@@ -1,0 +1,34 @@
+{
+  "name": "MysterionReact",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "scripts": {
+    "start": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
+    "test": "jest",
+    "lint": "eslint src",
+    "flow": "flow src"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-flowtype": "^2.49.3",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.10.0",
+    "jest-expo": "~27.0.0",
+    "react-native-scripts": "1.14.0",
+    "react-test-renderer": "16.3.1",
+    "flow-bin": "^0.75.0"
+  },
+  "dependencies": {
+    "expo": "^27.0.1",
+    "flow-bin": "^0.75.0",
+    "react": "16.3.1",
+    "react-native": "~0.55.2"
+  }
+}
