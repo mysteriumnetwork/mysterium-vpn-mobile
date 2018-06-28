@@ -1,20 +1,28 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Picker } from 'react-native';
+import { Text, View, Button, Picker } from 'react-native';
 import HttpTequilapiClient from '../libraries/mysterium-tequilapi/client'
-import Http from '../libraries/http'
+import Http from '../libraries/mysterium-tequilapi/adapters/http'
 import Countries from '../libraries/countries'
 import ConnectionRequestDTO from '../libraries/mysterium-tequilapi/dto/connection-request'
 import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
+import IdentityDTO from '../libraries/mysterium-tequilapi/dto/identity'
+import ConnectionStatusDTO from '../libraries/mysterium-tequilapi/dto/connection-status'
+import ConnectionIPDTO from '../libraries/mysterium-tequilapi/dto/connection-ip'
+import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
+import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connection-statistics'
+import styles from './App-styles'
+import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
+import CONFIG from '../config'
 
-const IP_UPDATING = 'updating...'
-const passphrase = ''
-const http = new Http("http://localhost:4050/")
+const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
+const http = new Http(CONFIG.TEQUILAPI_ADDRESS)
 const api = new HttpTequilapiClient(http)
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      refreshing: false,
       identityId: null,
       ip: IP_UPDATING,
       proposals: [],
@@ -32,7 +40,7 @@ export default class App extends React.Component {
   componentDidMount() {
     this.unlock()
     this.refresh()
-    setInterval(this.refresh.bind(this), 1000)
+    setInterval(this.refresh.bind(this), 5000)
   }
 
   isReady() {
@@ -48,26 +56,26 @@ export default class App extends React.Component {
   }
 
   async unlock() {
-    const identities = await api.identitiesList()
+    const identities: Array<IdentityDTO> = await api.identitiesList()
     let identityId: string = null
     if (identities.length) {
       identityId = identities[0].id
     } else {
-      const newIdentity = api.identityCreate(passphrase)
+      const newIdentity = api.identityCreate(CONFIG.PASSPHRASE)
       identityId = newIdentity.id
     }
-    await api.identityUnlock(identityId, passphrase)
+    await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
     this.setState({ identityId })
   }
 
   async refreshConnection() {
-    const connection = await api.connectionStatus()
+    const connection: ConnectionStatusDTO = await api.connectionStatus()
     console.log("connection", connection)
     this.setState({ connection })
   }
 
   async refreshIP() {
-    const ipDto = await api.connectionIP()
+    const ipDto: ConnectionIPDTO = await api.connectionIP()
     console.log("ip", ipDto)
     if (this.isReady()) {
       this.setState({ip: ipDto.ip})
@@ -75,7 +83,7 @@ export default class App extends React.Component {
   }
 
   async refreshProposals() {
-    const proposals = await api.findProposals()
+    const proposals: Array<ProposalDTO> = await api.findProposals()
     console.log("proposals", proposals)
     if (proposals.length) {
       this.setState({ proposals, selectedProviderId: proposals[0].providerId })
@@ -85,19 +93,22 @@ export default class App extends React.Component {
   }
 
   async refreshStatistics() {
-    const stats = await api.connectionStatistics()
+    const stats: ConnectionStatisticsDTO = await api.connectionStatistics()
     console.log("stats", stats)
     this.setState({ stats })
   }
 
   refresh() {
-    this.refreshConnection()
-    this.refreshProposals()
+    this.setState({ refreshing: true })
+    const promises = []
+    promises.push(this.refreshConnection())
+    promises.push(this.refreshProposals())
     if (this.isConnected()) {
-      this.refreshStatistics()
+      promises.push(this.refreshStatistics())
     } else {
-      this.refreshIP()
+      promises.push(this.refreshIP())
     }
+    Promise.all(promises).then(() => this.setState({ refreshing: false }))
   }
 
   async connectDisconnect() {
@@ -147,32 +158,11 @@ export default class App extends React.Component {
     if (!stats) {
       return null
     }
-
-    const formatTime = sec => {
-      if (sec < 60) {
-        return sec + ' seconds'
-      } else if (sec < 60*60) {
-        return Math.round(sec / 60) + ' minutes'
-      } else {
-        return Math.round(sec / 3600) + ' hours'
-      }
-    }
-
-    const formatBytes = bytes => {
-      if (bytes < 1024) {
-        return bytes + ' B'
-      } else if (bytes < 1024*1024) {
-        return Math.round(bytes / 1024) + ' kB'
-      } else {
-        return Math.round(bytes / (1024*1024)) + ' mB'
-      }
-    }
-
     return (
       <View>
-        <Text>Duration: {formatTime(stats.duration)}</Text>
-        <Text>Received: {formatBytes(stats.bytesReceived)}</Text>
-        <Text>Sent: {formatBytes(stats.bytesSent)}</Text>
+        <Text>Duration: {timeDisplay(stats.duration)}</Text>
+        <Text>Received: {bytesDisplay(stats.bytesReceived)}</Text>
+        <Text>Sent: {bytesDisplay(stats.bytesSent)}</Text>
       </View>
     )
   }
@@ -183,31 +173,18 @@ export default class App extends React.Component {
     const isConnected = this.isConnected()
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
-      : 'Loading...'
+      : CONFIG.TEXTS.UNKNOWN_STATUS
     return (
       <View style={styles.container}>
-        {s.connection ? <Text>{s.connection.status}</Text> : null }
+        { s.refreshing ? <Text>Refreshing...</Text> : <Text> </Text> }
+        { s.connection ? <Text>Status: {s.connection.status}</Text> : <Text> </Text> }
         <Text>IP: {s.ip}</Text>
         <Picker style={styles.picker} selectedValue={s.selectedProviderId} onValueChange={this.onProposalSelected}>
           {s.proposals.map(p => App.renderProposal(p))}
         </Picker>
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
-        {s.stats && isConnected ? App.renderStats(s.stats) : null}
+        { s.stats && isConnected ? App.renderStats(s.stats) : null }
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  picker: {
-    width: 150,
-    height: 20,
-    margin: 20,
-  }
-});

@@ -17,8 +17,8 @@
 
 // @flow
 
-import type {HttpInterface} from './mysterium-tequilapi/adapters/interface'
-import {HttpQueryParams} from './mysterium-tequilapi/adapters/interface'
+import type {HttpInterface} from './interface'
+import {HttpQueryParams} from './interface'
 
 const HEADERS = {
   'Accept': 'application/json',
