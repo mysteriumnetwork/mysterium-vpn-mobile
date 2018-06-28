@@ -23,7 +23,8 @@ export default {
     UNKNOWN_STATUS: 'Loading...'
   },
   REFRESH_INTERVALS: {
-    CONNECTION: 1,
+    INTERVAL_MS: 1000,
+    CONNECTION: 2,
     STATS: 1,
     PROPOSALS: 10,
     IP: 10

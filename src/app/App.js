@@ -61,7 +61,7 @@ export default class App extends React.Component {
   componentDidMount () {
     this.unlock()
     this.refresh(true)
-    setInterval(this.refresh.bind(this), 5000)
+    setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
   }
 
   isReady () {
@@ -120,6 +120,10 @@ export default class App extends React.Component {
   }
 
   refresh (force: boolean = false) {
+    if (this.state.refreshing) {
+      return
+    }
+
     this.interval++
     this.setState({ refreshing: true })
     const promises = []
