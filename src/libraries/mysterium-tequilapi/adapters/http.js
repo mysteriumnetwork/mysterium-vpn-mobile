@@ -22,7 +22,7 @@ import {HttpQueryParams} from './interface'
 
 const HEADERS = {
   'Accept': 'application/json',
-  'Content-Type': 'application/json',
+  'Content-Type': 'application/json'
 }
 
 export default class Http implements HttpInterface {
@@ -34,20 +34,20 @@ export default class Http implements HttpInterface {
 
   get (path: string, query: ?HttpQueryParams, timeout: ?number): Promise<?any> {
     const url = this.address + path
-    console.log("get", url)
+    console.log('get', url)
     return fetch(url, {
       method: 'GET',
-      headers: HEADERS,
+      headers: HEADERS
     })
       .then((response) => response.json())
       .catch((error) => {
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
 
   post (path: string, data: mixed, timeout: ?number): Promise<?any> {
     const url = this.address + path
-    console.log("post", url, data)
+    console.log('post', url, data)
     return fetch(url, {
       method: 'POST',
       headers: HEADERS,
@@ -58,25 +58,25 @@ export default class Http implements HttpInterface {
         return response
       })
       .catch((error) => {
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
 
   delete (path: string, timeout: ?number): Promise<?any> {
     const url = this.address + path
-    console.log("delete", url)
+    console.log('delete', url)
     return fetch(url, {
       method: 'DELETE',
-      headers: HEADERS,
+      headers: HEADERS
     })
       .catch((error) => {
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
 
   put (path: string, data: mixed, timeout: ?number): Promise<?any> {
     const url = this.address + path
-    console.log("put", url, data)
+    console.log('put', url, data)
     return fetch(url, {
       method: 'PUT',
       headers: HEADERS,
@@ -87,7 +87,7 @@ export default class Http implements HttpInterface {
         return response
       })
       .catch((error) => {
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
 }

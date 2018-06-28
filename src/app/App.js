@@ -1,5 +1,24 @@
-import React from 'react';
-import { Text, View, Button, Picker } from 'react-native';
+/*
+ * Copyright (C) 2017 The 'MysteriumNetwork/mysterion' Authors.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// @flow
+
+import React from 'react'
+import { Text, View, Button, Picker } from 'react-native'
 import HttpTequilapiClient from '../libraries/mysterium-tequilapi/client'
 import Http from '../libraries/mysterium-tequilapi/adapters/http'
 import Countries from '../libraries/countries'
@@ -21,7 +40,7 @@ const api = new HttpTequilapiClient(http)
 export default class App extends React.Component {
   interval: number = 0
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       refreshing: false,
@@ -30,7 +49,7 @@ export default class App extends React.Component {
       proposals: [],
       connection: null,
       selectedProviderId: null,
-      stats: null,
+      stats: null
     }
 
     // Bind local functions
@@ -39,27 +58,27 @@ export default class App extends React.Component {
     this.onProposalSelected = this.onProposalSelected.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.unlock()
     this.refresh(true)
     setInterval(this.refresh.bind(this), 5000)
   }
 
-  isReady() {
+  isReady () {
     const s = this.state
-    return s.identityId && s.connection
-      && ((s.connection.status == ConnectionStatusEnum.NOT_CONNECTED && s.selectedProviderId)
-        || s.connection.status == ConnectionStatusEnum.CONNECTED)
+    return s.identityId && s.connection &&
+      ((s.connection.status === ConnectionStatusEnum.NOT_CONNECTED && s.selectedProviderId) ||
+        s.connection.status === ConnectionStatusEnum.CONNECTED)
   }
 
-  isConnected() {
+  isConnected () {
     const c = this.state.connection
-    return c && c.status == ConnectionStatusEnum.CONNECTED
+    return c && c.status === ConnectionStatusEnum.CONNECTED
   }
 
-  async unlock() {
+  async unlock () {
     const identities: Array<IdentityDTO> = await api.identitiesList()
-    let identityId: string = null
+    let identityId: ?string = null
     if (identities.length) {
       identityId = identities[0].id
     } else {
@@ -70,23 +89,23 @@ export default class App extends React.Component {
     this.setState({ identityId })
   }
 
-  async refreshConnection() {
+  async refreshConnection () {
     const connection: ConnectionStatusDTO = await api.connectionStatus()
-    console.log("connection", connection)
+    console.log('connection', connection)
     this.setState({ connection })
   }
 
-  async refreshIP() {
+  async refreshIP () {
     const ipDto: ConnectionIPDTO = await api.connectionIP()
-    console.log("ip", ipDto)
+    console.log('ip', ipDto)
     if (this.isReady()) {
       this.setState({ip: ipDto.ip})
     }
   }
 
-  async refreshProposals() {
+  async refreshProposals () {
     const proposals: Array<ProposalDTO> = await api.findProposals()
-    console.log("proposals", proposals)
+    console.log('proposals', proposals)
     if (proposals.length) {
       this.setState({ proposals, selectedProviderId: proposals[0].providerId })
     } else {
@@ -94,13 +113,13 @@ export default class App extends React.Component {
     }
   }
 
-  async refreshStatistics() {
+  async refreshStatistics () {
     const stats: ConnectionStatisticsDTO = await api.connectionStatistics()
-    console.log("stats", stats)
+    console.log('stats', stats)
     this.setState({ stats })
   }
 
-  refresh(force: boolean = false) {
+  refresh (force: boolean = false) {
     this.interval++
     this.setState({ refreshing: true })
     const promises = []
@@ -119,10 +138,11 @@ export default class App extends React.Component {
         promises.push(this.refreshIP())
       }
     }
-    return Promise.all(promises).then(() => this.setState({ refreshing: false }))
+    return Promise.all(promises)
+      .then(() => this.setState({ refreshing: false }))
   }
 
-  async connectDisconnect() {
+  async connectDisconnect () {
     if (!this.isReady()) {
       return
     }
@@ -134,29 +154,36 @@ export default class App extends React.Component {
     }
   }
 
-  async connect() {
+  async connect () {
     const s = this.state
-    this.setState({ ip: IP_UPDATING, connection: { status: ConnectionStatusEnum.CONNECTING }})
+    this.setState({
+      ip: IP_UPDATING,
+      connection: { status: ConnectionStatusEnum.CONNECTING
+      }
+    })
     const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
     const connection = await api.connectionCreate(request)
-    console.log("connect", connection)
+    console.log('connect', connection)
     this.refresh(true)
   }
 
-  async disconnect() {
-    const s = this.state
-    this.setState({ ip: IP_UPDATING, connection: { status: ConnectionStatusEnum.DISCONNECTING }})
+  async disconnect () {
+    this.setState({
+      ip: IP_UPDATING,
+      connection: { status: ConnectionStatusEnum.DISCONNECTING
+      }
+    })
     await api.connectionCancel()
-    console.log("disconnect")
+    console.log('disconnect')
     this.refresh(true)
   }
 
-  onProposalSelected(value, index) {
-    console.log("selected", value, index)
+  onProposalSelected (value, index) {
+    console.log('selected', value, index)
     this.setState({ selectedProviderId: value })
   }
 
-  static renderProposal(p) {
+  static renderProposal (p) {
     const countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
     const countryName = Countries[countryCode] || 'unknown'
     const providerId = p.providerId
@@ -165,7 +192,7 @@ export default class App extends React.Component {
     )
   }
 
-  static renderStats(stats) {
+  static renderStats (stats) {
     if (!stats) {
       return null
     }
@@ -178,7 +205,7 @@ export default class App extends React.Component {
     )
   }
 
-  render() {
+  render () {
     const s = this.state
     const isReady = this.isReady()
     const isConnected = this.isConnected()
@@ -196,6 +223,6 @@ export default class App extends React.Component {
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
         { s.stats && isConnected ? App.renderStats(s.stats) : null }
       </View>
-    );
+    )
   }
 }

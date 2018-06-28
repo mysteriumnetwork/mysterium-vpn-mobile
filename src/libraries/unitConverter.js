@@ -18,10 +18,10 @@
 function bytesDisplay (bytes) {
   if (bytes < 1024) {
     return bytes + ' B'
-  } else if (bytes < 1024*1024) {
+  } else if (bytes < 1024 * 1024) {
     return Math.round(bytes / 1024) + ' kB'
   } else {
-    return Math.round(bytes / (1024*1024)) + ' mB'
+    return Math.round(bytes / (1024 * 1024)) + ' mB'
   }
 }
 
