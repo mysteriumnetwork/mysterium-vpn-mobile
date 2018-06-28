@@ -19,6 +19,8 @@ const http = new Http(CONFIG.TEQUILAPI_ADDRESS)
 const api = new HttpTequilapiClient(http)
 
 export default class App extends React.Component {
+  interval: number = 0
+
   constructor(props) {
     super(props)
     this.state = {
@@ -39,7 +41,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.unlock()
-    this.refresh()
+    this.refresh(true)
     setInterval(this.refresh.bind(this), 5000)
   }
 
@@ -98,17 +100,26 @@ export default class App extends React.Component {
     this.setState({ stats })
   }
 
-  refresh() {
+  refresh(force: boolean = false) {
+    this.interval++
     this.setState({ refreshing: true })
     const promises = []
-    promises.push(this.refreshConnection())
-    promises.push(this.refreshProposals())
-    if (this.isConnected()) {
-      promises.push(this.refreshStatistics())
-    } else {
-      promises.push(this.refreshIP())
+    if (force || this.interval % CONFIG.REFRESH_INTERVALS.CONNECTION === 0) {
+      promises.push(this.refreshConnection())
     }
-    Promise.all(promises).then(() => this.setState({ refreshing: false }))
+    if (force || this.interval % CONFIG.REFRESH_INTERVALS.PROPOSALS === 0) {
+      promises.push(this.refreshProposals())
+    }
+    if (this.isConnected()) {
+      if (force || this.interval % CONFIG.REFRESH_INTERVALS.STATS === 0) {
+        promises.push(this.refreshStatistics())
+      }
+    } else {
+      if (force || this.interval % CONFIG.REFRESH_INTERVALS.IP === 0) {
+        promises.push(this.refreshIP())
+      }
+    }
+    return Promise.all(promises).then(() => this.setState({ refreshing: false }))
   }
 
   async connectDisconnect() {
@@ -129,7 +140,7 @@ export default class App extends React.Component {
     const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
     const connection = await api.connectionCreate(request)
     console.log("connect", connection)
-    this.refresh()
+    this.refresh(true)
   }
 
   async disconnect() {
@@ -137,7 +148,7 @@ export default class App extends React.Component {
     this.setState({ ip: IP_UPDATING, connection: { status: ConnectionStatusEnum.DISCONNECTING }})
     await api.connectionCancel()
     console.log("disconnect")
-    this.refresh()
+    this.refresh(true)
   }
 
   onProposalSelected(value, index) {
