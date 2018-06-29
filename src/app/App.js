@@ -100,7 +100,7 @@ export default class App extends AppApi {
           {s.proposals.map(p => App.renderProposal(p))}
         </Picker>
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
-        { s.stats ? <Stats {...s.stats} />: null }
+        { s.stats ? <Stats {...s.stats} /> : null }
       </View>
     )
   }
