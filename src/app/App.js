@@ -19,8 +19,6 @@
 
 import React from 'react'
 import { Text, View, Button, Picker } from 'react-native'
-import HttpTequilapiClient from '../libraries/mysterium-tequilapi/client'
-import Http from '../libraries/mysterium-tequilapi/adapters/http'
 import Countries from '../libraries/countries'
 import ConnectionRequestDTO from '../libraries/mysterium-tequilapi/dto/connection-request'
 import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
@@ -32,10 +30,11 @@ import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connec
 import styles from './App-styles'
 import CONFIG from '../config'
 import Stats from './Stats'
+import tequilapiClientFactory from '../libraries/mysterium-tequilapi/client-factory'
+import type {TequilapiClient} from '../libraries/mysterium-tequilapi/client'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
-const http = new Http(CONFIG.TEQUILAPI_ADDRESS)
-const api = new HttpTequilapiClient(http)
+const api: TequilapiClient = tequilapiClientFactory()
 
 export default class App extends React.Component {
   interval: number = 0
