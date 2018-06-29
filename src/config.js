@@ -20,7 +20,7 @@ export default {
   TEQUILAPI_ADDRESS: 'http://localhost:4050/',
   TEXTS: {
     IP_UPDATING: 'updating...',
-    IP_UNKNOWN: 'unknown',
+    UNKNOWN: 'unknown',
     UNKNOWN_STATUS: 'Loading...'
   },
   REFRESH_INTERVALS: {

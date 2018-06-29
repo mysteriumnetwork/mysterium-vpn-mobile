@@ -27,11 +27,11 @@ import ConnectionStatusDTO from '../libraries/mysterium-tequilapi/dto/connection
 import ConnectionIPDTO from '../libraries/mysterium-tequilapi/dto/connection-ip'
 import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connection-statistics'
+import tequilapiClientFactory from '../libraries/mysterium-tequilapi/client-factory'
+import type {TequilapiClient} from '../libraries/mysterium-tequilapi/client'
 import styles from './App-styles'
 import CONFIG from '../config'
 import Stats from './Stats'
-import tequilapiClientFactory from '../libraries/mysterium-tequilapi/client-factory'
-import type {TequilapiClient} from '../libraries/mysterium-tequilapi/client'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const api: TequilapiClient = tequilapiClientFactory()
@@ -88,7 +88,7 @@ export default class App extends React.Component {
       if (identities.length) {
         identityId = identities[0].id
       } else {
-        const newIdentity = api.identityCreate(CONFIG.PASSPHRASE)
+        const newIdentity: IdentityDTO = api.identityCreate(CONFIG.PASSPHRASE)
         identityId = newIdentity.id
       }
     } catch (e) {
@@ -124,7 +124,7 @@ export default class App extends React.Component {
       }
     } catch (e) {
       console.warn('api.connectionIP failed', e)
-      this.setState({ip: CONFIG.TEXTS.IP_UNKNOWN})
+      this.setState({ip: CONFIG.TEXTS.UNKNOWN})
     }
   }
 
@@ -234,9 +234,12 @@ export default class App extends React.Component {
     this.setState({ selectedProviderId: value })
   }
 
-  static renderProposal (p) {
+  static renderProposal (p: ProposalDTO) {
+    if (!p.serviceDefinition) {
+      return null
+    }
     const countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-    const countryName = Countries[countryCode] || 'unknown'
+    const countryName = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
     const providerId = p.providerId
     return (
       <Picker.Item key={p.id} label={countryName} value={providerId} />
@@ -250,10 +253,11 @@ export default class App extends React.Component {
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
       : CONFIG.TEXTS.UNKNOWN_STATUS
+
     return (
       <View style={styles.container}>
         { s.refreshing ? <Text>Refreshing...</Text> : <Text> </Text> }
-        { s.connection ? <Text>Status: {s.connection.status}</Text> : <Text> </Text> }
+        <Text>Status: {s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>
         <Picker style={styles.picker} selectedValue={s.selectedProviderId} onValueChange={this.onProposalSelected}>
           {s.proposals.map(p => App.renderProposal(p))}
