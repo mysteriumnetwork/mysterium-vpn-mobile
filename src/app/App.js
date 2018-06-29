@@ -30,8 +30,8 @@ import ConnectionIPDTO from '../libraries/mysterium-tequilapi/dto/connection-ip'
 import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connection-statistics'
 import styles from './App-styles'
-import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
 import CONFIG from '../config'
+import Stats from './Stats'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const http = new Http(CONFIG.TEQUILAPI_ADDRESS)
@@ -196,19 +196,6 @@ export default class App extends React.Component {
     )
   }
 
-  static renderStats (stats) {
-    if (!stats) {
-      return null
-    }
-    return (
-      <View>
-        <Text>Duration: {timeDisplay(stats.duration)}</Text>
-        <Text>Received: {bytesDisplay(stats.bytesReceived)}</Text>
-        <Text>Sent: {bytesDisplay(stats.bytesSent)}</Text>
-      </View>
-    )
-  }
-
   render () {
     const s = this.state
     const isReady = this.isReady()
@@ -225,7 +212,7 @@ export default class App extends React.Component {
           {s.proposals.map(p => App.renderProposal(p))}
         </Picker>
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
-        { s.stats && isConnected ? App.renderStats(s.stats) : null }
+        { s.stats && isConnected ? <Stats {...s.stats} />: null }
       </View>
     )
   }
