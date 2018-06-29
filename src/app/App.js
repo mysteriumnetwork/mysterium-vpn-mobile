@@ -37,11 +37,20 @@ export default class App extends AppApi {
     this.onProposalSelected = this.onProposalSelected.bind(this)
   }
 
+  /***
+   * Refreshes connection state, ip and unlocks identity.
+   * Starts periodic state refreshing
+   * Called once after first rendering.
+   */
   componentDidMount () {
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
   }
 
+  /***
+   * Checks ability to connect/disconnect
+   * @returns {boolean} - true if where is no uncompleted operations
+   */
   isReady () {
     const s = this.state
     return s.identityId && s.connection &&
@@ -49,11 +58,20 @@ export default class App extends AppApi {
         s.connection.status === ConnectionStatusEnum.CONNECTED)
   }
 
+  /***
+   * Checks are you already connected to VPN server
+   * @returns {boolean} - true if you connected, false if not or state is unknown
+   */
   isConnected () {
     const c = this.state.connection
     return c && c.status === ConnectionStatusEnum.CONNECTED
   }
 
+  /***
+   * Connects or disconnects to VPN server, depends on current connection state.
+   * Is connection state is unknown - does nothing
+   * @returns {Promise<void>}
+   */
   async connectDisconnect () {
     if (!this.isReady()) {
       return
@@ -66,6 +84,11 @@ export default class App extends AppApi {
     }
   }
 
+  /**
+   * Callback called when VPN server is selected
+   * @param value - proposal/VPN providerId
+   * @param index - index of proposal in dropdown list
+   */
   onProposalSelected (value, index) {
     console.log('selected', value, index)
     this.setState({ selectedProviderId: value })

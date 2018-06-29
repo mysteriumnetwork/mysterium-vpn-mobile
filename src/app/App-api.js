@@ -32,6 +32,9 @@ import CONFIG from '../config'
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const api: TequilapiClient = tequilapiClientFactory()
 
+/***
+ * API operations level
+ */
 export default class AppApi extends React.Component {
   interval: number = 0
 
@@ -48,7 +51,11 @@ export default class AppApi extends React.Component {
     }
   }
 
-  async unlock () {
+  /***
+   * Tries to login to API, must be completed once before connect
+   * @returns {Promise<void>}
+   */
+  async unlock (): Promise<void> {
     let identities: Array<IdentityDTO>
     try {
       identities = await api.identitiesList()
@@ -78,7 +85,11 @@ export default class AppApi extends React.Component {
     }
   }
 
-  async refreshConnection () {
+  /***
+   * Gets current connection state
+   * @returns {Promise<void>}
+   */
+  async refreshConnection (): Promise<void> {
     try {
       const connection: ConnectionStatusDTO = await api.connectionStatus()
       console.log('connection', connection)
@@ -89,7 +100,11 @@ export default class AppApi extends React.Component {
     }
   }
 
-  async refreshIP () {
+  /***
+   * Gets current IP address, called until connection
+   * @returns {Promise<void>}
+   */
+  async refreshIP (): Promise<void> {
     try {
       const ipDto: ConnectionIPDTO = await api.connectionIP()
       console.log('ip', ipDto)
@@ -102,11 +117,15 @@ export default class AppApi extends React.Component {
     }
   }
 
-  async refreshProposals () {
+  /**
+   * Gets VPN server list with country code
+   * @returns {Promise<void>}
+   */
+  async refreshProposals (): Promise<void> {
     try {
       const proposals: Array<ProposalDTO> = await api.findProposals()
       console.log('proposals', proposals)
-      if (proposals.length) {
+      if (proposals.length && proposals.indexOf(this.state.selectedProviderId) < 0) {
         this.setState({proposals, selectedProviderId: proposals[0].providerId})
       } else {
         this.setState({proposals})
@@ -117,7 +136,11 @@ export default class AppApi extends React.Component {
     }
   }
 
-  async refreshStatistics () {
+  /***
+   * Gets connection statistics, like duration, bytes sent/received. Called when connection is active
+   * @returns {Promise<void>}
+   */
+  async refreshStatistics (): Promise<void> {
     try {
       const stats: ConnectionStatisticsDTO = await api.connectionStatistics()
       console.log('stats', stats)
@@ -127,7 +150,12 @@ export default class AppApi extends React.Component {
     }
   }
 
-  refresh (force: boolean = false) {
+  /***
+   * Updates state time to time, called each second
+   * @param force - true if you want to refresh all states ignoring refresh intervals
+   * @returns {Promise<void>}
+   */
+  refresh (force: boolean = false): Promise<void> {
     if (this.state.refreshing) {
       return
     }
@@ -159,12 +187,15 @@ export default class AppApi extends React.Component {
       .then(() => this.setState({ refreshing: false }))
   }
 
-  async connect () {
+  /***
+   * Tries to connect to selected VPN server
+   * @returns {Promise<void>}
+   */
+  async connect (): Promise<void> {
     const s = this.state
     this.setState({
       ip: IP_UPDATING,
-      connection: { status: ConnectionStatusEnum.CONNECTING
-      }
+      connection: { status: ConnectionStatusEnum.CONNECTING }
     })
     try {
       const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
@@ -176,11 +207,14 @@ export default class AppApi extends React.Component {
     this.refresh(true)
   }
 
-  async disconnect () {
+  /***
+   * Tries to disconnect from VPN server
+   * @returns {Promise<void>}
+   */
+  async disconnect (): Promise<void> {
     this.setState({
       ip: IP_UPDATING,
-      connection: { status: ConnectionStatusEnum.DISCONNECTING
-      }
+      connection: { status: ConnectionStatusEnum.DISCONNECTING }
     })
     try {
       await api.connectionCancel()
