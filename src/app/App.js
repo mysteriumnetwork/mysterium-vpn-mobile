@@ -59,7 +59,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount () {
-    this.unlock()
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
   }
@@ -77,46 +76,82 @@ export default class App extends React.Component {
   }
 
   async unlock () {
-    const identities: Array<IdentityDTO> = await api.identitiesList()
-    let identityId: ?string = null
-    if (identities.length) {
-      identityId = identities[0].id
-    } else {
-      const newIdentity = api.identityCreate(CONFIG.PASSPHRASE)
-      identityId = newIdentity.id
+    let identities: Array<IdentityDTO>
+    try {
+      identities = await api.identitiesList()
+    } catch (e) {
+      console.warn('api.identitiesList failed', e)
+      return
     }
-    await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-    this.setState({ identityId })
+
+    let identityId: ?string = null
+    try {
+      if (identities.length) {
+        identityId = identities[0].id
+      } else {
+        const newIdentity = api.identityCreate(CONFIG.PASSPHRASE)
+        identityId = newIdentity.id
+      }
+    } catch (e) {
+      console.warn('api.identityCreate failed', e)
+      return
+    }
+
+    try {
+      await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
+      this.setState({identityId})
+    } catch (e) {
+      console.warn('api.identityUnlock failed', e)
+    }
   }
 
   async refreshConnection () {
-    const connection: ConnectionStatusDTO = await api.connectionStatus()
-    console.log('connection', connection)
-    this.setState({ connection })
+    try {
+      const connection: ConnectionStatusDTO = await api.connectionStatus()
+      console.log('connection', connection)
+      this.setState({connection})
+    } catch (e) {
+      console.warn('api.connectionStatus failed', e)
+      this.setState({connection: null})
+    }
   }
 
   async refreshIP () {
-    const ipDto: ConnectionIPDTO = await api.connectionIP()
-    console.log('ip', ipDto)
-    if (this.isReady()) {
-      this.setState({ip: ipDto.ip})
+    try {
+      const ipDto: ConnectionIPDTO = await api.connectionIP()
+      console.log('ip', ipDto)
+      if (this.isReady()) {
+        this.setState({ip: ipDto.ip})
+      }
+    } catch (e) {
+      console.warn('api.connectionIP failed', e)
+      this.setState({ip: CONFIG.TEXTS.IP_UNKNOWN})
     }
   }
 
   async refreshProposals () {
-    const proposals: Array<ProposalDTO> = await api.findProposals()
-    console.log('proposals', proposals)
-    if (proposals.length) {
-      this.setState({ proposals, selectedProviderId: proposals[0].providerId })
-    } else {
-      this.setState({ proposals })
+    try {
+      const proposals: Array<ProposalDTO> = await api.findProposals()
+      console.log('proposals', proposals)
+      if (proposals.length) {
+        this.setState({proposals, selectedProviderId: proposals[0].providerId})
+      } else {
+        this.setState({proposals})
+      }
+    } catch (e) {
+      console.warn('api.findProposals failed', e)
+      this.setState({proposals: [], selectedProviderId: null})
     }
   }
 
   async refreshStatistics () {
-    const stats: ConnectionStatisticsDTO = await api.connectionStatistics()
-    console.log('stats', stats)
-    this.setState({ stats })
+    try {
+      const stats: ConnectionStatisticsDTO = await api.connectionStatistics()
+      console.log('stats', stats)
+      this.setState({ stats })
+    } catch (e) {
+      console.warn('api.connectionStatistics failed', e)
+    }
   }
 
   refresh (force: boolean = false) {
@@ -127,6 +162,11 @@ export default class App extends React.Component {
     this.interval++
     this.setState({ refreshing: true })
     const promises = []
+
+    if (!this.state.identityId) {
+      promises.push(this.unlock())
+    }
+
     if (force || this.interval % CONFIG.REFRESH_INTERVALS.CONNECTION === 0) {
       promises.push(this.refreshConnection())
     }
@@ -138,7 +178,7 @@ export default class App extends React.Component {
         promises.push(this.refreshStatistics())
       }
     } else {
-      if (force || this.interval % CONFIG.REFRESH_INTERVALS.IP === 0) {
+      if (force || this.interval % CONFIG.REFRESH_INTERVALS.IP === 0 || this.state.ip === IP_UPDATING) {
         promises.push(this.refreshIP())
       }
     }
@@ -165,9 +205,13 @@ export default class App extends React.Component {
       connection: { status: ConnectionStatusEnum.CONNECTING
       }
     })
-    const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
-    const connection = await api.connectionCreate(request)
-    console.log('connect', connection)
+    try {
+      const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
+      const connection = await api.connectionCreate(request)
+      console.log('connect', connection)
+    } catch (e) {
+      console.warn('api.connectionCreate failed', e)
+    }
     this.refresh(true)
   }
 
@@ -177,8 +221,12 @@ export default class App extends React.Component {
       connection: { status: ConnectionStatusEnum.DISCONNECTING
       }
     })
-    await api.connectionCancel()
-    console.log('disconnect')
+    try {
+      await api.connectionCancel()
+      console.log('disconnect')
+    } catch (e) {
+      console.warn('api.connectionCancel failed', e)
+    }
     this.refresh(true)
   }
 
@@ -212,7 +260,7 @@ export default class App extends React.Component {
           {s.proposals.map(p => App.renderProposal(p))}
         </Picker>
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
-        { s.stats && isConnected ? <Stats {...s.stats} />: null }
+        { s.stats ? <Stats {...s.stats} />: null }
       </View>
     )
   }

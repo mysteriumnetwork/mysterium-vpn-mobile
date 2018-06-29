@@ -37,11 +37,12 @@ export default class Http implements HttpInterface {
     console.log('get', url)
     return fetch(url, {
       method: 'GET',
-      headers: HEADERS
+      headers: HEADERS,
+      timeout
     })
       .then((response) => response.json())
       .catch((error) => {
-        console.error(error)
+        console.warn('get error', error)
       })
   }
 
@@ -51,6 +52,7 @@ export default class Http implements HttpInterface {
     return fetch(url, {
       method: 'POST',
       headers: HEADERS,
+      timeout,
       body: JSON.stringify(data)
     })
       .then((response) => {
@@ -58,7 +60,7 @@ export default class Http implements HttpInterface {
         return response
       })
       .catch((error) => {
-        console.error(error)
+        console.warn('post error', path, data, error)
       })
   }
 
@@ -67,10 +69,11 @@ export default class Http implements HttpInterface {
     console.log('delete', url)
     return fetch(url, {
       method: 'DELETE',
-      headers: HEADERS
+      headers: HEADERS,
+      timeout,
     })
       .catch((error) => {
-        console.error(error)
+        console.warn('delete error', path, error)
       })
   }
 
@@ -80,6 +83,7 @@ export default class Http implements HttpInterface {
     return fetch(url, {
       method: 'PUT',
       headers: HEADERS,
+      timeout,
       body: JSON.stringify(data)
     })
       .then((response) => {
@@ -87,7 +91,7 @@ export default class Http implements HttpInterface {
         return response
       })
       .catch((error) => {
-        console.error(error)
+        console.warn('put error', path, data, error)
       })
   }
 }
