@@ -15,13 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+const KB = 1024
+const MB = 1024 * KB
+const GB = 1024 * MB
+
 function bytesDisplay (bytes) {
-  if (bytes < 1024) {
+  if (bytes < KB) {
     return bytes + ' B'
-  } else if (bytes < 1024 * 1024) {
-    return Math.round(bytes / 1024) + ' kB'
+  } else if (bytes < MB) {
+    return Math.round(bytes / KB) + ' kB'
+  } else if (bytes < GB) {
+    return Math.round(bytes / MB) + ' mB'
   } else {
-    return Math.round(bytes / (1024 * 1024)) + ' mB'
+    return Math.round(bytes / GB) + ' gB'
   }
 }
 
