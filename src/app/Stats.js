@@ -21,7 +21,7 @@ import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
 
-export default Stats = ({ duration, bytesReceived, bytesSent }) => {
+const Stats = ({ duration, bytesReceived, bytesSent }) => {
   return (
     <View style={styles.container}>
       <Text>Duration: {timeDisplay(duration)}</Text>
@@ -34,5 +34,7 @@ export default Stats = ({ duration, bytesReceived, bytesSent }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 20
-  },
+  }
 })
+
+export default Stats
