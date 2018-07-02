@@ -115,9 +115,9 @@ export default class App extends AppApi {
       : CONFIG.TEXTS.UNKNOWN_STATUS
 
     return (
-      <View style={styles.container}>
-        { s.refreshing ? <Text>Refreshing...</Text> : <Text> </Text> }
-        <Text>Status: {s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
+      <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+        { s.refreshing ? <Text>...</Text> : <Text> </Text> }
+        <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>
         <Picker style={styles.picker} selectedValue={s.selectedProviderId} onValueChange={this.onProposalSelected}>
           {s.proposals.map(p => App.renderProposal(p))}

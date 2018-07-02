@@ -93,7 +93,11 @@ export default class AppApi extends React.Component {
     try {
       const connection: ConnectionStatusDTO = await api.connectionStatus()
       console.log('connection', connection)
-      this.setState({connection})
+      const stateUpdate = {connection}
+      if (connection.status === ConnectionStatusEnum.CONNECTING || connection.status === ConnectionStatusEnum.DISCONNECTING) {
+        stateUpdate.ip = IP_UPDATING
+      }
+      this.setState(stateUpdate)
     } catch (e) {
       console.warn('api.connectionStatus failed', e)
       this.setState({connection: null})
@@ -168,6 +172,10 @@ export default class AppApi extends React.Component {
       promises.push(this.unlock())
     }
 
+    if (force || this.state.ip === IP_UPDATING || this.state.ip === CONFIG.TEXTS.UNKNOWN) {
+      promises.push(this.refreshIP())
+    }
+
     if (force || this.interval % CONFIG.REFRESH_INTERVALS.CONNECTION === 0) {
       promises.push(this.refreshConnection())
     }
@@ -178,10 +186,8 @@ export default class AppApi extends React.Component {
       if (force || this.interval % CONFIG.REFRESH_INTERVALS.STATS === 0) {
         promises.push(this.refreshStatistics())
       }
-    } else {
-      if (force || this.interval % CONFIG.REFRESH_INTERVALS.IP === 0 || this.state.ip === IP_UPDATING) {
-        promises.push(this.refreshIP())
-      }
+    } else if (this.interval % CONFIG.REFRESH_INTERVALS.IP === 0) {
+      promises.push(this.refreshIP())
     }
     return Promise.all(promises)
       .then(() => this.setState({ refreshing: false }))

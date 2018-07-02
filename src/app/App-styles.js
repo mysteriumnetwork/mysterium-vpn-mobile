@@ -25,7 +25,7 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   picker: {
-    width: 150,
+    width: 130,
     height: 20,
     margin: 20
   }
