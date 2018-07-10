@@ -18,14 +18,13 @@
 // @flow
 
 import React from 'react'
-import { Text, View, Button, Picker } from 'react-native'
-import Countries from '../libraries/countries'
+import { Text, View, Button } from 'react-native'
 import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
-import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 import styles from './App-styles'
 import CONFIG from '../config'
 import Stats from './Stats'
 import AppApi from './App-api'
+import Proposals from './Proposals'
 
 export default class App extends AppApi {
   constructor (props) {
@@ -94,18 +93,6 @@ export default class App extends AppApi {
     this.setState({ selectedProviderId: value })
   }
 
-  static renderProposal (p: ProposalDTO) {
-    if (!p.serviceDefinition) {
-      return null
-    }
-    const countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-    const countryName = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
-    const providerId = p.providerId
-    return (
-      <Picker.Item key={p.id} label={countryName} value={providerId} />
-    )
-  }
-
   render () {
     const s = this.state
     const isReady = this.isReady()
@@ -119,9 +106,7 @@ export default class App extends AppApi {
         { s.refreshing ? <Text>...</Text> : <Text> </Text> }
         <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>
-        <Picker style={styles.picker} selectedValue={s.selectedProviderId} onValueChange={this.onProposalSelected}>
-          {s.proposals.map(p => App.renderProposal(p))}
-        </Picker>
+        <Proposals proposals={s.proposals} selectedProviderId={s.selectedProviderId} onProposalSelected={this.onProposalSelected}/>
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
         { s.stats ? <Stats {...s.stats} /> : null }
       </View>
