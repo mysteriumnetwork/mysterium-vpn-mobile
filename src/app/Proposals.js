@@ -51,5 +51,5 @@ export default class Proposals extends React.Component {
 Proposals.propTypes = {
   proposals: PropTypes.arrayOf(PropTypes.instanceOf(ProposalDTO)),
   selectedProviderId: PropTypes.string,
-  onProposalSelected: PropTypes.function
+  onProposalSelected: PropTypes.func
 }
