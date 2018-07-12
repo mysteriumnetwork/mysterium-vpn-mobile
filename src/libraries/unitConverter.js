@@ -23,11 +23,11 @@ function bytesDisplay (bytes) {
   if (bytes < KB) {
     return bytes + ' B'
   } else if (bytes < MB) {
-    return Math.round(bytes / KB) + ' KB'
+    return (bytes / KB).toFixed(2) + ' KB'
   } else if (bytes < GB) {
-    return Math.round(bytes / MB) + ' MB'
+    return (bytes / MB).toFixed(2) + ' MB'
   } else {
-    return Math.round(bytes / GB) + ' GB'
+    return (bytes / GB).toFixed(2) + ' GB'
   }
 }
 
