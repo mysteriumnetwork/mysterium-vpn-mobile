@@ -1,0 +1,3 @@
+rootProject.name = 'MysteriumVPN'
+
+include ':app'
