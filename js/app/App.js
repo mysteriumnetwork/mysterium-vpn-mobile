@@ -18,7 +18,7 @@
 // @flow
 
 import React from 'react'
-import { Text, View, Button } from 'react-native'
+import { Text, View, Button, NativeModules } from 'react-native'
 import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
 import styles from './App-styles'
 import CONFIG from '../config'
@@ -76,6 +76,8 @@ export default class App extends AppApi {
       return
     }
 
+    NativeModules.TestModule.startService()
+
     if (this.isConnected()) {
       await this.disconnect()
     } else {
@@ -100,9 +102,11 @@ export default class App extends AppApi {
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
       : CONFIG.TEXTS.UNKNOWN_STATUS
+    const testModule = NativeModules.TestModule
 
     return (
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+        <Text>{ `foo = ${testModule.foo}` }</Text>
         { s.refreshing ? <Text>...</Text> : <Text> </Text> }
         <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>
