@@ -18,13 +18,14 @@
 // @flow
 
 import React from 'react'
-import { Text, View, Button, NativeModules } from 'react-native'
+import { Text, View, Button } from 'react-native'
 import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
 import styles from './App-styles'
 import CONFIG from '../config'
 import Stats from './Stats'
 import AppApi from './App-api'
 import Proposals from './Proposals'
+import MysteriumClient from './MysteriumClient'
 
 export default class App extends AppApi {
   constructor (props) {
@@ -45,7 +46,7 @@ export default class App extends AppApi {
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
 
-    const service_status = await NativeModules.MysteriumClientModule.startService(4050)
+    const service_status = await MysteriumClient.startService(4050)
     this.setState({ service_status })
   }
 
