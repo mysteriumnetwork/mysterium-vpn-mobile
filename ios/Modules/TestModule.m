@@ -18,9 +18,10 @@ RCT_EXPORT_MODULE();
     return @{ @"foo": @"bar" };
 }
 
-RCT_EXPORT_METHOD(startService)
+RCT_EXPORT_METHOD(startService:(NSString *)name completion:(RCTResponseSenderBlock)completion)
 {
-    RCTLogInfo(@"Starting some sort of service");
+    NSString *newName = [NSString stringWithFormat:@"%@bar", name];
+    completion(@[[NSNull null], @[newName]]);
 }
 
 @end

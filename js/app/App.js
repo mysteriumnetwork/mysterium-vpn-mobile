@@ -76,7 +76,13 @@ export default class App extends AppApi {
       return
     }
 
-    NativeModules.TestModule.startService()
+    NativeModules.TestModule.startService("foo", (error, events) => {
+      if (error) {
+        console.error(error)
+      } else {
+        console.log(`startService returned ${events[0]}`)
+      }
+    })
 
     if (this.isConnected()) {
       await this.disconnect()
