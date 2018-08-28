@@ -45,8 +45,8 @@ export default class App extends AppApi {
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
 
-    const multiplied = await NativeModules.MysteriumClientModule.multiplyBy2(3)
-    this.setState({ multiplied })
+    const service_status = await NativeModules.MysteriumClientModule.startService(4050)
+    this.setState({ service_status })
   }
 
   /***
@@ -79,14 +79,6 @@ export default class App extends AppApi {
       return
     }
 
-    NativeModules.TestModule.startService("foo", (error, events) => {
-      if (error) {
-        console.error(error)
-      } else {
-        console.log(`startService returned ${events[0]}`)
-      }
-    })
-
     if (this.isConnected()) {
       await this.disconnect()
     } else {
@@ -111,10 +103,9 @@ export default class App extends AppApi {
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
       : CONFIG.TEXTS.UNKNOWN_STATUS
-    const mysteriumClientModule = NativeModules.MysteriumClientModule
     return (
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
-        <Text>{ `foo = ${mysteriumClientModule.foo}` } {s.multiplied}</Text>
+        <Text>{`Service start status = ${s.service_status}`}</Text>
         { s.refreshing ? <Text>...</Text> : <Text> </Text> }
         <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>

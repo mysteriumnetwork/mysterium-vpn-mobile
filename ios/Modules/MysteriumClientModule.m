@@ -13,15 +13,11 @@
 
 RCT_EXPORT_MODULE();
 
-- (NSDictionary *)constantsToExport
+RCT_EXPORT_METHOD(startService:(NSInteger)port
+                  statusResolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-    return @{ @"foo": @"bar" };
-}
-
-RCT_EXPORT_METHOD(startService:(NSString *)name completion:(RCTResponseSenderBlock)completion)
-{
-    NSString *newName = [NSString stringWithFormat:@"%@bar", name];
-    completion(@[[NSNull null], @[newName]]);
+    resolve(@[@0]); //return 0 for successful start
 }
 
 @end
