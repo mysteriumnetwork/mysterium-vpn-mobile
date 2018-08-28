@@ -45,7 +45,7 @@ export default class App extends AppApi {
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
 
-    const multiplied = await NativeModules.TestModule.multiplyBy2(3)
+    const multiplied = await NativeModules.MysteriumClientModule.multiplyBy2(3)
     this.setState({ multiplied })
   }
 
@@ -111,10 +111,10 @@ export default class App extends AppApi {
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
       : CONFIG.TEXTS.UNKNOWN_STATUS
-    const testModule = NativeModules.TestModule
+    const mysteriumClientModule = NativeModules.MysteriumClientModule
     return (
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
-        <Text>{ `foo = ${testModule.foo}` } {s.multiplied}</Text>
+        <Text>{ `foo = ${mysteriumClientModule.foo}` } {s.multiplied}</Text>
         { s.refreshing ? <Text>...</Text> : <Text> </Text> }
         <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>

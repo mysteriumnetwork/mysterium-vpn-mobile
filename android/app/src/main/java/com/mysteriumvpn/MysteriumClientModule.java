@@ -12,15 +12,15 @@ import com.facebook.react.bridge.Promise;
 import java.util.Map;
 import java.util.HashMap;
 
-public class TestModule extends ReactContextBaseJavaModule {
+public class MysteriumClientModule extends ReactContextBaseJavaModule {
 
-    public TestModule(ReactApplicationContext reactContext) {
+    public MysteriumClientModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
-        return "TestModule";
+        return "MysteriumClientModule";
     }
 
     @Override
@@ -32,7 +32,7 @@ public class TestModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startService() {
-        Log.d("TestModule", "Starting some sort of service");
+        Log.d("MysteriumClientModule", "Starting some sort of service");
     }
 
     @ReactMethod

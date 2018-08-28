@@ -1,5 +1,5 @@
 //
-//  TestModule.h
+//  MysteriumClientModule.h
 //  MysteriumVPN
 //
 //  Created by Arnas Dundulis on 27/08/2018.
@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
-@interface TestModule : NSObject <RCTBridgeModule>
+@interface MysteriumClientModule : NSObject <RCTBridgeModule>
 @end

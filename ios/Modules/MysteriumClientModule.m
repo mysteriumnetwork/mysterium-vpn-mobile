@@ -1,15 +1,15 @@
 //
-//  TestModule.m
+//  MysteriumClientModule.m
 //  MysteriumVPN
 //
 //  Created by Arnas Dundulis on 27/08/2018.
 //  Copyright © 2018 Mysterium Network. All rights reserved.
 //
 
-#import "TestModule.h"
+#import "MysteriumClientModule.h"
 #import <React/RCTLog.h>
 
-@implementation TestModule
+@implementation MysteriumClientModule
 
 RCT_EXPORT_MODULE();
 
