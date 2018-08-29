@@ -25,6 +25,7 @@ import CONFIG from '../config'
 import Stats from './Stats'
 import AppApi from './App-api'
 import Proposals from './Proposals'
+import MysteriumClient from '../libraries/mysterium-client'
 
 export default class App extends AppApi {
   constructor (props) {
@@ -34,6 +35,8 @@ export default class App extends AppApi {
     this.connectDisconnect = this.connectDisconnect.bind(this)
     this.isReady = this.isReady.bind(this)
     this.onProposalSelected = this.onProposalSelected.bind(this)
+
+    this.mysteriumClient = new MysteriumClient()
   }
 
   /***
@@ -41,9 +44,12 @@ export default class App extends AppApi {
    * Starts periodic state refreshing
    * Called once after first rendering.
    */
-  componentDidMount () {
+  async componentDidMount () {
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
+
+    const serviceStatus = await this.mysteriumClient.startService(4050)
+    this.setState({ serviceStatus })
   }
 
   /***
@@ -100,9 +106,9 @@ export default class App extends AppApi {
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
       : CONFIG.TEXTS.UNKNOWN_STATUS
-
     return (
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+        <Text>{`Service start status = ${s.serviceStatus}`}</Text>
         { s.refreshing ? <Text>...</Text> : <Text> </Text> }
         <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>
