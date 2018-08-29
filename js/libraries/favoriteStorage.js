@@ -61,7 +61,7 @@ class FavoriteProposalDTO {
   constructor (proposal: ProposalDTO) {
     const countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
     this.name = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
-    this.id = `${proposal.providerId}_${proposal.id}`
+    this.id = proposal.providerId
   }
 
   compareTo (other: FavoriteProposalDTO): number {
@@ -89,3 +89,4 @@ function sortFavorites (proposals: ProposalDTO[]): FavoriteProposalDTO[] {
 }
 
 export { sortFavorites }
+export type { FavoriteProposalDTO }

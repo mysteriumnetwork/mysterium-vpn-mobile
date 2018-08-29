@@ -18,38 +18,50 @@
 // @flow
 
 import React from 'react'
-import { Picker } from 'react-native'
+import { View, Picker, Button } from 'react-native'
 import styles from './Proposals-styles'
-import CONFIG from '../config'
-import Countries from '../libraries/countries'
-import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 import PropTypes from 'prop-types'
+import { FavoriteProposalDTO } from '../libraries/favoriteStorage'
 
 export default class Proposals extends React.Component {
-  static renderProposal (p: ProposalDTO) {
-    if (!p.serviceDefinition) {
-      return null
-    }
-    const countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-    const countryName = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
-    const providerId = p.providerId
+  static renderProposal (p: FavoriteProposalDTO) {
+    const label = (p.isFavorite ? '* ' : '') + p.name
     return (
-      <Picker.Item key={p.id} label={countryName} value={providerId} />
+      <Picker.Item key={p.id} label={label} value={p} />
     )
   }
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      selectedProposal: null
+    }
+  }
+
+  onFavoritePress () {
+    this.selectedProposal.isFavorite = !this.selectedProposal.isFavorite
+  }
+
+  onProposalChanged (value, index) {
+    // this.setState({ selectedProposal: value })
+    this.props.onProposalSelected(value.id, index)
+  }
+
   render () {
-    const { proposals, selectedProviderId, onProposalSelected } = this.props
+    const { proposals, selectedProviderId } = this.props
     return (
-      <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={onProposalSelected}>
-        {proposals.map(p => Proposals.renderProposal(p))}
-      </Picker>
+      <View>
+        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={this.onProposalChanged.bind(this)}>
+          {proposals.map(p => Proposals.renderProposal(p))}
+        </Picker>
+        {this.state.selectedProposal ? <Button title={'*'} onKeyPress={() => this.onFavoritePress()} /> : null}
+      </View>
     )
   }
 }
 
 Proposals.propTypes = {
-  proposals: PropTypes.arrayOf(PropTypes.instanceOf(ProposalDTO)),
+  proposals: PropTypes.arrayOf(PropTypes.instanceOf(FavoriteProposalDTO)),
   selectedProviderId: PropTypes.string,
   onProposalSelected: PropTypes.func
 }
