@@ -25,7 +25,7 @@ import CONFIG from '../config'
 import Stats from './Stats'
 import AppApi from './App-api'
 import Proposals from './Proposals'
-import MysteriumClient from './MysteriumClient'
+import MysteriumClient from '../libraries/mysterium-client'
 
 export default class App extends AppApi {
   constructor (props) {
