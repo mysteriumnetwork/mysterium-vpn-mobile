@@ -35,6 +35,8 @@ export default class App extends AppApi {
     this.connectDisconnect = this.connectDisconnect.bind(this)
     this.isReady = this.isReady.bind(this)
     this.onProposalSelected = this.onProposalSelected.bind(this)
+
+    this.mysteriumClient = new MysteriumClient()
   }
 
   /***
@@ -46,8 +48,8 @@ export default class App extends AppApi {
     this.refresh(true)
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
 
-    const service_status = await MysteriumClient.startService(4050)
-    this.setState({ service_status })
+    const serviceStatus = await this.mysteriumClient.startService(4050)
+    this.setState({ serviceStatus })
   }
 
   /***
@@ -106,7 +108,7 @@ export default class App extends AppApi {
       : CONFIG.TEXTS.UNKNOWN_STATUS
     return (
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
-        <Text>{`Service start status = ${s.service_status}`}</Text>
+        <Text>{`Service start status = ${s.serviceStatus}`}</Text>
         { s.refreshing ? <Text>...</Text> : <Text> </Text> }
         <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
         <Text>IP: {s.ip}</Text>

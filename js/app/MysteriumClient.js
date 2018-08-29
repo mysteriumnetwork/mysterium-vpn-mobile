@@ -1,9 +1,39 @@
-/**
- * This exposes the native MysteriumClient module as a JS module. This has a
- * function 'startService' which takes the following parameters:
+/*
+ * Copyright (C) 2017 The 'MysteriumNetwork/mysterion' Authors.
  *
- * 1. int port: port number for the service to use
- * 2. Promise service_status: The status of the service after starting
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import {NativeModules} from 'react-native';
-module.exports = NativeModules.MysteriumClientModule;
+
+// @flow
+import {NativeModules} from 'react-native'
+
+/**
+ * This exposes the native MysteriumClient module as a JS module.
+ */
+export default class MysteriumClient {
+  _client: Object
+
+  constructor () {
+    this._client = NativeModules.MysteriumClientModule
+  }
+
+  /**
+   * Start Mysterium Client API at provided HTTP port
+   * @param port - port number for the service to use
+   * @returns {Promise<number>} - The status of the service after starting
+   */
+  startService (port: number): Promise<number> {
+    return this._client.startService(port)
+  }
+}
