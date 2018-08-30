@@ -27,13 +27,11 @@ const FAVORITE_KEY = '@FavoritesStorage:Favorites'
 class Storage {
   async getFavorites (): Map<string, boolean> {
     const values = await AsyncStorage.getItem(FAVORITE_KEY)
-    if (values !== null) {
-      return values
-    }
+    return values || {}
   }
 
   async setFavorite (proposalId: string, isFavorite: boolean): void {
-    var favorites = this.getFavorites()
+    const favorites = this.getFavorites()
     if (isFavorite) {
       favorites[proposalId] = isFavorite
     } else if (favorites[proposalId]) {
@@ -46,22 +44,20 @@ class Storage {
 const storage = new Storage()
 
 class FavoriteProposalDTO {
-  _proposal: ProposalDTO
   name: string
   id: string
+  isFavorite: boolean
 
-  set isFavorite (newValue: boolean) {
-    storage.setFavorite(this.id, newValue)
-  }
-  get isFavorite (): boolean {
-    const favorites = storage.getFavorites()
-    return favorites[this.id] === true
+  async toggleFavorite () {
+    this.isFavorite = !this.isFavorite
+    await storage.setFavorite(this.id, this.isFavorite)
   }
 
-  constructor (proposal: ProposalDTO) {
+  constructor (proposal: ProposalDTO, isFavorite: boolean) {
     const countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
     this.name = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
     this.id = proposal.providerId
+    this.isFavorite = isFavorite
   }
 
   compareTo (other: FavoriteProposalDTO): number {
@@ -82,9 +78,10 @@ class FavoriteProposalDTO {
   }
 }
 
-function sortFavorites (proposals: ProposalDTO[]): FavoriteProposalDTO[] {
+async function sortFavorites (proposals: ProposalDTO[]): FavoriteProposalDTO[] {
+  const favorites = await storage.getFavorites()
   return proposals
-    .map(p => new FavoriteProposalDTO(p))
+    .map(p => new FavoriteProposalDTO(p, favorites[p.providerId] === true))
     .sort(FavoriteProposalDTO.compare)
 }
 

@@ -28,7 +28,6 @@ import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connec
 import tequilapiClientFactory from '../libraries/mysterium-tequilapi/client-factory'
 import type {TequilapiClient} from '../libraries/mysterium-tequilapi/client'
 import CONFIG from '../config'
-import { sortFavorites } from '../libraries/favoriteStorage'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const api: TequilapiClient = tequilapiClientFactory()
@@ -128,11 +127,10 @@ export default class AppApi extends React.Component {
    */
   async refreshProposals (): Promise<void> {
     try {
-      const originalProposals: Array<ProposalDTO> = await api.findProposals()
-      const proposals = sortFavorites(originalProposals)
+      const proposals: Array<ProposalDTO> = await api.findProposals()
       console.log('proposals', proposals)
       if (proposals.length && proposals.indexOf(this.state.selectedProviderId) < 0) {
-        this.setState({proposals, selectedProviderId: proposals[0].id})
+        this.setState({proposals, selectedProviderId: proposals[0].providerId})
       } else {
         this.setState({proposals})
       }

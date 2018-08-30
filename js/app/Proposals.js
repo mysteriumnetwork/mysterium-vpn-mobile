@@ -21,47 +21,66 @@ import React from 'react'
 import { View, Picker, Button } from 'react-native'
 import styles from './Proposals-styles'
 import PropTypes from 'prop-types'
-import { FavoriteProposalDTO } from '../libraries/favoriteStorage'
+import { FavoriteProposalDTO, sortFavorites } from '../libraries/favoriteStorage'
+import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 
 export default class Proposals extends React.Component {
-  static renderProposal (p: FavoriteProposalDTO) {
-    const label = (p.isFavorite ? '* ' : '') + p.name
-    return (
-      <Picker.Item key={p.id} label={label} value={p} />
-    )
-  }
-
   constructor (props) {
     super(props)
     this.state = {
-      selectedProposal: null
+      favoriteProposals: null
     }
   }
 
-  onFavoritePress () {
-    this.selectedProposal.isFavorite = !this.selectedProposal.isFavorite
+  // static getDerivedStateFromProps (nextProps, prevState) {
+  //   const favoriteProposals = sortFavorites(nextProps.proposals)
+  //   return {
+  //     ...prevState,
+  //     favoriteProposals
+  //   }
+  // }
+
+  async componentDidUpdate (prevProps, prevState) {
+    const favoriteProposals = await sortFavorites(prevProps.proposals)
+    this.setState({ favoriteProposals })
   }
 
-  onProposalChanged (value, index) {
-    // this.setState({ selectedProposal: value })
-    this.props.onProposalSelected(value.id, index)
+  async onFavoritePress (selectedProviderId) {
+    let { favoriteProposals } = this.state
+    const favoriteProposal: FavoriteProposalDTO = favoriteProposals
+      .filter(p => p.id === selectedProviderId)[0]
+
+    await favoriteProposal.toggleFavorite()
+    favoriteProposals = await sortFavorites(this.props.proposals)
+    this.setState({ favoriteProposals })
   }
 
   render () {
-    const { proposals, selectedProviderId } = this.props
+    const { selectedProviderId, onProposalSelected } = this.props
+    const { favoriteProposals } = this.state
+    if (!favoriteProposals) {
+      return null
+    }
     return (
-      <View>
-        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={this.onProposalChanged.bind(this)}>
-          {proposals.map(p => Proposals.renderProposal(p))}
+      <View style={{ flexDirection: 'row' }}>
+        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={onProposalSelected}>
+          {favoriteProposals.map(p => Proposals.renderProposal(p))}
         </Picker>
-        {this.state.selectedProposal ? <Button title={'*'} onKeyPress={() => this.onFavoritePress()} /> : null}
+        {selectedProviderId ? <Button title={'*'} onPress={() => this.onFavoritePress(selectedProviderId)} /> : null}
       </View>
+    )
+  }
+
+  static renderProposal (p: FavoriteProposalDTO) {
+    const label = (p.isFavorite ? '* ' : '') + p.name
+    return (
+      <Picker.Item key={p.id} label={label} value={p.id} />
     )
   }
 }
 
 Proposals.propTypes = {
-  proposals: PropTypes.arrayOf(PropTypes.instanceOf(FavoriteProposalDTO)),
+  proposals: PropTypes.arrayOf(PropTypes.instanceOf(ProposalDTO)),
   selectedProviderId: PropTypes.string,
   onProposalSelected: PropTypes.func
 }
