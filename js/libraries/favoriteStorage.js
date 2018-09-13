@@ -22,22 +22,24 @@ import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 import Countries from '../libraries/countries'
 import CONFIG from '../config'
 
-const FAVORITE_KEY = '@FavoritesStorage:Favorites'
+const FAVORITE_KEY = '@Favorites:key'
 
 class Storage {
   async getFavorites (): Map<string, boolean> {
-    const values = await AsyncStorage.getItem(FAVORITE_KEY)
-    return values || {}
+    const values = await AsyncStorage.getItem(FAVORITE_KEY) || '{}'
+    const favorites = JSON.parse(values)
+    return favorites
   }
 
   async setFavorite (proposalId: string, isFavorite: boolean): void {
-    const favorites = this.getFavorites()
+    const favorites = await this.getFavorites()
     if (isFavorite) {
       favorites[proposalId] = isFavorite
     } else if (favorites[proposalId]) {
       delete favorites[proposalId]
     }
-    await AsyncStorage.setItem(FAVORITE_KEY, favorites)
+    console.log('save favorites', favorites)
+    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(favorites))
   }
 }
 

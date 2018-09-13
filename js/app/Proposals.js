@@ -32,17 +32,8 @@ export default class Proposals extends React.Component {
     }
   }
 
-  // static getDerivedStateFromProps (nextProps, prevState) {
-  //   const favoriteProposals = sortFavorites(nextProps.proposals)
-  //   return {
-  //     ...prevState,
-  //     favoriteProposals
-  //   }
-  // }
-
-  async componentDidUpdate (prevProps, prevState) {
-    const favoriteProposals = await sortFavorites(prevProps.proposals)
-    this.setState({ favoriteProposals })
+  async shouldComponentUpdate (nextProps, nextState) {
+    nextState.favoriteProposals = await sortFavorites(nextProps.proposals)
   }
 
   async onFavoritePress (selectedProviderId) {
@@ -50,9 +41,11 @@ export default class Proposals extends React.Component {
     const favoriteProposal: FavoriteProposalDTO = favoriteProposals
       .filter(p => p.id === selectedProviderId)[0]
 
-    await favoriteProposal.toggleFavorite()
-    favoriteProposals = await sortFavorites(this.props.proposals)
-    this.setState({ favoriteProposals })
+    if (favoriteProposal) {
+      await favoriteProposal.toggleFavorite()
+      favoriteProposals = await sortFavorites(this.props.proposals)
+      this.setState({favoriteProposals})
+    }
   }
 
   render () {
