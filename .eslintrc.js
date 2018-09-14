@@ -27,7 +27,6 @@ module.exports = {
   },
   extends: [
     'standard',
-    'plugin:flowtype/recommended',
     'plugin:react/recommended'
   ],
   globals: {
@@ -35,8 +34,6 @@ module.exports = {
   },
   plugins: [
     'react',
-    'eslint-plugin-flowtype',
-    'flowtype',
     'jsx-a11y',
     'import'
   ],

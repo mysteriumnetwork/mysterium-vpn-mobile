@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-
 import { AsyncStorage } from 'react-native'
 import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 import Countries from '../libraries/countries'

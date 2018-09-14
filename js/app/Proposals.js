@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-
 import React from 'react'
 import { View, Picker, Button } from 'react-native'
 import styles from './Proposals-styles'

@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'

@@ -15,14 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
 import {NativeModules} from 'react-native'
 
 /**
  * This exposes the native MysteriumClient module as a JS module.
  */
 export default class MysteriumClient {
-  _client: Object
+  _client: any
 
   constructor () {
     this._client = NativeModules.MysteriumClientModule
