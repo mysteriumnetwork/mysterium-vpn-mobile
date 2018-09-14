@@ -18,11 +18,16 @@
 // @flow
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import {StyleSheet, Text, View} from 'react-native'
 import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
 
-const Stats = ({ duration, bytesReceived, bytesSent }) => {
+interface StatsProps {
+  duration: number
+  bytesReceived: number
+  bytesSent: number
+}
+
+const Stats: React.SFC<StatsProps> = ({ duration, bytesReceived, bytesSent }) => {
   return (
     <View style={styles.container}>
       <Text>Duration: {timeDisplay(duration)}</Text>
@@ -30,12 +35,6 @@ const Stats = ({ duration, bytesReceived, bytesSent }) => {
       <Text>Sent: {bytesDisplay(bytesSent)}</Text>
     </View>
   )
-}
-
-Stats.propTypes = {
-  duration: PropTypes.number,
-  bytesReceived: PropTypes.number,
-  bytesSent: PropTypes.number
 }
 
 const styles = StyleSheet.create({

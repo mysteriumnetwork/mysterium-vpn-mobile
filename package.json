@@ -13,6 +13,8 @@
     "preset": "jest-expo"
   },
   "devDependencies": {
+    "@types/react": "^16.4.14",
+    "@types/react-native": "^0.56.18",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.5",
     "babel-preset-flow": "^6.23.0",
@@ -31,7 +33,9 @@
     "flow-bin": "^0.75.0",
     "jest-expo": "~27.0.0",
     "react-native-scripts": "1.14.0",
-    "react-test-renderer": "16.3.1"
+    "react-native-typescript-transformer": "^1.2.10",
+    "react-test-renderer": "16.3.1",
+    "typescript": "^3.0.3"
   },
   "dependencies": {
     "axios": "^0.18.0",
