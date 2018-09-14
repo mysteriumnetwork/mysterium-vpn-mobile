@@ -22,20 +22,35 @@ import PropTypes from 'prop-types'
 import { FavoriteProposalDTO, sortFavorites } from '../libraries/favoriteStorage'
 import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 
-export default class Proposals extends React.Component {
-  constructor (props) {
+interface ProposalsProps {
+  proposals: ProposalDTO[],
+  selectedProviderId: string | null,
+  onProposalSelected (providerId: string): void
+}
+
+interface ProposalsState {
+  favoriteProposals: FavoriteProposalDTO[] | null
+}
+
+export default class Proposals extends React.Component<ProposalsProps, ProposalsState> {
+  constructor (props: ProposalsProps) {
     super(props)
     this.state = {
       favoriteProposals: null
     }
   }
 
-  async shouldComponentUpdate (nextProps, nextState) {
-    nextState.favoriteProposals = await sortFavorites(nextProps.proposals)
+  shouldComponentUpdate (nextProps: ProposalsProps, nextState: ProposalsState): boolean {
+    sortFavorites(nextProps.proposals).then(p => nextState.favoriteProposals)
+    return true
   }
 
-  async onFavoritePress (selectedProviderId) {
+  async onFavoritePress (selectedProviderId: string): Promise<void> {
     let { favoriteProposals } = this.state
+    if (!favoriteProposals) {
+      return
+    }
+
     const favoriteProposal: FavoriteProposalDTO = favoriteProposals
       .filter(p => p.id === selectedProviderId)[0]
 
@@ -68,10 +83,4 @@ export default class Proposals extends React.Component {
       <Picker.Item key={p.id} label={label} value={p.id} />
     )
   }
-}
-
-Proposals.propTypes = {
-  proposals: PropTypes.arrayOf(PropTypes.instanceOf(ProposalDTO)),
-  selectedProviderId: PropTypes.string,
-  onProposalSelected: PropTypes.func
 }

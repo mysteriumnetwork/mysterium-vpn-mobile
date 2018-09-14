@@ -53,7 +53,9 @@ class FavoriteProposalDTO {
   }
 
   constructor (proposal: ProposalDTO, isFavorite: boolean) {
-    const countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+    const countryCode = proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate
+      ? proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+      : ''
     this.name = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
     this.id = proposal.providerId
     this.isFavorite = isFavorite
@@ -84,5 +86,4 @@ async function sortFavorites (proposals: ProposalDTO[]): Promise<FavoriteProposa
     .sort(FavoriteProposalDTO.compare)
 }
 
-export { sortFavorites }
-export type { FavoriteProposalDTO }
+export { sortFavorites, FavoriteProposalDTO }
