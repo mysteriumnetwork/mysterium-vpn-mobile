@@ -23,13 +23,12 @@ import CONFIG from '../config'
 const FAVORITE_KEY = '@Favorites:key'
 
 class Storage {
-  async getFavorites (): Map<string, boolean> {
+  async getFavorites (): Promise<{[key: string]: boolean}> {
     const values = await AsyncStorage.getItem(FAVORITE_KEY) || '{}'
-    const favorites = JSON.parse(values)
-    return favorites
+    return JSON.parse(values)
   }
 
-  async setFavorite (proposalId: string, isFavorite: boolean): void {
+  async setFavorite (proposalId: string, isFavorite: boolean): Promise<void> {
     const favorites = await this.getFavorites()
     if (isFavorite) {
       favorites[proposalId] = isFavorite
@@ -78,7 +77,7 @@ class FavoriteProposalDTO {
   }
 }
 
-async function sortFavorites (proposals: ProposalDTO[]): FavoriteProposalDTO[] {
+async function sortFavorites (proposals: ProposalDTO[]): Promise<FavoriteProposalDTO[]> {
   const favorites = await storage.getFavorites()
   return proposals
     .map(p => new FavoriteProposalDTO(p, favorites[p.providerId] === true))
