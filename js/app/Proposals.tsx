@@ -39,8 +39,8 @@ export default class Proposals extends React.Component<ProposalsProps, Proposals
     }
   }
 
-  shouldComponentUpdate (nextProps: ProposalsProps, nextState: ProposalsState): boolean {
-    sortFavorites(nextProps.proposals).then(p => nextState.favoriteProposals)
+  async shouldComponentUpdate (nextProps: ProposalsProps, nextState: ProposalsState): Promise<boolean> {
+    nextState.favoriteProposals = await sortFavorites(nextProps.proposals)
     return true
   }
 

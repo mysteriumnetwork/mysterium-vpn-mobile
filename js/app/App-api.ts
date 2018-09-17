@@ -155,10 +155,6 @@ export default class AppApi extends React.Component<any, AppApiState> {
    * @returns {Promise<void>}
    */
   async refreshProposals (): Promise<void> {
-    if (!this.state.selectedProviderId) {
-      console.error('selectedProviderId is needed to refresh proposals')
-      return
-    }
     try {
       const proposals: Array<ProposalDTO> = await api.findProposals()
       console.log('proposals', proposals)

@@ -17,7 +17,6 @@
 
 import React from 'react'
 import { Text, View, Button } from 'react-native'
-import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
 import styles from './App-styles'
 import CONFIG from '../config'
 import Stats from './Stats'
