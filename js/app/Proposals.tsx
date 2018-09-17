@@ -18,7 +18,6 @@
 import React from 'react'
 import { View, Picker, Button } from 'react-native'
 import styles from './Proposals-styles'
-import PropTypes from 'prop-types'
 import { FavoriteProposalDTO, sortFavorites } from '../libraries/favoriteStorage'
 import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
 
