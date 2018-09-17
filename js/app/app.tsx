@@ -17,14 +17,14 @@
 
 import React from 'react'
 import { Text, View, Button } from 'react-native'
-import styles from './App-styles'
+import styles from './app-styles'
 import CONFIG from '../config'
-import Stats from './Stats'
-import AppApi from './App-api'
-import Proposals from './Proposals'
+import Stats from './stats'
+import AppMysteriumApi from './app-mysterium-api'
+import Proposals from './proposals'
 import MysteriumClient from '../libraries/mysterium-client'
 
-export default class App extends AppApi {
+export default class App extends AppMysteriumApi {
   mysteriumClient: MysteriumClient
 
   constructor (props: any) {

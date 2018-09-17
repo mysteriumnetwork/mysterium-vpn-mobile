@@ -44,7 +44,7 @@ interface AppApiState {
 /***
  * API operations level
  */
-export default class AppApi extends React.Component<any, AppApiState> {
+export default class AppMysteriumApi extends React.Component<any, AppApiState> {
   interval: number = 0
 
   constructor (props: any) {
