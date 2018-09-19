@@ -18,27 +18,27 @@
 declare module 'mysterium-tequilapi' {
   type ConnectionStatus = 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting'
 
-  export interface ConnectionStatusDTO {
+  export type ConnectionStatusDTO = {
     status: ConnectionStatus
     sessionId: string
   }
 
-  export interface ConnectionStatisticsDTO {
+  export type ConnectionStatisticsDTO = {
     duration: number
     bytesReceived: number
     bytesSent: number
   }
 
 
-  export interface LocationDTO {
+  export type LocationDTO = {
     country: string
   }
 
-  export interface ServiceDefinitionDTO {
+  export type ServiceDefinitionDTO = {
     locationOriginate: LocationDTO | null
   }
 
-  export interface ProposalDTO {
+  export type ProposalDTO = {
     id: string
     providerId: string
     serviceType: string
@@ -46,27 +46,27 @@ declare module 'mysterium-tequilapi' {
   }
 
 
-  export interface IdentityDTO {
+  export type IdentityDTO = {
     id: string
   }
 
-  export interface ConnectionIPDTO {
+  export type ConnectionIPDTO = {
     ip: string
   }
 
-  export interface ConnectionRequestDTO {
+  export type ConnectionRequestDTO = {
     consumerId: string
     providerId: string
     providerCountry?: string
   }
 
-  export interface NodeBuildInfoDTO {
+  export type NodeBuildInfoDTO = {
     commit: string | null
     branch: string | null
     buildNumber: string | null
   }
 
-  export interface NodeHealthcheckDTO {
+  export type NodeHealthcheckDTO = {
     uptime: string,
     process: number,
     version: string,
@@ -74,25 +74,25 @@ declare module 'mysterium-tequilapi' {
   }
 
 
-  export interface PublicKeyDTO {
+  export type PublicKeyDTO = {
     part1: string
     part2: string
   }
 
-  export interface SignatureDTO {
+  export type SignatureDTO = {
     r: string
     s: string
     v: number
   }
 
-  export interface IdentityRegistrationDTO {
+  export type IdentityRegistrationDTO = {
     registered: boolean
     publicKey: PublicKeyDTO
     signature: SignatureDTO
   }
 
 
-  export interface ConsumerLocationDTO {
+  export type ConsumerLocationDTO = {
     originalCountry: string
     originalIP: string
     currentCountry: string
