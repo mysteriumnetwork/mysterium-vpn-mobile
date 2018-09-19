@@ -16,15 +16,17 @@
  */
 
 import { AsyncStorage } from 'react-native'
-import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
-import Countries from '../libraries/countries'
-import CONFIG from '../config'
+import {ProposalDTO} from "mysterium-tequilapi";
+import { CONFIG } from '../config'
+import { Countries } from './countries'
 
-const FAVORITE_KEY = '@Favorites:key'
+const FAVORITE_KEY = '@Favorites:KEY'
 
 class Storage {
   async getFavorites (): Promise<{[key: string]: boolean}> {
+    console.log('getFavorites')
     const values = await AsyncStorage.getItem(FAVORITE_KEY) || '{}'
+    console.log('getFavorites', values)
     return JSON.parse(values)
   }
 
@@ -81,6 +83,7 @@ class FavoriteProposalDTO {
 
 async function sortFavorites (proposals: ProposalDTO[]): Promise<FavoriteProposalDTO[]> {
   const favorites = await storage.getFavorites()
+  console.log('favorites', favorites)
   return proposals
     .map(p => new FavoriteProposalDTO(p, favorites[p.providerId] === true))
     .sort(FavoriteProposalDTO.compare)

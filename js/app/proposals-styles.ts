@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2017 The 'MysteriumNetwork/mysterion' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
+import {StyleSheet, ViewStyle} from 'react-native'
 
-class ConnectionStatisticsDTO {
-  duration: number
-  bytesReceived: number
-  bytesSent: number
-
-  constructor (data: Object) {
-    this.duration = data.duration
-    this.bytesReceived = data.bytesReceived
-    this.bytesSent = data.bytesSent
-  }
+interface ProposalsStyles {
+  picker: ViewStyle
 }
 
-export default ConnectionStatisticsDTO
+export default StyleSheet.create({
+  picker: {
+    width: 130,
+    height: 20,
+    margin: 20
+  }
+}) as ProposalsStyles

@@ -19,7 +19,7 @@ import React from 'react'
 import { View, Picker, Button } from 'react-native'
 import styles from './proposals-styles'
 import { FavoriteProposalDTO, sortFavorites } from '../libraries/favoriteStorage'
-import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
+import {ProposalDTO} from "mysterium-tequilapi";
 
 interface ProposalsProps {
   proposals: ProposalDTO[],
@@ -28,6 +28,7 @@ interface ProposalsProps {
 }
 
 interface ProposalsState {
+  proposals: ProposalDTO[] | null,
   favoriteProposals: FavoriteProposalDTO[] | null
 }
 
@@ -35,12 +36,18 @@ export default class Proposals extends React.Component<ProposalsProps, Proposals
   constructor (props: ProposalsProps) {
     super(props)
     this.state = {
+      proposals: null,
       favoriteProposals: null
     }
   }
 
-  async shouldComponentUpdate (nextProps: ProposalsProps, nextState: ProposalsState): Promise<boolean> {
-    nextState.favoriteProposals = await sortFavorites(nextProps.proposals)
+  shouldComponentUpdate (nextProps: ProposalsProps, nextState: ProposalsState): boolean {
+    if (JSON.stringify(nextProps.proposals) === JSON.stringify(nextState.proposals)) {
+      return false
+    }
+    sortFavorites(nextProps.proposals).then(fp => {
+      this.setState({ favoriteProposals: fp })
+    })
     return true
   }
 

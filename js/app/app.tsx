@@ -18,7 +18,7 @@
 import React from 'react'
 import { Text, View, Button } from 'react-native'
 import styles from './app-styles'
-import CONFIG from '../config'
+import { CONFIG } from '../config'
 import Stats from './stats'
 import AppMysteriumApi from './app-mysterium-api'
 import Proposals from './proposals'

@@ -15,9 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export default {
+interface Config {
+  PASSPHRASE: string,
+  TEQUILAPI_ADDRESS: string,
+  TEQUILAPI_TIMEOUT: number,
+  TEXTS: {
+    IP_UPDATING: string,
+    UNKNOWN: string,
+    UNKNOWN_STATUS: string
+  }
+  REFRESH_INTERVALS: {
+    INTERVAL_MS: number,
+    CONNECTION: number,
+    STATS: number,
+    PROPOSALS: number,
+    IP: number
+  }
+}
+
+export const CONFIG = {
   PASSPHRASE: '',
   TEQUILAPI_ADDRESS: 'http://localhost:4050/',
+  TEQUILAPI_TIMEOUT: 6000,
   TEXTS: {
     IP_UPDATING: 'updating...',
     UNKNOWN: 'unknown',
@@ -30,4 +49,4 @@ export default {
     PROPOSALS: 10,
     IP: 10
   }
-}
+} as Config

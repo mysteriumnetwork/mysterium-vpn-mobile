@@ -16,18 +16,21 @@
  */
 
 import React from 'react'
-import ConnectionRequestDTO from '../libraries/mysterium-tequilapi/dto/connection-request'
-import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
-import IdentityDTO from '../libraries/mysterium-tequilapi/dto/identity'
-import ConnectionStatusDTO from '../libraries/mysterium-tequilapi/dto/connection-status'
-import ConnectionIPDTO from '../libraries/mysterium-tequilapi/dto/connection-ip'
-import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
-import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connection-statistics'
-import tequilapiClientFactory from '../libraries/mysterium-tequilapi/client-factory'
-import CONFIG from '../config'
+
+import TequilapiClientFactory, {
+  ConnectionIPDTO,
+  ConnectionRequestDTO,
+  ConnectionStatisticsDTO,
+  ConnectionStatusDTO,
+  IdentityDTO,
+  ProposalDTO
+} from 'mysterium-tequilapi'
+import {ConnectionStatusEnum} from "../libraries/tequilapi/enums";
+
+import { CONFIG } from '../config'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
-const api = tequilapiClientFactory()
+const api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
 
 interface AppApiState {
   refreshing: boolean,
@@ -238,8 +241,10 @@ export default class AppMysteriumApi extends React.Component<any, AppApiState> {
     s.connection = { sessionId: '', status: ConnectionStatusEnum.CONNECTING }
     this.setState(s)
     try {
-      const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
-      const connection = await api.connectionCreate(request)
+      const connection = await api.connectionCreate({
+        consumerId: s.identityId,
+        providerId: s.selectedProviderId
+      })
       console.log('connect', connection)
     } catch (e) {
       console.warn('api.connectionCreate failed', e)

@@ -13,9 +13,12 @@
     "preset": "jest-expo"
   },
   "devDependencies": {
+    "@babel/core": "7.1.0",
+    "@babel/runtime": "7.0.0",
     "@types/react": "^16.4.14",
     "@types/react-native": "^0.56.18",
     "babel-cli": "^6.26.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^8.2.5",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.1",
@@ -37,6 +40,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^27.0.1",
+    "mysterium-tequilapi": "^0.1.0",
     "prop-types": "^15.6.2",
     "react": "16.3.1",
     "react-native": "~0.55.2"

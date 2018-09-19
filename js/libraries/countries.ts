@@ -15,7 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export default {
+interface CountryNames {
+  [key: string]: string;
+}
+
+export const Countries = {
   'aw': 'Aruba',
   'af': 'Afghanistan',
   'ao': 'Angola',
@@ -255,4 +259,4 @@ export default {
   'za': 'South Africa',
   'zm': 'Zambia',
   'zw': 'Zimbabwe'
-}
+} as CountryNames
