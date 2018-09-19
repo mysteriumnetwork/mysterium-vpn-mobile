@@ -15,20 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-
 import React from 'react'
 import { Text, View, Button } from 'react-native'
-import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
-import styles from './App-styles'
-import CONFIG from '../config'
-import Stats from './Stats'
-import AppApi from './App-api'
-import Proposals from './Proposals'
+import styles from './app-styles'
+import { CONFIG } from '../config'
+import Stats from './stats'
+import AppMysteriumApi from './app-mysterium-api'
+import Proposals from './proposals'
 import MysteriumClient from '../libraries/mysterium-client'
 
-export default class App extends AppApi {
-  constructor (props) {
+export default class App extends AppMysteriumApi {
+  mysteriumClient: MysteriumClient
+
+  constructor (props: any) {
     super(props)
 
     // Bind local functions
@@ -49,27 +48,7 @@ export default class App extends AppApi {
     setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
 
     const serviceStatus = await this.mysteriumClient.startService(4050)
-    this.setState({ serviceStatus })
-  }
-
-  /***
-   * Checks ability to connect/disconnect
-   * @returns {boolean} - true if where is no uncompleted operations
-   */
-  isReady () {
-    const s = this.state
-    return s.identityId && s.connection &&
-      ((s.connection.status === ConnectionStatusEnum.NOT_CONNECTED && s.selectedProviderId) ||
-        s.connection.status === ConnectionStatusEnum.CONNECTED)
-  }
-
-  /***
-   * Checks are you already connected to VPN server
-   * @returns {boolean} - true if you connected, false if not or state is unknown
-   */
-  isConnected () {
-    const c = this.state.connection
-    return c && c.status === ConnectionStatusEnum.CONNECTED
+    this.setState({ ...this.state, serviceStatus })
   }
 
   /***
@@ -91,12 +70,12 @@ export default class App extends AppApi {
 
   /**
    * Callback called when VPN server is selected
-   * @param value - proposal/VPN providerId
+   * @param providerId - proposal/VPN providerId
    * @param index - index of proposal in dropdown list
    */
-  onProposalSelected (value, index) {
-    console.log('selected', value, index)
-    this.setState({ selectedProviderId: value })
+  onProposalSelected (providerId: string) {
+    console.log('selected', providerId)
+    this.setState({ selectedProviderId: providerId })
   }
 
   render () {

@@ -15,13 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {StyleSheet} from 'react-native'
+import React from 'react'
+import {StyleSheet, Text, View} from 'react-native'
+import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
 
-export default StyleSheet.create({
+interface StatsProps {
+  duration: number
+  bytesReceived: number
+  bytesSent: number
+}
+
+const Stats: React.SFC<StatsProps> = ({ duration, bytesReceived, bytesSent }) => {
+  return (
+    <View style={styles.container}>
+      <Text>Duration: {timeDisplay(duration)}</Text>
+      <Text>Received: {bytesDisplay(bytesReceived)}</Text>
+      <Text>Sent: {bytesDisplay(bytesSent)}</Text>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    padding: 20
   }
 })
+
+export default Stats

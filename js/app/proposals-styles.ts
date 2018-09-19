@@ -15,19 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export default {
-  PASSPHRASE: '',
-  TEQUILAPI_ADDRESS: 'http://localhost:4050/',
-  TEXTS: {
-    IP_UPDATING: 'updating...',
-    UNKNOWN: 'unknown',
-    UNKNOWN_STATUS: 'Loading...'
-  },
-  REFRESH_INTERVALS: {
-    INTERVAL_MS: 1000,
-    CONNECTION: 2,
-    STATS: 1,
-    PROPOSALS: 10,
-    IP: 10
-  }
+import {StyleSheet, ViewStyle} from 'react-native'
+
+interface ProposalsStyles {
+  picker: ViewStyle
 }
+
+export default StyleSheet.create({
+  picker: {
+    width: 130,
+    height: 20,
+    margin: 20
+  }
+}) as ProposalsStyles

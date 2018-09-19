@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2017 The 'MysteriumNetwork/mysterion' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-import ServiceDefinitionDTO from './service-definition'
+import {NativeModules} from 'react-native'
 
-class ProposalDTO {
-  id: number
-  providerId: string
-  serviceType: string
-  serviceDefinition: ?ServiceDefinitionDTO
+/**
+ * This exposes the native MysteriumClient module as a JS module.
+ */
+export default class MysteriumClient {
+  _client: any
 
-  constructor (data: Object) {
-    this.id = data.id
-    this.providerId = data.providerId
-    this.serviceType = data.serviceType
-    if (data.serviceDefinition) {
-      this.serviceDefinition = new ServiceDefinitionDTO(data.serviceDefinition)
-    }
+  constructor () {
+    this._client = NativeModules.MysteriumClientModule
+  }
+
+  /**
+   * Start Mysterium Client API at provided HTTP port
+   * @param port - port number for the service to use
+   * @returns {Promise<number>} - The status of the service after starting
+   */
+  startService (port: number): Promise<number> {
+    return this._client.startService(port)
   }
 }
-
-export default ProposalDTO

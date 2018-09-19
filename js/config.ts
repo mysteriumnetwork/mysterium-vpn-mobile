@@ -15,25 +15,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-import {NativeModules} from 'react-native'
-
-/**
- * This exposes the native MysteriumClient module as a JS module.
- */
-export default class MysteriumClient {
-  _client: Object
-
-  constructor () {
-    this._client = NativeModules.MysteriumClientModule
+interface Config {
+  PASSPHRASE: string,
+  TEQUILAPI_ADDRESS: string,
+  TEQUILAPI_TIMEOUT: number,
+  TEXTS: {
+    IP_UPDATING: string,
+    UNKNOWN: string,
+    UNKNOWN_STATUS: string
   }
-
-  /**
-   * Start Mysterium Client API at provided HTTP port
-   * @param port - port number for the service to use
-   * @returns {Promise<number>} - The status of the service after starting
-   */
-  startService (port: number): Promise<number> {
-    return this._client.startService(port)
+  REFRESH_INTERVALS: {
+    INTERVAL_MS: number,
+    CONNECTION: number,
+    STATS: number,
+    PROPOSALS: number,
+    IP: number
   }
 }
+
+export const CONFIG = {
+  PASSPHRASE: '',
+  TEQUILAPI_ADDRESS: 'http://localhost:4050/',
+  TEQUILAPI_TIMEOUT: 6000,
+  TEXTS: {
+    IP_UPDATING: 'updating...',
+    UNKNOWN: 'unknown',
+    UNKNOWN_STATUS: 'Loading...'
+  },
+  REFRESH_INTERVALS: {
+    INTERVAL_MS: 1000,
+    CONNECTION: 2,
+    STATS: 1,
+    PROPOSALS: 10,
+    IP: 10
+  }
+} as Config

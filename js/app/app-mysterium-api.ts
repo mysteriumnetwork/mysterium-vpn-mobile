@@ -15,30 +15,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-
 import React from 'react'
-import ConnectionRequestDTO from '../libraries/mysterium-tequilapi/dto/connection-request'
-import ConnectionStatusEnum from '../libraries/mysterium-tequilapi/dto/connection-status-enum'
-import IdentityDTO from '../libraries/mysterium-tequilapi/dto/identity'
-import ConnectionStatusDTO from '../libraries/mysterium-tequilapi/dto/connection-status'
-import ConnectionIPDTO from '../libraries/mysterium-tequilapi/dto/connection-ip'
-import ProposalDTO from '../libraries/mysterium-tequilapi/dto/proposal'
-import ConnectionStatisticsDTO from '../libraries/mysterium-tequilapi/dto/connection-statistics'
-import tequilapiClientFactory from '../libraries/mysterium-tequilapi/client-factory'
-import type {TequilapiClient} from '../libraries/mysterium-tequilapi/client'
-import CONFIG from '../config'
+
+import TequilapiClientFactory, {
+  ConnectionIPDTO,
+  ConnectionRequestDTO,
+  ConnectionStatisticsDTO,
+  ConnectionStatusDTO,
+  IdentityDTO,
+  ProposalDTO
+} from 'mysterium-tequilapi'
+import {ConnectionStatusEnum} from "../libraries/tequilapi/enums";
+
+import { CONFIG } from '../config'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
-const api: TequilapiClient = tequilapiClientFactory()
+const api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
+
+interface AppApiState {
+  refreshing: boolean,
+  identityId: string | null,
+  ip: string,
+  proposals: ProposalDTO[],
+  connection: ConnectionStatusDTO | null,
+  selectedProviderId: string | null,
+  stats: ConnectionStatisticsDTO | null
+
+  serviceStatus?: number  // TODO: remove it later, used for native part testing
+}
 
 /***
  * API operations level
  */
-export default class AppApi extends React.Component {
+export default class AppMysteriumApi extends React.Component<any, AppApiState> {
   interval: number = 0
 
-  constructor (props) {
+  constructor (props: any) {
     super(props)
     this.state = {
       refreshing: false,
@@ -49,6 +61,26 @@ export default class AppApi extends React.Component {
       selectedProviderId: null,
       stats: null
     }
+  }
+
+  /***
+   * Checks ability to connect/disconnect
+   * @returns {boolean} - true if where is no uncompleted operations
+   */
+  isReady () {
+    const s = this.state
+    return s.identityId && s.connection &&
+      ((s.connection.status === ConnectionStatusEnum.NOT_CONNECTED && s.selectedProviderId) ||
+        s.connection.status === ConnectionStatusEnum.CONNECTED)
+  }
+
+  /***
+   * Checks are you already connected to VPN server
+   * @returns {boolean} - true if you connected, false if not or state is unknown
+   */
+  isConnected () {
+    const c = this.state.connection
+    return c && c.status === ConnectionStatusEnum.CONNECTED
   }
 
   /***
@@ -64,12 +96,12 @@ export default class AppApi extends React.Component {
       return
     }
 
-    let identityId: ?string = null
+    let identityId: string | null = null
     try {
       if (identities.length) {
         identityId = identities[0].id
       } else {
-        const newIdentity: IdentityDTO = api.identityCreate(CONFIG.PASSPHRASE)
+        const newIdentity: IdentityDTO = await api.identityCreate(CONFIG.PASSPHRASE)
         identityId = newIdentity.id
       }
     } catch (e) {
@@ -93,7 +125,7 @@ export default class AppApi extends React.Component {
     try {
       const connection: ConnectionStatusDTO = await api.connectionStatus()
       console.log('connection', connection)
-      const stateUpdate = {connection}
+      const stateUpdate: any = {connection}
       if (connection.status === ConnectionStatusEnum.CONNECTING || connection.status === ConnectionStatusEnum.DISCONNECTING) {
         stateUpdate.ip = IP_UPDATING
       }
@@ -129,7 +161,9 @@ export default class AppApi extends React.Component {
     try {
       const proposals: Array<ProposalDTO> = await api.findProposals()
       console.log('proposals', proposals)
-      if (proposals.length && proposals.indexOf(this.state.selectedProviderId) < 0) {
+      if (proposals.length
+          && proposals.filter(p => p.providerId == this.state.selectedProviderId).length === 0
+      ) {
         this.setState({proposals, selectedProviderId: proposals[0].providerId})
       } else {
         this.setState({proposals})
@@ -159,7 +193,7 @@ export default class AppApi extends React.Component {
    * @param force - true if you want to refresh all states ignoring refresh intervals
    * @returns {Promise<void>}
    */
-  refresh (force: boolean = false): Promise<void> {
+  async refresh (force: boolean = false): Promise<void> {
     if (this.state.refreshing) {
       return
     }
@@ -198,14 +232,19 @@ export default class AppApi extends React.Component {
    * @returns {Promise<void>}
    */
   async connect (): Promise<void> {
-    const s = this.state
-    this.setState({
-      ip: IP_UPDATING,
-      connection: { status: ConnectionStatusEnum.CONNECTING }
-    })
+    const s: AppApiState = this.state
+    if (!s.identityId || !s.selectedProviderId) {
+      console.error('Not enough data to connect', s)
+      return
+    }
+    s.ip = IP_UPDATING
+    s.connection = { sessionId: '', status: ConnectionStatusEnum.CONNECTING }
+    this.setState(s)
     try {
-      const request = new ConnectionRequestDTO(s.identityId, s.selectedProviderId)
-      const connection = await api.connectionCreate(request)
+      const connection = await api.connectionCreate({
+        consumerId: s.identityId,
+        providerId: s.selectedProviderId
+      })
       console.log('connect', connection)
     } catch (e) {
       console.warn('api.connectionCreate failed', e)
@@ -218,10 +257,10 @@ export default class AppApi extends React.Component {
    * @returns {Promise<void>}
    */
   async disconnect (): Promise<void> {
-    this.setState({
-      ip: IP_UPDATING,
-      connection: { status: ConnectionStatusEnum.DISCONNECTING }
-    })
+    const s: AppApiState = this.state
+    s.ip = IP_UPDATING
+    s.connection = { sessionId: '', status: ConnectionStatusEnum.DISCONNECTING }
+    this.setState(s)
     try {
       await api.connectionCancel()
       console.log('disconnect')
