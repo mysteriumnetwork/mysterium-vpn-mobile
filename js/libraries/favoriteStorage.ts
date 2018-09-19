@@ -24,9 +24,7 @@ const FAVORITE_KEY = '@Favorites:KEY'
 
 class Storage {
   async getFavorites (): Promise<{[key: string]: boolean}> {
-    console.log('getFavorites')
     const values = await AsyncStorage.getItem(FAVORITE_KEY) || '{}'
-    console.log('getFavorites', values)
     return JSON.parse(values)
   }
 
@@ -83,7 +81,6 @@ class FavoriteProposalDTO {
 
 async function sortFavorites (proposals: ProposalDTO[]): Promise<FavoriteProposalDTO[]> {
   const favorites = await storage.getFavorites()
-  console.log('favorites', favorites)
   return proposals
     .map(p => new FavoriteProposalDTO(p, favorites[p.providerId] === true))
     .sort(FavoriteProposalDTO.compare)
