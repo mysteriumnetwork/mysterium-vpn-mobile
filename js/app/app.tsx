@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,21 @@
 import React from 'react'
 import { Text, View, Button } from 'react-native'
 import styles from './app-styles'
-import { CONFIG } from '../config'
+import {CONFIG} from '../config'
 import Stats from './stats'
-import AppMysteriumApi from './app-mysterium-api'
+import AppTequilapi from './app-tequilapi'
 import Proposals from './proposals'
 import MysteriumClient from '../libraries/mysterium-client'
+import {store} from "../store/tequilapi-store";
+import {observer} from "mobx-react/native";
 
-export default class App extends AppMysteriumApi {
-  mysteriumClient: MysteriumClient
-
+@observer
+export default class App extends AppTequilapi {
   constructor (props: any) {
     super(props)
 
     // Bind local functions
     this.connectDisconnect = this.connectDisconnect.bind(this)
-    this.isReady = this.isReady.bind(this)
-    this.onProposalSelected = this.onProposalSelected.bind(this)
-
-    this.mysteriumClient = new MysteriumClient()
   }
 
   /***
@@ -44,11 +41,12 @@ export default class App extends AppMysteriumApi {
    * Called once after first rendering.
    */
   async componentDidMount () {
-    this.refresh(true)
-    setInterval(this.refresh.bind(this), CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
+    await this.unlock()
 
-    const serviceStatus = await this.mysteriumClient.startService(4050)
-    this.setState({ ...this.state, serviceStatus })
+    // TODO: remove it later, serviceStatus is used only for native call test
+    const mysteriumClient = new MysteriumClient()
+    const serviceStatus = await mysteriumClient.startService(4050)
+    console.log('serviceStatus', serviceStatus)
   }
 
   /***
@@ -57,43 +55,30 @@ export default class App extends AppMysteriumApi {
    * @returns {Promise<void>}
    */
   async connectDisconnect () {
-    if (!this.isReady()) {
+    if (!store.isReady) {
       return
     }
 
-    if (this.isConnected()) {
+    if (store.isConnected) {
       await this.disconnect()
     } else {
       await this.connect()
     }
   }
 
-  /**
-   * Callback called when VPN server is selected
-   * @param providerId - proposal/VPN providerId
-   * @param index - index of proposal in dropdown list
-   */
-  onProposalSelected (providerId: string) {
-    console.log('selected', providerId)
-    this.setState({ selectedProviderId: providerId })
-  }
-
   render () {
-    const s = this.state
-    const isReady = this.isReady()
-    const isConnected = this.isConnected()
+    const isReady = store.isReady
+    const isConnected = store.isConnected
     const connectText = isReady
       ? (isConnected ? 'disconnect' : 'connect')
       : CONFIG.TEXTS.UNKNOWN_STATUS
     return (
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
-        <Text>{`Service start status = ${s.serviceStatus}`}</Text>
-        { s.refreshing ? <Text>...</Text> : <Text> </Text> }
-        <Text>{s.connection ? s.connection.status : CONFIG.TEXTS.UNKNOWN}</Text>
-        <Text>IP: {s.ip}</Text>
-        <Proposals proposals={s.proposals} selectedProviderId={s.selectedProviderId} onProposalSelected={this.onProposalSelected}/>
+        <Text>{store.ConnectionStatus ? store.ConnectionStatus.status : CONFIG.TEXTS.UNKNOWN}</Text>
+        <Text>IP: {store.IP}</Text>
+        <Proposals proposalsFetcher={this.proposalFetcher} proposalsStore={store} />
         <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
-        { s.stats ? <Stats {...s.stats} /> : null }
+        { store.Statistics ? <Stats {...store.Statistics} /> : null }
       </View>
     )
   }

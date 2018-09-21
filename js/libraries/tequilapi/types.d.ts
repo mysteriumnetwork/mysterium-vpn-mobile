@@ -16,7 +16,7 @@
  */
 
 declare module 'mysterium-tequilapi' {
-  type ConnectionStatus = 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting'
+  export type ConnectionStatus = 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting'
 
   export type ConnectionStatusDTO = {
     status: ConnectionStatus

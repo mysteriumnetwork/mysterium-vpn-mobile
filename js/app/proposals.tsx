@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,66 +16,52 @@
  */
 
 import React from 'react'
-import { View, Picker, Button } from 'react-native'
+import {observer} from 'mobx-react/native'
+import {View, Picker, Button, Text} from 'react-native'
 import styles from './proposals-styles'
-import { FavoriteProposalDTO, sortFavorites } from '../libraries/favoriteStorage'
 import {ProposalDTO} from "mysterium-tequilapi";
+import {ProposalsStore} from "../store/tequilapi-store";
+import {FavoriteProposalDTO} from "../libraries/favoriteStorage";
+import {action} from "mobx";
+import {ProposalsFetcher} from "../fetchers/proposals-fetcher";
 
 interface ProposalsProps {
-  proposals: ProposalDTO[],
-  selectedProviderId: string | null,
-  onProposalSelected (providerId: string): void
+  proposalsFetcher: ProposalsFetcher
+  proposalsStore: ProposalsStore
 }
 
-interface ProposalsState {
-  proposals: ProposalDTO[] | null,
-  favoriteProposals: FavoriteProposalDTO[] | null
-}
-
-export default class Proposals extends React.Component<ProposalsProps, ProposalsState> {
-  constructor (props: ProposalsProps) {
-    super(props)
-    this.state = {
-      proposals: null,
-      favoriteProposals: null
-    }
-  }
-
-  shouldComponentUpdate (nextProps: ProposalsProps, nextState: ProposalsState): boolean {
-    if (JSON.stringify(nextProps.proposals) === JSON.stringify(nextState.proposals)) {
-      return false
-    }
-    sortFavorites(nextProps.proposals).then(fp => {
-      this.setState({ favoriteProposals: fp })
-    })
-    return true
-  }
-
+@observer
+export default class Proposals extends React.Component<ProposalsProps> {
   async onFavoritePress (selectedProviderId: string): Promise<void> {
-    let { favoriteProposals } = this.state
+    const favoriteProposals = this.props.proposalsStore.FavoriteProposals
     if (!favoriteProposals) {
       return
     }
 
-    const favoriteProposal: FavoriteProposalDTO = favoriteProposals
+    const favoriteProposal = favoriteProposals
       .filter(p => p.id === selectedProviderId)[0]
 
     if (favoriteProposal) {
       await favoriteProposal.toggleFavorite()
-      favoriteProposals = await sortFavorites(this.props.proposals)
-      this.setState({favoriteProposals})
+      await this.props.proposalsFetcher.refresh()
     }
   }
 
+  @action
+  onProposalSelected (providerId: string) {
+    console.log('selected', providerId)
+    this.props.proposalsStore.SelectedProviderId = providerId
+  }
+
   render () {
-    const { selectedProviderId, onProposalSelected } = this.props
-    const { favoriteProposals } = this.state
+    const favoriteProposals = this.props.proposalsStore.FavoriteProposals
+    const selectedProviderId = this.props.proposalsStore.SelectedProviderId
     if (!favoriteProposals) {
       return null
     }
     return (
       <View style={{ flexDirection: 'row' }}>
-        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={onProposalSelected}>
+        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={providerId => this.onProposalSelected(providerId)}>
           {favoriteProposals.map(p => Proposals.renderProposal(p))}
         </Picker>
         {selectedProviderId ? <Button title={'*'} onPress={() => this.onFavoritePress(selectedProviderId)} /> : null}

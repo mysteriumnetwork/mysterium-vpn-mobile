@@ -15,24 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NativeModules} from 'react-native'
+import {action} from "mobx";
+import {ConnectionStatisticsDTO, TequilapiClient} from "mysterium-tequilapi";
+import {store} from "../store/tequilapi-store";
+import {CONFIG} from "../config";
+import {FetcherBase} from "./fetcher";
 
-/**
- * This exposes the native MysteriumClient module as a JS module.
- */
-export default class MysteriumClient {
-  _client: any
+export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
+  _api: TequilapiClient
 
-  constructor () {
-    this._client = NativeModules.MysteriumClientModule
+  constructor (api: TequilapiClient) {
+    super('Statistics')
+    this._api = api
+    this.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 
-  /**
-   * Start Mysterium Client API at provided HTTP port
-   * @param port - port number for the service to use
-   * @returns {Promise<number>} - The status of the service after starting
-   */
-  startService (port: number): Promise<number> {
-    return this._client.startService(port)
+  get canAction (): boolean {
+    return store.isConnected
+  }
+
+  @action
+  async fetch (): Promise<ConnectionStatisticsDTO> {
+    return this._api.connectionStatistics()
+  }
+
+  update (stats: ConnectionStatisticsDTO) {
+    store.Statistics = stats
   }
 }
