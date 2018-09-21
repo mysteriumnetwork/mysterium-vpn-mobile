@@ -521,7 +521,7 @@
     pirates "^3.0.1"
     source-map-support "^0.4.2"
 
-"@babel/runtime@7.0.0":
+"@babel/runtime@7.0.0", "@babel/runtime@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0.tgz#adeb78fedfc855aa05bc041640f3f6f98e85424c"
   dependencies:
@@ -5495,10 +5495,11 @@ mv@^2.1.1, mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-mysterium-tequilapi@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/mysterium-tequilapi/-/mysterium-tequilapi-0.1.0.tgz#639fade6a8011867e58d9eee793fb4df2f2374d6"
+mysterium-tequilapi@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/mysterium-tequilapi/-/mysterium-tequilapi-0.2.0.tgz#3e4a71db958f840d3f2eacf34c2ff0a32c5963b2"
   dependencies:
+    "@babel/runtime" "^7.0.0"
     axios "^0.18.0"
 
 mz@^2.6.0:

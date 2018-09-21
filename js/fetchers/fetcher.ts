@@ -20,7 +20,11 @@ import Timer = NodeJS.Timer;
 import {CONFIG} from "../config";
 
 export interface Fetcher {
+  isRunning: boolean
+
   refresh (): void
+  start (interval: number): void
+  stop (): void
 }
 
 export abstract class FetcherBase<T> implements Fetcher {
