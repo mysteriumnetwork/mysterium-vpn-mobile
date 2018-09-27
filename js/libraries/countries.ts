@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2018 The "MysteriumNetwork/mysterion" Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
+interface CountryNames {
+  [key: string]: string;
+}
 
-export default {
+export const Countries = {
   'aw': 'Aruba',
   'af': 'Afghanistan',
   'ao': 'Angola',
@@ -257,4 +259,4 @@ export default {
   'za': 'South Africa',
   'zm': 'Zambia',
   'zw': 'Zimbabwe'
-}
+} as CountryNames

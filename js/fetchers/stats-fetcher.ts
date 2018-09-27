@@ -14,10 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** @format */
 
-import {AppRegistry} from 'react-native'
-import App from './js/app/app'
-import {name as appName} from './app.json'
+import {action} from "mobx";
+import {ConnectionStatisticsDTO, TequilapiClient} from "mysterium-tequilapi";
+import {store} from "../store/tequilapi-store";
+import {CONFIG} from "../config";
+import {FetcherBase} from "./fetcher";
 
-AppRegistry.registerComponent(appName, () => App)
+export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
+  _api: TequilapiClient
+
+  constructor (api: TequilapiClient) {
+    super('Statistics')
+    this._api = api
+    this.start(CONFIG.REFRESH_INTERVALS.STATS)
+  }
+
+  get canAction (): boolean {
+    return store.isConnected
+  }
+
+  @action
+  async fetch (): Promise<ConnectionStatisticsDTO> {
+    return this._api.connectionStatistics()
+  }
+
+  update (stats: ConnectionStatisticsDTO) {
+    store.Statistics = stats
+  }
+}

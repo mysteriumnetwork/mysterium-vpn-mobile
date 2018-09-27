@@ -4,23 +4,26 @@
   "private": true,
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
+    "android": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
+    "ios": "react-native run-ios",
     "test": "jest",
-    "lint": "eslint src",
-    "flow": "flow src"
+    "lint": "eslint src"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "devDependencies": {
+    "@babel/core": "7.1.0",
+    "@babel/runtime": "7.0.0",
+    "@types/react": "^16.4.14",
+    "@types/react-native": "^0.56.18",
     "babel-cli": "^6.26.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^8.2.5",
-    "babel-preset-flow": "^6.23.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.9.0",
-    "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-html": "^3.1.1",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
@@ -28,17 +31,23 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^3.0.1",
-    "flow-bin": "^0.75.0",
     "jest-expo": "~27.0.0",
     "react-native-scripts": "1.14.0",
-    "react-test-renderer": "16.3.1"
+    "react-native-typescript-transformer": "^1.2.10",
+    "react-test-renderer": "16.3.1",
+    "typescript": "^3.0.3"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "computed-async-mobx": "^4.1.0",
     "expo": "^27.0.1",
-    "flow-bin": "^0.75.0",
+    "mobx": "^5.1.2",
+    "mobx-react": "^5.2.8",
+    "mobx-utils": "^5.0.2",
+    "mysterium-tequilapi": "^0.2.0",
     "prop-types": "^15.6.2",
     "react": "16.3.1",
-    "react-native": "~0.55.2"
+    "react-native": "~0.55.2",
+    "react-utils": "^1.0.0"
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @flow
-import type {ConnectionStatus} from './connection-status-enum'
+import {StyleSheet, ViewStyle} from 'react-native'
 
-class ConnectionStatusDTO {
-  status: ConnectionStatus
-  sessionId: string
-
-  constructor (data: Object) {
-    this.status = data.status
-    this.sessionId = data.sessionId
-  }
+interface AppStyles {
+  container: ViewStyle
 }
 
-export default ConnectionStatusDTO
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}) as AppStyles

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2018 The "MysteriumNetwork/mysterion" Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ const KB = 1024
 const MB = 1024 * KB
 const GB = 1024 * MB
 
-function bytesDisplay (bytes) {
+function bytesDisplay (bytes: number): string {
   if (bytes < KB) {
     return bytes + ' B'
   } else if (bytes < MB) {
@@ -33,21 +33,21 @@ function bytesDisplay (bytes) {
 
 /**
  * @function
- * @param {number} val
+ * @param {number} seconds
  * @returns {string} readable in --:--:-- format
  * @throws {Error} if argument is null
  */
-function timeDisplay (val) {
-  if (typeof val !== 'number' || val < 0) {
+function timeDisplay (seconds: number): string {
+  if (typeof seconds !== 'number' || seconds < 0) {
     throw new Error('invalid input')
   }
-  let h = Math.floor(val / 3600)
-  h = h > 9 ? h : '0' + h
-  let m = Math.floor((val % 3600) / 60)
-  m = m > 9 ? m : '0' + m
-  let s = (val % 60)
-  s = s > 9 ? s : '0' + s
-  return `${h}:${m}:${s}`
+  const h = Math.floor(seconds / 3600)
+  const hh = h > 9 ? h : '0' + h
+  const m = Math.floor((seconds % 3600) / 60)
+  const mm = m > 9 ? m : '0' + m
+  const s = (seconds % 60)
+  const ss = s > 9 ? s : '0' + s
+  return `${hh}:${mm}:${ss}`
 }
 
 export {
