@@ -6269,10 +6269,10 @@ mobx-utils@^5.0.2:
   resolved "https://registry.yarnpkg.com/mobx-utils/-/mobx-utils-5.0.2.tgz#82325c66c86a4b0a9c161df08bd71ebca0f9c902"
   integrity sha512-MkVVgWKe/F134s5HchzwpBA6kphn+N7P+q4z/9Nzg6brY9ZldWW3fTBpfHx77sQmGtk+P/vLSY+QsnZWB0OBaw==
 
-mobx@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.1.2.tgz#5a3a0bc381ba155901e33eabe492c3c7482e8b35"
-  integrity sha512-1kZW9KiJnq0YsrV/EeE8g1wDbGcgnlrqH7cYBqFUGVDwW93nX/fD93S9df3dCPh+j0le2zOWQXtoir/XLs+d9Q==
+mobx@^4.3.1:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-4.5.0.tgz#91a4ae60d7ae492926b6c7cf417f48e177527d7b"
+  integrity sha512-Mg/xMLV8uxaIu4mris0sWPPO3yzwVxtN5wfvtD+GhVazfAwGJU8WqxEZMpoFi4Q2QIPgiuLgaR4MLvctipBvyA==
 
 moment@2.x.x, moment@^2.10.6:
   version "2.22.2"

@@ -41,7 +41,7 @@
     "axios": "^0.18.0",
     "computed-async-mobx": "^4.1.0",
     "expo": "^27.0.1",
-    "mobx": "^5.1.2",
+    "mobx": "^4.3.1",
     "mobx-react": "^5.2.8",
     "mobx-utils": "^5.0.2",
     "mysterium-tequilapi": "^0.2.0",
