@@ -1,7 +1,7 @@
 import { StatusFetcher } from '../../js/fetchers/status-fetcher'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 import { TequilapiClient } from 'mysterium-tequilapi'
-import {store} from "../../js/store/tequilapi-store"
+import { store } from '../../js/store/tequilapi-store'
 
 describe('StatusFetcher', () => {
   let api: TequilapiClient
@@ -12,7 +12,7 @@ describe('StatusFetcher', () => {
     fetcher = new StatusFetcher(api)
   })
 
-  test('.constructor', async () => {
+  test('.constructor',  () => {
     expect(api.connectionStatus).toHaveBeenCalled()
   })
 
