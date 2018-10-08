@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface CountryNames {
-  [key: string]: string;
+interface ICountryNames {
+  [key: string]: string
 }
 
-export const Countries = {
+export const Countries: ICountryNames = {
   'aw': 'Aruba',
   'af': 'Afghanistan',
   'ao': 'Angola',
@@ -259,4 +259,4 @@ export const Countries = {
   'za': 'South Africa',
   'zm': 'Zambia',
   'zw': 'Zimbabwe'
-} as CountryNames
+}

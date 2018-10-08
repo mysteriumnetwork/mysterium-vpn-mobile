@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {observable, reaction} from "mobx";
-import Timer = NodeJS.Timer;
-import {CONFIG} from "../config";
+import {observable, reaction} from "mobx"
+import Timer = NodeJS.Timer
+import {CONFIG} from "../config"
 
-export interface Fetcher {
+export interface IFetcher {
   isRunning: boolean
 
   refresh (): void
@@ -27,30 +27,31 @@ export interface Fetcher {
   stop (): void
 }
 
-export abstract class FetcherBase<T> implements Fetcher {
-  @observable isRunning: boolean = false
+export abstract class FetcherBase<T> implements IFetcher {
+  @observable
+  public isRunning: boolean = false
 
-  _interval: Timer | null = null
-  _name: string
-  _prevData: T | null = null
+  protected name: string
+  private interval: Timer | null = null
+  private prevData: T | null = null
 
   constructor (name: string) {
-    this._name = name
+    this.name = name
   }
 
-  start (interval: number) {
+  public start (interval: number) {
     this.run()
-    this._interval = setInterval(() => this.run(), interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
+    this.interval = setInterval(() => this.run(), interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
   }
 
-  stop () {
-    if (this._interval) {
-      clearInterval(this._interval)
+  public stop () {
+    if (this.interval) {
+      clearInterval(this.interval)
     }
-    this._interval = null
+    this.interval = null
   }
 
-  refresh (): Promise<void> {
+  public refresh (): Promise<void> {
     if (!this.isRunning) {
       return this.run()
     }
@@ -76,14 +77,14 @@ export abstract class FetcherBase<T> implements Fetcher {
 
     try {
       const data = await this.fetch()
-      if (JSON.stringify(data) !== JSON.stringify(this._prevData)) {
-        this._prevData = data
-        console.info(`Fetcher '${this._name}' returns`, data)
+      if (JSON.stringify(data) !== JSON.stringify(this.prevData)) {
+        this.prevData = data
+        console.info(`Fetcher '${this.name}' returns`, data)
         this.update(data)
       }
     }
     catch (e) {
-      console.warn(`'${this._name}' fetching error`, e)
+      console.warn(`'${this.name}' fetching error`, e)
     }
     finally {
       this.isRunning = false

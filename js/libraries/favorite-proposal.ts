@@ -15,43 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AsyncStorage } from 'react-native'
-import {ProposalDTO} from "mysterium-tequilapi";
+import {ProposalDTO} from "mysterium-tequilapi"
 import { CONFIG } from '../config'
 import { Countries } from './countries'
-import {observable} from "mobx";
-
-const FAVORITE_KEY = '@Favorites:KEY'
-
-class Storage {
-  async getFavorites (): Promise<{[key: string]: boolean}> {
-    const values = await AsyncStorage.getItem(FAVORITE_KEY) || '{}'
-    return JSON.parse(values)
-  }
-
-  async setFavorite (proposalId: string, isFavorite: boolean): Promise<void> {
-    const favorites = await this.getFavorites()
-    if (isFavorite) {
-      favorites[proposalId] = isFavorite
-    } else if (favorites[proposalId]) {
-      delete favorites[proposalId]
-    }
-    console.log('save favorites', favorites)
-    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(favorites))
-  }
-}
-
-const storage = new Storage()
+import {storage} from "./favorite-storage"
 
 class FavoriteProposalDTO {
-  name: string
-  id: string
-  isFavorite: boolean
-
-  async toggleFavorite () {
-    this.isFavorite = !this.isFavorite
-    await storage.setFavorite(this.id, this.isFavorite)
+  public static compare (a: FavoriteProposalDTO, b: FavoriteProposalDTO): number {
+    return a.compareTo(b)
   }
+
+  public name: string
+  public id: string
+  public isFavorite: boolean
 
   constructor (proposal: ProposalDTO, isFavorite: boolean) {
     const countryCode = proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate
@@ -62,7 +38,12 @@ class FavoriteProposalDTO {
     this.isFavorite = isFavorite
   }
 
-  compareTo (other: FavoriteProposalDTO): number {
+  public async toggleFavorite () {
+    this.isFavorite = !this.isFavorite
+    await storage.setFavorite(this.id, this.isFavorite)
+  }
+
+  public compareTo (other: FavoriteProposalDTO): number {
     if (this.isFavorite && !other.isFavorite) {
       return -1
     } else if (!this.isFavorite && other.isFavorite) {
@@ -73,10 +54,6 @@ class FavoriteProposalDTO {
       return -1
     }
     return 0
-  }
-
-  static compare (a: FavoriteProposalDTO, b: FavoriteProposalDTO): number {
-    return a.compareTo(b)
   }
 }
 

@@ -16,23 +16,23 @@
  */
 
 import {observable, computed} from 'mobx'
-import {CONFIG} from "../config";
-import {ConnectionStatisticsDTO, ConnectionStatus, ConnectionStatusDTO} from "mysterium-tequilapi";
-import {FavoriteProposalDTO} from '../libraries/favoriteStorage'
-import {ConnectionStatusEnum} from "../libraries/tequilapi/enums";
+import {CONFIG} from "../config"
+import {ConnectionStatisticsDTO, ConnectionStatus, ConnectionStatusDTO} from "mysterium-tequilapi"
+import {FavoriteProposalDTO} from '../libraries/favorite-proposal'
+import {ConnectionStatusEnum} from "../libraries/tequilapi/enums"
 
-export interface ProposalsStore {
+export interface IProposalsStore {
   SelectedProviderId: string | null
   FavoriteProposals: FavoriteProposalDTO[] | null
 }
 
-class AppStore implements ProposalsStore {
-  @observable IdentityId: string | null = null
-  @observable IP: string = CONFIG.TEXTS.IP_UPDATING
-  @observable ConnectionStatus: ConnectionStatusDTO | null = null
-  @observable Statistics: ConnectionStatisticsDTO | null = null
-  @observable SelectedProviderId: string | null = null
-  @observable FavoriteProposals: FavoriteProposalDTO[] | null = null
+class AppStore implements IProposalsStore {
+  @observable public IdentityId: string | null = null
+  @observable public IP: string = CONFIG.TEXTS.IP_UPDATING
+  @observable public ConnectionStatus: ConnectionStatusDTO | null = null
+  @observable public Statistics: ConnectionStatisticsDTO | null = null
+  @observable public SelectedProviderId: string | null = null
+  @observable public FavoriteProposals: FavoriteProposalDTO[] | null = null
 
   @computed get status (): ConnectionStatus | null {
     if (this.ConnectionStatus == null) {

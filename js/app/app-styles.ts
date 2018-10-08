@@ -17,15 +17,15 @@
 
 import {StyleSheet, ViewStyle} from 'react-native'
 
-interface AppStyles {
+interface IAppStyles {
   container: ViewStyle
 }
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
     justifyContent: 'center'
   }
-}) as AppStyles
+}) as IAppStyles

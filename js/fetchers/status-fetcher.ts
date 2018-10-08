@@ -15,26 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action} from "mobx";
-import {ConnectionStatusDTO, TequilapiClient} from "mysterium-tequilapi";
-import {store} from "../store/tequilapi-store";
-import {CONFIG} from "../config";
-import {FetcherBase} from "./fetcher";
+import {action} from "mobx"
+import {ConnectionStatusDTO, TequilapiClient} from "mysterium-tequilapi"
+import {store} from "../store/tequilapi-store"
+import {CONFIG} from "../config"
+import {FetcherBase} from "./fetcher"
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  _api: TequilapiClient
-  _oldStatus: ConnectionStatusDTO | null = null
+  private api: TequilapiClient
+  private oldStatus: ConnectionStatusDTO | null = null
 
   constructor (api: TequilapiClient) {
     super('ConnectionStatus')
-    this._api = api
+    this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
   }
 
   @action
-  async action () {
-    const status = await this._api.connectionStatus()
-    if (JSON.stringify(status) === JSON.stringify(this._oldStatus)) {
+  protected async action () {
+    const status = await this.api.connectionStatus()
+    if (JSON.stringify(status) === JSON.stringify(this.oldStatus)) {
       return null
     }
     store.ConnectionStatus = status
@@ -42,11 +42,11 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   }
 
   @action
-  async fetch (): Promise<ConnectionStatusDTO> {
-    return this._api.connectionStatus()
+  protected async fetch (): Promise<ConnectionStatusDTO> {
+    return this.api.connectionStatus()
   }
 
-  update (status: ConnectionStatusDTO) {
+  protected update (status: ConnectionStatusDTO) {
     store.ConnectionStatus = status
   }
 }

@@ -15,20 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action, reaction} from "mobx";
-import {ConnectionIPDTO, TequilapiClient} from "mysterium-tequilapi";
-import {store} from "../store/tequilapi-store";
-import {CONFIG} from "../config";
-import {FetcherBase} from "./fetcher";
-import {ConnectionStatusEnum} from "../libraries/tequilapi/enums";
+import {action, reaction} from "mobx"
+import {ConnectionIPDTO, TequilapiClient} from "mysterium-tequilapi"
+import {store} from "../store/tequilapi-store"
+import {CONFIG} from "../config"
+import {FetcherBase} from "./fetcher"
+import {ConnectionStatusEnum} from "../libraries/tequilapi/enums"
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  _api: TequilapiClient
-  _oldStatus: 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting' | null = null
+  private api: TequilapiClient
+  private oldStatus: 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting' | null = null
 
   constructor (api: TequilapiClient) {
     super('IP')
-    this._api = api
+    this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
     reaction(
@@ -36,7 +36,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
       () => this.refresh())
   }
 
-  get canAction (): boolean {
+  protected get canAction (): boolean {
     if (store.IP == null || store.IP === CONFIG.TEXTS.IP_UPDATING) {
       return true
     }
@@ -45,12 +45,12 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
       && store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
   }
 
-  async fetch (): Promise<ConnectionIPDTO> {
-    return this._api.connectionIP()
+  protected async fetch (): Promise<ConnectionIPDTO> {
+    return this.api.connectionIP()
   }
 
   @action
-  update (newIP: ConnectionIPDTO) {
+  protected update (newIP: ConnectionIPDTO) {
     store.IP = newIP.ip
   }
 }

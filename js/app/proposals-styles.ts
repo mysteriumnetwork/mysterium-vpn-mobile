@@ -17,7 +17,7 @@
 
 import {StyleSheet, ViewStyle} from 'react-native'
 
-interface ProposalsStyles {
+interface IProposalsStyles {
   picker: ViewStyle
 }
 
@@ -27,4 +27,4 @@ export default StyleSheet.create({
     height: 20,
     margin: 20
   }
-}) as ProposalsStyles
+}) as IProposalsStyles
