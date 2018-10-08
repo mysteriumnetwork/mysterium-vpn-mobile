@@ -15,13 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ProposalDTO} from "mysterium-tequilapi"
+import { ProposalDTO } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { Countries } from './countries'
-import {storage} from "./favorite-storage"
+import { storage } from './favorite-storage'
 
 class FavoriteProposalDTO {
-  public static compare (a: FavoriteProposalDTO, b: FavoriteProposalDTO): number {
+  public static compare(
+    a: FavoriteProposalDTO,
+    b: FavoriteProposalDTO
+  ): number {
     return a.compareTo(b)
   }
 
@@ -29,21 +32,22 @@ class FavoriteProposalDTO {
   public id: string
   public isFavorite: boolean
 
-  constructor (proposal: ProposalDTO, isFavorite: boolean) {
-    const countryCode = proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate
-      ? proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-      : ''
+  constructor(proposal: ProposalDTO, isFavorite: boolean) {
+    const countryCode =
+      proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate
+        ? proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+        : ''
     this.name = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
     this.id = proposal.providerId
     this.isFavorite = isFavorite
   }
 
-  public async toggleFavorite () {
+  public async toggleFavorite() {
     this.isFavorite = !this.isFavorite
     await storage.setFavorite(this.id, this.isFavorite)
   }
 
-  public compareTo (other: FavoriteProposalDTO): number {
+  public compareTo(other: FavoriteProposalDTO): number {
     if (this.isFavorite && !other.isFavorite) {
       return -1
     } else if (!this.isFavorite && other.isFavorite) {
@@ -57,7 +61,9 @@ class FavoriteProposalDTO {
   }
 }
 
-async function sortFavorites (proposals: ProposalDTO[]): Promise<FavoriteProposalDTO[]> {
+async function sortFavorites(
+  proposals: ProposalDTO[]
+): Promise<FavoriteProposalDTO[]> {
   const favorites = await storage.getFavorites()
   return proposals
     .map(p => new FavoriteProposalDTO(p, favorites[p.providerId] === true))

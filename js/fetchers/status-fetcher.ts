@@ -15,24 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action} from "mobx"
-import {ConnectionStatusDTO, TequilapiClient} from "mysterium-tequilapi"
-import {store} from "../store/tequilapi-store"
-import {CONFIG} from "../config"
-import {FetcherBase} from "./fetcher"
+import { action } from 'mobx'
+import { ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { store } from '../store/tequilapi-store'
+import { CONFIG } from '../config'
+import { FetcherBase } from './fetcher'
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   private api: TequilapiClient
   private oldStatus: ConnectionStatusDTO | null = null
 
-  constructor (api: TequilapiClient) {
+  constructor(api: TequilapiClient) {
     super('ConnectionStatus')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
   }
 
   @action
-  protected async action () {
+  protected async action() {
     const status = await this.api.connectionStatus()
     if (JSON.stringify(status) === JSON.stringify(this.oldStatus)) {
       return null
@@ -42,11 +42,11 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   }
 
   @action
-  protected async fetch (): Promise<ConnectionStatusDTO> {
+  protected async fetch(): Promise<ConnectionStatusDTO> {
     return this.api.connectionStatus()
   }
 
-  protected update (status: ConnectionStatusDTO) {
+  protected update(status: ConnectionStatusDTO) {
     store.ConnectionStatus = status
   }
 }

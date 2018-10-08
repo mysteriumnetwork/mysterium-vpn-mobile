@@ -15,34 +15,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action} from "mobx"
-import {ProposalDTO, TequilapiClient} from "mysterium-tequilapi"
-import {FavoriteProposalDTO, sortFavorites} from "../libraries/favorite-proposal"
-import {store} from "../store/tequilapi-store"
-import {CONFIG} from "../config"
-import {FetcherBase} from "./fetcher"
+import { action } from 'mobx'
+import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
+import {
+  FavoriteProposalDTO,
+  sortFavorites
+} from '../libraries/favorite-proposal'
+import { store } from '../store/tequilapi-store'
+import { CONFIG } from '../config'
+import { FetcherBase } from './fetcher'
 
 export class ProposalsFetcher extends FetcherBase<FavoriteProposalDTO[]> {
   private api: TequilapiClient
 
-  constructor (api: TequilapiClient) {
+  constructor(api: TequilapiClient) {
     super('Proposals')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
   }
 
   @action
-  protected async fetch (): Promise<FavoriteProposalDTO[]> {
+  protected async fetch(): Promise<FavoriteProposalDTO[]> {
     const proposals: ProposalDTO[] = await this.api.findProposals()
     return sortFavorites(proposals)
   }
 
-  protected update (favoriteProposals: FavoriteProposalDTO[]) {
+  protected update(favoriteProposals: FavoriteProposalDTO[]) {
     store.FavoriteProposals = favoriteProposals
 
     // ensure that proposal is always selected
-    if (store.FavoriteProposals.length
-      && store.FavoriteProposals.filter(p => p.id === store.SelectedProviderId).length === 0
+    if (
+      store.FavoriteProposals.length &&
+      store.FavoriteProposals.filter(p => p.id === store.SelectedProviderId)
+        .length === 0
     ) {
       store.SelectedProviderId = store.FavoriteProposals[0].id
     }

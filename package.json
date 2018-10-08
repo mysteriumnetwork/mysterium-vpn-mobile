@@ -8,7 +8,7 @@
     "ios": "react-native run-ios",
     "test": "jest",
     "lint": "tslint -c tslint.json 'js/**/*.{ts,tsx}'",
-    "format": "prettier --find-config-path --write 'js/**/*.tsx'"
+    "format": "prettier --find-config-path --write 'js/**/*.ts*'"
   },
   "jest": {
     "preset": "jest-expo"

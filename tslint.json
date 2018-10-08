@@ -23,7 +23,7 @@
       "jsx-key": true,
       "jsx-no-bind": true,
       "jsx-no-lambda": false,
-      "jsx-no-multiline-js": true,
+      "jsx-no-multiline-js": false,
       "jsx-no-string-ref": true,
       "jsx-self-close": true,
       "jsx-wrap-multiline": true

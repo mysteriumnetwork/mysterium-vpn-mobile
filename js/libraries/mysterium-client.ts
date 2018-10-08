@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {NativeModules} from 'react-native'
+import { NativeModules } from 'react-native'
 
 /**
  * This exposes the native MysteriumClient module as a JS module.
@@ -23,7 +23,7 @@ import {NativeModules} from 'react-native'
 export default class MysteriumClient {
   private client: any
 
-  constructor () {
+  constructor() {
     this.client = NativeModules.MysteriumClientModule
   }
 
@@ -32,7 +32,7 @@ export default class MysteriumClient {
    * @param port - port number for the service to use
    * @returns {Promise<number>} - The status of the service after starting
    */
-  public startService (port: number): Promise<number> {
+  public startService(port: number): Promise<number> {
     return this.client.startService(port)
   }
 }

@@ -20,12 +20,15 @@ import { AsyncStorage } from 'react-native'
 const FAVORITE_KEY = '@Favorites:KEY'
 
 class Storage {
-  public async getFavorites (): Promise<{[key: string]: boolean}> {
-    const values = await AsyncStorage.getItem(FAVORITE_KEY) || '{}'
+  public async getFavorites(): Promise<{ [key: string]: boolean }> {
+    const values = (await AsyncStorage.getItem(FAVORITE_KEY)) || '{}'
     return JSON.parse(values)
   }
 
-  public async setFavorite (proposalId: string, isFavorite: boolean): Promise<void> {
+  public async setFavorite(
+    proposalId: string,
+    isFavorite: boolean
+  ): Promise<void> {
     const favorites = await this.getFavorites()
     if (isFavorite) {
       favorites[proposalId] = isFavorite

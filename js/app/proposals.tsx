@@ -16,13 +16,13 @@
  */
 
 import React from 'react'
-import {observer} from 'mobx-react/native'
-import {View, Picker, Button} from 'react-native'
+import { observer } from 'mobx-react/native'
+import { View, Picker, Button } from 'react-native'
 import styles from './proposals-styles'
-import {IProposalsStore} from "../store/tequilapi-store"
-import {FavoriteProposalDTO} from "../libraries/favorite-proposal"
-import {action} from "mobx"
-import {ProposalsFetcher} from "../fetchers/proposals-fetcher"
+import { IProposalsStore } from '../store/tequilapi-store'
+import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
+import { action } from 'mobx'
+import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 
 interface IProposalsProps {
   proposalsFetcher: ProposalsFetcher
@@ -31,14 +31,12 @@ interface IProposalsProps {
 
 @observer
 export default class Proposals extends React.Component<IProposalsProps> {
-  private static renderProposal (p: FavoriteProposalDTO) {
+  private static renderProposal(p: FavoriteProposalDTO) {
     const label = (p.isFavorite ? '* ' : '') + p.name
-    return (
-      <Picker.Item key={p.id} label={label} value={p.id} />
-    )
+    return <Picker.Item key={p.id} label={label} value={p.id} />
   }
 
-  public render () {
+  public render() {
     const favoriteProposals = this.props.proposalsStore.FavoriteProposals
     const selectedProviderId = this.props.proposalsStore.SelectedProviderId
     if (!favoriteProposals) {
@@ -46,22 +44,32 @@ export default class Proposals extends React.Component<IProposalsProps> {
     }
     return (
       <View style={{ flexDirection: 'row' }}>
-        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={providerId => this.onProposalSelected(providerId)}>
+        <Picker
+          style={styles.picker}
+          selectedValue={selectedProviderId}
+          onValueChange={providerId => this.onProposalSelected(providerId)}
+        >
           {favoriteProposals.map(p => Proposals.renderProposal(p))}
         </Picker>
-        {selectedProviderId ? <Button title={'*'} onPress={() => this.onFavoritePress(selectedProviderId)} /> : null}
+        {selectedProviderId ? (
+          <Button
+            title={'*'}
+            onPress={() => this.onFavoritePress(selectedProviderId)}
+          />
+        ) : null}
       </View>
     )
   }
 
-  private async onFavoritePress (selectedProviderId: string): Promise<void> {
+  private async onFavoritePress(selectedProviderId: string): Promise<void> {
     const favoriteProposals = this.props.proposalsStore.FavoriteProposals
     if (!favoriteProposals) {
       return
     }
 
-    const favoriteProposal = favoriteProposals
-      .filter(p => p.id === selectedProviderId)[0]
+    const favoriteProposal = favoriteProposals.filter(
+      p => p.id === selectedProviderId
+    )[0]
 
     if (favoriteProposal) {
       await favoriteProposal.toggleFavorite()
@@ -70,7 +78,7 @@ export default class Proposals extends React.Component<IProposalsProps> {
   }
 
   @action
-  private onProposalSelected (providerId: string) {
+  private onProposalSelected(providerId: string) {
     console.log('selected', providerId)
     this.props.proposalsStore.SelectedProviderId = providerId
   }

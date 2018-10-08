@@ -15,11 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {observable, computed} from 'mobx'
-import {CONFIG} from "../config"
-import {ConnectionStatisticsDTO, ConnectionStatus, ConnectionStatusDTO} from "mysterium-tequilapi"
-import {FavoriteProposalDTO} from '../libraries/favorite-proposal'
-import {ConnectionStatusEnum} from "../libraries/tequilapi/enums"
+import { observable, computed } from 'mobx'
+import { CONFIG } from '../config'
+import {
+  ConnectionStatisticsDTO,
+  ConnectionStatus,
+  ConnectionStatusDTO
+} from 'mysterium-tequilapi'
+import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
+import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
 export interface IProposalsStore {
   SelectedProviderId: string | null
@@ -27,30 +31,41 @@ export interface IProposalsStore {
 }
 
 class AppStore implements IProposalsStore {
-  @observable public IdentityId: string | null = null
-  @observable public IP: string = CONFIG.TEXTS.IP_UPDATING
-  @observable public ConnectionStatus: ConnectionStatusDTO | null = null
-  @observable public Statistics: ConnectionStatisticsDTO | null = null
-  @observable public SelectedProviderId: string | null = null
-  @observable public FavoriteProposals: FavoriteProposalDTO[] | null = null
+  @observable
+  public IdentityId: string | null = null
+  @observable
+  public IP: string = CONFIG.TEXTS.IP_UPDATING
+  @observable
+  public ConnectionStatus: ConnectionStatusDTO | null = null
+  @observable
+  public Statistics: ConnectionStatisticsDTO | null = null
+  @observable
+  public SelectedProviderId: string | null = null
+  @observable
+  public FavoriteProposals: FavoriteProposalDTO[] | null = null
 
-  @computed get status (): ConnectionStatus | null {
+  @computed
+  get status(): ConnectionStatus | null {
     if (this.ConnectionStatus == null) {
       return null
     }
     return this.ConnectionStatus.status
   }
 
-  @computed get isConnected () {
+  @computed
+  get isConnected() {
     return this.status === ConnectionStatusEnum.CONNECTED
   }
 
-  @computed get isReady () {
-    return this.IdentityId &&
+  @computed
+  get isReady() {
+    return (
+      this.IdentityId &&
       this.ConnectionStatus &&
       this.SelectedProviderId &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
+    )
   }
 }
 

@@ -16,8 +16,8 @@
  */
 
 import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
-import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
+import { StyleSheet, Text, View } from 'react-native'
+import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
 
 interface IStatsProps {
   duration: number
@@ -25,7 +25,11 @@ interface IStatsProps {
   bytesSent: number
 }
 
-const Stats: React.SFC<IStatsProps> = ({ duration, bytesReceived, bytesSent }) => {
+const Stats: React.SFC<IStatsProps> = ({
+  duration,
+  bytesReceived,
+  bytesSent
+}) => {
   return (
     <View style={styles.container}>
       <Text>Duration: {timeDisplay(duration)}</Text>

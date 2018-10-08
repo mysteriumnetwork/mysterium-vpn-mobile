@@ -15,42 +15,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action, reaction} from "mobx"
-import {ConnectionIPDTO, TequilapiClient} from "mysterium-tequilapi"
-import {store} from "../store/tequilapi-store"
-import {CONFIG} from "../config"
-import {FetcherBase} from "./fetcher"
-import {ConnectionStatusEnum} from "../libraries/tequilapi/enums"
+import { action, reaction } from 'mobx'
+import { ConnectionIPDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { store } from '../store/tequilapi-store'
+import { CONFIG } from '../config'
+import { FetcherBase } from './fetcher'
+import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
   private api: TequilapiClient
-  private oldStatus: 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting' | null = null
+  private oldStatus:
+    | 'Connected'
+    | 'NotConnected'
+    | 'Disconnecting'
+    | 'Connecting'
+    | null = null
 
-  constructor (api: TequilapiClient) {
+  constructor(api: TequilapiClient) {
     super('IP')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
-    reaction(
-      () => store.ConnectionStatus,
-      () => this.refresh())
+    reaction(() => store.ConnectionStatus, () => this.refresh())
   }
 
-  protected get canAction (): boolean {
+  protected get canAction(): boolean {
     if (store.IP == null || store.IP === CONFIG.TEXTS.IP_UPDATING) {
       return true
     }
 
-    return store.ConnectionStatus != null
-      && store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
+    return (
+      store.ConnectionStatus != null &&
+      store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
+    )
   }
 
-  protected async fetch (): Promise<ConnectionIPDTO> {
+  protected async fetch(): Promise<ConnectionIPDTO> {
     return this.api.connectionIP()
   }
 
   @action
-  protected update (newIP: ConnectionIPDTO) {
+  protected update(newIP: ConnectionIPDTO) {
     store.IP = newIP.ip
   }
 }

@@ -18,35 +18,49 @@
 import React from 'react'
 import { Text, View, Button } from 'react-native'
 import styles from './app-styles'
-import {CONFIG} from '../config'
+import { CONFIG } from '../config'
 import Stats from './stats'
 import AppTequilapi from './app-tequilapi'
 import Proposals from './proposals'
 import MysteriumClient from '../libraries/mysterium-client'
-import {store} from "../store/tequilapi-store"
-import {observer} from "mobx-react/native"
+import { store } from '../store/tequilapi-store'
+import { observer } from 'mobx-react/native'
 
 @observer
 export default class App extends AppTequilapi {
-  constructor (props: any) {
+  constructor(props: any) {
     super(props)
 
     // Bind local functions
     this.connectDisconnect = this.connectDisconnect.bind(this)
   }
 
-  public render () {
+  public render() {
     const isReady = store.isReady
     const isConnected = store.isConnected
     const connectText = isReady
-      ? (isConnected ? 'disconnect' : 'connect')
+      ? isConnected
+        ? 'disconnect'
+        : 'connect'
       : CONFIG.TEXTS.UNKNOWN_STATUS
     return (
+      // @ts-ignore
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
-        <Text>{store.ConnectionStatus ? store.ConnectionStatus.status : CONFIG.TEXTS.UNKNOWN}</Text>
+        <Text>
+          {store.ConnectionStatus
+            ? store.ConnectionStatus.status
+            : CONFIG.TEXTS.UNKNOWN}
+        </Text>
         <Text>IP: {store.IP}</Text>
-        <Proposals proposalsFetcher={this.proposalFetcher} proposalsStore={store} />
-        <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
+        <Proposals
+          proposalsFetcher={this.proposalFetcher}
+          proposalsStore={store}
+        />
+        <Button
+          title={connectText}
+          onPress={this.connectDisconnect}
+          disabled={!isReady}
+        />
         {store.Statistics ? <Stats {...store.Statistics} /> : null}
       </View>
     )
@@ -57,7 +71,7 @@ export default class App extends AppTequilapi {
    * Starts periodic state refreshing
    * Called once after first rendering.
    */
-  public async componentDidMount () {
+  public async componentDidMount() {
     await this.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
@@ -71,7 +85,7 @@ export default class App extends AppTequilapi {
    * Is connection state is unknown - does nothing
    * @returns {Promise<void>}
    */
-  private async connectDisconnect () {
+  private async connectDisconnect() {
     if (!store.isReady) {
       return
     }

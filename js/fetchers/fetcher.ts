@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {observable, reaction} from "mobx"
+import { observable, reaction } from 'mobx'
 import Timer = NodeJS.Timer
-import {CONFIG} from "../config"
+import { CONFIG } from '../config'
 
 export interface IFetcher {
   isRunning: boolean
 
-  refresh (): void
-  start (interval: number): void
-  stop (): void
+  refresh(): void
+  start(interval: number): void
+  stop(): void
 }
 
 export abstract class FetcherBase<T> implements IFetcher {
@@ -35,23 +35,26 @@ export abstract class FetcherBase<T> implements IFetcher {
   private interval: Timer | null = null
   private prevData: T | null = null
 
-  constructor (name: string) {
+  constructor(name: string) {
     this.name = name
   }
 
-  public start (interval: number) {
+  public start(interval: number) {
     this.run()
-    this.interval = setInterval(() => this.run(), interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS)
+    this.interval = setInterval(
+      () => this.run(),
+      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS
+    )
   }
 
-  public stop () {
+  public stop() {
     if (this.interval) {
       clearInterval(this.interval)
     }
     this.interval = null
   }
 
-  public refresh (): Promise<void> {
+  public refresh(): Promise<void> {
     if (!this.isRunning) {
       return this.run()
     }
@@ -65,11 +68,12 @@ export abstract class FetcherBase<T> implements IFetcher {
             await this.run()
             resolve()
           }
-        })
+        }
+      )
     })
   }
 
-  protected async run () {
+  protected async run() {
     if (this.isRunning || !this.canAction) {
       return
     }
@@ -82,20 +86,18 @@ export abstract class FetcherBase<T> implements IFetcher {
         console.info(`Fetcher '${this.name}' returns`, data)
         this.update(data)
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.warn(`'${this.name}' fetching error`, e)
-    }
-    finally {
+    } finally {
       this.isRunning = false
     }
   }
 
-  protected get canAction (): boolean {
+  protected get canAction(): boolean {
     return true
   }
 
-  protected abstract async fetch (): Promise<T>
+  protected abstract async fetch(): Promise<T>
 
-  protected abstract update (data: T): void
+  protected abstract update(data: T): void
 }

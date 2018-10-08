@@ -16,19 +16,19 @@
  */
 
 interface IConfig {
-  PASSPHRASE: string,
-  TEQUILAPI_ADDRESS: string,
-  TEQUILAPI_TIMEOUT: number,
+  PASSPHRASE: string
+  TEQUILAPI_ADDRESS: string
+  TEQUILAPI_TIMEOUT: number
   TEXTS: {
-    IP_UPDATING: string,
-    UNKNOWN: string,
+    IP_UPDATING: string
+    UNKNOWN: string
     UNKNOWN_STATUS: string
   }
   REFRESH_INTERVALS: {
-    INTERVAL_MS: number,
-    CONNECTION: number,
-    STATS: number,
-    PROPOSALS: number,
+    INTERVAL_MS: number
+    CONNECTION: number
+    STATS: number
+    PROPOSALS: number
     IP: number
   }
 }

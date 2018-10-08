@@ -15,31 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action} from "mobx"
-import {ConnectionStatisticsDTO, TequilapiClient} from "mysterium-tequilapi"
-import {store} from "../store/tequilapi-store"
-import {CONFIG} from "../config"
-import {FetcherBase} from "./fetcher"
+import { action } from 'mobx'
+import { ConnectionStatisticsDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { store } from '../store/tequilapi-store'
+import { CONFIG } from '../config'
+import { FetcherBase } from './fetcher'
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
   private api: TequilapiClient
 
-  constructor (api: TequilapiClient) {
+  constructor(api: TequilapiClient) {
     super('Statistics')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 
-  protected get canAction (): boolean {
+  protected get canAction(): boolean {
     return store.isConnected
   }
 
   @action
-  protected async fetch (): Promise<ConnectionStatisticsDTO> {
+  protected async fetch(): Promise<ConnectionStatisticsDTO> {
     return this.api.connectionStatistics()
   }
 
-  protected update (stats: ConnectionStatisticsDTO) {
+  protected update(stats: ConnectionStatisticsDTO) {
     store.Statistics = stats
   }
 }
