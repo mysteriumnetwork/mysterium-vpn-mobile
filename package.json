@@ -7,8 +7,7 @@
     "android": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
     "ios": "react-native run-ios",
     "test": "jest",
-    "lint": "tslint -c tslint.json 'js/**/*.{ts,tsx}'",
-    "format": "prettier --find-config-path --write 'js/**/*.ts*'"
+    "lint": "tslint -c tslint.json 'js/**/*.{ts,tsx}'"
   },
   "jest": {
     "preset": "jest-expo"
@@ -20,26 +19,11 @@
     "@types/react-native": "^0.56.18",
     "babel-cli": "^6.26.0",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^8.2.5",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-html": "^3.1.1",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-react": "^7.10.0",
-    "eslint-plugin-standard": "^3.0.1",
     "jest-expo": "~27.0.0",
-    "prettier": "1.14.3",
     "react-native-scripts": "1.14.0",
     "react-native-typescript-transformer": "^1.2.10",
     "react-test-renderer": "16.3.1",
     "tslint": "5.11.0",
-    "tslint-config-prettier": "1.15.0",
-    "tslint-eslint-rules": "5.4.0",
     "tslint-react": "3.6.0",
     "typescript": "^3.0.3"
   },

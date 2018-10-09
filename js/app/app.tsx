@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { observer } from 'mobx-react/native'
 import React from 'react'
-import { Text, View, Button } from 'react-native'
-import styles from './app-styles'
+import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
-import Stats from './stats'
-import AppTequilapi from './app-tequilapi'
-import Proposals from './proposals'
 import MysteriumClient from '../libraries/mysterium-client'
 import { store } from '../store/tequilapi-store'
-import { observer } from 'mobx-react/native'
+import styles from './app-styles'
+import AppTequilapi from './app-tequilapi'
+import Proposals from './proposals'
+import Stats from './stats'
 
 @observer
 export default class App extends AppTequilapi {

@@ -28,7 +28,7 @@ interface IStatsProps {
 const Stats: React.SFC<IStatsProps> = ({
   duration,
   bytesReceived,
-  bytesSent
+  bytesSent,
 }) => {
   return (
     <View style={styles.container}>
@@ -41,8 +41,8 @@ const Stats: React.SFC<IStatsProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
-  }
+    padding: 20,
+  },
 })
 
 export default Stats

@@ -17,8 +17,8 @@
 
 import { action } from 'mobx'
 import { ConnectionStatisticsDTO, TequilapiClient } from 'mysterium-tequilapi'
-import { store } from '../store/tequilapi-store'
 import { CONFIG } from '../config'
+import { store } from '../store/tequilapi-store'
 import { FetcherBase } from './fetcher'
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {

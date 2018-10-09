@@ -17,12 +17,12 @@
 
 import { action } from 'mobx'
 import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { CONFIG } from '../config'
 import {
   FavoriteProposalDTO,
-  sortFavorites
+  sortFavorites,
 } from '../libraries/favorite-proposal'
 import { store } from '../store/tequilapi-store'
-import { CONFIG } from '../config'
 import { FetcherBase } from './fetcher'
 
 export class ProposalsFetcher extends FetcherBase<FavoriteProposalDTO[]> {
