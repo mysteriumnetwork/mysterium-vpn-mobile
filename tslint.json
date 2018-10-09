@@ -2,9 +2,7 @@
     "defaultSeverity": "error",
     "extends": [
       "tslint:latest",
-      "tslint-react",
-      "tslint-eslint-rules",
-      "tslint-config-prettier"
+      "tslint-react"
     ],
     "jsRules": {},
     "rules": {
@@ -12,9 +10,13 @@
       "semicolon": {
         "options": ["never"]
       },
-      "ordered-imports": false,
       "no-submodule-imports": false,
       "object-literal-sort-keys": false,
+      "interface-over-type-literal": false,
+      "quotemark": [true, "single", "jsx-double"],
+      "no-return-await": true,
+      "curly": false,
+      "arrow-parens": false,
 
       "jsx-alignment": true,
       "jsx-boolean-value": true,

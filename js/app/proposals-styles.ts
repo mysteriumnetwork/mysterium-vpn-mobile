@@ -25,6 +25,6 @@ export default StyleSheet.create({
   picker: {
     width: 130,
     height: 20,
-    margin: 20
-  }
+    margin: 20,
+  },
 }) as IProposalsStyles

@@ -43,7 +43,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     this.run()
     this.interval = setInterval(
       () => this.run(),
-      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS
+      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS,
     )
   }
 
@@ -68,7 +68,7 @@ export abstract class FetcherBase<T> implements IFetcher {
             await this.run()
             resolve()
           }
-        }
+        },
       )
     })
   }

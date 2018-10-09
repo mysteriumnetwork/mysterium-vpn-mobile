@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { observer } from 'mobx-react/native'
-import { View, Picker, Button } from 'react-native'
-import styles from './proposals-styles'
-import { IProposalsStore } from '../store/tequilapi-store'
-import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
 import { action } from 'mobx'
+import { observer } from 'mobx-react/native'
+import React from 'react'
+import { Button, Picker, View } from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
+import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
+import { IProposalsStore } from '../store/tequilapi-store'
+import styles from './proposals-styles'
 
 interface IProposalsProps {
   proposalsFetcher: ProposalsFetcher
@@ -47,9 +47,9 @@ export default class Proposals extends React.Component<IProposalsProps> {
         <Picker
           style={styles.picker}
           selectedValue={selectedProviderId}
-          onValueChange={providerId => this.onProposalSelected(providerId)}
+          onValueChange={(providerId: string) => this.onProposalSelected(providerId)}
         >
-          {favoriteProposals.map(p => Proposals.renderProposal(p))}
+          {favoriteProposals.map((p: FavoriteProposalDTO) => Proposals.renderProposal(p))}
         </Picker>
         {selectedProviderId ? (
           <Button
@@ -68,7 +68,7 @@ export default class Proposals extends React.Component<IProposalsProps> {
     }
 
     const favoriteProposal = favoriteProposals.filter(
-      p => p.id === selectedProviderId
+      (p: FavoriteProposalDTO) => p.id === selectedProviderId,
     )[0]
 
     if (favoriteProposal) {

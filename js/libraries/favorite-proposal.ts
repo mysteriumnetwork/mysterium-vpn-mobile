@@ -23,7 +23,7 @@ import { storage } from './favorite-storage'
 class FavoriteProposalDTO {
   public static compare(
     a: FavoriteProposalDTO,
-    b: FavoriteProposalDTO
+    b: FavoriteProposalDTO,
   ): number {
     return a.compareTo(b)
   }
@@ -62,7 +62,7 @@ class FavoriteProposalDTO {
 }
 
 async function sortFavorites(
-  proposals: ProposalDTO[]
+  proposals: ProposalDTO[],
 ): Promise<FavoriteProposalDTO[]> {
   const favorites = await storage.getFavorites()
   return proposals

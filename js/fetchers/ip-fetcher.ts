@@ -17,19 +17,13 @@
 
 import { action, reaction } from 'mobx'
 import { ConnectionIPDTO, TequilapiClient } from 'mysterium-tequilapi'
-import { store } from '../store/tequilapi-store'
 import { CONFIG } from '../config'
-import { FetcherBase } from './fetcher'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
+import { store } from '../store/tequilapi-store'
+import { FetcherBase } from './fetcher'
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
   private api: TequilapiClient
-  private oldStatus:
-    | 'Connected'
-    | 'NotConnected'
-    | 'Disconnecting'
-    | 'Connecting'
-    | null = null
 
   constructor(api: TequilapiClient) {
     super('IP')

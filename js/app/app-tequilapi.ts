@@ -21,16 +21,16 @@ import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
 import { CONFIG } from '../config'
-import { store } from '../store/tequilapi-store'
-import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
-import { StatusFetcher } from '../fetchers/status-fetcher'
 import { IPFetcher } from '../fetchers/ip-fetcher'
+import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../fetchers/stats-fetcher'
+import { StatusFetcher } from '../fetchers/status-fetcher'
+import { store } from '../store/tequilapi-store'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
-  CONFIG.TEQUILAPI_TIMEOUT
+  CONFIG.TEQUILAPI_TIMEOUT,
 ).build()
 
 /***
@@ -54,13 +54,13 @@ export default class AppTequilapi extends React.Component {
     store.IP = IP_UPDATING
     store.ConnectionStatus = {
       sessionId: '',
-      status: ConnectionStatusEnum.CONNECTING
+      status: ConnectionStatusEnum.CONNECTING,
     }
     try {
       const connection = await api.connectionCreate({
         consumerId: store.IdentityId,
         providerCountry: '',
-        providerId: store.SelectedProviderId
+        providerId: store.SelectedProviderId,
       })
       console.log('connect', connection)
     } catch (e) {
@@ -76,7 +76,7 @@ export default class AppTequilapi extends React.Component {
     store.IP = IP_UPDATING
     store.ConnectionStatus = {
       sessionId: '',
-      status: ConnectionStatusEnum.DISCONNECTING
+      status: ConnectionStatusEnum.DISCONNECTING,
     }
     try {
       await api.connectionCancel()
@@ -105,7 +105,7 @@ export default class AppTequilapi extends React.Component {
         identityId = identities[0].id
       } else {
         const newIdentity: IdentityDTO = await api.identityCreate(
-          CONFIG.PASSPHRASE
+          CONFIG.PASSPHRASE,
         )
         identityId = newIdentity.id
       }

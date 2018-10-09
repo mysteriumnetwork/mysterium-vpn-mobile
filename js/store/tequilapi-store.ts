@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable, computed } from 'mobx'
-import { CONFIG } from '../config'
+import { computed, observable } from 'mobx'
 import {
   ConnectionStatisticsDTO,
   ConnectionStatus,
-  ConnectionStatusDTO
+  ConnectionStatusDTO,
 } from 'mysterium-tequilapi'
+import { CONFIG } from '../config'
 import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 

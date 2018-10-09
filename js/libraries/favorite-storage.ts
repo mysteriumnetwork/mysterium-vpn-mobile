@@ -27,7 +27,7 @@ class Storage {
 
   public async setFavorite(
     proposalId: string,
-    isFavorite: boolean
+    isFavorite: boolean,
   ): Promise<void> {
     const favorites = await this.getFavorites()
     if (isFavorite) {
