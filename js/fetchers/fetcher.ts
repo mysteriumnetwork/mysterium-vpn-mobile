@@ -39,11 +39,19 @@ export abstract class FetcherBase<T> implements IFetcher {
     this.name = name
   }
 
-  public start(interval: number) {
-    this.run()
+  public get isStarted(): boolean {
+    return this.interval != null
+  }
+
+  public start(millis: number) {
+    this.stop()
+
+    if (!this.isRunning) {
+      this.run()
+    }
     this.interval = setInterval(
       () => this.run(),
-      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS,
+      millis,
     )
   }
 

@@ -5,8 +5,8 @@ const TequilapiClientMock = jest.fn<TequilapiClient>(() => ({
     .fn()
     .mockReturnValue({
       status: 'NotConnected',
-      sessionId: 'MOCKED_SESSION_ID'
-    })
+      sessionId: 'MOCKED_SESSION_ID',
+    }),
 }))
 
 export { TequilapiClientMock }
