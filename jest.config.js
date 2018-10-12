@@ -1,8 +1,26 @@
 module.exports = {
-  roots: ['<rootDir>/tests'],
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest'
+  preset: 'react-native',
+  setupFiles: [
+    "<rootDir>/jest.setup.js"
+  ],
+  globals: {
+    __DEV__: true
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
+  moduleFileExtensions: [
+    "ts",
+    "tsx",
+    "js"
+  ],
+  transform: {
+    "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
+    "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+  },
+  testRegex: "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+  testPathIgnorePatterns: [
+    "\\.snap$",
+    "<rootDir>/node_modules/",
+    "<rootDir>/lib/",
+    "<rootDir>/e2e/"
+  ],
+  cacheDirectory: ".jest/cache"
 }

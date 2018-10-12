@@ -45,7 +45,7 @@ export default class App extends AppTequilapi {
       : CONFIG.TEXTS.UNKNOWN_STATUS
     return (
       // @ts-ignore
-      <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+      <View testID={'app'} style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
         <Text>
           {store.ConnectionStatus
             ? store.ConnectionStatus.status
