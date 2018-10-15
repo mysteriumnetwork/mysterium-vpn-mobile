@@ -20,10 +20,10 @@ import { CONFIG } from '../config'
 import { Countries } from './countries'
 import { storage } from './favorite-storage'
 
-class FavoriteProposalDTO {
+class Proposal {
   public static compare(
-    a: FavoriteProposalDTO,
-    b: FavoriteProposalDTO,
+    a: Proposal,
+    b: Proposal,
   ): number {
     return a.compareTo(b)
   }
@@ -47,7 +47,7 @@ class FavoriteProposalDTO {
     await storage.setFavorite(this.id, this.isFavorite)
   }
 
-  public compareTo(other: FavoriteProposalDTO): number {
+  public compareTo(other: Proposal): number {
     if (this.isFavorite && !other.isFavorite) {
       return -1
     } else if (!this.isFavorite && other.isFavorite) {
@@ -63,11 +63,11 @@ class FavoriteProposalDTO {
 
 async function sortFavorites(
   proposals: ProposalDTO[],
-): Promise<FavoriteProposalDTO[]> {
+): Promise<Proposal[]> {
   const favorites = await storage.getFavorites()
   return proposals
-    .map(p => new FavoriteProposalDTO(p, favorites[p.providerId] === true))
-    .sort(FavoriteProposalDTO.compare)
+    .map(p => new Proposal(p, favorites[p.providerId] === true))
+    .sort(Proposal.compare)
 }
 
-export { sortFavorites, FavoriteProposalDTO }
+export { sortFavorites, Proposal }

@@ -34,7 +34,6 @@ export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
     return store.isConnected
   }
 
-  @action
   protected async fetch(): Promise<ConnectionStatisticsDTO> {
     return this.api.connectionStatistics()
   }

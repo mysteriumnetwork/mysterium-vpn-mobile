@@ -19,13 +19,13 @@ import { action } from 'mobx'
 import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import {
-  FavoriteProposalDTO,
+  Proposal,
   sortFavorites,
 } from '../libraries/favorite-proposal'
 import { store } from '../store/tequilapi-store'
 import { FetcherBase } from './fetcher'
 
-export class ProposalsFetcher extends FetcherBase<FavoriteProposalDTO[]> {
+export class ProposalsFetcher extends FetcherBase<Proposal[]> {
   private api: TequilapiClient
 
   constructor(api: TequilapiClient) {
@@ -34,22 +34,21 @@ export class ProposalsFetcher extends FetcherBase<FavoriteProposalDTO[]> {
     this.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
   }
 
-  @action
-  protected async fetch(): Promise<FavoriteProposalDTO[]> {
+  protected async fetch(): Promise<Proposal[]> {
     const proposals: ProposalDTO[] = await this.api.findProposals()
     return sortFavorites(proposals)
   }
 
-  protected update(favoriteProposals: FavoriteProposalDTO[]) {
-    store.FavoriteProposals = favoriteProposals
+  protected update(proposals: Proposal[]) {
+    store.Proposals = proposals
 
     // ensure that proposal is always selected
     if (
-      store.FavoriteProposals.length &&
-      store.FavoriteProposals.filter(p => p.id === store.SelectedProviderId)
+      store.Proposals.length &&
+      store.Proposals.filter(p => p.id === store.SelectedProviderId)
         .length === 0
     ) {
-      store.SelectedProviderId = store.FavoriteProposals[0].id
+      store.SelectedProviderId = store.Proposals[0].id
     }
   }
 }

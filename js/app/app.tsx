@@ -28,21 +28,7 @@ import Stats from './stats'
 
 @observer
 export default class App extends AppTequilapi {
-  constructor(props: any) {
-    super(props)
-
-    // Bind local functions
-    this.connectDisconnect = this.connectDisconnect.bind(this)
-  }
-
   public render() {
-    const isReady = store.isReady
-    const isConnected = store.isConnected
-    const connectText = isReady
-      ? isConnected
-        ? 'disconnect'
-        : 'connect'
-      : CONFIG.TEXTS.UNKNOWN_STATUS
     return (
       // @ts-ignore
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
@@ -57,9 +43,9 @@ export default class App extends AppTequilapi {
           proposalsStore={store}
         />
         <Button
-          title={connectText}
-          onPress={this.connectDisconnect}
-          disabled={!isReady}
+          title={this.buttonText}
+          disabled={!this.buttonEnabled}
+          onPress={() => this.connectDisconnect()}
         />
         {store.Statistics ? <Stats {...store.Statistics} /> : null}
       </View>
@@ -78,6 +64,20 @@ export default class App extends AppTequilapi {
     const mysteriumClient = new MysteriumClient()
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
+  }
+
+  private get buttonEnabled() {
+    return store.isReady
+  }
+
+  private get buttonText() {
+    const isReady = store.isReady
+    const isConnected = store.isConnected
+    return isReady
+      ? isConnected
+        ? 'disconnect'
+        : 'connect'
+      : CONFIG.TEXTS.UNKNOWN_STATUS
   }
 
   /***

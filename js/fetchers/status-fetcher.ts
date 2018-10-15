@@ -41,7 +41,6 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
     return store.ConnectionStatus
   }
 
-  @action
   protected async fetch(): Promise<ConnectionStatusDTO> {
     return this.api.connectionStatus()
   }

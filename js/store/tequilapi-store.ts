@@ -22,12 +22,12 @@ import {
   ConnectionStatusDTO,
 } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
-import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
+import { Proposal } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
 export interface IProposalsStore {
   SelectedProviderId: string | null
-  FavoriteProposals: FavoriteProposalDTO[] | null
+  Proposals: Proposal[] | null
 }
 
 class AppStore implements IProposalsStore {
@@ -42,7 +42,7 @@ class AppStore implements IProposalsStore {
   @observable
   public SelectedProviderId: string | null = null
   @observable
-  public FavoriteProposals: FavoriteProposalDTO[] | null = null
+  public Proposals: Proposal[] | null = null
 
   @computed
   get status(): ConnectionStatus | null {
