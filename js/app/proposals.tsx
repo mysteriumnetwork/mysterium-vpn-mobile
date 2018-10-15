@@ -23,7 +23,7 @@ import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { Proposal } from '../libraries/favorite-proposal'
 import styles from './proposals-styles'
 
-interface IProposalsProps {
+type ProposalsProps = {
   proposalsFetcher: ProposalsFetcher,
   proposalsStore: {
     SelectedProviderId: string | null,
@@ -32,7 +32,7 @@ interface IProposalsProps {
 }
 
 @observer
-export default class Proposals extends React.Component<IProposalsProps> {
+export default class Proposals extends React.Component<ProposalsProps> {
   private static renderProposal(p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
     return <Picker.Item key={p.id} label={label} value={p.id} />

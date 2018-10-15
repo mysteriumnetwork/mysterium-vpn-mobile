@@ -21,14 +21,14 @@ import { CONFIG } from '../config'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export interface IStatusFetcherProps {
-  connectionStatus(): Promise<ConnectionStatusDTO>
+export type StatusFetcherProps = {
+  connectionStatus(): Promise<ConnectionStatusDTO>,
 }
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  private api: IStatusFetcherProps
+  private api: StatusFetcherProps
 
-  constructor(api: IStatusFetcherProps) {
+  constructor(api: StatusFetcherProps) {
     super('ConnectionStatus')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.CONNECTION)

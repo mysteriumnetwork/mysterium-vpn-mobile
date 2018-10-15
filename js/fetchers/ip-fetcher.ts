@@ -22,14 +22,14 @@ import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export interface IIPFetcherProps {
-  connectionIP(): Promise<ConnectionIPDTO>
+export type IPFetcherProps = {
+  connectionIP(): Promise<ConnectionIPDTO>,
 }
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  private api: IIPFetcherProps
+  private api: IPFetcherProps
 
-  constructor(api: IIPFetcherProps) {
+  constructor(api: IPFetcherProps) {
     super('IP')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)

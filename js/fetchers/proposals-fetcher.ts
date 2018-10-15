@@ -25,14 +25,14 @@ import {
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export interface IProposalsFetcherProps {
-  findProposals(filter?: ProposalsFilter): Promise<ProposalDTO[]>
+export type ProposalsFetcherProps = {
+  findProposals(filter?: ProposalsFilter): Promise<ProposalDTO[]>,
 }
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  private api: IProposalsFetcherProps
+  private api: ProposalsFetcherProps
 
-  constructor(api: IProposalsFetcherProps) {
+  constructor(api: ProposalsFetcherProps) {
     super('Proposals')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
