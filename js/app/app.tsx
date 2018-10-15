@@ -38,7 +38,7 @@ export default class App extends AppTequilapi {
         <Text>
           {store.ConnectionStatus
             ? store.ConnectionStatus.status
-            : CONFIG.TEXTS.UNKNOWN}
+            : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
         <Text>IP: {store.IP}</Text>
         <Proposals

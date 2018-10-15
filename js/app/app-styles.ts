@@ -17,8 +17,8 @@
 
 import { StyleSheet, ViewStyle } from 'react-native'
 
-interface IAppStyles {
-  container: ViewStyle
+type AppStyles = {
+  container: ViewStyle,
 }
 
 export default StyleSheet.create({
@@ -28,4 +28,4 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-}) as IAppStyles
+}) as AppStyles
