@@ -19,7 +19,7 @@ import { action, reaction } from 'mobx'
 import { ConnectionIPDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
-import { store } from '../store/tequilapi-store'
+import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
 export interface IIPFetcherProps {

@@ -21,7 +21,6 @@ import React from 'react'
 import {Button, Picker, Text, View} from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { Proposal } from '../libraries/favorite-proposal'
-import { IProposalsStore } from '../store/tequilapi-store'
 import styles from './proposals-styles'
 
 interface IProposalsProps {

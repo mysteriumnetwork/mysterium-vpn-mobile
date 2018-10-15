@@ -22,7 +22,7 @@ import {
   Proposal,
   sortFavorites,
 } from '../libraries/favorite-proposal'
-import { store } from '../store/tequilapi-store'
+import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
 export interface IProposalsFetcherProps {

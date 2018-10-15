@@ -18,7 +18,7 @@
 import { action } from 'mobx'
 import {ConnectionStatusDTO, TequilapiClient} from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
-import { store } from '../store/tequilapi-store'
+import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
 export interface IStatusFetcherProps {
@@ -26,8 +26,7 @@ export interface IStatusFetcherProps {
 }
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  private api: TequilapiClient
-  private oldStatus: ConnectionStatusDTO | null = null
+  private api: IStatusFetcherProps
 
   constructor(api: IStatusFetcherProps) {
     super('ConnectionStatus')
