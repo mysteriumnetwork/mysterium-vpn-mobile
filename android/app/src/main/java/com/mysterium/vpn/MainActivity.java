@@ -1,4 +1,4 @@
-package com.mysteriumvpn;
+package com.mysterium.vpn;
 
 import com.facebook.react.ReactActivity;
 
