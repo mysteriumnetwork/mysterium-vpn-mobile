@@ -62,7 +62,7 @@ export default class AppTequilapi extends React.Component {
         providerCountry: '',
         providerId: store.SelectedProviderId,
       })
-      console.log('connect', connection)
+      console.log('connected', connection)
     } catch (e) {
       console.warn('api.connectionCreate failed', e)
     }
@@ -80,7 +80,7 @@ export default class AppTequilapi extends React.Component {
     }
     try {
       await api.connectionCancel()
-      console.log('disconnect')
+      console.log('disconnected')
     } catch (e) {
       console.warn('api.connectionCancel failed', e)
     }

@@ -19,13 +19,17 @@ import { action, reaction } from 'mobx'
 import { ConnectionIPDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
-import { store } from '../store/tequilapi-store'
-import { FetcherBase } from './fetcher'
+import { store } from '../store/app-store'
+import { FetcherBase } from './fetcher-base'
+
+export interface IIPFetcherProps {
+  connectionIP(): Promise<ConnectionIPDTO>
+}
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  private api: TequilapiClient
+  private api: IIPFetcherProps
 
-  constructor(api: TequilapiClient) {
+  constructor(api: IIPFetcherProps) {
     super('IP')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)
@@ -33,7 +37,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     reaction(() => store.ConnectionStatus, () => this.refresh())
   }
 
-  protected get canAction(): boolean {
+  protected get canRun(): boolean {
     if (store.IP == null || store.IP === CONFIG.TEXTS.IP_UPDATING) {
       return true
     }

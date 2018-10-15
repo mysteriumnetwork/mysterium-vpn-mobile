@@ -15,32 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action } from 'mobx'
+import {action, computed} from 'mobx'
 import { observer } from 'mobx-react/native'
 import React from 'react'
-import { Button, Picker, View } from 'react-native'
+import {Button, Picker, Text, View} from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
-import { FavoriteProposalDTO } from '../libraries/favorite-proposal'
-import { IProposalsStore } from '../store/tequilapi-store'
+import { Proposal } from '../libraries/favorite-proposal'
 import styles from './proposals-styles'
 
 interface IProposalsProps {
-  proposalsFetcher: ProposalsFetcher
-  proposalsStore: IProposalsStore
+  proposalsFetcher: ProposalsFetcher,
+  proposalsStore: {
+    SelectedProviderId: string | null,
+    Proposals: Proposal[] | null,
+  },
 }
 
 @observer
 export default class Proposals extends React.Component<IProposalsProps> {
-  private static renderProposal(p: FavoriteProposalDTO) {
+  private static renderProposal(p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
     return <Picker.Item key={p.id} label={label} value={p.id} />
   }
 
   public render() {
-    const favoriteProposals = this.props.proposalsStore.FavoriteProposals
+    const proposals = this.props.proposalsStore.Proposals
     const selectedProviderId = this.props.proposalsStore.SelectedProviderId
-    if (!favoriteProposals) {
-      return null
+    if (!proposals) {
+      return <Text>Loading proposals...</Text>
     }
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -49,7 +51,7 @@ export default class Proposals extends React.Component<IProposalsProps> {
           selectedValue={selectedProviderId}
           onValueChange={(providerId: string) => this.onProposalSelected(providerId)}
         >
-          {favoriteProposals.map((p: FavoriteProposalDTO) => Proposals.renderProposal(p))}
+          {proposals.map((p: Proposal) => Proposals.renderProposal(p))}
         </Picker>
         {selectedProviderId ? (
           <Button
@@ -61,25 +63,24 @@ export default class Proposals extends React.Component<IProposalsProps> {
     )
   }
 
+  @computed
+  private get loadedProposals() {
+    return this.props.proposalsStore.Proposals || []
+  }
+
   private async onFavoritePress(selectedProviderId: string): Promise<void> {
-    const favoriteProposals = this.props.proposalsStore.FavoriteProposals
-    if (!favoriteProposals) {
-      return
-    }
+    const proposal = this.loadedProposals.find(
+      (p: Proposal) => p.id === selectedProviderId,
+    )
 
-    const favoriteProposal = favoriteProposals.filter(
-      (p: FavoriteProposalDTO) => p.id === selectedProviderId,
-    )[0]
-
-    if (favoriteProposal) {
-      await favoriteProposal.toggleFavorite()
+    if (proposal) {
+      await proposal.toggleFavorite()
       await this.props.proposalsFetcher.refresh()
     }
   }
 
   @action
   private onProposalSelected(providerId: string) {
-    console.log('selected', providerId)
     this.props.proposalsStore.SelectedProviderId = providerId
   }
 }
