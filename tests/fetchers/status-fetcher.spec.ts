@@ -1,7 +1,7 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../js/config'
 import { StatusFetcher } from '../../js/fetchers/status-fetcher'
-import { store } from '../../js/store/tequilapi-store'
+import { store } from '../../js/store/app-store'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {
@@ -18,6 +18,7 @@ describe('StatusFetcher', () => {
   })
 
   beforeEach(() => {
+    store.IdentityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
     fetcher = new StatusFetcher(api)
     jest.runAllTicks()

@@ -23,6 +23,7 @@ import {IFetcher} from './fetcher'
 export abstract class FetcherBase<T> implements IFetcher {
   @observable
   public isRunning: boolean = false
+  public isStarted: boolean = false
 
   protected name: string
   private interval: Timer | null = null
@@ -33,10 +34,15 @@ export abstract class FetcherBase<T> implements IFetcher {
   }
 
   public start(interval: number) {
+    if (this.isStarted) {
+      return
+    }
+    this.isStarted = true
+
     this.run()
     this.interval = setInterval(
       () => this.run(),
-      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS,
+      interval,
     )
   }
 
