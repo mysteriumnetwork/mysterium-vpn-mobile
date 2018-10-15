@@ -16,35 +16,34 @@
  */
 
 import { action } from 'mobx'
-import { ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
+import {ConnectionStatusDTO, TequilapiClient} from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { store } from '../store/tequilapi-store'
-import { FetcherBase } from './fetcher'
+import { FetcherBase } from './fetcher-base'
+
+export interface IStatusFetcherProps {
+  connectionStatus(): Promise<ConnectionStatusDTO>
+}
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   private api: TequilapiClient
   private oldStatus: ConnectionStatusDTO | null = null
 
-  constructor(api: TequilapiClient) {
+  constructor(api: IStatusFetcherProps) {
     super('ConnectionStatus')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
   }
 
-  @action
-  protected async action() {
-    const status = await this.api.connectionStatus()
-    if (JSON.stringify(status) === JSON.stringify(this.oldStatus)) {
-      return null
-    }
-    store.ConnectionStatus = status
-    return store.ConnectionStatus
+  protected get canRun(): boolean {
+    return store.IdentityId != null
   }
 
   protected async fetch(): Promise<ConnectionStatusDTO> {
     return this.api.connectionStatus()
   }
 
+  @action
   protected update(status: ConnectionStatusDTO) {
     store.ConnectionStatus = status
   }

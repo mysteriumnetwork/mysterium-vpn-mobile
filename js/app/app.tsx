@@ -19,12 +19,15 @@ import { observer } from 'mobx-react/native'
 import React from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
+import { logger } from '../libraries/log'
 import MysteriumClient from '../libraries/mysterium-client'
 import { store } from '../store/tequilapi-store'
 import styles from './app-styles'
 import AppTequilapi from './app-tequilapi'
 import Proposals from './proposals'
 import Stats from './stats'
+
+logger.showDebugMessages()
 
 @observer
 export default class App extends AppTequilapi {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computed, observable } from 'mobx'
+import {computed, observable} from 'mobx'
 import {
   ConnectionStatisticsDTO,
   ConnectionStatus,
@@ -25,12 +25,7 @@ import { CONFIG } from '../config'
 import { Proposal } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
-export interface IProposalsStore {
-  SelectedProviderId: string | null
-  Proposals: Proposal[] | null
-}
-
-class AppStore implements IProposalsStore {
+class AppStore {
   @observable
   public IdentityId: string | null = null
   @observable

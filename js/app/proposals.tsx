@@ -25,8 +25,11 @@ import { IProposalsStore } from '../store/tequilapi-store'
 import styles from './proposals-styles'
 
 interface IProposalsProps {
-  proposalsFetcher: ProposalsFetcher
-  proposalsStore: IProposalsStore
+  proposalsFetcher: ProposalsFetcher,
+  proposalsStore: {
+    SelectedProviderId: string | null,
+    Proposals: Proposal[] | null,
+  },
 }
 
 @observer
@@ -79,7 +82,6 @@ export default class Proposals extends React.Component<IProposalsProps> {
 
   @action
   private onProposalSelected(providerId: string) {
-    console.log('selected providerId', providerId)
     this.props.proposalsStore.SelectedProviderId = providerId
   }
 }
