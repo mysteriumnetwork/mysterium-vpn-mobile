@@ -25,7 +25,7 @@ import { IPFetcher } from '../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../fetchers/stats-fetcher'
 import { StatusFetcher } from '../fetchers/status-fetcher'
-import { store } from '../store/tequilapi-store'
+import { store } from '../store/app-store'
 
 const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const api = new TequilapiClientFactory(

@@ -21,14 +21,14 @@ import { CONFIG } from '../config'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export type IStatsFetcherProps = {
+export type StatsFetcherProps = {
   connectionStatistics(): Promise<ConnectionStatisticsDTO>,
 }
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  private api: IStatsFetcherProps
+  private api: StatsFetcherProps
 
-  constructor(api: IStatsFetcherProps) {
+  constructor(api: StatsFetcherProps) {
     super('Statistics')
     this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.STATS)
