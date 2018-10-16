@@ -48,16 +48,16 @@ class AppStore {
   }
 
   @computed
-  get isConnected() {
+  get isConnected(): boolean {
     return this.status === ConnectionStatusEnum.CONNECTED
   }
 
   @computed
-  get isReady() {
+  get isReady(): boolean {
     return (
-      this.IdentityId &&
-      this.ConnectionStatus &&
-      this.SelectedProviderId &&
+      this.IdentityId != null &&
+      this.ConnectionStatus != null &&
+      this.SelectedProviderId != null &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
     )

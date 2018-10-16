@@ -19,13 +19,13 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
 
-interface IStatsProps {
-  duration: number
-  bytesReceived: number
-  bytesSent: number
+type StatsProps = {
+  duration: number,
+  bytesReceived: number,
+  bytesSent: number,
 }
 
-const Stats: React.SFC<IStatsProps> = ({
+const Stats: React.SFC<StatsProps> = ({
   duration,
   bytesReceived,
   bytesSent,

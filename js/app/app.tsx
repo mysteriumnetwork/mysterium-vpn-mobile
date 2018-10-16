@@ -16,7 +16,7 @@
  */
 
 import { observer } from 'mobx-react/native'
-import React from 'react'
+import React, {ReactNode} from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { logger } from '../libraries/logger'
@@ -31,9 +31,9 @@ logger.showDebugMessages()
 
 @observer
 export default class App extends AppTequilapi {
-  public render() {
+  public render(): ReactNode {
     return (
-      // @ts-ignore
+      // @ts-ignore TODO remove ignore or transform
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
         <Text>
           {store.ConnectionStatus
@@ -69,11 +69,11 @@ export default class App extends AppTequilapi {
     console.log('serviceStatus', serviceStatus)
   }
 
-  private get buttonEnabled() {
+  private get buttonEnabled(): boolean {
     return store.isReady
   }
 
-  private get buttonText() {
+  private get buttonText(): string {
     const isReady = store.isReady
     const isConnected = store.isConnected
     return isReady
