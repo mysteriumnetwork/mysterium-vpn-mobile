@@ -16,31 +16,28 @@
  */
 
 import { observer } from 'mobx-react/native'
-import React from 'react'
+import React, {ReactNode} from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
-import { logger } from '../libraries/logger'
-import MysteriumClient from '../libraries/mysterium-client'
+import { mysteriumClient } from '../libraries/mysterium-client'
 import { store } from '../store/app-store'
 import styles from './app-styles'
 import AppTequilapi from './app-tequilapi'
 import Proposals from './proposals'
 import Stats from './stats'
 
-logger.showDebugMessages()
-
 @observer
 export default class App extends AppTequilapi {
-  public render() {
+  public render(): ReactNode {
     return (
-      // @ts-ignore
-      <View testID={'app'} style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+      // @ts-ignore TODO remove ignore or transform
+      <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
         <Text>
           {store.ConnectionStatus
             ? store.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {store.IP}</Text>
+        <Text>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
         <Proposals
           proposalsFetcher={this.proposalFetcher}
           proposalsStore={store}
@@ -64,16 +61,15 @@ export default class App extends AppTequilapi {
     await this.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
-    const mysteriumClient = new MysteriumClient()
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
   }
 
-  private get buttonEnabled() {
+  private get buttonEnabled(): boolean {
     return store.isReady
   }
 
-  private get buttonText() {
+  private get buttonText(): string {
     const isReady = store.isReady
     const isConnected = store.isConnected
     return isReady

@@ -17,22 +17,14 @@
 
 import { NativeModules } from 'react-native'
 
-/**
- * This exposes the native MysteriumClient module as a JS module.
- */
-export default class MysteriumClient {
-  private client: any
-
-  constructor() {
-    this.client = NativeModules.MysteriumClientModule
-  }
-
+interface IMysteriumClient {
   /**
-   * Start Mysterium Client API at provided HTTP port
+   * Starts Mysterium Client API at provided HTTP port
    * @param port - port number for the service to use
    * @returns {Promise<number>} - The status of the service after starting
    */
-  public startService(port: number): Promise<number> {
-    return this.client.startService(port)
-  }
+  startService(port: number): Promise<number>
 }
+
+const mysteriumClient: IMysteriumClient = NativeModules.MysteriumClientModule
+export { mysteriumClient }

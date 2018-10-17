@@ -17,7 +17,7 @@
 
 import {action, computed} from 'mobx'
 import { observer } from 'mobx-react/native'
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {Button, Picker, Text, View} from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { Proposal } from '../libraries/favorite-proposal'
@@ -26,8 +26,8 @@ import styles from './proposals-styles'
 type ProposalsProps = {
   proposalsFetcher: ProposalsFetcher,
   proposalsStore: {
-    SelectedProviderId: string | null,
-    Proposals: Proposal[] | null,
+    SelectedProviderId?: string,
+    Proposals?: Proposal[],
   },
 }
 
@@ -38,7 +38,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
     return <Picker.Item key={p.id} label={label} value={p.id} />
   }
 
-  public render() {
+  public render(): ReactNode {
     const proposals = this.props.proposalsStore.Proposals
     const selectedProviderId = this.props.proposalsStore.SelectedProviderId
     if (!proposals) {
@@ -64,7 +64,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
   }
 
   @computed
-  private get loadedProposals() {
+  private get loadedProposals(): Proposal[] {
     return this.props.proposalsStore.Proposals || []
   }
 
@@ -75,6 +75,8 @@ export default class Proposals extends React.Component<ProposalsProps> {
 
     if (proposal) {
       await proposal.toggleFavorite()
+
+      // TODO: don't need to fetch proposals here, remove later
       await this.props.proposalsFetcher.refresh()
     }
   }

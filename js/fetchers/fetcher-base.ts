@@ -25,13 +25,9 @@ export abstract class FetcherBase<T> implements IFetcher {
   public isRunning: boolean = false
   public isStarted: boolean = false
 
-  protected name: string
-  private interval: Timer | null = null
-  private prevData: T | null = null
+  private interval?: Timer
 
-  constructor(name: string) {
-    this.name = name
-  }
+  constructor(protected name: string) {}
 
   public start(interval: number) {
     if (this.isStarted) {
@@ -50,7 +46,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     if (this.interval) {
       clearInterval(this.interval)
     }
-    this.interval = null
+    this.interval = undefined
   }
 
   public refresh(): Promise<void> {
@@ -72,25 +68,6 @@ export abstract class FetcherBase<T> implements IFetcher {
     })
   }
 
-  protected async run() {
-    if (this.isRunning || !this.canRun) {
-      return
-    }
-    this.isRunning = true
-
-    try {
-      const data = await this.fetch()
-      if (JSON.stringify(data) !== JSON.stringify(this.prevData)) {
-        this.prevData = data
-        this.update(data)
-      }
-    } catch (e) {
-      console.warn(`'${this.name}' fetching error`, e)
-    } finally {
-      this.isRunning = false
-    }
-  }
-
   protected get canRun(): boolean {
     return true
   }
@@ -98,4 +75,20 @@ export abstract class FetcherBase<T> implements IFetcher {
   protected abstract async fetch(): Promise<T>
 
   protected abstract update(data: T): void
+
+  private async run() {
+    if (this.isRunning || !this.canRun) {
+      return
+    }
+    this.isRunning = true
+
+    try {
+      const data = await this.fetch()
+      this.update(data)
+    } catch (e) {
+      console.warn(`'${this.name}' fetching error`, e)
+    } finally {
+      this.isRunning = false
+    }
+  }
 }

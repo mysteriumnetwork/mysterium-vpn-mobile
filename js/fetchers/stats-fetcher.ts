@@ -16,21 +16,18 @@
  */
 
 import {action} from 'mobx'
-import { ConnectionStatisticsDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export type IStatsFetcherProps = {
+type StatsFetcherProps = {
   connectionStatistics(): Promise<ConnectionStatisticsDTO>,
 }
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  private api: IStatsFetcherProps
-
-  constructor(api: IStatsFetcherProps) {
+  constructor(private props: StatsFetcherProps) {
     super('Statistics')
-    this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 
@@ -39,7 +36,7 @@ export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
   }
 
   protected async fetch(): Promise<ConnectionStatisticsDTO> {
-    return this.api.connectionStatistics()
+    return this.props.connectionStatistics()
   }
 
   @action

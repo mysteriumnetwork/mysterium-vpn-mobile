@@ -21,6 +21,7 @@ const FAVORITE_KEY = '@Favorites:KEY'
 
 class Storage {
   public async getFavorites(): Promise<{ [key: string]: boolean }> {
+    // TODO: add cache to increase speed
     const values = (await AsyncStorage.getItem(FAVORITE_KEY)) || '{}'
     return JSON.parse(values)
   }
@@ -31,8 +32,10 @@ class Storage {
   ): Promise<void> {
     const favorites = await this.getFavorites()
     if (isFavorite) {
+      // make proposal favorite
       favorites[proposalId] = isFavorite
     } else if (favorites[proposalId]) {
+      // unfavorite proposal
       delete favorites[proposalId]
     }
     console.log('save favorites', favorites)

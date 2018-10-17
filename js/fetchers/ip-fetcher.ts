@@ -22,34 +22,38 @@ import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export type IPFetcherProps = {
+type IPFetcherProps = {
   connectionIP(): Promise<ConnectionIPDTO>,
 }
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  private api: IPFetcherProps
-
-  constructor(api: IPFetcherProps) {
+  constructor(private props: IPFetcherProps) {
     super('IP')
-    this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
-    reaction(() => store.ConnectionStatus, () => this.refresh())
+    reaction(() => store.ConnectionStatus, () => {
+      if (
+        store.status === ConnectionStatusEnum.CONNECTED ||
+        store.status === ConnectionStatusEnum.NOT_CONNECTED
+      ) {
+        this.refresh()
+      }
+    })
   }
 
   protected get canRun(): boolean {
-    if (store.IP == null || store.IP === CONFIG.TEXTS.IP_UPDATING) {
+    if (!store.IP) {
       return true
     }
 
     return (
-      store.ConnectionStatus != null &&
+      store.ConnectionStatus !== undefined &&
       store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
     )
   }
 
   protected async fetch(): Promise<ConnectionIPDTO> {
-    return this.api.connectionIP()
+    return this.props.connectionIP()
   }
 
   @action
