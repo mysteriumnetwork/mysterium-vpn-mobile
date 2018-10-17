@@ -79,6 +79,31 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
+ * Get the version code from command line param
+ *
+ * @return int If the param -PversionCode is present then return int value or -1
+ */
+def getVersionCode = { ->
+
+    def code = project.hasProperty('versionCode') ? versionCode.toInteger() : -1
+    println "VersionCode is set to $code"
+    return code
+}
+
+/**
+ * Get the version name from command line param
+ *
+ * @return string If the param -PversionName is present then return string value or "0.1"
+ */
+def getVersionName = { ->
+
+    def name = project.hasProperty('versionName') ? versionName.toString() : "0.1"
+    println "VersionBane is set to $name"
+    return name
+}
+
+
+/**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
  *   - An APK that only works on x86 devices
@@ -101,8 +126,8 @@ android {
         applicationId "com.mysteriumvpn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode getVersionCode()
+        versionName getVersionName()
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
