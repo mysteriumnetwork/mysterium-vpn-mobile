@@ -1,4 +1,4 @@
-package com.mysterium.vpn;
+package network.mysterium.vpn;
 
 import android.app.Application;
 
@@ -7,7 +7,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.mysterium.vpn.BuildConfig;
+import network.mysterium.vpn.BuildConfig;
 
 import java.util.Arrays;
 import java.util.List;

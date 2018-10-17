@@ -1,4 +1,4 @@
-package com.mysterium.vpn;
+package network.mysterium.vpn;
 
 import android.util.Log;
 
