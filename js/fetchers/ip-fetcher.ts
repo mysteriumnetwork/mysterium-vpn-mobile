@@ -31,10 +31,12 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     super('IP')
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
-    reaction(() => store.ConnectionStatus, () => this.refresh())
-    reaction(() => store.IP, () => {
-      if (!store.IP) {
-        this.refresh(true)
+    reaction(() => store.ConnectionStatus, () => {
+      if (
+        store.status === ConnectionStatusEnum.CONNECTED ||
+        store.status === ConnectionStatusEnum.NOT_CONNECTED
+      ) {
+        this.refresh()
       }
     })
   }

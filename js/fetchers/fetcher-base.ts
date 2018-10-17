@@ -25,7 +25,6 @@ export abstract class FetcherBase<T> implements IFetcher {
   public isRunning: boolean = false
 
   private interval?: Timer
-  private prevData?: T
 
   constructor(protected name: string) {}
 
@@ -44,11 +43,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     this.interval = undefined
   }
 
-  public refresh(force: boolean = false): Promise<void> {
-    if (force) {
-      this.prevData = undefined
-    }
-
+  public refresh(): Promise<void> {
     if (!this.isRunning) {
       return this.run()
     }
@@ -83,10 +78,7 @@ export abstract class FetcherBase<T> implements IFetcher {
 
     try {
       const data = await this.fetch()
-      if (JSON.stringify(data) !== JSON.stringify(this.prevData)) {
-        this.prevData = data
-        this.update(data)
-      }
+      this.update(data)
     } catch (e) {
       console.warn(`'${this.name}' fetching error`, e)
     } finally {
