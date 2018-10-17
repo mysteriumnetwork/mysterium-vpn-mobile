@@ -2,13 +2,13 @@ import {reaction} from 'mobx'
 import {store} from '../store/app-store'
 
 class Logger {
-  private debugMode: boolean = false
+  private loggingStarted: boolean = false
 
-  public showDebugMessages(): void {
-    if (this.debugMode) {
+  public logObservableChanges(): void {
+    if (this.loggingStarted) {
       return
     }
-    this.debugMode = true
+    this.loggingStarted = true
 
     reaction(() => store.IdentityId, () => {
       this.info('Identity unlocked', store.IdentityId)

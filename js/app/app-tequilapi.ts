@@ -38,15 +38,15 @@ const api = new TequilapiClientFactory(
  */
 export default class AppTequilapi extends React.Component {
   protected proposalFetcher = new ProposalsFetcher(api)
-  protected statusFetcher = new StatusFetcher(api)
-  protected ipFetcher = new IPFetcher(api)
-  protected statsFetcher = new StatsFetcher(api)
+  private statusFetcher = new StatusFetcher(api)
+  private ipFetcher = new IPFetcher(api)
+  private statsFetcher = new StatsFetcher(api)
 
   /***
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  public async connect(): Promise<void> {
+  protected async connect(): Promise<void> {
     if (!store.IdentityId || !store.SelectedProviderId) {
       console.error('Not enough data to connect', store)
       return
@@ -72,7 +72,7 @@ export default class AppTequilapi extends React.Component {
    * Tries to disconnect from VPN server
    * @returns {Promise<void>}
    */
-  public async disconnect(): Promise<void> {
+  protected async disconnect(): Promise<void> {
     store.IP = IP_UPDATING
     store.ConnectionStatus = {
       sessionId: '',

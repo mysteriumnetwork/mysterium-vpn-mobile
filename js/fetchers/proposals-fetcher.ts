@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action} from 'mobx'
-import {ProposalDTO, ProposalsFilter, TequilapiClient} from 'mysterium-tequilapi'
+import { action } from 'mobx'
+import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import {
   Proposal,
@@ -30,16 +30,13 @@ export type ProposalsFetcherProps = {
 }
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  private api: ProposalsFetcherProps
-
-  constructor(api: ProposalsFetcherProps) {
+  constructor(private props: ProposalsFetcherProps) {
     super('Proposals')
-    this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
   }
 
   protected async fetch(): Promise<Proposal[]> {
-    const proposals: ProposalDTO[] = await this.api.findProposals()
+    const proposals: ProposalDTO[] = await this.props.findProposals()
     return sortFavorites(proposals)
   }
 

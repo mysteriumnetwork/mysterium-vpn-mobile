@@ -32,8 +32,10 @@ class Storage {
   ): Promise<void> {
     const favorites = await this.getFavorites()
     if (isFavorite) {
+      // make proposal favorite
       favorites[proposalId] = isFavorite
     } else if (favorites[proposalId]) {
+      // unfavorite proposal
       delete favorites[proposalId]
     }
     console.log('save favorites', favorites)

@@ -24,13 +24,10 @@ export abstract class FetcherBase<T> implements IFetcher {
   @observable
   public isRunning: boolean = false
 
-  protected name: string
   private interval: Timer | null = null
   private prevData: T | null = null
 
-  constructor(name: string) {
-    this.name = name
-  }
+  constructor(protected name: string) {}
 
   public start(interval: number) {
     this.run()
@@ -66,7 +63,15 @@ export abstract class FetcherBase<T> implements IFetcher {
     })
   }
 
-  protected async run() {
+  protected get canRun(): boolean {
+    return true
+  }
+
+  protected abstract async fetch(): Promise<T>
+
+  protected abstract update(data: T): void
+
+  private async run() {
     if (this.isRunning || !this.canRun) {
       return
     }
@@ -84,12 +89,4 @@ export abstract class FetcherBase<T> implements IFetcher {
       this.isRunning = false
     }
   }
-
-  protected get canRun(): boolean {
-    return true
-  }
-
-  protected abstract async fetch(): Promise<T>
-
-  protected abstract update(data: T): void
 }

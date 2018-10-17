@@ -27,11 +27,8 @@ export type IPFetcherProps = {
 }
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  private api: IPFetcherProps
-
-  constructor(api: IPFetcherProps) {
+  constructor(private props: IPFetcherProps) {
     super('IP')
-    this.api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
     reaction(() => store.ConnectionStatus, () => this.refresh())
@@ -49,7 +46,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
   }
 
   protected async fetch(): Promise<ConnectionIPDTO> {
-    return this.api.connectionIP()
+    return this.props.connectionIP()
   }
 
   @action

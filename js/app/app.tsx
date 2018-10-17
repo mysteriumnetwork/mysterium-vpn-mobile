@@ -19,15 +19,12 @@ import { observer } from 'mobx-react/native'
 import React, {ReactNode} from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
-import { logger } from '../libraries/logger'
-import MysteriumClient from '../libraries/mysterium-client'
+import { mysteriumClient } from '../libraries/mysterium-client'
 import { store } from '../store/app-store'
 import styles from './app-styles'
 import AppTequilapi from './app-tequilapi'
 import Proposals from './proposals'
 import Stats from './stats'
-
-logger.showDebugMessages()
 
 @observer
 export default class App extends AppTequilapi {
@@ -64,7 +61,6 @@ export default class App extends AppTequilapi {
     await this.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
-    const mysteriumClient = new MysteriumClient()
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
   }
