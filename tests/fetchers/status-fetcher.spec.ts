@@ -68,7 +68,7 @@ describe('StatusFetcher', () => {
 
   it('.refresh', async () => {
     expect(fetcher.isRunning).toBe(false)
-    store.ConnectionStatus = null
+    store.ConnectionStatus = undefined
 
     const connectedStatus = {
       status: 'Connected',

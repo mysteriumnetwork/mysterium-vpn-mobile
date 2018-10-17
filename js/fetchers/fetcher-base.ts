@@ -23,17 +23,19 @@ import {IFetcher} from './fetcher'
 export abstract class FetcherBase<T> implements IFetcher {
   @observable
   public isRunning: boolean = false
-  public isStarted: boolean = false
 
   private interval?: Timer
 
   constructor(protected name: string) {}
 
+  public get isStarted(): boolean {
+    return this.interval !== undefined
+  }
+
   public start(interval: number) {
     if (this.isStarted) {
       return
     }
-    this.isStarted = true
 
     this.run()
     this.interval = setInterval(
