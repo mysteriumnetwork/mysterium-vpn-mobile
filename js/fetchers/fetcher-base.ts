@@ -24,8 +24,8 @@ export abstract class FetcherBase<T> implements IFetcher {
   @observable
   public isRunning: boolean = false
 
-  private interval: Timer | null = null
-  private prevData: T | null = null
+  private interval?: Timer
+  private prevData?: T
 
   constructor(protected name: string) {}
 
@@ -41,10 +41,14 @@ export abstract class FetcherBase<T> implements IFetcher {
     if (this.interval) {
       clearInterval(this.interval)
     }
-    this.interval = null
+    this.interval = undefined
   }
 
-  public refresh(): Promise<void> {
+  public refresh(force: boolean = false): Promise<void> {
+    if (force) {
+      this.prevData = undefined
+    }
+
     if (!this.isRunning) {
       return this.run()
     }

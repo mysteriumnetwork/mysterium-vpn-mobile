@@ -32,15 +32,20 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
     reaction(() => store.ConnectionStatus, () => this.refresh())
+    reaction(() => store.IP, () => {
+      if (!store.IP) {
+        this.refresh(true)
+      }
+    })
   }
 
   protected get canRun(): boolean {
-    if (store.IP == null || store.IP === CONFIG.TEXTS.IP_UPDATING) {
+    if (!store.IP) {
       return true
     }
 
     return (
-      store.ConnectionStatus != null &&
+      store.ConnectionStatus !== undefined &&
       store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
     )
   }

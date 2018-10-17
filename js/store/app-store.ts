@@ -27,22 +27,22 @@ import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
 class AppStore {
   @observable
-  public IdentityId: string | null = null
+  public IdentityId?: string
   @observable
-  public IP: string = CONFIG.TEXTS.IP_UPDATING
+  public IP?: string
   @observable
-  public ConnectionStatus: ConnectionStatusDTO | null = null
+  public ConnectionStatus?: ConnectionStatusDTO
   @observable
-  public Statistics: ConnectionStatisticsDTO | null = null
+  public Statistics?: ConnectionStatisticsDTO
   @observable
-  public SelectedProviderId: string | null = null
+  public SelectedProviderId?: string
   @observable
-  public Proposals: Proposal[] | null = null
+  public Proposals?: Proposal[]
 
   @computed
-  get status(): ConnectionStatus | null {
+  get status(): ConnectionStatus | undefined {
     if (this.ConnectionStatus == null) {
-      return null
+      return
     }
     return this.ConnectionStatus.status
   }
@@ -55,9 +55,9 @@ class AppStore {
   @computed
   get isReady(): boolean {
     return (
-      this.IdentityId != null &&
-      this.ConnectionStatus != null &&
-      this.SelectedProviderId != null &&
+      this.IdentityId !== undefined &&
+      this.ConnectionStatus !== undefined &&
+      this.SelectedProviderId !== undefined &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
     )

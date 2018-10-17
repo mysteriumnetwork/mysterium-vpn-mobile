@@ -27,7 +27,6 @@ import { StatsFetcher } from '../fetchers/stats-fetcher'
 import { StatusFetcher } from '../fetchers/status-fetcher'
 import { store } from '../store/app-store'
 
-const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
   CONFIG.TEQUILAPI_TIMEOUT,
@@ -51,7 +50,7 @@ export default class AppTequilapi extends React.Component {
       console.error('Not enough data to connect', store)
       return
     }
-    store.IP = IP_UPDATING
+    store.IP = undefined
     store.ConnectionStatus = {
       sessionId: '',
       status: ConnectionStatusEnum.CONNECTING,
@@ -73,7 +72,7 @@ export default class AppTequilapi extends React.Component {
    * @returns {Promise<void>}
    */
   protected async disconnect(): Promise<void> {
-    store.IP = IP_UPDATING
+    store.IP = undefined
     store.ConnectionStatus = {
       sessionId: '',
       status: ConnectionStatusEnum.DISCONNECTING,

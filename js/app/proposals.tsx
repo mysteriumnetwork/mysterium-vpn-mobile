@@ -26,8 +26,8 @@ import styles from './proposals-styles'
 type ProposalsProps = {
   proposalsFetcher: ProposalsFetcher,
   proposalsStore: {
-    SelectedProviderId: string | null,
-    Proposals: Proposal[] | null,
+    SelectedProviderId?: string,
+    Proposals?: Proposal[],
   },
 }
 
