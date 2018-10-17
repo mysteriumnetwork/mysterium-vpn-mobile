@@ -22,7 +22,7 @@ import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export type IPFetcherProps = {
+type IPFetcherProps = {
   connectionIP(): Promise<ConnectionIPDTO>,
 }
 

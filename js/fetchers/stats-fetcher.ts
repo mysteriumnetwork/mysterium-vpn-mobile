@@ -21,7 +21,7 @@ import { CONFIG } from '../config'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export type StatsFetcherProps = {
+type StatsFetcherProps = {
   connectionStatistics(): Promise<ConnectionStatisticsDTO>,
 }
 

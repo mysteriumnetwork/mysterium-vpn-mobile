@@ -25,7 +25,7 @@ import {
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-export type ProposalsFetcherProps = {
+type ProposalsFetcherProps = {
   findProposals(filter?: ProposalsFilter): Promise<ProposalDTO[]>,
 }
 
