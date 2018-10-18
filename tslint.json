@@ -8,9 +8,7 @@
     "jsRules": {},
     "rules": {
       "no-console": false,
-      "semicolon": {
-        "options": ["never"]
-      },
+      "semicolon": [ true, "never" ],
       "no-submodule-imports": false,
       "object-literal-sort-keys": false,
       "interface-over-type-literal": false,
