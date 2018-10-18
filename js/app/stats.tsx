@@ -16,16 +16,20 @@
  */
 
 import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
-import {bytesDisplay, timeDisplay} from '../libraries/unitConverter'
+import { StyleSheet, Text, View } from 'react-native'
+import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
 
-interface StatsProps {
-  duration: number
-  bytesReceived: number
-  bytesSent: number
+type StatsProps = {
+  duration: number,
+  bytesReceived: number,
+  bytesSent: number,
 }
 
-const Stats: React.SFC<StatsProps> = ({ duration, bytesReceived, bytesSent }) => {
+const Stats: React.SFC<StatsProps> = ({
+  duration,
+  bytesReceived,
+  bytesSent,
+}) => {
   return (
     <View style={styles.container}>
       <Text>Duration: {timeDisplay(duration)}</Text>
@@ -37,8 +41,8 @@ const Stats: React.SFC<StatsProps> = ({ duration, bytesReceived, bytesSent }) =>
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
-  }
+    padding: 20,
+  },
 })
 
 export default Stats

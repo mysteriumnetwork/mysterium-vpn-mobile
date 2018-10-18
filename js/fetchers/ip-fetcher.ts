@@ -15,42 +15,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action, reaction} from "mobx";
-import {ConnectionIPDTO, TequilapiClient} from "mysterium-tequilapi";
-import {store} from "../store/tequilapi-store";
-import {CONFIG} from "../config";
-import {FetcherBase} from "./fetcher";
-import {ConnectionStatusEnum} from "../libraries/tequilapi/enums";
+import { action, reaction } from 'mobx'
+import { ConnectionIPDTO } from 'mysterium-tequilapi'
+import { CONFIG } from '../config'
+import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
+import { store } from '../store/app-store'
+import { FetcherBase } from './fetcher-base'
+
+type IPFetcherProps = {
+  connectionIP(): Promise<ConnectionIPDTO>,
+}
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  _api: TequilapiClient
-  _oldStatus: 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting' | null = null
-
-  constructor (api: TequilapiClient) {
+  constructor(private props: IPFetcherProps) {
     super('IP')
-    this._api = api
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
-    reaction(
-      () => store.ConnectionStatus,
-      () => this.refresh())
+    reaction(() => store.ConnectionStatus, () => {
+      if (
+        store.status === ConnectionStatusEnum.CONNECTED ||
+        store.status === ConnectionStatusEnum.NOT_CONNECTED
+      ) {
+        this.refresh()
+      }
+    })
   }
 
-  get canAction (): boolean {
-    if (store.IP == null || store.IP === CONFIG.TEXTS.IP_UPDATING) {
+  protected get canRun(): boolean {
+    if (!store.IP) {
       return true
     }
 
-    return store.ConnectionStatus != null
-      && store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
+    return (
+      store.ConnectionStatus != null &&
+      store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
+    )
   }
 
-  async fetch (): Promise<ConnectionIPDTO> {
-    return this._api.connectionIP()
+  protected async fetch(): Promise<ConnectionIPDTO> {
+    return this.props.connectionIP()
   }
 
   @action
-  update (newIP: ConnectionIPDTO) {
+  protected update(newIP: ConnectionIPDTO) {
     store.IP = newIP.ip
   }
 }

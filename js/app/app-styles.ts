@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {StyleSheet, ViewStyle} from 'react-native'
+import { StyleSheet, ViewStyle } from 'react-native'
 
-interface AppStyles {
-  container: ViewStyle
+type AppStyles = {
+  container: ViewStyle,
 }
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'center',
+  },
 }) as AppStyles

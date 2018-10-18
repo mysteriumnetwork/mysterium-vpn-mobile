@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {StyleSheet, ViewStyle} from 'react-native'
+import { StyleSheet, ViewStyle } from 'react-native'
 
-interface ProposalsStyles {
-  picker: ViewStyle
+type ProposalsStyles = {
+  picker: ViewStyle,
 }
 
 export default StyleSheet.create({
   picker: {
     width: 130,
     height: 20,
-    margin: 20
-  }
+    margin: 20,
+  },
 }) as ProposalsStyles

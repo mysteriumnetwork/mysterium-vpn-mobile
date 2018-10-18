@@ -17,36 +17,72 @@
 
 import React from 'react'
 
-import TequilapiClientFactory, {
-  IdentityDTO,
-} from 'mysterium-tequilapi'
-import {ConnectionStatusEnum} from "../libraries/tequilapi/enums";
+import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
-import {CONFIG} from '../config'
-import {store} from "../store/tequilapi-store";
-import {ProposalsFetcher} from "../fetchers/proposals-fetcher";
-import {StatusFetcher} from "../fetchers/status-fetcher";
-import {IPFetcher} from "../fetchers/ip-fetcher";
-import {StatsFetcher} from "../fetchers/stats-fetcher";
+import { CONFIG } from '../config'
+import { IPFetcher } from '../fetchers/ip-fetcher'
+import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
+import { StatsFetcher } from '../fetchers/stats-fetcher'
+import { StatusFetcher } from '../fetchers/status-fetcher'
+import { store } from '../store/app-store'
 
-const IP_UPDATING = CONFIG.TEXTS.IP_UPDATING
-const api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
+const api = new TequilapiClientFactory(
+  CONFIG.TEQUILAPI_ADDRESS,
+  CONFIG.TEQUILAPI_TIMEOUT,
+).build()
 
 /***
  * API operations level
  */
 export default class AppTequilapi extends React.Component {
-  proposalFetcher = new ProposalsFetcher(api)
-  statusFetcher = new StatusFetcher(api)
-  ipFetcher = new IPFetcher(api)
-  statsFetcher = new StatsFetcher(api)
+  protected proposalFetcher = new ProposalsFetcher(api)
+  private statusFetcher = new StatusFetcher(api)
+  private ipFetcher = new IPFetcher(api)
+  private statsFetcher = new StatsFetcher(api)
+
+  /***
+   * Tries to connect to selected VPN server
+   * @returns {Promise<void>}
+   */
+  protected async connect(): Promise<void> {
+    if (!store.IdentityId || !store.SelectedProviderId) {
+      console.error('Not enough data to connect', store)
+      return
+    }
+    store.resetIP()
+    store.setConnectionStatusToConnecting()
+    try {
+      const connection = await api.connectionCreate({
+        consumerId: store.IdentityId,
+        providerCountry: '',
+        providerId: store.SelectedProviderId,
+      })
+      console.log('connected', connection)
+    } catch (e) {
+      console.warn('api.connectionCreate failed', e)
+    }
+  }
+
+  /***
+   * Tries to disconnect from VPN server
+   */
+  protected async disconnect(): Promise<void> {
+    store.resetIP()
+    store.setConnectionStatusToDisconnecting()
+    try {
+      await api.connectionCancel()
+      console.log('disconnected')
+    } catch (e) {
+      console.warn('api.connectionCancel failed', e)
+    }
+  }
 
   /***
    * Tries to login to API, must be completed once before connect
-   * @returns {Promise<void>}
    */
-  async unlock (): Promise<void> {
-    let identities: Array<IdentityDTO>
+  protected async unlock(): Promise<void> {
+    let identities: IdentityDTO[]
     try {
       identities = await api.identitiesList()
     } catch (e) {
@@ -59,7 +95,9 @@ export default class AppTequilapi extends React.Component {
       if (identities.length) {
         identityId = identities[0].id
       } else {
-        const newIdentity: IdentityDTO = await api.identityCreate(CONFIG.PASSPHRASE)
+        const newIdentity: IdentityDTO = await api.identityCreate(
+          CONFIG.PASSPHRASE,
+        )
         identityId = newIdentity.id
       }
     } catch (e) {
@@ -72,43 +110,6 @@ export default class AppTequilapi extends React.Component {
       store.IdentityId = identityId
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
-    }
-  }
-
-  /***
-   * Tries to connect to selected VPN server
-   * @returns {Promise<void>}
-   */
-  async connect (): Promise<void> {
-    if (!store.IdentityId || !store.SelectedProviderId) {
-      console.error('Not enough data to connect', store)
-      return
-    }
-    store.IP = IP_UPDATING
-    store.ConnectionStatus = { sessionId: '', status: ConnectionStatusEnum.CONNECTING }
-    try {
-      const connection = await api.connectionCreate({
-        consumerId: store.IdentityId,
-        providerId: store.SelectedProviderId
-      })
-      console.log('connect', connection)
-    } catch (e) {
-      console.warn('api.connectionCreate failed', e)
-    }
-  }
-
-  /***
-   * Tries to disconnect from VPN server
-   * @returns {Promise<void>}
-   */
-  async disconnect (): Promise<void> {
-    store.IP = IP_UPDATING
-    store.ConnectionStatus = { sessionId: '', status: ConnectionStatusEnum.DISCONNECTING }
-    try {
-      await api.connectionCancel()
-      console.log('disconnect')
-    } catch (e) {
-      console.warn('api.connectionCancel failed', e)
     }
   }
 }

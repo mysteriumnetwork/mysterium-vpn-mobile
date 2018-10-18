@@ -15,64 +15,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import {observer} from 'mobx-react/native'
-import {View, Picker, Button, Text} from 'react-native'
+import { action, computed } from 'mobx'
+import { observer } from 'mobx-react/native'
+import React, { ReactNode } from 'react'
+import { Button, Picker, Text, View } from 'react-native'
+import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
+import { Proposal } from '../libraries/favorite-proposal'
 import styles from './proposals-styles'
-import {ProposalDTO} from "mysterium-tequilapi";
-import {ProposalsStore} from "../store/tequilapi-store";
-import {FavoriteProposalDTO} from "../libraries/favoriteStorage";
-import {action} from "mobx";
-import {ProposalsFetcher} from "../fetchers/proposals-fetcher";
 
-interface ProposalsProps {
-  proposalsFetcher: ProposalsFetcher
-  proposalsStore: ProposalsStore
+type ProposalsProps = {
+  proposalsFetcher: ProposalsFetcher,
+  proposalsStore: {
+    SelectedProviderId?: string,
+    Proposals?: Proposal[],
+  },
 }
 
 @observer
 export default class Proposals extends React.Component<ProposalsProps> {
-  async onFavoritePress (selectedProviderId: string): Promise<void> {
-    const favoriteProposals = this.props.proposalsStore.FavoriteProposals
-    if (!favoriteProposals) {
-      return
+  private static renderProposal(p: Proposal) {
+    const label = (p.isFavorite ? '* ' : '') + p.name
+    return <Picker.Item key={p.id} label={label} value={p.id} />
+  }
+
+  public render(): ReactNode {
+    const proposals = this.props.proposalsStore.Proposals
+    const selectedProviderId = this.props.proposalsStore.SelectedProviderId
+    if (!proposals) {
+      return <Text>Loading proposals...</Text>
     }
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <Picker
+          style={styles.picker}
+          selectedValue={selectedProviderId}
+          onValueChange={(providerId: string) => this.onProposalSelected(providerId)}
+        >
+          {proposals.map((p: Proposal) => Proposals.renderProposal(p))}
+        </Picker>
+        {selectedProviderId ? (
+          <Button
+            title={'*'}
+            onPress={() => this.onFavoritePress(selectedProviderId)}
+          />
+        ) : null}
+      </View>
+    )
+  }
 
-    const favoriteProposal = favoriteProposals
-      .filter(p => p.id === selectedProviderId)[0]
+  @computed
+  private get loadedProposals(): Proposal[] {
+    return this.props.proposalsStore.Proposals || []
+  }
 
-    if (favoriteProposal) {
-      await favoriteProposal.toggleFavorite()
+  private async onFavoritePress(selectedProviderId: string): Promise<void> {
+    const proposal = this.loadedProposals.find(
+      (p: Proposal) => p.id === selectedProviderId,
+    )
+
+    if (proposal) {
+      await proposal.toggleFavorite()
+
+      // TODO: don't need to fetch proposals here, remove later
       await this.props.proposalsFetcher.refresh()
     }
   }
 
   @action
-  onProposalSelected (providerId: string) {
-    console.log('selected', providerId)
+  private onProposalSelected(providerId: string) {
     this.props.proposalsStore.SelectedProviderId = providerId
-  }
-
-  render () {
-    const favoriteProposals = this.props.proposalsStore.FavoriteProposals
-    const selectedProviderId = this.props.proposalsStore.SelectedProviderId
-    if (!favoriteProposals) {
-      return null
-    }
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <Picker style={styles.picker} selectedValue={selectedProviderId} onValueChange={providerId => this.onProposalSelected(providerId)}>
-          {favoriteProposals.map(p => Proposals.renderProposal(p))}
-        </Picker>
-        {selectedProviderId ? <Button title={'*'} onPress={() => this.onFavoritePress(selectedProviderId)} /> : null}
-      </View>
-    )
-  }
-
-  static renderProposal (p: FavoriteProposalDTO) {
-    const label = (p.isFavorite ? '* ' : '') + p.name
-    return (
-      <Picker.Item key={p.id} label={label} value={p.id} />
-    )
   }
 }

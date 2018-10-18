@@ -15,24 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { Text, View, Button } from 'react-native'
+import { observer } from 'mobx-react/native'
+import React, { ReactNode } from 'react'
+import { Button, Text, View } from 'react-native'
+import { CONFIG } from '../config'
+import { mysteriumClient } from '../libraries/mysterium-client'
+import { store } from '../store/app-store'
 import styles from './app-styles'
-import {CONFIG} from '../config'
-import Stats from './stats'
 import AppTequilapi from './app-tequilapi'
 import Proposals from './proposals'
-import MysteriumClient from '../libraries/mysterium-client'
-import {store} from "../store/tequilapi-store";
-import {observer} from "mobx-react/native";
+import Stats from './stats'
 
 @observer
 export default class App extends AppTequilapi {
-  constructor (props: any) {
-    super(props)
-
-    // Bind local functions
-    this.connectDisconnect = this.connectDisconnect.bind(this)
+  public render(): ReactNode {
+    return (
+      // @ts-ignore TODO remove ignore or transform
+      <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+        <Text>
+          {store.ConnectionStatus
+            ? store.ConnectionStatus.status
+            : CONFIG.TEXTS.UNKNOWN_STATUS}
+        </Text>
+        <Text>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Proposals
+          proposalsFetcher={this.proposalFetcher}
+          proposalsStore={store}
+        />
+        <Button
+          title={this.buttonText}
+          disabled={!this.buttonEnabled}
+          onPress={() => this.connectOrDisconnect()}
+        />
+        {store.Statistics ? <Stats {...store.Statistics} /> : null}
+      </View>
+    )
   }
 
   /***
@@ -40,21 +57,33 @@ export default class App extends AppTequilapi {
    * Starts periodic state refreshing
    * Called once after first rendering.
    */
-  async componentDidMount () {
+  public async componentDidMount() {
     await this.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
-    const mysteriumClient = new MysteriumClient()
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
+  }
+
+  private get buttonEnabled(): boolean {
+    return store.isReady
+  }
+
+  private get buttonText(): string {
+    const isReady = store.isReady
+    const isConnected = store.isConnected
+    return isReady
+      ? isConnected
+        ? 'disconnect'
+        : 'connect'
+      : CONFIG.TEXTS.UNKNOWN_STATUS
   }
 
   /***
    * Connects or disconnects to VPN server, depends on current connection state.
    * Is connection state is unknown - does nothing
-   * @returns {Promise<void>}
    */
-  async connectDisconnect () {
+  private async connectOrDisconnect() {
     if (!store.isReady) {
       return
     }
@@ -64,22 +93,5 @@ export default class App extends AppTequilapi {
     } else {
       await this.connect()
     }
-  }
-
-  render () {
-    const isReady = store.isReady
-    const isConnected = store.isConnected
-    const connectText = isReady
-      ? (isConnected ? 'disconnect' : 'connect')
-      : CONFIG.TEXTS.UNKNOWN_STATUS
-    return (
-      <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
-        <Text>{store.ConnectionStatus ? store.ConnectionStatus.status : CONFIG.TEXTS.UNKNOWN}</Text>
-        <Text>IP: {store.IP}</Text>
-        <Proposals proposalsFetcher={this.proposalFetcher} proposalsStore={store} />
-        <Button title={connectText} onPress={this.connectDisconnect} disabled={!isReady}/>
-        { store.Statistics ? <Stats {...store.Statistics} /> : null }
-      </View>
-    )
   }
 }
