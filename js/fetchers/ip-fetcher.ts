@@ -16,7 +16,7 @@
  */
 
 import { action, reaction } from 'mobx'
-import { ConnectionIPDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionIPDTO } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 import { store } from '../store/app-store'
@@ -47,7 +47,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     }
 
     return (
-      store.ConnectionStatus !== undefined &&
+      store.ConnectionStatus != null &&
       store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
     )
   }

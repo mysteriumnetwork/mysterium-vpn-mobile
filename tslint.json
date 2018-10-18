@@ -2,24 +2,23 @@
     "defaultSeverity": "error",
     "extends": [
       "tslint:latest",
-      "tslint-react"
+      "tslint-react",
+      "tslint-eslint-rules"
     ],
     "jsRules": {},
     "rules": {
       "no-console": false,
-      "semicolon": {
-        "options": ["never"]
-      },
+      "semicolon": [ true, "never" ],
       "no-submodule-imports": false,
       "object-literal-sort-keys": false,
       "interface-over-type-literal": false,
       "quotemark": [true, "single", "jsx-double"],
       "no-return-await": true,
-      "curly": false,
       "arrow-parens": false,
-
       "jsx-no-lambda": false,
-      "jsx-no-multiline-js": false
+      "jsx-no-multiline-js": false,
+
+      "object-curly-spacing": true
     },
     "rulesDirectory": []
 }

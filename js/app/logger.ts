@@ -1,5 +1,5 @@
-import {reaction} from 'mobx'
-import {store} from '../store/app-store'
+import { reaction } from 'mobx'
+import { store } from '../store/app-store'
 
 class Logger {
   private loggingStarted: boolean = false

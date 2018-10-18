@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {observable, reaction} from 'mobx'
+import { observable, reaction } from 'mobx'
 import Timer = NodeJS.Timer
 import { CONFIG } from '../config'
-import {IFetcher} from './fetcher'
+import { IFetcher } from './fetcher'
 
 export abstract class FetcherBase<T> implements IFetcher {
   @observable

@@ -16,7 +16,7 @@
  */
 
 import { action } from 'mobx'
-import {ConnectionStatusDTO, TequilapiClient} from 'mysterium-tequilapi'
+import { ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'

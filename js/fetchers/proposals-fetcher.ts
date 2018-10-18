@@ -47,7 +47,8 @@ export class ProposalsFetcher extends FetcherBase<Proposal[]> {
     // TODO: support non-selected proposal
     // ensure that proposal is always selected
     const containsSelectedProvider = store.Proposals.some(
-      (p: Proposal) => p.id === store.SelectedProviderId)
+      (p: Proposal) => p.id === store.SelectedProviderId,
+    )
     if (!containsSelectedProvider) {
       store.SelectedProviderId = store.Proposals[0].id
     }

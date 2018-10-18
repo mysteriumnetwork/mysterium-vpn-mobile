@@ -16,7 +16,7 @@
  */
 
 import { observer } from 'mobx-react/native'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
@@ -45,7 +45,7 @@ export default class App extends AppTequilapi {
         <Button
           title={this.buttonText}
           disabled={!this.buttonEnabled}
-          onPress={() => this.connectDisconnect()}
+          onPress={() => this.connectOrDisconnect()}
         />
         {store.Statistics ? <Stats {...store.Statistics} /> : null}
       </View>
@@ -82,9 +82,8 @@ export default class App extends AppTequilapi {
   /***
    * Connects or disconnects to VPN server, depends on current connection state.
    * Is connection state is unknown - does nothing
-   * @returns {Promise<void>}
    */
-  private async connectDisconnect() {
+  private async connectOrDisconnect() {
     if (!store.isReady) {
       return
     }

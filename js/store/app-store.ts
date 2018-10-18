@@ -15,13 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {computed, observable} from 'mobx'
+import { action, computed, observable } from 'mobx'
 import {
   ConnectionStatisticsDTO,
   ConnectionStatus,
   ConnectionStatusDTO,
 } from 'mysterium-tequilapi'
-import { CONFIG } from '../config'
 import { Proposal } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
@@ -55,12 +54,33 @@ class AppStore {
   @computed
   get isReady(): boolean {
     return (
-      this.IdentityId !== undefined &&
-      this.ConnectionStatus !== undefined &&
-      this.SelectedProviderId !== undefined &&
+      this.IdentityId != null &&
+      this.ConnectionStatus != null &&
+      this.SelectedProviderId != null &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
     )
+  }
+
+  @action
+  public resetIP() {
+    this.IP = undefined
+  }
+
+  @action
+  public setConnectionStatusToConnecting() {
+    this.ConnectionStatus = {
+      sessionId: '',
+      status: ConnectionStatusEnum.CONNECTING,
+    }
+  }
+
+  @action
+  public setConnectionStatusToDisconnecting() {
+    this.ConnectionStatus = {
+      sessionId: '',
+      status: ConnectionStatusEnum.DISCONNECTING,
+    }
   }
 }
 
