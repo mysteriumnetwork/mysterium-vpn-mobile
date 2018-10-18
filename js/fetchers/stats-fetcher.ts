@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {action} from 'mobx'
+import { action } from 'mobx'
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { store } from '../store/app-store'
