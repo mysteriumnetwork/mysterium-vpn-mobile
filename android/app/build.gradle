@@ -86,7 +86,9 @@ apply from: "../../node_modules/react-native/react.gradle"
 def getVersionCode = { ->
 
     def code = project.hasProperty('versionCode') ? versionCode.toInteger() : -1
+    
     println "VersionCode is set to $code"
+    
     return code
 }
 
@@ -98,7 +100,9 @@ def getVersionCode = { ->
 def getVersionName = { ->
 
     def name = project.hasProperty('versionName') ? versionName.toString() : "0.1"
-    println "VersionBane is set to $name"
+    
+    println "VersionName is set to $name"
+    
     return name
 }
 
