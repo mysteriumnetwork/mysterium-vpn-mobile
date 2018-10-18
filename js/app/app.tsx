@@ -16,7 +16,7 @@
  */
 
 import { observer } from 'mobx-react/native'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'

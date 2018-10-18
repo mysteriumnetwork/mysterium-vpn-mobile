@@ -2,7 +2,8 @@
     "defaultSeverity": "error",
     "extends": [
       "tslint:latest",
-      "tslint-react"
+      "tslint-react",
+      "tslint-eslint-rules"
     ],
     "jsRules": {},
     "rules": {
@@ -17,9 +18,10 @@
       "no-return-await": true,
       "curly": false,
       "arrow-parens": false,
-
       "jsx-no-lambda": false,
-      "jsx-no-multiline-js": false
+      "jsx-no-multiline-js": false,
+
+      "object-curly-spacing": true
     },
     "rulesDirectory": []
 }
