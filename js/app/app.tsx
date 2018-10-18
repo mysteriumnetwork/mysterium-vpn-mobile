@@ -82,7 +82,6 @@ export default class App extends AppTequilapi {
   /***
    * Connects or disconnects to VPN server, depends on current connection state.
    * Is connection state is unknown - does nothing
-   * @returns {Promise<void>}
    */
   private async connectDisconnect() {
     if (!store.isReady) {

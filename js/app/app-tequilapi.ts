@@ -69,7 +69,6 @@ export default class AppTequilapi extends React.Component {
 
   /***
    * Tries to disconnect from VPN server
-   * @returns {Promise<void>}
    */
   protected async disconnect(): Promise<void> {
     store.IP = undefined
@@ -87,7 +86,6 @@ export default class AppTequilapi extends React.Component {
 
   /***
    * Tries to login to API, must be completed once before connect
-   * @returns {Promise<void>}
    */
   protected async unlock(): Promise<void> {
     let identities: IdentityDTO[]
