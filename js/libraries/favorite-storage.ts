@@ -26,11 +26,9 @@ class Storage {
     return JSON.parse(values)
   }
 
-  public async setFavorite(
-    proposalId: string,
-    isFavorite: boolean,
-  ): Promise<void> {
+  public async setFavorite(proposalId: string, isFavorite: boolean): Promise<void> {
     const favorites = await this.getFavorites()
+
     if (isFavorite) {
       favorites[proposalId] = isFavorite
     } else {
@@ -38,7 +36,8 @@ class Storage {
         delete favorites[proposalId]
       }
     }
-    console.log('save favorites', favorites)
+
+    console.log('saving favorites', favorites)
     await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(favorites))
   }
 }

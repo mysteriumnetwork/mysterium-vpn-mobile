@@ -45,7 +45,7 @@ export default class App extends AppTequilapi {
         <Button
           title={this.buttonText}
           disabled={!this.buttonEnabled}
-          onPress={() => this.connectDisconnect()}
+          onPress={() => this.connectOrDisconnect()}
         />
         {store.Statistics ? <Stats {...store.Statistics} /> : null}
       </View>
@@ -83,7 +83,7 @@ export default class App extends AppTequilapi {
    * Connects or disconnects to VPN server, depends on current connection state.
    * Is connection state is unknown - does nothing
    */
-  private async connectDisconnect() {
+  private async connectOrDisconnect() {
     if (!store.isReady) {
       return
     }

@@ -50,11 +50,8 @@ export default class AppTequilapi extends React.Component {
       console.error('Not enough data to connect', store)
       return
     }
-    store.IP = undefined
-    store.ConnectionStatus = {
-      sessionId: '',
-      status: ConnectionStatusEnum.CONNECTING,
-    }
+    store.resetIP()
+    store.setConnectionStatusToConnecting()
     try {
       const connection = await api.connectionCreate({
         consumerId: store.IdentityId,
@@ -71,11 +68,8 @@ export default class AppTequilapi extends React.Component {
    * Tries to disconnect from VPN server
    */
   protected async disconnect(): Promise<void> {
-    store.IP = undefined
-    store.ConnectionStatus = {
-      sessionId: '',
-      status: ConnectionStatusEnum.DISCONNECTING,
-    }
+    store.resetIP()
+    store.setConnectionStatusToDisconnecting()
     try {
       await api.connectionCancel()
       console.log('disconnected')

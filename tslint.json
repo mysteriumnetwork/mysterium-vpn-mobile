@@ -16,7 +16,6 @@
       "interface-over-type-literal": false,
       "quotemark": [true, "single", "jsx-double"],
       "no-return-await": true,
-      "curly": false,
       "arrow-parens": false,
       "jsx-no-lambda": false,
       "jsx-no-multiline-js": false,
