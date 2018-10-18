@@ -21,9 +21,9 @@ import { Countries } from './countries'
 import { storage } from './favorite-storage'
 
 class Proposal {
-  public static compare(
+  public static compare (
     a: Proposal,
-    b: Proposal,
+    b: Proposal
   ): number {
     return a.compareTo(b)
   }
@@ -32,7 +32,7 @@ class Proposal {
   public id: string
   public isFavorite: boolean
 
-  constructor(proposal: ProposalDTO, isFavorite: boolean) {
+  constructor (proposal: ProposalDTO, isFavorite: boolean) {
     const countryCode =
       proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate
         ? proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
@@ -42,12 +42,12 @@ class Proposal {
     this.isFavorite = isFavorite
   }
 
-  public async toggleFavorite() {
+  public async toggleFavorite () {
     this.isFavorite = !this.isFavorite
     await storage.setFavorite(this.id, this.isFavorite)
   }
 
-  public compareTo(other: Proposal): number {
+  public compareTo (other: Proposal): number {
     if (this.isFavorite && !other.isFavorite) {
       return -1
     } else if (!this.isFavorite && other.isFavorite) {
@@ -61,8 +61,8 @@ class Proposal {
   }
 }
 
-async function sortFavorites(
-  proposals: ProposalDTO[],
+async function sortFavorites (
+  proposals: ProposalDTO[]
 ): Promise<Proposal[]> {
   const favorites = await storage.getFavorites()
   return proposals

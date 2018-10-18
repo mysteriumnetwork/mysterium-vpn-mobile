@@ -23,7 +23,7 @@ interface IMysteriumClient {
    * @param port - port number for the service to use
    * @returns {Promise<number>} - The status of the service after starting
    */
-  startService(port: number): Promise<number>
+  startService (port: number): Promise<number>
 }
 
 const mysteriumClient: IMysteriumClient = NativeModules.MysteriumClientModule

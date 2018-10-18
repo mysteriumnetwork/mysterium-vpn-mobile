@@ -22,25 +22,25 @@ import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
 type StatusFetcherProps = {
-  connectionStatus(): Promise<ConnectionStatusDTO>,
+  connectionStatus (): Promise<ConnectionStatusDTO>
 }
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  constructor(private props: StatusFetcherProps) {
+  constructor (private props: StatusFetcherProps) {
     super('ConnectionStatus')
     this.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
   }
 
-  protected get canRun(): boolean {
-    return store.IdentityId != null
+  protected get canRun (): boolean {
+    return store.IdentityId !== undefined
   }
 
-  protected async fetch(): Promise<ConnectionStatusDTO> {
+  protected async fetch (): Promise<ConnectionStatusDTO> {
     return this.props.connectionStatus()
   }
 
   @action
-  protected update(status: ConnectionStatusDTO) {
+  protected update (status: ConnectionStatusDTO) {
     store.ConnectionStatus = status
   }
 }

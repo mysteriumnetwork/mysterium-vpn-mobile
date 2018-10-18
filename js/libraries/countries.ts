@@ -258,5 +258,5 @@ export const Countries: ICountryNames = {
   yu: 'Yugoslavia',
   za: 'South Africa',
   zm: 'Zambia',
-  zw: 'Zimbabwe',
+  zw: 'Zimbabwe'
 }

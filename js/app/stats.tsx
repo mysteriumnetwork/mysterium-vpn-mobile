@@ -22,13 +22,13 @@ import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
 type StatsProps = {
   duration: number,
   bytesReceived: number,
-  bytesSent: number,
+  bytesSent: number
 }
 
 const Stats: React.SFC<StatsProps> = ({
   duration,
   bytesReceived,
-  bytesSent,
+  bytesSent
 }) => {
   return (
     <View style={styles.container}>
@@ -41,8 +41,8 @@ const Stats: React.SFC<StatsProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-  },
+    padding: 20
+  }
 })
 
 export default Stats

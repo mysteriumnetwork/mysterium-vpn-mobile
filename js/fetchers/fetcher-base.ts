@@ -26,24 +26,26 @@ export abstract class FetcherBase<T> implements IFetcher {
 
   private interval?: Timer
 
-  constructor(protected name: string) {}
+  constructor (protected name: string) {}
 
-  public start(interval: number) {
-    this.run()
+  public start (interval: number) {
+    this.run().catch(error => {
+      console.error('Fetcher run failed:', error)
+    })
     this.interval = setInterval(
       () => this.run(),
-      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS,
+      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS
     )
   }
 
-  public stop() {
+  public stop () {
     if (this.interval) {
       clearInterval(this.interval)
     }
     this.interval = undefined
   }
 
-  public refresh(): Promise<void> {
+  public refresh (): Promise<void> {
     if (!this.isRunning) {
       return this.run()
     }
@@ -57,20 +59,20 @@ export abstract class FetcherBase<T> implements IFetcher {
             await this.run()
             resolve()
           }
-        },
+        }
       )
     })
   }
 
-  protected get canRun(): boolean {
+  protected get canRun (): boolean {
     return true
   }
 
-  protected abstract async fetch(): Promise<T>
+  protected abstract async fetch (): Promise<T>
 
-  protected abstract update(data: T): void
+  protected abstract update (data: T): void
 
-  private async run() {
+  private async run () {
     if (this.isRunning || !this.canRun) {
       return
     }
