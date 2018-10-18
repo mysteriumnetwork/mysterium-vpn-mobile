@@ -18,9 +18,10 @@
       "no-return-await": true,
       "curly": false,
       "arrow-parens": false,
-
       "jsx-no-lambda": false,
-      "jsx-no-multiline-js": false
+      "jsx-no-multiline-js": false,
+
+      "object-curly-spacing": true
     },
     "rulesDirectory": []
 }
