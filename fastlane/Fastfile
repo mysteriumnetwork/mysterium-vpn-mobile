@@ -1,0 +1,37 @@
+default_platform(:ios)
+
+platform :ios do
+  def bump_versions
+    increment_version_number(version_number: last_git_tag)
+    increment_build_number(build_number: number_of_commits)
+  end
+  
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    bump_versions
+    build_app(scheme: "MysteriumVPN", project: "ios/MysteriumVPN.xcodeproj")
+    upload_to_testflight
+  end
+end
+
+platform :android do
+  desc "Push a new beta build to Playstore"
+  lane :beta do
+    gradle(
+      task: "clean assembleRelease", 
+      project_dir: "android",
+      print_command: false, # to prevent outputting passwords
+      properties: { 
+        'versionCode' => number_of_commits, 
+        'versionName' => last_git_tag,
+        "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
+        "android.injected.signing.store.password" => ENV["FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS"],
+        "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["FASTLANE_ANDROID_SIGNING_KEY_PASS"],
+      })
+    upload_to_play_store(
+      track: "internal",
+      json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]
+    )
+  end
+end

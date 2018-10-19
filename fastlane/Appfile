@@ -1,8 +1,9 @@
+### Android
+package_name("network.mysterium.vpn")
+
+### iOS
 app_identifier("network.mysterium.MysteriumVPN") # The bundle identifier of your app
 apple_id("arrnas@gmail.com") # Your Apple email address
 
 itc_team_id("96179937") # App Store Connect Team ID
 team_id("YRSJ62FGRH") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
