@@ -7,3 +7,15 @@
 * yarn start
 
 Currently tested only on Android devices
+
+## Contributing
+
+* Running tests:
+```bash
+yarn test
+```
+
+* Running linter:
+```bash
+yarn lint
+```
