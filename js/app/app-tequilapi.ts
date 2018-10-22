@@ -115,10 +115,13 @@ export default class AppTequilapi<P> extends React.Component {
   private startFetchers () {
     const proposalFetcher = new ProposalsFetcher(api)
     proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
+
     const statusFetcher = new StatusFetcher(api)
     statusFetcher.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
+
     const ipFetcher = new IPFetcher(api)
     ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
+
     const statsFetcher = new StatsFetcher(api)
     statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
