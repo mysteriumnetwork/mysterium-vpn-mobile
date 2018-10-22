@@ -24,24 +24,29 @@ describe('StatusFetcher', () => {
   })
 
   describe('.start', () => {
-    it('starts continuous status fetching', () => {
+    it('fetches and updates connection status', () => {
       fetcher.start(refreshInterval)
-      jest.runAllTicks()
 
       expect(fetcher.isStarted).toBe(true)
-
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
+
+      jest.runAllTicks()
       expect(store.ConnectionStatus).toEqual({
         status: 'NotConnected',
         sessionId: 'MOCKED_SESSION_ID',
       })
-      expect(fetcher.isRunning).toBe(false)
+    })
 
-      for (let call = 2; call < 6; call++) {
-        jest.advanceTimersByTime(refreshInterval)
+    it('fetches status continuously', () => {
+      fetcher.start(refreshInterval)
+
+      for (let call = 1; call < 6; call++) {
         expect(api.connectionStatus).toHaveBeenCalledTimes(call)
+
         jest.runAllTicks()
         expect(fetcher.isRunning).toBe(false)
+
+        jest.advanceTimersByTime(refreshInterval)
       }
     })
 
