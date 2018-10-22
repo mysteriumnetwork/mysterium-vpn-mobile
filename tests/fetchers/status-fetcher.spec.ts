@@ -44,6 +44,16 @@ describe('StatusFetcher', () => {
         expect(fetcher.isRunning).toBe(false)
       }
     })
+
+    it('does not fetch status when invoking the second time', () => {
+      fetcher.start(refreshInterval)
+      jest.runAllTicks()
+      expect(api.connectionStatus).toHaveBeenCalledTimes(1)
+
+      fetcher.start(refreshInterval)
+      jest.runAllTicks()
+      expect(api.connectionStatus).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('.stop', () => {
