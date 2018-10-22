@@ -8,6 +8,10 @@ build/
 local.properties
 *.iml
 
+# test
+.jest/
+coverage/
+
 # expo
 .expo/
 
@@ -23,10 +27,6 @@ local.properties
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-.jest/
-
-coverage/
 
 # Xcode
 
