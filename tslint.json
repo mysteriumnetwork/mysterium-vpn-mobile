@@ -18,8 +18,7 @@
       "jsx-no-lambda": false,
       "jsx-no-multiline-js": false,
 
-      "no-implicit-dependencies": [true, "dev"],
-      "object-curly-spacing": true
+      "no-implicit-dependencies": [true, "dev"]
     },
     "rulesDirectory": []
 }
