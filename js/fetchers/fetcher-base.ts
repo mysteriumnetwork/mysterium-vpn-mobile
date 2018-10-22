@@ -17,7 +17,6 @@
 
 import { observable, reaction } from 'mobx'
 import Timer = NodeJS.Timer
-import { CONFIG } from '../config'
 import { IFetcher } from './fetcher'
 
 export abstract class FetcherBase<T> implements IFetcher {
@@ -26,32 +25,34 @@ export abstract class FetcherBase<T> implements IFetcher {
 
   private interval?: Timer
 
-  constructor(protected name: string) {}
+  constructor (protected name: string) {}
 
-  public get isStarted(): boolean {
+  public get isStarted (): boolean {
     return this.interval !== undefined
   }
 
-  public start(interval: number) {
+  public start (interval: number) {
     if (this.isStarted) {
       return
     }
 
-    this.run()
+    this.run().catch(error => {
+      console.error('Fetcher run failed:', error)
+    })
     this.interval = setInterval(
       () => this.run(),
-      interval,
+      interval
     )
   }
 
-  public stop() {
+  public stop () {
     if (this.interval) {
       clearInterval(this.interval)
     }
     this.interval = undefined
   }
 
-  public refresh(): Promise<void> {
+  public refresh (): Promise<void> {
     if (!this.isRunning) {
       return this.run()
     }
@@ -65,20 +66,20 @@ export abstract class FetcherBase<T> implements IFetcher {
             await this.run()
             resolve()
           }
-        },
+        }
       )
     })
   }
 
-  protected get canRun(): boolean {
+  protected get canRun (): boolean {
     return true
   }
 
-  protected abstract async fetch(): Promise<T>
+  protected abstract async fetch (): Promise<T>
 
-  protected abstract update(data: T): void
+  protected abstract update (data: T): void
 
-  private async run() {
+  private async run () {
     if (this.isRunning || !this.canRun) {
       return
     }

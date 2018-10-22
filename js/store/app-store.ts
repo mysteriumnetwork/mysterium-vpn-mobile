@@ -19,7 +19,7 @@ import { action, computed, observable } from 'mobx'
 import {
   ConnectionStatisticsDTO,
   ConnectionStatus,
-  ConnectionStatusDTO,
+  ConnectionStatusDTO
 } from 'mysterium-tequilapi'
 import { Proposal } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
@@ -39,47 +39,47 @@ class AppStore {
   public Proposals?: Proposal[]
 
   @computed
-  get status(): ConnectionStatus | undefined {
-    if (this.ConnectionStatus == null) {
+  get status (): ConnectionStatus | undefined {
+    if (this.ConnectionStatus === undefined) {
       return
     }
     return this.ConnectionStatus.status
   }
 
   @computed
-  get isConnected(): boolean {
+  get isConnected (): boolean {
     return this.status === ConnectionStatusEnum.CONNECTED
   }
 
   @computed
-  get isReady(): boolean {
+  get isReady (): boolean {
     return (
-      this.IdentityId != null &&
-      this.ConnectionStatus != null &&
-      this.SelectedProviderId != null &&
+      this.IdentityId !== undefined &&
+      this.ConnectionStatus !== undefined &&
+      this.SelectedProviderId !== undefined &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
     )
   }
 
   @action
-  public resetIP() {
+  public resetIP () {
     this.IP = undefined
   }
 
   @action
-  public setConnectionStatusToConnecting() {
+  public setConnectionStatusToConnecting () {
     this.ConnectionStatus = {
       sessionId: '',
-      status: ConnectionStatusEnum.CONNECTING,
+      status: ConnectionStatusEnum.CONNECTING
     }
   }
 
   @action
-  public setConnectionStatusToDisconnecting() {
+  public setConnectionStatusToDisconnecting () {
     this.ConnectionStatus = {
       sessionId: '',
-      status: ConnectionStatusEnum.DISCONNECTING,
+      status: ConnectionStatusEnum.DISCONNECTING
     }
   }
 }

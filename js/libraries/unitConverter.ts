@@ -19,7 +19,7 @@ const KB = 1024
 const MB = 1024 * KB
 const GB = 1024 * MB
 
-function bytesDisplay(bytes: number): string {
+function bytesDisplay (bytes: number): string {
   if (bytes < KB) {
     return bytes + ' B'
   } else if (bytes < MB) {
@@ -37,8 +37,8 @@ function bytesDisplay(bytes: number): string {
  * @returns {string} readable in --:--:-- format
  * @throws {Error} if argument is null
  */
-function timeDisplay(seconds: number): string {
-  if (typeof seconds !== 'number' || seconds < 0) {
+function timeDisplay (seconds: number): string {
+  if (seconds < 0) {
     throw new Error('invalid input')
   }
   const h = Math.floor(seconds / 3600)

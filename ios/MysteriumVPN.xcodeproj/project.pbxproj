@@ -1144,8 +1144,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = YRSJ62FGRH;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1159,7 +1159,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = network.mysterium.MysteriumVPN;
+				PRODUCT_BUNDLE_IDENTIFIER = network.mysterium.vpn;
 				PRODUCT_NAME = MysteriumVPN;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1169,8 +1169,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YRSJ62FGRH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1183,7 +1183,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = network.mysterium.MysteriumVPN;
+				PRODUCT_BUNDLE_IDENTIFIER = network.mysterium.vpn;
 				PRODUCT_NAME = MysteriumVPN;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

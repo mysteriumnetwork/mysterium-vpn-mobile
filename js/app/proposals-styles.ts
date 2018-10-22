@@ -18,13 +18,13 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 
 type ProposalsStyles = {
-  picker: ViewStyle,
+  picker: ViewStyle
 }
 
 export default StyleSheet.create({
   picker: {
     width: 130,
     height: 20,
-    margin: 20,
-  },
+    margin: 20
+  }
 }) as ProposalsStyles
