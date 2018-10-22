@@ -17,7 +17,6 @@
 
 import { action } from 'mobx'
 import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
-import { CONFIG } from '../config'
 import {
   Proposal,
   sortFavorites
@@ -32,7 +31,6 @@ type ProposalsFetcherProps = {
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
   constructor (private props: ProposalsFetcherProps) {
     super('Proposals')
-    this.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
   }
 
   protected async fetch (): Promise<Proposal[]> {

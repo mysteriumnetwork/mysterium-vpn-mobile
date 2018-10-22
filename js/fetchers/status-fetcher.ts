@@ -16,8 +16,7 @@
  */
 
 import { action } from 'mobx'
-import { ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
-import { CONFIG } from '../config'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
@@ -28,7 +27,6 @@ type StatusFetcherProps = {
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   constructor (private props: StatusFetcherProps) {
     super('ConnectionStatus')
-    this.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
   }
 
   protected get canRun (): boolean {

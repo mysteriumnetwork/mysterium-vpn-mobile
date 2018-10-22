@@ -17,7 +17,6 @@
 
 import { observable, reaction } from 'mobx'
 import Timer = NodeJS.Timer
-import { CONFIG } from '../config'
 import { IFetcher } from './fetcher'
 
 export abstract class FetcherBase<T> implements IFetcher {
@@ -28,13 +27,21 @@ export abstract class FetcherBase<T> implements IFetcher {
 
   constructor (protected name: string) {}
 
+  public get isStarted (): boolean {
+    return this.interval !== undefined
+  }
+
   public start (interval: number) {
+    if (this.isStarted) {
+      return
+    }
+
     this.run().catch(error => {
       console.error('Fetcher run failed:', error)
     })
     this.interval = setInterval(
       () => this.run(),
-      interval * CONFIG.REFRESH_INTERVALS.INTERVAL_MS
+      interval
     )
   }
 

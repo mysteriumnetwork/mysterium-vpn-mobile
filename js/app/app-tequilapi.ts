@@ -18,7 +18,6 @@
 import React from 'react'
 
 import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
-import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
 import { CONFIG } from '../config'
 import { IPFetcher } from '../fetchers/ip-fetcher'
@@ -40,6 +39,11 @@ export default class AppTequilapi extends React.Component {
   private statusFetcher = new StatusFetcher(api)
   private ipFetcher = new IPFetcher(api)
   private statsFetcher = new StatsFetcher(api)
+
+  constructor () {
+    super({})
+    this.startFetchers()
+  }
 
   /***
    * Tries to connect to selected VPN server
@@ -111,5 +115,12 @@ export default class AppTequilapi extends React.Component {
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }
+  }
+
+  private startFetchers () {
+    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
+    this.statusFetcher.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
+    this.ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
+    this.statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 }

@@ -25,7 +25,6 @@ interface IConfig {
     UNKNOWN_STATUS: string
   },
   REFRESH_INTERVALS: {
-    INTERVAL_MS: number,
     CONNECTION: number,
     STATS: number,
     PROPOSALS: number,
@@ -43,10 +42,9 @@ export const CONFIG: IConfig = {
     UNKNOWN_STATUS: 'Loading...'
   },
   REFRESH_INTERVALS: {
-    INTERVAL_MS: 1000,
-    CONNECTION: 2,
-    STATS: 1,
-    PROPOSALS: 10,
-    IP: 10
+    CONNECTION: 2 * 1000,
+    STATS: 1 * 1000,
+    PROPOSALS: 10 * 1000,
+    IP: 10 * 1000
   }
 }

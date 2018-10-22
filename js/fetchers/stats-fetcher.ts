@@ -17,7 +17,6 @@
 
 import { action } from 'mobx'
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
-import { CONFIG } from '../config'
 import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
@@ -28,7 +27,6 @@ type StatsFetcherProps = {
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
   constructor (private props: StatsFetcherProps) {
     super('Statistics')
-    this.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 
   protected get canRun (): boolean {

@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stats renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Stats
+    bytesReceived={9999999}
+    bytesSent={9999}
+    duration={999999}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": Array [
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Duration: 
+          277:46:39
+        </Text>,
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Received: 
+          9.54 MB
+        </Text>,
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Sent: 
+          9.76 KB
+        </Text>,
+      ],
+      "style": Object {
+        "padding": 20,
+      },
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "accessible": true,
+          "allowFontScaling": true,
+          "children": Array [
+            "Duration: ",
+            "277:46:39",
+          ],
+          "ellipsizeMode": "tail",
+        },
+        "ref": null,
+        "rendered": Array [
+          "Duration: ",
+          "277:46:39",
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "accessible": true,
+          "allowFontScaling": true,
+          "children": Array [
+            "Received: ",
+            "9.54 MB",
+          ],
+          "ellipsizeMode": "tail",
+        },
+        "ref": null,
+        "rendered": Array [
+          "Received: ",
+          "9.54 MB",
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "accessible": true,
+          "allowFontScaling": true,
+          "children": Array [
+            "Sent: ",
+            "9.76 KB",
+          ],
+          "ellipsizeMode": "tail",
+        },
+        "ref": null,
+        "rendered": Array [
+          "Sent: ",
+          "9.76 KB",
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+          >
+            Duration: 
+            277:46:39
+          </Text>,
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+          >
+            Received: 
+            9.54 MB
+          </Text>,
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+          >
+            Sent: 
+            9.76 KB
+          </Text>,
+        ],
+        "style": Object {
+          "padding": 20,
+        },
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "accessible": true,
+            "allowFontScaling": true,
+            "children": Array [
+              "Duration: ",
+              "277:46:39",
+            ],
+            "ellipsizeMode": "tail",
+          },
+          "ref": null,
+          "rendered": Array [
+            "Duration: ",
+            "277:46:39",
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "accessible": true,
+            "allowFontScaling": true,
+            "children": Array [
+              "Received: ",
+              "9.54 MB",
+            ],
+            "ellipsizeMode": "tail",
+          },
+          "ref": null,
+          "rendered": Array [
+            "Received: ",
+            "9.54 MB",
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "accessible": true,
+            "allowFontScaling": true,
+            "children": Array [
+              "Sent: ",
+              "9.76 KB",
+            ],
+            "ellipsizeMode": "tail",
+          },
+          "ref": null,
+          "rendered": Array [
+            "Sent: ",
+            "9.76 KB",
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
