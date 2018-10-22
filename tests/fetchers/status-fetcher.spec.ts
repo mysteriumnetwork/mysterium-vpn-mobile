@@ -21,11 +21,13 @@ describe('StatusFetcher', () => {
     store.IdentityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
     fetcher = new StatusFetcher(api)
-    jest.runAllTicks()
   })
 
-  describe('.constructor', () => {
+  describe('.start', () => {
     it('starts continuous status fetching', () => {
+      fetcher.start(refreshInterval)
+      jest.runAllTicks()
+
       expect(fetcher.isStarted).toBe(true)
 
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
@@ -44,20 +46,11 @@ describe('StatusFetcher', () => {
     })
   })
 
-  describe('.start', () => {
-    it('starts continuous status fetching', () => {
-      fetcher.stop()
-      jest.runAllTicks()
-      expect(api.connectionStatus).toHaveBeenCalledTimes(1)
-      expect(fetcher.isRunning).toBe(false)
-
-      fetcher.start(refreshInterval)
-      expect(api.connectionStatus).toHaveBeenCalledTimes(2)
-    })
-  })
-
   describe('.stop', () => {
     it('stops fetching status', () => {
+      fetcher.start(refreshInterval)
+      jest.runAllTicks()
+
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
       jest.runTimersToTime(refreshInterval)
       expect(api.connectionStatus).toHaveBeenCalledTimes(2)
@@ -74,6 +67,9 @@ describe('StatusFetcher', () => {
 
   describe('.refresh', () => {
     it('fetches status immediately', async () => {
+      fetcher.start(refreshInterval)
+      jest.runAllTicks()
+
       expect(fetcher.isRunning).toBe(false)
       store.ConnectionStatus = undefined
 
