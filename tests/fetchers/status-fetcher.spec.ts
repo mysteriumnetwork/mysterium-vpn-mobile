@@ -57,7 +57,7 @@ describe('StatusFetcher', () => {
   })
 
   describe('.stop', () => {
-    it('stops fetching status', () => {
+    it('stops fetching when invoked after starting', () => {
       fetcher.start(refreshInterval)
       jest.runAllTicks()
 
@@ -72,6 +72,10 @@ describe('StatusFetcher', () => {
       expect(api.connectionStatus).toHaveBeenCalledTimes(2)
       jest.runTimersToTime(refreshInterval)
       expect(api.connectionStatus).toHaveBeenCalledTimes(2)
+    })
+
+    it('does nothing when invoked without starting', () => {
+      fetcher.stop()
     })
   })
 
