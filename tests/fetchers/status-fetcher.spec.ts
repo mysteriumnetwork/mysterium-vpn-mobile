@@ -33,7 +33,7 @@ describe('StatusFetcher', () => {
       jest.runAllTicks()
       expect(store.ConnectionStatus).toEqual({
         status: 'NotConnected',
-        sessionId: 'MOCKED_SESSION_ID',
+        sessionId: 'MOCKED_SESSION_ID'
       })
     })
 
