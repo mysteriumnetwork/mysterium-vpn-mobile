@@ -22,25 +22,25 @@ import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
 type StatsFetcherProps = {
-  connectionStatistics(): Promise<ConnectionStatisticsDTO>,
+  connectionStatistics (): Promise<ConnectionStatisticsDTO>
 }
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  constructor(private props: StatsFetcherProps) {
+  constructor (private props: StatsFetcherProps) {
     super('Statistics')
     this.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 
-  protected get canRun(): boolean {
+  protected get canRun (): boolean {
     return store.isConnected
   }
 
-  protected async fetch(): Promise<ConnectionStatisticsDTO> {
+  protected async fetch (): Promise<ConnectionStatisticsDTO> {
     return this.props.connectionStatistics()
   }
 
   @action
-  protected update(stats: ConnectionStatisticsDTO) {
+  protected update (stats: ConnectionStatisticsDTO) {
     store.Statistics = stats
   }
 }

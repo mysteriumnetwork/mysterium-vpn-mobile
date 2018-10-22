@@ -22,14 +22,14 @@ interface IConfig {
   TEXTS: {
     IP_UPDATING: string,
     UNKNOWN: string,
-    UNKNOWN_STATUS: string,
+    UNKNOWN_STATUS: string
   },
   REFRESH_INTERVALS: {
     INTERVAL_MS: number,
     CONNECTION: number,
     STATS: number,
     PROPOSALS: number,
-    IP: number,
+    IP: number
   },
 }
 
@@ -40,13 +40,13 @@ export const CONFIG: IConfig = {
   TEXTS: {
     IP_UPDATING: 'updating...',
     UNKNOWN: 'unknown',
-    UNKNOWN_STATUS: 'Loading...',
+    UNKNOWN_STATUS: 'Loading...'
   },
   REFRESH_INTERVALS: {
     INTERVAL_MS: 1000,
     CONNECTION: 2,
     STATS: 1,
     PROPOSALS: 10,
-    IP: 10,
-  },
+    IP: 10
+  }
 }

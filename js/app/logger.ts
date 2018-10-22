@@ -4,7 +4,7 @@ import { store } from '../store/app-store'
 class Logger {
   private loggingStarted: boolean = false
 
-  public logObservableChanges(): void {
+  public logObservableChanges (): void {
     if (this.loggingStarted) {
       return
     }
@@ -31,7 +31,7 @@ class Logger {
     })
   }
 
-  private info(...args: any[]) {
+  private info (...args: any[]) {
     console.info('[LOG]', ...args)
   }
 }

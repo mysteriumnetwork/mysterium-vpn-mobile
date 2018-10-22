@@ -27,18 +27,18 @@ type ProposalsProps = {
   proposalsFetcher: ProposalsFetcher,
   proposalsStore: {
     SelectedProviderId?: string,
-    Proposals?: Proposal[],
-  },
+    Proposals?: Proposal[]
+  }
 }
 
 @observer
 export default class Proposals extends React.Component<ProposalsProps> {
-  private static renderProposal(p: Proposal) {
+  private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
     return <Picker.Item key={p.id} label={label} value={p.id} />
   }
 
-  public render(): ReactNode {
+  public render (): ReactNode {
     const proposals = this.props.proposalsStore.Proposals
     const selectedProviderId = this.props.proposalsStore.SelectedProviderId
     if (!proposals) {
@@ -64,13 +64,13 @@ export default class Proposals extends React.Component<ProposalsProps> {
   }
 
   @computed
-  private get loadedProposals(): Proposal[] {
+  private get loadedProposals (): Proposal[] {
     return this.props.proposalsStore.Proposals || []
   }
 
-  private async onFavoritePress(selectedProviderId: string): Promise<void> {
+  private async onFavoritePress (selectedProviderId: string): Promise<void> {
     const proposal = this.loadedProposals.find(
-      (p: Proposal) => p.id === selectedProviderId,
+      (p: Proposal) => p.id === selectedProviderId
     )
 
     if (proposal) {
@@ -82,7 +82,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
   }
 
   @action
-  private onProposalSelected(providerId: string) {
+  private onProposalSelected (providerId: string) {
     this.props.proposalsStore.SelectedProviderId = providerId
   }
 }

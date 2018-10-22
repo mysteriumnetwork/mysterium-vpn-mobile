@@ -18,7 +18,7 @@
 export interface IFetcher {
   isRunning: boolean
 
-  refresh(): void
-  start(interval: number): void
-  stop(): void
+  refresh (): void
+  start (interval: number): void
+  stop (): void
 }

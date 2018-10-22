@@ -28,7 +28,7 @@ import Stats from './stats'
 
 @observer
 export default class App extends AppTequilapi {
-  public render(): ReactNode {
+  public render (): ReactNode {
     return (
       // @ts-ignore TODO remove ignore or transform
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
@@ -57,7 +57,7 @@ export default class App extends AppTequilapi {
    * Starts periodic state refreshing
    * Called once after first rendering.
    */
-  public async componentDidMount() {
+  public async componentDidMount () {
     await this.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
@@ -65,11 +65,11 @@ export default class App extends AppTequilapi {
     console.log('serviceStatus', serviceStatus)
   }
 
-  private get buttonEnabled(): boolean {
+  private get buttonEnabled (): boolean {
     return store.isReady
   }
 
-  private get buttonText(): string {
+  private get buttonText (): string {
     const isReady = store.isReady
     const isConnected = store.isConnected
     return isReady
@@ -83,7 +83,7 @@ export default class App extends AppTequilapi {
    * Connects or disconnects to VPN server, depends on current connection state.
    * Is connection state is unknown - does nothing
    */
-  private async connectOrDisconnect() {
+  private async connectOrDisconnect () {
     if (!store.isReady) {
       return
     }

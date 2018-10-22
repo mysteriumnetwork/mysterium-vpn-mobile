@@ -23,11 +23,11 @@ import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
 type IPFetcherProps = {
-  connectionIP(): Promise<ConnectionIPDTO>,
+  connectionIP (): Promise<ConnectionIPDTO>
 }
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor(private props: IPFetcherProps) {
+  constructor (private props: IPFetcherProps) {
     super('IP')
     this.start(CONFIG.REFRESH_INTERVALS.IP)
 
@@ -36,28 +36,30 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
         store.status === ConnectionStatusEnum.CONNECTED ||
         store.status === ConnectionStatusEnum.NOT_CONNECTED
       ) {
-        this.refresh()
+        this.refresh().catch(error => {
+          console.error('IPFetcher refresh failed:', error)
+        })
       }
     })
   }
 
-  protected get canRun(): boolean {
+  protected get canRun (): boolean {
     if (!store.IP) {
       return true
     }
 
     return (
-      store.ConnectionStatus != null &&
+      store.ConnectionStatus !== undefined &&
       store.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
     )
   }
 
-  protected async fetch(): Promise<ConnectionIPDTO> {
+  protected async fetch (): Promise<ConnectionIPDTO> {
     return this.props.connectionIP()
   }
 
   @action
-  protected update(newIP: ConnectionIPDTO) {
+  protected update (newIP: ConnectionIPDTO) {
     store.IP = newIP.ip
   }
 }

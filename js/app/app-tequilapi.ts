@@ -29,7 +29,7 @@ import { store } from '../store/app-store'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
-  CONFIG.TEQUILAPI_TIMEOUT,
+  CONFIG.TEQUILAPI_TIMEOUT
 ).build()
 
 /***
@@ -45,7 +45,7 @@ export default class AppTequilapi extends React.Component {
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  protected async connect(): Promise<void> {
+  protected async connect (): Promise<void> {
     if (!store.IdentityId || !store.SelectedProviderId) {
       console.error('Not enough data to connect', store)
       return
@@ -56,7 +56,7 @@ export default class AppTequilapi extends React.Component {
       const connection = await api.connectionCreate({
         consumerId: store.IdentityId,
         providerCountry: '',
-        providerId: store.SelectedProviderId,
+        providerId: store.SelectedProviderId
       })
       console.log('connected', connection)
     } catch (e) {
@@ -67,7 +67,7 @@ export default class AppTequilapi extends React.Component {
   /***
    * Tries to disconnect from VPN server
    */
-  protected async disconnect(): Promise<void> {
+  protected async disconnect (): Promise<void> {
     store.resetIP()
     store.setConnectionStatusToDisconnecting()
     try {
@@ -81,7 +81,7 @@ export default class AppTequilapi extends React.Component {
   /***
    * Tries to login to API, must be completed once before connect
    */
-  protected async unlock(): Promise<void> {
+  protected async unlock (): Promise<void> {
     let identities: IdentityDTO[]
     try {
       identities = await api.identitiesList()
@@ -96,7 +96,7 @@ export default class AppTequilapi extends React.Component {
         identityId = identities[0].id
       } else {
         const newIdentity: IdentityDTO = await api.identityCreate(
-          CONFIG.PASSPHRASE,
+          CONFIG.PASSPHRASE
         )
         identityId = newIdentity.id
       }

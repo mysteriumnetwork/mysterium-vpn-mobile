@@ -7,7 +7,7 @@
     "android": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
     "ios": "react-native run-ios",
     "test": "jest",
-    "lint": "tslint -c tslint.json 'js/**/*.{ts,tsx}'"
+    "lint": "tslint -p . -c tslint.json 'js/**/*.{ts,tsx}'"
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,7 +24,7 @@
     "react-native-typescript-transformer": "^1.2.10",
     "react-test-renderer": "16.3.1",
     "tslint": "5.11.0",
-    "tslint-eslint-rules": "^5.4.0",
+    "tslint-config-standard": "^8.0.1",
     "tslint-react": "3.6.0",
     "typescript": "^3.0.3"
   },
