@@ -1,19 +1,11 @@
 package network.mysterium.vpn;
 
-import android.util.Log;
-
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
 
-import java.util.Map;
-import java.util.HashMap;
+import mysterium.Mysterium;
 
 public class MysteriumClientModule extends ReactContextBaseJavaModule {
 
@@ -28,6 +20,7 @@ public class MysteriumClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startService(int port, Promise promise) {
+        Mysterium.newNode();
         promise.resolve(0); // return 0 for successful start
     }
 }
