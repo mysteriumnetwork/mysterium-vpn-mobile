@@ -1,13 +1,31 @@
-## How to run
+## Running
 
-* [Install and run Tequilapi](https://github.com/MysteriumNetwork/node) on your PC with default port 4050
-* [Install ADB](https://www.xda-developers.com/install-adb-windows-macos-linux) and connect Android phone:
-* [Install React Native](https://facebook.github.io/react-native/docs/getting-started.html), target OS: Android
-* yarn install
-* yarn start
+### Android
 
-Currently tested only on Android devices
+* [Install and run Tequilapi](https://github.com/MysteriumNetwork/node) on your PC
+* [Install ADB](https://www.xda-developers.com/install-adb-windows-macos-linux)
+* Connect Android phone, check if `adb` can see it:
+```bash
+adb devices
+```
+* Install React Native CLI:
+```bash
+npm install -g react-native-cli
+```
+* Install Android SDK, export `ANDROID_HOME` to SDK location, i.e.:
+```bash
+export ANDROID_HOME=/Users/<username>/Library/Android/sdk/
+```
 
+* Install dependencies:
+```bash
+yarn install
+```
+
+* Start application:
+```bash
+yarn start
+```
 ## Contributing
 
 * Running tests:
@@ -18,4 +36,3 @@ yarn test
 * Running linter:
 ```bash
 yarn lint
-```
