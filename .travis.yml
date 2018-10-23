@@ -10,7 +10,3 @@ install:
 - yarn
 script:
 - yarn ci
-before_deploy:
-  # todo
-deploy:
-  # todo
