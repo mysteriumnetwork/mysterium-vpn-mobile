@@ -7,8 +7,7 @@ cache:
 before_cache:
 - rm -rf node_modules/.yarn-integrity
 install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- source ~/.bashrc
+- yarn
 script:
 - yarn ci
 before_deploy:
