@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- "9"
+cache:
+  directories:
+  - node_modules
+before_cache:
+- rm -rf node_modules/.yarn-integrity
+install:
+- yarn
+script:
+- yarn ci
