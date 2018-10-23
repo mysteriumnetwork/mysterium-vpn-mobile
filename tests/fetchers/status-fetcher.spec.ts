@@ -94,7 +94,7 @@ describe('StatusFetcher', () => {
 
       const connectedStatus = {
         status: 'Connected',
-        sessionId: 'MOCKED_SESSION_ID',
+        sessionId: 'MOCKED_SESSION_ID'
       }
       api.connectionStatus = jest.fn()
         .mockReturnValue(connectedStatus)

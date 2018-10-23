@@ -7,7 +7,7 @@
     "android": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
     "ios": "react-native run-ios",
     "test": "jest",
-    "lint": "tslint -p . -c tslint.json 'js/**/*.{ts,tsx}'",
+    "lint": "tslint -p . -c tslint.json 'js/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
     "ci": "yarn lint && yarn test"
   },
   "devDependencies": {
