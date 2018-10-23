@@ -16,6 +16,10 @@ coverage/
 # expo
 .expo/
 
+# react native
+index.android.bundle
+index.android.bundle.meta
+
 # dependencies
 /node_modules
 

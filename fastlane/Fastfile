@@ -15,8 +15,18 @@ platform :ios do
 end
 
 platform :android do
+  def bundle_offline_js
+    sh("cd .. && "\
+       "react-native bundle --platform android"\
+                          " --dev false"\
+                          " --entry-file index.js"\
+                          " --bundle-output android/app/src/main/assets/index.android.bundle"\
+                          " --assets-dest android/app/src/main/res")
+  end
+
   desc "Push a new beta build to Playstore"
   lane :beta do
+    bundle_offline_js
     gradle(
       task: "clean assembleRelease", 
       project_dir: "android",
