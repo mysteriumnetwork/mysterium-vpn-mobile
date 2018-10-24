@@ -28,6 +28,12 @@ describe('Storage', () => {
       expect(favorites).toEqual({ 1: true })
       expect(AsyncStorage.getItem).toBeCalledWith(FAVORITES_KEY)
     })
+
+    it('resolves to favorites hash-map', async () => {
+      mockFavorites = ''
+      const favorites = await storage.getFavorites()
+      expect(favorites).toEqual({})
+    })
   })
 
   describe('.setFavorite', () => {
