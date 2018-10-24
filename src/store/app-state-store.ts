@@ -24,7 +24,7 @@ import {
 import { Proposal } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
 
-class AppStore {
+export default class AppStateStore {
   @observable
   public IdentityId?: string
   @observable
@@ -83,6 +83,3 @@ class AppStore {
     }
   }
 }
-
-const store = new AppStore()
-export { store }

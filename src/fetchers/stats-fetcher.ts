@@ -17,28 +17,26 @@
 
 import { action } from 'mobx'
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
-import { store } from '../store/app-store'
+import AppStateStore from '../store/app-state-store'
 import { FetcherBase } from './fetcher-base'
 
-type StatsFetcherProps = {
-  connectionStatistics (): Promise<ConnectionStatisticsDTO>
-}
+type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  constructor (private props: StatsFetcherProps) {
+  constructor (private connectionStatistics: ConnectionStatistics, private readonly store:AppStateStore) {
     super('Statistics')
   }
 
   protected get canRun (): boolean {
-    return store.isConnected
+    return this.store.isConnected
   }
 
   protected async fetch (): Promise<ConnectionStatisticsDTO> {
-    return this.props.connectionStatistics()
+    return this.connectionStatistics()
   }
 
   @action
   protected update (stats: ConnectionStatisticsDTO) {
-    store.Statistics = stats
+    this.store.Statistics = stats
   }
 }

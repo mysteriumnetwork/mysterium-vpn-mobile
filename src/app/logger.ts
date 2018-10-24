@@ -1,7 +1,9 @@
 import { reaction } from 'mobx'
-import { store } from '../store/app-store'
+import AppStateStore from '../store/app-state-store'
 
-class Logger {
+export default class Logger {
+  constructor(private readonly store: AppStateStore) {
+  }
   private loggingStarted: boolean = false
 
   public logObservableChanges (): void {
@@ -10,24 +12,24 @@ class Logger {
     }
     this.loggingStarted = true
 
-    reaction(() => store.IdentityId, () => {
-      this.info('Identity unlocked', store.IdentityId)
+    reaction(() => this.store.IdentityId, () => {
+      this.info('Identity unlocked', this.store.IdentityId)
     })
 
-    reaction(() => store.SelectedProviderId, () => {
-      this.info('Selected provider ID selected', store.SelectedProviderId)
+    reaction(() => this.store.SelectedProviderId, () => {
+      this.info('Selected provider ID selected', this.store.SelectedProviderId)
     })
 
-    reaction(() => store.ConnectionStatus, () => {
-      this.info('Connection status changed', store.ConnectionStatus)
+    reaction(() => this.store.ConnectionStatus, () => {
+      this.info('Connection status changed', this.store.ConnectionStatus)
     })
 
-    reaction(() => store.IP, () => {
-      this.info('IP changed', store.IP)
+    reaction(() => this.store.IP, () => {
+      this.info('IP changed', this.store.IP)
     })
 
-    reaction(() => store.Proposals, () => {
-      this.info('Proposals updated', store.Proposals)
+    reaction(() => this.store.Proposals, () => {
+      this.info('Proposals updated', this.store.Proposals)
     })
   }
 
@@ -35,6 +37,3 @@ class Logger {
     console.info('[LOG]', ...args)
   }
 }
-
-const logger = new Logger()
-export { logger }

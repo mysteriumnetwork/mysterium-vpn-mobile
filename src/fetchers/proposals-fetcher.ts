@@ -21,34 +21,32 @@ import {
   Proposal,
   sortFavorites
 } from '../libraries/favorite-proposal'
-import { store } from '../store/app-store'
+import AppStateStore from '../store/app-state-store'
 import { FetcherBase } from './fetcher-base'
 
-type ProposalsFetcherProps = {
-  findProposals (filter?: ProposalsFilter): Promise<ProposalDTO[]>
-}
+type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private props: ProposalsFetcherProps) {
+  constructor (private findProposals: FindProposals, private readonly store:AppStateStore) {
     super('Proposals')
   }
 
   protected async fetch (): Promise<Proposal[]> {
-    const proposals: ProposalDTO[] = await this.props.findProposals()
+    const proposals: ProposalDTO[] = await this.findProposals()
     return sortFavorites(proposals)
   }
 
   @action
   protected update (proposals: Proposal[]) {
-    store.Proposals = proposals
+    this.store.Proposals = proposals
 
     // TODO: support non-selected proposal
     // ensure that proposal is always selected
-    const containsSelectedProvider = store.Proposals.some(
-      (p: Proposal) => p.id === store.SelectedProviderId
+    const containsSelectedProvider = this.store.Proposals.some(
+      (p: Proposal) => p.id === this.store.SelectedProviderId
     )
     if (!containsSelectedProvider) {
-      store.SelectedProviderId = store.Proposals[0].id
+      this.store.SelectedProviderId = this.store.Proposals[0].id
     }
   }
 }

@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-
 import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
 
 import { CONFIG } from '../config'
@@ -24,7 +22,7 @@ import { IPFetcher } from '../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../fetchers/stats-fetcher'
 import { StatusFetcher } from '../fetchers/status-fetcher'
-import { store } from '../store/app-store'
+import AppStateStore from '../store/app-state-store'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
@@ -34,14 +32,20 @@ const api = new TequilapiClientFactory(
 /***
  * API operations level
  */
-export default class AppTequilapi extends React.Component {
-  protected proposalFetcher = new ProposalsFetcher(api)
-  private statusFetcher = new StatusFetcher(api)
-  private ipFetcher = new IPFetcher(api)
-  private statsFetcher = new StatsFetcher(api)
 
-  constructor () {
-    super({})
+export default class AppTequilapi {
+  public proposalFetcher: ProposalsFetcher
+  private statusFetcher: StatusFetcher
+  private ipFetcher: IPFetcher
+  private statsFetcher: StatsFetcher
+  public readonly store: AppStateStore
+
+  constructor (store: AppStateStore) {
+    this.store = store
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals, this.store)
+    this.statusFetcher = new StatusFetcher(api.connectionStatus, this.store)
+    this.ipFetcher = new IPFetcher(api.connectionIP, this.store)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics, this.store)
     this.startFetchers()
   }
 
@@ -49,20 +53,20 @@ export default class AppTequilapi extends React.Component {
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  protected async connect (): Promise<void> {
-    if (!store.IdentityId || !store.SelectedProviderId) {
-      console.error('Not enough data to connect', store)
+  public async connect (): Promise<void> {
+    if (!this.store.IdentityId || !this.store.SelectedProviderId) {
+      console.error('Not enough data to connect', this.store)
       return
     }
 
-    store.resetIP()
-    store.setConnectionStatusToConnecting()
+    this.store.resetIP()
+    this.store.setConnectionStatusToConnecting()
 
     try {
       const connection = await api.connectionCreate({
-        consumerId: store.IdentityId,
+        consumerId: this.store.IdentityId,
         providerCountry: '',
-        providerId: store.SelectedProviderId
+        providerId: this.store.SelectedProviderId
       })
       console.log('connected', connection)
     } catch (e) {
@@ -73,9 +77,9 @@ export default class AppTequilapi extends React.Component {
   /***
    * Tries to disconnect from VPN server
    */
-  protected async disconnect (): Promise<void> {
-    store.resetIP()
-    store.setConnectionStatusToDisconnecting()
+  public async disconnect (): Promise<void> {
+    this.store.resetIP()
+    this.store.setConnectionStatusToDisconnecting()
 
     try {
       await api.connectionCancel()
@@ -88,7 +92,7 @@ export default class AppTequilapi extends React.Component {
   /***
    * Tries to login to API, must be completed once before connect
    */
-  protected async unlock (): Promise<void> {
+  public async unlock (): Promise<void> {
     let identities: IdentityDTO[]
     try {
       identities = await api.identitiesList()
@@ -109,7 +113,7 @@ export default class AppTequilapi extends React.Component {
 
     try {
       await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-      store.IdentityId = identityId
+      this.store.IdentityId = identityId
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }

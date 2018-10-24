@@ -15,39 +15,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import { store } from '../store/app-store'
 import styles from './app-styles'
-import AppTequilapi from './app-tequilapi'
+import {default as AppTequilapi} from './app-tequilapi'
 import Proposals from './proposals'
 import Stats from './stats'
+import { observer } from 'mobx-react/native'
+
+type TequilapiProp = {tequilapi: AppTequilapi}
 
 @observer
-export default class App extends AppTequilapi {
+export default class App extends React.Component<TequilapiProp> {
+  private readonly tequilapi:AppTequilapi
+
+  constructor(props: TequilapiProp) {
+    super(props)
+    this.tequilapi = props.tequilapi
+  }
+
   public render (): ReactNode {
     return (
       // @ts-ignore TODO remove ignore or transform
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
         <Text>
-          {store.ConnectionStatus
-            ? store.ConnectionStatus.status
+          {this.tequilapi.store.ConnectionStatus
+            ? this.tequilapi.store.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text>IP: {this.tequilapi.store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
         <Proposals
-          proposalsFetcher={this.proposalFetcher}
-          proposalsStore={store}
+          proposalsFetcher={this.tequilapi.proposalFetcher}
+          proposalsStore={this.tequilapi.store}
         />
         <Button
           title={this.buttonText}
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
         />
-        {store.Statistics ? <Stats {...store.Statistics} /> : null}
+        {this.tequilapi.store.Statistics ? <Stats {...this.tequilapi.store.Statistics} /> : null}
       </View>
     )
   }
@@ -58,7 +66,7 @@ export default class App extends AppTequilapi {
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.unlock()
+    await this.tequilapi.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
@@ -66,12 +74,12 @@ export default class App extends AppTequilapi {
   }
 
   private get buttonEnabled (): boolean {
-    return store.isReady
+    return this.tequilapi.store.isReady
   }
 
   private get buttonText (): string {
-    const isReady = store.isReady
-    const isConnected = store.isConnected
+    const isReady = this.tequilapi.store.isReady
+    const isConnected = this.tequilapi.store.isConnected
     return isReady
       ? isConnected
         ? 'disconnect'
@@ -84,14 +92,14 @@ export default class App extends AppTequilapi {
    * Is connection state is unknown - does nothing
    */
   private async connectOrDisconnect () {
-    if (!store.isReady) {
+    if (!this.tequilapi.store.isReady) {
       return
     }
 
-    if (store.isConnected) {
-      await this.disconnect()
+    if (this.tequilapi.store.isConnected) {
+      await this.tequilapi.disconnect()
     } else {
-      await this.connect()
+      await this.tequilapi.connect()
     }
   }
 }
