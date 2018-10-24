@@ -17,9 +17,9 @@
 /** @format */
 
 import {AppRegistry} from 'react-native'
-import App from './js/app/app'
+import App from './src/app/app'
 import {name as appName} from './app.json'
-import { logger } from './js/app/logger'
+import { logger } from './src/app/logger'
 
 logger.logObservableChanges()
 AppRegistry.registerComponent(appName, () => App)
