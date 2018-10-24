@@ -21,23 +21,12 @@ import { Countries } from './countries'
 import { storage } from './favorite-storage'
 
 class Proposal {
-  public static compare (
-    a: Proposal,
-    b: Proposal
-  ): number {
-    return a.compareTo(b)
-  }
-
   public name: string
   public id: string
   public isFavorite: boolean
 
   constructor (proposal: ProposalDTO, isFavorite: boolean) {
-    const countryCode =
-      proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate
-        ? proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-        : ''
-    this.name = Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
+    this.name = this.getCountryName(proposal)
     this.id = proposal.providerId
     this.isFavorite = isFavorite
   }
@@ -59,15 +48,28 @@ class Proposal {
     }
     return 0
   }
+
+  private getCountryName (proposal: ProposalDTO) {
+    let countryCode = ''
+
+    if (proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate) {
+      countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+    }
+
+    return Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
+  }
 }
 
-async function sortFavorites (
-  proposals: ProposalDTO[]
-): Promise<Proposal[]> {
+const sortFunction = (a: Proposal, b: Proposal): number => {
+  return a.compareTo(b)
+}
+
+async function sortFavorites (proposals: ProposalDTO[]): Promise<Proposal[]> {
   const favorites = await storage.getFavorites()
+
   return proposals
     .map(p => new Proposal(p, favorites[p.providerId] === true))
-    .sort(Proposal.compare)
+    .sort(sortFunction)
 }
 
 export { sortFavorites, Proposal }

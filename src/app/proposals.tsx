@@ -35,15 +35,18 @@ type ProposalsProps = {
 export default class Proposals extends React.Component<ProposalsProps> {
   private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
-    return <Picker.Item key={p.id} label={label} value={p.id} />
+
+    return <Picker.Item key={p.id} label={label} value={p.id}/>
   }
 
   public render (): ReactNode {
     const proposals = this.props.proposalsStore.Proposals
     const selectedProviderId = this.props.proposalsStore.SelectedProviderId
+
     if (!proposals) {
       return <Text>Loading proposals...</Text>
     }
+
     return (
       <View style={{ flexDirection: 'row' }}>
         <Picker

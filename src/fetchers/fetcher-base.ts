@@ -25,7 +25,8 @@ export abstract class FetcherBase<T> implements IFetcher {
 
   private interval?: Timer
 
-  constructor (protected name: string) {}
+  constructor (protected name: string) {
+  }
 
   public get isStarted (): boolean {
     return this.interval !== undefined
@@ -39,6 +40,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     this.run().catch(error => {
       console.error('Fetcher run failed:', error)
     })
+
     this.interval = setInterval(
       () => this.run(),
       interval
@@ -49,6 +51,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     if (this.interval) {
       clearInterval(this.interval)
     }
+
     this.interval = undefined
   }
 
@@ -56,6 +59,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     if (!this.isRunning) {
       return this.run()
     }
+
     return new Promise(resolve => {
       // run as soon as possible
       reaction(
@@ -83,6 +87,7 @@ export abstract class FetcherBase<T> implements IFetcher {
     if (this.isRunning || !this.canRun) {
       return
     }
+
     this.isRunning = true
 
     try {
