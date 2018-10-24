@@ -1,6 +1,6 @@
 import { storage } from '../../js/libraries/storage'
 
-let mockFavorites = ''
+let mockFavorites: string
 
 jest.mock('react-native', () => ({
   AsyncStorage: {
@@ -21,37 +21,26 @@ describe('Storage', () => {
   const { AsyncStorage } = require('react-native')
   const FAVORITES_KEY = '@Favorites:KEY'
 
-  beforeEach(() => {
-    AsyncStorage.setItem.mockClear()
-    AsyncStorage.getItem.mockClear()
-  })
-
   describe('.getFavorites', () => {
-    it('should return a promise with favorites', () => {
+    it('resolves to favorites hash-map', async () => {
       mockFavorites = '{"1":true}'
-      return storage.getFavorites().then((favorites) => {
-        expect(favorites).toEqual({ 1: true })
-        expect(AsyncStorage.getItem).toBeCalledWith(FAVORITES_KEY)
-      })
+      const favorites = await storage.getFavorites()
+      expect(favorites).toEqual({ 1: true })
+      expect(AsyncStorage.getItem).toBeCalledWith(FAVORITES_KEY)
     })
   })
 
   describe('.setFavorite', () => {
-    it('should include proposalId when adding', () => {
+    it('includes passed proposalId in favorites hash-map when isFavorite is true', async () => {
       mockFavorites = ''
-      return storage.setFavorite('5', true).then(() => {
-        expect(AsyncStorage.setItem).toBeCalledWith(
-          FAVORITES_KEY,
-          '{"5":true}'
-        )
-      })
+      await storage.setFavorite('5', true)
+      expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{"5":true}')
     })
 
-    it('should remove proposalId when removing', () => {
+    it('removes passed proposalId from favorites hash-map when isFavorite is false', async () => {
       mockFavorites = '{"1":true}'
-      return storage.setFavorite('1', false).then(() => {
-        expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{}')
-      })
+      await storage.setFavorite('1', false)
+      expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{}')
     })
   })
 })
