@@ -18,7 +18,7 @@
 import { ProposalDTO } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { Countries } from './countries'
-import { storage } from './storage'
+import { storage } from './favorite-storage'
 
 class Proposal {
   public static compare (

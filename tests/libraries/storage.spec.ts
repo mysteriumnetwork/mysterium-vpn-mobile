@@ -1,4 +1,4 @@
-import { storage } from '../../js/libraries/storage'
+import { storage } from '../../src/libraries/favorite-storage'
 
 let mockFavorites: string
 

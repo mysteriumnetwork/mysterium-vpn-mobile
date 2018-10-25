@@ -1,7 +1,7 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
-import { CONFIG } from '../../js/config'
-import { StatusFetcher } from '../../js/fetchers/status-fetcher'
-import { store } from '../../js/store/app-store'
+import { CONFIG } from '../../src/config'
+import { StatusFetcher } from '../../src/fetchers/status-fetcher'
+import { store } from '../../src/store/app-store'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {

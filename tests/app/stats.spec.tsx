@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import Stats from '../../js/app/stats'
+import Stats from '../../src/app/stats'
 
 describe('Stats', () => {
   it('renders correctly', () => {
