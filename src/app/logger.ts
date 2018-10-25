@@ -2,9 +2,9 @@ import { reaction } from 'mobx'
 import AppStateStore from '../store/app-state-store'
 
 export default class Logger {
-  constructor(private readonly store: AppStateStore) {
-  }
   private loggingStarted: boolean = false
+  constructor (private readonly store: AppStateStore) {
+  }
 
   public logObservableChanges (): void {
     if (this.loggingStarted) {

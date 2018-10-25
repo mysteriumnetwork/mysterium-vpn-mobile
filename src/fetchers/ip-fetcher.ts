@@ -24,7 +24,7 @@ import { FetcherBase } from './fetcher-base'
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor (private connectionIP: ConnectionIP, private readonly store:AppStateStore) {
+  constructor (private connectionIP: ConnectionIP, private readonly store: AppStateStore) {
     super('IP')
 
     reaction(() => this.store.ConnectionStatus, () => {

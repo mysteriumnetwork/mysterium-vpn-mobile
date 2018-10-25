@@ -27,7 +27,7 @@ import { FetcherBase } from './fetcher-base'
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private findProposals: FindProposals, private readonly store:AppStateStore) {
+  constructor (private findProposals: FindProposals, private readonly store: AppStateStore) {
     super('Proposals')
   }
 

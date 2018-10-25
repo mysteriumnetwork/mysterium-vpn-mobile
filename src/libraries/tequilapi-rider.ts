@@ -35,10 +35,10 @@ const api = new TequilapiClientFactory(
 
 export default class TequilapiRider {
   public proposalFetcher: ProposalsFetcher
+  public readonly store: AppStateStore
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
-  public readonly store: AppStateStore
 
   constructor (store: AppStateStore) {
     this.store = store

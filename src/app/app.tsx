@@ -15,23 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import styles from './app-styles'
 import TequilapiRider from '../libraries/tequilapi-rider'
+import styles from './app-styles'
 import Proposals from './proposals'
 import Stats from './stats'
-import { observer } from 'mobx-react/native'
 
 type TequilapiProp = {tequilapi: TequilapiRider}
 
 @observer
 export default class App extends React.Component<TequilapiProp> {
-  private readonly tequilapi:TequilapiRider
+  private readonly tequilapi: TequilapiRider
 
-  constructor(props: TequilapiProp) {
+  constructor (props: TequilapiProp) {
     super(props)
     this.tequilapi = props.tequilapi
   }

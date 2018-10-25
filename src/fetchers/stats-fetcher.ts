@@ -23,7 +23,7 @@ import { FetcherBase } from './fetcher-base'
 type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  constructor (private connectionStatistics: ConnectionStatistics, private readonly store:AppStateStore) {
+  constructor (private connectionStatistics: ConnectionStatistics, private readonly store: AppStateStore) {
     super('Statistics')
   }
 
