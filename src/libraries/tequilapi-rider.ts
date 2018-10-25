@@ -33,7 +33,7 @@ const api = new TequilapiClientFactory(
  * API operations level
  */
 
-export default class AppTequilapi {
+export default class TequilapiRider {
   public proposalFetcher: ProposalsFetcher
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher

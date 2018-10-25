@@ -20,16 +20,16 @@ import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import styles from './app-styles'
-import {default as AppTequilapi} from './app-tequilapi'
+import TequilapiRider from '../libraries/tequilapi-rider'
 import Proposals from './proposals'
 import Stats from './stats'
 import { observer } from 'mobx-react/native'
 
-type TequilapiProp = {tequilapi: AppTequilapi}
+type TequilapiProp = {tequilapi: TequilapiRider}
 
 @observer
 export default class App extends React.Component<TequilapiProp> {
-  private readonly tequilapi:AppTequilapi
+  private readonly tequilapi:TequilapiRider
 
   constructor(props: TequilapiProp) {
     super(props)

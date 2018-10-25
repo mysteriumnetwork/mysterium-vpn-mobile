@@ -1,12 +1,12 @@
 import * as React from 'react'
 import App from './app'
 import AppStateStore from '../store/app-state-store'
-import AppTequilapi from './app-tequilapi'
+import TequilapiRider from '../libraries/tequilapi-rider'
 import {SFC} from 'react'
 import Logger from './logger'
 
 const store = new AppStateStore()
-const tequilapi = new AppTequilapi(store)
+const tequilapi = new TequilapiRider(store)
 const logger = new Logger(store)
 logger.logObservableChanges()
 
