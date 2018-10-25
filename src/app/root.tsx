@@ -1,13 +1,18 @@
 import * as React from 'react'
-import TequilapiRider from '../libraries/tequilapi-rider'
-import AppStateStore from '../store/app-state-store'
+import TequilaRider from '../libraries/tequila/rider'
+import TequilaState from '../libraries/tequila/state'
 import App from './app'
 import Logger from './logger'
 
-const store = new AppStateStore()
-const tequilapi = new TequilapiRider(store)
-const logger = new Logger(store)
+const tequilaState = new TequilaState()
+const tequilaRider = new TequilaRider(tequilaState)
+const logger = new Logger(tequilaState)
 logger.logObservableChanges()
 
-const Root: React.SFC = () => <App tequilapi={tequilapi}/>
+const Root: React.SFC = () => (
+  <App
+    tequilaRider={tequilaRider}
+    tequilaState={tequilaState}
+  />
+)
 export default Root

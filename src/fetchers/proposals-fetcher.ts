@@ -21,13 +21,13 @@ import {
   Proposal,
   sortFavorites
 } from '../libraries/favorite-proposal'
-import AppStateStore from '../store/app-state-store'
+import TequilaState from '../libraries/tequila/state'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private findProposals: FindProposals, private readonly store: AppStateStore) {
+  constructor (private findProposals: FindProposals, private readonly store: TequilaState) {
     super('Proposals')
   }
 

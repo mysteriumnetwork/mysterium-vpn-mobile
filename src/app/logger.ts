@@ -1,9 +1,9 @@
 import { reaction } from 'mobx'
-import AppStateStore from '../store/app-state-store'
+import TequilaState from '../libraries/tequila/state'
 
 export default class Logger {
   private loggingStarted: boolean = false
-  constructor (private readonly store: AppStateStore) {
+  constructor (private readonly store: TequilaState) {
   }
 
   public logObservableChanges (): void {

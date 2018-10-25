@@ -17,12 +17,12 @@
 
 import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
 
-import { CONFIG } from '../config'
-import { IPFetcher } from '../fetchers/ip-fetcher'
-import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
-import { StatsFetcher } from '../fetchers/stats-fetcher'
-import { StatusFetcher } from '../fetchers/status-fetcher'
-import AppStateStore from '../store/app-state-store'
+import { CONFIG } from '../../config'
+import { IPFetcher } from '../../fetchers/ip-fetcher'
+import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
+import { StatsFetcher } from '../../fetchers/stats-fetcher'
+import { StatusFetcher } from '../../fetchers/status-fetcher'
+import TequilaState from './state'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
@@ -33,14 +33,14 @@ const api = new TequilapiClientFactory(
  * API operations level
  */
 
-export default class TequilapiRider {
+export default class TequilaRider {
   public proposalFetcher: ProposalsFetcher
-  public readonly store: AppStateStore
+  public readonly store: TequilaState
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
-  constructor (store: AppStateStore) {
+  constructor (store: TequilaState) {
     this.store = store
     this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.store)
     this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.store)

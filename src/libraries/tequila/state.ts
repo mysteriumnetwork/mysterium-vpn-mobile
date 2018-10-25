@@ -21,10 +21,10 @@ import {
   ConnectionStatus,
   ConnectionStatusDTO
 } from 'mysterium-tequilapi'
-import { Proposal } from '../libraries/favorite-proposal'
-import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
+import { Proposal } from '../favorite-proposal'
+import { ConnectionStatusEnum } from './enums'
 
-export default class AppStateStore {
+export default class TequilaState {
   @observable
   public IdentityId?: string
   @observable

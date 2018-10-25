@@ -1,11 +1,11 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../src/config'
 import { StatusFetcher } from '../../src/fetchers/status-fetcher'
-import AppStateStore from '../../src/store/app-state-store'
+import TequilaState from '../../src/libraries/tequila/state'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {
-  const store = new AppStateStore()
+  const store = new TequilaState()
   const refreshInterval = CONFIG.REFRESH_INTERVALS.CONNECTION
   let api: TequilapiClient
   let fetcher: StatusFetcher

@@ -17,14 +17,14 @@
 
 import { action, reaction } from 'mobx'
 import { ConnectionIPDTO } from 'mysterium-tequilapi'
-import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
-import AppStateStore from '../store/app-state-store'
+import { ConnectionStatusEnum } from '../libraries/tequila/enums'
+import TequilaState from '../libraries/tequila/state'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor (private connectionIP: ConnectionIP, private readonly store: AppStateStore) {
+  constructor (private connectionIP: ConnectionIP, private readonly store: TequilaState) {
     super('IP')
 
     reaction(() => this.store.ConnectionStatus, () => {

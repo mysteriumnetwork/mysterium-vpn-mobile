@@ -20,20 +20,26 @@ import React, { ReactNode } from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import TequilapiRider from '../libraries/tequilapi-rider'
+import TequilaRider from '../libraries/tequila/rider'
+import TequilaState from '../libraries/tequila/state'
 import styles from './app-styles'
 import Proposals from './proposals'
 import Stats from './stats'
 
-type TequilapiProp = {tequilapi: TequilapiRider}
+type TequilapiProp = {
+  tequilaRider: TequilaRider,
+  tequilaState: TequilaState
+}
 
 @observer
 export default class App extends React.Component<TequilapiProp> {
-  private readonly tequilapi: TequilapiRider
+  private readonly tequilaRider: TequilaRider
+  private readonly tequilaState: TequilaState
 
   constructor (props: TequilapiProp) {
     super(props)
-    this.tequilapi = props.tequilapi
+    this.tequilaRider = props.tequilaRider
+    this.tequilaState = props.tequilaState
   }
 
   public render (): ReactNode {
@@ -41,21 +47,21 @@ export default class App extends React.Component<TequilapiProp> {
       // @ts-ignore TODO remove ignore or transform
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
         <Text>
-          {this.tequilapi.store.ConnectionStatus
-            ? this.tequilapi.store.ConnectionStatus.status
+          {this.tequilaState.ConnectionStatus
+            ? this.tequilaState.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {this.tequilapi.store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text>IP: {this.tequilaState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
         <Proposals
-          proposalsFetcher={this.tequilapi.proposalFetcher}
-          proposalsStore={this.tequilapi.store}
+          proposalsFetcher={this.tequilaRider.proposalFetcher}
+          proposalsStore={this.tequilaState}
         />
         <Button
           title={this.buttonText}
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
         />
-        {this.tequilapi.store.Statistics ? <Stats {...this.tequilapi.store.Statistics} /> : null}
+        {this.tequilaState.Statistics ? <Stats {...this.tequilaState.Statistics} /> : null}
       </View>
     )
   }
@@ -66,7 +72,7 @@ export default class App extends React.Component<TequilapiProp> {
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.tequilapi.unlock()
+    await this.tequilaRider.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
@@ -74,12 +80,12 @@ export default class App extends React.Component<TequilapiProp> {
   }
 
   private get buttonEnabled (): boolean {
-    return this.tequilapi.store.isReady
+    return this.tequilaState.isReady
   }
 
   private get buttonText (): string {
-    const isReady = this.tequilapi.store.isReady
-    const isConnected = this.tequilapi.store.isConnected
+    const isReady = this.tequilaState.isReady
+    const isConnected = this.tequilaState.isConnected
     return isReady
       ? isConnected
         ? 'disconnect'
@@ -92,14 +98,14 @@ export default class App extends React.Component<TequilapiProp> {
    * Is connection state is unknown - does nothing
    */
   private async connectOrDisconnect () {
-    if (!this.tequilapi.store.isReady) {
+    if (!this.tequilaState.isReady) {
       return
     }
 
-    if (this.tequilapi.store.isConnected) {
-      await this.tequilapi.disconnect()
+    if (this.tequilaState.isConnected) {
+      await this.tequilaRider.disconnect()
     } else {
-      await this.tequilapi.connect()
+      await this.tequilaRider.connect()
     }
   }
 }
