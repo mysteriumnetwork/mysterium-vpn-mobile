@@ -42,10 +42,10 @@ export default class AppTequilapi {
 
   constructor (store: AppStateStore) {
     this.store = store
-    this.proposalFetcher = new ProposalsFetcher(api.findProposals, this.store)
-    this.statusFetcher = new StatusFetcher(api.connectionStatus, this.store)
-    this.ipFetcher = new IPFetcher(api.connectionIP, this.store)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics, this.store)
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.store)
+    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.store)
+    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.store)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.store)
     this.startFetchers()
   }
 
