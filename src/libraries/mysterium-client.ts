@@ -27,4 +27,5 @@ interface IMysteriumClient {
 }
 
 const mysteriumClient: IMysteriumClient = NativeModules.MysteriumClientModule
+
 export { mysteriumClient }

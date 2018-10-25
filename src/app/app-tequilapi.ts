@@ -54,8 +54,10 @@ export default class AppTequilapi extends React.Component {
       console.error('Not enough data to connect', store)
       return
     }
+
     store.resetIP()
     store.setConnectionStatusToConnecting()
+
     try {
       const connection = await api.connectionCreate({
         consumerId: store.IdentityId,
@@ -74,6 +76,7 @@ export default class AppTequilapi extends React.Component {
   protected async disconnect (): Promise<void> {
     store.resetIP()
     store.setConnectionStatusToDisconnecting()
+
     try {
       await api.connectionCancel()
       console.log('disconnected')
@@ -95,15 +98,10 @@ export default class AppTequilapi extends React.Component {
     }
 
     let identityId: string | null = null
+
     try {
-      if (identities.length) {
-        identityId = identities[0].id
-      } else {
-        const newIdentity: IdentityDTO = await api.identityCreate(
-          CONFIG.PASSPHRASE
-        )
-        identityId = newIdentity.id
-      }
+      const identity = await this.findOrCreateIdentity(identities)
+      identityId = identity.id
     } catch (e) {
       console.warn('api.identityCreate failed', e)
       return
@@ -115,6 +113,17 @@ export default class AppTequilapi extends React.Component {
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }
+  }
+
+  private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {
+    if (identities.length) {
+      return identities[0]
+    }
+
+    const newIdentity: IdentityDTO = await api.identityCreate(
+      CONFIG.PASSPHRASE
+    )
+    return newIdentity
   }
 
   private startFetchers () {

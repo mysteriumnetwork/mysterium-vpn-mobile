@@ -41,12 +41,16 @@ function timeDisplay (seconds: number): string {
   if (seconds < 0) {
     throw new Error('invalid input')
   }
+
   const h = Math.floor(seconds / 3600)
   const hh = h > 9 ? h : '0' + h
+
   const m = Math.floor((seconds % 3600) / 60)
   const mm = m > 9 ? m : '0' + m
+
   const s = seconds % 60
   const ss = s > 9 ? s : '0' + s
+
   return `${hh}:${mm}:${ss}`
 }
 
