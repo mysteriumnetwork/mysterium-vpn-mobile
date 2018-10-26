@@ -1,3 +1,4 @@
 binary "https://building42.github.io/Specs/Carthage/iOS/Crashlytics.json" "3.11.0"
 binary "https://building42.github.io/Specs/Carthage/iOS/Fabric.json" "1.8.0"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json" "5.11.0"
+binary "https://releases.mysterium.network/Carthage.json" "0.5.0"

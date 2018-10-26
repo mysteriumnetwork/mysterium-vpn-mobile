@@ -26,6 +26,7 @@
 		377AE786213593FB00A494E7 /* MysteriumClientModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 377AE785213593FA00A494E7 /* MysteriumClientModule.m */; };
 		378D2192218376CC00EB2531 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D2191218376CC00EB2531 /* PacketTunnelProvider.swift */; };
 		378D2197218376CC00EB2531 /* MysteriumNetworkExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 378D218F218376CC00EB2531 /* MysteriumNetworkExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		378D21C52183781800EB2531 /* Mysterium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 378D21C42183781800EB2531 /* Mysterium.framework */; };
 		378D21C92183877500EB2531 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 378D21C82183877500EB2531 /* NetworkExtension.framework */; };
 		37C304E02163CE2F00DAB0D1 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C304B12163CE2E00DAB0D1 /* FirebaseCoreDiagnostics.framework */; };
 		37C304E22163CE2F00DAB0D1 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C304D82163CE2E00DAB0D1 /* GoogleAppMeasurement.framework */; };
@@ -359,6 +360,7 @@
 		378D2193218376CC00EB2531 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		378D2194218376CC00EB2531 /* MysteriumNetworkExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MysteriumNetworkExtension.entitlements; sourceTree = "<group>"; };
 		378D21C1218376D200EB2531 /* MysteriumVPN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MysteriumVPN.entitlements; path = MysteriumVPN/MysteriumVPN.entitlements; sourceTree = "<group>"; };
+		378D21C42183781800EB2531 /* Mysterium.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mysterium.framework; path = Carthage/Build/Mac/Mysterium.framework; sourceTree = "<group>"; };
 		378D21C82183877500EB2531 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		37C304B12163CE2E00DAB0D1 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCoreDiagnostics.framework; path = Carthage/Build/iOS/FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		37C304D72163CE2E00DAB0D1 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = Carthage/Build/iOS/Firebase.framework; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				378D21C52183781800EB2531 /* Mysterium.framework in Frameworks */,
 				378D21C92183877500EB2531 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -548,6 +551,7 @@
 			isa = PBXGroup;
 			children = (
 				378D21C82183877500EB2531 /* NetworkExtension.framework */,
+				378D21C42183781800EB2531 /* Mysterium.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				37C304DB2163CE2E00DAB0D1 /* Crashlytics.framework */,
 				37C304DD2163CE2F00DAB0D1 /* Fabric.framework */,
@@ -711,6 +715,7 @@
 				378D218B218376CC00EB2531 /* Sources */,
 				378D218C218376CC00EB2531 /* Frameworks */,
 				378D218D218376CC00EB2531 /* Resources */,
+				378D21C62183783500EB2531 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -1135,6 +1140,26 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		378D21C62183783500EB2531 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/Mac/Mysterium.framework",
+			);
+			name = Carthage;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Mysterium.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#/usr/local/bin/carthage copy-frameworks\n";
+		};
 		37C304EC2163CE9800DAB0D1 /* Run crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1263,6 +1288,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = YRSJ62FGRH;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1290,6 +1316,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YRSJ62FGRH;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1321,6 +1348,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YRSJ62FGRH;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MysteriumNetworkExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1352,6 +1384,11 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YRSJ62FGRH;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MysteriumNetworkExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
