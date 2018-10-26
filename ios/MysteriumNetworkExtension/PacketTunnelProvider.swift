@@ -7,9 +7,11 @@
 //
 
 import NetworkExtension
+import Mysterium
 
 class PacketTunnelProvider: NEPacketTunnelProvider {
-    
-    override func wake() {
+
+    override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
+        MysteriumNewNode()
     }
 }
