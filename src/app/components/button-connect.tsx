@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import { CONFIG } from '../../config'
 
 type ButtonConnectProps = {
@@ -10,12 +10,20 @@ type ButtonConnectProps = {
 
 export default class ButtonConnect extends Component<ButtonConnectProps> {
   public render () {
+    let buttonStylesDisabled: StyleProp<ViewStyle>
+    let textStylesDisabled: StyleProp<ViewStyle>
+
+    if (this.props.disabled) {
+      buttonStylesDisabled = styles.disabledRoot
+      textStylesDisabled = styles.disabledButtonContent
+    }
+
     return (
       <TouchableOpacity
-        style={[styles.root, this.props.disabled ? styles.disabledRoot : null]}
+        style={[styles.root, buttonStylesDisabled]}
         onPress={this.props.onPress}
       >
-        <Text style={[styles.buttonContent, this.props.disabled ? styles.disabledButtonContent : null]}>
+        <Text style={[styles.buttonContent, textStylesDisabled]}>
           {this.props.title}
         </Text>
       </TouchableOpacity>
