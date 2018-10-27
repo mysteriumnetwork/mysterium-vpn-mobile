@@ -1,5 +1,5 @@
 import { reaction } from 'mobx'
-import TequilaState from '../libraries/tequila/state'
+import TequilaState from '../libraries/tequila/tequila-state'
 
 export default class Logger {
   private loggingStarted: boolean = false

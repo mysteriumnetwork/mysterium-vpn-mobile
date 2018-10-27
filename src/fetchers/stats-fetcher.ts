@@ -17,7 +17,7 @@
 
 import { action } from 'mobx'
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
-import TequilaState from '../libraries/tequila/state'
+import TequilaState from '../libraries/tequila/tequila-state'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>

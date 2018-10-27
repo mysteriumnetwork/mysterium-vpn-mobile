@@ -22,7 +22,7 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
-import TequilaState from './state'
+import TequilaState from './tequila-state'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,

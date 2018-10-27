@@ -1,7 +1,7 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../src/config'
 import { StatusFetcher } from '../../src/fetchers/status-fetcher'
-import TequilaState from '../../src/libraries/tequila/state'
+import TequilaState from '../../src/libraries/tequila/tequila-state'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {

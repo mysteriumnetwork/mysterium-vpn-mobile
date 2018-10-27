@@ -21,7 +21,7 @@ import {
   Proposal,
   sortFavorites
 } from '../libraries/favorite-proposal'
-import TequilaState from '../libraries/tequila/state'
+import TequilaState from '../libraries/tequila/tequila-state'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>

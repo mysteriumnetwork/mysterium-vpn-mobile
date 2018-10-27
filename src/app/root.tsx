@@ -1,6 +1,6 @@
 import * as React from 'react'
-import TequilaRider from '../libraries/tequila/rider'
-import TequilaState from '../libraries/tequila/state'
+import TequilaRider from '../libraries/tequila/tequila-rider'
+import TequilaState from '../libraries/tequila/tequila-state'
 import App from './app'
 import Logger from './logger'
 

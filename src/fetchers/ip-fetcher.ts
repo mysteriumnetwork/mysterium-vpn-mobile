@@ -18,7 +18,7 @@
 import { action, reaction } from 'mobx'
 import { ConnectionIPDTO } from 'mysterium-tequilapi'
 import { ConnectionStatusEnum } from '../libraries/tequila/enums'
-import TequilaState from '../libraries/tequila/state'
+import TequilaState from '../libraries/tequila/tequila-state'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionIP = () => Promise<ConnectionIPDTO>
