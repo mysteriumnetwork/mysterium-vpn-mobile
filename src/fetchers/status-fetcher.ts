@@ -23,12 +23,12 @@ import { FetcherBase } from './fetcher-base'
 type ConnectionStatus = () => Promise<ConnectionStatusDTO>
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  constructor (private connectionStatus: ConnectionStatus, private readonly tequilaState: AppState) {
+  constructor (private connectionStatus: ConnectionStatus, private readonly appState: AppState) {
     super('ConnectionStatus')
   }
 
   protected get canRun (): boolean {
-    return this.tequilaState.IdentityId !== undefined
+    return this.appState.IdentityId !== undefined
   }
 
   protected async fetch (): Promise<ConnectionStatusDTO> {
@@ -37,6 +37,6 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
 
   @action
   protected update (status: ConnectionStatusDTO) {
-    this.tequilaState.ConnectionStatus = status
+    this.appState.ConnectionStatus = status
   }
 }

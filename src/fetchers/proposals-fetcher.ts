@@ -27,7 +27,7 @@ import { FetcherBase } from './fetcher-base'
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private findProposals: FindProposals, private readonly tequilaState: AppState) {
+  constructor (private findProposals: FindProposals, private readonly appState: AppState) {
     super('Proposals')
   }
 
@@ -38,15 +38,15 @@ export class ProposalsFetcher extends FetcherBase<Proposal[]> {
 
   @action
   protected update (proposals: Proposal[]) {
-    this.tequilaState.Proposals = proposals
+    this.appState.Proposals = proposals
 
     // TODO: support non-selected proposal
     // ensure that proposal is always selected
-    const containsSelectedProvider = this.tequilaState.Proposals.some(
-      (p: Proposal) => p.id === this.tequilaState.SelectedProviderId
+    const containsSelectedProvider = this.appState.Proposals.some(
+      (p: Proposal) => p.id === this.appState.SelectedProviderId
     )
     if (!containsSelectedProvider) {
-      this.tequilaState.SelectedProviderId = this.tequilaState.Proposals[0].id
+      this.appState.SelectedProviderId = this.appState.Proposals[0].id
     }
   }
 }

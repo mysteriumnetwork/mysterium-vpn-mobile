@@ -5,7 +5,7 @@ import { StatusFetcher } from '../../src/fetchers/status-fetcher'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {
-  const tequilaState = new AppState()
+  const appState = new AppState()
   const refreshInterval = CONFIG.REFRESH_INTERVALS.CONNECTION
   let api: TequilapiClient
   let fetcher: StatusFetcher
@@ -19,9 +19,9 @@ describe('StatusFetcher', () => {
   })
 
   beforeEach(() => {
-    tequilaState.IdentityId = 'MOCKED_IDENTITY_ID'
+    appState.IdentityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
-    fetcher = new StatusFetcher(api.connectionStatus, tequilaState)
+    fetcher = new StatusFetcher(api.connectionStatus, appState)
   })
 
   describe('.start', () => {
@@ -32,7 +32,7 @@ describe('StatusFetcher', () => {
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
 
       jest.runAllTicks()
-      expect(tequilaState.ConnectionStatus).toEqual({
+      expect(appState.ConnectionStatus).toEqual({
         status: 'NotConnected',
         sessionId: 'MOCKED_SESSION_ID'
       })
@@ -92,10 +92,10 @@ describe('StatusFetcher', () => {
       jest.runAllTicks()
 
       expect(fetcher.isRunning).toBe(false)
-      tequilaState.ConnectionStatus = undefined
+      appState.ConnectionStatus = undefined
 
       await fetcher.refresh()
-      expect(tequilaState.ConnectionStatus).toEqual({
+      expect(appState.ConnectionStatus).toEqual({
         status: 'NotConnected',
         sessionId: 'MOCKED_SESSION_ID'
       })

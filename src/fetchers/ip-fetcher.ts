@@ -24,13 +24,13 @@ import { FetcherBase } from './fetcher-base'
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor (private connectionIP: ConnectionIP, private readonly tequilaState: AppState) {
+  constructor (private connectionIP: ConnectionIP, private readonly appState: AppState) {
     super('IP')
 
-    reaction(() => this.tequilaState.ConnectionStatus, () => {
+    reaction(() => this.appState.ConnectionStatus, () => {
       if (
-        this.tequilaState.status === ConnectionStatusEnum.CONNECTED ||
-        this.tequilaState.status === ConnectionStatusEnum.NOT_CONNECTED
+        this.appState.status === ConnectionStatusEnum.CONNECTED ||
+        this.appState.status === ConnectionStatusEnum.NOT_CONNECTED
       ) {
         this.refresh().catch(error => {
           console.error('IPFetcher refresh failed:', error)
@@ -40,13 +40,13 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
   }
 
   protected get canRun (): boolean {
-    if (!this.tequilaState.IP) {
+    if (!this.appState.IP) {
       return true
     }
 
     return (
-      this.tequilaState.ConnectionStatus !== undefined &&
-      this.tequilaState.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
+      this.appState.ConnectionStatus !== undefined &&
+      this.appState.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
     )
   }
 
@@ -56,6 +56,6 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
 
   @action
   protected update (newIP: ConnectionIPDTO) {
-    this.tequilaState.IP = newIP.ip
+    this.appState.IP = newIP.ip
   }
 }

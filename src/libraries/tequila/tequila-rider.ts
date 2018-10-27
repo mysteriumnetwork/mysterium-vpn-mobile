@@ -35,17 +35,17 @@ const api = new TequilapiClientFactory(
 
 export default class TequilaRider {
   public proposalFetcher: ProposalsFetcher
-  public readonly tequilaState: AppState
+  public readonly appState: AppState
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
-  constructor (tequilaState: AppState) {
-    this.tequilaState = tequilaState
-    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.tequilaState)
-    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.tequilaState)
-    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.tequilaState)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.tequilaState)
+  constructor (appState: AppState) {
+    this.appState = appState
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.appState)
+    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.appState)
+    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.appState)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.appState)
     this.startFetchers()
   }
 
@@ -54,19 +54,19 @@ export default class TequilaRider {
    * @returns {Promise<void>}
    */
   public async connect (): Promise<void> {
-    if (!this.tequilaState.IdentityId || !this.tequilaState.SelectedProviderId) {
-      console.error('Not enough data to connect', this.tequilaState)
+    if (!this.appState.IdentityId || !this.appState.SelectedProviderId) {
+      console.error('Not enough data to connect', this.appState)
       return
     }
 
-    this.tequilaState.resetIP()
-    this.tequilaState.setConnectionStatusToConnecting()
+    this.appState.resetIP()
+    this.appState.setConnectionStatusToConnecting()
 
     try {
       const connection = await api.connectionCreate({
-        consumerId: this.tequilaState.IdentityId,
+        consumerId: this.appState.IdentityId,
         providerCountry: '',
-        providerId: this.tequilaState.SelectedProviderId
+        providerId: this.appState.SelectedProviderId
       })
       console.log('connected', connection)
     } catch (e) {
@@ -78,8 +78,8 @@ export default class TequilaRider {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.tequilaState.resetIP()
-    this.tequilaState.setConnectionStatusToDisconnecting()
+    this.appState.resetIP()
+    this.appState.setConnectionStatusToDisconnecting()
 
     try {
       await api.connectionCancel()
@@ -113,7 +113,7 @@ export default class TequilaRider {
 
     try {
       await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-      this.tequilaState.IdentityId = identityId
+      this.appState.IdentityId = identityId
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }

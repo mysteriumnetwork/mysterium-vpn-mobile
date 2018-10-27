@@ -5,16 +5,16 @@ import AppState from './app-state'
 import Logger from './logger'
 
 const Root: React.SFC = () => {
-  const tequilaState = new AppState()
-  const tequilaRider = new TequilaRider(tequilaState)
+  const appState = new AppState()
+  const tequilaRider = new TequilaRider(appState)
 
-  const logger = new Logger(tequilaState)
+  const logger = new Logger(appState)
   logger.logObservableChanges()
 
   return (
     <App
       tequilaRider={tequilaRider}
-      tequilaState={tequilaState}
+      appState={appState}
     />
   )
 }

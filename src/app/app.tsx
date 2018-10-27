@@ -28,18 +28,18 @@ import Stats from './stats'
 
 type AppProps = {
   tequilaRider: TequilaRider,
-  tequilaState: AppState
+  appState: AppState
 }
 
 @observer
 export default class App extends React.Component<AppProps> {
   private readonly tequilaRider: TequilaRider
-  private readonly tequilaState: AppState
+  private readonly appState: AppState
 
   constructor (props: AppProps) {
     super(props)
     this.tequilaRider = props.tequilaRider
-    this.tequilaState = props.tequilaState
+    this.appState = props.appState
   }
 
   public render (): ReactNode {
@@ -47,21 +47,21 @@ export default class App extends React.Component<AppProps> {
       // @ts-ignore TODO remove ignore or transform
       <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
         <Text>
-          {this.tequilaState.ConnectionStatus
-            ? this.tequilaState.ConnectionStatus.status
+          {this.appState.ConnectionStatus
+            ? this.appState.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {this.tequilaState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
         <Proposals
           proposalsFetcher={this.tequilaRider.proposalFetcher}
-          proposalsStore={this.tequilaState}
+          proposalsStore={this.appState}
         />
         <Button
           title={this.buttonText}
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
         />
-        {this.tequilaState.Statistics ? <Stats {...this.tequilaState.Statistics} /> : null}
+        {this.appState.Statistics ? <Stats {...this.appState.Statistics} /> : null}
       </View>
     )
   }
@@ -80,12 +80,12 @@ export default class App extends React.Component<AppProps> {
   }
 
   private get buttonEnabled (): boolean {
-    return this.tequilaState.isReady
+    return this.appState.isReady
   }
 
   private get buttonText (): string {
-    const isReady = this.tequilaState.isReady
-    const isConnected = this.tequilaState.isConnected
+    const isReady = this.appState.isReady
+    const isConnected = this.appState.isConnected
     return isReady
       ? isConnected
         ? 'disconnect'
@@ -98,11 +98,11 @@ export default class App extends React.Component<AppProps> {
    * Is connection state is unknown - does nothing
    */
   private async connectOrDisconnect () {
-    if (!this.tequilaState.isReady) {
+    if (!this.appState.isReady) {
       return
     }
 
-    if (this.tequilaState.isConnected) {
+    if (this.appState.isConnected) {
       await this.tequilaRider.disconnect()
     } else {
       await this.tequilaRider.connect()

@@ -3,7 +3,7 @@ import AppState from './app-state'
 
 export default class Logger {
   private loggingStarted: boolean = false
-  constructor (private readonly tequilaState: AppState) {
+  constructor (private readonly appState: AppState) {
   }
 
   public logObservableChanges (): void {
@@ -12,24 +12,24 @@ export default class Logger {
     }
     this.loggingStarted = true
 
-    reaction(() => this.tequilaState.IdentityId, () => {
-      this.info('Identity unlocked', this.tequilaState.IdentityId)
+    reaction(() => this.appState.IdentityId, () => {
+      this.info('Identity unlocked', this.appState.IdentityId)
     })
 
-    reaction(() => this.tequilaState.SelectedProviderId, () => {
-      this.info('Selected provider ID selected', this.tequilaState.SelectedProviderId)
+    reaction(() => this.appState.SelectedProviderId, () => {
+      this.info('Selected provider ID selected', this.appState.SelectedProviderId)
     })
 
-    reaction(() => this.tequilaState.ConnectionStatus, () => {
-      this.info('Connection status changed', this.tequilaState.ConnectionStatus)
+    reaction(() => this.appState.ConnectionStatus, () => {
+      this.info('Connection status changed', this.appState.ConnectionStatus)
     })
 
-    reaction(() => this.tequilaState.IP, () => {
-      this.info('IP changed', this.tequilaState.IP)
+    reaction(() => this.appState.IP, () => {
+      this.info('IP changed', this.appState.IP)
     })
 
-    reaction(() => this.tequilaState.Proposals, () => {
-      this.info('Proposals updated', this.tequilaState.Proposals)
+    reaction(() => this.appState.Proposals, () => {
+      this.info('Proposals updated', this.appState.Proposals)
     })
   }
 
