@@ -20,25 +20,25 @@ import React, { ReactNode } from 'react'
 import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import TequilaRider from '../libraries/tequila/tequila-rider'
+import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
 import Proposals from './proposals'
 import Stats from './stats'
 
 type AppProps = {
-  tequilaRider: TequilaRider,
+  tequilAPIDriver: TequilAPIDriver,
   appState: AppState
 }
 
 @observer
 export default class App extends React.Component<AppProps> {
-  private readonly tequilaRider: TequilaRider
+  private readonly tequilAPIDriver: TequilAPIDriver
   private readonly appState: AppState
 
   constructor (props: AppProps) {
     super(props)
-    this.tequilaRider = props.tequilaRider
+    this.tequilAPIDriver = props.tequilAPIDriver
     this.appState = props.appState
   }
 
@@ -53,7 +53,7 @@ export default class App extends React.Component<AppProps> {
         </Text>
         <Text>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
         <Proposals
-          proposalsFetcher={this.tequilaRider.proposalFetcher}
+          proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
           proposalsStore={this.appState}
         />
         <Button
@@ -72,7 +72,7 @@ export default class App extends React.Component<AppProps> {
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.tequilaRider.unlock()
+    await this.tequilAPIDriver.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
@@ -103,9 +103,9 @@ export default class App extends React.Component<AppProps> {
     }
 
     if (this.appState.isConnected) {
-      await this.tequilaRider.disconnect()
+      await this.tequilAPIDriver.disconnect()
     } else {
-      await this.tequilaRider.connect()
+      await this.tequilAPIDriver.connect()
     }
   }
 }

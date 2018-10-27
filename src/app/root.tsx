@@ -1,19 +1,19 @@
 import * as React from 'react'
-import TequilaRider from '../libraries/tequila/tequila-rider'
+import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import App from './app'
 import AppState from './app-state'
 import Logger from './logger'
 
 const Root: React.SFC = () => {
   const appState = new AppState()
-  const tequilaRider = new TequilaRider(appState)
+  const tequilAPIDriver = new TequilAPIDriver(appState)
 
   const logger = new Logger(appState)
   logger.logObservableChanges()
 
   return (
     <App
-      tequilaRider={tequilaRider}
+      tequilAPIDriver={tequilAPIDriver}
       appState={appState}
     />
   )
