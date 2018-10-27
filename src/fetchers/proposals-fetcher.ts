@@ -17,17 +17,17 @@
 
 import { action } from 'mobx'
 import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
+import AppState from '../app/app-state'
 import {
   Proposal,
   sortFavorites
 } from '../libraries/favorite-proposal'
-import TequilaState from '../libraries/tequila/tequila-state'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private findProposals: FindProposals, private readonly tequilaState: TequilaState) {
+  constructor (private findProposals: FindProposals, private readonly tequilaState: AppState) {
     super('Proposals')
   }
 

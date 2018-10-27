@@ -17,12 +17,12 @@
 
 import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
 
+import AppState from '../../app/app-state'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
-import TequilaState from './tequila-state'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
@@ -35,12 +35,12 @@ const api = new TequilapiClientFactory(
 
 export default class TequilaRider {
   public proposalFetcher: ProposalsFetcher
-  public readonly tequilaState: TequilaState
+  public readonly tequilaState: AppState
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
-  constructor (tequilaState: TequilaState) {
+  constructor (tequilaState: AppState) {
     this.tequilaState = tequilaState
     this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.tequilaState)
     this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.tequilaState)

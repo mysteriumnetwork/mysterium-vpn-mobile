@@ -17,13 +17,13 @@
 
 import { action } from 'mobx'
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import TequilaState from '../libraries/tequila/tequila-state'
+import AppState from '../app/app-state'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionStatus = () => Promise<ConnectionStatusDTO>
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  constructor (private connectionStatus: ConnectionStatus, private readonly tequilaState: TequilaState) {
+  constructor (private connectionStatus: ConnectionStatus, private readonly tequilaState: AppState) {
     super('ConnectionStatus')
   }
 

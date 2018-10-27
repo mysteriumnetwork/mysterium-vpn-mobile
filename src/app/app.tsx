@@ -21,22 +21,22 @@ import { Button, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilaRider from '../libraries/tequila/tequila-rider'
-import TequilaState from '../libraries/tequila/tequila-state'
+import AppState from './app-state'
 import styles from './app-styles'
 import Proposals from './proposals'
 import Stats from './stats'
 
-type TequilapiProp = {
+type AppProps = {
   tequilaRider: TequilaRider,
-  tequilaState: TequilaState
+  tequilaState: AppState
 }
 
 @observer
-export default class App extends React.Component<TequilapiProp> {
+export default class App extends React.Component<AppProps> {
   private readonly tequilaRider: TequilaRider
-  private readonly tequilaState: TequilaState
+  private readonly tequilaState: AppState
 
-  constructor (props: TequilapiProp) {
+  constructor (props: AppProps) {
     super(props)
     this.tequilaRider = props.tequilaRider
     this.tequilaState = props.tequilaState
