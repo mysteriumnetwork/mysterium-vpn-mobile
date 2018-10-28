@@ -58,7 +58,7 @@ RCT_EXPORT_METHOD(startService:(NSInteger)port
                 [self callFailure:failure withError:startError];
                 return;
             }
-            success(@0);
+            success(@[@0]); //return 0 for successful start
         }];
     }];
 }
