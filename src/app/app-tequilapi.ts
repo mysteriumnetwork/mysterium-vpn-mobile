@@ -40,8 +40,8 @@ export default class AppTequilapi extends React.Component {
   private ipFetcher = new IPFetcher(api)
   private statsFetcher = new StatsFetcher(api)
 
-  constructor () {
-    super({})
+  constructor (props: any) {
+    super(props)
     this.startFetchers()
   }
 
