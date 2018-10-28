@@ -18,9 +18,10 @@
 import { action, computed } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
-import { Button, Picker, Text, View } from 'react-native'
+import { Picker, Text, View } from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { Proposal } from '../libraries/favorite-proposal'
+import ButtonFavorite from './components/button-favorite'
 import styles from './proposals-styles'
 
 type ProposalsProps = {
@@ -44,11 +45,15 @@ export default class Proposals extends React.Component<ProposalsProps> {
     const selectedProviderId = this.props.proposalsStore.SelectedProviderId
 
     if (!proposals) {
-      return <Text>Loading proposals...</Text>
+      return (
+        <View style={styles.root}>
+          <Text>Loading proposals...</Text>
+        </View>
+      )
     }
 
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.root}>
         <Picker
           style={styles.picker}
           selectedValue={selectedProviderId}
@@ -57,8 +62,8 @@ export default class Proposals extends React.Component<ProposalsProps> {
           {proposals.map((p: Proposal) => Proposals.renderProposal(p))}
         </Picker>
         {selectedProviderId ? (
-          <Button
-            title={'*'}
+          <ButtonFavorite
+            title={this.favoriteText}
             onPress={() => this.onFavoritePress(selectedProviderId)}
           />
         ) : null}
@@ -69,6 +74,13 @@ export default class Proposals extends React.Component<ProposalsProps> {
   @computed
   private get loadedProposals (): Proposal[] {
     return this.props.proposalsStore.Proposals || []
+  }
+
+  private get favoriteText (): string {
+    const selectedProposal = this.loadedProposals.find(
+      (p: Proposal) => p.id === this.props.proposalsStore.SelectedProviderId
+    )
+    return selectedProposal && selectedProposal.isFavorite ? '☆' : '★'
   }
 
   private async onFavoritePress (selectedProviderId: string): Promise<void> {

@@ -17,7 +17,7 @@
 
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
-import { Text, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import { store } from '../store/app-store'
@@ -32,22 +32,31 @@ export default class App extends AppTequilapi {
   public render (): ReactNode {
     return (
       <View style={styles.container}>
-        <Text>
+        <Image
+          style={styles.imageLoader}
+          source={require('../assets/loading.png')}
+          resizeMode="contain"
+        />
+
+        <Text style={styles.textStatus}>
           {store.ConnectionStatus
             ? store.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
-        <Proposals
-          proposalsFetcher={this.proposalFetcher}
-          proposalsStore={store}
-        />
-        <ButtonConnect
-          title={this.buttonText}
-          disabled={!this.buttonEnabled}
-          onPress={() => this.connectOrDisconnect()}
-        />
-        {store.Statistics ? <Stats {...store.Statistics} /> : null}
+        <Text style={styles.textIp}>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+
+        <View style={styles.footer}>
+          <Proposals
+            proposalsFetcher={this.proposalFetcher}
+            proposalsStore={store}
+          />
+          <ButtonConnect
+            title={this.buttonText}
+            disabled={!this.buttonEnabled}
+            onPress={() => this.connectOrDisconnect()}
+          />
+          {store.Statistics ? <Stats {...store.Statistics} /> : null}
+        </View>
       </View>
     )
   }

@@ -45,19 +45,18 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 20,
-    borderColor: CONFIG.STYLES.MAIN_COLOR,
-    borderWidth: 1
+    borderColor: CONFIG.STYLES.COLOR_MAIN,
+    borderWidth: 1,
+    backgroundColor: CONFIG.STYLES.COLOR_BACKGROUND
   },
   disabledRoot: {
-    borderColor: CONFIG.STYLES.DISABLED_COLOR
+    borderColor: CONFIG.STYLES.COLOR_DISABLED
   },
   buttonContent: {
-    fontSize: 18,
-    fontWeight: '200',
-    color: CONFIG.STYLES.MAIN_COLOR,
-    opacity: 1
+    fontSize: CONFIG.STYLES.FONT_NORMAL,
+    color: CONFIG.STYLES.COLOR_MAIN
   },
   disabledButtonContent: {
-    color: CONFIG.STYLES.DISABLED_COLOR
+    color: CONFIG.STYLES.COLOR_DISABLED
   }
 })

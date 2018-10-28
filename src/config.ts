@@ -31,9 +31,14 @@ interface IConfig {
     IP: number
   },
   STYLES: {
-    MAIN_COLOR: string,
-    DISABLED_COLOR: string,
-    PADDING: number
+    FONT_LARGE: number,
+    FONT_NORMAL: number,
+    COLOR_MAIN: string,
+    COLOR_SECONDARY: string,
+    COLOR_DISABLED: string,
+    COLOR_BACKGROUND: string,
+    PADDING: number,
+    MARGIN: number
   }
 }
 
@@ -53,8 +58,13 @@ export const CONFIG: IConfig = {
     IP: 10 * 1000
   },
   STYLES: {
-    MAIN_COLOR: '#622461',
-    DISABLED_COLOR: '#eee',
-    PADDING: 15
+    FONT_LARGE: 32,
+    FONT_NORMAL: 18,
+    COLOR_MAIN: '#622461',
+    COLOR_SECONDARY: '#999',
+    COLOR_DISABLED: '#eee',
+    COLOR_BACKGROUND: '#fff',
+    PADDING: 15,
+    MARGIN: 15
   }
 }

@@ -16,15 +16,23 @@
  */
 
 import { StyleSheet, ViewStyle } from 'react-native'
+import { CONFIG } from '../config'
 
 type ProposalsStyles = {
+  root: ViewStyle,
   picker: ViewStyle
 }
 
 export default StyleSheet.create({
+  root: {
+    flexDirection: 'row',
+    marginBottom: CONFIG.STYLES.MARGIN,
+    borderWidth: 1,
+    borderColor: CONFIG.STYLES.COLOR_SECONDARY
+  },
   picker: {
-    width: 130,
-    height: 20,
-    margin: 20
+    width: 300,
+    height: 50,
+    backgroundColor: CONFIG.STYLES.COLOR_BACKGROUND
   }
 }) as ProposalsStyles
