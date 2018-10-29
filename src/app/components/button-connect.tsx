@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
-import { CONFIG } from '../../config'
+import { STYLES } from '../../styles'
 
 type ButtonConnectProps = {
   title: string,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: CONFIG.STYLES.PADDING,
+    padding: STYLES.PADDING,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -45,18 +45,18 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 20,
-    borderColor: CONFIG.STYLES.COLOR_MAIN,
+    borderColor: STYLES.COLOR_MAIN,
     borderWidth: 1,
-    backgroundColor: CONFIG.STYLES.COLOR_BACKGROUND
+    backgroundColor: STYLES.COLOR_BACKGROUND
   },
   disabledRoot: {
-    borderColor: CONFIG.STYLES.COLOR_DISABLED
+    borderColor: STYLES.COLOR_DISABLED
   },
   buttonContent: {
-    fontSize: CONFIG.STYLES.FONT_NORMAL,
-    color: CONFIG.STYLES.COLOR_MAIN
+    fontSize: STYLES.FONT_NORMAL,
+    color: STYLES.COLOR_MAIN
   },
   disabledButtonContent: {
-    color: CONFIG.STYLES.COLOR_DISABLED
+    color: STYLES.COLOR_DISABLED
   }
 })

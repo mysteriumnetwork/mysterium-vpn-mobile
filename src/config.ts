@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IStyles, STYLES } from './styles'
+
 interface IConfig {
   PASSPHRASE: string,
   TEQUILAPI_ADDRESS: string,
@@ -30,16 +32,7 @@ interface IConfig {
     PROPOSALS: number,
     IP: number
   },
-  STYLES: {
-    FONT_LARGE: number,
-    FONT_NORMAL: number,
-    COLOR_MAIN: string,
-    COLOR_SECONDARY: string,
-    COLOR_DISABLED: string,
-    COLOR_BACKGROUND: string,
-    PADDING: number,
-    MARGIN: number
-  }
+  STYLES: IStyles
 }
 
 export const CONFIG: IConfig = {
@@ -57,14 +50,5 @@ export const CONFIG: IConfig = {
     PROPOSALS: 10 * 1000,
     IP: 10 * 1000
   },
-  STYLES: {
-    FONT_LARGE: 32,
-    FONT_NORMAL: 18,
-    COLOR_MAIN: '#622461',
-    COLOR_SECONDARY: '#999',
-    COLOR_DISABLED: '#eee',
-    COLOR_BACKGROUND: '#fff',
-    PADDING: 15,
-    MARGIN: 15
-  }
+  STYLES
 }

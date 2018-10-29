@@ -17,8 +17,8 @@
 
 import React, { ReactNode } from 'react'
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { CONFIG } from '../config'
 import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
+import { STYLES } from '../styles'
 
 type StatsProps = {
   style?: StyleProp<ViewStyle>
@@ -80,21 +80,21 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: CONFIG.STYLES.PADDING
+    padding: STYLES.PADDING
   },
   textBlock: {
     alignItems: 'center'
   },
   textName: {
-    fontSize: CONFIG.STYLES.FONT_NORMAL,
-    color: CONFIG.STYLES.COLOR_SECONDARY
+    fontSize: STYLES.FONT_NORMAL,
+    color: STYLES.COLOR_SECONDARY
   },
   textAmount: {
     fontSize: 22,
-    color: CONFIG.STYLES.COLOR_MAIN
+    color: STYLES.COLOR_MAIN
   },
   textUnits: {
-    fontSize: CONFIG.STYLES.FONT_NORMAL
+    fontSize: STYLES.FONT_NORMAL
   }
 })
 

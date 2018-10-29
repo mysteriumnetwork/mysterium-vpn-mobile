@@ -63,7 +63,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
         </Picker>
         {selectedProviderId ? (
           <ButtonFavorite
-            title={this.favoriteText}
+            isFavorite={this.isFavoriteSelected}
             onPress={() => this.onFavoritePress(selectedProviderId)}
           />
         ) : null}
@@ -76,11 +76,14 @@ export default class Proposals extends React.Component<ProposalsProps> {
     return this.props.proposalsStore.Proposals || []
   }
 
-  private get favoriteText (): string {
+  private get isFavoriteSelected (): boolean {
     const selectedProposal = this.loadedProposals.find(
       (p: Proposal) => p.id === this.props.proposalsStore.SelectedProviderId
     )
-    return selectedProposal && selectedProposal.isFavorite ? '★' : '☆'
+    if (!selectedProposal) {
+      return false
+    }
+    return selectedProposal.isFavorite
   }
 
   private async onFavoritePress (selectedProviderId: string): Promise<void> {
