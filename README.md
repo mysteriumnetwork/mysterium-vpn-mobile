@@ -55,7 +55,7 @@ yarn android
 * Install Cocoa dependency manager
  
 ```bash
-brew install carthage
+brew bundle
 ```
 
 ```bash
@@ -65,7 +65,7 @@ cd ios
 * Install Cocoa dependencies
 
 ```bash
-carthage bootstrap
+carthage update --plaftorm iOS
 ```
 
 ```bash
