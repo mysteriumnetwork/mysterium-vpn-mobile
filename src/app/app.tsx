@@ -45,7 +45,7 @@ export default class App extends AppTequilapi {
         </Text>
         <Text style={styles.textIp}>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
-        <View style={styles.footer}>
+        <View style={styles.controls}>
           <Proposals
             proposalsFetcher={this.proposalFetcher}
             proposalsStore={store}
@@ -55,8 +55,8 @@ export default class App extends AppTequilapi {
             disabled={!this.buttonEnabled}
             onPress={() => this.connectOrDisconnect()}
           />
-          {store.Statistics ? <Stats {...store.Statistics} /> : null}
         </View>
+        {store.Statistics ? <Stats style={styles.footer} {...store.Statistics} /> : null}
       </View>
     )
   }

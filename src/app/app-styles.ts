@@ -20,6 +20,7 @@ import { CONFIG } from '../config'
 
 type AppStyles = {
   container: ViewStyle,
+  controls: ViewStyle,
   footer: ViewStyle,
   imageLoader: ViewStyle,
   textStatus: ViewStyle,
@@ -32,15 +33,18 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1
   },
-  footer: {
+  controls: {
     top: 270,
     alignItems: 'center'
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0
   },
   imageLoader: {
     top: -25,
     position: 'absolute',
     height: 720,
-    left: 0,
     width: '100%'
   },
   textStatus: {

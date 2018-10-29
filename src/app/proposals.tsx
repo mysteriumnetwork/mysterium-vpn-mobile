@@ -80,7 +80,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
     const selectedProposal = this.loadedProposals.find(
       (p: Proposal) => p.id === this.props.proposalsStore.SelectedProviderId
     )
-    return selectedProposal && selectedProposal.isFavorite ? '☆' : '★'
+    return selectedProposal && selectedProposal.isFavorite ? '★' : '☆'
   }
 
   private async onFavoritePress (selectedProviderId: string): Promise<void> {
