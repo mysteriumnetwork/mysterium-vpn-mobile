@@ -36,6 +36,9 @@ yarn android
 
 ### iOS
 
+* Crash reporting
+* Download firebase crashlytics config - `GoogleService-Info.plist` from https://console.firebase.google.com and place it in `ios/`
+
 * Install Cocoa dependency manager
  
 ```bash
