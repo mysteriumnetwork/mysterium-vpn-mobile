@@ -23,6 +23,7 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
+import errors from '../../app/errors'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
@@ -70,6 +71,7 @@ export default class TequilAPIDriver {
       })
       console.log('connected', connection)
     } catch (e) {
+      this.appState.showError(errors.CONNECT_FAILED)
       console.warn('api.connectionCreate failed', e)
     }
   }

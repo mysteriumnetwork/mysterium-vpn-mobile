@@ -24,6 +24,7 @@ import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
+import Error from './components/error'
 import Proposals from './proposals'
 import Stats from './stats'
 
@@ -61,6 +62,7 @@ export default class App extends React.Component<AppProps> {
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
         />
+        {this.appState.Error ? <Error message={this.appState.Error}/> : null}
         {this.appState.Statistics ? <Stats {...this.appState.Statistics} /> : null}
       </View>
     )
