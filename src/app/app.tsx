@@ -17,12 +17,13 @@
 
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
-import { Button, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
+import ButtonConnect from './components/button-connect'
 import Proposals from './proposals'
 import Stats from './stats'
 
@@ -44,8 +45,7 @@ export default class App extends React.Component<AppProps> {
 
   public render (): ReactNode {
     return (
-      // @ts-ignore TODO remove ignore or transform
-      <View style={styles.container} transform={[{ scaleX: 2 }, { scaleY: 2 }]}>
+      <View style={styles.container}>
         <Text>
           {this.appState.ConnectionStatus
             ? this.appState.ConnectionStatus.status
@@ -56,7 +56,7 @@ export default class App extends React.Component<AppProps> {
           proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
           proposalsStore={this.appState}
         />
-        <Button
+        <ButtonConnect
           title={this.buttonText}
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
@@ -88,8 +88,8 @@ export default class App extends React.Component<AppProps> {
     const isConnected = this.appState.isConnected
     return isReady
       ? isConnected
-        ? 'disconnect'
-        : 'connect'
+        ? 'Disconnect'
+        : 'Connect'
       : CONFIG.TEXTS.UNKNOWN_STATUS
   }
 

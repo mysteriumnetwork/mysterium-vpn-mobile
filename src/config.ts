@@ -30,6 +30,11 @@ interface IConfig {
     PROPOSALS: number,
     IP: number
   },
+  STYLES: {
+    MAIN_COLOR: string,
+    DISABLED_COLOR: string,
+    PADDING: number
+  }
 }
 
 export const CONFIG: IConfig = {
@@ -46,5 +51,10 @@ export const CONFIG: IConfig = {
     STATS: 1 * 1000,
     PROPOSALS: 10 * 1000,
     IP: 10 * 1000
+  },
+  STYLES: {
+    MAIN_COLOR: '#622461',
+    DISABLED_COLOR: '#eee',
+    PADDING: 15
   }
 }
