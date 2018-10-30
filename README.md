@@ -16,6 +16,9 @@ npm install -g react-native-cli
 
 ### Android
 
+* Crash reporting
+* Download firebase crashlytics config - `google-services.json` from https://console.firebase.google.com and place it in `android/app/`
+
 * `brew cask install android-platform-tools` or [Install ADB](https://www.xda-developers.com/install-adb-windows-macos-linux)
 * Connect Android phone, check if `adb` can see it:
 ```bash
