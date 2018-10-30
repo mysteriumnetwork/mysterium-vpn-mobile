@@ -76,13 +76,12 @@ const StatsBlock: React.SFC<StatsBlockProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: 360,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     padding: STYLES.PADDING
   },
   textBlock: {
+    width: '33.3%',
     alignItems: 'center'
   },
   textName: {

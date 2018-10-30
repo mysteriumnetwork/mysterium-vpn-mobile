@@ -42,9 +42,7 @@ ShallowWrapper {
         Object {
           "flex": 1,
           "flexDirection": "row",
-          "justifyContent": "space-between",
           "padding": 15,
-          "width": 360,
         },
         undefined,
       ],
@@ -120,9 +118,7 @@ ShallowWrapper {
           Object {
             "flex": 1,
             "flexDirection": "row",
-            "justifyContent": "space-between",
             "padding": 15,
-            "width": 360,
           },
           undefined,
         ],
