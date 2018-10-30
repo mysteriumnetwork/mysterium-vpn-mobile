@@ -20,34 +20,48 @@ import React, { ReactNode } from 'react'
 import { Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import { store } from '../store/app-store'
+import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
+import AppState from './app-state'
 import styles from './app-styles'
-import AppTequilapi from './app-tequilapi'
 import ButtonConnect from './components/button-connect'
 import Proposals from './proposals'
 import Stats from './stats'
 
+type AppProps = {
+  tequilAPIDriver: TequilAPIDriver,
+  appState: AppState
+}
+
 @observer
-export default class App extends AppTequilapi {
+export default class App extends React.Component<AppProps> {
+  private readonly tequilAPIDriver: TequilAPIDriver
+  private readonly appState: AppState
+
+  constructor (props: AppProps) {
+    super(props)
+    this.tequilAPIDriver = props.tequilAPIDriver
+    this.appState = props.appState
+  }
+
   public render (): ReactNode {
     return (
       <View style={styles.container}>
         <Text>
-          {store.ConnectionStatus
-            ? store.ConnectionStatus.status
+          {this.appState.ConnectionStatus
+            ? this.appState.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {store.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
         <Proposals
-          proposalsFetcher={this.proposalFetcher}
-          proposalsStore={store}
+          proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
+          proposalsStore={this.appState}
         />
         <ButtonConnect
           title={this.buttonText}
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
         />
-        {store.Statistics ? <Stats {...store.Statistics} /> : null}
+        {this.appState.Statistics ? <Stats {...this.appState.Statistics} /> : null}
       </View>
     )
   }
@@ -58,7 +72,7 @@ export default class App extends AppTequilapi {
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.unlock()
+    await this.tequilAPIDriver.unlock()
 
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
@@ -66,12 +80,12 @@ export default class App extends AppTequilapi {
   }
 
   private get buttonEnabled (): boolean {
-    return store.isReady
+    return this.appState.isReady
   }
 
   private get buttonText (): string {
-    const isReady = store.isReady
-    const isConnected = store.isConnected
+    const isReady = this.appState.isReady
+    const isConnected = this.appState.isConnected
     return isReady
       ? isConnected
         ? 'Disconnect'
@@ -84,14 +98,14 @@ export default class App extends AppTequilapi {
    * Is connection state is unknown - does nothing
    */
   private async connectOrDisconnect () {
-    if (!store.isReady) {
+    if (!this.appState.isReady) {
       return
     }
 
-    if (store.isConnected) {
-      await this.disconnect()
+    if (this.appState.isConnected) {
+      await this.tequilAPIDriver.disconnect()
     } else {
-      await this.connect()
+      await this.tequilAPIDriver.connect()
     }
   }
 }

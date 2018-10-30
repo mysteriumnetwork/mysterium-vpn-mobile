@@ -15,16 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-
 import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
 
-import { CONFIG } from '../config'
-import { IPFetcher } from '../fetchers/ip-fetcher'
-import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
-import { StatsFetcher } from '../fetchers/stats-fetcher'
-import { StatusFetcher } from '../fetchers/status-fetcher'
-import { store } from '../store/app-store'
+import AppState from '../../app/app-state'
+import { CONFIG } from '../../config'
+import { IPFetcher } from '../../fetchers/ip-fetcher'
+import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
+import { StatsFetcher } from '../../fetchers/stats-fetcher'
+import { StatusFetcher } from '../../fetchers/status-fetcher'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
@@ -34,14 +32,20 @@ const api = new TequilapiClientFactory(
 /***
  * API operations level
  */
-export default class AppTequilapi extends React.Component {
-  protected proposalFetcher = new ProposalsFetcher(api)
-  private statusFetcher = new StatusFetcher(api)
-  private ipFetcher = new IPFetcher(api)
-  private statsFetcher = new StatsFetcher(api)
 
-  constructor (props: any) {
-    super(props)
+export default class TequilAPIDriver {
+  public proposalFetcher: ProposalsFetcher
+  public readonly appState: AppState
+  private statusFetcher: StatusFetcher
+  private ipFetcher: IPFetcher
+  private statsFetcher: StatsFetcher
+
+  constructor (appState: AppState) {
+    this.appState = appState
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.appState)
+    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.appState)
+    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.appState)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.appState)
     this.startFetchers()
   }
 
@@ -49,20 +53,20 @@ export default class AppTequilapi extends React.Component {
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  protected async connect (): Promise<void> {
-    if (!store.IdentityId || !store.SelectedProviderId) {
-      console.error('Not enough data to connect', store)
+  public async connect (): Promise<void> {
+    if (!this.appState.IdentityId || !this.appState.SelectedProviderId) {
+      console.error('Not enough data to connect', this.appState)
       return
     }
 
-    store.resetIP()
-    store.setConnectionStatusToConnecting()
+    this.appState.resetIP()
+    this.appState.setConnectionStatusToConnecting()
 
     try {
       const connection = await api.connectionCreate({
-        consumerId: store.IdentityId,
+        consumerId: this.appState.IdentityId,
         providerCountry: '',
-        providerId: store.SelectedProviderId
+        providerId: this.appState.SelectedProviderId
       })
       console.log('connected', connection)
     } catch (e) {
@@ -73,9 +77,9 @@ export default class AppTequilapi extends React.Component {
   /***
    * Tries to disconnect from VPN server
    */
-  protected async disconnect (): Promise<void> {
-    store.resetIP()
-    store.setConnectionStatusToDisconnecting()
+  public async disconnect (): Promise<void> {
+    this.appState.resetIP()
+    this.appState.setConnectionStatusToDisconnecting()
 
     try {
       await api.connectionCancel()
@@ -88,7 +92,7 @@ export default class AppTequilapi extends React.Component {
   /***
    * Tries to login to API, must be completed once before connect
    */
-  protected async unlock (): Promise<void> {
+  public async unlock (): Promise<void> {
     let identities: IdentityDTO[]
     try {
       identities = await api.identitiesList()
@@ -109,7 +113,7 @@ export default class AppTequilapi extends React.Component {
 
     try {
       await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-      store.IdentityId = identityId
+      this.appState.IdentityId = identityId
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }

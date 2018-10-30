@@ -1,10 +1,11 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
+import AppState from '../../src/app/app-state'
 import { CONFIG } from '../../src/config'
 import { StatusFetcher } from '../../src/fetchers/status-fetcher'
-import { store } from '../../src/store/app-store'
 import { TequilapiClientMock } from '../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {
+  const appState = new AppState()
   const refreshInterval = CONFIG.REFRESH_INTERVALS.CONNECTION
   let api: TequilapiClient
   let fetcher: StatusFetcher
@@ -18,9 +19,9 @@ describe('StatusFetcher', () => {
   })
 
   beforeEach(() => {
-    store.IdentityId = 'MOCKED_IDENTITY_ID'
+    appState.IdentityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
-    fetcher = new StatusFetcher(api)
+    fetcher = new StatusFetcher(api.connectionStatus, appState)
   })
 
   describe('.start', () => {
@@ -31,7 +32,7 @@ describe('StatusFetcher', () => {
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
 
       jest.runAllTicks()
-      expect(store.ConnectionStatus).toEqual({
+      expect(appState.ConnectionStatus).toEqual({
         status: 'NotConnected',
         sessionId: 'MOCKED_SESSION_ID'
       })
@@ -85,22 +86,19 @@ describe('StatusFetcher', () => {
   })
 
   describe('.refresh', () => {
+
     it('fetches status immediately', async () => {
       fetcher.start(refreshInterval)
       jest.runAllTicks()
 
       expect(fetcher.isRunning).toBe(false)
-      store.ConnectionStatus = undefined
-
-      const connectedStatus = {
-        status: 'Connected',
-        sessionId: 'MOCKED_SESSION_ID'
-      }
-      api.connectionStatus = jest.fn()
-        .mockReturnValue(connectedStatus)
+      appState.ConnectionStatus = undefined
 
       await fetcher.refresh()
-      expect(store.ConnectionStatus).toEqual(connectedStatus)
+      expect(appState.ConnectionStatus).toEqual({
+        status: 'NotConnected',
+        sessionId: 'MOCKED_SESSION_ID'
+      })
     })
   })
 })
