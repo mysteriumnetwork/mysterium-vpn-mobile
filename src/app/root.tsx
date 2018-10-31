@@ -1,24 +1,33 @@
 import * as React from 'react'
+import { FavoritesStorage } from '../libraries/favorite-storage'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import App from './app'
 import AppState from './app-state'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Logger from './logger'
 
-const Root: React.SFC = () => {
-  const appState = new AppState()
-  const errorDisplayDelegate = new ErrorDisplayDelegate()
-  const tequilAPIDriver = new TequilAPIDriver(appState, errorDisplayDelegate)
+class Root extends React.PureComponent {
+  private readonly appState = new AppState()
+  private errorDisplayDelegate = new ErrorDisplayDelegate()
+  private readonly tequilAPIDriver = new TequilAPIDriver(this.appState, this.errorDisplayDelegate)
+  private readonly favoritesStore = new FavoritesStorage()
 
-  const logger = new Logger(appState)
-  logger.logObservableChanges()
+  public async componentWillMount () {
+    const logger = new Logger(this.appState)
+    logger.logObservableChanges()
+    await this.favoritesStore.fetch()
+  }
 
-  return (
-    <App
-      tequilAPIDriver={tequilAPIDriver}
-      appState={appState}
-      errorDisplayDelegate={errorDisplayDelegate}
-    />
-  )
+  public render () {
+    return (
+      <App
+        tequilAPIDriver={this.tequilAPIDriver}
+        appState={this.appState}
+        errorDisplayDelegate={this.errorDisplayDelegate}
+        favoritesStore={this.favoritesStore}
+      />
+    )
+  }
 }
+
 export default Root

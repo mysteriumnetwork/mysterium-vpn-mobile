@@ -19,9 +19,9 @@ import { action, computed, observable } from 'mobx'
 import {
   ConnectionStatisticsDTO,
   ConnectionStatus,
-  ConnectionStatusDTO
+  ConnectionStatusDTO,
+  ProposalDTO
 } from 'mysterium-tequilapi'
-import { Proposal } from '../libraries/favorite-proposal'
 import { ConnectionStatusEnum } from '../libraries/tequilAPI/enums'
 
 export default class AppState {
@@ -36,7 +36,7 @@ export default class AppState {
   @observable
   public SelectedProviderId?: string
   @observable
-  public Proposals?: Proposal[]
+  public Proposals?: ProposalDTO[]
 
   @computed
   get status (): ConnectionStatus | undefined {

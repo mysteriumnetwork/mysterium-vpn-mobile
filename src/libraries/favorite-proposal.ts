@@ -18,35 +18,16 @@
 import { ProposalDTO } from 'mysterium-tequilapi'
 import { CONFIG } from '../config'
 import { Countries } from './countries'
-import { storage } from './favorite-storage'
 
 class Proposal {
   public name: string
-  public id: string
+  public providerID: string
   public isFavorite: boolean
 
   constructor (proposal: ProposalDTO, isFavorite: boolean) {
     this.name = this.getCountryName(proposal)
-    this.id = proposal.providerId
+    this.providerID = proposal.providerId
     this.isFavorite = isFavorite
-  }
-
-  public async toggleFavorite () {
-    this.isFavorite = !this.isFavorite
-    await storage.setFavorite(this.id, this.isFavorite)
-  }
-
-  public compareTo (other: Proposal): number {
-    if (this.isFavorite && !other.isFavorite) {
-      return -1
-    } else if (!this.isFavorite && other.isFavorite) {
-      return 1
-    } else if (this.name > other.name) {
-      return 1
-    } else if (this.name < other.name) {
-      return -1
-    }
-    return 0
   }
 
   private getCountryName (proposal: ProposalDTO) {
@@ -60,16 +41,17 @@ class Proposal {
   }
 }
 
-const sortFunction = (a: Proposal, b: Proposal): number => {
-  return a.compareTo(b)
+export function compareProposals (one: Proposal, other: Proposal): number {
+  if (one.isFavorite && !other.isFavorite) {
+    return -1
+  } else if (!one.isFavorite && other.isFavorite) {
+    return 1
+  } else if (one.name > other.name) {
+    return 1
+  } else if (one.name < other.name) {
+    return -1
+  }
+  return 0
 }
 
-async function sortFavorites (proposals: ProposalDTO[]): Promise<Proposal[]> {
-  const favorites = await storage.getFavorites()
-
-  return proposals
-    .map(p => new Proposal(p, favorites[p.providerId] === true))
-    .sort(sortFunction)
-}
-
-export { sortFavorites, Proposal }
+export { Proposal }

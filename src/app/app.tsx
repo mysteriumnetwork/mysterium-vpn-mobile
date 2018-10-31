@@ -19,6 +19,7 @@ import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
+import { FavoritesStorage } from '../libraries/favorite-storage'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
@@ -33,7 +34,8 @@ import Stats from './stats'
 type AppProps = {
   tequilAPIDriver: TequilAPIDriver,
   appState: AppState,
-  errorDisplayDelegate: ErrorDisplayDelegate
+  errorDisplayDelegate: ErrorDisplayDelegate,
+  favoritesStore: FavoritesStorage
 }
 
 @observer
@@ -63,8 +65,9 @@ export default class App extends React.Component<AppProps> {
 
         <View style={styles.controls}>
           <Proposals
+            favoritesStore={this.props.favoritesStore}
             proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-            proposalsStore={this.appState}
+            proposalsState={this.appState}
           />
           <ButtonConnect
             title={this.buttonText}

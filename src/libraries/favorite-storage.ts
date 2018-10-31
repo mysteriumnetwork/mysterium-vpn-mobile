@@ -15,33 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { action, get, observable, set } from 'mobx'
 import { AsyncStorage } from 'react-native'
 
 const FAVORITE_KEY = '@Favorites:KEY'
 
-class Storage {
-  public async getFavorites (): Promise<{ [key: string]: boolean }> {
-    // TODO: add cache to increase speed
+export type FavoriteProposals = Map<string, boolean>
+
+export class FavoritesStorage {
+  @observable public favorites: FavoriteProposals = new Map()
+
+  public async fetch () {
     const values = (await AsyncStorage.getItem(FAVORITE_KEY)) || '{}'
-    return JSON.parse(values)
+    this.favorites = JSON.parse(values)
   }
 
-  public async setFavorite (proposalId: string, isFavorite: boolean): Promise<void> {
-    const favorites = await this.getFavorites()
+  @action
+  public async set (proposalId: string, isFavorite: boolean): Promise<void> {
 
     if (isFavorite) {
-      favorites[proposalId] = isFavorite
+      set(this.favorites, proposalId, isFavorite)
     } else {
-      if (favorites[proposalId]) {
-        delete favorites[proposalId]
-      }
+      set(this.favorites, proposalId, undefined)
     }
 
-    console.log('saving favorites', favorites)
-    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(favorites))
+    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(this.favorites))
+  }
+
+  public get (proposalId: string) {
+    return !!get(this.favorites, proposalId)
   }
 }
-
-const storage = new Storage()
-
-export { storage }

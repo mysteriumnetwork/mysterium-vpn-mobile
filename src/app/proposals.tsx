@@ -17,33 +17,45 @@
 
 import { action, computed } from 'mobx'
 import { observer } from 'mobx-react/native'
+import { ProposalDTO } from 'mysterium-tequilapi'
 import React, { ReactNode } from 'react'
 import { Picker, Text, View } from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
-import { Proposal } from '../libraries/favorite-proposal'
+import { compareProposals, Proposal } from '../libraries/favorite-proposal'
+import { FavoritesStorage } from '../libraries/favorite-storage'
 import ButtonFavorite from './components/button-favorite'
 import styles from './proposals-styles'
 
 type ProposalsProps = {
+  favoritesStore: FavoritesStorage,
   proposalsFetcher: ProposalsFetcher,
-  proposalsStore: {
+  proposalsState: {
     SelectedProviderId?: string,
-    Proposals?: Proposal[]
+    Proposals?: ProposalDTO[]
   }
 }
 
 @observer
 export default class Proposals extends React.Component<ProposalsProps> {
+
+  @computed
+  private get proposalsSorted (): Proposal[] {
+    if (this.props.proposalsState.Proposals === undefined) return []
+    return this.props.proposalsState.Proposals
+      .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.get(p.providerId)))
+      .sort(compareProposals)
+  }
+
   private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
 
-    return <Picker.Item key={p.id} label={label} value={p.id}/>
+    return <Picker.Item key={p.providerID} label={label} value={p.providerID}/>
   }
 
   public render (): ReactNode {
-    const proposals = this.props.proposalsStore.Proposals
-    const selectedProviderId = this.props.proposalsStore.SelectedProviderId
-
+    this.setDefaultSelectedProvider()
+    const proposals = this.props.proposalsState.Proposals
+    const selectedProviderId = this.props.proposalsState.SelectedProviderId
     if (!proposals) {
       return (
         <View style={styles.root}>
@@ -59,48 +71,43 @@ export default class Proposals extends React.Component<ProposalsProps> {
           selectedValue={selectedProviderId}
           onValueChange={(providerId: string) => this.onProposalSelected(providerId)}
         >
-          {proposals.map((p: Proposal) => Proposals.renderProposal(p))}
+          {this.proposalsSorted.map(Proposals.renderProposal)}
         </Picker>
         {selectedProviderId ? (
           <ButtonFavorite
             isFavorite={this.isFavoriteSelected}
-            onPress={() => this.onFavoritePress(selectedProviderId)}
+            onPress={() => this.toggleFavorite(selectedProviderId)}
           />
         ) : null}
       </View>
     )
   }
 
-  @computed
-  private get loadedProposals (): Proposal[] {
-    return this.props.proposalsStore.Proposals || []
-  }
-
   private get isFavoriteSelected (): boolean {
-    const selectedProposal = this.loadedProposals.find(
-      (p: Proposal) => p.id === this.props.proposalsStore.SelectedProviderId
-    )
-    if (!selectedProposal) {
-      return false
-    }
-    return selectedProposal.isFavorite
+    if (!this.props.proposalsState.SelectedProviderId) return false
+    return this.props.favoritesStore.get(this.props.proposalsState.SelectedProviderId)
   }
 
-  private async onFavoritePress (selectedProviderId: string): Promise<void> {
-    const proposal = this.loadedProposals.find(
-      (p: Proposal) => p.id === selectedProviderId
-    )
-
-    if (proposal) {
-      await proposal.toggleFavorite()
-
-      // TODO: don't need to fetch proposals here, remove later
-      await this.props.proposalsFetcher.refresh()
+  @action
+  private setDefaultSelectedProvider () {
+    const statePropoals = this.props.proposalsState.Proposals
+    const selectedProviderId = this.props.proposalsState.SelectedProviderId
+    if (statePropoals && statePropoals[0]) {
+      if (!selectedProviderId
+        || !statePropoals.find((p) => p.providerId === selectedProviderId)) {
+        this.props.proposalsState.SelectedProviderId = this.proposalsSorted[0].providerID
+        return
+      }
     }
   }
 
   @action
+  private async toggleFavorite (selectedProviderId: string): Promise<void> {
+    await this.props.favoritesStore.set(selectedProviderId, !this.props.favoritesStore.get(selectedProviderId))
+  }
+
+  @action
   private onProposalSelected (providerId: string) {
-    this.props.proposalsStore.SelectedProviderId = providerId
+    this.props.proposalsState.SelectedProviderId = providerId
   }
 }
