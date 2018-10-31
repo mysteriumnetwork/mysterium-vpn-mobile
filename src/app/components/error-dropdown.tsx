@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import DropdownAlert from 'react-native-dropdownalert'
 import ErrorAlert from '../error-alert'
 
@@ -24,11 +24,26 @@ type ErrorProps = {
 }
 
 /**
- * Error dropdown component, capable of error messages.
- * Binds itself to ErrorAlert.
+ * Allowing show error messages as a dropdowns.
  */
-const ErrorDropdown: React.SFC<ErrorProps> = ({ errorAlert }) => {
-  return <DropdownAlert ref={(ref: DropdownAlert) => errorAlert.dropdown = ref}/>
+
+class ErrorDropdown extends React.Component<ErrorProps> {
+  private errorAlert: ErrorAlert
+  private dropdown: any
+
+  constructor (props: ErrorProps) {
+    super(props)
+    this.errorAlert = props.errorAlert
+  }
+
+  public render (): ReactNode {
+    this.errorAlert.errorDropdown = this
+    return <DropdownAlert ref={(ref: DropdownAlert) => this.dropdown = ref}/>
+  }
+
+  public showError (error: string) {
+    this.dropdown.alertWithType('error', 'Error', error)
+  }
 }
 
 export default ErrorDropdown

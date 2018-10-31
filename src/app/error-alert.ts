@@ -1,19 +1,21 @@
+import ErrorDropdown from './components/error-dropdown'
+
 /**
  * Allows showing errors.
- * Requires dropdown to be set.
+ * Requires ErrorDropdown to be set.
  */
 class ErrorAlert {
-  private _dropdown: any
+  private _errorDropdown?: ErrorDropdown
 
-  public set dropdown (value: any) {
-    this._dropdown = value
+  public set errorDropdown (value: ErrorDropdown) {
+    this._errorDropdown = value
   }
 
   public showError (error: string) {
-    if (this._dropdown === undefined) {
-      throw Error('ErrorDropdown dropdown is not initialized yet')
+    if (this._errorDropdown === undefined) {
+      throw Error('Cannot show error, because ErrorDropdown is not initialized yet')
     }
-    this._dropdown.alertWithType('error', 'Error', error)
+    this._errorDropdown.showError(error)
   }
 }
 
