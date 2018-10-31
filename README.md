@@ -16,8 +16,9 @@ npm install -g react-native-cli
 
 ### Android
 
-* Crash reporting
-* Download firebase crashlytics config - `google-services.json` from https://console.firebase.google.com and place it in `android/app/`
+* Setup crash reporting:
+    * Download firebase crashlytics config - `google-services.json` from https://console.firebase.google.com
+    * Place it in `android/app/`
 
 * `brew cask install android-platform-tools` or [Install ADB](https://www.xda-developers.com/install-adb-windows-macos-linux)
 * Connect Android phone, check if `adb` can see it:
@@ -39,8 +40,17 @@ yarn android
 
 ### iOS
 
-* Crash reporting
-* Download firebase crashlytics config - `GoogleService-Info.plist` from https://console.firebase.google.com and place it in `ios/`
+* Setup crash reporting:
+    * Download firebase crashlytics config - `GoogleService-Info.plist` from https://console.firebase.google.com
+    * Place it in `ios/`
+
+* Install X Code using App Store
+
+* Set location for command line tools is X Code:
+
+    * Open X Code
+    * Go to "X Code" -> "Preferences" -> "Locations"
+    * In "Command Line Tools", select single available option
 
 * Install Cocoa dependency manager
  
