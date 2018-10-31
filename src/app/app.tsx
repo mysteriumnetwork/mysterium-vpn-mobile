@@ -48,7 +48,7 @@ export default class App extends React.Component<AppProps> {
       <View style={styles.container}>
         <Image
           style={styles.imageBackground}
-          source={require('../assets/background-loading.png')}
+          source={require('../assets/background-logo.png')}
           resizeMode="contain"
         />
 

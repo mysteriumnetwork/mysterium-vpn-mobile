@@ -42,9 +42,8 @@ export default StyleSheet.create({
     bottom: 0
   },
   imageBackground: {
-    top: -25,
+    top: 10,
     position: 'absolute',
-    height: 720,
     width: '100%'
   },
   textStatus: {
