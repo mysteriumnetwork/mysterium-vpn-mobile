@@ -17,28 +17,26 @@
 
 import { action } from 'mobx'
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import { store } from '../store/app-store'
+import AppState from '../app/app-state'
 import { FetcherBase } from './fetcher-base'
 
-type StatusFetcherProps = {
-  connectionStatus (): Promise<ConnectionStatusDTO>
-}
+type ConnectionStatus = () => Promise<ConnectionStatusDTO>
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  constructor (private props: StatusFetcherProps) {
+  constructor (private connectionStatus: ConnectionStatus, private readonly appState: AppState) {
     super('ConnectionStatus')
   }
 
   protected get canRun (): boolean {
-    return store.IdentityId !== undefined
+    return this.appState.IdentityId !== undefined
   }
 
   protected async fetch (): Promise<ConnectionStatusDTO> {
-    return this.props.connectionStatus()
+    return this.connectionStatus()
   }
 
   @action
   protected update (status: ConnectionStatusDTO) {
-    store.ConnectionStatus = status
+    this.appState.ConnectionStatus = status
   }
 }

@@ -17,38 +17,36 @@
 
 import { action } from 'mobx'
 import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
+import AppState from '../app/app-state'
 import {
   Proposal,
   sortFavorites
 } from '../libraries/favorite-proposal'
-import { store } from '../store/app-store'
 import { FetcherBase } from './fetcher-base'
 
-type ProposalsFetcherProps = {
-  findProposals (filter?: ProposalsFilter): Promise<ProposalDTO[]>
-}
+type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private props: ProposalsFetcherProps) {
+  constructor (private findProposals: FindProposals, private readonly appState: AppState) {
     super('Proposals')
   }
 
   protected async fetch (): Promise<Proposal[]> {
-    const proposals: ProposalDTO[] = await this.props.findProposals()
+    const proposals: ProposalDTO[] = await this.findProposals()
     return sortFavorites(proposals)
   }
 
   @action
   protected update (proposals: Proposal[]) {
-    store.Proposals = proposals
+    this.appState.Proposals = proposals
 
     // TODO: support non-selected proposal
     // ensure that proposal is always selected
-    const containsSelectedProvider = store.Proposals.some(
-      (p: Proposal) => p.id === store.SelectedProviderId
+    const containsSelectedProvider = this.appState.Proposals.some(
+      (p: Proposal) => p.id === this.appState.SelectedProviderId
     )
     if (!containsSelectedProvider) {
-      store.SelectedProviderId = store.Proposals[0].id
+      this.appState.SelectedProviderId = this.appState.Proposals[0].id
     }
   }
 }

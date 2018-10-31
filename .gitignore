@@ -28,6 +28,7 @@ index.android.bundle.meta
 .env.development.local
 .env.test.local
 .env.production.local
+google-services.json
 
 npm-debug.log*
 yarn-debug.log*
@@ -108,3 +109,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Firebase Crashlytics
+GoogleService-Info.plist

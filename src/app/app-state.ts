@@ -22,9 +22,9 @@ import {
   ConnectionStatusDTO
 } from 'mysterium-tequilapi'
 import { Proposal } from '../libraries/favorite-proposal'
-import { ConnectionStatusEnum } from '../libraries/tequilapi/enums'
+import { ConnectionStatusEnum } from '../libraries/tequilAPI/enums'
 
-class AppStore {
+export default class AppState {
   @observable
   public IdentityId?: string
   @observable
@@ -83,6 +83,3 @@ class AppStore {
     }
   }
 }
-
-const store = new AppStore()
-export { store }
