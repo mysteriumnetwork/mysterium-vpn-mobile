@@ -17,7 +17,7 @@
 
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
-import { Text, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
@@ -46,22 +46,31 @@ export default class App extends React.Component<AppProps> {
   public render (): ReactNode {
     return (
       <View style={styles.container}>
-        <Text>
+        <Image
+          style={styles.imageBackground}
+          source={require('../assets/background-logo.png')}
+          resizeMode="contain"
+        />
+
+        <Text style={styles.textStatus}>
           {this.appState.ConnectionStatus
             ? this.appState.ConnectionStatus.status
             : CONFIG.TEXTS.UNKNOWN_STATUS}
         </Text>
-        <Text>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
-        <Proposals
-          proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-          proposalsStore={this.appState}
-        />
-        <ButtonConnect
-          title={this.buttonText}
-          disabled={!this.buttonEnabled}
-          onPress={() => this.connectOrDisconnect()}
-        />
-        {this.appState.Statistics ? <Stats {...this.appState.Statistics} /> : null}
+        <Text style={styles.textIp}>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+
+        <View style={styles.controls}>
+          <Proposals
+            proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
+            proposalsStore={this.appState}
+          />
+          <ButtonConnect
+            title={this.buttonText}
+            disabled={!this.buttonEnabled}
+            onPress={() => this.connectOrDisconnect()}
+          />
+        </View>
+        {this.appState.Statistics ? <Stats style={styles.footer} {...this.appState.Statistics} /> : null}
       </View>
     )
   }

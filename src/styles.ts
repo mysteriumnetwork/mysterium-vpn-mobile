@@ -15,24 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StyleSheet, ViewStyle } from 'react-native'
-import { STYLES } from '../styles'
-
-type ProposalsStyles = {
-  root: ViewStyle,
-  picker: ViewStyle
+export interface IStyles {
+  FONT_LARGE: number,
+  FONT_NORMAL: number,
+  COLOR_MAIN: string,
+  COLOR_SECONDARY: string,
+  COLOR_DISABLED: string,
+  COLOR_BACKGROUND: string,
+  PADDING: number,
+  MARGIN: number
 }
 
-export default StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    marginBottom: STYLES.MARGIN,
-    borderWidth: 1,
-    borderColor: STYLES.COLOR_SECONDARY
-  },
-  picker: {
-    width: 300,
-    height: 50,
-    backgroundColor: STYLES.COLOR_BACKGROUND
-  }
-}) as ProposalsStyles
+export const STYLES: IStyles = {
+  FONT_LARGE: 32,
+  FONT_NORMAL: 18,
+  COLOR_MAIN: '#622461',
+  COLOR_SECONDARY: '#999',
+  COLOR_DISABLED: '#eee',
+  COLOR_BACKGROUND: '#fff',
+  PADDING: 15,
+  MARGIN: 15
+}
