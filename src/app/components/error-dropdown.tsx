@@ -16,18 +16,19 @@
  */
 
 import React from 'react'
-import { Text } from 'react-native'
+import DropdownAlert from 'react-native-dropdownalert'
+import ErrorAlert from '../error-alert'
 
 type ErrorProps = {
-  message: string
+  errorAlert: ErrorAlert
 }
 
-const Error: React.SFC<ErrorProps> = ({
-  message
-}) => {
-  return (
-      <Text>{message}</Text>
-  )
+/**
+ * Error dropdown component, capable of error messages.
+ * Binds itself to ErrorAlert.
+ */
+const ErrorDropdown: React.SFC<ErrorProps> = ({ errorAlert }) => {
+  return <DropdownAlert ref={(ref: DropdownAlert) => errorAlert.dropdown = ref}/>
 }
 
-export default Error
+export default ErrorDropdown

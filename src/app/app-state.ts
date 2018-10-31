@@ -39,13 +39,6 @@ export default class AppState {
   public Proposals?: Proposal[]
 
   @computed
-  public get Error (): string | undefined {
-    return this._error
-  }
-  @observable
-  private _error?: string
-
-  @computed
   get status (): ConnectionStatus | undefined {
     if (this.ConnectionStatus === undefined) {
       return
@@ -88,10 +81,5 @@ export default class AppState {
       sessionId: '',
       status: ConnectionStatusEnum.DISCONNECTING
     }
-  }
-
-  @action
-  public showError (error: string) {
-    this._error = error
   }
 }

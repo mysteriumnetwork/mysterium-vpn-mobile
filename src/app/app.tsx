@@ -24,24 +24,28 @@ import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
-import Error from './components/error'
+import ErrorDropdown from './components/error-dropdown'
+import ErrorAlert from './error-alert'
 import Proposals from './proposals'
 import Stats from './stats'
 
 type AppProps = {
   tequilAPIDriver: TequilAPIDriver,
-  appState: AppState
+  appState: AppState,
+  errorAlert: ErrorAlert
 }
 
 @observer
 export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilAPIDriver
   private readonly appState: AppState
+  private readonly errorAlert: ErrorAlert
 
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
     this.appState = props.appState
+    this.errorAlert = props.errorAlert
   }
 
   public render (): ReactNode {
@@ -62,8 +66,8 @@ export default class App extends React.Component<AppProps> {
           disabled={!this.buttonEnabled}
           onPress={() => this.connectOrDisconnect()}
         />
-        {this.appState.Error ? <Error message={this.appState.Error}/> : null}
         {this.appState.Statistics ? <Stats {...this.appState.Statistics} /> : null}
+        <ErrorDropdown errorAlert={this.errorAlert}/>
       </View>
     )
   }
