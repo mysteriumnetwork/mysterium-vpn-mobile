@@ -34,7 +34,7 @@ export default class App extends AppTequilapi {
       <View style={styles.container}>
         <Image
           style={styles.imageBackground}
-          source={require('../assets/background-loading.png')}
+          source={require('../assets/background-logo.png')}
           resizeMode="contain"
         />
 
