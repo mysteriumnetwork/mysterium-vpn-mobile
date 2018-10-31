@@ -15,33 +15,85 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { ReactNode } from 'react'
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
+import { STYLES } from '../styles'
 
 type StatsProps = {
+  style?: StyleProp<ViewStyle>
   duration: number,
   bytesReceived: number,
   bytesSent: number
 }
 
 const Stats: React.SFC<StatsProps> = ({
+  style,
   duration,
   bytesReceived,
   bytesSent
 }) => {
   return (
-    <View style={styles.container}>
-      <Text>Duration: {timeDisplay(duration)}</Text>
-      <Text>Received: {bytesDisplay(bytesReceived)}</Text>
-      <Text>Sent: {bytesDisplay(bytesSent)}</Text>
+    <View style={[styles.container, style]}>
+      {createStatsBlock('Duration', timeDisplay(duration), 'H:M:S')}
+      {createStatsBlock('Received', bytesDisplay(bytesReceived))}
+      {createStatsBlock('Sent', bytesDisplay(bytesSent))}
+    </View>
+  )
+}
+
+function createStatsBlock (name: string, value: string, units?: string): ReactNode {
+  const textName = name.toUpperCase()
+  const parts = value.split(' ')
+  const textAmount = parts[0]
+  const textUnits = parts[1] || units || ''
+  return <StatsBlock textName={textName} textAmount={textAmount} textUnits={textUnits}/>
+}
+
+type StatsBlockProps = {
+  textName: string,
+  textAmount: string,
+  textUnits: string
+}
+
+const StatsBlock: React.SFC<StatsBlockProps> = ({
+  textName, textAmount, textUnits
+}) => {
+  return (
+    <View style={styles.textBlock}>
+      <Text style={styles.textName}>
+        {textName}
+      </Text>
+      <Text style={styles.textAmount}>
+        {textAmount}
+      </Text>
+      <Text style={styles.textUnits}>
+        {textUnits}
+      </Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    flex: 1,
+    flexDirection: 'row',
+    padding: STYLES.PADDING
+  },
+  textBlock: {
+    width: '33.3%',
+    alignItems: 'center'
+  },
+  textName: {
+    fontSize: STYLES.FONT_NORMAL,
+    color: STYLES.COLOR_SECONDARY
+  },
+  textAmount: {
+    fontSize: 22,
+    color: STYLES.COLOR_MAIN
+  },
+  textUnits: {
+    fontSize: STYLES.FONT_NORMAL
   }
 })
 

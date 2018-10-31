@@ -16,16 +16,44 @@
  */
 
 import { StyleSheet, ViewStyle } from 'react-native'
+import { STYLES } from '../styles'
 
 type AppStyles = {
-  container: ViewStyle
+  container: ViewStyle,
+  controls: ViewStyle,
+  footer: ViewStyle,
+  imageBackground: ViewStyle,
+  textStatus: ViewStyle,
+  textIp: ViewStyle
 }
 
 export default StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'center'
+    flex: 1
+  },
+  controls: {
+    top: 270,
+    alignItems: 'center'
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0
+  },
+  imageBackground: {
+    top: 10,
+    position: 'absolute',
+    width: '100%'
+  },
+  textStatus: {
+    marginTop: 45,
+    fontSize: STYLES.FONT_LARGE,
+    color: STYLES.COLOR_MAIN
+  },
+  textIp: {
+    marginTop: STYLES.MARGIN,
+    fontSize: STYLES.FONT_NORMAL,
+    color: STYLES.COLOR_SECONDARY
   }
 }) as AppStyles
