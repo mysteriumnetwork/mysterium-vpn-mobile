@@ -24,23 +24,28 @@ import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
+import ErrorDropdown from './components/error-dropdown'
+import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Proposals from './proposals'
 import Stats from './stats'
 
 type AppProps = {
   tequilAPIDriver: TequilAPIDriver,
-  appState: AppState
+  appState: AppState,
+  errorDisplayDelegate: ErrorDisplayDelegate
 }
 
 @observer
 export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilAPIDriver
   private readonly appState: AppState
+  private readonly errorDisplayDelegate: ErrorDisplayDelegate
 
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
     this.appState = props.appState
+    this.errorDisplayDelegate = props.errorDisplayDelegate
   }
 
   public render (): ReactNode {
@@ -71,6 +76,7 @@ export default class App extends React.Component<AppProps> {
           />
         </View>
         {this.appState.Statistics ? <Stats style={styles.footer} {...this.appState.Statistics} /> : null}
+        <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
       </View>
     )
   }

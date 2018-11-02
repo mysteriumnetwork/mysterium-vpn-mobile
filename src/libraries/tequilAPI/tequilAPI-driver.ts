@@ -18,6 +18,8 @@
 import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
 
 import AppState from '../../app/app-state'
+import IErrorDisplay from '../../app/errors/error-display'
+import errors from '../../app/errors/errors'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
@@ -40,7 +42,7 @@ export default class TequilAPIDriver {
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
-  constructor (appState: AppState) {
+  constructor (appState: AppState, private errorDisplay: IErrorDisplay) {
     this.appState = appState
     this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.appState)
     this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.appState)
@@ -70,6 +72,7 @@ export default class TequilAPIDriver {
       })
       console.log('connected', connection)
     } catch (e) {
+      this.errorDisplay.showError(errors.CONNECT_FAILED)
       console.warn('api.connectionCreate failed', e)
     }
   }
