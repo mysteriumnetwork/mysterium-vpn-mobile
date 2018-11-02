@@ -65,7 +65,7 @@ cd ios
 * Install Cocoa dependencies
 
 ```bash
-carthage update --plaftorm iOS
+carthage bootstrap --plaftorm iOS --cache-builds
 ```
 
 ```bash
