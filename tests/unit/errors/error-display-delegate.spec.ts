@@ -1,5 +1,5 @@
-import IErrorDisplay from '../../src/app/errors/error-display'
-import ErrorDisplayDelegate from '../../src/app/errors/error-display-delegate'
+import IErrorDisplay from '../../../src/app/errors/error-display'
+import ErrorDisplayDelegate from '../../../src/app/errors/error-display-delegate'
 
 class ErrorDisplayKeeper implements IErrorDisplay {
   public error?: string
