@@ -37,15 +37,6 @@ type ProposalsProps = {
 
 @observer
 export default class Proposals extends React.Component<ProposalsProps> {
-
-  @computed
-  private get proposalsSorted (): Proposal[] {
-    if (this.props.proposalsState.Proposals === undefined) return []
-    return this.props.proposalsState.Proposals
-      .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.get(p.providerId)))
-      .sort(compareProposals)
-  }
-
   private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
 
@@ -83,9 +74,17 @@ export default class Proposals extends React.Component<ProposalsProps> {
     )
   }
 
+  @computed
+  private get proposalsSorted (): Proposal[] {
+    if (this.props.proposalsState.Proposals === undefined) return []
+    return this.props.proposalsState.Proposals
+      .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.has(p.providerId)))
+      .sort(compareProposals)
+  }
+
   private get isFavoriteSelected (): boolean {
     if (!this.props.proposalsState.SelectedProviderId) return false
-    return this.props.favoritesStore.get(this.props.proposalsState.SelectedProviderId)
+    return this.props.favoritesStore.has(this.props.proposalsState.SelectedProviderId)
   }
 
   @action
@@ -105,7 +104,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
 
   @action
   private async toggleFavorite (selectedProviderId: string): Promise<void> {
-    await this.props.favoritesStore.set(selectedProviderId, !this.props.favoritesStore.get(selectedProviderId))
+    await this.props.favoritesStore.set(selectedProviderId, !this.props.favoritesStore.has(selectedProviderId))
   }
 
   @action

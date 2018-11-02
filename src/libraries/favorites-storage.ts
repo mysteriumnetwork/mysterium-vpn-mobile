@@ -42,7 +42,7 @@ export class FavoritesStorage {
     await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(this.favorites))
   }
 
-  public get (proposalId: string) {
+  public has (proposalId: string): boolean {
     return !!get(this.favorites, proposalId)
   }
 }
