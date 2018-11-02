@@ -20,11 +20,11 @@ import { observer } from 'mobx-react/native'
 import { ProposalDTO } from 'mysterium-tequilapi'
 import React, { ReactNode } from 'react'
 import { Picker, Text, View } from 'react-native'
-import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
-import { compareProposals, Proposal } from '../libraries/favorite-proposal'
-import { FavoritesStorage } from '../libraries/favorites-storage'
-import ButtonFavorite from './components/button-favorite'
-import styles from './proposals-styles'
+import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
+import { compareProposals, Proposal } from '../../libraries/favorite-proposal'
+import { FavoritesStorage } from '../../libraries/favorites-storage'
+import styles from '../proposals-styles'
+import ButtonFavorite from './button-favorite'
 
 type ProposalsProps = {
   favoritesStore: FavoritesStorage,
@@ -97,7 +97,6 @@ export default class Proposals extends React.Component<ProposalsProps> {
     if (stateProposals && stateProposals[0]) {
       if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {
         this.props.proposalsState.SelectedProviderId = this.proposalsSorted[0].providerID
-        return
       }
     }
   }

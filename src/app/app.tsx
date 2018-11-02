@@ -27,9 +27,9 @@ import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
 import ErrorDropdown from './components/error-dropdown'
+import Proposals from './components/proposals'
+import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
-import Proposals from './proposals'
-import Stats from './stats'
 
 type AppProps = {
   tequilAPIDriver: TequilAPIDriver,

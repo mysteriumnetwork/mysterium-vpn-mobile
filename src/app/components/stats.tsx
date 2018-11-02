@@ -17,8 +17,8 @@
 
 import React, { ReactNode } from 'react'
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { bytesDisplay, timeDisplay } from '../libraries/unitConverter'
-import { STYLES } from '../styles'
+import { bytesDisplay, timeDisplay } from '../../libraries/unitConverter'
+import { STYLES } from '../../styles'
 
 type StatsProps = {
   style?: StyleProp<ViewStyle>
