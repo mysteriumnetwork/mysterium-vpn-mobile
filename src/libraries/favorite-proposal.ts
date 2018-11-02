@@ -41,7 +41,7 @@ class Proposal {
   }
 }
 
-export function compareProposals (one: Proposal, other: Proposal): number {
+function compareProposals (one: Proposal, other: Proposal): number {
   if (one.isFavorite && !other.isFavorite) {
     return -1
   } else if (!one.isFavorite && other.isFavorite) {
@@ -54,4 +54,4 @@ export function compareProposals (one: Proposal, other: Proposal): number {
   return 0
 }
 
-export { Proposal }
+export { Proposal, compareProposals }
