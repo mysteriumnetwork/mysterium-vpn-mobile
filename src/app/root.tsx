@@ -2,13 +2,13 @@ import * as React from 'react'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import App from './app'
 import AppState from './app-state'
-import ErrorAlert from './error-alert'
+import ErrorDisplayDelegator from './errors/error-display-delegator'
 import Logger from './logger'
 
 const Root: React.SFC = () => {
   const appState = new AppState()
-  const errorAlert = new ErrorAlert()
-  const tequilAPIDriver = new TequilAPIDriver(appState, errorAlert)
+  const errorDisplayDelegator = new ErrorDisplayDelegator()
+  const tequilAPIDriver = new TequilAPIDriver(appState, errorDisplayDelegator)
 
   const logger = new Logger(appState)
   logger.logObservableChanges()
@@ -17,7 +17,7 @@ const Root: React.SFC = () => {
     <App
       tequilAPIDriver={tequilAPIDriver}
       appState={appState}
-      errorAlert={errorAlert}
+      errorDisplayDelegator={errorDisplayDelegator}
     />
   )
 }
