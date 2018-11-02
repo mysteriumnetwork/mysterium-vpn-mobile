@@ -17,7 +17,7 @@ jest.mock('react-native', () => ({
   }
 }))
 
-describe('Storage', () => {
+describe('FavoritesStorage', () => {
   const storage = new FavoritesStorage()
   const { AsyncStorage } = require('react-native')
   const FAVORITES_KEY = '@Favorites:KEY'
@@ -37,8 +37,7 @@ describe('Storage', () => {
     })
   })
 
-  describe('.setFavorite', () => {
-
+  describe('.set', () => {
     it('includes passed proposalId in favorites hash-map when isFavorite is true', async () => {
       mockFavorites = ''
       await storage.fetch()
