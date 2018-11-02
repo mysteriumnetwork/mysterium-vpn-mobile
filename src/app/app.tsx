@@ -15,11 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { computed } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { mysteriumClient } from '../libraries/mysterium-client'
+import { ConnectionStatusEnum } from '../libraries/tequilAPI/enums'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
@@ -40,12 +42,25 @@ export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilAPIDriver
   private readonly appState: AppState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
+  private readonly connectionStatusTexts: { [key: string]: string | undefined } = {
+    [ConnectionStatusEnum.NOT_CONNECTED]: 'Disconnected',
+    [ConnectionStatusEnum.CONNECTING]: 'Connecting',
+    [ConnectionStatusEnum.CONNECTED]: 'Connected',
+    [ConnectionStatusEnum.DISCONNECTING]: 'Disconnecting'
+  }
 
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
     this.appState = props.appState
     this.errorDisplayDelegate = props.errorDisplayDelegate
+  }
+
+  @computed
+  private get connectionStatus (): string {
+    return this.appState.ConnectionStatus
+      ? this.getConnectionStatusText(this.appState.ConnectionStatus.status)
+      : CONFIG.TEXTS.UNKNOWN_STATUS
   }
 
   public render (): ReactNode {
@@ -58,9 +73,7 @@ export default class App extends React.Component<AppProps> {
         />
 
         <Text style={styles.textStatus}>
-          {this.appState.ConnectionStatus
-            ? this.appState.ConnectionStatus.status
-            : CONFIG.TEXTS.UNKNOWN_STATUS}
+          {this.connectionStatus}
         </Text>
         <Text style={styles.textIp}>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
@@ -106,6 +119,14 @@ export default class App extends React.Component<AppProps> {
         ? 'Disconnect'
         : 'Connect'
       : CONFIG.TEXTS.UNKNOWN_STATUS
+  }
+
+  private getConnectionStatusText (connectionStatus: string): string {
+    const text = this.connectionStatusTexts[connectionStatus]
+    if (text === undefined) {
+      throw new Error(`Unknown connection status: ${connectionStatus}`)
+    }
+    return text
   }
 
   /***
