@@ -11,10 +11,10 @@ class ErrorDisplayDelegate implements IErrorDisplay {
   }
 
   public showError (error: string) {
-    this.getDelegateOrFail().showError(error)
+    this.getErrorDisplayOrFail().showError(error)
   }
 
-  private getDelegateOrFail (): IErrorDisplay {
+  private getErrorDisplayOrFail (): IErrorDisplay {
     if (this._errorDisplay === undefined) {
       throw new Error('ErrorDisplayDelegate failed - errorDisplay not set')
     }
