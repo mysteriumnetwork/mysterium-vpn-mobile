@@ -78,6 +78,20 @@ cd ..
 yarn ios
 ```
 
+* E2E tests
+
+Make sure these are installed:
+```bash
+brew tap wix/brew
+brew install wix/brew/applesimutils
+```
+
+Run E2E tests:
+
+```bash
+yarn test:e2e:ios
+```
+
 # Troubleshooting
 
 ### iOS build & run error

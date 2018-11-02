@@ -1,8 +1,8 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
-import AppState from '../../src/app/app-state'
-import { CONFIG } from '../../src/config'
-import { StatusFetcher } from '../../src/fetchers/status-fetcher'
-import { TequilapiClientMock } from '../mocks/tequilapi-mock'
+import AppState from './../../../src/app/app-state'
+import { CONFIG } from './../../../src/config'
+import { StatusFetcher } from './../../../src/fetchers/status-fetcher'
+import { TequilapiClientMock } from './../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {
   const appState = new AppState()
