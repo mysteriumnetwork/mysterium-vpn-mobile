@@ -8,7 +8,6 @@
     "ios": "react-native run-ios",
     "test:unit": "jest",
     "test:e2e:ios": "detox test -o tests/e2e/config.json --configuration=ios.sim.debug",
-    "test:e2e:android": "detox test -o tests/e2e/config.json --configuration=android.emu.debug",
     "lint": "tslint -p . -c tslint.json 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
     "ci": "yarn lint && yarn test:unit"
   },
