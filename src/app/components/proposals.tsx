@@ -103,7 +103,12 @@ export default class Proposals extends React.Component<ProposalsProps> {
 
   @action
   private async toggleFavorite (selectedProviderId: string): Promise<void> {
-    await this.props.favoritesStore.set(selectedProviderId, !this.props.favoritesStore.has(selectedProviderId))
+    const store = this.props.favoritesStore
+    if (store.has(selectedProviderId)) {
+      await store.add(selectedProviderId)
+    } else {
+      await store.remove(selectedProviderId)
+    }
   }
 
   @action

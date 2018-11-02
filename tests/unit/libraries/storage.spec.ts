@@ -37,18 +37,20 @@ describe('FavoritesStorage', () => {
     })
   })
 
-  describe('.set', () => {
+  describe('.add', () => {
     it('includes passed proposalId in favorites hash-map when isFavorite is true', async () => {
       mockFavorites = ''
       await storage.fetch()
-      await storage.set('5', true)
+      await storage.add('5')
       expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{"5":true}')
     })
+  })
 
+  describe('.remove', () => {
     it('removes passed proposalId from favorites hash-map when isFavorite is false', async () => {
       mockFavorites = '{"1":true}'
       await storage.fetch()
-      await storage.set('1', false)
+      await storage.remove('1')
       expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{}')
     })
   })

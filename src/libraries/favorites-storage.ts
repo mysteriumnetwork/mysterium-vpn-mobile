@@ -31,18 +31,22 @@ export class FavoritesStorage {
   }
 
   @action
-  public async set (proposalId: string, isFavorite: boolean): Promise<void> {
+  public async add (proposalId: string): Promise<void> {
+    set(this.favorites, proposalId, true)
+    await this.saveToStorage()
+  }
 
-    if (isFavorite) {
-      set(this.favorites, proposalId, isFavorite)
-    } else {
-      set(this.favorites, proposalId, undefined)
-    }
-
-    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(this.favorites))
+  @action
+  public async remove (proposalId: string): Promise<void> {
+    set(this.favorites, proposalId, undefined)
+    await this.saveToStorage()
   }
 
   public has (proposalId: string): boolean {
     return !!get(this.favorites, proposalId)
+  }
+
+  private async saveToStorage () {
+    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(this.favorites))
   }
 }
