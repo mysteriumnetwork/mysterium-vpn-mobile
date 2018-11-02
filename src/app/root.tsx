@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FavoritesStorage } from '../libraries/favorite-storage'
+import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import App from './app'
 import AppState from './app-state'

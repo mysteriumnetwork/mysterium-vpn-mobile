@@ -22,7 +22,7 @@ import React, { ReactNode } from 'react'
 import { Picker, Text, View } from 'react-native'
 import { ProposalsFetcher } from '../fetchers/proposals-fetcher'
 import { compareProposals, Proposal } from '../libraries/favorite-proposal'
-import { FavoritesStorage } from '../libraries/favorite-storage'
+import { FavoritesStorage } from '../libraries/favorites-storage'
 import ButtonFavorite from './components/button-favorite'
 import styles from './proposals-styles'
 
@@ -90,11 +90,13 @@ export default class Proposals extends React.Component<ProposalsProps> {
 
   @action
   private setDefaultSelectedProvider () {
-    const statePropoals = this.props.proposalsState.Proposals
+    const stateProposals = this.props.proposalsState.Proposals
     const selectedProviderId = this.props.proposalsState.SelectedProviderId
-    if (statePropoals && statePropoals[0]) {
-      if (!selectedProviderId
-        || !statePropoals.find((p) => p.providerId === selectedProviderId)) {
+    const stateProposalsIncludeSelectedProposal = stateProposals
+      && stateProposals.some((p) => p.providerId === selectedProviderId)
+
+    if (stateProposals && stateProposals[0]) {
+      if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {
         this.props.proposalsState.SelectedProviderId = this.proposalsSorted[0].providerID
         return
       }
