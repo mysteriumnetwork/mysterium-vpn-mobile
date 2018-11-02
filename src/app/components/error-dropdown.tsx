@@ -23,7 +23,7 @@ import IErrorDisplay from '../errors/error-display'
  * Allowing show error messages as a dropdowns.
  */
 class ErrorDropdown extends React.Component implements IErrorDisplay {
-  private dropdown: any
+  private dropdown: DropdownAlert
 
   public render (): ReactNode {
     return <DropdownAlert ref={(ref: DropdownAlert) => this.dropdown = ref}/>
