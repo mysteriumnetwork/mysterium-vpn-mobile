@@ -20,6 +20,7 @@
     "@types/react-test-renderer": "^16.0.1",
     "babel-jest": "22.4.3",
     "babel-preset-react-native": "4.0.0",
+    "detox": "^9.0.5",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "enzyme-to-json": "^3.3.4",

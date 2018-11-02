@@ -3,7 +3,7 @@ describe('HomeScreen', () => {
     await device.reloadReactNative()
   })
 
-  it('Should show IP updating status', async () => {
-    await expect(await element(by.text('IP: updating...'))).toExist()
+  it('Should show IP updating status', () => {
+    expect(element(by.text('IP: updating...'))).toExist()
   })
 })
