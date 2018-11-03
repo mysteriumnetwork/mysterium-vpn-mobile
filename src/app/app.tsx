@@ -89,8 +89,8 @@ export default class App extends React.Component<AppProps> {
   public async componentDidMount () {
     await this.tequilAPIDriver.unlock()
 
-    // TODO: remove it later, serviceStatus is used only for native call test
-    const serviceStatus = await mysteriumClient.startService(4050)
-    console.log('serviceStatus', serviceStatus)
+    // TODO: uncomment once node has full functionality
+    // const serviceStatus = await mysteriumClient.startService(4050)
+    // console.log('serviceStatus', serviceStatus)
   }
 }
