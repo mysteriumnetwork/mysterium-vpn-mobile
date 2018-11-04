@@ -178,4 +178,13 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-apply plugin: 'com.google.gms.google-services'
+
+gradle.projectsEvaluated {
+    preBuild.dependsOn(applyGoogleServicesIfNeeded)
+}
+
+task applyGoogleServicesIfNeeded {
+    if(project.hasProperty('applyGoogleServices')) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+}
