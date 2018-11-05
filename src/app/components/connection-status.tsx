@@ -1,4 +1,3 @@
-import { computed } from 'mobx'
 import React, { Component } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { CONFIG } from '../../config'
@@ -23,7 +22,6 @@ export default class ConnectionStatus extends Component<ConnectionStatusProps> {
     )
   }
 
-  @computed
   private get connectionStatus (): string {
     const status = this.props.status
 
