@@ -24,6 +24,7 @@ import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
+import ConnectionStatus from './components/connection-status'
 import ErrorDropdown from './components/error-dropdown'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Proposals from './proposals'
@@ -57,11 +58,7 @@ export default class App extends React.Component<AppProps> {
           resizeMode="contain"
         />
 
-        <Text style={styles.textStatus}>
-          {this.appState.ConnectionStatus
-            ? this.appState.ConnectionStatus.status
-            : CONFIG.TEXTS.UNKNOWN_STATUS}
-        </Text>
+        <ConnectionStatus status={this.appState.ConnectionStatus ? this.appState.ConnectionStatus.status : undefined}/>
         <Text style={styles.textIp}>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>

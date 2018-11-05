@@ -24,7 +24,13 @@ interface IConfig {
   TEXTS: {
     IP_UPDATING: string,
     UNKNOWN: string,
-    UNKNOWN_STATUS: string
+    CONNECTION_STATUS: {
+      UNKNOWN: string,
+      NOT_CONNECTED: string,
+      CONNECTING: string,
+      CONNECTED: string,
+      DISCONNECTING: string
+    }
   },
   REFRESH_INTERVALS: {
     CONNECTION: number,
@@ -42,7 +48,13 @@ export const CONFIG: IConfig = {
   TEXTS: {
     IP_UPDATING: 'updating...',
     UNKNOWN: 'unknown',
-    UNKNOWN_STATUS: 'Loading...'
+    CONNECTION_STATUS: {
+      UNKNOWN: 'Loading...',
+      NOT_CONNECTED: 'Disconnected',
+      CONNECTING: 'Connecting',
+      CONNECTED: 'Connected',
+      DISCONNECTING: 'Disconnecting'
+    }
   },
   REFRESH_INTERVALS: {
     CONNECTION: 2 * 1000,

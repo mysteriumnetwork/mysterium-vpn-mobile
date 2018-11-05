@@ -23,7 +23,6 @@ type AppStyles = {
   controls: ViewStyle,
   footer: ViewStyle,
   imageBackground: ViewStyle,
-  textStatus: ViewStyle,
   textIp: ViewStyle
 }
 
@@ -45,11 +44,6 @@ export default StyleSheet.create({
     top: 10,
     position: 'absolute',
     width: '100%'
-  },
-  textStatus: {
-    marginTop: 45,
-    fontSize: STYLES.FONT_LARGE,
-    color: STYLES.COLOR_MAIN
   },
   textIp: {
     marginTop: STYLES.MARGIN,
