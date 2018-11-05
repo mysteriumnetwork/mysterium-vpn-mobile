@@ -88,6 +88,7 @@ export default class TequilAPIDriver {
       await api.connectionCancel()
       console.log('disconnected')
     } catch (e) {
+      this.errorDisplay.showError(errors.DISCONNECT_FAILED)
       console.warn('api.connectionCancel failed', e)
     }
   }
