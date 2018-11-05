@@ -26,17 +26,19 @@ import { FavoritesStorage } from '../../libraries/favorites-storage'
 import styles from '../proposals-styles'
 import ButtonFavorite from './button-favorite'
 
+export type ProposalsState = {
+  SelectedProviderId?: string,
+  Proposals?: ProposalDTO[]
+}
+
 type ProposalsProps = {
   favoritesStore: FavoritesStorage,
   proposalsFetcher: ProposalsFetcher,
-  proposalsState: {
-    SelectedProviderId?: string,
-    Proposals?: ProposalDTO[]
-  }
+  proposalsState: ProposalsState
 }
 
 @observer
-export default class Proposals extends React.Component<ProposalsProps> {
+export default class ProposalsDropdown extends React.Component<ProposalsProps> {
   private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
 
@@ -62,7 +64,7 @@ export default class Proposals extends React.Component<ProposalsProps> {
           selectedValue={selectedProviderId}
           onValueChange={(providerId: string) => this.onProposalSelected(providerId)}
         >
-          {this.proposalsSorted.map(Proposals.renderProposal)}
+          {this.proposalsSorted.map(ProposalsDropdown.renderProposal)}
         </Picker>
         {selectedProviderId ? (
           <ButtonFavorite

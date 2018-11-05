@@ -27,7 +27,7 @@ import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
 import ErrorDropdown from './components/error-dropdown'
-import Proposals from './components/proposals'
+import ProposalsDropdown, { ProposalsState } from './components/proposals-dropdown'
 import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 
@@ -64,10 +64,10 @@ export default class App extends React.Component<AppProps> {
         <Text style={styles.textIp}>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
-          <Proposals
+          <ProposalsDropdown
             favoritesStore={this.props.favoritesStore}
             proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-            proposalsState={this.appState}
+            proposalsState={this.appState as ProposalsState}
           />
           <ButtonConnect
             title={this.buttonText}
