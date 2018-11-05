@@ -34,6 +34,7 @@ platform :android do
       properties: { 
         'versionCode' => number_of_commits, 
         'versionName' => last_git_tag,
+        'applyGoogleServices' => true,
         "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
         "android.injected.signing.store.password" => ENV["FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS"],
         "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
