@@ -11,10 +11,10 @@ type ConnectionStatusProps = {
 
 export default class ConnectionStatus extends Component<ConnectionStatusProps> {
   private readonly connectionStatusTexts: { [key: string]: string | undefined } = {
-    [ConnectionStatusEnum.NOT_CONNECTED]: 'Disconnected',
-    [ConnectionStatusEnum.CONNECTING]: 'Connecting',
-    [ConnectionStatusEnum.CONNECTED]: 'Connected',
-    [ConnectionStatusEnum.DISCONNECTING]: 'Disconnecting'
+    [ConnectionStatusEnum.NOT_CONNECTED]: this.statusTexts.NOT_CONNECTED,
+    [ConnectionStatusEnum.CONNECTING]: this.statusTexts.CONNECTING,
+    [ConnectionStatusEnum.CONNECTED]: this.statusTexts.CONNECTED,
+    [ConnectionStatusEnum.DISCONNECTING]: this.statusTexts.DISCONNECTING
   }
 
   public render () {
@@ -28,7 +28,7 @@ export default class ConnectionStatus extends Component<ConnectionStatusProps> {
     const status = this.props.status
 
     if (status === undefined) {
-      return CONFIG.TEXTS.UNKNOWN_STATUS
+      return this.statusTexts.UNKNOWN
     }
 
     const text = this.connectionStatusTexts[status]
@@ -37,6 +37,10 @@ export default class ConnectionStatus extends Component<ConnectionStatusProps> {
     }
 
     return text
+  }
+
+  private get statusTexts () {
+    return CONFIG.TEXTS.CONNECTION_STATUS
   }
 }
 
