@@ -102,7 +102,7 @@ export default class App extends React.Component<AppProps> {
       ? isConnected
         ? 'Disconnect'
         : 'Connect'
-      : CONFIG.TEXTS.UNKNOWN_STATUS
+      : CONFIG.TEXTS.CONNECTION_STATUS.UNKNOWN
   }
 
   /***
