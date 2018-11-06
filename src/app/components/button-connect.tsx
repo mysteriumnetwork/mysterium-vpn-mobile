@@ -16,7 +16,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
     let buttonStylesDisabled: StyleProp<ViewStyle>
     let textStylesDisabled: StyleProp<ViewStyle>
 
-    if (!this.buttonEnabled) {
+    if (!this.isButtonEnabled) {
       buttonStylesDisabled = styles.disabledRoot
       textStylesDisabled = styles.disabledButtonContent
     }
@@ -25,7 +25,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
       <TouchableOpacity
         activeOpacity={0.6}
         style={[styles.root, buttonStylesDisabled]}
-        onPress={this.connectOrDisconnect}
+        onPress={this.connectOrDisconnectOrCancel}
       >
         <Text style={[styles.buttonContent, textStylesDisabled]}>
           {this.buttonText}
@@ -34,7 +34,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
     )
   }
 
-  private get buttonEnabled (): boolean {
+  private get isButtonEnabled (): boolean {
     if (!this.props.connectionStatus) return false
     const connectionStatus = this.props.connectionStatus.status
     return (connectionStatus === ConnectionStatusEnum.NOT_CONNECTED
@@ -47,7 +47,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
    * Connects or disconnects to VPN server, depends on current connection state.
    * Is connection state is unknown - does nothing
    */
-  private connectOrDisconnect = async () => {
+  private connectOrDisconnectOrCancel = async () => {
     if (!this.props.connectionStatus) return
     const status = this.props.connectionStatus.status
 
@@ -62,25 +62,21 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
   }
 
   private get buttonText (): string {
-    let text: string = CONFIG.TEXTS.UNKNOWN
-    if (!this.props.connectionStatus) return text
+    if (!this.props.connectionStatus) return CONFIG.TEXTS.UNKNOWN
 
     const connectionStatus = this.props.connectionStatus.status
     switch (connectionStatus) {
       case ConnectionStatusEnum.NOT_CONNECTED:
-        text = 'Connect'
-        break
+        return CONFIG.TEXTS.CONNECT_BUTTON.NOT_CONNECTED
       case ConnectionStatusEnum.CONNECTED:
-        text = 'Disconnect'
-        break
+        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECTED
       case ConnectionStatusEnum.CONNECTING:
-        text = 'Cancel'
-        break
+        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECTING
       case ConnectionStatusEnum.DISCONNECTING:
-        text = 'Disconnecting'
-        break
+        return CONFIG.TEXTS.CONNECT_BUTTON.DISCONNECTING
+      default:
+        return CONFIG.TEXTS.UNKNOWN
     }
-    return text
   }
 }
 
