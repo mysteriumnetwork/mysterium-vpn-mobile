@@ -21,6 +21,7 @@ import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import { mysteriumClient } from '../libraries/mysterium-client'
+import { ConnectionStatusEnum } from '../libraries/tequilAPI/enums'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppState from './app-state'
 import styles from './app-styles'
@@ -95,17 +96,32 @@ export default class App extends React.Component<AppProps> {
   }
 
   private get buttonEnabled (): boolean {
-    return this.appState.isReady
+    const connectionStatus = this.appState.ConnectionStatus
+    if (!connectionStatus) return false
+    return (connectionStatus.status === ConnectionStatusEnum.NOT_CONNECTED
+      || connectionStatus.status === ConnectionStatusEnum.CONNECTED)
   }
 
   private get buttonText (): string {
-    const isReady = this.appState.isReady
-    const isConnected = this.appState.isConnected
-    return isReady
-      ? isConnected
-        ? 'Disconnect'
-        : 'Connect'
-      : CONFIG.TEXTS.CONNECTION_STATUS.UNKNOWN
+    const connectionStatus = this.appState.ConnectionStatus
+    let text: string = CONFIG.TEXTS.UNKNOWN
+
+    if (!connectionStatus) return text
+    switch (connectionStatus.status) {
+      case ConnectionStatusEnum.NOT_CONNECTED:
+        text = 'Connect'
+        break
+      case ConnectionStatusEnum.CONNECTED:
+        text = 'Disconnect'
+        break
+      case ConnectionStatusEnum.CONNECTING:
+        text = 'Cancel'
+        break
+      case ConnectionStatusEnum.DISCONNECTING:
+        text = 'Disconnecting'
+        break
+    }
+    return text
   }
 
   /***

@@ -20,6 +20,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
 
     return (
       <TouchableOpacity
+        activeOpacity={0.6}
         style={[styles.root, buttonStylesDisabled]}
         onPress={this.props.onPress}
       >
