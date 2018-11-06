@@ -1,10 +1,12 @@
+import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import React, { Component } from 'react'
 import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import { CONFIG } from '../../config'
+import { ConnectionStatusEnum } from '../../libraries/tequilAPI/enums'
 import { STYLES } from '../../styles'
 
 type ButtonConnectProps = {
-  title: string,
-  disabled: boolean,
+  connectionStatus?: ConnectionStatusDTO
   onPress: () => void
 }
 
@@ -13,7 +15,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
     let buttonStylesDisabled: StyleProp<ViewStyle>
     let textStylesDisabled: StyleProp<ViewStyle>
 
-    if (this.props.disabled) {
+    if (!this.buttonEnabled) {
       buttonStylesDisabled = styles.disabledRoot
       textStylesDisabled = styles.disabledButtonContent
     }
@@ -25,10 +27,40 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
         onPress={this.props.onPress}
       >
         <Text style={[styles.buttonContent, textStylesDisabled]}>
-          {this.props.title}
+          {this.buttonText}
         </Text>
       </TouchableOpacity>
     )
+  }
+  private get buttonEnabled (): boolean {
+    if (!this.props.connectionStatus) return false
+    const connectionStatus = this.props.connectionStatus.status
+    return (connectionStatus === ConnectionStatusEnum.NOT_CONNECTED
+      || connectionStatus === ConnectionStatusEnum.CONNECTED
+      || connectionStatus === ConnectionStatusEnum.CONNECTING
+    )
+  }
+
+  private get buttonText (): string {
+    let text: string = CONFIG.TEXTS.UNKNOWN
+    if (!this.props.connectionStatus) return text
+
+    const connectionStatus = this.props.connectionStatus.status
+    switch (connectionStatus) {
+      case ConnectionStatusEnum.NOT_CONNECTED:
+        text = 'Connect'
+        break
+      case ConnectionStatusEnum.CONNECTED:
+        text = 'Disconnect'
+        break
+      case ConnectionStatusEnum.CONNECTING:
+        text = 'Cancel'
+        break
+      case ConnectionStatusEnum.DISCONNECTING:
+        text = 'Disconnecting'
+        break
+    }
+    return text
   }
 }
 

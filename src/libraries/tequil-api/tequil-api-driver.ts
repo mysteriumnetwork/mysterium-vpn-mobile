@@ -72,6 +72,8 @@ export default class TequilApiDriver {
       })
       console.log('connected', connection)
     } catch (e) {
+      if (e.isRequestClosedError) return
+
       this.errorDisplay.showError(errors.CONNECT_FAILED)
       console.warn('api.connectionCreate failed', e)
     }

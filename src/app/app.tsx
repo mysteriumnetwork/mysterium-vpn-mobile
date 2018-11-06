@@ -71,8 +71,7 @@ export default class App extends React.Component<AppProps> {
             proposalsState={this.appState as ProposalsState}
           />
           <ButtonConnect
-            title={this.buttonText}
-            disabled={!this.buttonEnabled}
+            connectionStatus={this.appState.ConnectionStatus}
             onPress={() => this.connectOrDisconnect()}
           />
         </View>
@@ -93,35 +92,6 @@ export default class App extends React.Component<AppProps> {
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
-  }
-
-  private get buttonEnabled (): boolean {
-    const connectionStatus = this.appState.ConnectionStatus
-    if (!connectionStatus) return false
-    return (connectionStatus.status === ConnectionStatusEnum.NOT_CONNECTED
-      || connectionStatus.status === ConnectionStatusEnum.CONNECTED)
-  }
-
-  private get buttonText (): string {
-    const connectionStatus = this.appState.ConnectionStatus
-    let text: string = CONFIG.TEXTS.UNKNOWN
-
-    if (!connectionStatus) return text
-    switch (connectionStatus.status) {
-      case ConnectionStatusEnum.NOT_CONNECTED:
-        text = 'Connect'
-        break
-      case ConnectionStatusEnum.CONNECTED:
-        text = 'Disconnect'
-        break
-      case ConnectionStatusEnum.CONNECTING:
-        text = 'Cancel'
-        break
-      case ConnectionStatusEnum.DISCONNECTING:
-        text = 'Disconnecting'
-        break
-    }
-    return text
   }
 
   /***
