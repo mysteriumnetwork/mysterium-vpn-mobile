@@ -106,7 +106,7 @@ export default class ProposalsDropdown extends React.Component<ProposalsProps> {
   @action
   private async toggleFavorite (selectedProviderId: string): Promise<void> {
     const store = this.props.favoritesStore
-    if (store.has(selectedProviderId)) {
+    if (!store.has(selectedProviderId)) {
       await store.add(selectedProviderId)
     } else {
       await store.remove(selectedProviderId)
