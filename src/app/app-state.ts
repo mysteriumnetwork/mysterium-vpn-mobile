@@ -51,17 +51,6 @@ export default class AppState {
     return this.status === ConnectionStatusEnum.CONNECTED
   }
 
-  @computed
-  get isReady (): boolean {
-    return (
-      this.IdentityId !== undefined &&
-      this.ConnectionStatus !== undefined &&
-      this.SelectedProviderId !== undefined &&
-      (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
-        this.status === ConnectionStatusEnum.CONNECTED)
-    )
-  }
-
   @action
   public resetIP () {
     this.IP = undefined

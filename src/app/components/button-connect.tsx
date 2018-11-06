@@ -2,12 +2,13 @@ import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import React, { Component } from 'react'
 import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import { CONFIG } from '../../config'
-import { ConnectionStatusEnum } from '../../libraries/tequilAPI/enums'
+import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import { STYLES } from '../../styles'
 
 type ButtonConnectProps = {
   connectionStatus?: ConnectionStatusDTO
-  onPress: () => void
+  connect: () => void,
+  disconnect: () => void
 }
 
 export default class ButtonConnect extends Component<ButtonConnectProps> {
@@ -24,7 +25,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
       <TouchableOpacity
         activeOpacity={0.6}
         style={[styles.root, buttonStylesDisabled]}
-        onPress={this.props.onPress}
+        onPress={this.connectOrDisconnect}
       >
         <Text style={[styles.buttonContent, textStylesDisabled]}>
           {this.buttonText}
@@ -32,6 +33,7 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
       </TouchableOpacity>
     )
   }
+
   private get buttonEnabled (): boolean {
     if (!this.props.connectionStatus) return false
     const connectionStatus = this.props.connectionStatus.status
@@ -39,6 +41,24 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
       || connectionStatus === ConnectionStatusEnum.CONNECTED
       || connectionStatus === ConnectionStatusEnum.CONNECTING
     )
+  }
+
+  /***
+   * Connects or disconnects to VPN server, depends on current connection state.
+   * Is connection state is unknown - does nothing
+   */
+  private connectOrDisconnect = async () => {
+    if (!this.props.connectionStatus) return
+    const status = this.props.connectionStatus.status
+
+    if (status === ConnectionStatusEnum.CONNECTING
+      || status === ConnectionStatusEnum.CONNECTED) {
+      this.props.disconnect()
+    }
+
+    if (status === ConnectionStatusEnum.NOT_CONNECTED) {
+      this.props.connect()
+    }
   }
 
   private get buttonText (): string {

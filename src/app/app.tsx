@@ -21,7 +21,6 @@ import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import { ConnectionStatusEnum } from '../libraries/tequilAPI/enums'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppState from './app-state'
 import styles from './app-styles'
@@ -72,7 +71,8 @@ export default class App extends React.Component<AppProps> {
           />
           <ButtonConnect
             connectionStatus={this.appState.ConnectionStatus}
-            onPress={() => this.connectOrDisconnect()}
+            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver)}
+            disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
         {this.appState.Statistics ? <Stats style={styles.footer} {...this.appState.Statistics} /> : null}
@@ -92,21 +92,5 @@ export default class App extends React.Component<AppProps> {
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
-  }
-
-  /***
-   * Connects or disconnects to VPN server, depends on current connection state.
-   * Is connection state is unknown - does nothing
-   */
-  private async connectOrDisconnect () {
-    if (!this.appState.isReady) {
-      return
-    }
-
-    if (this.appState.isConnected) {
-      await this.tequilAPIDriver.disconnect()
-    } else {
-      await this.tequilAPIDriver.connect()
-    }
   }
 }
