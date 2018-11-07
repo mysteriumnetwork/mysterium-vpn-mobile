@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 import ConnectionStatus from '../../../../src/app/components/connection-status'
-import { ConnectionStatusEnum } from '../../../../src/libraries/tequilAPI/enums'
+import { ConnectionStatusEnum } from '../../../../src/libraries/tequilapi/enums'
 
 describe('ConnectionStatus', () => {
   it('renders loading text with no status', () => {

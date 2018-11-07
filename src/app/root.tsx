@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FavoritesStorage } from '../libraries/favorites-storage'
-import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
+import TequilAPIDriver from '../libraries/tequilapi/tequilAPI-driver'
 import App from './app'
 import AppState from './app-state'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
