@@ -24,13 +24,18 @@ import {
 } from 'mysterium-tequilapi'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 
+const initialConnectionStatus: ConnectionStatusDTO = {
+  sessionId: '',
+  status: ConnectionStatusEnum.NOT_CONNECTED
+}
+
 export default class AppState {
   @observable
   public IdentityId?: string
   @observable
   public IP?: string
   @observable
-  public ConnectionStatus?: ConnectionStatusDTO
+  public ConnectionStatus: ConnectionStatusDTO = initialConnectionStatus
   @observable
   public Statistics?: ConnectionStatisticsDTO
   @observable
@@ -39,10 +44,7 @@ export default class AppState {
   public Proposals?: ProposalDTO[]
 
   @computed
-  get status (): ConnectionStatus | undefined {
-    if (this.ConnectionStatus === undefined) {
-      return
-    }
+  get status (): ConnectionStatus {
     return this.ConnectionStatus.status
   }
 

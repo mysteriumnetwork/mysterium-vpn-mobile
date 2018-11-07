@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum ConnectionStatusEnum {
+export const enum ConnectionStatusEnum {
   CONNECTED = 'Connected',
   NOT_CONNECTED = 'NotConnected',
   DISCONNECTING = 'Disconnecting',

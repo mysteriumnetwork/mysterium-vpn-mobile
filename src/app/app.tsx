@@ -70,7 +70,7 @@ export default class App extends React.Component<AppProps> {
             proposalsState={this.appState as ProposalsState}
           />
           <ButtonConnect
-            connectionStatus={this.appState.ConnectionStatus}
+            connectionStatus={this.appState.ConnectionStatus.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />

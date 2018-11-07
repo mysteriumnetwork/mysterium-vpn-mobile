@@ -32,7 +32,7 @@ export const CONFIG = {
       DISCONNECTING: 'Disconnecting'
     },
     CONNECT_BUTTON: {
-      NOT_CONNECTED: 'Connect',
+      CONNECT: 'Connect',
       CONNECTING: 'Cancel',
       CONNECTED: 'Disconnect',
       DISCONNECTING: 'Disconnecting'
