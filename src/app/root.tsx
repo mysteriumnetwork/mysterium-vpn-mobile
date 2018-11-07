@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FavoritesStorage } from '../libraries/favorites-storage'
-import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
+import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import App from './app'
 import AppState from './app-state'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
@@ -9,7 +9,7 @@ import Logger from './logger'
 class Root extends React.PureComponent {
   private readonly appState = new AppState()
   private errorDisplayDelegate = new ErrorDisplayDelegate()
-  private readonly tequilAPIDriver = new TequilAPIDriver(this.appState, this.errorDisplayDelegate)
+  private readonly tequilAPIDriver = new TequilApiDriver(this.appState, this.errorDisplayDelegate)
   private readonly favoritesStore = new FavoritesStorage()
 
   public async componentWillMount () {

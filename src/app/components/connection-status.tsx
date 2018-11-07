@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { CONFIG } from '../../config'
-import { ConnectionStatusEnum } from '../../libraries/tequilAPI/enums'
+import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import { STYLES } from '../../styles'
 
 type ConnectionStatusProps = {

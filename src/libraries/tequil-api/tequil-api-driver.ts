@@ -35,7 +35,7 @@ const api = new TequilapiClientFactory(
  * API operations level
  */
 
-export default class TequilAPIDriver {
+export default class TequilApiDriver {
   public proposalFetcher: ProposalsFetcher
   public readonly appState: AppState
   private statusFetcher: StatusFetcher
