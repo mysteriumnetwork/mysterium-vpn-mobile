@@ -21,7 +21,7 @@ import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import { mysteriumClient } from '../libraries/mysterium-client'
-import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
+import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppState from './app-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
@@ -32,7 +32,7 @@ import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 
 type AppProps = {
-  tequilAPIDriver: TequilAPIDriver,
+  tequilAPIDriver: TequilApiDriver,
   appState: AppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
   favoritesStore: FavoritesStorage
@@ -40,7 +40,7 @@ type AppProps = {
 
 @observer
 export default class App extends React.Component<AppProps> {
-  private readonly tequilAPIDriver: TequilAPIDriver
+  private readonly tequilAPIDriver: TequilApiDriver
   private readonly appState: AppState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
 
