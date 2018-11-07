@@ -18,35 +18,21 @@
 import { action } from 'mobx'
 import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
 import AppState from '../app/app-state'
-import {
-  Proposal,
-  sortFavorites
-} from '../libraries/favorite-proposal'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
-export class ProposalsFetcher extends FetcherBase<Proposal[]> {
+export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
   constructor (private findProposals: FindProposals, private readonly appState: AppState) {
     super('Proposals')
   }
 
-  protected async fetch (): Promise<Proposal[]> {
-    const proposals: ProposalDTO[] = await this.findProposals()
-    return sortFavorites(proposals)
+  protected async fetch (): Promise<ProposalDTO[]> {
+    return this.findProposals()
   }
 
   @action
-  protected update (proposals: Proposal[]) {
+  protected update (proposals: ProposalDTO[]) {
     this.appState.Proposals = proposals
-
-    // TODO: support non-selected proposal
-    // ensure that proposal is always selected
-    const containsSelectedProvider = this.appState.Proposals.some(
-      (p: Proposal) => p.id === this.appState.SelectedProviderId
-    )
-    if (!containsSelectedProvider) {
-      this.appState.SelectedProviderId = this.appState.Proposals[0].id
-    }
   }
 }

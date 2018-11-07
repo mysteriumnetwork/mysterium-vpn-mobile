@@ -19,6 +19,7 @@ import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
+import { FavoritesStorage } from '../libraries/favorites-storage'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilAPIDriver from '../libraries/tequilAPI/tequilAPI-driver'
 import AppState from './app-state'
@@ -26,14 +27,15 @@ import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
 import ErrorDropdown from './components/error-dropdown'
+import ProposalsDropdown, { ProposalsState } from './components/proposals-dropdown'
+import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
-import Proposals from './proposals'
-import Stats from './stats'
 
 type AppProps = {
   tequilAPIDriver: TequilAPIDriver,
   appState: AppState,
-  errorDisplayDelegate: ErrorDisplayDelegate
+  errorDisplayDelegate: ErrorDisplayDelegate,
+  favoritesStore: FavoritesStorage
 }
 
 @observer
@@ -62,9 +64,10 @@ export default class App extends React.Component<AppProps> {
         <Text style={styles.textIp}>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
-          <Proposals
+          <ProposalsDropdown
+            favoritesStore={this.props.favoritesStore}
             proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-            proposalsStore={this.appState}
+            proposalsState={this.appState as ProposalsState}
           />
           <ButtonConnect
             title={this.buttonText}

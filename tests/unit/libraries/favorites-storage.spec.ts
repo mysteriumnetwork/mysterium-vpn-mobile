@@ -1,4 +1,4 @@
-import { storage } from './../../../src/libraries/favorite-storage'
+import { FavoritesStorage } from '../../../src/libraries/favorites-storage'
 
 let mockFavorites: string
 
@@ -17,36 +17,49 @@ jest.mock('react-native', () => ({
   }
 }))
 
-describe('Storage', () => {
+describe('FavoritesStorage', () => {
+  const storage = new FavoritesStorage()
   const { AsyncStorage } = require('react-native')
   const FAVORITES_KEY = '@Favorites:KEY'
 
-  describe('.getFavorites', () => {
+  describe('.favorites', () => {
     it('resolves to favorites hash-map', async () => {
       mockFavorites = '{"1":true}'
-      const favorites = await storage.getFavorites()
-      expect(favorites).toEqual({ 1: true })
+      await storage.fetch()
+      expect(storage.favorites).toEqual({ 1: true })
       expect(AsyncStorage.getItem).toBeCalledWith(FAVORITES_KEY)
     })
 
     it('resolves to favorites hash-map', async () => {
       mockFavorites = ''
-      const favorites = await storage.getFavorites()
-      expect(favorites).toEqual({})
+      await storage.fetch()
+      expect(storage.favorites).toEqual({})
     })
   })
 
-  describe('.setFavorite', () => {
+  describe('.add', () => {
     it('includes passed proposalId in favorites hash-map when isFavorite is true', async () => {
-      mockFavorites = ''
-      await storage.setFavorite('5', true)
+      await storage.add('5')
       expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{"5":true}')
     })
+  })
 
+  describe('.remove', () => {
     it('removes passed proposalId from favorites hash-map when isFavorite is false', async () => {
       mockFavorites = '{"1":true}'
-      await storage.setFavorite('1', false)
+      await storage.fetch()
+      await storage.remove('1')
       expect(AsyncStorage.setItem).toBeCalledWith(FAVORITES_KEY, '{}')
+    })
+  })
+
+  describe('.has', () => {
+    it('returns true if storage contains requested key', async () => {
+      await storage.add('3')
+      expect(storage.has('3')).toBe(true)
+    })
+    it('returns false if storage does not contain requested key', async () => {
+      expect(storage.has('2')).toBe(false)
     })
   })
 })
