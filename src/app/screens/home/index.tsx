@@ -16,7 +16,7 @@
  */
 
 import { observer } from 'mobx-react/native'
-import { Container, Content, Grid, Row } from 'native-base'
+import { Container, Content, Grid, Row, Toast } from 'native-base'
 import React, { ReactNode } from 'react'
 import { ImageBackground, Text } from 'react-native'
 import { FavoritesStorage } from '../../../libraries/favorites-storage'
@@ -102,7 +102,7 @@ export default class HomeScreen extends React.Component<AppProps> {
 
                   <Row style={[styles.textCentered, styles.connectButton]}>
                     <ConnectButton
-                      onClick={() => this.connectOrDisconnect()}
+                      onClick={() => this.onButtonClick()}
                       disabled={!this.buttonIsEnabled}
                       active={this.buttonIsActive}
                     />
@@ -153,7 +153,7 @@ export default class HomeScreen extends React.Component<AppProps> {
   }
 
   private onCountrySelect (country: CountryListItem) {
-    this.props.appState.setSelectedProviderId(country.id)
+    this.props.appState.SelectedProviderId = country.id
   }
 
   private get buttonIsEnabled (): boolean {
@@ -168,6 +168,17 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.appState.ConnectionStatus
       ? this.appState.ConnectionStatus.status
       : undefined
+  }
+
+  private onButtonClick () {
+    if (!this.appState.isConnected && !this.appState.SelectedProviderId) {
+      Toast.show({
+        text: 'Please select a country'
+      })
+      return
+    }
+
+    this.connectOrDisconnect()
   }
 
   /**

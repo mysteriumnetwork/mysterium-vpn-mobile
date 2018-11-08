@@ -81,9 +81,4 @@ export default class AppState {
       status: ConnectionStatusEnum.DISCONNECTING
     }
   }
-
-  @action
-  public setSelectedProviderId (providerId: string) {
-    this.SelectedProviderId = providerId
-  }
 }
