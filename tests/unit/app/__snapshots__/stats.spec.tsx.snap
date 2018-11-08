@@ -22,29 +22,27 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <StatsBlock
-          textAmount="277:46:39"
-          textName="DURATION"
-          textUnits="H:M:S"
-        />,
-        <StatsBlock
-          textAmount="9.54"
-          textName="RECEIVED"
-          textUnits="MB"
-        />,
-        <StatsBlock
-          textAmount="9.76"
-          textName="SENT"
-          textUnits="KB"
-        />,
-      ],
-      "style": Array [
-        Object {
-          "flex": 1,
-          "flexDirection": "row",
-          "padding": 15,
-        },
-        undefined,
+        <ColumnNB>
+          <StatsBlock
+            textAmount="277:46:39"
+            textName="DURATION"
+            textUnits="H:M:S"
+          />
+        </ColumnNB>,
+        <ColumnNB>
+          <StatsBlock
+            textAmount="9.54"
+            textName="RECEIVED"
+            textUnits="MB"
+          />
+        </ColumnNB>,
+        <ColumnNB>
+          <StatsBlock
+            textAmount="9.76"
+            textName="SENT"
+            textUnits="KB"
+          />
+        </ColumnNB>,
       ],
     },
     "ref": null,
@@ -52,80 +50,16 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "function",
+        "nodeType": "class",
         "props": Object {
-          "textAmount": "277:46:39",
-          "textName": "DURATION",
-          "textUnits": "H:M:S",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "textAmount": "9.54",
-          "textName": "RECEIVED",
-          "textUnits": "MB",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "textAmount": "9.76",
-          "textName": "SENT",
-          "textUnits": "KB",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": Array [
-          <StatsBlock
+          "children": <StatsBlock
             textAmount="277:46:39"
             textName="DURATION"
             textUnits="H:M:S"
           />,
-          <StatsBlock
-            textAmount="9.54"
-            textName="RECEIVED"
-            textUnits="MB"
-          />,
-          <StatsBlock
-            textAmount="9.76"
-            textName="SENT"
-            textUnits="KB"
-          />,
-        ],
-        "style": Array [
-          Object {
-            "flex": 1,
-            "flexDirection": "row",
-            "padding": 15,
-          },
-          undefined,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
+        },
+        "ref": null,
+        "rendered": Object {
           "instance": null,
           "key": undefined,
           "nodeType": "function",
@@ -138,7 +72,21 @@ ShallowWrapper {
           "rendered": null,
           "type": [Function],
         },
-        Object {
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <StatsBlock
+            textAmount="9.54"
+            textName="RECEIVED"
+            textUnits="MB"
+          />,
+        },
+        "ref": null,
+        "rendered": Object {
           "instance": null,
           "key": undefined,
           "nodeType": "function",
@@ -151,7 +99,21 @@ ShallowWrapper {
           "rendered": null,
           "type": [Function],
         },
-        Object {
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <StatsBlock
+            textAmount="9.76"
+            textName="SENT"
+            textUnits="KB"
+          />,
+        },
+        "ref": null,
+        "rendered": Object {
           "instance": null,
           "key": undefined,
           "nodeType": "function",
@@ -162,6 +124,124 @@ ShallowWrapper {
           },
           "ref": null,
           "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <ColumnNB>
+            <StatsBlock
+              textAmount="277:46:39"
+              textName="DURATION"
+              textUnits="H:M:S"
+            />
+          </ColumnNB>,
+          <ColumnNB>
+            <StatsBlock
+              textAmount="9.54"
+              textName="RECEIVED"
+              textUnits="MB"
+            />
+          </ColumnNB>,
+          <ColumnNB>
+            <StatsBlock
+              textAmount="9.76"
+              textName="SENT"
+              textUnits="KB"
+            />
+          </ColumnNB>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <StatsBlock
+              textAmount="277:46:39"
+              textName="DURATION"
+              textUnits="H:M:S"
+            />,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "textAmount": "277:46:39",
+              "textName": "DURATION",
+              "textUnits": "H:M:S",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <StatsBlock
+              textAmount="9.54"
+              textName="RECEIVED"
+              textUnits="MB"
+            />,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "textAmount": "9.54",
+              "textName": "RECEIVED",
+              "textUnits": "MB",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <StatsBlock
+              textAmount="9.76"
+              textName="SENT"
+              textUnits="KB"
+            />,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "textAmount": "9.76",
+              "textName": "SENT",
+              "textUnits": "KB",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
           "type": [Function],
         },
       ],

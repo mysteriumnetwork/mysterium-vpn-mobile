@@ -1,5 +1,8 @@
 module.exports = {
   preset: 'react-native',
+  "transformIgnorePatterns": [
+    "node_modules/(?!react-native|native-base|native-base-shoutem-theme|react-navigation)"
+  ],
   setupFiles: [
     "<rootDir>/jest.setup.js"
   ],
