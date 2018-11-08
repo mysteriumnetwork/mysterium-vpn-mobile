@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text } from 'react-native'
-import { CONFIG } from '../../config'
+import { StyleSheet, Text, Platform } from 'react-native'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
-import { STYLES } from '../../styles'
+import colors from '../styles/colors'
+import fonts from '../styles/fonts'
+import translations from '../../app/translations'
 
 type ConnectionStatusProps = {
   status?: string
@@ -10,10 +11,10 @@ type ConnectionStatusProps = {
 
 export default class ConnectionStatus extends Component<ConnectionStatusProps> {
   private readonly connectionStatusTexts: { [key: string]: string | undefined } = {
-    [ConnectionStatusEnum.NOT_CONNECTED]: this.statusTexts.NOT_CONNECTED,
-    [ConnectionStatusEnum.CONNECTING]: this.statusTexts.CONNECTING,
-    [ConnectionStatusEnum.CONNECTED]: this.statusTexts.CONNECTED,
-    [ConnectionStatusEnum.DISCONNECTING]: this.statusTexts.DISCONNECTING
+    [ConnectionStatusEnum.NOT_CONNECTED]: translations.CONNECTION_STATUS.NOT_CONNECTED,
+    [ConnectionStatusEnum.CONNECTING]: translations.CONNECTION_STATUS.CONNECTING,
+    [ConnectionStatusEnum.CONNECTED]: translations.CONNECTION_STATUS.CONNECTED,
+    [ConnectionStatusEnum.DISCONNECTING]: translations.CONNECTION_STATUS.DISCONNECTING
   }
 
   public render () {
@@ -26,7 +27,7 @@ export default class ConnectionStatus extends Component<ConnectionStatusProps> {
     const status = this.props.status
 
     if (status === undefined) {
-      return this.statusTexts.UNKNOWN
+      return translations.CONNECTION_STATUS.UNKNOWN
     }
 
     const text = this.connectionStatusTexts[status]
@@ -36,16 +37,12 @@ export default class ConnectionStatus extends Component<ConnectionStatusProps> {
 
     return text
   }
-
-  private get statusTexts () {
-    return CONFIG.TEXTS.CONNECTION_STATUS
-  }
 }
 
 const style = StyleSheet.create({
   root: {
-    marginTop: 45,
-    fontSize: STYLES.FONT_LARGE,
-    color: STYLES.COLOR_MAIN
+    marginTop: Platform.OS === 'ios' ? 35 : 20,
+    fontSize: fonts.size.large,
+    color: colors.primary
   }
 })

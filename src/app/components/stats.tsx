@@ -16,29 +16,31 @@
  */
 
 import React, { ReactNode } from 'react'
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { bytesDisplay, timeDisplay } from '../../libraries/unitConverter'
-import { STYLES } from '../../styles'
+import { Col, Grid } from 'native-base'
+import colors from '../styles/colors'
+import fonts from '../styles/fonts'
 
 type StatsProps = {
-  style?: StyleProp<ViewStyle>
   duration: number,
   bytesReceived: number,
   bytesSent: number
 }
 
-const Stats: React.SFC<StatsProps> = ({
-  style,
-  duration,
-  bytesReceived,
-  bytesSent
-}) => {
+const Stats: React.SFC<StatsProps> = ({ duration, bytesReceived, bytesSent }) => {
   return (
-    <View style={[styles.container, style]}>
-      {createStatsBlock('Duration', timeDisplay(duration), 'H:M:S')}
-      {createStatsBlock('Received', bytesDisplay(bytesReceived))}
-      {createStatsBlock('Sent', bytesDisplay(bytesSent))}
-    </View>
+    <Grid>
+      <Col>
+        {createStatsBlock('Duration', timeDisplay(duration || 0), 'H:M:S')}
+      </Col>
+      <Col>
+        {createStatsBlock('Received', bytesDisplay(bytesReceived || 0))}
+      </Col>
+      <Col>
+        {createStatsBlock('Sent', bytesDisplay(bytesSent || 0))}
+      </Col>
+    </Grid>
   )
 }
 
@@ -47,6 +49,7 @@ function createStatsBlock (name: string, value: string, units?: string): ReactNo
   const parts = value.split(' ')
   const textAmount = parts[0]
   const textUnits = parts[1] || units || ''
+
   return <StatsBlock textName={textName} textAmount={textAmount} textUnits={textUnits}/>
 }
 
@@ -56,18 +59,16 @@ type StatsBlockProps = {
   textUnits: string
 }
 
-const StatsBlock: React.SFC<StatsBlockProps> = ({
-  textName, textAmount, textUnits
-}) => {
+const StatsBlock: React.SFC<StatsBlockProps> = ({ textName, textAmount, textUnits }) => {
   return (
-    <View style={styles.textBlock}>
-      <Text style={styles.textName}>
+    <View>
+      <Text style={[styles.textName, styles.centerText]}>
         {textName}
       </Text>
-      <Text style={styles.textAmount}>
+      <Text style={[styles.textAmount, styles.centerText]}>
         {textAmount}
       </Text>
-      <Text style={styles.textUnits}>
+      <Text style={[styles.textUnits, styles.centerText]}>
         {textUnits}
       </Text>
     </View>
@@ -75,25 +76,20 @@ const StatsBlock: React.SFC<StatsBlockProps> = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: STYLES.PADDING
-  },
-  textBlock: {
-    width: '33.3%',
-    alignItems: 'center'
+  centerText: {
+    justifyContent: 'center',
+    textAlign: 'center'
   },
   textName: {
-    fontSize: STYLES.FONT_NORMAL,
-    color: STYLES.COLOR_SECONDARY
+    fontSize: fonts.size.small,
+    color: colors.secondary
   },
   textAmount: {
-    fontSize: 22,
-    color: STYLES.COLOR_MAIN
+    fontSize: fonts.size.medium,
+    color: colors.primary
   },
   textUnits: {
-    fontSize: STYLES.FONT_NORMAL
+    fontSize: fonts.size.small
   }
 })
 

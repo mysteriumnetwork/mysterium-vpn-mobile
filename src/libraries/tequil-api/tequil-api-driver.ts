@@ -64,6 +64,8 @@ export default class TequilApiDriver {
     this.appState.resetIP()
     this.appState.setConnectionStatusToConnecting()
 
+    console.log(this.appState.SelectedProviderId, this.appState.IdentityId)
+
     try {
       const connection = await api.connectionCreate({
         consumerId: this.appState.IdentityId,

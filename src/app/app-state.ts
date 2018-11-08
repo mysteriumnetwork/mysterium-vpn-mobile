@@ -56,7 +56,6 @@ export default class AppState {
     return (
       this.IdentityId !== undefined &&
       this.ConnectionStatus !== undefined &&
-      this.SelectedProviderId !== undefined &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
     )
@@ -81,5 +80,10 @@ export default class AppState {
       sessionId: '',
       status: ConnectionStatusEnum.DISCONNECTING
     }
+  }
+
+  @action
+  public setSelectedProviderId (providerId: string) {
+    this.SelectedProviderId = providerId
   }
 }

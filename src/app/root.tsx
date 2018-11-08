@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import App from './app'
+import HomeScreen from './screens/home'
 import AppState from './app-state'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Logger from './logger'
+import { Root } from 'native-base'
 
-class Root extends React.PureComponent {
+class RootComponent extends React.PureComponent {
   private readonly appState = new AppState()
   private errorDisplayDelegate = new ErrorDisplayDelegate()
   private readonly tequilAPIDriver = new TequilApiDriver(this.appState, this.errorDisplayDelegate)
@@ -20,14 +21,16 @@ class Root extends React.PureComponent {
 
   public render () {
     return (
-      <App
-        tequilAPIDriver={this.tequilAPIDriver}
-        appState={this.appState}
-        errorDisplayDelegate={this.errorDisplayDelegate}
-        favoritesStore={this.favoritesStore}
-      />
+      <Root>
+        <HomeScreen
+          tequilAPIDriver={this.tequilAPIDriver}
+          appState={this.appState}
+          errorDisplayDelegate={this.errorDisplayDelegate}
+          favoritesStore={this.favoritesStore}
+        />
+      </Root>
     )
   }
 }
 
-export default Root
+export default RootComponent

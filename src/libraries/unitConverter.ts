@@ -20,6 +20,10 @@ const MB = 1024 * KB
 const GB = 1024 * MB
 
 function bytesDisplay (bytes: number): string {
+  if (bytes === 0) {
+    return '0.00 MB'
+  }
+
   if (bytes < KB) {
     return bytes + ' B'
   } else if (bytes < MB) {
