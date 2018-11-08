@@ -16,8 +16,8 @@
  */
 
 import { ProposalDTO } from 'mysterium-tequilapi'
-import { Countries } from './countries'
 import translations from '../app/translations'
+import { Countries } from './countries'
 
 class Proposal {
   public name: string

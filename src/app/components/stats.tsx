@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Col, Grid } from 'native-base'
 import React, { ReactNode } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { bytesDisplay, timeDisplay } from '../../libraries/unitConverter'
-import { Col, Grid } from 'native-base'
 import colors from '../styles/colors'
 import fonts from '../styles/fonts'
 

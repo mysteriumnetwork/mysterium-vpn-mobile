@@ -1,15 +1,32 @@
-import * as React from 'react'
-import {
-  Text,
-  Icon,
-  Grid,
-  Col
-} from 'native-base'
+/*
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import { Image, StyleSheet, Modal, View, TouchableOpacity } from 'react-native'
+import {
+  Col,
+  Grid,
+  Icon,
+  Text
+} from 'native-base'
+import * as React from 'react'
+
+import { Image, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
+import colors from '../../../app/styles/colors'
 import CountryList from './country-list'
 import { getCountryImageFile } from './image-handler'
-import colors from '../../../app/styles/colors'
 
 const EMPTY_COUNTRY_TEXT = 'Select country'
 
@@ -19,13 +36,13 @@ export type CountryListItem = {
   countryCode: string
 }
 
-export interface Props {
+export interface IProps {
   items: CountryListItem[],
   onSelect: (country: CountryListItem) => void,
   placeholder: string
 }
 
-export interface State {
+export interface IState {
   modalIsOpen: boolean,
   selectedCountry?: CountryListItem
 }
@@ -92,8 +109,8 @@ const styles: any = StyleSheet.create({
   }
 })
 
-class CountryPicker extends React.Component<Props, State> {
-  constructor (props: Props) {
+class CountryPicker extends React.Component<IProps, IState> {
+  constructor (props: IProps) {
     super(props)
 
     this.state = { modalIsOpen: false }

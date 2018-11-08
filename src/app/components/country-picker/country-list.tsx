@@ -1,26 +1,26 @@
-import * as React from 'react'
 import {
-  Container,
-  Header,
-  Content,
-  Text,
+  Body,
   Button,
+  Container,
+  Content,
+  Header,
   Icon,
-  Right,
+  Input,
+  Item,
+  Left,
   List,
   ListItem,
-  Item,
-  Input,
-  Body,
-  Left
+  Right,
+  Text
 } from 'native-base'
+import * as React from 'react'
 
-import { Image, StyleSheet, Platform } from 'react-native'
+import { Image, Platform, StyleSheet } from 'react-native'
+import colors from '../../styles/colors'
 import { CountryListItem } from './country-picker'
 import { getCountryImageFile } from './image-handler'
-import colors from '../../styles/colors'
 
-export interface Props {
+export interface IProps {
   items: CountryListItem[]
   onClose: () => void,
   onSelect: (country: CountryListItem) => void
@@ -56,10 +56,10 @@ const styles: any = StyleSheet.create({
   }
 })
 
-class CountryList extends React.Component<Props> {
+class CountryList extends React.Component<IProps> {
   private items: CountryListItem[]
 
-  constructor (props: any) {
+  constructor (props: IProps) {
     super(props)
 
     this.items = this.props.items

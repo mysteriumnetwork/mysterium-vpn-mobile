@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,22 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observer } from 'mobx-react/native'
 import { computed } from 'mobx'
+import { observer } from 'mobx-react/native'
+import { Container, Content, Grid, Row } from 'native-base'
 import React, { ReactNode } from 'react'
-import { Text, ImageBackground } from 'react-native'
+import { ImageBackground, Text } from 'react-native'
 import { FavoritesStorage } from '../../../libraries/favorites-storage'
 import { mysteriumClient } from '../../../libraries/mysterium-client'
 import TequilApiDriver from '../../../libraries/tequil-api/tequil-api-driver'
 import AppState from '../../app-state'
+import ConnectButton from '../../components/connect-button'
 import ConnectionStatus from '../../components/connection-status'
+import CountryPicker, { CountryListItem } from '../../components/country-picker/country-picker'
+import { getCountryListItemsFromProposals } from '../../components/country-picker/proposal-converter'
 import ErrorDropdown from '../../components/error-dropdown'
 import Stats from '../../components/stats'
 import ErrorDisplayDelegate from '../../errors/error-display-delegate'
-import CountryPicker, { CountryListItem } from '../../components/country-picker/country-picker'
-import { Container, Content, Grid, Row } from 'native-base'
-import ConnectButton from '../../components/connect-button'
-import { getCountryListItemsFromProposals } from '../../components/country-picker/proposal-converter'
 import translations from './../../translations'
 import styles from './styles'
 
