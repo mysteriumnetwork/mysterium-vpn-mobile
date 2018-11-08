@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computed } from 'mobx'
 import { observer } from 'mobx-react/native'
 import { Container, Content, Grid, Row } from 'native-base'
 import React, { ReactNode } from 'react'
@@ -125,7 +124,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     )
   }
 
-  @computed get sessionDuration () {
+  private get sessionDuration () {
     if (!this.appState.Statistics) {
       return 0
     }
@@ -133,7 +132,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.appState.Statistics.duration
   }
 
-  @computed get sessionBytesSent () {
+  private get sessionBytesSent () {
     if (!this.appState.Statistics) {
       return 0
     }
@@ -141,7 +140,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.appState.Statistics.bytesSent
   }
 
-  @computed get sessionBytesReceived () {
+  private get sessionBytesReceived () {
     if (!this.appState.Statistics) {
       return 0
     }
@@ -149,7 +148,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.appState.Statistics.bytesReceived
   }
 
-  @computed get countries () {
+  private get countries () {
     return getCountryListItemsFromProposals(this.appState.Proposals)
   }
 
