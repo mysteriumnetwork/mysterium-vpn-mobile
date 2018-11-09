@@ -170,7 +170,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "com.google.firebase:firebase-core:16.0.1"
-    implementation "mysterium.aar:mysterium@aar"
+    implementation "mysterium.network:mobile-node:0.5-rc"
 }
 
 repositories{
