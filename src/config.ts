@@ -15,33 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IStyles, STYLES } from './styles'
+import { STYLES } from './styles'
 
-interface IConfig {
-  PASSPHRASE: string,
-  TEQUILAPI_ADDRESS: string,
-  TEQUILAPI_TIMEOUT: number,
-  TEXTS: {
-    IP_UPDATING: string,
-    UNKNOWN: string,
-    CONNECTION_STATUS: {
-      UNKNOWN: string,
-      NOT_CONNECTED: string,
-      CONNECTING: string,
-      CONNECTED: string,
-      DISCONNECTING: string
-    }
-  },
-  REFRESH_INTERVALS: {
-    CONNECTION: number,
-    STATS: number,
-    PROPOSALS: number,
-    IP: number
-  },
-  STYLES: IStyles
-}
-
-export const CONFIG: IConfig = {
+export const CONFIG = {
   PASSPHRASE: '',
   TEQUILAPI_ADDRESS: 'http://localhost:4050/',
   TEQUILAPI_TIMEOUT: 6000,
@@ -53,6 +29,12 @@ export const CONFIG: IConfig = {
       NOT_CONNECTED: 'Disconnected',
       CONNECTING: 'Connecting',
       CONNECTED: 'Connected',
+      DISCONNECTING: 'Disconnecting'
+    },
+    CONNECT_BUTTON: {
+      CONNECT: 'Connect',
+      CANCEL: 'Cancel',
+      DISCONNECT: 'Disconnect',
       DISCONNECTING: 'Disconnecting'
     }
   },

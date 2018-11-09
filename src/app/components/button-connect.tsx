@@ -1,11 +1,14 @@
+import { ConnectionStatus } from 'mysterium-tequilapi'
 import React, { Component } from 'react'
 import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import { CONFIG } from '../../config'
+import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import { STYLES } from '../../styles'
 
 type ButtonConnectProps = {
-  title: string,
-  disabled: boolean,
-  onPress: () => void
+  connectionStatus: ConnectionStatus
+  connect: () => void,
+  disconnect: () => void
 }
 
 export default class ButtonConnect extends Component<ButtonConnectProps> {
@@ -13,26 +16,73 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
     let buttonStylesDisabled: StyleProp<ViewStyle>
     let textStylesDisabled: StyleProp<ViewStyle>
 
-    if (this.props.disabled) {
+    if (!this.isButtonEnabled) {
       buttonStylesDisabled = styles.disabledRoot
       textStylesDisabled = styles.disabledButtonContent
     }
 
     return (
       <TouchableOpacity
+        activeOpacity={0.6}
         style={[styles.root, buttonStylesDisabled]}
-        onPress={this.props.onPress}
+        onPress={this.connectOrDisconnectOrCancel}
       >
         <Text style={[styles.buttonContent, textStylesDisabled]}>
-          {this.props.title}
+          {this.buttonText}
         </Text>
       </TouchableOpacity>
     )
+  }
+
+  private get isButtonEnabled (): boolean {
+    if (!this.props.connectionStatus) return false
+    const connectionStatus = this.props.connectionStatus
+    return (connectionStatus === ConnectionStatusEnum.NOT_CONNECTED
+      || connectionStatus === ConnectionStatusEnum.CONNECTED
+      || connectionStatus === ConnectionStatusEnum.CONNECTING
+    )
+  }
+
+  /***
+   * Connects or disconnects to VPN server, depends on current connection state.
+   * Is connection state is unknown - does nothing
+   */
+  private connectOrDisconnectOrCancel = async () => {
+    if (!this.props.connectionStatus) return
+    const status = this.props.connectionStatus
+
+    if (status === ConnectionStatusEnum.CONNECTING
+      || status === ConnectionStatusEnum.CONNECTED) {
+      this.props.disconnect()
+    }
+
+    if (status === ConnectionStatusEnum.NOT_CONNECTED) {
+      this.props.connect()
+    }
+  }
+
+  private get buttonText (): string {
+    if (!this.props.connectionStatus) return CONFIG.TEXTS.UNKNOWN
+
+    const connectionStatus = this.props.connectionStatus
+    switch (connectionStatus) {
+      case ConnectionStatusEnum.NOT_CONNECTED:
+        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECT
+      case ConnectionStatusEnum.CONNECTED:
+        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECTED
+      case ConnectionStatusEnum.CONNECTING:
+        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECTING
+      case ConnectionStatusEnum.DISCONNECTING:
+        return CONFIG.TEXTS.CONNECT_BUTTON.DISCONNECTING
+      default:
+        return CONFIG.TEXTS.UNKNOWN
+    }
   }
 }
 
 const styles = StyleSheet.create({
   root: {
+    width: 220,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

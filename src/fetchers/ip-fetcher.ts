@@ -44,10 +44,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
       return true
     }
 
-    return (
-      this.appState.ConnectionStatus !== undefined &&
-      this.appState.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
-    )
+    return this.appState.ConnectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
   }
 
   protected async fetch (): Promise<ConnectionIPDTO> {

@@ -70,9 +70,9 @@ export default class App extends React.Component<AppProps> {
             proposalsState={this.appState as ProposalsState}
           />
           <ButtonConnect
-            title={this.buttonText}
-            disabled={!this.buttonEnabled}
-            onPress={() => this.connectOrDisconnect()}
+            connectionStatus={this.appState.ConnectionStatus.status}
+            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver)}
+            disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
         {this.appState.Statistics ? <Stats style={styles.footer} {...this.appState.Statistics} /> : null}
@@ -92,35 +92,5 @@ export default class App extends React.Component<AppProps> {
     // TODO: remove it later, serviceStatus is used only for native call test
     const serviceStatus = await mysteriumClient.startService(4050)
     console.log('serviceStatus', serviceStatus)
-  }
-
-  private get buttonEnabled (): boolean {
-    return this.appState.isReady
-  }
-
-  private get buttonText (): string {
-    const isReady = this.appState.isReady
-    const isConnected = this.appState.isConnected
-    return isReady
-      ? isConnected
-        ? 'Disconnect'
-        : 'Connect'
-      : CONFIG.TEXTS.CONNECTION_STATUS.UNKNOWN
-  }
-
-  /***
-   * Connects or disconnects to VPN server, depends on current connection state.
-   * Is connection state is unknown - does nothing
-   */
-  private async connectOrDisconnect () {
-    if (!this.appState.isReady) {
-      return
-    }
-
-    if (this.appState.isConnected) {
-      await this.tequilAPIDriver.disconnect()
-    } else {
-      await this.tequilAPIDriver.connect()
-    }
   }
 }

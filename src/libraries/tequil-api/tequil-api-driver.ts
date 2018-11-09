@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import TequilapiClientFactory, { IdentityDTO } from 'mysterium-tequilapi'
+import TequilapiClientFactory, { IdentityDTO, TequilapiError } from 'mysterium-tequilapi'
 
 import AppState from '../../app/app-state'
 import IErrorDisplay from '../../app/errors/error-display'
@@ -72,6 +72,8 @@ export default class TequilApiDriver {
       })
       console.log('connected', connection)
     } catch (e) {
+      if (isConnectionCancelled(e)) return
+
       this.errorDisplay.showError(errors.CONNECT_FAILED)
       console.warn('api.connectionCreate failed', e)
     }
@@ -140,4 +142,8 @@ export default class TequilApiDriver {
     this.ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
     this.statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
+}
+
+function isConnectionCancelled (e: TequilapiError) {
+  return e.isRequestClosedError
 }
