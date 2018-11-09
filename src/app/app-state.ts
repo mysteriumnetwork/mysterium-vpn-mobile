@@ -25,7 +25,6 @@ import {
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 
 const initialConnectionStatus: ConnectionStatusDTO = {
-  sessionId: '', // TODO: change value to null once js-tequilapi is fixed
   status: ConnectionStatusEnum.NOT_CONNECTED
 }
 
@@ -61,7 +60,6 @@ export default class AppState {
   @action
   public setConnectionStatusToConnecting () {
     this.ConnectionStatus = {
-      sessionId: '',
       status: ConnectionStatusEnum.CONNECTING
     }
   }
@@ -69,7 +67,6 @@ export default class AppState {
   @action
   public setConnectionStatusToDisconnecting () {
     this.ConnectionStatus = {
-      sessionId: '',
       status: ConnectionStatusEnum.DISCONNECTING
     }
   }
