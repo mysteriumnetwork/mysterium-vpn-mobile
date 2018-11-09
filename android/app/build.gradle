@@ -173,12 +173,6 @@ dependencies {
     implementation "mysterium.network:mobile-node:0.5-rc"
 }
 
-repositories{
-    flatDir{
-        dirs 'libs'
-    }
-}
-
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
