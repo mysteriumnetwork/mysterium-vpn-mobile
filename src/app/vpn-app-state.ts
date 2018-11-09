@@ -15,24 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action } from 'mobx'
-import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
-import TequilApiState from '../libraries/tequil-api/tequil-api-state'
-import { FetcherBase } from './fetcher-base'
+import { observable } from 'mobx'
 
-type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
-
-export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
-  constructor (private findProposals: FindProposals, private readonly tequilApiState: TequilApiState) {
-    super('Proposals')
-  }
-
-  protected async fetch (): Promise<ProposalDTO[]> {
-    return this.findProposals()
-  }
-
-  @action
-  protected update (proposals: ProposalDTO[]) {
-    this.tequilApiState.proposals = proposals
-  }
+export default class VpnAppState {
+  @observable
+  public selectedProviderId: string | null = null
 }

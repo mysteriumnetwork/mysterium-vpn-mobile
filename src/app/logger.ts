@@ -1,9 +1,9 @@
 import { reaction } from 'mobx'
-import AppState from './app-state'
+import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 
 export default class Logger {
   private loggingStarted: boolean = false
-  constructor (private readonly appState: AppState) {
+  constructor (private readonly tequilApiState: TequilApiState) {
   }
 
   public logObservableChanges (): void {
@@ -12,24 +12,20 @@ export default class Logger {
     }
     this.loggingStarted = true
 
-    reaction(() => this.appState.IdentityId, () => {
-      this.info('Identity unlocked', this.appState.IdentityId)
+    reaction(() => this.tequilApiState.identityId, () => {
+      this.info('Identity unlocked', this.tequilApiState.identityId)
     })
 
-    reaction(() => this.appState.SelectedProviderId, () => {
-      this.info('Selected provider ID selected', this.appState.SelectedProviderId)
+    reaction(() => this.tequilApiState.connectionStatus, () => {
+      this.info('Connection status changed', this.tequilApiState.connectionStatus)
     })
 
-    reaction(() => this.appState.ConnectionStatus, () => {
-      this.info('Connection status changed', this.appState.ConnectionStatus)
+    reaction(() => this.tequilApiState.IP, () => {
+      this.info('IP changed', this.tequilApiState.IP)
     })
 
-    reaction(() => this.appState.IP, () => {
-      this.info('IP changed', this.appState.IP)
-    })
-
-    reaction(() => this.appState.Proposals, () => {
-      this.info('Proposals updated', this.appState.Proposals)
+    reaction(() => this.tequilApiState.proposals, () => {
+      this.info('Proposals updated', this.tequilApiState.proposals)
     })
   }
 

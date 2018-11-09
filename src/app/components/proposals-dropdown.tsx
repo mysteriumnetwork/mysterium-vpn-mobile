@@ -26,19 +26,15 @@ import { FavoritesStorage } from '../../libraries/favorites-storage'
 import styles from '../proposals-styles'
 import ButtonFavorite from './button-favorite'
 
-export type ProposalsState = {
-  SelectedProviderId?: string,
-  Proposals?: ProposalDTO[]
-}
-
-type ProposalsProps = {
+type ProposalsDropdownProps = {
   favoritesStore: FavoritesStorage,
   proposalsFetcher: ProposalsFetcher,
-  proposalsState: ProposalsState
+  proposals: ProposalDTO[],
+  stateWithSelectedProviderId: { selectedProviderId: string | null }
 }
 
 @observer
-export default class ProposalsDropdown extends React.Component<ProposalsProps> {
+export default class ProposalsDropdown extends React.Component<ProposalsDropdownProps> {
   private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
 
@@ -47,8 +43,8 @@ export default class ProposalsDropdown extends React.Component<ProposalsProps> {
 
   public render (): ReactNode {
     this.setDefaultSelectedProvider()
-    const proposals = this.props.proposalsState.Proposals
-    const selectedProviderId = this.props.proposalsState.SelectedProviderId
+    const proposals = this.props.proposals
+    const selectedProviderId = this.props.stateWithSelectedProviderId.selectedProviderId
     if (!proposals) {
       return (
         <View style={styles.root}>
@@ -78,27 +74,26 @@ export default class ProposalsDropdown extends React.Component<ProposalsProps> {
 
   @computed
   private get proposalsSorted (): Proposal[] {
-    if (this.props.proposalsState.Proposals === undefined) return []
-    return this.props.proposalsState.Proposals
+    return this.props.proposals
       .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.has(p.providerId)))
       .sort(compareProposals)
   }
 
   private get isFavoriteSelected (): boolean {
-    if (!this.props.proposalsState.SelectedProviderId) return false
-    return this.props.favoritesStore.has(this.props.proposalsState.SelectedProviderId)
+    if (!this.props.stateWithSelectedProviderId.selectedProviderId) return false
+    return this.props.favoritesStore.has(this.props.stateWithSelectedProviderId.selectedProviderId)
   }
 
   @action
   private setDefaultSelectedProvider () {
-    const stateProposals = this.props.proposalsState.Proposals
-    const selectedProviderId = this.props.proposalsState.SelectedProviderId
+    const stateProposals = this.props.proposals
+    const selectedProviderId = this.props.stateWithSelectedProviderId.selectedProviderId
     const stateProposalsIncludeSelectedProposal = stateProposals
       && stateProposals.some((p) => p.providerId === selectedProviderId)
 
     if (stateProposals && stateProposals[0]) {
       if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {
-        this.props.proposalsState.SelectedProviderId = this.proposalsSorted[0].providerID
+        this.props.stateWithSelectedProviderId.selectedProviderId = this.proposalsSorted[0].providerID
       }
     }
   }
@@ -115,6 +110,6 @@ export default class ProposalsDropdown extends React.Component<ProposalsProps> {
 
   @action
   private onProposalSelected (providerId: string) {
-    this.props.proposalsState.SelectedProviderId = providerId
+    this.props.stateWithSelectedProviderId.selectedProviderId = providerId
   }
 }
