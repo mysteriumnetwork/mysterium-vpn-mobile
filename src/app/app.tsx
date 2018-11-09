@@ -20,6 +20,7 @@ import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
+import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppState from './app-state'
 import styles from './app-styles'
@@ -88,8 +89,9 @@ export default class App extends React.Component<AppProps> {
   public async componentDidMount () {
     await this.tequilAPIDriver.unlock()
 
-    // TODO: uncomment once node has full functionality
-    // const serviceStatus = await mysteriumClient.startService(4050)
-    // console.log('serviceStatus', serviceStatus)
+    if (CONFIG.RUN_NODE_ON_DEVICE) {
+      const serviceStatus = await mysteriumClient.startService(4050)
+      console.log('serviceStatus', serviceStatus)
+    }
   }
 }
