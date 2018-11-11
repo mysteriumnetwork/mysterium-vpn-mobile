@@ -15,16 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import countries from './countries.json'
+import * as React from 'react'
 
-const getCountryImageFile = (code: string) => {
-  if (countries[code]) {
-    return countries[code].image
+import { Modal, StyleSheet, View } from 'react-native'
+
+type ModalProps = {
+  isOpen: boolean,
+  onClose: () => void
+}
+
+const CountryModal: React.SFC<ModalProps> = ({ isOpen, onClose, children }) => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={isOpen}
+      onRequestClose={() => onClose()}
+    >
+      <View style={styles.container}>
+        {children}
+      </View>
+    </Modal>
+  )
+}
+
+const styles: any = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%'
   }
+})
 
-  return ''
-}
-
-export {
-  getCountryImageFile
-}
+export default CountryModal

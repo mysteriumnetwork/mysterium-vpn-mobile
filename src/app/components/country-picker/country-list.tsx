@@ -15,15 +15,83 @@ import {
 } from 'native-base'
 import * as React from 'react'
 
-import { Image, Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import colors from '../../styles/colors'
-import { CountryListItem } from './country-picker'
-import { getCountryImageFile } from './image-handler'
+import { Country } from './country'
+import CountryFlag from './country-flag'
+import translations from '../../translations'
 
-export interface IProps {
-  items: CountryListItem[]
+type ListProps = {
+  items: Country[],
   onClose: () => void,
-  onSelect: (country: CountryListItem) => void
+  onSelect: (country: Country) => void
+}
+
+class CountryList extends React.Component<ListProps> {
+  private items: Country[]
+
+  constructor (props: ListProps) {
+    super(props)
+
+    this.items = this.props.items
+  }
+
+  public render () {
+    return (
+      <Container>
+        <Header>
+          <Item style={styles.headerItem}>
+            <Icon name="ios-search" style={styles.searchIcon}/>
+            <Input
+              placeholderTextColor={platformStyles.search.inputColor}
+              placeholder={translations.COUNTRY_SEARCH}
+              onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
+              style={styles.searchInput}
+            />
+          </Item>
+          <Right>
+            <Button transparent={true} onPress={() => this.props.onClose()}>
+              <Text>Close</Text>
+            </Button>
+          </Right>
+        </Header>
+        <Content>
+          <List>
+            {this.items.map((country: Country) => this.renderListItem(country))}
+          </List>
+        </Content>
+      </Container>
+    )
+  }
+
+  private renderListItem (country: Country) {
+    return (
+      <ListItem icon={true} key={country.id} onPress={() => this.onItemSelect(country)}>
+        <Left style={styles.flagImage}>
+          <CountryFlag countryCode={country.countryCode}/>
+        </Left>
+        <Body>
+        <Text>{country.name}</Text>
+        </Body>
+      </ListItem>
+    )
+  }
+
+  private onSearchValueChange (text: string) {
+    this.items = this.props.items
+
+    if (!text.trim().length) {
+      return
+    }
+
+    this.items = this.items.filter((country: Country) => {
+      return country.name.toLowerCase().includes(text.toLowerCase())
+    })
+  }
+
+  private onItemSelect (country: Country) {
+    this.props.onSelect(country)
+  }
 }
 
 const platformStyles = {
@@ -55,76 +123,5 @@ const styles: any = StyleSheet.create({
     color: platformStyles.search.inputColor
   }
 })
-
-class CountryList extends React.Component<IProps> {
-  private items: CountryListItem[]
-
-  constructor (props: IProps) {
-    super(props)
-
-    this.items = this.props.items
-  }
-
-  public renderListItem (country: CountryListItem) {
-    return (
-      <ListItem icon={true} key={country.id} onPress={() => this.onItemSelect(country)}>
-        <Left>
-          <Image
-            style={styles.flagImage}
-            source={{ uri: getCountryImageFile(country.countryCode) }}
-          />
-        </Left>
-        <Body>
-        <Text>{country.name}</Text>
-        </Body>
-      </ListItem>
-    )
-  }
-
-  public render () {
-    return (
-      <Container>
-        <Header>
-          <Item style={styles.headerItem}>
-            <Icon name="ios-search" style={styles.searchIcon}/>
-            <Input
-              placeholderTextColor={platformStyles.search.inputColor}
-              placeholder="Search countries"
-              onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
-              style={styles.searchInput}
-            />
-          </Item>
-          <Right>
-            <Button transparent={true} onPress={this.props.onClose}>
-              <Text>Close</Text>
-            </Button>
-          </Right>
-        </Header>
-        <Content>
-          <List>
-            {this.items.map((country: CountryListItem) => this.renderListItem(country))}
-          </List>
-        </Content>
-      </Container>
-    )
-  }
-
-  private onSearchValueChange (text: string) {
-    this.items = this.props.items
-
-    if (!text.trim().length) {
-      return
-    }
-
-    this.items = this.items.filter((country: CountryListItem) => {
-      return country.name.toLowerCase().includes(text.toLowerCase())
-    })
-  }
-
-  private onItemSelect (country: CountryListItem) {
-    this.props.onSelect(country)
-    this.props.onClose()
-  }
-}
 
 export default CountryList

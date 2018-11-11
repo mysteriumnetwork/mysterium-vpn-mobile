@@ -18,20 +18,22 @@
 import { observer } from 'mobx-react/native'
 import { Container, Content, Grid, Row, Toast } from 'native-base'
 import React, { ReactNode } from 'react'
-import { ImageBackground, Text } from 'react-native'
 import { FavoritesStorage } from '../../../libraries/favorites-storage'
 import { mysteriumClient } from '../../../libraries/mysterium-client'
 import TequilApiDriver from '../../../libraries/tequil-api/tequil-api-driver'
 import AppState from '../../app-state'
 import ConnectButton from '../../components/connect-button'
 import ConnectionStatus from '../../components/connection-status'
-import CountryPicker, { CountryListItem } from '../../components/country-picker/country-picker'
-import { getCountryListItemsFromProposals } from '../../components/country-picker/proposal-converter'
+import CountryPicker  from '../../components/country-picker/country-picker'
+import { proposalsToCountries } from '../../components/country-picker/country'
 import ErrorDropdown from '../../components/error-dropdown'
 import Stats from '../../components/stats'
 import ErrorDisplayDelegate from '../../errors/error-display-delegate'
 import translations from './../../translations'
 import styles from './styles'
+import IPAddress from '../../components/ip-address'
+import BackgroundImage from '../../components/background-image'
+import { Country } from '../../components/country-picker/country'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
@@ -48,6 +50,7 @@ export default class HomeScreen extends React.Component<AppProps> {
 
   constructor (props: AppProps) {
     super(props)
+
     this.tequilAPIDriver = props.tequilAPIDriver
     this.appState = props.appState
     this.errorDisplayDelegate = props.errorDisplayDelegate
@@ -70,11 +73,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return (
       <Container>
         <Content>
-          <ImageBackground
-            style={styles.backgroundImage}
-            source={require('../../../assets/background-logo.png')}
-            resizeMode="contain"
-          >
+          <BackgroundImage>
             <Grid>
               <Row>
                 <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
@@ -85,9 +84,7 @@ export default class HomeScreen extends React.Component<AppProps> {
               </Row>
 
               <Row style={styles.textCentered}>
-                <Text style={styles.ipText}>
-                  IP: {this.appState.IP || translations.IP_UPDATING}
-                </Text>
+                <IPAddress ipAddress={this.ipAddress}/>
               </Row>
 
               <Row style={styles.connectionContainer}>
@@ -96,14 +93,14 @@ export default class HomeScreen extends React.Component<AppProps> {
                     <CountryPicker
                       placeholder={translations.COUNTRY_PICKER_LABEL}
                       items={this.countries}
-                      onSelect={(country: CountryListItem) => this.onCountrySelect(country)}
+                      onSelect={(country: Country) => this.onCountrySelect(country)}
                     />
                   </Row>
 
                   <Row style={[styles.textCentered, styles.connectButton]}>
                     <ConnectButton
-                      onClick={() => this.onButtonClick()}
-                      disabled={!this.buttonIsEnabled}
+                      onClick={() => this.onConnectButtonClick()}
+                      loading={!this.buttonIsReady}
                       active={this.buttonIsActive}
                     />
                   </Row>
@@ -118,10 +115,14 @@ export default class HomeScreen extends React.Component<AppProps> {
                 </Grid>
               </Row>
             </Grid>
-          </ImageBackground>
+          </BackgroundImage>
         </Content>
       </Container>
     )
+  }
+
+  private get ipAddress () {
+    return this.appState.IP || translations.IP_UPDATING
   }
 
   private get sessionDuration () {
@@ -149,14 +150,14 @@ export default class HomeScreen extends React.Component<AppProps> {
   }
 
   private get countries () {
-    return getCountryListItemsFromProposals(this.appState.Proposals)
+    return proposalsToCountries(this.appState.Proposals)
   }
 
-  private onCountrySelect (country: CountryListItem) {
+  private onCountrySelect (country: Country) {
     this.props.appState.SelectedProviderId = country.id
   }
 
-  private get buttonIsEnabled (): boolean {
+  private get buttonIsReady (): boolean {
     return this.appState.isReady
   }
 
@@ -170,10 +171,13 @@ export default class HomeScreen extends React.Component<AppProps> {
       : undefined
   }
 
-  private onButtonClick () {
+  private onConnectButtonClick () {
     if (!this.appState.isConnected && !this.appState.SelectedProviderId) {
       Toast.show({
-        text: 'Please select a country'
+        text: translations.UNSELECTED_COUNTRY,
+        textStyle: {
+          textAlign: 'center'
+        }
       })
       return
     }

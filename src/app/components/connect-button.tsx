@@ -25,62 +25,89 @@ import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
 import colors from '../styles/colors'
 
-export interface IProps {
+type ButtonProps = {
   onClick: () => void,
-  disabled: boolean,
-  active: boolean,
+  loading: boolean,
+  active: boolean
 }
 
-const styles: any = StyleSheet.create({
-  container: {
-    height: 60,
-    width: 60
-  },
-  button: {
-    borderColor: colors.border,
-    borderRadius: 100,
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    borderWidth: 0
-  },
-  buttonDisabled: {
-    borderWidth: 0
-  },
-  powerIcon: {
-    fontSize: 30,
-    fontWeight: '800'
-  },
-  powerIconActive: {
-    color: '#266e2e'
-  },
-  spinner: {
-    marginTop: -5
-  }
-})
-
-class ConnectButton extends React.Component<IProps, any> {
+class ConnectButton extends React.Component<ButtonProps> {
   public render () {
-    if (this.props.disabled) {
-      return (
-        <View style={styles.container}>
-          <Spinner color="red" style={styles.spinner}/>
-        </View>
-      )
+    if (this.props.loading) {
+      return this.spinner()
     }
 
     return (
       <View style={styles.container}>
         <Button
-          bordered={true}
           onPress={() => this.props.onClick()}
-          style={[styles.button, this.props.disabled ? styles.buttonDisabled : null]}
+          style={this.buttonStyle()}
         >
-          <Icon style={[styles.powerIcon, this.props.active ? styles.powerIconActive : null]} name="ios-power"/>
+          {this.icon()}
         </Button>
       </View>
     )
   }
+
+  private spinner () {
+    return (
+      <View style={styles.container}>
+        <Spinner color="red" style={styles.spinner}/>
+      </View>
+    )
+  }
+
+  private icon () {
+    if (this.props.active) {
+      return (<Icon style={[styles.icon, styles.iconActive]} name="md-checkmark"/>)
+    }
+
+    return (<Icon style={[styles.icon, styles.iconInactive]} name="ios-power"/>)
+  }
+
+  private buttonStyle () {
+    const style = [styles.button]
+
+    if (this.props.active) {
+      style.push(styles.buttonConnected)
+    }
+
+    return style
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: 65,
+    width: 65
+  },
+  button: {
+    borderColor: colors.primary,
+    borderRadius: 31,
+    width: 62,
+    height: 62,
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    shadowRadius: 0,
+    backgroundColor: 'transparent'
+  },
+  buttonConnected: {
+    borderColor: colors.success
+  },
+  icon: {
+    color: colors.primary,
+    fontSize: 28,
+    fontWeight: '600'
+  },
+  iconActive: {
+    color: colors.success
+  },
+  iconInactive: {
+    color: colors.primary
+  },
+  spinner: {
+    marginTop: -5
+  }
+})
 
 export default ConnectButton

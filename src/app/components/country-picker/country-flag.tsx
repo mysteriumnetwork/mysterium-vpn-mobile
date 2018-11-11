@@ -15,37 +15,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Dimensions, StyleSheet } from 'react-native'
+import countries from './countries.json'
+import { Icon } from 'native-base'
+import { Image, StyleSheet } from 'react-native'
+import * as React from 'react'
 import colors from '../../styles/colors'
-import fonts from '../../styles/fonts'
 
-const height = Dimensions.get('window').height
+type FlagProps = {
+  countryCode?: string
+}
+
+const getCountryImageUri = (code: string) => {
+  if (countries[code]) {
+    return countries[code].image
+  }
+
+  return ''
+}
+
+const CountryFlag: React.SFC<FlagProps> = ({ countryCode }) => {
+  if (!countryCode) {
+    return (
+      <Icon style={styles.globeIcon} name={'ios-globe'}/>
+    )
+  }
+
+  return (
+    <Image
+      source={{ uri: getCountryImageUri(countryCode) }}
+      style={styles.countryFlagImage}
+    />
+  )
+}
 
 const styles = StyleSheet.create({
-  textCentered: {
-    justifyContent: 'center'
+  countryFlagImage: {
+    width: '100%',
+    height: '100%'
   },
-  ipText: {
-    marginTop: 15,
-    fontSize: fonts.size.small,
-    color: colors.secondary
-  },
-  connectButton: {
-    marginTop: 20
-  },
-  statsContainer: {
-    marginTop: 30,
-    padding: 15,
-    borderTopWidth: 0.5,
-    borderColor: colors.border
-  },
-  connectionContainer: {
-    marginTop: height - 380
-  },
-  countryPicker: {
-    paddingLeft: 10,
-    paddingRight: 10
+  globeIcon: {
+    color: colors.primary
   }
 })
 
-export default styles
+export default CountryFlag

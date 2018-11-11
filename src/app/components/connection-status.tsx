@@ -26,7 +26,7 @@ type ConnectionStatusProps = {
   status?: string
 }
 
-export default class ConnectionStatus extends Component<ConnectionStatusProps> {
+class ConnectionStatus extends Component<ConnectionStatusProps> {
   private readonly connectionStatusTexts: { [key: string]: string | undefined } = {
     [ConnectionStatusEnum.NOT_CONNECTED]: translations.CONNECTION_STATUS.NOT_CONNECTED,
     [ConnectionStatusEnum.CONNECTING]: translations.CONNECTION_STATUS.CONNECTING,
@@ -63,3 +63,5 @@ const style = StyleSheet.create({
     color: colors.primary
   }
 })
+
+export default ConnectionStatus

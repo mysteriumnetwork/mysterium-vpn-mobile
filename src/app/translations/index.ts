@@ -8,7 +8,9 @@ const translations = {
     DISCONNECTING: 'Disconnecting'
   },
   IP_UPDATING: 'Updating...',
-  UNKNOWN: 'Unknown'
+  UNKNOWN: 'Unknown',
+  UNSELECTED_COUNTRY: 'Please select a country',
+  COUNTRY_SEARCH: 'Search countries'
 }
 
 export default translations
