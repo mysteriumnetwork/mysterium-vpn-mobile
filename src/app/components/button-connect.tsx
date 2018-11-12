@@ -69,9 +69,9 @@ export default class ButtonConnect extends Component<ButtonConnectProps> {
       case ConnectionStatusEnum.NOT_CONNECTED:
         return CONFIG.TEXTS.CONNECT_BUTTON.CONNECT
       case ConnectionStatusEnum.CONNECTED:
-        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECTED
+        return CONFIG.TEXTS.CONNECT_BUTTON.DISCONNECT
       case ConnectionStatusEnum.CONNECTING:
-        return CONFIG.TEXTS.CONNECT_BUTTON.CONNECTING
+        return CONFIG.TEXTS.CONNECT_BUTTON.CANCEL
       case ConnectionStatusEnum.DISCONNECTING:
         return CONFIG.TEXTS.CONNECT_BUTTON.DISCONNECTING
       default:

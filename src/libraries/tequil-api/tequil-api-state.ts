@@ -22,29 +22,27 @@ import {
   ConnectionStatusDTO,
   ProposalDTO
 } from 'mysterium-tequilapi'
-import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
+import { ConnectionStatusEnum } from './enums'
 
 const initialConnectionStatus: ConnectionStatusDTO = {
   status: ConnectionStatusEnum.NOT_CONNECTED
 }
 
-export default class AppState {
+export default class TequilApiState {
   @observable
-  public IdentityId?: string
+  public identityId?: string
   @observable
   public IP?: string
   @observable
-  public ConnectionStatus: ConnectionStatusDTO = initialConnectionStatus
+  public connectionStatus: ConnectionStatusDTO = initialConnectionStatus
   @observable
-  public Statistics?: ConnectionStatisticsDTO
+  public connectionStatistics?: ConnectionStatisticsDTO
   @observable
-  public SelectedProviderId?: string
-  @observable
-  public Proposals?: ProposalDTO[]
+  public proposals: ProposalDTO[] = []
 
   @computed
   get status (): ConnectionStatus {
-    return this.ConnectionStatus.status
+    return this.connectionStatus.status
   }
 
   @computed
@@ -59,14 +57,14 @@ export default class AppState {
 
   @action
   public setConnectionStatusToConnecting () {
-    this.ConnectionStatus = {
+    this.connectionStatus = {
       status: ConnectionStatusEnum.CONNECTING
     }
   }
 
   @action
   public setConnectionStatusToDisconnecting () {
-    this.ConnectionStatus = {
+    this.connectionStatus = {
       status: ConnectionStatusEnum.DISCONNECTING
     }
   }

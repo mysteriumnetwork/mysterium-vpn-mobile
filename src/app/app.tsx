@@ -22,18 +22,20 @@ import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import AppState from './app-state'
+import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
 import ErrorDropdown from './components/error-dropdown'
-import ProposalsDropdown, { ProposalsState } from './components/proposals-dropdown'
+import ProposalsDropdown from './components/proposals-dropdown'
 import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
+import VpnAppState from './vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
-  appState: AppState,
+  tequilApiState: TequilApiState,
+  vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
   favoritesStore: FavoritesStorage
 }
@@ -41,14 +43,16 @@ type AppProps = {
 @observer
 export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
-  private readonly appState: AppState
+  private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
+  private readonly vpnAppState: VpnAppState
 
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
-    this.appState = props.appState
+    this.tequilApiState = props.tequilApiState
     this.errorDisplayDelegate = props.errorDisplayDelegate
+    this.vpnAppState = props.vpnAppState
   }
 
   public render (): ReactNode {
@@ -60,22 +64,27 @@ export default class App extends React.Component<AppProps> {
           resizeMode="contain"
         />
 
-        <ConnectionStatus status={this.appState.ConnectionStatus ? this.appState.ConnectionStatus.status : undefined}/>
-        <Text style={styles.textIp}>IP: {this.appState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <ConnectionStatus status={this.tequilApiState.connectionStatus.status}/>
+
+        <Text style={styles.textIp}>IP: {this.tequilApiState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
           <ProposalsDropdown
             favoritesStore={this.props.favoritesStore}
             proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-            proposalsState={this.appState as ProposalsState}
+            proposals={this.tequilApiState.proposals}
+            selectedProviderId={this.vpnAppState.selectedProviderId}
+            setSelectedProviderId={(value) => this.vpnAppState.selectedProviderId = value}
           />
           <ButtonConnect
-            connectionStatus={this.appState.ConnectionStatus.status}
-            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver)}
+            connectionStatus={this.tequilApiState.connectionStatus.status}
+            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
-        {this.appState.Statistics ? <Stats style={styles.footer} {...this.appState.Statistics} /> : null}
+        {this.tequilApiState.connectionStatistics
+          ? <Stats style={styles.footer} {...this.tequilApiState.connectionStatistics} />
+          : null}
         <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
       </View>
     )

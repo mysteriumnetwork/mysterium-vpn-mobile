@@ -17,7 +17,6 @@
 
 import TequilapiClientFactory, { IdentityDTO, TequilapiError } from 'mysterium-tequilapi'
 
-import AppState from '../../app/app-state'
 import IErrorDisplay from '../../app/errors/error-display'
 import errors from '../../app/errors/errors'
 import { CONFIG } from '../../config'
@@ -25,6 +24,7 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
+import TequilApiState from './tequil-api-state'
 
 const api = new TequilapiClientFactory(
   CONFIG.TEQUILAPI_ADDRESS,
@@ -37,17 +37,17 @@ const api = new TequilapiClientFactory(
 
 export default class TequilApiDriver {
   public proposalFetcher: ProposalsFetcher
-  public readonly appState: AppState
+  public readonly tequilApiState: TequilApiState
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
-  constructor (appState: AppState, private errorDisplay: IErrorDisplay) {
-    this.appState = appState
-    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.appState)
-    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.appState)
-    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.appState)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.appState)
+  constructor (apiState: TequilApiState, private errorDisplay: IErrorDisplay) {
+    this.tequilApiState = apiState
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.tequilApiState)
+    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.tequilApiState)
+    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.tequilApiState)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.tequilApiState)
     this.startFetchers()
   }
 
@@ -55,20 +55,20 @@ export default class TequilApiDriver {
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  public async connect (): Promise<void> {
-    if (!this.appState.IdentityId || !this.appState.SelectedProviderId) {
-      console.error('Not enough data to connect', this.appState)
+  public async connect (selectedProviderId: string): Promise<void> {
+    if (!this.tequilApiState.identityId) {
+      console.error('Not enough data to connect', this.tequilApiState)
       return
     }
 
-    this.appState.resetIP()
-    this.appState.setConnectionStatusToConnecting()
+    this.tequilApiState.resetIP()
+    this.tequilApiState.setConnectionStatusToConnecting()
 
     try {
       const connection = await api.connectionCreate({
-        consumerId: this.appState.IdentityId,
+        consumerId: this.tequilApiState.identityId,
         providerCountry: '',
-        providerId: this.appState.SelectedProviderId
+        providerId: selectedProviderId
       })
       console.log('connected', connection)
     } catch (e) {
@@ -83,8 +83,8 @@ export default class TequilApiDriver {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.appState.resetIP()
-    this.appState.setConnectionStatusToDisconnecting()
+    this.tequilApiState.resetIP()
+    this.tequilApiState.setConnectionStatusToDisconnecting()
 
     try {
       await api.connectionCancel()
@@ -119,7 +119,7 @@ export default class TequilApiDriver {
 
     try {
       await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-      this.appState.IdentityId = identityId
+      this.tequilApiState.identityId = identityId
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }
