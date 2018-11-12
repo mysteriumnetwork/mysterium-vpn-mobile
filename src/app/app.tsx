@@ -35,6 +35,7 @@ import VpnAppState from './vpn-app-state'
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
   tequilApiState: TequilApiState,
+  vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
   favoritesStore: FavoritesStorage
 }
@@ -44,13 +45,14 @@ export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
-  private readonly appState: VpnAppState = new VpnAppState()
+  private readonly vpnAppState: VpnAppState
 
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
     this.tequilApiState = props.tequilApiState
     this.errorDisplayDelegate = props.errorDisplayDelegate
+    this.vpnAppState = props.vpnAppState
   }
 
   public render (): ReactNode {
@@ -71,11 +73,11 @@ export default class App extends React.Component<AppProps> {
             favoritesStore={this.props.favoritesStore}
             proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
             proposals={this.tequilApiState.proposals}
-            stateWithSelectedProviderId={this.appState}
+            stateWithSelectedProviderId={this.vpnAppState}
           />
           <ButtonConnect
             connectionStatus={this.tequilApiState.connectionStatus.status}
-            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.appState.selectedProviderId)}
+            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
