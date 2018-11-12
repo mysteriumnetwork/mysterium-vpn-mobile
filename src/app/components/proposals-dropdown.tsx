@@ -16,7 +16,6 @@
  */
 
 import { action, computed } from 'mobx'
-import { observer } from 'mobx-react/native'
 import { ProposalDTO } from 'mysterium-tequilapi'
 import React, { ReactNode } from 'react'
 import { Picker, Text, View } from 'react-native'
@@ -30,13 +29,10 @@ type ProposalsDropdownProps = {
   favoritesStore: FavoritesStorage,
   proposalsFetcher: ProposalsFetcher,
   proposals: ProposalDTO[],
-  stateWithSelectedProviderId: {
-    selectedProviderId: string | null,
-    setSelectedProviderId: (newId: string) => void
-  }
+  selectedProviderId: string | null,
+  setSelectedProviderId: (newId: string) => void
 }
 
-@observer
 export default class ProposalsDropdown extends React.Component<ProposalsDropdownProps> {
   private static renderProposal (p: Proposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
@@ -47,7 +43,7 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
   public render (): ReactNode {
     this.setDefaultSelectedProvider()
     const proposals = this.props.proposals
-    const selectedProviderId = this.props.stateWithSelectedProviderId.selectedProviderId
+    const selectedProviderId = this.props.selectedProviderId
     if (!proposals) {
       return (
         <View style={styles.root}>
@@ -83,20 +79,20 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
   }
 
   private get isFavoriteSelected (): boolean {
-    if (!this.props.stateWithSelectedProviderId.selectedProviderId) return false
-    return this.props.favoritesStore.has(this.props.stateWithSelectedProviderId.selectedProviderId)
+    if (!this.props.selectedProviderId) return false
+    return this.props.favoritesStore.has(this.props.selectedProviderId)
   }
 
   @action
   private setDefaultSelectedProvider () {
     const stateProposals = this.props.proposals
-    const selectedProviderId = this.props.stateWithSelectedProviderId.selectedProviderId
+    const selectedProviderId = this.props.selectedProviderId
     const stateProposalsIncludeSelectedProposal = stateProposals
       && stateProposals.some((p) => p.providerId === selectedProviderId)
 
     if (stateProposals && stateProposals[0]) {
       if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {
-        this.props.stateWithSelectedProviderId.setSelectedProviderId(this.proposalsSorted[0].providerID)
+        this.props.setSelectedProviderId(this.proposalsSorted[0].providerID)
       }
     }
   }
@@ -113,6 +109,6 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
 
   @action
   private onProposalSelected (providerId: string) {
-    this.props.stateWithSelectedProviderId.setSelectedProviderId(providerId)
+    this.props.setSelectedProviderId(providerId)
   }
 }

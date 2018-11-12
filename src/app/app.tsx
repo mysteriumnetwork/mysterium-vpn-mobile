@@ -73,7 +73,8 @@ export default class App extends React.Component<AppProps> {
             favoritesStore={this.props.favoritesStore}
             proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
             proposals={this.tequilApiState.proposals}
-            stateWithSelectedProviderId={this.vpnAppState}
+            selectedProviderId={this.vpnAppState.selectedProviderId}
+            setSelectedProviderId={(value) => this.vpnAppState.selectedProviderId = value}
           />
           <ButtonConnect
             connectionStatus={this.tequilApiState.connectionStatus.status}
