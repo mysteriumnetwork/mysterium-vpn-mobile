@@ -15,9 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
+import { action, observable } from 'mobx'
 
 export default class VpnAppState {
   @observable
   public selectedProviderId: string | null = null
+
+  @action
+  public setSelectedProviderId (newId: string) {
+    this.selectedProviderId = newId
+  }
 }

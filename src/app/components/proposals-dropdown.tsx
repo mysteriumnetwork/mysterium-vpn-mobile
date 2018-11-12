@@ -30,7 +30,10 @@ type ProposalsDropdownProps = {
   favoritesStore: FavoritesStorage,
   proposalsFetcher: ProposalsFetcher,
   proposals: ProposalDTO[],
-  stateWithSelectedProviderId: { selectedProviderId: string | null }
+  stateWithSelectedProviderId: {
+    selectedProviderId: string | null,
+    setSelectedProviderId: (newId: string) => void
+  }
 }
 
 @observer
@@ -93,7 +96,7 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
 
     if (stateProposals && stateProposals[0]) {
       if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {
-        this.props.stateWithSelectedProviderId.selectedProviderId = this.proposalsSorted[0].providerID
+        this.props.stateWithSelectedProviderId.setSelectedProviderId(this.proposalsSorted[0].providerID)
       }
     }
   }
@@ -110,6 +113,6 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
 
   @action
   private onProposalSelected (providerId: string) {
-    this.props.stateWithSelectedProviderId.selectedProviderId = providerId
+    this.props.stateWithSelectedProviderId.setSelectedProviderId(providerId)
   }
 }
