@@ -24,7 +24,7 @@ import TequilApiDriver from '../../../libraries/tequil-api/tequil-api-driver'
 import AppState from '../../app-state'
 import ConnectButton from '../../components/connect-button'
 import ConnectionStatus from '../../components/connection-status'
-import CountryPicker  from '../../components/country-picker/country-picker'
+import CountryPicker from '../../components/country-picker/country-picker'
 import { proposalsToCountries } from '../../components/country-picker/country'
 import ErrorDropdown from '../../components/error-dropdown'
 import Stats from '../../components/stats'
@@ -34,10 +34,13 @@ import styles from './styles'
 import IPAddress from '../../components/ip-address'
 import BackgroundImage from '../../components/background-image'
 import { Country } from '../../components/country-picker/country'
+import TequilApiState from 'src/libraries/tequil-api/tequil-api-state'
+import VpnAppState from 'src/app/vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
-  appState: AppState,
+  tequilApiState: TequilApiState,
+  vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
   favoritesStore: FavoritesStorage
 }
@@ -45,15 +48,16 @@ type AppProps = {
 @observer
 export default class HomeScreen extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
-  private readonly appState: AppState
+  private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
+  private readonly vpnAppState: VpnAppState
 
   constructor (props: AppProps) {
     super(props)
-
     this.tequilAPIDriver = props.tequilAPIDriver
-    this.appState = props.appState
+    this.tequilApiState = props.tequilApiState
     this.errorDisplayDelegate = props.errorDisplayDelegate
+    this.vpnAppState = props.vpnAppState
   }
 
   /***
@@ -122,57 +126,57 @@ export default class HomeScreen extends React.Component<AppProps> {
   }
 
   private get ipAddress () {
-    return this.appState.IP || translations.IP_UPDATING
+    return this.tequilApiState.IP || translations.IP_UPDATING
   }
 
   private get sessionDuration () {
-    if (!this.appState.Statistics) {
+    if (!this.tequilApiState.connectionStatistics) {
       return 0
     }
 
-    return this.appState.Statistics.duration
+    return this.tequilApiState.connectionStatistics.duration
   }
 
   private get sessionBytesSent () {
-    if (!this.appState.Statistics) {
+    if (!this.tequilApiState.connectionStatistics) {
       return 0
     }
 
-    return this.appState.Statistics.bytesSent
+    return this.tequilApiState.connectionStatistics.bytesSent
   }
 
   private get sessionBytesReceived () {
-    if (!this.appState.Statistics) {
+    if (!this.tequilApiState.connectionStatistics) {
       return 0
     }
 
-    return this.appState.Statistics.bytesReceived
+    return this.tequilApiState.connectionStatistics.bytesReceived
   }
 
   private get countries () {
-    return proposalsToCountries(this.appState.Proposals)
+    return proposalsToCountries(this.tequilApiState.proposals)
   }
 
   private onCountrySelect (country: Country) {
-    this.props.appState.SelectedProviderId = country.id
+    this.vpnAppState.selectedProviderId = country.id
   }
 
   private get buttonIsReady (): boolean {
-    return this.appState.isReady
+    return this.tequilApiState.isReady
   }
 
   private get buttonIsActive (): boolean {
-    return this.appState.isConnected
+    return this.tequilApiState.isConnected
   }
 
   private get connectionStatusText () {
-    return this.appState.ConnectionStatus
-      ? this.appState.ConnectionStatus.status
+    return this.tequilApiState.connectionStatus
+      ? this.tequilApiState.connectionStatus.status
       : undefined
   }
 
   private onConnectButtonClick () {
-    if (!this.appState.isConnected && !this.appState.SelectedProviderId) {
+    if (!this.tequilApiState.isConnected && !this.vpnAppState.selectedProviderId) {
       Toast.show({
         text: translations.UNSELECTED_COUNTRY,
         textStyle: {
@@ -190,14 +194,14 @@ export default class HomeScreen extends React.Component<AppProps> {
    * Is connection state is unknown - does nothing
    */
   private async connectOrDisconnect () {
-    if (!this.appState.isReady) {
+    if (!this.tequilApiState.isReady) {
       return
     }
 
-    if (this.appState.isConnected) {
+    if (this.tequilApiState.isConnected) {
       await this.tequilAPIDriver.disconnect()
     } else {
-      await this.tequilAPIDriver.connect()
+      await this.tequilAPIDriver.connect(this.vpnAppState.selectedProviderId)
     }
   }
 }

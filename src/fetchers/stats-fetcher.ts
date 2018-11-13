@@ -17,18 +17,18 @@
 
 import { action } from 'mobx'
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
-import AppState from '../app/app-state'
+import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  constructor (private connectionStatistics: ConnectionStatistics, private readonly appState: AppState) {
+  constructor (private connectionStatistics: ConnectionStatistics, private readonly tequilApiState: TequilApiState) {
     super('Statistics')
   }
 
   protected get canRun (): boolean {
-    return this.appState.isConnected
+    return this.tequilApiState.isConnected
   }
 
   protected async fetch (): Promise<ConnectionStatisticsDTO> {
@@ -37,6 +37,6 @@ export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
 
   @action
   protected update (stats: ConnectionStatisticsDTO) {
-    this.appState.Statistics = stats
+    this.tequilApiState.connectionStatistics = stats
   }
 }

@@ -17,13 +17,13 @@
 
 import { action } from 'mobx'
 import { ProposalDTO, ProposalsFilter } from 'mysterium-tequilapi'
-import AppState from '../app/app-state'
+import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (filter?: ProposalsFilter) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
-  constructor (private findProposals: FindProposals, private readonly appState: AppState) {
+  constructor (private findProposals: FindProposals, private readonly tequilApiState: TequilApiState) {
     super('Proposals')
   }
 
@@ -33,6 +33,6 @@ export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
 
   @action
   protected update (proposals: ProposalDTO[]) {
-    this.appState.Proposals = proposals
+    this.tequilApiState.proposals = proposals
   }
 }

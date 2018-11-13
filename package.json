@@ -43,7 +43,7 @@
     "mobx": "^4.3.1",
     "mobx-react": "^5.1.0",
     "mobx-utils": "^5.0.2",
-    "mysterium-tequilapi": "^0.2.0",
+    "mysterium-tequilapi": "^0.2.2",
     "native-base": "^2.8.1",
     "react": "^16.6.0",
     "react-native": "0.56",
