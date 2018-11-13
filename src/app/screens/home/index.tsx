@@ -155,10 +155,6 @@ export default class HomeScreen extends React.Component<AppProps> {
     return proposalsToCountries(this.tequilApiState.proposals)
   }
 
-  private onCountrySelect (country: Country) {
-    this.vpnAppState.selectedProviderId = country.id
-  }
-
   private get buttonIsReady (): boolean {
     return this.tequilApiState.isReady
   }
@@ -169,6 +165,10 @@ export default class HomeScreen extends React.Component<AppProps> {
 
   private get connectionStatusText () {
     return this.tequilApiState.connectionStatus.status
+  }
+
+  private onCountrySelect (country: Country) {
+    this.vpnAppState.selectedProviderId = country.id
   }
 
   private async onConnectButtonClick () {
@@ -185,10 +185,6 @@ export default class HomeScreen extends React.Component<AppProps> {
     await this.connectOrDisconnect()
   }
 
-  /**
-   * Connects or disconnects to VPN server, depends on current connection state.
-   * Is connection state is unknown - does nothing
-   */
   private async connectOrDisconnect () {
     if (!this.tequilApiState.isReady) {
       return
