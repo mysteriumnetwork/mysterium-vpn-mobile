@@ -34,7 +34,7 @@ const getCountryImageUri = (code: string) => {
 }
 
 const CountryFlag: React.SFC<FlagProps> = ({ countryCode }) => {
-  if (!countryCode) {
+  if (!countryCode || !countries[countryCode]) {
     return (
       <Icon style={styles.globeIcon} name={'ios-globe'}/>
     )
@@ -52,7 +52,9 @@ const styles = StyleSheet.create({
   countryFlagImage: {
     width: 26,
     height: 26,
-    borderRadius: 13
+    borderRadius: 13,
+    borderWidth: 0.5,
+    borderColor: colors.border
   },
   globeIcon: {
     color: colors.primary

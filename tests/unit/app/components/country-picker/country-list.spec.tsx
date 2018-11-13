@@ -19,18 +19,7 @@ describe('CountryList', () => {
     items = []
   })
 
-  it('renders correctly', () => {
-    const wrapper = shallow(
-      <CountryList
-        items={items}
-        onSelect={onSelect}
-        onClose={onClose}
-      />
-    )
-    expect(wrapper).toMatchSnapshot()
-  })
-
-  const renderWrap = () => {
+  const wrapRender = () => {
     return render(
       <CountryList
         items={items}
@@ -39,6 +28,23 @@ describe('CountryList', () => {
       />
     )
   }
+
+  const wrapShallow = () => {
+    return shallow(
+      <CountryList
+        items={items}
+        onSelect={onSelect}
+        onClose={onClose}
+      />
+    )
+  }
+
+  it('renders correctly', () => {
+    const wrapper = wrapShallow()
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
   it('renders items', () => {
     items = [
       {
@@ -53,14 +59,14 @@ describe('CountryList', () => {
       }
     ]
 
-    const wrapper = renderWrap()
+    const wrapper = wrapRender()
 
     expect(wrapper.text()).toContain('Lithuania')
     expect(wrapper.text()).toContain('United States')
   })
 
   it('has close button', () => {
-    const wrapper = renderWrap()
+    const wrapper = wrapRender()
 
     expect(wrapper.text()).toContain('Close')
   })
