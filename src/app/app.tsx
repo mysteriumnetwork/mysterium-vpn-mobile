@@ -97,6 +97,7 @@ export default class App extends React.Component<AppProps> {
    */
   public async componentDidMount () {
     await this.waitForClient()
+    this.tequilAPIDriver.startFetchers()
     try {
       console.info('Unlocking identity')
       await this.tequilAPIDriver.unlock()

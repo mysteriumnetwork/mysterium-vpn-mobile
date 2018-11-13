@@ -48,7 +48,6 @@ export default class TequilApiDriver {
     this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.tequilApiState)
     this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.tequilApiState)
     this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.tequilApiState)
-    this.startFetchers()
   }
 
   /***
@@ -129,6 +128,13 @@ export default class TequilApiDriver {
     }
   }
 
+  public startFetchers () {
+    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
+    this.statusFetcher.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
+    this.ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
+    this.statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
+  }
+
   private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {
     if (identities.length) {
       return identities[0]
@@ -138,13 +144,6 @@ export default class TequilApiDriver {
       CONFIG.PASSPHRASE
     )
     return newIdentity
-  }
-
-  private startFetchers () {
-    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
-    this.statusFetcher.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
-    this.ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
-    this.statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 }
 
