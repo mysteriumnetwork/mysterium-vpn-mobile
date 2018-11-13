@@ -1,8 +1,8 @@
 import { render, shallow } from 'enzyme'
 import React from 'react'
-import consoleOverride from '../../../helpers/console-override'
-import CountryList from '../../../../../src/app/components/country-picker/country-list'
 import { Country } from '../../../../../src/app/components/country-picker/country'
+import CountryList from '../../../../../src/app/components/country-picker/country-list'
+import consoleOverride from '../../../helpers/console-override'
 
 describe('CountryList', () => {
   consoleOverride()

@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import CountryPicker from '../../../../../src/app/components/country-picker/country-picker'
 import { Country } from '../../../../../src/app/components/country-picker/country'
+import CountryPicker from '../../../../../src/app/components/country-picker/country-picker'
 import consoleOverride from '../../../helpers/console-override'
 
 describe('CountryPicker', () => {
