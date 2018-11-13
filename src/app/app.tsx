@@ -96,6 +96,25 @@ export default class App extends React.Component<AppProps> {
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.tequilAPIDriver.unlock()
+    await this.waitForClient()
+    try {
+      console.info('Unlocking identity')
+      await this.tequilAPIDriver.unlock()
+    } catch (err) {
+      console.error('Identity unlock failed', err)
+    }
+  }
+
+  private async waitForClient () {
+    console.info('Waiting for client to start up')
+    while (true) {
+      try {
+        await this.tequilAPIDriver.healthcheck()
+        return
+      } catch (err) {
+        console.info('Client still down')
+        // TODO: add delay
+      }
+    }
   }
 }

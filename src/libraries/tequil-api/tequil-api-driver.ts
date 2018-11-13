@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import TequilapiClientFactory, { IdentityDTO, TequilapiError } from 'mysterium-tequilapi'
+import TequilapiClientFactory, { IdentityDTO, NodeHealthcheckDTO, TequilapiError } from 'mysterium-tequilapi'
 
 import IErrorDisplay from '../../app/errors/error-display'
 import errors from '../../app/errors/errors'
@@ -93,6 +93,10 @@ export default class TequilApiDriver {
       this.errorDisplay.showError(errors.DISCONNECT_FAILED)
       console.warn('api.connectionCancel failed', e)
     }
+  }
+
+  public async healthcheck (): Promise<NodeHealthcheckDTO> {
+    return api.healthCheck()
   }
 
   /***
