@@ -34,22 +34,22 @@ type ButtonProps = {
 class ConnectButton extends React.Component<ButtonProps> {
   public render () {
     if (this.props.loading) {
-      return this.spinner()
+      return this.spinner
     }
 
     return (
       <View style={styles.container}>
         <Button
           onPress={() => this.props.onClick()}
-          style={this.buttonStyle()}
+          style={this.buttonStyle}
         >
-          {this.icon()}
+          {this.icon}
         </Button>
       </View>
     )
   }
 
-  private spinner () {
+  private get spinner () {
     return (
       <View style={styles.container}>
         <Spinner color="red" style={styles.spinner}/>
@@ -57,7 +57,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     )
   }
 
-  private icon () {
+  private get icon () {
     if (this.props.active) {
       return (<Icon style={[styles.icon, styles.iconActive]} name="md-checkmark"/>)
     }
@@ -65,7 +65,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     return (<Icon style={[styles.icon, styles.iconInactive]} name="ios-power"/>)
   }
 
-  private buttonStyle () {
+  private get buttonStyle () {
     const style = [styles.button]
 
     if (this.props.active) {
@@ -83,12 +83,11 @@ const styles = StyleSheet.create({
   },
   button: {
     borderColor: colors.primary,
-    borderRadius: 31,
     width: 62,
     height: 62,
+    borderRadius: 31,
     justifyContent: 'center',
     borderWidth: 1.5,
-    shadowRadius: 0,
     backgroundColor: 'transparent'
   },
   buttonConnected: {
