@@ -1,29 +1,29 @@
 module.exports = {
   preset: 'react-native',
-  "transformIgnorePatterns": [
-    "node_modules/(?!react-native|native-base|native-base-shoutem-theme|react-navigation)"
+  transformIgnorePatterns: [
+    'node_modules/(?!native-base|react-native|native-base-shoutem-theme|react-navigation)'
   ],
   setupFiles: [
-    "<rootDir>/jest.setup.js"
+    '<rootDir>/jest.setup.js'
   ],
   globals: {
     __DEV__: true
   },
   moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js"
+    'ts',
+    'tsx',
+    'js'
   ],
   transform: {
-    "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
-    "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    '^.+\\.(js)$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
+    '\\.(ts|tsx)$': 'ts-jest'
   },
-  testRegex: "(/*\\.(test|spec))\\.(ts|tsx|js)$",
+  testRegex: '(/*\\.(test|spec))\\.(ts|tsx|js)$',
   testPathIgnorePatterns: [
-    "\\.snap$",
-    "<rootDir>/node_modules/",
-    "<rootDir>/lib/",
-    "<rootDir>/tests/e2e/"
+    '\\.snap$',
+    '<rootDir>/node_modules/',
+    '<rootDir>/lib/',
+    '<rootDir>/tests/e2e/'
   ],
-  cacheDirectory: ".jest/cache"
+  cacheDirectory: '.jest/cache'
 }

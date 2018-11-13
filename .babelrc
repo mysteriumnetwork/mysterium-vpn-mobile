@@ -1,5 +1,11 @@
 {
   "presets": [
-    "react-native"
+    "react-native",
+    [
+      "@babel/preset-env",
+      {
+        "modules": "commonjs"
+      }
+    ]
   ]
 }

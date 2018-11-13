@@ -19,7 +19,7 @@ import { Icon } from 'native-base'
 import * as React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import colors from '../../styles/colors'
-import countries from './countries.json'
+import countries from './countries'
 
 type FlagProps = {
   countryCode?: string
