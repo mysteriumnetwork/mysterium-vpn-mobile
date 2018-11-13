@@ -114,8 +114,12 @@ export default class App extends React.Component<AppProps> {
         return
       } catch (err) {
         console.info('Client still down')
-        // TODO: add delay
+        await this.delay(CONFIG.HEALTHCHECK_DELAY)
       }
     }
+  }
+
+  private async delay (ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 }
