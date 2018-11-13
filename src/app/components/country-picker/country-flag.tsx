@@ -50,8 +50,9 @@ const CountryFlag: React.SFC<FlagProps> = ({ countryCode }) => {
 
 const styles = StyleSheet.create({
   countryFlagImage: {
-    width: '100%',
-    height: '100%'
+    width: 26,
+    height: 26,
+    borderRadius: 13
   },
   globeIcon: {
     color: colors.primary

@@ -111,10 +111,7 @@ const styles: any = StyleSheet.create({
     width: 26,
     height: 26,
     margin: 0,
-    padding: 0,
-    borderRadius: 13,
-    borderWidth: 0.5,
-    borderColor: colors.border
+    padding: 0
   },
   searchIcon: {
     color: platformStyles.search.iconColor
