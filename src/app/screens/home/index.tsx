@@ -96,6 +96,8 @@ export default class HomeScreen extends React.Component<AppProps> {
                       placeholder={translations.COUNTRY_PICKER_LABEL}
                       items={this.countries}
                       onSelect={(country: Country) => this.onCountrySelect(country)}
+                      onFavoriteSelect={() => this.onFavoriteSelect()}
+                      isFavoriteSelected={this.selectedProviderIsFavored}
                     />
                   </Row>
 
@@ -167,18 +169,21 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.tequilApiState.connectionStatus.status
   }
 
+  private get selectedProviderIsFavored () {
+    if (!this.vpnAppState.selectedProviderId) {
+      return false
+    }
+
+    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
+  }
+
   private onCountrySelect (country: Country) {
     this.vpnAppState.selectedProviderId = country.id
   }
 
   private async onConnectButtonClick () {
     if (!this.tequilApiState.isConnected && !this.vpnAppState.selectedProviderId) {
-      Toast.show({
-        text: translations.UNSELECTED_COUNTRY,
-        textStyle: {
-          textAlign: 'center'
-        }
-      })
+      this.showMissingCountryError()
       return
     }
 
@@ -195,5 +200,30 @@ export default class HomeScreen extends React.Component<AppProps> {
     } else {
       await this.tequilAPIDriver.connect(this.vpnAppState.selectedProviderId)
     }
+  }
+
+  private async onFavoriteSelect (): Promise<void> {
+    const store = this.props.favoritesStore
+    const selectedProviderId = this.vpnAppState.selectedProviderId
+
+    if (!selectedProviderId) {
+      this.showMissingCountryError()
+      return
+    }
+
+    if (!store.has(selectedProviderId)) {
+      await store.add(selectedProviderId)
+    } else {
+      await store.remove(selectedProviderId)
+    }
+  }
+
+  private showMissingCountryError () {
+    Toast.show({
+      text: translations.UNSELECTED_COUNTRY,
+      textStyle: {
+        textAlign: 'center'
+      }
+    })
   }
 }
