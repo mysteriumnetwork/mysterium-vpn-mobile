@@ -16,9 +16,9 @@ import {
 import * as React from 'react'
 
 import { Platform, StyleSheet } from 'react-native'
+import translations from '../../translations'
 import { Country } from './country'
 import CountryFlag from './country-flag'
-import translations from '../../translations'
 
 type ListProps = {
   items: Country[],

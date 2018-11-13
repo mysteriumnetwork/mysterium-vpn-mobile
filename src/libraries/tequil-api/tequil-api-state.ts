@@ -54,7 +54,6 @@ export default class TequilApiState {
   get isReady (): boolean {
     return (
       this.identityId !== undefined &&
-      this.connectionStatus !== undefined &&
       (this.status === ConnectionStatusEnum.NOT_CONNECTED ||
         this.status === ConnectionStatusEnum.CONNECTED)
     )

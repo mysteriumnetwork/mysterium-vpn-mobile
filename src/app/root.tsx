@@ -1,11 +1,11 @@
-import * as React from 'react'
 import { Root } from 'native-base'
+import * as React from 'react'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
-import HomeScreen from './screens/home'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Logger from './logger'
+import HomeScreen from './screens/home'
 import VpnAppState from './vpn-app-state'
 
 class RootComponent extends React.PureComponent {

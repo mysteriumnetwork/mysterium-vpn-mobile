@@ -18,24 +18,22 @@
 import { observer } from 'mobx-react/native'
 import { Container, Content, Grid, Row, Toast } from 'native-base'
 import React, { ReactNode } from 'react'
+import VpnAppState from '../../../app/vpn-app-state'
 import { FavoritesStorage } from '../../../libraries/favorites-storage'
 import { mysteriumClient } from '../../../libraries/mysterium-client'
 import TequilApiDriver from '../../../libraries/tequil-api/tequil-api-driver'
-import AppState from '../../app-state'
+import TequilApiState from '../../../libraries/tequil-api/tequil-api-state'
+import BackgroundImage from '../../components/background-image'
 import ConnectButton from '../../components/connect-button'
 import ConnectionStatus from '../../components/connection-status'
+import { Country, proposalsToCountries } from '../../components/country-picker/country'
 import CountryPicker from '../../components/country-picker/country-picker'
-import { proposalsToCountries } from '../../components/country-picker/country'
 import ErrorDropdown from '../../components/error-dropdown'
+import IPAddress from '../../components/ip-address'
 import Stats from '../../components/stats'
 import ErrorDisplayDelegate from '../../errors/error-display-delegate'
 import translations from './../../translations'
 import styles from './styles'
-import IPAddress from '../../components/ip-address'
-import BackgroundImage from '../../components/background-image'
-import { Country } from '../../components/country-picker/country'
-import TequilApiState from 'src/libraries/tequil-api/tequil-api-state'
-import VpnAppState from 'src/app/vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
@@ -170,12 +168,10 @@ export default class HomeScreen extends React.Component<AppProps> {
   }
 
   private get connectionStatusText () {
-    return this.tequilApiState.connectionStatus
-      ? this.tequilApiState.connectionStatus.status
-      : undefined
+    return this.tequilApiState.connectionStatus.status
   }
 
-  private onConnectButtonClick () {
+  private async onConnectButtonClick () {
     if (!this.tequilApiState.isConnected && !this.vpnAppState.selectedProviderId) {
       Toast.show({
         text: translations.UNSELECTED_COUNTRY,
@@ -186,7 +182,7 @@ export default class HomeScreen extends React.Component<AppProps> {
       return
     }
 
-    this.connectOrDisconnect()
+    await this.connectOrDisconnect()
   }
 
   /**

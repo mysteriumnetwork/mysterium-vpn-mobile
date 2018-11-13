@@ -25,10 +25,10 @@ import * as React from 'react'
 
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
-import CountryModal from './country-modal'
 import { Country } from './country'
 import CountryFlag from './country-flag'
 import CountryList from './country-list'
+import CountryModal from './country-modal'
 
 type PickerProps = {
   items: Country[],

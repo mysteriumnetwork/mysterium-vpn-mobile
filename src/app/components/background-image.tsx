@@ -1,5 +1,5 @@
-import { ImageBackground, StyleSheet } from 'react-native'
 import React from 'react'
+import { ImageBackground, StyleSheet } from 'react-native'
 
 const BackgroundImage: React.SFC = ({ children }) => {
   return (

@@ -1,7 +1,7 @@
-import { StyleSheet, Text } from 'react-native'
-import fonts from '../styles/fonts'
-import colors from '../styles/colors'
 import React from 'react'
+import { StyleSheet, Text } from 'react-native'
+import colors from '../styles/colors'
+import fonts from '../styles/fonts'
 
 type IPProps = {
   ipAddress?: string
