@@ -45,5 +45,5 @@ export const CONFIG = {
     IP: 10 * 1000
   },
   STYLES,
-  RUN_NODE_ON_DEVICE: false
+  RUN_NODE_ON_DEVICE: true
 }
