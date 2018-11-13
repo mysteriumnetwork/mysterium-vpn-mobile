@@ -16,7 +16,6 @@ import {
 import * as React from 'react'
 
 import { Platform, StyleSheet } from 'react-native'
-import colors from '../../styles/colors'
 import { Country } from './country'
 import CountryFlag from './country-flag'
 import translations from '../../translations'
@@ -27,13 +26,15 @@ type ListProps = {
   onSelect: (country: Country) => void
 }
 
-class CountryList extends React.Component<ListProps> {
-  private items: Country[]
+type ListState = {
+  items: Country[]
+}
 
+class CountryList extends React.Component<ListProps, ListState> {
   constructor (props: ListProps) {
     super(props)
 
-    this.items = this.props.items
+    this.state = { items: this.props.items }
   }
 
   public render () {
@@ -57,7 +58,7 @@ class CountryList extends React.Component<ListProps> {
         </Header>
         <Content>
           <List>
-            {this.items.map((country: Country) => this.renderListItem(country))}
+            {this.state.items.map((country: Country) => this.renderListItem(country))}
           </List>
         </Content>
       </Container>
@@ -78,15 +79,19 @@ class CountryList extends React.Component<ListProps> {
   }
 
   private onSearchValueChange (text: string) {
-    this.items = this.props.items
+    let items = this.props.items
 
     if (!text.trim().length) {
+      this.setState({ items })
+
       return
     }
 
-    this.items = this.items.filter((country: Country) => {
+    items = this.props.items.filter((country: Country) => {
       return country.name.toLowerCase().includes(text.toLowerCase())
     })
+
+    this.setState({ items })
   }
 
   private onItemSelect (country: Country) {
@@ -94,10 +99,13 @@ class CountryList extends React.Component<ListProps> {
   }
 }
 
+const iosSearchColor = '#222'
+const androidSearchColor = '#fff'
+
 const platformStyles = {
   search: {
-    iconColor: Platform.OS === 'ios' ? '#222' : '#fff',
-    inputColor: Platform.OS === 'ios' ? '#222' : '#fff'
+    iconColor: Platform.OS === 'ios' ? iosSearchColor : androidSearchColor,
+    inputColor: Platform.OS === 'ios' ? iosSearchColor : androidSearchColor
   }
 }
 
