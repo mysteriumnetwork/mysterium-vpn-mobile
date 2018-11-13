@@ -1,18 +1,21 @@
 package network.mysterium.service.core
 
+import android.content.Intent
 import android.net.VpnService
+import android.os.Binder
+import android.os.IBinder
 import android.util.Log
 import mysterium.MobileNetworkOptions
 import mysterium.MobileNode
 import mysterium.Mysterium
 
-class MysteriumAndroidCoreService(private val filesPath: String) : VpnService() {
+class MysteriumAndroidCoreService : VpnService() {
     val TAG = "[Mysterium vpn service]"
 
     private var mobileNode : MobileNode? = null
     private val localnet = false
 
-    fun startMobileNode() {
+    fun startMobileNode(filesPath: String) {
         val androidOpenvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
         var options = Mysterium.defaultNetworkOptions()
         options.experimentIdentityCheck = true
@@ -50,5 +53,19 @@ class MysteriumAndroidCoreService(private val filesPath: String) : VpnService() 
 
     override fun onRevoke() {
         Log.w(TAG , "VPN service revoked!")
+    }
+
+    inner class MysteriumCoreServiceBridge : Binder() , MysteriumCoreService {
+        override fun StartTequila() {
+            startMobileNode(filesDir.canonicalPath)
+        }
+
+        override fun StopTequila() {
+            stopMobileNode()
+        }
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return MysteriumCoreServiceBridge()
     }
 }

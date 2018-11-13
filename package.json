@@ -4,7 +4,7 @@
   "private": true,
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "android": "adb reverse tcp:4050 tcp:4050 && react-native run-android",
+    "android": "react-native run-android",
     "ios": "react-native run-ios",
     "test:unit": "jest",
     "test:e2e:ios": "detox test -o tests/e2e/config.json --configuration=ios.sim.debug",

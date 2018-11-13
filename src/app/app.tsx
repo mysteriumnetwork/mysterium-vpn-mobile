@@ -97,21 +97,5 @@ export default class App extends React.Component<AppProps> {
    */
   public async componentDidMount () {
     await this.tequilAPIDriver.unlock()
-
-    if (CONFIG.RUN_NODE_ON_DEVICE) {
-      try {
-        await this.startClientService()
-      } catch (err) {
-        console.error(err)
-      }
-    }
-  }
-
-  private async startClientService () {
-    const status = await mysteriumClient.startService(4050)
-    if (status !== 0) {
-      throw Error(`Client service start failed with status ${status}`)
-    }
-    console.log('Client service started.')
   }
 }
