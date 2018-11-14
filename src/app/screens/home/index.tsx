@@ -125,11 +125,11 @@ export default class HomeScreen extends React.Component<AppProps> {
     )
   }
 
-  private get ipAddress () {
+  private get ipAddress (): string {
     return this.tequilApiState.IP || translations.IP_UPDATING
   }
 
-  private get sessionDuration () {
+  private get sessionDuration (): number {
     if (!this.tequilApiState.connectionStatistics) {
       return 0
     }
@@ -137,7 +137,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.tequilApiState.connectionStatistics.duration
   }
 
-  private get sessionBytesSent () {
+  private get sessionBytesSent (): number {
     if (!this.tequilApiState.connectionStatistics) {
       return 0
     }
@@ -145,7 +145,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.tequilApiState.connectionStatistics.bytesSent
   }
 
-  private get sessionBytesReceived () {
+  private get sessionBytesReceived (): number {
     if (!this.tequilApiState.connectionStatistics) {
       return 0
     }
@@ -153,7 +153,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.tequilApiState.connectionStatistics.bytesReceived
   }
 
-  private get countries () {
+  private get countries (): Country[] {
     return proposalsToCountries(this.tequilApiState.proposals)
   }
 
@@ -165,11 +165,11 @@ export default class HomeScreen extends React.Component<AppProps> {
     return this.tequilApiState.isConnected
   }
 
-  private get connectionStatusText () {
+  private get connectionStatusText (): string {
     return this.tequilApiState.connectionStatus.status
   }
 
-  private get selectedProviderIsFavored () {
+  private get selectedProviderIsFavored (): boolean {
     if (!this.vpnAppState.selectedProviderId) {
       return false
     }
@@ -181,7 +181,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     this.vpnAppState.selectedProviderId = country.id
   }
 
-  private async onConnectButtonClick () {
+  private async onConnectButtonClick (): Promise<void> {
     if (!this.tequilApiState.isConnected && !this.vpnAppState.selectedProviderId) {
       this.showMissingCountryError()
       return
@@ -190,7 +190,7 @@ export default class HomeScreen extends React.Component<AppProps> {
     await this.connectOrDisconnect()
   }
 
-  private async connectOrDisconnect () {
+  private async connectOrDisconnect (): Promise<void> {
     if (!this.tequilApiState.isReady) {
       return
     }

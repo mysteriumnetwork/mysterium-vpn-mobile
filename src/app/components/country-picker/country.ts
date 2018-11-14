@@ -17,7 +17,7 @@ const proposalToCountry = (proposalDto: ProposalDTO): Country => {
   }
 }
 
-const proposalsToCountries = (proposals?: ProposalDTO[]) => {
+const proposalsToCountries = (proposals?: ProposalDTO[]): Country[] => {
   if (!proposals) {
     return []
   }

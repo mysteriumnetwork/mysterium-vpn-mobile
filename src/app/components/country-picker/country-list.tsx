@@ -13,8 +13,7 @@ import {
   Right,
   Text
 } from 'native-base'
-import * as React from 'react'
-
+import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import translations from '../../translations'
 import { Country } from './country'
@@ -37,7 +36,7 @@ class CountryList extends React.Component<ListProps, ListState> {
     this.state = { items: this.props.items }
   }
 
-  public render () {
+  public render (): ReactNode {
     return (
       <Container>
         <Header>
@@ -65,7 +64,7 @@ class CountryList extends React.Component<ListProps, ListState> {
     )
   }
 
-  private renderListItem (country: Country) {
+  private renderListItem (country: Country): ReactNode {
     return (
       <ListItem icon={true} key={country.id} onPress={() => this.onItemSelect(country)}>
         <Left style={styles.flagImage}>

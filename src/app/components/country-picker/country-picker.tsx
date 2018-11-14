@@ -21,8 +21,7 @@ import {
   Icon,
   Text
 } from 'native-base'
-import * as React from 'react'
-
+import React, { ReactNode } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
 import { Country } from './country'
@@ -50,7 +49,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
     this.state = { modalIsOpen: false }
   }
 
-  public render () {
+  public render (): ReactNode {
     return (
       <View style={styles.container}>
         <CountryModal
@@ -97,7 +96,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
     )
   }
 
-  private get countryCode () {
+  private get countryCode (): string | undefined {
     if (!this.state.selectedCountry) {
       return
     }
@@ -105,7 +104,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
     return this.state.selectedCountry.countryCode.toLowerCase()
   }
 
-  private get countryName () {
+  private get countryName (): string {
     if (!this.state.selectedCountry) {
       return this.props.placeholder
     }

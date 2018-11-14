@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { Component } from 'react'
+import React, { Component, ReactNode } from 'react'
 import { Platform, StyleSheet, Text } from 'react-native'
 import translations from '../../app/translations'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
@@ -34,7 +34,7 @@ class ConnectionStatus extends Component<ConnectionStatusProps> {
     [ConnectionStatusEnum.DISCONNECTING]: translations.CONNECTION_STATUS.DISCONNECTING
   }
 
-  public render () {
+  public render (): ReactNode {
     return (
       <Text style={style.root}>{this.connectionStatus}</Text>
     )

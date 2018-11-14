@@ -20,8 +20,7 @@ import {
   Icon,
   Spinner
 } from 'native-base'
-import * as React from 'react'
-
+import React, { ReactNode } from 'react'
 import { StyleSheet, View } from 'react-native'
 import colors from '../styles/colors'
 
@@ -32,7 +31,7 @@ type ButtonProps = {
 }
 
 class ConnectButton extends React.Component<ButtonProps> {
-  public render () {
+  public render (): ReactNode {
     if (this.props.loading) {
       return this.spinner
     }
@@ -49,7 +48,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     )
   }
 
-  private get spinner () {
+  private get spinner (): ReactNode {
     return (
       <View style={styles.container}>
         <Spinner color="red" style={styles.spinner}/>
@@ -57,7 +56,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     )
   }
 
-  private get icon () {
+  private get icon (): ReactNode {
     if (this.props.active) {
       return (<Icon style={[styles.icon, styles.iconActive]} name="md-checkmark"/>)
     }
@@ -65,7 +64,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     return (<Icon style={[styles.icon, styles.iconInactive]} name="ios-power"/>)
   }
 
-  private get buttonStyle () {
+  private get buttonStyle (): object {
     const style = [styles.button]
 
     if (this.props.active) {
