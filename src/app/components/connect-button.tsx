@@ -48,6 +48,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     )
   }
 
+  // @TODO extract into separate component
   private get spinner (): ReactNode {
     return (
       <View style={styles.container}>
@@ -56,6 +57,7 @@ class ConnectButton extends React.Component<ButtonProps> {
     )
   }
 
+  // @TODO extract into separate component
   private get icon (): ReactNode {
     if (this.props.active) {
       return (<Icon style={[styles.icon, styles.iconActive]} name="md-checkmark"/>)
