@@ -17,7 +17,6 @@ const IPAddress: React.SFC<IPProps> = ({ ipAddress }) => {
 
 const styles = StyleSheet.create({
   ipText: {
-    marginTop: 15,
     fontSize: fonts.size.small,
     color: colors.secondary
   }

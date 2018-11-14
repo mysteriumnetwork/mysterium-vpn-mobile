@@ -85,7 +85,7 @@ export default class HomeScreen extends React.Component<AppProps> {
                 <ConnectionStatus status={this.connectionStatusText}/>
               </Row>
 
-              <Row style={styles.textCentered}>
+              <Row style={[styles.textCentered, styles.ip]}>
                 <IPAddress ipAddress={this.ipAddress}/>
               </Row>
 
@@ -197,7 +197,10 @@ export default class HomeScreen extends React.Component<AppProps> {
 
     if (this.tequilApiState.isConnected) {
       await this.tequilAPIDriver.disconnect()
-    } else {
+      return
+    }
+
+    if (this.vpnAppState.selectedProviderId) {
       await this.tequilAPIDriver.connect(this.vpnAppState.selectedProviderId)
     }
   }

@@ -17,7 +17,6 @@
 
 import { Dimensions, StyleSheet } from 'react-native'
 import colors from '../../styles/colors'
-import fonts from '../../styles/fonts'
 
 const height = Dimensions.get('window').height
 
@@ -25,10 +24,8 @@ const styles = StyleSheet.create({
   textCentered: {
     justifyContent: 'center'
   },
-  ipText: {
-    marginTop: 15,
-    fontSize: fonts.size.small,
-    color: colors.secondary
+  ip: {
+    marginTop: 15
   },
   connectButton: {
     marginTop: 20
