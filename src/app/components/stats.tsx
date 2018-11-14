@@ -32,13 +32,13 @@ const Stats: React.SFC<StatsProps> = ({ duration, bytesReceived, bytesSent }) =>
   return (
     <Grid>
       <Col>
-        {createStatsBlock('Duration', timeDisplay(duration || 0), 'H:M:S')}
+        {createStatsBlock('Duration', timeDisplay(duration), 'H:M:S')}
       </Col>
       <Col>
-        {createStatsBlock('Received', bytesDisplay(bytesReceived || 0))}
+        {createStatsBlock('Received', bytesDisplay(bytesReceived))}
       </Col>
       <Col>
-        {createStatsBlock('Sent', bytesDisplay(bytesSent || 0))}
+        {createStatsBlock('Sent', bytesDisplay(bytesSent))}
       </Col>
     </Grid>
   )
