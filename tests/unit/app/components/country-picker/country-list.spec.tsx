@@ -8,10 +8,7 @@ describe('CountryList', () => {
   consoleOverride()
 
   let items: Country[] = []
-  const onSelect = () => {
-    //
-  }
-  const onClose = () => {
+  const stub = () => {
     //
   }
 
@@ -23,8 +20,8 @@ describe('CountryList', () => {
     return render(
       <CountryList
         items={items}
-        onSelect={onSelect}
-        onClose={onClose}
+        onSelect={stub}
+        onClose={stub}
       />
     )
   }
@@ -33,8 +30,8 @@ describe('CountryList', () => {
     return shallow(
       <CountryList
         items={items}
-        onSelect={onSelect}
-        onClose={onClose}
+        onSelect={stub}
+        onClose={stub}
       />
     )
   }
@@ -45,7 +42,7 @@ describe('CountryList', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('renders items', () => {
+  it('renders countries', () => {
     items = [
       {
         id: '0x1',

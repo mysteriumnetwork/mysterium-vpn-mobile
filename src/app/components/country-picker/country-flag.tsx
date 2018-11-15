@@ -22,10 +22,10 @@ import colors from '../../styles/colors'
 import countries from './countries'
 
 type FlagProps = {
-  countryCode?: string
+  countryCode: string | null
 }
 
-const getCountryImageUri = (code: string) => {
+const getCountryImageUri = (code: string): string => {
   if (countries[code]) {
     return countries[code].image
   }

@@ -39,14 +39,17 @@ type PickerProps = {
 
 type PickerState = {
   modalIsOpen: boolean
-  selectedCountry?: Country
+  selectedCountry: Country | null
 }
 
 class CountryPicker extends React.Component<PickerProps, PickerState> {
   constructor (props: PickerProps) {
     super(props)
 
-    this.state = { modalIsOpen: false }
+    this.state = {
+      modalIsOpen: false,
+      selectedCountry: null
+    }
   }
 
   public render (): ReactNode {
@@ -96,9 +99,9 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
     )
   }
 
-  private get countryCode (): string | undefined {
+  private get countryCode (): string | null {
     if (!this.state.selectedCountry) {
-      return
+      return null
     }
 
     return this.state.selectedCountry.countryCode.toLowerCase()

@@ -26,14 +26,14 @@ type ListProps = {
 }
 
 type ListState = {
-  items: Country[]
+  countries: Country[]
 }
 
 class CountryList extends React.Component<ListProps, ListState> {
   constructor (props: ListProps) {
     super(props)
 
-    this.state = { items: this.props.items }
+    this.state = { countries: this.props.items }
   }
 
   public render (): ReactNode {
@@ -57,7 +57,7 @@ class CountryList extends React.Component<ListProps, ListState> {
         </Header>
         <Content>
           <List>
-            {this.state.items.map((country: Country) => this.renderListItem(country))}
+            {this.state.countries.map((country: Country) => this.renderListItem(country))}
           </List>
         </Content>
       </Container>
@@ -66,7 +66,7 @@ class CountryList extends React.Component<ListProps, ListState> {
 
   private renderListItem (country: Country): ReactNode {
     return (
-      <ListItem icon={true} key={country.id} onPress={() => this.onItemSelect(country)}>
+      <ListItem icon={true} key={country.id} onPress={() => this.props.onSelect(country)}>
         <Left style={styles.flagImage}>
           <CountryFlag countryCode={country.countryCode}/>
         </Left>
@@ -78,23 +78,19 @@ class CountryList extends React.Component<ListProps, ListState> {
   }
 
   private onSearchValueChange (text: string) {
-    let items = this.props.items
+    let countries = this.props.items
 
     if (!text.trim().length) {
-      this.setState({ items })
+      this.setState({ countries })
 
       return
     }
 
-    items = this.props.items.filter((country: Country) => {
+    countries = this.props.items.filter((country: Country) => {
       return country.name.toLowerCase().includes(text.toLowerCase())
     })
 
-    this.setState({ items })
-  }
-
-  private onItemSelect (country: Country) {
-    this.props.onSelect(country)
+    this.setState({ countries })
   }
 }
 

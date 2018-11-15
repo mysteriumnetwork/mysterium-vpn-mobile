@@ -66,7 +66,9 @@ ShallowWrapper {
                       }
                     }
                   >
-                    <CountryFlag />
+                    <CountryFlag
+                      countryCode={null}
+                    />
                   </ColumnNB>
                   <ColumnNB
                     size={90}
@@ -197,7 +199,9 @@ ShallowWrapper {
                       }
                     }
                   >
-                    <CountryFlag />
+                    <CountryFlag
+                      countryCode={null}
+                    />
                   </ColumnNB>
                   <ColumnNB
                     size={90}
@@ -299,7 +303,9 @@ ShallowWrapper {
                         }
                       }
                     >
-                      <CountryFlag />
+                      <CountryFlag
+                        countryCode={null}
+                      />
                     </ColumnNB>
                     <ColumnNB
                       size={90}
@@ -391,7 +397,9 @@ ShallowWrapper {
                         }
                       }
                     >
-                      <CountryFlag />
+                      <CountryFlag
+                        countryCode={null}
+                      />
                     </ColumnNB>
                     <ColumnNB
                       size={90}
@@ -453,7 +461,9 @@ ShallowWrapper {
                         }
                       }
                     >
-                      <CountryFlag />
+                      <CountryFlag
+                        countryCode={null}
+                      />
                     </ColumnNB>
                     <ColumnNB
                       size={90}
@@ -513,7 +523,9 @@ ShallowWrapper {
                           }
                         }
                       >
-                        <CountryFlag />
+                        <CountryFlag
+                          countryCode={null}
+                        />
                       </ColumnNB>,
                       <ColumnNB
                         size={90}
@@ -560,7 +572,9 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <CountryFlag />,
+                        "children": <CountryFlag
+                          countryCode={null}
+                        />,
                         "size": 15,
                         "style": Object {
                           "alignItems": "center",
@@ -576,7 +590,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "countryCode": undefined,
+                          "countryCode": null,
                         },
                         "ref": null,
                         "rendered": null,
@@ -784,7 +798,9 @@ ShallowWrapper {
                         }
                       }
                     >
-                      <CountryFlag />
+                      <CountryFlag
+                        countryCode={null}
+                      />
                     </ColumnNB>
                     <ColumnNB
                       size={90}
@@ -915,7 +931,9 @@ ShallowWrapper {
                         }
                       }
                     >
-                      <CountryFlag />
+                      <CountryFlag
+                        countryCode={null}
+                      />
                     </ColumnNB>
                     <ColumnNB
                       size={90}
@@ -1017,7 +1035,9 @@ ShallowWrapper {
                           }
                         }
                       >
-                        <CountryFlag />
+                        <CountryFlag
+                          countryCode={null}
+                        />
                       </ColumnNB>
                       <ColumnNB
                         size={90}
@@ -1109,7 +1129,9 @@ ShallowWrapper {
                           }
                         }
                       >
-                        <CountryFlag />
+                        <CountryFlag
+                          countryCode={null}
+                        />
                       </ColumnNB>
                       <ColumnNB
                         size={90}
@@ -1171,7 +1193,9 @@ ShallowWrapper {
                           }
                         }
                       >
-                        <CountryFlag />
+                        <CountryFlag
+                          countryCode={null}
+                        />
                       </ColumnNB>
                       <ColumnNB
                         size={90}
@@ -1231,7 +1255,9 @@ ShallowWrapper {
                             }
                           }
                         >
-                          <CountryFlag />
+                          <CountryFlag
+                            countryCode={null}
+                          />
                         </ColumnNB>,
                         <ColumnNB
                           size={90}
@@ -1278,7 +1304,9 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "class",
                         "props": Object {
-                          "children": <CountryFlag />,
+                          "children": <CountryFlag
+                            countryCode={null}
+                          />,
                           "size": 15,
                           "style": Object {
                             "alignItems": "center",
@@ -1294,7 +1322,7 @@ ShallowWrapper {
                           "key": undefined,
                           "nodeType": "function",
                           "props": Object {
-                            "countryCode": undefined,
+                            "countryCode": null,
                           },
                           "ref": null,
                           "rendered": null,
