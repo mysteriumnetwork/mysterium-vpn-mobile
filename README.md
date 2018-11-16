@@ -119,7 +119,7 @@ Print: Entry, ":CFBundleIdentifier", Does Not Exist
 # Node development
 
 ## iOS
-- To bump node version update `binary "https://releases.mysterium.network/Carthage.json" ==` line in `./ios/Cartfile`, published versions can be found [here](https://releases.mysterium.network/Carthage.json).
+- To bump node version update `github "mysteriumnetwork/node" ~>` line in `./ios/Cartfile`, published versions can be found [here](https://github.com/mysteriumnetwork/node/releases).
 - Run `carthage update --platform iOS --cache-builds` to download the update version of Node.
 - Node usage can be found in `PacketTunnelProvider.swift`.
 - Network Extension usage can be found in `MysteriumClientModule.m` (this starts the native iOS VPN process).
