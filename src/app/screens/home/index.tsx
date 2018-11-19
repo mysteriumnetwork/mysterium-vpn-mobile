@@ -77,10 +77,6 @@ export default class HomeScreen extends React.Component<AppProps> {
         <Content>
           <BackgroundImage>
             <Grid>
-              <Row>
-                <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
-              </Row>
-
               <Row style={styles.textCentered}>
                 <ConnectionStatus status={this.connectionStatusText}/>
               </Row>
@@ -121,6 +117,7 @@ export default class HomeScreen extends React.Component<AppProps> {
             </Grid>
           </BackgroundImage>
         </Content>
+        <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
       </Container>
     )
   }
