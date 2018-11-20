@@ -15,7 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { action } from 'mobx'
 import { observer } from 'mobx-react/native'
+import { Container, Content } from 'native-base'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
@@ -26,15 +28,13 @@ import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
+import { Country, proposalsToCountries } from './components/country-picker/country'
+import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
 import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
-import VpnAppState from './vpn-app-state'
-import CountryPicker from './components/country-picker/country-picker'
 import translations from './translations'
-import { Country, proposalsToCountries } from './components/country-picker/country'
-import { Container, Content } from 'native-base'
-import { action } from 'mobx'
+import VpnAppState from './vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
@@ -46,6 +46,13 @@ type AppProps = {
 
 @observer
 export default class App extends React.Component<AppProps> {
+
+  private get selectedCountryIsFavored (): boolean {
+    if (!this.vpnAppState.selectedProviderId) {
+      return false
+    }
+    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
+  }
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
@@ -99,11 +106,13 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
-  private get selectedCountryIsFavored (): boolean {
-    if (!this.vpnAppState.selectedProviderId) {
-      return false
-    }
-    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
+  /***
+   * Refreshes connection state, ip and unlocks identity.
+   * Starts periodic state refreshing
+   * Called once after first rendering.
+   */
+  public async componentDidMount () {
+    await this.tequilAPIDriver.unlock()
   }
 
   private async toggleFavorite (): Promise<void> {
@@ -118,14 +127,5 @@ export default class App extends React.Component<AppProps> {
     } else {
       await store.remove(selectedProviderId)
     }
-  }
-
-  /***
-   * Refreshes connection state, ip and unlocks identity.
-   * Starts periodic state refreshing
-   * Called once after first rendering.
-   */
-  public async componentDidMount () {
-    await this.tequilAPIDriver.unlock()
   }
 }
