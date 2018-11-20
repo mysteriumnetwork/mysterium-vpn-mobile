@@ -27,10 +27,13 @@ import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
 import ErrorDropdown from './components/error-dropdown'
-import ProposalsDropdown from './components/proposals-dropdown'
 import Stats from './components/stats'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import VpnAppState from './vpn-app-state'
+import CountryPicker from './components/country-picker/country-picker'
+import translations from './translations'
+import { Country, proposalsToCountries } from './components/country-picker/country'
+import { Container, Content } from 'native-base'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
@@ -69,22 +72,27 @@ export default class App extends React.Component<AppProps> {
         <Text style={styles.textIp}>IP: {this.tequilApiState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
-          <ProposalsDropdown
-            favoritesStore={this.props.favoritesStore}
-            proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-            proposals={this.tequilApiState.proposals}
-            selectedProviderId={this.vpnAppState.selectedProviderId}
-            setSelectedProviderId={(value) => this.vpnAppState.selectedProviderId = value}
-          />
+          <View style={styles.countryPicker}>
+            <CountryPicker
+              placeholder={translations.COUNTRY_PICKER_LABEL}
+              items={proposalsToCountries(this.tequilApiState.proposals)}
+              onSelect={(country: Country) => this.vpnAppState.selectedProviderId = country.id}
+              onFavoriteSelect={() => this.onFavoriteSelect()}
+              isFavoriteSelected={this.selectedProviderIsFavored}
+            />
+          </View>
+
           <ButtonConnect
             connectionStatus={this.tequilApiState.connectionStatus.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
-        {this.tequilApiState.connectionStatistics
-          ? <Stats style={styles.footer} {...this.tequilApiState.connectionStatistics} />
-          : null}
+
+        <View style={styles.footer}>
+          <Stats {...this.tequilApiState.connectionStatistics} />
+        </View>
+
         <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
       </View>
     )

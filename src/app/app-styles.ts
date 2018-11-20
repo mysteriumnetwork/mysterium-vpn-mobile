@@ -23,7 +23,8 @@ type AppStyles = {
   controls: ViewStyle,
   footer: ViewStyle,
   imageBackground: ViewStyle,
-  textIp: ViewStyle
+  textIp: ViewStyle,
+  countryPicker: ViewStyle
 }
 
 export default StyleSheet.create({
@@ -33,6 +34,7 @@ export default StyleSheet.create({
     flex: 1
   },
   controls: {
+    width: '100%',
     top: 270,
     alignItems: 'center'
   },
@@ -49,5 +51,11 @@ export default StyleSheet.create({
     marginTop: STYLES.MARGIN,
     fontSize: STYLES.FONT_NORMAL,
     color: STYLES.COLOR_SECONDARY
+  },
+  countryPicker: {
+    width: '90%',
+    marginTop: 10,
+    marginBottom: 10,
+    height: 50
   }
 }) as AppStyles

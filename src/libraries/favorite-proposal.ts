@@ -16,8 +16,8 @@
  */
 
 import { ProposalDTO } from 'mysterium-tequilapi'
-import { CONFIG } from '../config'
 import { Countries } from './countries'
+import translations from '../app/translations'
 
 class Proposal {
   public name: string
@@ -30,14 +30,20 @@ class Proposal {
     this.isFavorite = isFavorite
   }
 
-  private getCountryName (proposal: ProposalDTO) {
+  public getCountryCode (proposal: ProposalDTO) {
     let countryCode = ''
 
     if (proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate) {
       countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
     }
 
-    return Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
+    return countryCode
+  }
+
+  private getCountryName (proposal: ProposalDTO) {
+    const countryCode = this.getCountryCode(proposal)
+
+    return Countries[countryCode] || translations.UNKNOWN
   }
 }
 

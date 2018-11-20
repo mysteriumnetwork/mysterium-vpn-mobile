@@ -1,3 +1,4 @@
+import { Root as RootBase } from 'native-base'
 import * as React from 'react'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
@@ -22,13 +23,15 @@ class Root extends React.PureComponent {
 
   public render () {
     return (
-      <App
-        tequilAPIDriver={this.tequilAPIDriver}
-        tequilApiState={this.tequilApiState}
-        vpnAppState={this.vpnAppState}
-        errorDisplayDelegate={this.errorDisplayDelegate}
-        favoritesStore={this.favoritesStore}
-      />
+      <RootBase>
+        <App
+          tequilAPIDriver={this.tequilAPIDriver}
+          tequilApiState={this.tequilApiState}
+          vpnAppState={this.vpnAppState}
+          errorDisplayDelegate={this.errorDisplayDelegate}
+          favoritesStore={this.favoritesStore}
+        />
+      </RootBase>
     )
   }
 }
