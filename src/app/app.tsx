@@ -75,7 +75,7 @@ export default class App extends React.Component<AppProps> {
           <View style={styles.countryPicker}>
             <CountryPicker
               placeholder={translations.COUNTRY_PICKER_LABEL}
-              items={this.countriesSorted}
+              countries={this.countriesSorted}
               onSelect={(country: Country) => this.vpnAppState.selectedProviderId = country.id}
               onFavoriteSelect={() => this.toggleFavorite()}
               isFavoriteSelected={this.selectedCountryIsFavored}

@@ -30,7 +30,7 @@ import CountryList from './country-list'
 import CountryModal from './country-modal'
 
 type PickerProps = {
-  items: Country[]
+  countries: Country[]
   onSelect: (country: Country) => void
   onFavoriteSelect: () => void
   isFavoriteSelected: boolean
@@ -60,7 +60,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
           onClose={() => this.closeCountryModal()}
         >
           <CountryList
-            items={this.props.items}
+            countries={this.props.countries}
             onClose={() => this.closeCountryModal()}
             onSelect={(country: Country) => this.onCountrySelect(country)}
           />

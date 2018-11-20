@@ -20,7 +20,7 @@ import { Country } from './country'
 import CountryFlag from './country-flag'
 
 type ListProps = {
-  items: Country[],
+  countries: Country[],
   onClose: () => void,
   onSelect: (country: Country) => void
 }
@@ -33,7 +33,7 @@ class CountryList extends React.Component<ListProps, ListState> {
   constructor (props: ListProps) {
     super(props)
 
-    this.state = { countries: this.props.items }
+    this.state = { countries: this.props.countries }
   }
 
   public render (): ReactNode {
@@ -83,7 +83,7 @@ class CountryList extends React.Component<ListProps, ListState> {
   }
 
   private onSearchValueChange (text: string) {
-    let countries = this.props.items
+    let countries = this.props.countries
 
     if (!text.trim().length) {
       this.setState({ countries })
@@ -91,7 +91,7 @@ class CountryList extends React.Component<ListProps, ListState> {
       return
     }
 
-    countries = this.props.items.filter((country: Country) => {
+    countries = this.props.countries.filter((country: Country) => {
       return country.name.toLowerCase().includes(text.toLowerCase())
     })
 
