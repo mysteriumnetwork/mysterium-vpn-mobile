@@ -14,7 +14,7 @@ import {
   Text
 } from 'native-base'
 import React, { ReactNode } from 'react'
-import { Platform, StyleSheet, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import translations from '../../translations'
 import { Country } from './country'
 import CountryFlag from './country-flag'
