@@ -66,7 +66,12 @@ class CountryList extends React.Component<ListProps, ListState> {
 
   private renderListItem (country: ICountry): ReactNode {
     return (
-      <ListItem style={styles.listItem} icon={true} key={country.providerID} onPress={() => this.props.onSelect(country)}>
+      <ListItem
+        style={styles.listItem}
+        icon={true}
+        key={country.providerID}
+        onPress={() => this.props.onSelect(country)}
+      >
         <Left style={styles.flagImage}>
           <CountryFlag countryCode={country.countryCode}/>
         </Left>
