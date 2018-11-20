@@ -55,7 +55,6 @@ export default StyleSheet.create({
   countryPicker: {
     width: '90%',
     marginTop: 10,
-    marginBottom: 10,
-    height: 50
+    marginBottom: 10
   }
 }) as AppStyles
