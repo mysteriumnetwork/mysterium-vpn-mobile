@@ -27,7 +27,7 @@ import { compareProposals, Proposal } from './../libraries/favorite-proposal'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
-import { Country, proposalsToCountries } from './components/country-picker/country'
+import { ICountry, proposalsToCountries } from './components/country-picker/country'
 import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
 import Stats from './components/stats'
@@ -76,7 +76,7 @@ export default class App extends React.Component<AppProps> {
             <CountryPicker
               placeholder={translations.COUNTRY_PICKER_LABEL}
               countries={this.countriesSorted}
-              onSelect={(country: Country) => this.vpnAppState.selectedProviderId = country.id}
+              onSelect={(country: ICountry) => this.vpnAppState.selectedProviderId = country.providerID}
               onFavoriteSelect={() => this.toggleFavorite()}
               isFavoriteSelected={this.selectedCountryIsFavored}
             />
@@ -118,12 +118,12 @@ export default class App extends React.Component<AppProps> {
     return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
   }
 
-  private get countriesSorted (): Country[] {
+  private get countriesSorted (): ICountry[] {
     const proposals = this.tequilApiState.proposals
       .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.has(p.providerId)))
       .sort(compareProposals)
 
-    return proposalsToCountries(proposals)
+    return proposals
   }
 
   private async toggleFavorite (): Promise<void> {

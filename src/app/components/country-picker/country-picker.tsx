@@ -24,14 +24,14 @@ import {
 import React, { ReactNode } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
-import { Country } from './country'
+import { ICountry } from './country'
 import CountryFlag from './country-flag'
 import CountryList from './country-list'
 import CountryModal from './country-modal'
 
 type PickerProps = {
-  countries: Country[]
-  onSelect: (country: Country) => void
+  countries: ICountry[]
+  onSelect: (country: ICountry) => void
   onFavoriteSelect: () => void
   isFavoriteSelected: boolean
   placeholder: string
@@ -39,7 +39,7 @@ type PickerProps = {
 
 type PickerState = {
   modalIsOpen: boolean
-  selectedCountry: Country | null
+  selectedCountry: ICountry | null
 }
 
 class CountryPicker extends React.Component<PickerProps, PickerState> {
@@ -62,7 +62,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
           <CountryList
             countries={this.props.countries}
             onClose={() => this.closeCountryModal()}
-            onSelect={(country: Country) => this.onCountrySelect(country)}
+            onSelect={(country: ICountry) => this.onCountrySelect(country)}
           />
         </CountryModal>
 
@@ -123,7 +123,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
     this.setState({ modalIsOpen: false })
   }
 
-  private onCountrySelect (country: Country) {
+  private onCountrySelect (country: ICountry) {
     this.props.onSelect(country)
 
     this.setState({

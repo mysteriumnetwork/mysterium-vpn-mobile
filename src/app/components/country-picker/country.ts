@@ -1,30 +1,10 @@
-import { Proposal } from '../../../libraries/favorite-proposal'
-
-type Country = {
-  id: string
+interface ICountry {
   name: string,
+  providerID: string,
   countryCode: string,
-  isFavored: boolean
-}
-
-const proposalToCountry = (proposal: Proposal): Country => {
-  return {
-    id: proposal.providerID,
-    name: proposal.name,
-    countryCode: proposal.countryCode,
-    isFavored: proposal.isFavorite
-  }
-}
-
-const proposalsToCountries = (proposals?: Proposal[]): Country[] => {
-  if (!proposals) {
-    return []
-  }
-
-  return proposals.map(proposalToCountry)
+  isFavorite: boolean
 }
 
 export {
-  proposalsToCountries,
-  Country
+  ICountry
 }

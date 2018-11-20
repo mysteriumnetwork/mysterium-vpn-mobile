@@ -16,17 +16,17 @@ import {
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import translations from '../../translations'
-import { Country } from './country'
+import { ICountry } from './country'
 import CountryFlag from './country-flag'
 
 type ListProps = {
-  countries: Country[],
+  countries: ICountry[],
   onClose: () => void,
-  onSelect: (country: Country) => void
+  onSelect: (country: ICountry) => void
 }
 
 type ListState = {
-  countries: Country[]
+  countries: ICountry[]
 }
 
 class CountryList extends React.Component<ListProps, ListState> {
@@ -57,16 +57,16 @@ class CountryList extends React.Component<ListProps, ListState> {
         </Header>
         <Content>
           <List>
-            {this.state.countries.map((country: Country) => this.renderListItem(country))}
+            {this.state.countries.map((country: ICountry) => this.renderListItem(country))}
           </List>
         </Content>
       </Container>
     )
   }
 
-  private renderListItem (country: Country): ReactNode {
+  private renderListItem (country: ICountry): ReactNode {
     return (
-      <ListItem style={styles.listItem} icon={true} key={country.id} onPress={() => this.props.onSelect(country)}>
+      <ListItem style={styles.listItem} icon={true} key={country.providerID} onPress={() => this.props.onSelect(country)}>
         <Left style={styles.flagImage}>
           <CountryFlag countryCode={country.countryCode}/>
         </Left>
@@ -75,7 +75,7 @@ class CountryList extends React.Component<ListProps, ListState> {
         </Body>
         <Right>
           <Icon
-            name={country.isFavored ? 'md-star' : 'md-star-outline'}
+            name={country.isFavorite ? 'md-star' : 'md-star-outline'}
           />
         </Right>
       </ListItem>
@@ -91,7 +91,7 @@ class CountryList extends React.Component<ListProps, ListState> {
       return
     }
 
-    countries = this.props.countries.filter((country: Country) => {
+    countries = this.props.countries.filter((country: ICountry) => {
       return country.name.toLowerCase().includes(text.toLowerCase())
     })
 
