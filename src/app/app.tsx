@@ -15,16 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action } from 'mobx'
 import { observer } from 'mobx-react/native'
-import { Container, Content } from 'native-base'
+import { ProposalDTO } from 'mysterium-tequilapi'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
-import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import { compareProposals, Proposal } from './../libraries/favorite-proposal'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
@@ -46,13 +45,6 @@ type AppProps = {
 
 @observer
 export default class App extends React.Component<AppProps> {
-
-  private get selectedCountryIsFavored (): boolean {
-    if (!this.vpnAppState.selectedProviderId) {
-      return false
-    }
-    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
-  }
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
@@ -83,7 +75,7 @@ export default class App extends React.Component<AppProps> {
           <View style={styles.countryPicker}>
             <CountryPicker
               placeholder={translations.COUNTRY_PICKER_LABEL}
-              items={proposalsToCountries(this.tequilApiState.proposals)}
+              items={this.countriesSorted}
               onSelect={(country: Country) => this.vpnAppState.selectedProviderId = country.id}
               onFavoriteSelect={() => this.toggleFavorite()}
               isFavoriteSelected={this.selectedCountryIsFavored}
@@ -106,13 +98,32 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
-  /***
+  /**
    * Refreshes connection state, ip and unlocks identity.
    * Starts periodic state refreshing
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.tequilAPIDriver.unlock()
+    try {
+      await this.tequilAPIDriver.unlock()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  private get selectedCountryIsFavored (): boolean {
+    if (!this.vpnAppState.selectedProviderId) {
+      return false
+    }
+    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
+  }
+
+  private get countriesSorted (): Country[] {
+    const proposals = this.tequilApiState.proposals
+      .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.has(p.providerId)))
+      .sort(compareProposals)
+
+    return proposalsToCountries(proposals)
   }
 
   private async toggleFavorite (): Promise<void> {

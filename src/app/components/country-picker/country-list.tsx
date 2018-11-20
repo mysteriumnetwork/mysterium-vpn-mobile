@@ -14,7 +14,7 @@ import {
   Text
 } from 'native-base'
 import React, { ReactNode } from 'react'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native'
 import translations from '../../translations'
 import { Country } from './country'
 import CountryFlag from './country-flag'
@@ -73,6 +73,11 @@ class CountryList extends React.Component<ListProps, ListState> {
         <Body>
         <Text>{country.name}</Text>
         </Body>
+        <Right>
+          <Icon
+            name={country.isFavored ? 'md-star' : 'md-star-outline'}
+          />
+        </Right>
       </ListItem>
     )
   }

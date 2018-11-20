@@ -22,15 +22,17 @@ import { Countries } from './countries'
 class Proposal {
   public name: string
   public providerID: string
+  public countryCode: string
   public isFavorite: boolean
 
   constructor (proposal: ProposalDTO, isFavorite: boolean) {
-    this.name = this.getCountryName(proposal)
+    this.countryCode = this.getCountryCode(proposal)
+    this.name = this.getCountryName(this.countryCode)
     this.providerID = proposal.providerId
     this.isFavorite = isFavorite
   }
 
-  public getCountryCode (proposal: ProposalDTO) {
+  private getCountryCode (proposal: ProposalDTO) {
     let countryCode = ''
 
     if (proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate) {
@@ -40,9 +42,7 @@ class Proposal {
     return countryCode
   }
 
-  private getCountryName (proposal: ProposalDTO) {
-    const countryCode = this.getCountryCode(proposal)
-
+  private getCountryName (countryCode: string) {
     return Countries[countryCode] || translations.UNKNOWN
   }
 }

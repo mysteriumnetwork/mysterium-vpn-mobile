@@ -1,23 +1,22 @@
-import { ProposalDTO } from 'mysterium-tequilapi'
 import { Proposal } from '../../../libraries/favorite-proposal'
 
 type Country = {
   id: string
   name: string,
-  countryCode: string
+  countryCode: string,
+  isFavored: boolean
 }
 
-const proposalToCountry = (proposalDto: ProposalDTO): Country => {
-  const proposal = new Proposal(proposalDto, false)
-
+const proposalToCountry = (proposal: Proposal): Country => {
   return {
-    id: proposalDto.providerId,
+    id: proposal.providerID,
     name: proposal.name,
-    countryCode: proposal.getCountryCode(proposalDto)
+    countryCode: proposal.countryCode,
+    isFavored: proposal.isFavorite
   }
 }
 
-const proposalsToCountries = (proposals?: ProposalDTO[]): Country[] => {
+const proposalsToCountries = (proposals?: Proposal[]): Country[] => {
   if (!proposals) {
     return []
   }
