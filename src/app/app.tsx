@@ -34,6 +34,7 @@ import CountryPicker from './components/country-picker/country-picker'
 import translations from './translations'
 import { Country, proposalsToCountries } from './components/country-picker/country'
 import { Container, Content } from 'native-base'
+import { action } from 'mobx'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
@@ -77,8 +78,8 @@ export default class App extends React.Component<AppProps> {
               placeholder={translations.COUNTRY_PICKER_LABEL}
               items={proposalsToCountries(this.tequilApiState.proposals)}
               onSelect={(country: Country) => this.vpnAppState.selectedProviderId = country.id}
-              onFavoriteSelect={() => this.onFavoriteSelect()}
-              isFavoriteSelected={this.selectedProviderIsFavored}
+              onFavoriteSelect={() => this.toggleFavorite()}
+              isFavoriteSelected={this.selectedCountryIsFavored}
             />
           </View>
 
@@ -98,6 +99,27 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
+  private get selectedCountryIsFavored (): boolean {
+    if (!this.vpnAppState.selectedProviderId) {
+      return false
+    }
+    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
+  }
+
+  private async toggleFavorite (): Promise<void> {
+    const selectedProviderId = this.vpnAppState.selectedProviderId
+    if (!selectedProviderId) {
+      return
+    }
+
+    const store = this.props.favoritesStore
+    if (!store.has(selectedProviderId)) {
+      await store.add(selectedProviderId)
+    } else {
+      await store.remove(selectedProviderId)
+    }
+  }
+
   /***
    * Refreshes connection state, ip and unlocks identity.
    * Starts periodic state refreshing
@@ -105,9 +127,5 @@ export default class App extends React.Component<AppProps> {
    */
   public async componentDidMount () {
     await this.tequilAPIDriver.unlock()
-
-    // TODO: remove it later, serviceStatus is used only for native call test
-    const serviceStatus = await mysteriumClient.startService(4050)
-    console.log('serviceStatus', serviceStatus)
   }
 }
