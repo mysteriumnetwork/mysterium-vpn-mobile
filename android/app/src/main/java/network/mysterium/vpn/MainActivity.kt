@@ -22,7 +22,21 @@ class MainActivity : ReactActivity() {
     return "MysteriumVPN"
   }
 
-  private var mysteriumService: MysteriumCoreService? = null
+  private var mysteriumService: MysteriumCoreService?
+    get() = _mysteriumService
+    set(value) {
+      _mysteriumService = value
+      startIfReady()
+    }
+  private var _mysteriumService: MysteriumCoreService? = null
+
+  private var vpnServiceGranted: Boolean
+    get() = _vpnServiceGranted
+    set(value) {
+      _vpnServiceGranted = value
+      startIfReady()
+    }
+  private var _vpnServiceGranted: Boolean = false
 
   private val serviceConnection = object : ServiceConnection {
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -33,54 +47,68 @@ class MainActivity : ReactActivity() {
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
       Log.i(TAG, "Service connected")
       mysteriumService = service as MysteriumCoreService
-      startTequila()
     }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    Log.i(TAG, "Binding service")
 
-    Intent(this, MysteriumAndroidCoreService::class.java).also { intent ->
-      bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
-    }
+    bindMysteriumService()
+    ensureVpnServicePermission()
   }
 
   override fun onDestroy() {
-    Log.i(TAG, "Unbinding service")
-    unbindService(serviceConnection)
+    unbindMysteriumService()
     super.onDestroy()
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     when (requestCode) {
       VPN_SERVICE_REQUEST -> {
-        Log.i(TAG, "User allowed VPN service? " + (resultCode == Activity.RESULT_OK))
+        if (resultCode != Activity.RESULT_OK) {
+          Log.w(TAG, "User forbidden VPN service")
+          return
+        }
+        Log.i(TAG, "User allowed VPN service")
+        vpnServiceGranted = true
       }
     }
   }
 
-  private fun startTequila() {
-    Log.i(TAG, "Will start node")
-    try {
-      startService()
-    } catch (tr: Throwable) {
-      Log.e(TAG, "Starting service failed:", tr)
-      tr.printStackTrace()
+  private fun bindMysteriumService() {
+    Log.i(TAG, "Binding service")
+    Intent(this, MysteriumAndroidCoreService::class.java).also { intent ->
+      bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
-    Log.i(TAG, "Node started successfully")
   }
 
-  private fun startService() {
-    val intent = VpnService.prepare(this)
-    if (intent != null) {
-      startActivityForResult(intent, MainActivity.VPN_SERVICE_REQUEST)
+  private fun unbindMysteriumService() {
+    Log.i(TAG, "Unbinding service")
+    unbindService(serviceConnection)
+  }
+
+  private fun ensureVpnServicePermission() {
+    val intent: Intent? = VpnService.prepare(this)
+    if (intent == null) {
+      vpnServiceGranted = true
+      return
+    }
+    startActivityForResult(intent, MainActivity.VPN_SERVICE_REQUEST)
+  }
+
+  private fun startIfReady() {
+    val service = mysteriumService ?: return
+    if (!vpnServiceGranted) {
       return
     }
 
-    val service = mysteriumService
-        ?: throw Error("Mysterium service is not set on activity")
-    service.StartTequila()
+    Log.i(TAG, "Starting node")
+    try {
+      service.StartTequila()
+      Log.i(TAG, "Node started successfully")
+    } catch (tr: Throwable) {
+      Log.e(TAG, "Starting service failed", tr)
+    }
   }
 
   companion object {
