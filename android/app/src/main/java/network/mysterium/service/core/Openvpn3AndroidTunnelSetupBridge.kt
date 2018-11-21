@@ -5,20 +5,16 @@ import android.os.ParcelFileDescriptor
 import android.util.Log
 import mysterium.Openvpn3TunnelSetup
 
-class Openvpn3AndroidTunnelSetupBridge(vpnService: VpnService) : Openvpn3TunnelSetup {
+class Openvpn3AndroidTunnelSetupBridge(private val vpnService: VpnService) : Openvpn3TunnelSetup {
   override fun socketProtect(socket: Long): Boolean {
     val succeeded = vpnService.protect(socket.toInt())
-    Log.i(Tag, "Protecting socket: " + socket.toInt() + " res: " + succeeded)
+    Log.i(TAG, "Protecting socket: " + socket.toInt() + " res: " + succeeded)
     return succeeded
   }
 
-  private val Tag = "[Openvpn3 setup bridge]"
+  private var builder: VpnService.Builder? = null
 
-  private val vpnService = vpnService
-
-  private var builder : VpnService.Builder? = null
-
-  private var tunnelFd : Int? = null
+  private var tunnelFd: Int? = null
 
   override fun addAddress(
       address: String,
@@ -79,9 +75,9 @@ class Openvpn3AndroidTunnelSetupBridge(vpnService: VpnService) : Openvpn3TunnelS
   }
 
   override fun rerouteGw(ipv4: Boolean, ipv6: Boolean, flags: Long): Boolean {
-    Log.i(Tag, "Flags for gw reroute: " + flags.toString(16))
-    builder?.addRoute("0.0.0.0" , 1)
-    builder?.addRoute("128.0.0.0" , 1)
+    Log.i(TAG, "Flags for gw reroute: " + flags.toString(16))
+    builder?.addRoute("0.0.0.0", 1)
+    builder?.addRoute("128.0.0.0", 1)
     return builder != null
   }
 
@@ -132,5 +128,9 @@ class Openvpn3AndroidTunnelSetupBridge(vpnService: VpnService) : Openvpn3TunnelS
     tunnelFd?.let {
       ParcelFileDescriptor.adoptFd(it).close()
     }
+  }
+
+  companion object {
+    private const val TAG = "Openvpn3 setup bridge"
   }
 }

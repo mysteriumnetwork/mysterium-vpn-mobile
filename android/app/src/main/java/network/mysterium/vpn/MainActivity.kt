@@ -22,7 +22,7 @@ class MainActivity : ReactActivity() {
     return "MysteriumVPN"
   }
 
-  var mysteriumService: MysteriumCoreService? = null
+  private var mysteriumService: MysteriumCoreService? = null
 
   private val serviceConnection = object : ServiceConnection {
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -63,7 +63,7 @@ class MainActivity : ReactActivity() {
   private fun startTequila() {
     Log.i(TAG, "Will start node")
     try {
-      startService(this)
+      startService()
     } catch (tr: Throwable) {
       Log.e(TAG, "Starting service failed:", tr)
       tr.printStackTrace()
@@ -71,21 +71,20 @@ class MainActivity : ReactActivity() {
     Log.i(TAG, "Node started successfully")
   }
 
-  private fun startService(activity: MainActivity) {
-    val intent = VpnService.prepare(activity)
+  private fun startService() {
+    val intent = VpnService.prepare(this)
     if (intent != null) {
-      activity.startActivityForResult(intent, MainActivity.VPN_SERVICE_REQUEST)
+      startActivityForResult(intent, MainActivity.VPN_SERVICE_REQUEST)
       return
     }
 
-    val service = activity.mysteriumService
+    val service = mysteriumService
         ?: throw Error("Mysterium service is not set on activity")
     service.StartTequila()
   }
 
   companion object {
-    const val VPN_SERVICE_REQUEST = 1
+    private const val VPN_SERVICE_REQUEST = 1
+    private const val TAG = "MainActivity"
   }
 }
-
-private const val TAG = "App"

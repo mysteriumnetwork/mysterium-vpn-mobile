@@ -10,9 +10,7 @@ import mysterium.MobileNode
 import mysterium.Mysterium
 
 class MysteriumAndroidCoreService : VpnService() {
-  val TAG = "[Mysterium vpn service]"
-
-  private var mobileNode : MobileNode? = null
+  private var mobileNode: MobileNode? = null
   private val localnet = false
 
   fun startMobileNode(filesPath: String) {
@@ -27,7 +25,7 @@ class MysteriumAndroidCoreService : VpnService() {
       //options.discoveryAPIAddress = "https://devnet-api.mysterium.network/v1"
     }
 
-    mobileNode = Mysterium.newNode(filesPath, options, androidOpenvpnBridge )
+    mobileNode = Mysterium.newNode(filesPath, options, androidOpenvpnBridge)
     Log.i(TAG, "started.")
   }
 
@@ -52,10 +50,10 @@ class MysteriumAndroidCoreService : VpnService() {
   }
 
   override fun onRevoke() {
-    Log.w(TAG , "VPN service revoked!")
+    Log.w(TAG, "VPN service revoked!")
   }
 
-  inner class MysteriumCoreServiceBridge : Binder() , MysteriumCoreService {
+  inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
     override fun StartTequila() {
       startMobileNode(filesDir.canonicalPath)
     }
@@ -67,5 +65,9 @@ class MysteriumAndroidCoreService : VpnService() {
 
   override fun onBind(intent: Intent?): IBinder? {
     return MysteriumCoreServiceBridge()
+  }
+
+  companion object {
+    private const val TAG = "Mysterium vpn service"
   }
 }
