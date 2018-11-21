@@ -27,7 +27,7 @@ import { compareProposals, Proposal } from './../libraries/favorite-proposal'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
-import { ICountry, proposalsToCountries } from './components/country-picker/country'
+import { ICountry } from './components/country-picker/country'
 import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
 import Stats from './components/stats'
@@ -77,7 +77,7 @@ export default class App extends React.Component<AppProps> {
               placeholder={translations.COUNTRY_PICKER_LABEL}
               countries={this.countriesSorted}
               onSelect={(country: ICountry) => this.vpnAppState.selectedProviderId = country.providerID}
-              onFavoriteSelect={() => this.toggleFavorite()}
+              onFavoriteToggle={() => this.toggleFavorite()}
               isFavoriteSelected={this.selectedCountryIsFavored}
             />
           </View>

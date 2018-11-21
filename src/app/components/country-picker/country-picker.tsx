@@ -32,7 +32,7 @@ import CountryModal from './country-modal'
 type PickerProps = {
   countries: ICountry[]
   onSelect: (country: ICountry) => void
-  onFavoriteSelect: () => void
+  onFavoriteToggle: () => void
   isFavoriteSelected: boolean
   placeholder: string
 }
@@ -86,7 +86,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
               </TouchableOpacity>
             </Col>
             <Col size={15} style={styles.favoritesBox}>
-              <TouchableOpacity onPress={() => this.props.onFavoriteSelect()}>
+              <TouchableOpacity onPress={() => this.props.onFavoriteToggle()}>
                 <Icon
                   style={styles.favoritesIcon}
                   name={this.props.isFavoriteSelected ? 'md-star' : 'md-star-outline'}

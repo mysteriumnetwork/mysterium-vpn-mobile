@@ -1,17 +1,6 @@
 import {
-  Body,
-  Button,
-  Container,
-  Content,
-  Header,
-  Icon,
-  Input,
-  Item,
-  Left,
-  List,
-  ListItem,
-  Right,
-  Text
+  Body, Button, Container, Content, Header, Icon,
+  Input, Item, Left, List, ListItem, Right, Text
 } from 'native-base'
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
@@ -26,14 +15,14 @@ type ListProps = {
 }
 
 type ListState = {
-  countries: ICountry[]
+  filteredCountries: ICountry[]
 }
 
 class CountryList extends React.Component<ListProps, ListState> {
   constructor (props: ListProps) {
     super(props)
 
-    this.state = { countries: this.props.countries }
+    this.state = { filteredCountries: this.props.countries }
   }
 
   public render (): ReactNode {
@@ -57,14 +46,14 @@ class CountryList extends React.Component<ListProps, ListState> {
         </Header>
         <Content>
           <List>
-            {this.state.countries.map((country: ICountry) => this.renderListItem(country))}
+            {this.state.filteredCountries.map((country: ICountry) => this.renderCountry(country))}
           </List>
         </Content>
       </Container>
     )
   }
 
-  private renderListItem (country: ICountry): ReactNode {
+  private renderCountry (country: ICountry): ReactNode {
     return (
       <ListItem
         style={styles.listItem}
@@ -88,19 +77,23 @@ class CountryList extends React.Component<ListProps, ListState> {
   }
 
   private onSearchValueChange (text: string) {
-    let countries = this.props.countries
+    const filteredCountries = this.filterCountries(text)
+
+    this.setState({ filteredCountries })
+  }
+
+  private filterCountries (text: string): ICountry[] {
+    let filteredCountries = this.props.countries
 
     if (!text.trim().length) {
-      this.setState({ countries })
-
-      return
+      return filteredCountries
     }
 
-    countries = this.props.countries.filter((country: ICountry) => {
+    filteredCountries = filteredCountries.filter((country: ICountry) => {
       return country.name.toLowerCase().includes(text.toLowerCase())
     })
 
-    this.setState({ countries })
+    return filteredCountries
   }
 }
 

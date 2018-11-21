@@ -26,7 +26,8 @@ type FlagProps = {
 }
 
 const CountryFlag: React.SFC<FlagProps> = ({ countryCode }) => {
-  if (!countryCode || !countries[countryCode]) {
+  const uri = getCountryImageUri(countryCode)
+  if (!uri) {
     return (
       <Icon style={styles.globeIcon} name={'ios-globe'}/>
     )
@@ -34,18 +35,18 @@ const CountryFlag: React.SFC<FlagProps> = ({ countryCode }) => {
 
   return (
     <Image
-      source={{ uri: getCountryImageUri(countryCode) }}
+      source={{ uri }}
       style={styles.countryFlagImage}
     />
   )
 }
 
-const getCountryImageUri = (code: string): string => {
-  if (countries[code]) {
+const getCountryImageUri = (code: string | null): string | null => {
+  if (code && countries[code]) {
     return countries[code].image
   }
 
-  return ''
+  return null
 }
 
 const styles = StyleSheet.create({
