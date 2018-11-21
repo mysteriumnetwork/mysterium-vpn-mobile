@@ -11,7 +11,6 @@ import mysterium.Mysterium
 
 class MysteriumAndroidCoreService : VpnService() {
   private var mobileNode: MobileNode? = null
-  private val localnet = false
 
   fun startMobileNode(filesPath: String) {
     val androidOpenvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
@@ -19,17 +18,28 @@ class MysteriumAndroidCoreService : VpnService() {
     options.experimentIdentityCheck = true
     options.experimentPromiseCheck = true
 
-    if (localnet) {
-      options = getLocalnetOptions(options)
-    } else {
-      //options.discoveryAPIAddress = "https://devnet-api.mysterium.network/v1"
-    }
+    options = getLocalnetOptions(options)
 
     mobileNode = Mysterium.newNode(filesPath, options, androidOpenvpnBridge)
     Log.i(TAG, "started.")
   }
 
-  fun getLocalnetOptions(options: MobileNetworkOptions): MobileNetworkOptions {
+  fun stopMobileNode() {
+    val node = mobileNode
+    if (node == null) {
+      Log.w(TAG, "Trying to stop node when instance is not set")
+      return
+    }
+
+    node.shutdown()
+    try {
+      node.waitUntilDies()
+    } catch (e: Exception) {
+      Log.i(TAG, "Got exception, safe to ignore: " + e.message)
+    }
+  }
+
+  private fun getLocalnetOptions(options: MobileNetworkOptions): MobileNetworkOptions {
     options.discoveryAPIAddress = "http://192.168.1.62/v1"
     options.brokerAddress = "192.168.1.62"
     options.etherClientRPC = "http://192.168.1.62:8545"
@@ -38,15 +48,6 @@ class MysteriumAndroidCoreService : VpnService() {
     options.etherPaymentsAddress = "0x1955141ba8e77a5B56efBa8522034352c94f77Ea"
 
     return options
-  }
-
-  fun stopMobileNode() {
-    mobileNode?.shutdown()
-    try {
-      mobileNode?.waitUntilDies()
-    } catch (e: Exception) {
-      Log.i(TAG, "Got exception, safe to ignore: " + e.message)
-    }
   }
 
   override fun onRevoke() {

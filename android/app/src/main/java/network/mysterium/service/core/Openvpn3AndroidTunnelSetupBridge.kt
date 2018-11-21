@@ -8,7 +8,7 @@ import mysterium.Openvpn3TunnelSetup
 class Openvpn3AndroidTunnelSetupBridge(private val vpnService: VpnService) : Openvpn3TunnelSetup {
   override fun socketProtect(socket: Long): Boolean {
     val succeeded = vpnService.protect(socket.toInt())
-    Log.i(TAG, "Protecting socket: " + socket.toInt() + " res: " + succeeded)
+    Log.i(TAG, "Protecting socket: ${socket.toInt()}  res: $succeeded")
     return succeeded
   }
 
