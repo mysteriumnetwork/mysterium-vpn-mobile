@@ -4,6 +4,8 @@ import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import App from './app'
+import CountryList from './countries/country-list'
+import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Logger from './logger'
 import VpnAppState from './vpn-app-state'
@@ -14,6 +16,8 @@ class Root extends React.PureComponent {
   private errorDisplayDelegate = new ErrorDisplayDelegate()
   private readonly tequilAPIDriver = new TequilApiDriver(this.tequilApiState, this.errorDisplayDelegate)
   private readonly favoritesStore = new FavoritesStorage()
+  private readonly countryList = new CountryList(this.tequilApiState, this.favoritesStore)
+  private readonly favorites = new Favorites(this.favoritesStore)
 
   public async componentWillMount () {
     const logger = new Logger(this.tequilApiState, this.vpnAppState)
@@ -29,7 +33,8 @@ class Root extends React.PureComponent {
           tequilApiState={this.tequilApiState}
           vpnAppState={this.vpnAppState}
           errorDisplayDelegate={this.errorDisplayDelegate}
-          favoritesStore={this.favoritesStore}
+          countryList={this.countryList}
+          favorites={this.favorites}
         />
       </RootBase>
     )

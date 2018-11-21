@@ -16,14 +16,11 @@
  */
 
 import { observer } from 'mobx-react/native'
-import { ProposalDTO } from 'mysterium-tequilapi'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
-import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
-import { compareProposals, Proposal } from './../libraries/favorite-proposal'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
@@ -31,6 +28,8 @@ import { ICountry } from './components/country-picker/country'
 import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
 import Stats from './components/stats'
+import CountryList from './countries/country-list'
+import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import translations from './translations'
 import VpnAppState from './vpn-app-state'
@@ -40,7 +39,8 @@ type AppProps = {
   tequilApiState: TequilApiState,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
-  favoritesStore: FavoritesStorage
+  countryList: CountryList
+  favorites: Favorites
 }
 
 @observer
@@ -49,6 +49,8 @@ export default class App extends React.Component<AppProps> {
   private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
   private readonly vpnAppState: VpnAppState
+  private readonly countryList: CountryList
+  private readonly favorites: Favorites
 
   constructor (props: AppProps) {
     super(props)
@@ -56,6 +58,8 @@ export default class App extends React.Component<AppProps> {
     this.tequilApiState = props.tequilApiState
     this.errorDisplayDelegate = props.errorDisplayDelegate
     this.vpnAppState = props.vpnAppState
+    this.countryList = props.countryList
+    this.favorites = props.favorites
   }
 
   public render (): ReactNode {
@@ -75,10 +79,10 @@ export default class App extends React.Component<AppProps> {
           <View style={styles.countryPicker}>
             <CountryPicker
               placeholder={translations.COUNTRY_PICKER_LABEL}
-              countries={this.countriesSorted}
+              countries={this.countryList.countries}
               onSelect={(country: ICountry) => this.vpnAppState.selectedProviderId = country.providerID}
-              onFavoriteToggle={() => this.toggleFavorite()}
-              isFavoriteSelected={this.selectedCountryIsFavored}
+              onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
+              isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
             />
           </View>
 
@@ -108,35 +112,6 @@ export default class App extends React.Component<AppProps> {
       await this.tequilAPIDriver.unlock()
     } catch (e) {
       console.error(e)
-    }
-  }
-
-  private get selectedCountryIsFavored (): boolean {
-    if (!this.vpnAppState.selectedProviderId) {
-      return false
-    }
-    return this.props.favoritesStore.has(this.vpnAppState.selectedProviderId)
-  }
-
-  private get countriesSorted (): ICountry[] {
-    const proposals = this.tequilApiState.proposals
-      .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.has(p.providerId)))
-      .sort(compareProposals)
-
-    return proposals
-  }
-
-  private async toggleFavorite (): Promise<void> {
-    const selectedProviderId = this.vpnAppState.selectedProviderId
-    if (!selectedProviderId) {
-      return
-    }
-
-    const store = this.props.favoritesStore
-    if (!store.has(selectedProviderId)) {
-      await store.add(selectedProviderId)
-    } else {
-      await store.remove(selectedProviderId)
     }
   }
 }
