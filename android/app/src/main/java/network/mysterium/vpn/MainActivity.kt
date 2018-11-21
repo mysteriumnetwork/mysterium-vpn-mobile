@@ -9,6 +9,7 @@ import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import com.facebook.react.ReactActivity
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
@@ -67,6 +68,8 @@ class MainActivity : ReactActivity() {
       VPN_SERVICE_REQUEST -> {
         if (resultCode != Activity.RESULT_OK) {
           Log.w(TAG, "User forbidden VPN service")
+          showMessage("VPN connection has to be granted for Mysterium VPN to work.")
+          finish()
           return
         }
         Log.i(TAG, "User allowed VPN service")
@@ -109,6 +112,10 @@ class MainActivity : ReactActivity() {
     } catch (tr: Throwable) {
       Log.e(TAG, "Starting service failed", tr)
     }
+  }
+
+  private fun showMessage(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
   }
 
   companion object {
