@@ -117,8 +117,19 @@ Print: Entry, ":CFBundleIdentifier", Does Not Exist
 * Product -> Build
 
 
-# Node development
+# Contributing
 
 ### Android
-- To bump node version update `implementation "mysterium.network:mobile-node:0.5-rc"` line in `./android/app/build.gradle`, published versions can be found [here](https://bintray.com/mysterium/Node/mobile-node).
+
+#### Bump mobile-node version
+
+- To Update `implementation "mysterium.network:mobile-node:0.5-rc"` line in `./android/app/build.gradle`, published versions can be found [here](https://bintray.com/mysterium/Node/mobile-node).
 - Node usage can be found in `MainActivity.java`.
+
+#### Native android logs
+
+To see native android logs, use Logcat:
+
+```bash
+adb logcat
+```
