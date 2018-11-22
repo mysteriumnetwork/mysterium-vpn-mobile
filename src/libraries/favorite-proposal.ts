@@ -16,28 +16,34 @@
  */
 
 import { ProposalDTO } from 'mysterium-tequilapi'
-import { CONFIG } from '../config'
+import translations from '../app/translations'
 import { Countries } from './countries'
 
 class Proposal {
   public name: string
   public providerID: string
+  public countryCode: string
   public isFavorite: boolean
 
   constructor (proposal: ProposalDTO, isFavorite: boolean) {
-    this.name = this.getCountryName(proposal)
+    this.countryCode = this.getCountryCode(proposal)
+    this.name = this.getCountryName(this.countryCode)
     this.providerID = proposal.providerId
     this.isFavorite = isFavorite
   }
 
-  private getCountryName (proposal: ProposalDTO) {
+  private getCountryCode (proposal: ProposalDTO) {
     let countryCode = ''
 
     if (proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate) {
       countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
     }
 
-    return Countries[countryCode] || CONFIG.TEXTS.UNKNOWN
+    return countryCode
+  }
+
+  private getCountryName (countryCode: string) {
+    return Countries[countryCode] || translations.UNKNOWN
   }
 }
 

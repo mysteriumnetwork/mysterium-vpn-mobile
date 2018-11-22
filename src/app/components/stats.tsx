@@ -35,9 +35,9 @@ const Stats: React.SFC<StatsProps> = ({
 }) => {
   return (
     <View style={[styles.container, style]}>
-      {createStatsBlock('Duration', timeDisplay(duration), 'H:M:S')}
-      {createStatsBlock('Received', bytesDisplay(bytesReceived))}
-      {createStatsBlock('Sent', bytesDisplay(bytesSent))}
+      {createStatsBlock('Duration', timeDisplay(duration || 0), 'H:M:S')}
+      {createStatsBlock('Received', bytesDisplay(bytesReceived || 0))}
+      {createStatsBlock('Sent', bytesDisplay(bytesSent || 0))}
     </View>
   )
 }
