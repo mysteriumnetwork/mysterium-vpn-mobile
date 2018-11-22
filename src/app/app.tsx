@@ -20,9 +20,9 @@ import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
-import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import AppLoader from './app-loader'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
@@ -37,7 +37,8 @@ type AppProps = {
   tequilApiState: TequilApiState,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
-  favoritesStore: FavoritesStorage
+  favoritesStore: FavoritesStorage,
+  appLoader: AppLoader
 }
 
 @observer
@@ -46,6 +47,7 @@ export default class App extends React.Component<AppProps> {
   private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
   private readonly vpnAppState: VpnAppState
+  private readonly appLoader: AppLoader
 
   constructor (props: AppProps) {
     super(props)
@@ -53,6 +55,7 @@ export default class App extends React.Component<AppProps> {
     this.tequilApiState = props.tequilApiState
     this.errorDisplayDelegate = props.errorDisplayDelegate
     this.vpnAppState = props.vpnAppState
+    this.appLoader = props.appLoader
   }
 
   public render (): ReactNode {
@@ -90,36 +93,7 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
-  /***
-   * Refreshes connection state, ip and unlocks identity.
-   * Starts periodic state refreshing
-   * Called once after first rendering.
-   */
   public async componentDidMount () {
-    await this.waitForClient()
-    this.tequilAPIDriver.startFetchers()
-    try {
-      console.info('Unlocking identity')
-      await this.tequilAPIDriver.unlock()
-    } catch (err) {
-      console.error('Identity unlock failed', err)
-    }
-  }
-
-  private async waitForClient () {
-    console.info('Waiting for client to start up')
-    while (true) {
-      try {
-        await this.tequilAPIDriver.healthcheck()
-        return
-      } catch (err) {
-        console.info('Client still down')
-        await this.delay(CONFIG.HEALTHCHECK_DELAY)
-      }
-    }
-  }
-
-  private async delay (ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms))
+    await this.appLoader.load()
   }
 }
