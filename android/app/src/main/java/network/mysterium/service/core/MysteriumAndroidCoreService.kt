@@ -5,7 +5,6 @@ import android.net.VpnService
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import mysterium.MobileNetworkOptions
 import mysterium.MobileNode
 import mysterium.Mysterium
 
@@ -35,17 +34,6 @@ class MysteriumAndroidCoreService : VpnService() {
     } catch (e: Exception) {
       Log.i(TAG, "Got exception, safe to ignore: " + e.message)
     }
-  }
-
-  private fun getLocalnetOptions(options: MobileNetworkOptions): MobileNetworkOptions {
-    options.discoveryAPIAddress = "http://192.168.1.62/v1"
-    options.brokerAddress = "192.168.1.62"
-    options.etherClientRPC = "http://192.168.1.62:8545"
-    options.testnet = false
-    options.localnet = true
-    options.etherPaymentsAddress = "0x1955141ba8e77a5B56efBa8522034352c94f77Ea"
-
-    return options
   }
 
   override fun onRevoke() {
