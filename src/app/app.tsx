@@ -19,17 +19,19 @@ import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
-import { FavoritesStorage } from '../libraries/favorites-storage'
-import { mysteriumClient } from '../libraries/mysterium-client'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
+import { ICountry } from './components/country-picker/country'
+import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
-import ProposalsDropdown from './components/proposals-dropdown'
 import Stats from './components/stats'
+import CountryList from './countries/country-list'
+import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
+import translations from './translations'
 import VpnAppState from './vpn-app-state'
 
 type AppProps = {
@@ -37,7 +39,8 @@ type AppProps = {
   tequilApiState: TequilApiState,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
-  favoritesStore: FavoritesStorage
+  countryList: CountryList
+  favorites: Favorites
 }
 
 @observer
@@ -46,6 +49,8 @@ export default class App extends React.Component<AppProps> {
   private readonly tequilApiState: TequilApiState
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
   private readonly vpnAppState: VpnAppState
+  private readonly countryList: CountryList
+  private readonly favorites: Favorites
 
   constructor (props: AppProps) {
     super(props)
@@ -53,6 +58,8 @@ export default class App extends React.Component<AppProps> {
     this.tequilApiState = props.tequilApiState
     this.errorDisplayDelegate = props.errorDisplayDelegate
     this.vpnAppState = props.vpnAppState
+    this.countryList = props.countryList
+    this.favorites = props.favorites
   }
 
   public render (): ReactNode {
@@ -69,37 +76,42 @@ export default class App extends React.Component<AppProps> {
         <Text style={styles.textIp}>IP: {this.tequilApiState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
-          <ProposalsDropdown
-            favoritesStore={this.props.favoritesStore}
-            proposalsFetcher={this.tequilAPIDriver.proposalFetcher}
-            proposals={this.tequilApiState.proposals}
-            selectedProviderId={this.vpnAppState.selectedProviderId}
-            setSelectedProviderId={(value) => this.vpnAppState.selectedProviderId = value}
-          />
+          <View style={styles.countryPicker}>
+            <CountryPicker
+              placeholder={translations.COUNTRY_PICKER_LABEL}
+              countries={this.countryList.countries}
+              onSelect={(country: ICountry) => this.vpnAppState.selectedProviderId = country.providerID}
+              onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
+              isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+            />
+          </View>
+
           <ButtonConnect
             connectionStatus={this.tequilApiState.connectionStatus.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
-        {this.tequilApiState.connectionStatistics
-          ? <Stats style={styles.footer} {...this.tequilApiState.connectionStatistics} />
-          : null}
+
+        <View style={styles.footer}>
+          <Stats {...this.tequilApiState.connectionStatistics} />
+        </View>
+
         <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
       </View>
     )
   }
 
-  /***
+  /**
    * Refreshes connection state, ip and unlocks identity.
    * Starts periodic state refreshing
    * Called once after first rendering.
    */
   public async componentDidMount () {
-    await this.tequilAPIDriver.unlock()
-
-    // TODO: remove it later, serviceStatus is used only for native call test
-    const serviceStatus = await mysteriumClient.startService(4050)
-    console.log('serviceStatus', serviceStatus)
+    try {
+      await this.tequilAPIDriver.unlock()
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
