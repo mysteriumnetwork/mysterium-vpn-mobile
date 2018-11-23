@@ -16,6 +16,7 @@
  */
 
 import React, { ReactNode } from 'react'
+// @ts-ignore
 import DropdownAlert from 'react-native-dropdownalert'
 import IErrorDisplay from '../errors/error-display'
 
