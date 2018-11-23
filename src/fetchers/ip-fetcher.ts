@@ -39,10 +39,6 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     })
   }
 
-  protected get canRun (): boolean {
-    return true
-  }
-
   protected async fetch (): Promise<ConnectionIPDTO> {
     return this.connectionIP()
   }
