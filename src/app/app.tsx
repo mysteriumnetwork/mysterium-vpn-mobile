@@ -19,7 +19,6 @@ import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
-import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import AppLoader from './app-loader'
@@ -41,7 +40,6 @@ type AppProps = {
   tequilApiState: TequilApiState,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
-  favoritesStore: FavoritesStorage,
   countryList: CountryList,
   favorites: Favorites,
   appLoader: AppLoader
