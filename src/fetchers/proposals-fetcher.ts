@@ -20,7 +20,7 @@ import { ProposalDTO, ProposalQuery } from 'mysterium-tequilapi'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
-type FindProposals = (filter?: ProposalQuery) => Promise<ProposalDTO[]>
+type FindProposals = (query?: ProposalQuery) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
   constructor (private findProposals: FindProposals, private readonly tequilApiState: TequilApiState) {
