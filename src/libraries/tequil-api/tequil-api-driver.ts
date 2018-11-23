@@ -129,10 +129,11 @@ export default class TequilApiDriver {
   }
 
   public startFetchers () {
-    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
-    this.statusFetcher.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
-    this.ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
-    this.statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
+    const intervals = CONFIG.REFRESH_INTERVALS
+    this.proposalFetcher.start(intervals.PROPOSALS)
+    this.statusFetcher.start(intervals.CONNECTION)
+    this.ipFetcher.start(intervals.IP)
+    this.statsFetcher.start(intervals.STATS)
   }
 
   private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {

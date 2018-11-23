@@ -109,6 +109,10 @@ export default class App extends React.Component<AppProps> {
   }
 
   public async componentDidMount () {
-    await this.appLoader.load()
+    try {
+      await this.appLoader.load()
+    } catch (err) {
+      console.log('App loading failed', err)
+    }
   }
 }

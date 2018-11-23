@@ -11,12 +11,7 @@ class AppLoader {
   public async load () {
     await this.waitForClient()
     this.tequilAPIDriver.startFetchers()
-    try {
-      console.info('Unlocking identity')
-      await this.tequilAPIDriver.unlock()
-    } catch (err) {
-      console.error('Identity unlock failed', err)
-    }
+    await this.tequilAPIDriver.unlock()
   }
 
   private async waitForClient () {
@@ -26,15 +21,18 @@ class AppLoader {
         await this.tequilAPIDriver.healthcheck()
         return
       } catch (err) {
-        console.info('Client still down')
-        await this.delay(CONFIG.HEALTHCHECK_DELAY)
+        console.info('Client still down', err)
+        await delay(CONFIG.HEALTHCHECK_DELAY)
       }
     }
   }
+}
 
-  private async delay (ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
+/**
+ * Resolves after given time in milliseconds.
+ */
+async function delay (ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export default AppLoader

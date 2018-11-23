@@ -18,7 +18,7 @@ class MysteriumAndroidCoreService : VpnService() {
     options.experimentPromiseCheck = true
 
     mobileNode = Mysterium.newNode(filesPath, options, androidOpenvpnBridge)
-    Log.i(TAG, "started.")
+    Log.i(TAG, "started")
   }
 
   fun stopMobileNode() {

@@ -45,8 +45,8 @@ const Stats: React.SFC<StatsProps> = ({
 function createStatsBlock (name: string, value: string, units?: string): ReactNode {
   const textName = name.toUpperCase()
   const parts = value.split(' ')
-  if (parts.length < 1) {
-    throw Error(`Unable to parse stats block value: ${value}`)
+  if (parts.length === 0 || parts.length > 2) {
+    throw Error(`Unable to parse stats block value: "${value}"`)
   }
   const textAmount = parts[0]
   const textUnits = parts[1] || units || ''

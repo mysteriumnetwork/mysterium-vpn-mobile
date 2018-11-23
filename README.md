@@ -117,7 +117,7 @@ Print: Entry, ":CFBundleIdentifier", Does Not Exist
 * Product -> Build
 
 
-# Contributing
+## Contributing
 
 ### Android
 

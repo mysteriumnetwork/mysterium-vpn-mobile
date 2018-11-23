@@ -14,6 +14,7 @@ describe('AppLoader', () => {
       const tequilApiDriver = new TequilApiDriverMock()
       const loader = new AppLoader(tequilApiDriver)
       await loader.load()
+      expect(tequilApiDriver.healthcheck).toHaveBeenCalledTimes(1)
       expect(tequilApiDriver.unlock).toHaveBeenCalledTimes(1)
       expect(tequilApiDriver.startFetchers).toHaveBeenCalledTimes(1)
     })
