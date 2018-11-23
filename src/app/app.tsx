@@ -100,7 +100,11 @@ export default class App extends React.Component<AppProps> {
         </View>
 
         <View style={styles.footer}>
-          <Stats {...this.tequilApiState.connectionStatistics} />
+          <Stats
+            duration={this.tequilApiState.connectionStatistics.duration}
+            bytesReceived={this.tequilApiState.connectionStatistics.bytesReceived}
+            bytesSent={this.tequilApiState.connectionStatistics.bytesSent}
+          />
         </View>
 
         <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
