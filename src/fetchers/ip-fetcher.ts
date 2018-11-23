@@ -39,14 +39,6 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     })
   }
 
-  protected get canRun (): boolean {
-    if (!this.tequilApiState.IP) {
-      return true
-    }
-
-    return this.tequilApiState.connectionStatus.status !== ConnectionStatusEnum.NOT_CONNECTED
-  }
-
   protected async fetch (): Promise<ConnectionIPDTO> {
     return this.connectionIP()
   }
