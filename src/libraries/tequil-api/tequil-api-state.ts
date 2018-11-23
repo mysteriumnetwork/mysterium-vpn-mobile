@@ -28,6 +28,12 @@ const initialConnectionStatus: ConnectionStatusDTO = {
   status: ConnectionStatusEnum.NOT_CONNECTED
 }
 
+const initialConnectionStatistics: ConnectionStatisticsDTO = {
+  duration: 0,
+  bytesSent: 0,
+  bytesReceived: 0
+}
+
 export default class TequilApiState {
   @observable
   public identityId?: string
@@ -36,7 +42,7 @@ export default class TequilApiState {
   @observable
   public connectionStatus: ConnectionStatusDTO = initialConnectionStatus
   @observable
-  public connectionStatistics?: ConnectionStatisticsDTO
+  public connectionStatistics: ConnectionStatisticsDTO = initialConnectionStatistics
   @observable
   public proposals: ProposalDTO[] = []
 
