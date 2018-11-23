@@ -21,6 +21,7 @@ import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import AppLoader from './app-loader'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
 import ConnectionStatus from './components/connection-status'
@@ -39,8 +40,9 @@ type AppProps = {
   tequilApiState: TequilApiState,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
-  countryList: CountryList
-  favorites: Favorites
+  countryList: CountryList,
+  favorites: Favorites,
+  appLoader: AppLoader
 }
 
 @observer
@@ -51,6 +53,7 @@ export default class App extends React.Component<AppProps> {
   private readonly vpnAppState: VpnAppState
   private readonly countryList: CountryList
   private readonly favorites: Favorites
+  private readonly appLoader: AppLoader
 
   constructor (props: AppProps) {
     super(props)
@@ -60,6 +63,7 @@ export default class App extends React.Component<AppProps> {
     this.vpnAppState = props.vpnAppState
     this.countryList = props.countryList
     this.favorites = props.favorites
+    this.appLoader = props.appLoader
   }
 
   public render (): ReactNode {
@@ -106,16 +110,11 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
-  /**
-   * Refreshes connection state, ip and unlocks identity.
-   * Starts periodic state refreshing
-   * Called once after first rendering.
-   */
   public async componentDidMount () {
     try {
-      await this.tequilAPIDriver.unlock()
-    } catch (e) {
-      console.error(e)
+      await this.appLoader.load()
+    } catch (err) {
+      console.log('App loading failed', err)
     }
   }
 }

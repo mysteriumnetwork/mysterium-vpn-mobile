@@ -44,5 +44,7 @@ export const CONFIG = {
     PROPOSALS: 10 * 1000,
     IP: 10 * 1000
   },
-  STYLES
+  HEALTHCHECK_DELAY: 200,
+  STYLES,
+  RUN_NODE_ON_DEVICE: true
 }

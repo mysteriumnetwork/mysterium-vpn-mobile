@@ -90,9 +90,12 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
     const stateProposalsIncludeSelectedProposal = stateProposals
       && stateProposals.some((p) => p.providerId === selectedProviderId)
 
-    if (stateProposals && stateProposals[0]) {
+    if (stateProposals.length && stateProposals[0]) {
       if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {
-        this.props.setSelectedProviderId(this.proposalsSorted[0].providerID)
+        if (this.proposalsSorted.length) {
+          const proposal = this.proposalsSorted[0]
+          this.props.setSelectedProviderId(proposal.providerID)
+        }
       }
     }
   }

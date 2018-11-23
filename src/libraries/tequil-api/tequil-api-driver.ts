@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import TequilapiClientFactory, { IdentityDTO, TequilapiError } from 'mysterium-tequilapi'
+import TequilapiClientFactory, { IdentityDTO, NodeHealthcheckDTO, TequilapiError } from 'mysterium-tequilapi'
 
 import IErrorDisplay from '../../app/errors/error-display'
 import errors from '../../app/errors/errors'
@@ -48,7 +48,6 @@ export default class TequilApiDriver {
     this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.tequilApiState)
     this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.tequilApiState)
     this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.tequilApiState)
-    this.startFetchers()
   }
 
   /***
@@ -95,6 +94,10 @@ export default class TequilApiDriver {
     }
   }
 
+  public async healthcheck (): Promise<NodeHealthcheckDTO> {
+    return api.healthCheck()
+  }
+
   /***
    * Tries to login to API, must be completed once before connect
    */
@@ -125,6 +128,14 @@ export default class TequilApiDriver {
     }
   }
 
+  public startFetchers () {
+    const intervals = CONFIG.REFRESH_INTERVALS
+    this.proposalFetcher.start(intervals.PROPOSALS)
+    this.statusFetcher.start(intervals.CONNECTION)
+    this.ipFetcher.start(intervals.IP)
+    this.statsFetcher.start(intervals.STATS)
+  }
+
   private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {
     if (identities.length) {
       return identities[0]
@@ -134,13 +145,6 @@ export default class TequilApiDriver {
       CONFIG.PASSPHRASE
     )
     return newIdentity
-  }
-
-  private startFetchers () {
-    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
-    this.statusFetcher.start(CONFIG.REFRESH_INTERVALS.CONNECTION)
-    this.ipFetcher.start(CONFIG.REFRESH_INTERVALS.IP)
-    this.statsFetcher.start(CONFIG.REFRESH_INTERVALS.STATS)
   }
 }
 
