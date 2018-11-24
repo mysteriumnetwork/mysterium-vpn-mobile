@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computed, observable } from 'mobx'
 import {
   ConnectionStatisticsDTO,
   ConnectionStatus,
@@ -24,32 +23,18 @@ import {
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 
 class ConnectionState {
-  @observable
-  public connectionStatus: ConnectionStatusDTO = initialConnectionStatus
-  @observable
-  public IP?: string
-  @observable
-  public connectionStatistics: ConnectionStatisticsDTO = initialConnectionStatistics
+  constructor (public readonly connectionStatus: ConnectionStatusDTO,
+               public readonly IP: string | undefined,
+               public readonly connectionStatistics: ConnectionStatisticsDTO) {
+  }
 
-  @computed
   get status (): ConnectionStatus {
     return this.connectionStatus.status
   }
 
-  @computed
   get isConnected (): boolean {
     return this.status === ConnectionStatusEnum.CONNECTED
   }
-}
-
-const initialConnectionStatus: ConnectionStatusDTO = {
-  status: ConnectionStatusEnum.NOT_CONNECTED
-}
-
-const initialConnectionStatistics: ConnectionStatisticsDTO = {
-  duration: 0,
-  bytesSent: 0,
-  bytesReceived: 0
 }
 
 export default ConnectionState

@@ -17,20 +17,20 @@
 
 import { action, reaction } from 'mobx'
 import { ConnectionIPDTO } from 'mysterium-tequilapi'
-import ConnectionState from '../app/core/connection-state'
+import Connection from '../app/core/connection'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor (private connectionIP: ConnectionIP, private readonly connectionState: ConnectionState) {
+  constructor (private connectionIP: ConnectionIP, private readonly connection: Connection) {
     super('IP')
 
-    reaction(() => this.connectionState.connectionStatus, () => {
+    reaction(() => this.connection.state.connectionStatus, () => {
       if (
-        this.connectionState.status === ConnectionStatusEnum.CONNECTED ||
-        this.connectionState.status === ConnectionStatusEnum.NOT_CONNECTED
+        this.connection.state.status === ConnectionStatusEnum.CONNECTED ||
+        this.connection.state.status === ConnectionStatusEnum.NOT_CONNECTED
       ) {
         this.refresh().catch(error => {
           console.error('IPFetcher refresh failed:', error)
@@ -45,6 +45,6 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
 
   @action
   protected update (newIP: ConnectionIPDTO) {
-    this.connectionState.IP = newIP.ip
+    this.connection.updateIP(newIP.ip)
   }
 }

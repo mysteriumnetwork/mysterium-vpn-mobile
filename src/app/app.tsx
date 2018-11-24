@@ -75,9 +75,9 @@ export default class App extends React.Component<AppProps> {
           resizeMode="contain"
         />
 
-        <ConnectionStatus status={this.connection.connectionState.connectionStatus.status}/>
+        <ConnectionStatus status={this.connection.state.connectionStatus.status}/>
 
-        <Text style={styles.textIp}>IP: {this.connection.connectionState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text style={styles.textIp}>IP: {this.connection.state.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
           <View style={styles.countryPicker}>
@@ -91,7 +91,7 @@ export default class App extends React.Component<AppProps> {
           </View>
 
           <ButtonConnect
-            connectionStatus={this.connection.connectionState.connectionStatus.status}
+            connectionStatus={this.connection.state.connectionStatus.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
@@ -99,9 +99,9 @@ export default class App extends React.Component<AppProps> {
 
         <View style={styles.footer}>
           <Stats
-            duration={this.connection.connectionState.connectionStatistics.duration}
-            bytesReceived={this.connection.connectionState.connectionStatistics.bytesReceived}
-            bytesSent={this.connection.connectionState.connectionStatistics.bytesSent}
+            duration={this.connection.state.connectionStatistics.duration}
+            bytesReceived={this.connection.state.connectionStatistics.bytesReceived}
+            bytesSent={this.connection.state.connectionStatistics.bytesSent}
           />
         </View>
 

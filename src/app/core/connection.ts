@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action, observable } from 'mobx'
-import { TequilapiClient } from 'mysterium-tequilapi'
+import { action, computed, observable } from 'mobx'
+import { ConnectionStatisticsDTO, ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
@@ -26,19 +26,25 @@ import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import ConnectionState from './connection-state'
 
 class Connection {
+  @computed
+  public get state (): ConnectionState {
+    return this._state
+  }
+
   @observable
-  public connectionState: ConnectionState = new ConnectionState()
+  private _state = new ConnectionState(initialConnectionStatus, undefined, initialConnectionStatistics)
 
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
   constructor (api: TequilapiClient, tequilApiState: TequilApiState) {
-    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), tequilApiState, this.connectionState)
-    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.connectionState)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.connectionState)
+    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), tequilApiState, this)
+    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this)
   }
 
+  @action
   public startUpdating () {
     const intervals = CONFIG.REFRESH_INTERVALS
     this.statusFetcher.start(intervals.CONNECTION)
@@ -48,22 +54,50 @@ class Connection {
 
   @action
   public resetIP () {
-    this.connectionState.IP = undefined
+    this.updateIP(undefined)
   }
 
   @action
   public setConnectionStatusToConnecting () {
-    this.connectionState.connectionStatus = {
+    this.updateConnectionStatus({
       status: ConnectionStatusEnum.CONNECTING
-    }
+    })
   }
 
   @action
   public setConnectionStatusToDisconnecting () {
-    this.connectionState.connectionStatus = {
+    this.updateConnectionStatus({
       status: ConnectionStatusEnum.DISCONNECTING
-    }
+    })
   }
+
+  @action
+  public updateIP (ip: string | undefined) {
+    this._state =
+      new ConnectionState(this.state.connectionStatus, ip, this.state.connectionStatistics)
+  }
+
+  @action
+  public updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
+    this._state =
+      new ConnectionState(this.state.connectionStatus, this.state.IP, statistics)
+  }
+
+  @action
+  public updateConnectionStatus (status: ConnectionStatusDTO) {
+    this._state =
+      new ConnectionState(status, this.state.IP, this.state.connectionStatistics)
+  }
+}
+
+const initialConnectionStatus: ConnectionStatusDTO = {
+  status: ConnectionStatusEnum.NOT_CONNECTED
+}
+
+const initialConnectionStatistics: ConnectionStatisticsDTO = {
+  duration: 0,
+  bytesSent: 0,
+  bytesReceived: 0
 }
 
 export default Connection
