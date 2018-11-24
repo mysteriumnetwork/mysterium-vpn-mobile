@@ -28,7 +28,7 @@ import { ICountry } from './components/country-picker/country'
 import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
 import Stats from './components/stats'
-import ConnectionState from './core/connection-state'
+import Connection from './core/connection'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
@@ -37,7 +37,7 @@ import VpnAppState from './vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
-  connectionState: ConnectionState
+  connection: Connection,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
   countryList: CountryList,
@@ -48,7 +48,7 @@ type AppProps = {
 @observer
 export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
-  private readonly connectionState: ConnectionState
+  private readonly connection: Connection
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
   private readonly vpnAppState: VpnAppState
   private readonly countryList: CountryList
@@ -58,7 +58,7 @@ export default class App extends React.Component<AppProps> {
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
-    this.connectionState = props.connectionState
+    this.connection = props.connection
     this.errorDisplayDelegate = props.errorDisplayDelegate
     this.vpnAppState = props.vpnAppState
     this.countryList = props.countryList
@@ -75,9 +75,9 @@ export default class App extends React.Component<AppProps> {
           resizeMode="contain"
         />
 
-        <ConnectionStatus status={this.connectionState.connectionStatus.status}/>
+        <ConnectionStatus status={this.connection.connectionState.connectionStatus.status}/>
 
-        <Text style={styles.textIp}>IP: {this.connectionState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text style={styles.textIp}>IP: {this.connection.connectionState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
           <View style={styles.countryPicker}>
@@ -91,7 +91,7 @@ export default class App extends React.Component<AppProps> {
           </View>
 
           <ButtonConnect
-            connectionStatus={this.connectionState.connectionStatus.status}
+            connectionStatus={this.connection.connectionState.connectionStatus.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
@@ -99,9 +99,9 @@ export default class App extends React.Component<AppProps> {
 
         <View style={styles.footer}>
           <Stats
-            duration={this.connectionState.connectionStatistics.duration}
-            bytesReceived={this.connectionState.connectionStatistics.bytesReceived}
-            bytesSent={this.connectionState.connectionStatistics.bytesSent}
+            duration={this.connection.connectionState.connectionStatistics.duration}
+            bytesReceived={this.connection.connectionState.connectionStatistics.bytesReceived}
+            bytesSent={this.connection.connectionState.connectionStatistics.bytesSent}
           />
         </View>
 

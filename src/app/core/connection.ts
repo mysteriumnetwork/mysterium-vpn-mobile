@@ -15,23 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { action, observable } from 'mobx'
 import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
+import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import ConnectionState from './connection-state'
 
 class Connection {
+  @observable
+  public connectionState: ConnectionState = new ConnectionState()
+
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
   private statsFetcher: StatsFetcher
 
-  constructor (api: TequilapiClient, tequilApiState: TequilApiState, connectionState: ConnectionState) {
-    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), tequilApiState, connectionState)
-    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), connectionState)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), connectionState)
+  constructor (api: TequilapiClient, tequilApiState: TequilApiState) {
+    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), tequilApiState, this.connectionState)
+    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.connectionState)
+    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.connectionState)
   }
 
   public startUpdating () {
@@ -39,6 +44,25 @@ class Connection {
     this.statusFetcher.start(intervals.CONNECTION)
     this.ipFetcher.start(intervals.IP)
     this.statsFetcher.start(intervals.STATS)
+  }
+
+  @action
+  public resetIP () {
+    this.connectionState.IP = undefined
+  }
+
+  @action
+  public setConnectionStatusToConnecting () {
+    this.connectionState.connectionStatus = {
+      status: ConnectionStatusEnum.CONNECTING
+    }
+  }
+
+  @action
+  public setConnectionStatusToDisconnecting () {
+    this.connectionState.connectionStatus = {
+      status: ConnectionStatusEnum.DISCONNECTING
+    }
   }
 }
 
