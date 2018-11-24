@@ -24,8 +24,8 @@ export default class Logger {
       this.info('Identity unlocked', this.tequilApiState.identityId)
     })
 
-    reaction(() => this.connectionStore.connection.connectionStatus, () => {
-      this.info('Connection status changed', this.connectionStore.connection.connectionStatus)
+    reaction(() => this.connectionStore.connection.status, () => {
+      this.info('Connection status changed', this.connectionStore.connection.status)
     })
 
     reaction(() => this.connectionStore.connection.IP, () => {

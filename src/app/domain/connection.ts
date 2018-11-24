@@ -15,21 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  ConnectionStatisticsDTO,
-  ConnectionStatus,
-  ConnectionStatusDTO
-} from 'mysterium-tequilapi'
+import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 
 class Connection {
-  constructor (public readonly connectionStatus: ConnectionStatusDTO,
+  // TODO: uncouple from 'mysterium-tequilapi'
+  constructor (public readonly status: ConnectionStatus,
                public readonly IP: string | undefined,
                public readonly connectionStatistics: ConnectionStatisticsDTO) {
-  }
-
-  get status (): ConnectionStatus {
-    return this.connectionStatus.status
   }
 
   get isConnected (): boolean {

@@ -27,7 +27,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
   constructor (private connectionIP: ConnectionIP, private readonly connectionStore: ConnectionStore) {
     super('IP')
 
-    reaction(() => this.connectionStore.connection.connectionStatus, () => {
+    reaction(() => this.connectionStore.connection.status, () => {
       if (
         this.connectionStore.connection.status === ConnectionStatusEnum.CONNECTED ||
         this.connectionStore.connection.status === ConnectionStatusEnum.NOT_CONNECTED

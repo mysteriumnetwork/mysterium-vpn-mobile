@@ -16,7 +16,7 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import { ConnectionStatisticsDTO, ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionStatisticsDTO, ConnectionStatus, TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
@@ -32,7 +32,7 @@ class ConnectionStore {
   }
 
   @observable
-  private _connection = new Connection(initialConnectionStatus, undefined, initialConnectionStatistics)
+  private _connection = new Connection(ConnectionStatusEnum.NOT_CONNECTED, undefined, initialConnectionStatistics)
 
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
@@ -59,39 +59,31 @@ class ConnectionStore {
 
   @action
   public setConnectionStatusToConnecting () {
-    this.updateConnectionStatus({
-      status: ConnectionStatusEnum.CONNECTING
-    })
+    this.updateConnectionStatus(ConnectionStatusEnum.CONNECTING)
   }
 
   @action
   public setConnectionStatusToDisconnecting () {
-    this.updateConnectionStatus({
-      status: ConnectionStatusEnum.DISCONNECTING
-    })
+    this.updateConnectionStatus(ConnectionStatusEnum.DISCONNECTING)
   }
 
   @action
   public updateIP (ip: string | undefined) {
     this._connection =
-      new Connection(this.connection.connectionStatus, ip, this.connection.connectionStatistics)
+      new Connection(this.connection.status, ip, this.connection.connectionStatistics)
   }
 
   @action
   public updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
     this._connection =
-      new Connection(this.connection.connectionStatus, this.connection.IP, statistics)
+      new Connection(this.connection.status, this.connection.IP, statistics)
   }
 
   @action
-  public updateConnectionStatus (status: ConnectionStatusDTO) {
+  public updateConnectionStatus (status: ConnectionStatus) {
     this._connection =
       new Connection(status, this.connection.IP, this.connection.connectionStatistics)
   }
-}
-
-const initialConnectionStatus: ConnectionStatusDTO = {
-  status: ConnectionStatusEnum.NOT_CONNECTED
 }
 
 const initialConnectionStatistics: ConnectionStatisticsDTO = {

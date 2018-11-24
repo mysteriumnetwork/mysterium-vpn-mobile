@@ -75,7 +75,7 @@ export default class App extends React.Component<AppProps> {
           resizeMode="contain"
         />
 
-        <ConnectionStatus status={this.connectionStore.connection.connectionStatus.status}/>
+        <ConnectionStatus status={this.connectionStore.connection.status}/>
 
         <Text style={styles.textIp}>IP: {this.connectionStore.connection.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
@@ -91,7 +91,7 @@ export default class App extends React.Component<AppProps> {
           </View>
 
           <ButtonConnect
-            connectionStatus={this.connectionStore.connection.connectionStatus.status}
+            connectionStatus={this.connectionStore.connection.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />

@@ -42,6 +42,6 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
 
   @action
   protected update (status: ConnectionStatusDTO) {
-    this.connectionStore.updateConnectionStatus(status)
+    this.connectionStore.updateConnectionStatus(status.status)
   }
 }
