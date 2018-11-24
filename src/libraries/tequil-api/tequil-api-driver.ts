@@ -15,21 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import TequilapiClientFactory, { IdentityDTO, NodeHealthcheckDTO, TequilapiError } from 'mysterium-tequilapi'
+import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
 
+import ConnectionState from '../../app/core/connection-state'
 import IErrorDisplay from '../../app/errors/error-display'
 import errors from '../../app/errors/errors'
 import { CONFIG } from '../../config'
-import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
-import { StatsFetcher } from '../../fetchers/stats-fetcher'
-import { StatusFetcher } from '../../fetchers/status-fetcher'
 import TequilApiState from './tequil-api-state'
-
-const api = new TequilapiClientFactory(
-  CONFIG.TEQUILAPI_ADDRESS,
-  CONFIG.TEQUILAPI_TIMEOUT
-).build()
 
 /***
  * API operations level
@@ -38,16 +31,14 @@ const api = new TequilapiClientFactory(
 export default class TequilApiDriver {
   public proposalFetcher: ProposalsFetcher
   public readonly tequilApiState: TequilApiState
-  private statusFetcher: StatusFetcher
-  private ipFetcher: IPFetcher
-  private statsFetcher: StatsFetcher
 
-  constructor (apiState: TequilApiState, private errorDisplay: IErrorDisplay) {
+  constructor (
+    private api: TequilapiClient,
+    apiState: TequilApiState,
+    private connectionState: ConnectionState,
+    private errorDisplay: IErrorDisplay) {
     this.tequilApiState = apiState
     this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.tequilApiState)
-    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), this.tequilApiState)
-    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this.tequilApiState)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this.tequilApiState)
   }
 
   /***
@@ -60,11 +51,11 @@ export default class TequilApiDriver {
       return
     }
 
-    this.tequilApiState.resetIP()
-    this.tequilApiState.setConnectionStatusToConnecting()
+    this.connectionState.resetIP()
+    this.connectionState.setConnectionStatusToConnecting()
 
     try {
-      const connection = await api.connectionCreate({
+      const connection = await this.api.connectionCreate({
         consumerId: this.tequilApiState.identityId,
         providerCountry: '',
         providerId: selectedProviderId
@@ -82,11 +73,11 @@ export default class TequilApiDriver {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.tequilApiState.resetIP()
-    this.tequilApiState.setConnectionStatusToDisconnecting()
+    this.connectionState.resetIP()
+    this.connectionState.setConnectionStatusToDisconnecting()
 
     try {
-      await api.connectionCancel()
+      await this.api.connectionCancel()
       console.log('disconnected')
     } catch (e) {
       this.errorDisplay.showError(errors.DISCONNECT_FAILED)
@@ -95,7 +86,7 @@ export default class TequilApiDriver {
   }
 
   public async healthcheck (): Promise<NodeHealthcheckDTO> {
-    return api.healthCheck()
+    return this.api.healthCheck()
   }
 
   /***
@@ -104,7 +95,7 @@ export default class TequilApiDriver {
   public async unlock (): Promise<void> {
     let identities: IdentityDTO[]
     try {
-      identities = await api.identitiesList()
+      identities = await this.api.identitiesList()
     } catch (e) {
       console.warn('api.identitiesList failed', e)
       return
@@ -121,7 +112,7 @@ export default class TequilApiDriver {
     }
 
     try {
-      await api.identityUnlock(identityId, CONFIG.PASSPHRASE)
+      await this.api.identityUnlock(identityId, CONFIG.PASSPHRASE)
       this.tequilApiState.identityId = identityId
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
@@ -129,11 +120,7 @@ export default class TequilApiDriver {
   }
 
   public startFetchers () {
-    const intervals = CONFIG.REFRESH_INTERVALS
-    this.proposalFetcher.start(intervals.PROPOSALS)
-    this.statusFetcher.start(intervals.CONNECTION)
-    this.ipFetcher.start(intervals.IP)
-    this.statsFetcher.start(intervals.STATS)
+    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
   }
 
   private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {
@@ -141,7 +128,7 @@ export default class TequilApiDriver {
       return identities[0]
     }
 
-    const newIdentity: IdentityDTO = await api.identityCreate(
+    const newIdentity: IdentityDTO = await this.api.identityCreate(
       CONFIG.PASSPHRASE
     )
     return newIdentity
