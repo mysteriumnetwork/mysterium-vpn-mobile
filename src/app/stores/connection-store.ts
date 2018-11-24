@@ -23,16 +23,16 @@ import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
-import ConnectionState from './connection-state'
+import Connection from '../domain/connection'
 
-class Connection {
+class ConnectionStore {
   @computed
-  public get state (): ConnectionState {
-    return this._state
+  public get connection (): Connection {
+    return this._connection
   }
 
   @observable
-  private _state = new ConnectionState(initialConnectionStatus, undefined, initialConnectionStatistics)
+  private _connection = new Connection(initialConnectionStatus, undefined, initialConnectionStatistics)
 
   private statusFetcher: StatusFetcher
   private ipFetcher: IPFetcher
@@ -73,20 +73,20 @@ class Connection {
 
   @action
   public updateIP (ip: string | undefined) {
-    this._state =
-      new ConnectionState(this.state.connectionStatus, ip, this.state.connectionStatistics)
+    this._connection =
+      new Connection(this.connection.connectionStatus, ip, this.connection.connectionStatistics)
   }
 
   @action
   public updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
-    this._state =
-      new ConnectionState(this.state.connectionStatus, this.state.IP, statistics)
+    this._connection =
+      new Connection(this.connection.connectionStatus, this.connection.IP, statistics)
   }
 
   @action
   public updateConnectionStatus (status: ConnectionStatusDTO) {
-    this._state =
-      new ConnectionState(status, this.state.IP, this.state.connectionStatistics)
+    this._connection =
+      new Connection(status, this.connection.IP, this.connection.connectionStatistics)
   }
 }
 
@@ -100,4 +100,4 @@ const initialConnectionStatistics: ConnectionStatisticsDTO = {
   bytesReceived: 0
 }
 
-export default Connection
+export default ConnectionStore

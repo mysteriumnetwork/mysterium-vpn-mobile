@@ -22,7 +22,7 @@ import {
 } from 'mysterium-tequilapi'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 
-class ConnectionState {
+class Connection {
   constructor (public readonly connectionStatus: ConnectionStatusDTO,
                public readonly IP: string | undefined,
                public readonly connectionStatistics: ConnectionStatisticsDTO) {
@@ -37,4 +37,4 @@ class ConnectionState {
   }
 }
 
-export default ConnectionState
+export default Connection

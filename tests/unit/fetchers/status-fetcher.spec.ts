@@ -1,5 +1,5 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
-import Connection from '../../../src/app/core/connection'
+import ConnectionStore from '../../../src/app/stores/connection-store'
 import TequilApiState from '../../../src/libraries/tequil-api/tequil-api-state'
 import { CONFIG } from './../../../src/config'
 import { StatusFetcher } from './../../../src/fetchers/status-fetcher'
@@ -9,7 +9,7 @@ describe('StatusFetcher', () => {
   const tequilApiState = new TequilApiState()
   const refreshInterval = CONFIG.REFRESH_INTERVALS.CONNECTION
   let api: TequilapiClient
-  let connection: Connection
+  let connectionStore: ConnectionStore
   let fetcher: StatusFetcher
 
   beforeAll(() => {
@@ -23,8 +23,8 @@ describe('StatusFetcher', () => {
   beforeEach(() => {
     tequilApiState.identityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
-    connection = new Connection(api, tequilApiState)
-    fetcher = new StatusFetcher(api.connectionStatus, tequilApiState, connection)
+    connectionStore = new ConnectionStore(api, tequilApiState)
+    fetcher = new StatusFetcher(api.connectionStatus, tequilApiState, connectionStore)
   })
 
   describe('.start', () => {
@@ -35,7 +35,7 @@ describe('StatusFetcher', () => {
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
 
       jest.runAllTicks()
-      expect(connection.state.connectionStatus).toEqual({
+      expect(connectionStore.connection.connectionStatus).toEqual({
         status: 'NotConnected',
         sessionId: 'MOCKED_SESSION_ID'
       })
@@ -95,12 +95,12 @@ describe('StatusFetcher', () => {
       jest.runAllTicks()
 
       expect(fetcher.isRunning).toBe(false)
-      connection.updateConnectionStatus({
+      connectionStore.updateConnectionStatus({
         status: 'Connected'
       })
 
       await fetcher.refresh()
-      expect(connection.state.connectionStatus).toEqual({
+      expect(connectionStore.connection.connectionStatus).toEqual({
         status: 'NotConnected',
         sessionId: 'MOCKED_SESSION_ID'
       })

@@ -17,7 +17,7 @@
 
 import { action } from 'mobx'
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import Connection from '../app/core/connection'
+import ConnectionStore from '../app/stores/connection-store'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
@@ -27,7 +27,7 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   constructor (
     private connectionStatus: ConnectionStatus,
     private readonly tequilApiState: TequilApiState,
-    private readonly connection: Connection
+    private readonly connectionStore: ConnectionStore
   ) {
     super('ConnectionStatus')
   }
@@ -42,6 +42,6 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
 
   @action
   protected update (status: ConnectionStatusDTO) {
-    this.connection.updateConnectionStatus(status)
+    this.connectionStore.updateConnectionStatus(status)
   }
 }

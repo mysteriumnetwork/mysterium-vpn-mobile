@@ -17,9 +17,9 @@
 
 import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
 
-import Connection from '../../app/core/connection'
 import IErrorDisplay from '../../app/errors/error-display'
 import errors from '../../app/errors/errors'
+import ConnectionStore from '../../app/stores/connection-store'
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import TequilApiState from './tequil-api-state'
@@ -35,7 +35,7 @@ export default class TequilApiDriver {
   constructor (
     private api: TequilapiClient,
     apiState: TequilApiState,
-    private connection: Connection,
+    private connectionStore: ConnectionStore,
     private errorDisplay: IErrorDisplay) {
     this.tequilApiState = apiState
     this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.tequilApiState)
@@ -51,8 +51,8 @@ export default class TequilApiDriver {
       return
     }
 
-    this.connection.resetIP()
-    this.connection.setConnectionStatusToConnecting()
+    this.connectionStore.resetIP()
+    this.connectionStore.setConnectionStatusToConnecting()
 
     try {
       const connection = await this.api.connectionCreate({
@@ -73,8 +73,8 @@ export default class TequilApiDriver {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.connection.resetIP()
-    this.connection.setConnectionStatusToDisconnecting()
+    this.connectionStore.resetIP()
+    this.connectionStore.setConnectionStatusToDisconnecting()
 
     try {
       await this.api.connectionCancel()
