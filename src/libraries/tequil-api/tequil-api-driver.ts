@@ -21,7 +21,6 @@ import IErrorDisplay from '../../app/errors/error-display'
 import errors from '../../app/errors/errors'
 import ConnectionStore from '../../app/stores/connection-store'
 import { CONFIG } from '../../config'
-import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import TequilApiState from './tequil-api-state'
 
 /***
@@ -29,7 +28,6 @@ import TequilApiState from './tequil-api-state'
  */
 
 export default class TequilApiDriver {
-  public proposalFetcher: ProposalsFetcher
   public readonly tequilApiState: TequilApiState
 
   constructor (
@@ -38,7 +36,6 @@ export default class TequilApiDriver {
     private connectionStore: ConnectionStore,
     private errorDisplay: IErrorDisplay) {
     this.tequilApiState = apiState
-    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this.tequilApiState)
   }
 
   /***
@@ -117,10 +114,6 @@ export default class TequilApiDriver {
     } catch (e) {
       console.warn('api.identityUnlock failed', e)
     }
-  }
-
-  public startFetchers () {
-    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
   }
 
   private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {

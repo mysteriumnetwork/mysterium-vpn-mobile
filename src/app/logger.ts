@@ -1,6 +1,7 @@
 import { reaction } from 'mobx'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import ConnectionStore from './stores/connection-store'
+import ProposalsStore from './stores/proposals-store'
 import VpnAppState from './vpn-app-state'
 
 export default class Logger {
@@ -9,7 +10,8 @@ export default class Logger {
   constructor (
     private readonly tequilApiState: TequilApiState,
     private readonly vpnAppState: VpnAppState,
-    private readonly connectionStore: ConnectionStore) {
+    private readonly connectionStore: ConnectionStore,
+    private readonly proposalsStore: ProposalsStore) {
   }
 
   public logObservableChanges (): void {
@@ -30,8 +32,8 @@ export default class Logger {
       this.info('IP changed', this.connectionStore.connection.IP)
     })
 
-    reaction(() => this.tequilApiState.proposals, () => {
-      this.info('Proposals updated', this.tequilApiState.proposals)
+    reaction(() => this.proposalsStore.proposals, () => {
+      this.info('Proposals updated', this.proposalsStore.proposals)
     })
 
     reaction(() => this.vpnAppState.selectedProviderId, () => {

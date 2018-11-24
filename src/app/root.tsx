@@ -12,6 +12,7 @@ import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Logger from './logger'
 import ConnectionStore from './stores/connection-store'
+import ProposalsStore from './stores/proposals-store'
 import VpnAppState from './vpn-app-state'
 
 class Root extends React.PureComponent {
@@ -21,14 +22,15 @@ class Root extends React.PureComponent {
   private errorDisplayDelegate = new ErrorDisplayDelegate()
   private readonly favoritesStore = new FavoritesStorage()
   private readonly connectionStore = new ConnectionStore(this.api, this.tequilApiState)
+  private readonly proposalsStore = new ProposalsStore(this.api)
   private readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.tequilApiState, this.connectionStore, this.errorDisplayDelegate)
-  private readonly countryList = new CountryList(this.tequilApiState, this.favoritesStore)
+  private readonly countryList = new CountryList(this.proposalsStore, this.favoritesStore)
   private readonly favorites = new Favorites(this.favoritesStore)
-  private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connectionStore)
+  private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connectionStore, this.proposalsStore)
 
   public async componentWillMount () {
-    const logger = new Logger(this.tequilApiState, this.vpnAppState, this.connectionStore)
+    const logger = new Logger(this.tequilApiState, this.vpnAppState, this.connectionStore, this.proposalsStore)
     logger.logObservableChanges()
     await this.favoritesStore.fetch()
   }
