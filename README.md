@@ -15,25 +15,30 @@ npm install -g react-native-cli
 ```
 
 ### Android
-
 * Setup crash reporting:
     * Download firebase crashlytics config - `google-services.json` from https://console.firebase.google.com
     * Place it in `android/app/`
 
+#### Setup to run on actual device
 * `brew cask install android-platform-tools` or [Install ADB](https://www.xda-developers.com/install-adb-windows-macos-linux)
 * Connect Android phone, check if `adb` can see it:
 ```bash
 adb devices
 ```
 
-* Install Android SDK, export `ANDROID_HOME` to SDK location, i.e.:
+#### Setup Emulator
+1. Download Android Studio
+2. Android Studio comes with JDK preinstalled, but in case that version doesn't work, you need [JDK 1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+3. Setup Emulator in Android Studio and start it
+
+#### Run Android:
+Install Android SDK, export `ANDROID_HOME` to SDK location, i.e.:
 
 ```bash
 export ANDROID_HOME=/Users/<username>/Library/Android/sdk/
 ```
 
-* Run Android:
-
+Run app on default device (connected or emulator)
 ```bash
 yarn android
 ```
