@@ -48,8 +48,8 @@ export default class TequilApiDriver {
       return
     }
 
-    this.connectionStore.resetIP()
-    this.connectionStore.setConnectionStatusToConnecting()
+    this.connectionStore.connection.resetIP()
+    this.connectionStore.connection.setConnectionStatusToConnecting()
 
     try {
       const connection = await this.api.connectionCreate({
@@ -70,8 +70,8 @@ export default class TequilApiDriver {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.connectionStore.resetIP()
-    this.connectionStore.setConnectionStatusToDisconnecting()
+    this.connectionStore.connection.resetIP()
+    this.connectionStore.connection.setConnectionStatusToDisconnecting()
 
     try {
       await this.api.connectionCancel()

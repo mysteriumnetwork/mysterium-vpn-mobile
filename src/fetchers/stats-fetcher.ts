@@ -16,7 +16,7 @@
  */
 
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
-import ConnectionStore from '../app/stores/connection-store'
+import Connection from '../app/core/connection'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
@@ -24,14 +24,14 @@ type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
   constructor (
     private connectionStatistics: ConnectionStatistics,
-    private readonly connectionStore: ConnectionStore,
+    private readonly connection: Connection,
     update: (data: ConnectionStatisticsDTO) => void
   ) {
     super('Statistics', update)
   }
 
   protected get canRun (): boolean {
-    return this.connectionStore.connectionData.isConnected
+    return this.connection.connectionData.isConnected
   }
 
   protected async fetch (): Promise<ConnectionStatisticsDTO> {

@@ -16,13 +16,7 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import { ConnectionStatisticsDTO, ConnectionStatus, TequilapiClient } from 'mysterium-tequilapi'
-import { CONFIG } from '../../config'
-import { IPFetcher } from '../../fetchers/ip-fetcher'
-import { StatsFetcher } from '../../fetchers/stats-fetcher'
-import { StatusFetcher } from '../../fetchers/status-fetcher'
-import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
-import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
+import Connection from '../core/connection'
 import ConnectionData from '../domain/connectionData'
 
 class ConnectionStore {
@@ -32,67 +26,17 @@ class ConnectionStore {
   }
 
   @observable
-  private _connectionData =
-    new ConnectionData(ConnectionStatusEnum.NOT_CONNECTED, undefined, initialConnectionStatistics)
+  private _connectionData: ConnectionData
 
-  constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {}
-
-  @action
-  public startUpdating () {
-    const statusFetcher = new StatusFetcher(this.api.connectionStatus.bind(this.api), this.tequilApiState, status => {
-      this.updateConnectionStatus(status.status)
-    })
-    const ipFetcher = new IPFetcher(this.api.connectionIP.bind(this.api), this, connectionIpDto => {
-      this.updateIP(connectionIpDto.ip)
-    })
-    const statsFetcher = new StatsFetcher(this.api.connectionStatistics.bind(this.api), this, stats => {
-      this.updateConnectionStatistics(stats)
-    })
-
-    const intervals = CONFIG.REFRESH_INTERVALS
-    statusFetcher.start(intervals.CONNECTION)
-    ipFetcher.start(intervals.IP)
-    statsFetcher.start(intervals.STATS)
+  constructor (public readonly connection: Connection) {
+    this._connectionData = this.connection.connectionData
+    this.connection.onConnectionDataChange(data => this.updateConnectionData(data))
   }
 
   @action
-  public resetIP () {
-    this.updateIP(undefined)
+  private updateConnectionData (data: ConnectionData) {
+    this._connectionData = data
   }
-
-  @action
-  public setConnectionStatusToConnecting () {
-    this.updateConnectionStatus(ConnectionStatusEnum.CONNECTING)
-  }
-
-  @action
-  public setConnectionStatusToDisconnecting () {
-    this.updateConnectionStatus(ConnectionStatusEnum.DISCONNECTING)
-  }
-
-  @action
-  private updateIP (ip: string | undefined) {
-    this._connectionData =
-      new ConnectionData(this.connectionData.status, ip, this.connectionData.connectionStatistics)
-  }
-
-  @action
-  private updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
-    this._connectionData =
-      new ConnectionData(this.connectionData.status, this.connectionData.IP, statistics)
-  }
-
-  @action
-  private updateConnectionStatus (status: ConnectionStatus) {
-    this._connectionData =
-      new ConnectionData(status, this.connectionData.IP, this.connectionData.connectionStatistics)
-  }
-}
-
-const initialConnectionStatistics: ConnectionStatisticsDTO = {
-  duration: 0,
-  bytesSent: 0,
-  bytesReceived: 0
 }
 
 export default ConnectionStore

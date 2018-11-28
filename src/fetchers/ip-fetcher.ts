@@ -15,34 +15,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { reaction } from 'mobx'
-import { ConnectionIPDTO } from 'mysterium-tequilapi'
-import ConnectionStore from '../app/stores/connection-store'
+import { ConnectionIPDTO, ConnectionStatus } from 'mysterium-tequilapi'
+import Connection from '../app/core/connection'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
+  private lastStatus?: ConnectionStatus
+
   constructor (
     private connectionIP: ConnectionIP,
-    private readonly connectionStore: ConnectionStore,
+    connection: Connection,
     update: (data: ConnectionIPDTO) => void) {
     super('IP', update)
 
-    reaction(() => this.connectionStore.connectionData.status, () => {
-      if (
-        this.connectionStore.connectionData.status === ConnectionStatusEnum.CONNECTED ||
-        this.connectionStore.connectionData.status === ConnectionStatusEnum.NOT_CONNECTED
-      ) {
-        this.refresh().catch(error => {
-          console.error('IPFetcher refresh failed:', error)
-        })
-      }
+    connection.onConnectionDataChange(data => {
+      this.handleConnectionStatusChange(data.status)
     })
   }
 
   protected async fetch (): Promise<ConnectionIPDTO> {
     return this.connectionIP()
+  }
+
+  // TODO: move this logic out to Connection and move fetchers into /core
+  private handleConnectionStatusChange (status: ConnectionStatus) {
+    if (status === this.lastStatus) {
+      return
+    }
+    this.lastStatus = status
+
+    if (status === ConnectionStatusEnum.CONNECTED || status === ConnectionStatusEnum.NOT_CONNECTED) {
+      this.refresh().catch(error => {
+        console.error('IPFetcher refresh failed:', error)
+      })
+    }
   }
 }

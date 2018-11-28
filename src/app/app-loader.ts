@@ -1,6 +1,6 @@
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import ConnectionStore from './stores/connection-store'
+import Connection from './core/connection'
 import ProposalsStore from './stores/proposals-store'
 
 /**
@@ -9,13 +9,13 @@ import ProposalsStore from './stores/proposals-store'
  */
 class AppLoader {
   constructor (private tequilAPIDriver: TequilApiDriver,
-               private connectionStore: ConnectionStore,
+               private connection: Connection,
                private proposals: ProposalsStore) {}
 
   public async load () {
     await this.waitForClient()
     this.proposals.startUpdating()
-    this.connectionStore.startUpdating()
+    this.connection.startUpdating()
     await this.tequilAPIDriver.unlock()
   }
 
