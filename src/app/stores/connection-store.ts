@@ -21,21 +21,21 @@ import ConnectionData from '../domain/connectionData'
 
 class ConnectionStore {
   @computed
-  public get connectionData (): ConnectionData {
-    return this._connectionData
+  public get data (): ConnectionData {
+    return this._data
   }
 
   @observable
-  private _connectionData: ConnectionData
+  private _data: ConnectionData
 
   constructor (public readonly connection: Connection) {
-    this._connectionData = this.connection.connectionData
-    this.connection.onConnectionDataChange(data => this.updateConnectionData(data))
+    this._data = this.connection.data
+    this.connection.onDataChange(data => this.updateData(data))
   }
 
   @action
-  private updateConnectionData (data: ConnectionData) {
-    this._connectionData = data
+  private updateData (data: ConnectionData) {
+    this._data = data
   }
 }
 

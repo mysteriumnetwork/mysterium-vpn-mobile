@@ -49,7 +49,7 @@ export default class TequilApiDriver {
     }
 
     this.connectionStore.connection.resetIP()
-    this.connectionStore.connection.setConnectionStatusToConnecting()
+    this.connectionStore.connection.setStatusToConnecting()
 
     try {
       const connection = await this.api.connectionCreate({
@@ -71,7 +71,7 @@ export default class TequilApiDriver {
    */
   public async disconnect (): Promise<void> {
     this.connectionStore.connection.resetIP()
-    this.connectionStore.connection.setConnectionStatusToDisconnecting()
+    this.connectionStore.connection.setStatusToDisconnecting()
 
     try {
       await this.api.connectionCancel()

@@ -24,11 +24,11 @@ import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import ConnectionData from '../domain/connectionData'
 
 class Connection {
-  public get connectionData (): ConnectionData {
-    return this._connectionData
+  public get data (): ConnectionData {
+    return this._data
   }
 
-  private _connectionData =
+  private _data =
     new ConnectionData(ConnectionStatusEnum.NOT_CONNECTED, undefined, initialConnectionStatistics)
   private _callbacks: ConnectionDataChangeCallback[] = []
 
@@ -36,13 +36,13 @@ class Connection {
 
   public startUpdating () {
     const statusFetcher = new StatusFetcher(this.api.connectionStatus.bind(this.api), this.tequilApiState, status => {
-      this.updateConnectionStatus(status.status)
+      this.updateStatus(status.status)
     })
     const ipFetcher = new IPFetcher(this.api.connectionIP.bind(this.api), this, connectionIpDto => {
       this.updateIP(connectionIpDto.ip)
     })
     const statsFetcher = new StatsFetcher(this.api.connectionStatistics.bind(this.api), this, stats => {
-      this.updateConnectionStatistics(stats)
+      this.updateStatistics(stats)
     })
 
     const intervals = CONFIG.REFRESH_INTERVALS
@@ -51,37 +51,37 @@ class Connection {
     statsFetcher.start(intervals.STATS)
   }
 
-  public onConnectionDataChange (callback: ConnectionDataChangeCallback) {
+  public onDataChange (callback: ConnectionDataChangeCallback) {
     this._callbacks.push(callback)
-    callback(this.connectionData)
+    callback(this.data)
   }
 
   public resetIP () {
     this.updateIP(undefined)
   }
 
-  public setConnectionStatusToConnecting () {
-    this.updateConnectionStatus(ConnectionStatusEnum.CONNECTING)
+  public setStatusToConnecting () {
+    this.updateStatus(ConnectionStatusEnum.CONNECTING)
   }
 
-  public setConnectionStatusToDisconnecting () {
-    this.updateConnectionStatus(ConnectionStatusEnum.DISCONNECTING)
+  public setStatusToDisconnecting () {
+    this.updateStatus(ConnectionStatusEnum.DISCONNECTING)
   }
 
   private updateIP (ip: string | undefined) {
-    this.setConnectionData(new ConnectionData(this.connectionData.status, ip, this.connectionData.connectionStatistics))
+    this.setData(new ConnectionData(this.data.status, ip, this.data.connectionStatistics))
   }
 
-  private updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
-    this.setConnectionData(new ConnectionData(this.connectionData.status, this.connectionData.IP, statistics))
+  private updateStatistics (statistics: ConnectionStatisticsDTO) {
+    this.setData(new ConnectionData(this.data.status, this.data.IP, statistics))
   }
 
-  private updateConnectionStatus (status: ConnectionStatus) {
-    this.setConnectionData(new ConnectionData(status, this.connectionData.IP, this.connectionData.connectionStatistics))
+  private updateStatus (status: ConnectionStatus) {
+    this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics))
   }
 
-  private setConnectionData (data: ConnectionData) {
-    this._connectionData = data
+  private setData (data: ConnectionData) {
+    this._data = data
     this._callbacks.forEach(callback => callback(data))
   }
 }

@@ -31,7 +31,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     update: (data: ConnectionIPDTO) => void) {
     super('IP', update)
 
-    connection.onConnectionDataChange(data => {
+    connection.onDataChange(data => {
       this.handleConnectionStatusChange(data.status)
     })
   }

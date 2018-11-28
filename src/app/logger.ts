@@ -24,12 +24,12 @@ export default class Logger {
       this.info('Identity unlocked', this.tequilApiState.identityId)
     })
 
-    reaction(() => this.connectionStore.connectionData.status, () => {
-      this.info('Connection status changed', this.connectionStore.connectionData.status)
+    reaction(() => this.connectionStore.data.status, () => {
+      this.info('Connection status changed', this.connectionStore.data.status)
     })
 
-    reaction(() => this.connectionStore.connectionData.IP, () => {
-      this.info('IP changed', this.connectionStore.connectionData.IP)
+    reaction(() => this.connectionStore.data.IP, () => {
+      this.info('IP changed', this.connectionStore.data.IP)
     })
 
     reaction(() => this.proposalsStore.proposals, () => {

@@ -31,7 +31,7 @@ export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
   }
 
   protected get canRun (): boolean {
-    return this.connection.connectionData.isConnected
+    return this.connection.data.isConnected
   }
 
   protected async fetch (): Promise<ConnectionStatisticsDTO> {
