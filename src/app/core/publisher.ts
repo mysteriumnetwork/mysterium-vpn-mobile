@@ -15,9 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
+class Publisher<T> {
+  private callbacks: Array<Callback<T>> = []
 
-export default class TequilApiState {
-  @observable
-  public identityId?: string
+  public subscribe (callback: Callback<T>) {
+    this.callbacks.push(callback)
+  }
+
+  public publish (value: T) {
+    this.callbacks.forEach(callback => callback(value))
+  }
 }
+
+type Callback<T> = (data: T) => void
+
+export { Callback }
+
+export default Publisher

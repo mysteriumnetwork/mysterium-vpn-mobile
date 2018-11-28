@@ -15,24 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action } from 'mobx'
 import { ProposalDTO, ProposalQuery } from 'mysterium-tequilapi'
-import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (query?: ProposalQuery) => Promise<ProposalDTO[]>
 
 export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
-  constructor (private findProposals: FindProposals, private readonly tequilApiState: TequilApiState) {
-    super('Proposals')
+  constructor (private findProposals: FindProposals, update: (data: ProposalDTO[]) => void) {
+    super('Proposals', update)
   }
 
   protected async fetch (): Promise<ProposalDTO[]> {
     return this.findProposals()
-  }
-
-  @action
-  protected update (proposals: ProposalDTO[]) {
-    this.tequilApiState.proposals = proposals
   }
 }

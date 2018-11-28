@@ -1,4 +1,5 @@
-import { TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionStatus, TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionStatusEnum } from '../../../src/libraries/tequil-api/enums'
 import TequilApiState from '../../../src/libraries/tequil-api/tequil-api-state'
 import { CONFIG } from './../../../src/config'
 import { StatusFetcher } from './../../../src/fetchers/status-fetcher'
@@ -8,6 +9,7 @@ describe('StatusFetcher', () => {
   const tequilApiState = new TequilApiState()
   const refreshInterval = CONFIG.REFRESH_INTERVALS.CONNECTION
   let api: TequilapiClient
+  let status: ConnectionStatus | null
   let fetcher: StatusFetcher
 
   beforeAll(() => {
@@ -21,7 +23,10 @@ describe('StatusFetcher', () => {
   beforeEach(() => {
     tequilApiState.identityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
-    fetcher = new StatusFetcher(api.connectionStatus, tequilApiState)
+    status = null
+    fetcher = new StatusFetcher(api.connectionStatus, tequilApiState, dto => {
+      status = dto.status
+    })
   })
 
   describe('.start', () => {
@@ -32,10 +37,7 @@ describe('StatusFetcher', () => {
       expect(api.connectionStatus).toHaveBeenCalledTimes(1)
 
       jest.runAllTicks()
-      expect(tequilApiState.connectionStatus).toEqual({
-        status: 'NotConnected',
-        sessionId: 'MOCKED_SESSION_ID'
-      })
+      expect(status).toEqual('NotConnected')
     })
 
     it('fetches status continuously', () => {
@@ -92,15 +94,10 @@ describe('StatusFetcher', () => {
       jest.runAllTicks()
 
       expect(fetcher.isRunning).toBe(false)
-      tequilApiState.connectionStatus = {
-        status: 'Connected'
-      }
+      status = ConnectionStatusEnum.CONNECTED
 
       await fetcher.refresh()
-      expect(tequilApiState.connectionStatus).toEqual({
-        status: 'NotConnected',
-        sessionId: 'MOCKED_SESSION_ID'
-      })
+      expect(status).toEqual('NotConnected')
     })
   })
 })

@@ -16,8 +16,25 @@
  */
 
 import { observable } from 'mobx'
+import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { CONFIG } from '../../config'
+import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 
-export default class TequilApiState {
+class ProposalsStore {
   @observable
-  public identityId?: string
+  public proposals: ProposalDTO[] = []
+
+  private proposalFetcher: ProposalsFetcher
+
+  constructor (api: TequilapiClient) {
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), proposals => {
+      this.proposals = proposals
+    })
+  }
+
+  public startUpdating () {
+    this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
+  }
 }
+
+export default ProposalsStore

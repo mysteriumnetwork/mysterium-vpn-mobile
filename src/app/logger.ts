@@ -1,11 +1,17 @@
 import { reaction } from 'mobx'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import Connection from './core/connection'
+import ProposalsStore from './stores/proposals-store'
 import VpnAppState from './vpn-app-state'
 
 export default class Logger {
   private loggingStarted: boolean = false
 
-  constructor (private readonly tequilApiState: TequilApiState, private readonly vpnAppState: VpnAppState) {
+  constructor (
+    private readonly tequilApiState: TequilApiState,
+    private readonly vpnAppState: VpnAppState,
+    private readonly connection: Connection,
+    private readonly proposalsStore: ProposalsStore) {
   }
 
   public logObservableChanges (): void {
@@ -18,16 +24,16 @@ export default class Logger {
       this.info('Identity unlocked', this.tequilApiState.identityId)
     })
 
-    reaction(() => this.tequilApiState.connectionStatus, () => {
-      this.info('Connection status changed', this.tequilApiState.connectionStatus)
+    this.connection.onStatusChange(status => {
+      this.info('Connection status changed', status)
     })
 
-    reaction(() => this.tequilApiState.IP, () => {
-      this.info('IP changed', this.tequilApiState.IP)
+    this.connection.onIpChange(ip => {
+      this.info('IP changed', ip)
     })
 
-    reaction(() => this.tequilApiState.proposals, () => {
-      this.info('Proposals updated', this.tequilApiState.proposals)
+    reaction(() => this.proposalsStore.proposals, () => {
+      this.info('Proposals updated', this.proposalsStore.proposals)
     })
 
     reaction(() => this.vpnAppState.selectedProviderId, () => {

@@ -20,7 +20,6 @@ import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import AppLoader from './app-loader'
 import styles from './app-styles'
 import ButtonConnect from './components/button-connect'
@@ -32,12 +31,13 @@ import Stats from './components/stats'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
+import ConnectionStore from './stores/connection-store'
 import translations from './translations'
 import VpnAppState from './vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
-  tequilApiState: TequilApiState,
+  connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
   countryList: CountryList,
@@ -48,7 +48,7 @@ type AppProps = {
 @observer
 export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
-  private readonly tequilApiState: TequilApiState
+  private readonly connectionStore: ConnectionStore
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
   private readonly vpnAppState: VpnAppState
   private readonly countryList: CountryList
@@ -58,7 +58,7 @@ export default class App extends React.Component<AppProps> {
   constructor (props: AppProps) {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
-    this.tequilApiState = props.tequilApiState
+    this.connectionStore = props.connectionStore
     this.errorDisplayDelegate = props.errorDisplayDelegate
     this.vpnAppState = props.vpnAppState
     this.countryList = props.countryList
@@ -67,6 +67,7 @@ export default class App extends React.Component<AppProps> {
   }
 
   public render (): ReactNode {
+    const connectionData = this.connectionStore.data
     return (
       <View style={styles.container}>
         <Image
@@ -75,9 +76,9 @@ export default class App extends React.Component<AppProps> {
           resizeMode="contain"
         />
 
-        <ConnectionStatus status={this.tequilApiState.connectionStatus.status}/>
+        <ConnectionStatus status={connectionData.status}/>
 
-        <Text style={styles.textIp}>IP: {this.tequilApiState.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controls}>
           <View style={styles.countryPicker}>
@@ -91,7 +92,7 @@ export default class App extends React.Component<AppProps> {
           </View>
 
           <ButtonConnect
-            connectionStatus={this.tequilApiState.connectionStatus.status}
+            connectionStatus={connectionData.status}
             connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
             disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
@@ -99,9 +100,9 @@ export default class App extends React.Component<AppProps> {
 
         <View style={styles.footer}>
           <Stats
-            duration={this.tequilApiState.connectionStatistics.duration}
-            bytesReceived={this.tequilApiState.connectionStatistics.bytesReceived}
-            bytesSent={this.tequilApiState.connectionStatistics.bytesSent}
+            duration={connectionData.connectionStatistics.duration}
+            bytesReceived={connectionData.connectionStatistics.bytesReceived}
+            bytesSent={connectionData.connectionStatistics.bytesSent}
           />
         </View>
 

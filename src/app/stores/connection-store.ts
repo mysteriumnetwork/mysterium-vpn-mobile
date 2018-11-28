@@ -15,9 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
+import Connection from '../core/connection'
+import ConnectionData from '../domain/connection-data'
 
-export default class TequilApiState {
+class ConnectionStore {
+  @computed
+  public get data (): ConnectionData {
+    return this._data
+  }
+
   @observable
-  public identityId?: string
+  private _data: ConnectionData
+
+  constructor (public readonly connection: Connection) {
+    this._data = this.connection.data
+    this.connection.onDataChange(data => this.updateData(data))
+  }
+
+  @action
+  private updateData (data: ConnectionData) {
+    this._data = data
+  }
 }
+
+export default ConnectionStore

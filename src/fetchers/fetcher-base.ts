@@ -25,7 +25,7 @@ export abstract class FetcherBase<T> implements IFetcher {
 
   private interval?: Timer
 
-  constructor (protected name: string) {
+  constructor (protected name: string, private update: (data: T) => void) {
   }
 
   public get isStarted (): boolean {
@@ -80,8 +80,6 @@ export abstract class FetcherBase<T> implements IFetcher {
   }
 
   protected abstract async fetch (): Promise<T>
-
-  protected abstract update (data: T): void
 
   private async run () {
     if (this.isRunning || !this.canRun) {

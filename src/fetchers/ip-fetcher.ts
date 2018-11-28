@@ -15,27 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action, reaction } from 'mobx'
-import { ConnectionIPDTO } from 'mysterium-tequilapi'
+import { ConnectionIPDTO, ConnectionStatus } from 'mysterium-tequilapi'
+import Connection from '../app/core/connection'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
-import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor (private connectionIP: ConnectionIP, private readonly tequilApiState: TequilApiState) {
-    super('IP')
+  private lastStatus?: ConnectionStatus
 
-    reaction(() => this.tequilApiState.connectionStatus, () => {
-      if (
-        this.tequilApiState.status === ConnectionStatusEnum.CONNECTED ||
-        this.tequilApiState.status === ConnectionStatusEnum.NOT_CONNECTED
-      ) {
-        this.refresh().catch(error => {
-          console.error('IPFetcher refresh failed:', error)
-        })
-      }
+  constructor (
+    private connectionIP: ConnectionIP,
+    connection: Connection,
+    update: (data: ConnectionIPDTO) => void) {
+    super('IP', update)
+
+    connection.onDataChange(data => {
+      this.handleConnectionStatusChange(data.status)
     })
   }
 
@@ -43,8 +40,17 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     return this.connectionIP()
   }
 
-  @action
-  protected update (newIP: ConnectionIPDTO) {
-    this.tequilApiState.IP = newIP.ip
+  // TODO: move this logic out to Connection and move fetchers into /core
+  private handleConnectionStatusChange (status: ConnectionStatus) {
+    if (status === this.lastStatus) {
+      return
+    }
+    this.lastStatus = status
+
+    if (status === ConnectionStatusEnum.CONNECTED || status === ConnectionStatusEnum.NOT_CONNECTED) {
+      this.refresh().catch(error => {
+        console.error('IPFetcher refresh failed:', error)
+      })
+    }
   }
 }
