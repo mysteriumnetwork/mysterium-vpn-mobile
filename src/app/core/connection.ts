@@ -28,8 +28,7 @@ class Connection {
     return this._data
   }
 
-  private _data =
-    new ConnectionData(ConnectionStatusEnum.NOT_CONNECTED, undefined, initialConnectionStatistics)
+  private _data: ConnectionData = initialConnectionData
   private _callbacks: ConnectionDataChangeCallback[] = []
 
   constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {}
@@ -86,11 +85,15 @@ class Connection {
   }
 }
 
-const initialConnectionStatistics: ConnectionStatisticsDTO = {
+const initialStatistics: ConnectionStatisticsDTO = {
   duration: 0,
   bytesSent: 0,
   bytesReceived: 0
 }
+const initialIp = undefined
+const initialStatus = ConnectionStatusEnum.NOT_CONNECTED
+
+const initialConnectionData = new ConnectionData(initialStatus, initialIp, initialStatistics)
 
 type ConnectionDataChangeCallback = (data: ConnectionData) => void
 
