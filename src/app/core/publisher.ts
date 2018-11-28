@@ -15,20 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
-import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
-import Ip from './ip'
+class Publisher<T> {
+  private callbacks: Array<Callback<T>> = []
 
-class ConnectionData {
-  // TODO: uncouple from 'mysterium-tequilapi'
-  constructor (public readonly status: ConnectionStatus,
-               public readonly IP: Ip,
-               public readonly connectionStatistics: ConnectionStatisticsDTO) {
+  public subscribe (callback: Callback<T>) {
+    this.callbacks.push(callback)
   }
 
-  get isConnected (): boolean {
-    return this.status === ConnectionStatusEnum.CONNECTED
+  public publish (value: T) {
+    this.callbacks.forEach(callback => callback(value))
   }
 }
 
-export default ConnectionData
+type Callback<T> = (data: T) => void
+
+export { Callback }
+
+export default Publisher

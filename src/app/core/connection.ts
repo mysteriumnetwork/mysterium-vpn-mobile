@@ -22,6 +22,8 @@ import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import ConnectionData from '../domain/connection-data'
+import Ip from '../domain/ip'
+import Publisher, { Callback } from './publisher'
 
 class Connection {
   public get data (): ConnectionData {
@@ -29,7 +31,9 @@ class Connection {
   }
 
   private _data: ConnectionData = initialConnectionData
-  private _callbacks: ConnectionDataChangeCallback[] = []
+  private dataPublisher = new Publisher<ConnectionData>()
+  private statusPublisher = new Publisher<ConnectionStatus>()
+  private ipPublisher = new Publisher<Ip>()
 
   constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {}
 
@@ -50,9 +54,19 @@ class Connection {
     statsFetcher.start(intervals.STATS)
   }
 
-  public onDataChange (callback: ConnectionDataChangeCallback) {
-    this._callbacks.push(callback)
+  public onDataChange (callback: Callback<ConnectionData>) {
+    this.dataPublisher.subscribe(callback)
     callback(this.data)
+  }
+
+  public onStatusChange (callback: Callback<ConnectionStatus>) {
+    this.statusPublisher.subscribe(callback)
+    callback(this.data.status)
+  }
+
+  public onIpChange (callback: Callback<Ip>) {
+    this.ipPublisher.subscribe(callback)
+    callback(this.data.IP)
   }
 
   public resetIP () {
@@ -80,8 +94,20 @@ class Connection {
   }
 
   private setData (data: ConnectionData) {
+    if (this._data === data) {
+      return
+    }
+
+    if (this._data.status !== data.status) {
+      this.statusPublisher.publish(data.status)
+    }
+
+    if (this._data.IP !== data.IP) {
+      this.ipPublisher.publish(data.IP)
+    }
+
+    this.dataPublisher.publish(data)
     this._data = data
-    this._callbacks.forEach(callback => callback(data))
   }
 }
 
@@ -94,7 +120,5 @@ const initialIp = null
 const initialStatus = ConnectionStatusEnum.NOT_CONNECTED
 
 const initialConnectionData = new ConnectionData(initialStatus, initialIp, initialStatistics)
-
-type ConnectionDataChangeCallback = (data: ConnectionData) => void
 
 export default Connection

@@ -15,20 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
-import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
-import Ip from './ip'
+type Ip = string | null
 
-class ConnectionData {
-  // TODO: uncouple from 'mysterium-tequilapi'
-  constructor (public readonly status: ConnectionStatus,
-               public readonly IP: Ip,
-               public readonly connectionStatistics: ConnectionStatisticsDTO) {
-  }
-
-  get isConnected (): boolean {
-    return this.status === ConnectionStatusEnum.CONNECTED
-  }
-}
-
-export default ConnectionData
+export default Ip

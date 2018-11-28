@@ -32,7 +32,7 @@ class Root extends React.PureComponent {
   private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
 
   public async componentWillMount () {
-    const logger = new Logger(this.tequilApiState, this.vpnAppState, this.connectionStore, this.proposalsStore)
+    const logger = new Logger(this.tequilApiState, this.vpnAppState, this.connection, this.proposalsStore)
     logger.logObservableChanges()
     await this.favoritesStore.fetch()
   }
