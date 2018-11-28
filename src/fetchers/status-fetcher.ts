@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action } from 'mobx'
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import ConnectionStore from '../app/stores/connection-store'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
@@ -27,9 +25,9 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   constructor (
     private connectionStatus: ConnectionStatus,
     private readonly tequilApiState: TequilApiState,
-    private readonly connectionStore: ConnectionStore
+    update: (data: ConnectionStatusDTO) => void
   ) {
-    super('ConnectionStatus')
+    super('ConnectionStatus', update)
   }
 
   protected get canRun (): boolean {
@@ -38,10 +36,5 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
 
   protected async fetch (): Promise<ConnectionStatusDTO> {
     return this.connectionStatus()
-  }
-
-  @action
-  protected update (status: ConnectionStatusDTO) {
-    this.connectionStore.updateConnectionStatus(status.status)
   }
 }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action, reaction } from 'mobx'
+import { reaction } from 'mobx'
 import { ConnectionIPDTO } from 'mysterium-tequilapi'
 import ConnectionStore from '../app/stores/connection-store'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
@@ -24,8 +24,11 @@ import { FetcherBase } from './fetcher-base'
 type ConnectionIP = () => Promise<ConnectionIPDTO>
 
 export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
-  constructor (private connectionIP: ConnectionIP, private readonly connectionStore: ConnectionStore) {
-    super('IP')
+  constructor (
+    private connectionIP: ConnectionIP,
+    private readonly connectionStore: ConnectionStore,
+    update: (data: ConnectionIPDTO) => void) {
+    super('IP', update)
 
     reaction(() => this.connectionStore.connection.status, () => {
       if (
@@ -41,10 +44,5 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
 
   protected async fetch (): Promise<ConnectionIPDTO> {
     return this.connectionIP()
-  }
-
-  @action
-  protected update (newIP: ConnectionIPDTO) {
-    this.connectionStore.updateIP(newIP.ip)
   }
 }

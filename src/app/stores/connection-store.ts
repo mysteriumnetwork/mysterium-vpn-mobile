@@ -34,22 +34,24 @@ class ConnectionStore {
   @observable
   private _connection = new Connection(ConnectionStatusEnum.NOT_CONNECTED, undefined, initialConnectionStatistics)
 
-  private statusFetcher: StatusFetcher
-  private ipFetcher: IPFetcher
-  private statsFetcher: StatsFetcher
-
-  constructor (api: TequilapiClient, tequilApiState: TequilApiState) {
-    this.statusFetcher = new StatusFetcher(api.connectionStatus.bind(api), tequilApiState, this)
-    this.ipFetcher = new IPFetcher(api.connectionIP.bind(api), this)
-    this.statsFetcher = new StatsFetcher(api.connectionStatistics.bind(api), this)
-  }
+  constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {}
 
   @action
   public startUpdating () {
+    const statusFetcher = new StatusFetcher(this.api.connectionStatus.bind(this.api), this.tequilApiState, status => {
+      this.updateConnectionStatus(status.status)
+    })
+    const ipFetcher = new IPFetcher(this.api.connectionIP.bind(this.api), this, connectionIpDto => {
+      this.updateIP(connectionIpDto.ip)
+    })
+    const statsFetcher = new StatsFetcher(this.api.connectionStatistics.bind(this.api), this, stats => {
+      this.updateConnectionStatistics(stats)
+    })
+
     const intervals = CONFIG.REFRESH_INTERVALS
-    this.statusFetcher.start(intervals.CONNECTION)
-    this.ipFetcher.start(intervals.IP)
-    this.statsFetcher.start(intervals.STATS)
+    statusFetcher.start(intervals.CONNECTION)
+    ipFetcher.start(intervals.IP)
+    statsFetcher.start(intervals.STATS)
   }
 
   @action
@@ -68,19 +70,19 @@ class ConnectionStore {
   }
 
   @action
-  public updateIP (ip: string | undefined) {
+  private updateIP (ip: string | undefined) {
     this._connection =
       new Connection(this.connection.status, ip, this.connection.connectionStatistics)
   }
 
   @action
-  public updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
+  private updateConnectionStatistics (statistics: ConnectionStatisticsDTO) {
     this._connection =
       new Connection(this.connection.status, this.connection.IP, statistics)
   }
 
   @action
-  public updateConnectionStatus (status: ConnectionStatus) {
+  private updateConnectionStatus (status: ConnectionStatus) {
     this._connection =
       new Connection(status, this.connection.IP, this.connection.connectionStatistics)
   }

@@ -27,7 +27,9 @@ class ProposalsStore {
   private proposalFetcher: ProposalsFetcher
 
   constructor (api: TequilapiClient) {
-    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), this)
+    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), proposals => {
+      this.proposals = proposals
+    })
   }
 
   public startUpdating () {

@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action } from 'mobx'
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
 import ConnectionStore from '../app/stores/connection-store'
 import { FetcherBase } from './fetcher-base'
@@ -23,8 +22,12 @@ import { FetcherBase } from './fetcher-base'
 type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
 
 export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
-  constructor (private connectionStatistics: ConnectionStatistics, private readonly connectionStore: ConnectionStore) {
-    super('Statistics')
+  constructor (
+    private connectionStatistics: ConnectionStatistics,
+    private readonly connectionStore: ConnectionStore,
+    update: (data: ConnectionStatisticsDTO) => void
+  ) {
+    super('Statistics', update)
   }
 
   protected get canRun (): boolean {
@@ -33,10 +36,5 @@ export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
 
   protected async fetch (): Promise<ConnectionStatisticsDTO> {
     return this.connectionStatistics()
-  }
-
-  @action
-  protected update (stats: ConnectionStatisticsDTO) {
-    this.connectionStore.updateConnectionStatistics(stats)
   }
 }
