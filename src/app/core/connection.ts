@@ -21,7 +21,7 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
-import ConnectionData from '../domain/connectionData'
+import ConnectionData from '../domain/connection-data'
 
 class Connection {
   public get data (): ConnectionData {
