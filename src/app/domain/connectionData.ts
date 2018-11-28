@@ -21,7 +21,7 @@ import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 class ConnectionData {
   // TODO: uncouple from 'mysterium-tequilapi'
   constructor (public readonly status: ConnectionStatus,
-               public readonly IP: string | undefined,
+               public readonly IP: string | null,
                public readonly connectionStatistics: ConnectionStatisticsDTO) {
   }
 

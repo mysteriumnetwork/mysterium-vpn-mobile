@@ -56,7 +56,7 @@ class Connection {
   }
 
   public resetIP () {
-    this.updateIP(undefined)
+    this.updateIP(null)
   }
 
   public setStatusToConnecting () {
@@ -67,7 +67,7 @@ class Connection {
     this.updateStatus(ConnectionStatusEnum.DISCONNECTING)
   }
 
-  private updateIP (ip: string | undefined) {
+  private updateIP (ip: string | null) {
     this.setData(new ConnectionData(this.data.status, ip, this.data.connectionStatistics))
   }
 
@@ -90,7 +90,7 @@ const initialStatistics: ConnectionStatisticsDTO = {
   bytesSent: 0,
   bytesReceived: 0
 }
-const initialIp = undefined
+const initialIp = null
 const initialStatus = ConnectionStatusEnum.NOT_CONNECTED
 
 const initialConnectionData = new ConnectionData(initialStatus, initialIp, initialStatistics)
