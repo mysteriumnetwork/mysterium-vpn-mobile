@@ -26,7 +26,7 @@ class Root extends React.PureComponent {
   private readonly connectionStore = new ConnectionStore(this.connection)
   private readonly proposalsStore = new ProposalsStore(this.api)
   private readonly tequilAPIDriver =
-    new TequilApiDriver(this.api, this.tequilApiState, this.connectionStore, this.errorDisplayDelegate)
+    new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.errorDisplayDelegate)
   private readonly countryList = new CountryList(this.proposalsStore, this.favoritesStore)
   private readonly favorites = new Favorites(this.favoritesStore)
   private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
