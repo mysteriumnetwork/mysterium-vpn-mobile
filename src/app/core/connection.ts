@@ -53,6 +53,7 @@ class Connection {
 
   public onConnectionDataChange (callback: ConnectionDataChangeCallback) {
     this._callbacks.push(callback)
+    callback(this.connectionData)
   }
 
   public resetIP () {
