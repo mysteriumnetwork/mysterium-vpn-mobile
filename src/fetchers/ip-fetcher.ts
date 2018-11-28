@@ -30,10 +30,10 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     update: (data: ConnectionIPDTO) => void) {
     super('IP', update)
 
-    reaction(() => this.connectionStore.connection.status, () => {
+    reaction(() => this.connectionStore.connectionData.status, () => {
       if (
-        this.connectionStore.connection.status === ConnectionStatusEnum.CONNECTED ||
-        this.connectionStore.connection.status === ConnectionStatusEnum.NOT_CONNECTED
+        this.connectionStore.connectionData.status === ConnectionStatusEnum.CONNECTED ||
+        this.connectionStore.connectionData.status === ConnectionStatusEnum.NOT_CONNECTED
       ) {
         this.refresh().catch(error => {
           console.error('IPFetcher refresh failed:', error)
