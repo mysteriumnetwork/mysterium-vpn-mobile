@@ -18,7 +18,7 @@
 import { observable } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
@@ -28,6 +28,7 @@ import ConnectionStatus from './components/connection-status'
 import { ICountry } from './components/country-picker/country'
 import CountryPicker from './components/country-picker/country-picker'
 import ErrorDropdown from './components/error-dropdown'
+import LogoBackground from './components/logo-background'
 import Stats from './components/stats'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
@@ -74,22 +75,14 @@ export default class App extends React.Component<AppProps> {
     if (!this.loaded) {
       return (
         <View style={styles.container}>
-          <Image
-            style={styles.imageBackground}
-            source={require('../assets/background-logo.png')}
-            resizeMode="contain"
-          />
+          <LogoBackground/>
         </View>
       )
     }
     const connectionData = this.connectionStore.data
     return (
       <View style={styles.container}>
-        <Image
-          style={styles.imageBackground}
-          source={require('../assets/background-logo.png')}
-          resizeMode="contain"
-        />
+        <LogoBackground/>
 
         <ConnectionStatus status={connectionData.status}/>
 
