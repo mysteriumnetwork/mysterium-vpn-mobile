@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { observable } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { Image, Text, View } from 'react-native'
@@ -54,6 +55,8 @@ export default class App extends React.Component<AppProps> {
   private readonly countryList: CountryList
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
+  @observable
+  private loaded: boolean
 
   constructor (props: AppProps) {
     super(props)
@@ -64,9 +67,21 @@ export default class App extends React.Component<AppProps> {
     this.countryList = props.countryList
     this.favorites = props.favorites
     this.appLoader = props.appLoader
+    this.loaded = false
   }
 
   public render (): ReactNode {
+    if (!this.loaded) {
+      return (
+        <View style={styles.container}>
+          <Image
+            style={styles.imageBackground}
+            source={require('../assets/background-logo.png')}
+            resizeMode="contain"
+          />
+        </View>
+      )
+    }
     const connectionData = this.connectionStore.data
     return (
       <View style={styles.container}>
@@ -114,6 +129,7 @@ export default class App extends React.Component<AppProps> {
   public async componentDidMount () {
     try {
       await this.appLoader.load()
+      this.loaded = true
     } catch (err) {
       console.log('App loading failed', err)
     }
