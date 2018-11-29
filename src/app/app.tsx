@@ -18,23 +18,14 @@
 import { observable } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
-import { Text, View } from 'react-native'
-import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
-import styles from './app-styles'
-import ButtonConnect from './components/button-connect'
-import ConnectionStatus from './components/connection-status'
-import { ICountry } from './components/country-picker/country'
-import CountryPicker from './components/country-picker/country-picker'
-import ErrorDropdown from './components/error-dropdown'
-import LogoBackground from './components/logo-background'
-import Stats from './components/stats'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
+import Home from './screens/home'
+import Loading from './screens/loading'
 import ConnectionStore from './stores/connection-store'
-import translations from './translations'
 import VpnAppState from './vpn-app-state'
 
 type AppProps = {
@@ -73,49 +64,18 @@ export default class App extends React.Component<AppProps> {
 
   public render (): ReactNode {
     if (!this.loaded) {
-      return (
-        <View style={styles.container}>
-          <LogoBackground/>
-        </View>
-      )
+      return <Loading/>
     }
-    const connectionData = this.connectionStore.data
+
     return (
-      <View style={styles.container}>
-        <LogoBackground/>
-
-        <ConnectionStatus status={connectionData.status}/>
-
-        <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
-
-        <View style={styles.controls}>
-          <View style={styles.countryPicker}>
-            <CountryPicker
-              placeholder={translations.COUNTRY_PICKER_LABEL}
-              countries={this.countryList.countries}
-              onSelect={(country: ICountry) => this.vpnAppState.selectedProviderId = country.providerID}
-              onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
-              isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
-            />
-          </View>
-
-          <ButtonConnect
-            connectionStatus={connectionData.status}
-            connect={this.tequilAPIDriver.connect.bind(this.tequilAPIDriver, this.vpnAppState.selectedProviderId)}
-            disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
-          />
-        </View>
-
-        <View style={styles.footer}>
-          <Stats
-            duration={connectionData.connectionStatistics.duration}
-            bytesReceived={connectionData.connectionStatistics.bytesReceived}
-            bytesSent={connectionData.connectionStatistics.bytesSent}
-          />
-        </View>
-
-        <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
-      </View>
+      <Home
+        tequilAPIDriver={this.tequilAPIDriver}
+        connectionStore={this.connectionStore}
+        vpnAppState={this.vpnAppState}
+        errorDisplayDelegate={this.errorDisplayDelegate}
+        countryList={this.countryList}
+        favorites={this.favorites}
+      />
     )
   }
 
