@@ -20,4 +20,9 @@ import {AppRegistry} from 'react-native'
 import Root from './src/app/root'
 import {name as appName} from './app.json'
 
+if (!__DEV__) {
+  const errorReporting = require('./utils/error-reporting');
+  errorReporting.setupErrorHandlers()
+}
+
 AppRegistry.registerComponent(appName, () => Root)
