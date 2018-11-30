@@ -16,16 +16,17 @@
  */
 
 import { ProposalDTO, ProposalQuery } from 'mysterium-tequilapi'
+import { Proposal } from '../app/domain/proposal'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (query?: ProposalQuery) => Promise<ProposalDTO[]>
 
-export class ProposalsFetcher extends FetcherBase<ProposalDTO[]> {
-  constructor (private findProposals: FindProposals, update: (data: ProposalDTO[]) => void) {
+export class ProposalsFetcher extends FetcherBase<Proposal[]> {
+  constructor (private findProposals: FindProposals, update: (data: Proposal[]) => void) {
     super('Proposals', update)
   }
 
-  protected async fetch (): Promise<ProposalDTO[]> {
+  protected async fetch (): Promise<Proposal[]> {
     return this.findProposals()
   }
 }

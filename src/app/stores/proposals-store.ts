@@ -16,13 +16,14 @@
  */
 
 import { observable } from 'mobx'
-import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
+import { Proposal } from '../domain/proposal'
 
 class ProposalsStore {
   @observable
-  public proposals: ProposalDTO[] = []
+  public proposals: Proposal[] = []
 
   private proposalFetcher: ProposalsFetcher
 
