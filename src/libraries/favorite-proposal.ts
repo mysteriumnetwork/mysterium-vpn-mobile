@@ -17,26 +17,13 @@
 
 import Proposal from '../app/domain/proposal'
 import translations from '../app/translations'
-import { Countries } from './countries'
 
-class FavoriteProposal {
-  public readonly providerID: string
-  public readonly countryCode: string | null
-  public readonly name: string
+class FavoriteProposal extends Proposal {
   public readonly isFavorite: boolean
 
   constructor (proposal: Proposal, isFavorite: boolean) {
-    this.providerID = proposal.providerID
-    this.countryCode = proposal.countryCode
-    this.name = this.getCountryName(this.countryCode)
+    super(proposal.providerID, proposal.countryCode)
     this.isFavorite = isFavorite
-  }
-
-  private getCountryName (countryCode: string | null) {
-    if (countryCode === null) {
-      return translations.UNKNOWN
-    }
-    return Countries[countryCode] || translations.UNKNOWN
   }
 }
 
@@ -45,9 +32,12 @@ function compareFavoriteProposals (one: FavoriteProposal, other: FavoriteProposa
     return -1
   } else if (!one.isFavorite && other.isFavorite) {
     return 1
-  } else if (one.name > other.name) {
+  }
+  const oneName = one.countryName || translations.UNKNOWN
+  const otherName = other.countryName || translations.UNKNOWN
+  if (oneName > otherName) {
     return 1
-  } else if (one.name < other.name) {
+  } else if (oneName < oneName) {
     return -1
   }
   return 0

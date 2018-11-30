@@ -38,6 +38,6 @@ export class ProposalsFetcher extends FetcherBase<Proposal[]> {
     if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
       countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
     }
-    return { providerID: p.providerId, countryCode }
+    return new Proposal(p.providerId, countryCode)
   }
 }

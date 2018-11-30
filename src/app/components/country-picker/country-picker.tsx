@@ -116,7 +116,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
       return this.props.placeholder
     }
 
-    return this.state.selectedCountry.name
+    return this.state.selectedCountry.countryName || ''
   }
 
   private openCountryModal () {

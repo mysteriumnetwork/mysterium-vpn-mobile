@@ -65,7 +65,7 @@ class CountryList extends React.Component<ListProps, ListState> {
           <CountryFlag countryCode={country.countryCode}/>
         </Left>
         <Body>
-        <Text>{country.name}</Text>
+        <Text>{country.countryName}</Text>
         </Body>
         <Right>
           <Icon
@@ -90,7 +90,8 @@ class CountryList extends React.Component<ListProps, ListState> {
     }
 
     filteredCountries = filteredCountries.filter((country: ICountry) => {
-      return country.name.toLowerCase().includes(text.toLowerCase())
+      const name = country.countryName || ''
+      return name.toLowerCase().includes(text.toLowerCase())
     })
 
     return filteredCountries

@@ -23,6 +23,7 @@ import { compareFavoriteProposals, FavoriteProposal } from '../../libraries/favo
 import { FavoritesStorage } from '../../libraries/favorites-storage'
 import Proposal from '../domain/proposal'
 import styles from '../proposals-styles'
+import translations from '../translations'
 import ButtonFavorite from './button-favorite'
 
 type ProposalsDropdownProps = {
@@ -35,7 +36,7 @@ type ProposalsDropdownProps = {
 
 export default class ProposalsDropdown extends React.Component<ProposalsDropdownProps> {
   private static renderProposal (p: FavoriteProposal) {
-    const label = (p.isFavorite ? '* ' : '') + p.name
+    const label = (p.isFavorite ? '* ' : '') + (p.countryName || translations.UNKNOWN)
 
     return <Picker.Item key={p.providerID} label={label} value={p.providerID}/>
   }

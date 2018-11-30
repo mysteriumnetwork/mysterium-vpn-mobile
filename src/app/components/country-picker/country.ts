@@ -1,7 +1,7 @@
 interface ICountry {
-  name: string,
   providerID: string,
   countryCode: string | null,
+  countryName: string | null,
   isFavorite: boolean
 }
 
