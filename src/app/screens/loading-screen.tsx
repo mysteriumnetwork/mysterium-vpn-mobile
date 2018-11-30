@@ -21,7 +21,7 @@ import { View } from 'react-native'
 import styles from '../app-styles'
 import LogoBackground from '../components/logo-background'
 
-class Loading extends React.Component {
+class LoadingScreen extends React.Component {
   public render (): React.ReactNode {
     return (
       <View style={styles.container}>
@@ -31,4 +31,4 @@ class Loading extends React.Component {
   }
 }
 
-export default Loading
+export default LoadingScreen

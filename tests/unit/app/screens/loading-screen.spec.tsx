@@ -18,11 +18,11 @@
 
 import { shallow } from 'enzyme'
 import React from 'react'
-import Loading from '../../../../src/app/screens/loading'
+import LoadingScreen from '../../../../src/app/screens/loading-screen'
 
-describe('Loading', () => {
+describe('LoadingScreen', () => {
   it('matches snapshot', () => {
-    const wrapper = shallow(<Loading/>)
+    const wrapper = shallow(<LoadingScreen/>)
     expect(wrapper).toMatchSnapshot()
   })
 })

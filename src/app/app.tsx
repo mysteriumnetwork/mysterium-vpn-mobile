@@ -22,8 +22,8 @@ import AppLoader from './app-loader'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
-import Home from './screens/home'
-import Loading from './screens/loading'
+import HomeScreen from './screens/home-screen'
+import LoadingScreen from './screens/loading-screen'
 import ConnectionStore from './stores/connection-store'
 import VpnAppState from './vpn-app-state'
 
@@ -60,11 +60,11 @@ export default class App extends React.Component<AppProps> {
 
   public render (): ReactNode {
     if (!this.vpnAppState.isAppLoaded) {
-      return <Loading/>
+      return <LoadingScreen/>
     }
 
     return (
-      <Home
+      <HomeScreen
         tequilAPIDriver={this.tequilAPIDriver}
         connectionStore={this.connectionStore}
         vpnAppState={this.vpnAppState}

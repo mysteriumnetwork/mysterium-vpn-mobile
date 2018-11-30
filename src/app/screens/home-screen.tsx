@@ -44,7 +44,7 @@ type HomeProps = {
   favorites: Favorites
 }
 
-class Home extends React.Component<HomeProps> {
+class HomeScreen extends React.Component<HomeProps> {
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly connectionStore: ConnectionStore
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
@@ -105,4 +105,4 @@ class Home extends React.Component<HomeProps> {
   }
 }
 
-export default Home
+export default HomeScreen
