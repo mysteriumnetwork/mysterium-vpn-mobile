@@ -21,14 +21,12 @@ import { View } from 'react-native'
 import styles from '../app-styles'
 import LogoBackground from '../components/logo-background'
 
-class LoadingScreen extends React.Component {
-  public render (): React.ReactNode {
-    return (
-      <View style={styles.container}>
-        <LogoBackground/>
-      </View>
-    )
-  }
+const LoadingScreen: React.SFC = () => {
+  return (
+    <View style={styles.container}>
+      <LogoBackground/>
+    </View>
+  )
 }
 
 export default LoadingScreen
