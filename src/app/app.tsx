@@ -17,8 +17,11 @@
 
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
+import { View } from 'react-native'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
+import styles from './app-styles'
+import ErrorDropdown from './components/error-dropdown'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
@@ -59,19 +62,11 @@ export default class App extends React.Component<AppProps> {
   }
 
   public render (): ReactNode {
-    if (!this.vpnAppState.isAppLoaded) {
-      return <LoadingScreen/>
-    }
-
     return (
-      <HomeScreen
-        tequilAPIDriver={this.tequilAPIDriver}
-        connectionStore={this.connectionStore}
-        vpnAppState={this.vpnAppState}
-        errorDisplayDelegate={this.errorDisplayDelegate}
-        countryList={this.countryList}
-        favorites={this.favorites}
-      />
+      <View style={styles.app}>
+        {this.renderCurrentScreen()}
+        <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
+      </View>
     )
   }
 
@@ -83,4 +78,20 @@ export default class App extends React.Component<AppProps> {
       console.log('App loading failed', err)
     }
   }
+
+  private renderCurrentScreen (): ReactNode {
+    if (!this.vpnAppState.isAppLoaded) {
+      return <LoadingScreen/>
+    }
+    return (
+      <HomeScreen
+        tequilAPIDriver={this.tequilAPIDriver}
+        connectionStore={this.connectionStore}
+        vpnAppState={this.vpnAppState}
+        countryList={this.countryList}
+        favorites={this.favorites}
+      />
+    )
+  }
+
 }

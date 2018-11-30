@@ -23,7 +23,7 @@ import LogoBackground from '../components/logo-background'
 
 const LoadingScreen: React.SFC = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <LogoBackground/>
     </View>
   )

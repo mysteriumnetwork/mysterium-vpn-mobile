@@ -19,7 +19,8 @@ import { StyleSheet, ViewStyle } from 'react-native'
 import { STYLES } from '../styles'
 
 type AppStyles = {
-  container: ViewStyle,
+  app: ViewStyle,
+  screen: ViewStyle,
   controls: ViewStyle,
   footer: ViewStyle,
   imageBackground: ViewStyle,
@@ -28,9 +29,12 @@ type AppStyles = {
 }
 
 export default StyleSheet.create({
-  container: {
-    alignItems: 'center',
+  app: {
     backgroundColor: '#fff',
+    flex: 1
+  },
+  screen: {
+    alignItems: 'center',
     flex: 1
   },
   controls: {

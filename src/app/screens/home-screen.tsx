@@ -25,12 +25,10 @@ import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
 import { ICountry } from '../components/country-picker/country'
 import CountryPicker from '../components/country-picker/country-picker'
-import ErrorDropdown from '../components/error-dropdown'
 import LogoBackground from '../components/logo-background'
 import Stats from '../components/stats'
 import CountryList from '../countries/country-list'
 import Favorites from '../countries/favorites'
-import ErrorDisplayDelegate from '../errors/error-display-delegate'
 import ConnectionStore from '../stores/connection-store'
 import translations from '../translations'
 import VpnAppState from '../vpn-app-state'
@@ -39,7 +37,6 @@ type HomeProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
-  errorDisplayDelegate: ErrorDisplayDelegate,
   countryList: CountryList,
   favorites: Favorites
 }
@@ -48,14 +45,13 @@ const HomeScreen: React.SFC<HomeProps> = ({
   tequilAPIDriver,
   connectionStore,
   vpnAppState,
-  errorDisplayDelegate,
   countryList,
   favorites
 }) => {
   const connectionData = connectionStore.data
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <LogoBackground/>
 
       <ConnectionStatus status={connectionData.status}/>
@@ -87,8 +83,6 @@ const HomeScreen: React.SFC<HomeProps> = ({
           bytesSent={connectionData.connectionStatistics.bytesSent}
         />
       </View>
-
-      <ErrorDropdown ref={(ref: ErrorDropdown) => errorDisplayDelegate.errorDisplay = ref}/>
     </View>
   )
 }

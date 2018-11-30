@@ -20,7 +20,6 @@ ShallowWrapper {
       "children": <LogoBackground />,
       "style": Object {
         "alignItems": "center",
-        "backgroundColor": "#fff",
         "flex": 1,
       },
     },
@@ -45,7 +44,6 @@ ShallowWrapper {
         "children": <LogoBackground />,
         "style": Object {
           "alignItems": "center",
-          "backgroundColor": "#fff",
           "flex": 1,
         },
       },

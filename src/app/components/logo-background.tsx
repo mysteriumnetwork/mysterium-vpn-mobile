@@ -24,6 +24,7 @@ const LogoBackground: React.SFC = () => {
   return (
     <Image
       style={styles.imageBackground}
+      fadeDuration={0}
       source={require('../../assets/background-logo.png')}
       resizeMode="contain"
     />
