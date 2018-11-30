@@ -5,6 +5,7 @@ import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import ProposalsAdapter from './adapters/proposals-adapter'
 import App from './app'
 import AppLoader from './app-loader'
 import Connection from './core/connection'
@@ -24,7 +25,8 @@ class Root extends React.PureComponent {
   private readonly favoritesStore = new FavoritesStorage()
   private readonly connection = new Connection(this.api, this.tequilApiState)
   private readonly connectionStore = new ConnectionStore(this.connection)
-  private readonly proposalsStore = new ProposalsStore(this.api)
+  private readonly proposalsAdapter = new ProposalsAdapter(this.api)
+  private readonly proposalsStore = new ProposalsStore(this.proposalsAdapter)
   private readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.errorDisplayDelegate)
   private readonly countryList = new CountryList(this.proposalsStore, this.favoritesStore)

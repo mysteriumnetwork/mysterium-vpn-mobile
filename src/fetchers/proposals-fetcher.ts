@@ -15,29 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalDTO, ProposalQuery } from 'mysterium-tequilapi'
+import ProposalsAdapter from '../app/adapters/proposals-adapter'
 import Proposal from '../app/domain/proposal'
 import { FetcherBase } from './fetcher-base'
 
-type FindProposals = (query?: ProposalQuery) => Promise<ProposalDTO[]>
-
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {
-  constructor (private findProposals: FindProposals, update: (data: Proposal[]) => void) {
+  constructor (private proposalsAdapter: ProposalsAdapter, update: (data: Proposal[]) => void) {
     super('Proposals', update)
   }
 
   protected async fetch (): Promise<Proposal[]> {
-    const proposalsDTO = await this.findProposals()
-    return proposalsDTO.map(p => {
-      return this.proposalDtoToProposal(p)
-    })
-  }
-
-  private proposalDtoToProposal (p: ProposalDTO): Proposal {
-    let countryCode = null
-    if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
-      countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-    }
-    return new Proposal(p.providerId, countryCode)
+    return this.proposalsAdapter.findProposals()
   }
 }

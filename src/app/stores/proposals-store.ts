@@ -16,9 +16,9 @@
  */
 
 import { observable } from 'mobx'
-import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
+import ProposalsAdapter from '../adapters/proposals-adapter'
 import Proposal from '../domain/proposal'
 
 class ProposalsStore {
@@ -27,8 +27,8 @@ class ProposalsStore {
 
   private proposalFetcher: ProposalsFetcher
 
-  constructor (api: TequilapiClient) {
-    this.proposalFetcher = new ProposalsFetcher(api.findProposals.bind(api), proposals => {
+  constructor (proposalsAdapter: ProposalsAdapter) {
+    this.proposalFetcher = new ProposalsFetcher(proposalsAdapter, proposals => {
       this.proposals = proposals
     })
   }
