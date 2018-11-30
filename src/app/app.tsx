@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
@@ -47,8 +46,6 @@ export default class App extends React.Component<AppProps> {
   private readonly countryList: CountryList
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
-  @observable
-  private loaded: boolean
 
   constructor (props: AppProps) {
     super(props)
@@ -59,11 +56,10 @@ export default class App extends React.Component<AppProps> {
     this.countryList = props.countryList
     this.favorites = props.favorites
     this.appLoader = props.appLoader
-    this.loaded = false
   }
 
   public render (): ReactNode {
-    if (!this.loaded) {
+    if (!this.vpnAppState.isAppLoaded) {
       return <Loading/>
     }
 
@@ -82,7 +78,7 @@ export default class App extends React.Component<AppProps> {
   public async componentDidMount () {
     try {
       await this.appLoader.load()
-      this.loaded = true
+      this.vpnAppState.markAppAsLoaded()
     } catch (err) {
       console.log('App loading failed', err)
     }

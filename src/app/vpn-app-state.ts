@@ -15,9 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
 
 export default class VpnAppState {
+  @computed
+  public get isAppLoaded (): boolean {
+    return this._isAppLoaded
+  }
   @observable
   public selectedProviderId: string | null = null
+
+  @observable
+  private _isAppLoaded: boolean = false
+
+  @action
+  public markAppAsLoaded () {
+    this._isAppLoaded = true
+  }
 }
