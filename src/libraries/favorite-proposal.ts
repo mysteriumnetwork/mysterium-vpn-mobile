@@ -15,39 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalDTO } from 'mysterium-tequilapi'
+import Proposal from '../app/domain/proposal'
 import translations from '../app/translations'
 import { Countries } from './countries'
 
-class Proposal {
-  public name: string
-  public providerID: string
-  public countryCode: string
-  public isFavorite: boolean
+class FavoriteProposal {
+  public readonly providerID: string
+  public readonly countryCode: string | null
+  public readonly name: string
+  public readonly isFavorite: boolean
 
-  constructor (proposal: ProposalDTO, isFavorite: boolean) {
-    this.countryCode = this.getCountryCode(proposal)
+  constructor (proposal: Proposal, isFavorite: boolean) {
+    this.providerID = proposal.providerID
+    this.countryCode = proposal.countryCode
     this.name = this.getCountryName(this.countryCode)
-    this.providerID = proposal.providerId
     this.isFavorite = isFavorite
   }
 
-  private getCountryCode (proposal: ProposalDTO) {
-    let countryCode = ''
-
-    if (proposal.serviceDefinition && proposal.serviceDefinition.locationOriginate) {
-      countryCode = proposal.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+  private getCountryName (countryCode: string | null) {
+    if (countryCode === null) {
+      return translations.UNKNOWN
     }
-
-    return countryCode
-  }
-
-  private getCountryName (countryCode: string) {
     return Countries[countryCode] || translations.UNKNOWN
   }
 }
 
-function compareProposals (one: Proposal, other: Proposal): number {
+function compareFavoriteProposals (one: FavoriteProposal, other: FavoriteProposal): number {
   if (one.isFavorite && !other.isFavorite) {
     return -1
   } else if (!one.isFavorite && other.isFavorite) {
@@ -60,4 +53,4 @@ function compareProposals (one: Proposal, other: Proposal): number {
   return 0
 }
 
-export { Proposal, compareProposals }
+export { FavoriteProposal, compareFavoriteProposals }

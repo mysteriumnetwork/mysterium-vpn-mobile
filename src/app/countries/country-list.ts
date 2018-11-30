@@ -1,9 +1,9 @@
-import { ProposalDTO } from 'mysterium-tequilapi'
-import { compareProposals, Proposal } from '../../libraries/favorite-proposal'
+import { compareFavoriteProposals, FavoriteProposal } from '../../libraries/favorite-proposal'
 import { ICountry } from '../components/country-picker/country'
+import Proposal from '../domain/proposal'
 
 interface IProposalList {
-  proposals: ProposalDTO[]
+  proposals: Proposal[]
 }
 
 interface IFavoritesStorage {
@@ -21,16 +21,16 @@ class CountryList {
 
   public get countries (): ICountry[] {
     const proposals = this.proposalList.proposals
-      .map((dto: ProposalDTO) => this.dtoToProposal(dto))
-      .sort(compareProposals)
+      .map((proposal: Proposal) => this.proposalToFavoriteProposal(proposal))
+      .sort(compareFavoriteProposals)
 
     return proposals
   }
 
-  private dtoToProposal (dto: ProposalDTO): Proposal {
-    return new Proposal(
-      dto,
-      this.favorites.has(dto.providerId)
+  private proposalToFavoriteProposal (proposal: Proposal): FavoriteProposal {
+    return new FavoriteProposal(
+      proposal,
+      this.favorites.has(proposal.providerID)
     )
   }
 }

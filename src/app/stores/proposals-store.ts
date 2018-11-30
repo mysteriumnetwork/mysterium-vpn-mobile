@@ -19,7 +19,7 @@ import { observable } from 'mobx'
 import { TequilapiClient } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
-import { Proposal } from '../domain/proposal'
+import Proposal from '../domain/proposal'
 
 class ProposalsStore {
   @observable

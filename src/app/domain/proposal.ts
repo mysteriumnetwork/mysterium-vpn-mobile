@@ -16,17 +16,9 @@
  *
  */
 
-export type Proposal = {
-  id: string
-  providerId: string
-  serviceType: string
-  serviceDefinition?: ServiceDefinition
+type Proposal = {
+  providerID: string
+  countryCode: string | null
 }
 
-type ServiceDefinition = {
-  locationOriginate?: LocationDTO
-}
-
-type LocationDTO = {
-  country: string
-}
+export default Proposal

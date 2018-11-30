@@ -16,25 +16,25 @@
  */
 
 import { action, computed } from 'mobx'
-import { ProposalDTO } from 'mysterium-tequilapi'
 import React, { ReactNode } from 'react'
 import { Picker, Text, View } from 'react-native'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
-import { compareProposals, Proposal } from '../../libraries/favorite-proposal'
+import { compareFavoriteProposals, FavoriteProposal } from '../../libraries/favorite-proposal'
 import { FavoritesStorage } from '../../libraries/favorites-storage'
+import Proposal from '../domain/proposal'
 import styles from '../proposals-styles'
 import ButtonFavorite from './button-favorite'
 
 type ProposalsDropdownProps = {
   favoritesStore: FavoritesStorage,
   proposalsFetcher: ProposalsFetcher,
-  proposals: ProposalDTO[],
+  proposals: Proposal[],
   selectedProviderId: string | null,
   setSelectedProviderId: (newId: string) => void
 }
 
 export default class ProposalsDropdown extends React.Component<ProposalsDropdownProps> {
-  private static renderProposal (p: Proposal) {
+  private static renderProposal (p: FavoriteProposal) {
     const label = (p.isFavorite ? '* ' : '') + p.name
 
     return <Picker.Item key={p.providerID} label={label} value={p.providerID}/>
@@ -72,10 +72,10 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
   }
 
   @computed
-  private get proposalsSorted (): Proposal[] {
+  private get proposalsSorted (): FavoriteProposal[] {
     return this.props.proposals
-      .map((p: ProposalDTO) => new Proposal(p, this.props.favoritesStore.has(p.providerId)))
-      .sort(compareProposals)
+      .map((p: Proposal) => new FavoriteProposal(p, this.props.favoritesStore.has(p.providerID)))
+      .sort(compareFavoriteProposals)
   }
 
   private get isFavoriteSelected (): boolean {
@@ -88,7 +88,7 @@ export default class ProposalsDropdown extends React.Component<ProposalsDropdown
     const stateProposals = this.props.proposals
     const selectedProviderId = this.props.selectedProviderId
     const stateProposalsIncludeSelectedProposal = stateProposals
-      && stateProposals.some((p) => p.providerId === selectedProviderId)
+      && stateProposals.some((p) => p.providerID === selectedProviderId)
 
     if (stateProposals.length && stateProposals[0]) {
       if (!selectedProviderId || !stateProposalsIncludeSelectedProposal) {

@@ -16,7 +16,7 @@
  */
 
 import { ProposalDTO, ProposalQuery } from 'mysterium-tequilapi'
-import { Proposal } from '../app/domain/proposal'
+import Proposal from '../app/domain/proposal'
 import { FetcherBase } from './fetcher-base'
 
 type FindProposals = (query?: ProposalQuery) => Promise<ProposalDTO[]>
@@ -27,6 +27,17 @@ export class ProposalsFetcher extends FetcherBase<Proposal[]> {
   }
 
   protected async fetch (): Promise<Proposal[]> {
-    return this.findProposals()
+    const proposalsDTO = await this.findProposals()
+    return proposalsDTO.map(p => {
+      return this.proposalDtoToProposal(p)
+    })
+  }
+
+  private proposalDtoToProposal (p: ProposalDTO): Proposal {
+    let countryCode = null
+    if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
+      countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+    }
+    return { providerID: p.providerId, countryCode }
   }
 }

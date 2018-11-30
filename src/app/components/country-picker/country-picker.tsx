@@ -72,7 +72,7 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
               <TouchableOpacity style={styles.pickerButton} onPress={() => this.openCountryModal()}>
                 <Grid>
                   <Col size={15} style={styles.countryFlagBox}>
-                    <CountryFlag countryCode={this.countryCode}/>
+                    <CountryFlag countryCode={this.countryCode || ''}/>
                   </Col>
 
                   <Col size={90} style={styles.countryNameBox}>
@@ -104,7 +104,11 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
       return null
     }
 
-    return this.state.selectedCountry.countryCode.toLowerCase()
+    const code = this.state.selectedCountry.countryCode
+    if (code === null) {
+      return ''
+    }
+    return code.toLowerCase()
   }
 
   private get countryName (): string {
