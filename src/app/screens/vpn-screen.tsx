@@ -41,7 +41,7 @@ type HomeProps = {
   favorites: Favorites
 }
 
-const HomeScreen: React.SFC<HomeProps> = ({
+const VpnScreen: React.SFC<HomeProps> = ({
   tequilAPIDriver,
   connectionStore,
   vpnAppState,
@@ -87,4 +87,4 @@ const HomeScreen: React.SFC<HomeProps> = ({
   )
 }
 
-export default HomeScreen
+export default VpnScreen

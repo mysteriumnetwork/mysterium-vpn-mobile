@@ -25,8 +25,8 @@ import ErrorDropdown from './components/error-dropdown'
 import CountryList from './countries/country-list'
 import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
-import HomeScreen from './screens/home-screen'
 import LoadingScreen from './screens/loading-screen'
+import VpnScreen from './screens/vpn-screen'
 import ConnectionStore from './stores/connection-store'
 import VpnAppState from './vpn-app-state'
 
@@ -84,7 +84,7 @@ export default class App extends React.Component<AppProps> {
       return <LoadingScreen/>
     }
     return (
-      <HomeScreen
+      <VpnScreen
         tequilAPIDriver={this.tequilAPIDriver}
         connectionStore={this.connectionStore}
         vpnAppState={this.vpnAppState}
