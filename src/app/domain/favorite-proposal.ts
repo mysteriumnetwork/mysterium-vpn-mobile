@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Proposal from '../app/domain/proposal'
-import translations from '../app/translations'
+import translations from '../translations'
+import Proposal from './proposal'
 
 class FavoriteProposal extends Proposal {
   public readonly isFavorite: boolean

@@ -1,5 +1,5 @@
-import { compareFavoriteProposals, FavoriteProposal } from '../../libraries/favorite-proposal'
 import { ICountry } from '../components/country-picker/country'
+import { compareFavoriteProposals, FavoriteProposal } from '../domain/favorite-proposal'
 import Proposal from '../domain/proposal'
 
 interface IProposalList {
