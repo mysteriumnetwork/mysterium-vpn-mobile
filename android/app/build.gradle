@@ -168,9 +168,9 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-fabric')
+    implementation project(':react-native-fabric')
     compile project(':react-native-vector-icons')
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
+    implementation project('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
       transitive = true;
     }
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
