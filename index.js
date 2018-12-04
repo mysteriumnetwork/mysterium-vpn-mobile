@@ -16,13 +16,14 @@
  */
 /** @format */
 
-import {AppRegistry} from 'react-native'
+import { AppRegistry } from 'react-native'
 import Root from './src/app/root'
-import {name as appName} from './app.json'
+import { name as appName } from './app.json'
+
+import { setupErrorHandlers } from './utils/error-reporting'
 
 if (!__DEV__) {
-  const errorReporting = require('./utils/error-reporting');
-  errorReporting.setupErrorHandlers()
+  setupErrorHandlers()
 }
 
 AppRegistry.registerComponent(appName, () => Root)

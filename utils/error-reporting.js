@@ -14,4 +14,4 @@ const setupErrorHandlers = () => {
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-module.exports.setupErrorHandlers = setupErrorHandlers
+export { setupErrorHandlers }
