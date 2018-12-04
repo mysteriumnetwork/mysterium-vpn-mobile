@@ -21,6 +21,10 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+       <meta-data
+         android:name="io.fabric.ApiKey"
+         android:value="c614c88920a993fbd6030ed842b48214b0ebc689"
+       />
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <service android:name="network.mysterium.service.core.MysteriumAndroidCoreService"
         android:permission="android.permission.BIND_VPN_SERVICE">
@@ -29,5 +33,6 @@
           </intent-filter>
       </service>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
