@@ -49,6 +49,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     Fabric.with(this, new Crashlytics());
+    Crashlytics.setInt("android_sdk_int", android.os.Build.VERSION.SDK_INT);
+
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }
