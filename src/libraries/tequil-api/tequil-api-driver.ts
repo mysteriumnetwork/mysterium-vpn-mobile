@@ -44,7 +44,7 @@ export default class TequilApiDriver {
    */
   public async connect (selectedProviderId: string): Promise<void> {
     if (!this.tequilApiState.identityId) {
-      console.error('Not enough data to connect', this.tequilApiState)
+      console.error('Identity required for connect is not set', this.tequilApiState)
       return
     }
 

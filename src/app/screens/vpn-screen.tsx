@@ -16,6 +16,7 @@
  *
  */
 
+import { observer } from 'mobx-react'
 import React from 'react'
 import { Text, View } from 'react-native'
 import { CONFIG } from '../../config'
@@ -41,50 +42,70 @@ type HomeProps = {
   favorites: Favorites
 }
 
-const VpnScreen: React.SFC<HomeProps> = ({
-  tequilAPIDriver,
-  connectionStore,
-  vpnAppState,
-  proposalList,
-  favorites
-}) => {
-  const connectionData = connectionStore.data
+@observer
+class VpnScreen extends React.Component<HomeProps> {
+  private readonly tequilAPIDriver: TequilApiDriver
+  private readonly connectionStore: ConnectionStore
+  private readonly vpnAppState: VpnAppState
+  private readonly proposalList: ProposalList
+  private readonly favorites: Favorites
 
-  return (
-    <View style={styles.screen}>
-      <LogoBackground/>
+  constructor (props: HomeProps) {
+    super(props)
+    this.tequilAPIDriver = props.tequilAPIDriver
+    this.connectionStore = props.connectionStore
+    this.vpnAppState = props.vpnAppState
+    this.proposalList = props.proposalList
+    this.favorites = props.favorites
+  }
 
-      <ConnectionStatus status={connectionData.status}/>
+  public render () {
+    const connectionData = this.connectionStore.data
 
-      <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+    return (
+      <View style={styles.screen}>
+        <LogoBackground/>
 
-      <View style={styles.controls}>
-        <View style={styles.proposalPicker}>
-          <ProposalPicker
-            placeholder={translations.COUNTRY_PICKER_LABEL}
-            proposals={proposalList.proposals}
-            onSelect={(proposal: IProposal) => vpnAppState.selectedProviderId = proposal.providerID}
-            onFavoriteToggle={() => favorites.toggle(vpnAppState.selectedProviderId)}
-            isFavoriteSelected={favorites.isFavored(vpnAppState.selectedProviderId)}
+        <ConnectionStatus status={connectionData.status}/>
+
+        <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+
+        <View style={styles.controls}>
+          <View style={styles.proposalPicker}>
+            <ProposalPicker
+              placeholder={translations.COUNTRY_PICKER_LABEL}
+              proposals={this.proposalList.proposals}
+              onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
+              onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
+              isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+            />
+          </View>
+
+          <ButtonConnect
+            connectionStatus={connectionData.status}
+            connect={() => this.connect()}
+            disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
           />
         </View>
 
-        <ButtonConnect
-          connectionStatus={connectionData.status}
-          connect={tequilAPIDriver.connect.bind(tequilAPIDriver, vpnAppState.selectedProviderId)}
-          disconnect={tequilAPIDriver.disconnect.bind(tequilAPIDriver)}
-        />
+        <View style={styles.footer}>
+          <Stats
+            duration={connectionData.connectionStatistics.duration}
+            bytesReceived={connectionData.connectionStatistics.bytesReceived}
+            bytesSent={connectionData.connectionStatistics.bytesSent}
+          />
+        </View>
       </View>
+    )
+  }
 
-      <View style={styles.footer}>
-        <Stats
-          duration={connectionData.connectionStatistics.duration}
-          bytesReceived={connectionData.connectionStatistics.bytesReceived}
-          bytesSent={connectionData.connectionStatistics.bytesSent}
-        />
-      </View>
-    </View>
-  )
+  private async connect () {
+    const providerId = this.vpnAppState.selectedProviderId
+    if (providerId === null) {
+      throw Error('Provider is not selected')
+    }
+    await this.tequilAPIDriver.connect(providerId)
+  }
 }
 
 export default VpnScreen
