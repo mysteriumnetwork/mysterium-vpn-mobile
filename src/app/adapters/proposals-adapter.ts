@@ -25,18 +25,16 @@ class ProposalsAdapter {
     // TODO: remove ts-ignore once mysterium-tequilapi findProposals definition is fixed
     // @ts-ignore
     const proposalsDTO: ProposalDTO[] = await this.tequilapiClient.findProposals()
-    return proposalsDTO.map(p => {
-      return this.dtoToModel(p)
-    })
+    return proposalsDTO.map(proposalDtoToModel)
   }
+}
 
-  private dtoToModel (p: ProposalDTO): Proposal {
-    let countryCode = null
-    if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
-      countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
-    }
-    return new Proposal(p.providerId, countryCode)
+function proposalDtoToModel (p: ProposalDTO): Proposal {
+  let countryCode = null
+  if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
+    countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
   }
+  return new Proposal(p.providerId, countryCode)
 }
 
 export default ProposalsAdapter
