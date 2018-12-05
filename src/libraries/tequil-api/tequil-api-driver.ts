@@ -18,8 +18,8 @@
 import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
 import Connection from '../../app/core/connection'
 
-import IErrorDisplay from '../../app/errors/error-display'
-import errors from '../../app/errors/errors'
+import IMessageDisplay from '../../app/messages/message-display'
+import errors from '../../app/messages/messages'
 import { CONFIG } from '../../config'
 import TequilApiState from './tequil-api-state'
 
@@ -34,7 +34,7 @@ export default class TequilApiDriver {
     private api: TequilapiClient,
     apiState: TequilApiState,
     private connection: Connection,
-    private errorDisplay: IErrorDisplay) {
+    private messageDisplay: IMessageDisplay) {
     this.tequilApiState = apiState
   }
 
@@ -61,7 +61,7 @@ export default class TequilApiDriver {
     } catch (e) {
       if (isConnectionCancelled(e)) return
 
-      this.errorDisplay.showError(errors.CONNECT_FAILED)
+      this.messageDisplay.showError(errors.CONNECT_FAILED)
       console.warn('api.connectionCreate failed', e)
     }
   }
@@ -77,7 +77,7 @@ export default class TequilApiDriver {
       await this.api.connectionCancel()
       console.log('disconnected')
     } catch (e) {
-      this.errorDisplay.showError(errors.DISCONNECT_FAILED)
+      this.messageDisplay.showError(errors.DISCONNECT_FAILED)
       console.warn('api.connectionCancel failed', e)
     }
   }

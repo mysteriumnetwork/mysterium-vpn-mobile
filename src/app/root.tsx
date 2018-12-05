@@ -9,8 +9,8 @@ import ProposalsAdapter from './adapters/proposals-adapter'
 import App from './app'
 import AppLoader from './app-loader'
 import Connection from './core/connection'
-import ErrorDisplayDelegate from './errors/error-display-delegate'
 import Logger from './logger'
+import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
 import ProposalList from './proposals/proposal-list'
 import ConnectionStore from './stores/connection-store'
@@ -21,14 +21,14 @@ class Root extends React.PureComponent {
   private readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
   private readonly tequilApiState = new TequilApiState()
   private readonly vpnAppState = new VpnAppState()
-  private errorDisplayDelegate = new ErrorDisplayDelegate()
+  private readonly messageDisplayDelegate = new MessageDisplayDelegate()
   private readonly favoritesStore = new FavoritesStorage()
   private readonly connection = new Connection(this.api, this.tequilApiState)
   private readonly connectionStore = new ConnectionStore(this.connection)
   private readonly proposalsAdapter = new ProposalsAdapter(this.api)
   private readonly proposalsStore = new ProposalsStore(this.proposalsAdapter)
   private readonly tequilAPIDriver =
-    new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.errorDisplayDelegate)
+    new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
   private readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   private readonly favorites = new Favorites(this.favoritesStore)
   private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
@@ -46,7 +46,7 @@ class Root extends React.PureComponent {
           tequilAPIDriver={this.tequilAPIDriver}
           connectionStore={this.connectionStore}
           vpnAppState={this.vpnAppState}
-          errorDisplayDelegate={this.errorDisplayDelegate}
+          messageDisplayDelegate={this.messageDisplayDelegate}
           proposalList={this.proposalList}
           favorites={this.favorites}
           appLoader={this.appLoader}

@@ -28,6 +28,8 @@ import LogoBackground from '../components/logo-background'
 import { IProposal } from '../components/proposal-picker/proposal'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
+import IMessageDisplay from '../messages/message-display'
+import errors from '../messages/messages'
 import Favorites from '../proposals/favorites'
 import ProposalList from '../proposals/proposal-list'
 import ConnectionStore from '../stores/connection-store'
@@ -39,7 +41,8 @@ type HomeProps = {
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
   proposalList: ProposalList,
-  favorites: Favorites
+  favorites: Favorites,
+  messageDisplay: IMessageDisplay
 }
 
 @observer
@@ -49,6 +52,7 @@ class VpnScreen extends React.Component<HomeProps> {
   private readonly vpnAppState: VpnAppState
   private readonly proposalList: ProposalList
   private readonly favorites: Favorites
+  private readonly messageDisplay: IMessageDisplay
 
   constructor (props: HomeProps) {
     super(props)
@@ -57,6 +61,7 @@ class VpnScreen extends React.Component<HomeProps> {
     this.vpnAppState = props.vpnAppState
     this.proposalList = props.proposalList
     this.favorites = props.favorites
+    this.messageDisplay = props.messageDisplay
   }
 
   public render () {
@@ -102,7 +107,8 @@ class VpnScreen extends React.Component<HomeProps> {
   private async connect () {
     const providerId = this.vpnAppState.selectedProviderId
     if (providerId === null) {
-      throw Error('Provider is not selected')
+      this.messageDisplay.showInfo(errors.COUNTRY_NOT_SELECTED)
+      return
     }
     await this.tequilAPIDriver.connect(providerId)
   }
