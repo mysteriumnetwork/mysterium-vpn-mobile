@@ -43,6 +43,23 @@ Run app on default device (connected or emulator)
 yarn android
 ```
 
+#### Build release locally
+
+- Generate Javascript bundle:
+
+```bash
+yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+```
+
+- Generate APK release:
+    - Open Android Studio
+    - Open menu "Build" -> "Generate Signed Bundle / APK" and build APK using generated key
+    
+or
+
+- `cd android`
+- `./gradlew assembleRelease`
+
 ### iOS
 
 * Setup crash reporting:
