@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import translations from '../translations'
 import Proposal from './proposal'
 
 class FavoriteProposal extends Proposal {
@@ -27,20 +26,4 @@ class FavoriteProposal extends Proposal {
   }
 }
 
-function compareFavoriteProposals (one: FavoriteProposal, other: FavoriteProposal): number {
-  if (one.isFavorite && !other.isFavorite) {
-    return -1
-  } else if (!one.isFavorite && other.isFavorite) {
-    return 1
-  }
-  const oneName = one.countryName || translations.UNKNOWN
-  const otherName = other.countryName || translations.UNKNOWN
-  if (oneName > otherName) {
-    return 1
-  } else if (oneName < oneName) {
-    return -1
-  }
-  return 0
-}
-
-export { FavoriteProposal, compareFavoriteProposals }
+export { FavoriteProposal }

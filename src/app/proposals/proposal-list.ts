@@ -1,6 +1,7 @@
 import { IProposal } from '../components/proposal-picker/proposal'
-import { compareFavoriteProposals, FavoriteProposal } from '../domain/favorite-proposal'
+import { FavoriteProposal } from '../domain/favorite-proposal'
 import Proposal from '../domain/proposal'
+import translations from '../translations'
 
 interface IProposalList {
   proposals: Proposal[]
@@ -33,6 +34,22 @@ class ProposalList {
       this.favorites.has(proposal.providerID)
     )
   }
+}
+
+function compareFavoriteProposals (one: FavoriteProposal, other: FavoriteProposal): number {
+  if (one.isFavorite && !other.isFavorite) {
+    return -1
+  } else if (!one.isFavorite && other.isFavorite) {
+    return 1
+  }
+  const oneName = one.countryName || translations.UNKNOWN
+  const otherName = other.countryName || translations.UNKNOWN
+  if (oneName > otherName) {
+    return 1
+  } else if (oneName < oneName) {
+    return -1
+  }
+  return 0
 }
 
 export default ProposalList
