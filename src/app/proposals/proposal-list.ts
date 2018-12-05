@@ -1,4 +1,4 @@
-import { ICountry } from '../components/country-picker/country'
+import { IProposal } from '../components/proposal-picker/proposal'
 import { compareFavoriteProposals, FavoriteProposal } from '../domain/favorite-proposal'
 import Proposal from '../domain/proposal'
 
@@ -10,7 +10,7 @@ interface IFavoritesStorage {
   has (id: string): boolean
 }
 
-class CountryList {
+class ProposalList {
   protected proposalList: IProposalList
   protected favorites: IFavoritesStorage
 
@@ -19,7 +19,7 @@ class CountryList {
     this.favorites = favorites
   }
 
-  public get countries (): ICountry[] {
+  public get proposals (): IProposal[] {
     const proposals = this.proposalList.proposals
       .map((proposal: Proposal) => this.proposalToFavoriteProposal(proposal))
       .sort(compareFavoriteProposals)
@@ -35,4 +35,4 @@ class CountryList {
   }
 }
 
-export default CountryList
+export default ProposalList

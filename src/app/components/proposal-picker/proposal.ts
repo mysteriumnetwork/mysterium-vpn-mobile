@@ -1,4 +1,4 @@
-interface ICountry {
+interface IProposal {
   providerID: string,
   countryCode: string | null,
   countryName: string | null,
@@ -6,5 +6,5 @@ interface ICountry {
 }
 
 export {
-  ICountry
+  IProposal
 }

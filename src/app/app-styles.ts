@@ -25,7 +25,7 @@ type AppStyles = {
   footer: ViewStyle,
   imageBackground: ViewStyle,
   textIp: ViewStyle,
-  countryPicker: ViewStyle
+  proposalPicker: ViewStyle
 }
 
 export default StyleSheet.create({
@@ -56,7 +56,7 @@ export default StyleSheet.create({
     fontSize: STYLES.FONT_NORMAL,
     color: STYLES.COLOR_SECONDARY
   },
-  countryPicker: {
+  proposalPicker: {
     width: '90%',
     marginTop: 10,
     marginBottom: 10

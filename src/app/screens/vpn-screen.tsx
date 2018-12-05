@@ -23,12 +23,12 @@ import TequilApiDriver from '../../libraries/tequil-api/tequil-api-driver'
 import styles from '../app-styles'
 import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
-import { ICountry } from '../components/country-picker/country'
-import CountryPicker from '../components/country-picker/country-picker'
 import LogoBackground from '../components/logo-background'
+import { IProposal } from '../components/proposal-picker/proposal'
+import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
-import CountryList from '../countries/country-list'
-import Favorites from '../countries/favorites'
+import Favorites from '../proposals/favorites'
+import ProposalList from '../proposals/proposal-list'
 import ConnectionStore from '../stores/connection-store'
 import translations from '../translations'
 import VpnAppState from '../vpn-app-state'
@@ -37,7 +37,7 @@ type HomeProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
-  countryList: CountryList,
+  proposalList: ProposalList,
   favorites: Favorites
 }
 
@@ -45,7 +45,7 @@ const VpnScreen: React.SFC<HomeProps> = ({
   tequilAPIDriver,
   connectionStore,
   vpnAppState,
-  countryList,
+  proposalList,
   favorites
 }) => {
   const connectionData = connectionStore.data
@@ -59,11 +59,11 @@ const VpnScreen: React.SFC<HomeProps> = ({
       <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
       <View style={styles.controls}>
-        <View style={styles.countryPicker}>
-          <CountryPicker
+        <View style={styles.proposalPicker}>
+          <ProposalPicker
             placeholder={translations.COUNTRY_PICKER_LABEL}
-            countries={countryList.countries}
-            onSelect={(country: ICountry) => vpnAppState.selectedProviderId = country.providerID}
+            proposals={proposalList.proposals}
+            onSelect={(proposal: IProposal) => vpnAppState.selectedProviderId = proposal.providerID}
             onFavoriteToggle={() => favorites.toggle(vpnAppState.selectedProviderId)}
             isFavoriteSelected={favorites.isFavored(vpnAppState.selectedProviderId)}
           />

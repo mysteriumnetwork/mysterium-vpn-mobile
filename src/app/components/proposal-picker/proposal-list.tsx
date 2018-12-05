@@ -1,28 +1,39 @@
 import {
-  Body, Button, Container, Content, Header, Icon,
-  Input, Item, Left, List, ListItem, Right, Text
+  Body,
+  Button,
+  Container,
+  Content,
+  Header,
+  Icon,
+  Input,
+  Item,
+  Left,
+  List,
+  ListItem,
+  Right,
+  Text
 } from 'native-base'
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import translations from '../../translations'
-import { ICountry } from './country'
 import CountryFlag from './country-flag'
+import { IProposal } from './proposal'
 
 type ListProps = {
-  countries: ICountry[],
+  proposals: IProposal[],
   onClose: () => void,
-  onSelect: (country: ICountry) => void
+  onSelect: (proposal: IProposal) => void
 }
 
 type ListState = {
-  filteredCountries: ICountry[]
+  filteredProposals: IProposal[]
 }
 
-class CountryList extends React.Component<ListProps, ListState> {
+class ProposalList extends React.Component<ListProps, ListState> {
   constructor (props: ListProps) {
     super(props)
 
-    this.state = { filteredCountries: this.props.countries }
+    this.state = { filteredProposals: this.props.proposals }
   }
 
   public render (): ReactNode {
@@ -46,30 +57,30 @@ class CountryList extends React.Component<ListProps, ListState> {
         </Header>
         <Content>
           <List>
-            {this.state.filteredCountries.map((country: ICountry) => this.renderCountry(country))}
+            {this.state.filteredProposals.map((proposal: IProposal) => this.renderProposal(proposal))}
           </List>
         </Content>
       </Container>
     )
   }
 
-  private renderCountry (country: ICountry): ReactNode {
+  private renderProposal (proposal: IProposal): ReactNode {
     return (
       <ListItem
         style={styles.listItem}
         icon={true}
-        key={country.providerID}
-        onPress={() => this.props.onSelect(country)}
+        key={proposal.providerID}
+        onPress={() => this.props.onSelect(proposal)}
       >
         <Left style={styles.flagImage}>
-          <CountryFlag countryCode={country.countryCode}/>
+          <CountryFlag countryCode={proposal.countryCode}/>
         </Left>
         <Body>
-        <Text>{country.countryName}</Text>
+        <Text>{proposal.countryName}</Text>
         </Body>
         <Right>
           <Icon
-            name={country.isFavorite ? 'md-star' : 'md-star-outline'}
+            name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
           />
         </Right>
       </ListItem>
@@ -77,24 +88,24 @@ class CountryList extends React.Component<ListProps, ListState> {
   }
 
   private onSearchValueChange (text: string) {
-    const filteredCountries = this.filterCountries(text)
+    const filteredProposals = this.filteredProposals(text)
 
-    this.setState({ filteredCountries })
+    this.setState({ filteredProposals })
   }
 
-  private filterCountries (text: string): ICountry[] {
-    let filteredCountries = this.props.countries
+  private filteredProposals (text: string): IProposal[] {
+    let filteredProposals = this.props.proposals
 
     if (!text.trim().length) {
-      return filteredCountries
+      return filteredProposals
     }
 
-    filteredCountries = filteredCountries.filter((country: ICountry) => {
-      const name = country.countryName || ''
+    filteredProposals = filteredProposals.filter((proposal: IProposal) => {
+      const name = proposal.countryName || ''
       return name.toLowerCase().includes(text.toLowerCase())
     })
 
-    return filteredCountries
+    return filteredProposals
   }
 }
 
@@ -137,4 +148,4 @@ const styles: any = StyleSheet.create({
   }
 })
 
-export default CountryList
+export default ProposalList
