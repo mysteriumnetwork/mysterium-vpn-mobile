@@ -15,14 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalDTO, ProposalQuery, TequilapiClient } from 'mysterium-tequilapi'
+import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
 import Proposal from '../domain/proposal'
 
 class ProposalsAdapter {
   constructor (private tequilapiClient: TequilapiClient) {}
 
   public async findProposals (): Promise<Proposal[]> {
-    const proposalsDTO = await this.tequilapiClient.findProposals(new ProposalQuery())
+    // TODO: remove ts-ignore once mysterium-tequilapi findProposals definition is fixed
+    // @ts-ignore
+    const proposalsDTO: ProposalDTO[] = await this.tequilapiClient.findProposals()
     return proposalsDTO.map(p => {
       return this.dtoToModel(p)
     })
