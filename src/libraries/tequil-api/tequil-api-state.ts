@@ -15,16 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable, reaction } from 'mobx'
-import { Crashlytics } from 'react-native-fabric'
+import { observable } from 'mobx'
 
 export default class TequilApiState {
   @observable
   public identityId?: string
-
-  private reaction = reaction(
-    () => this.identityId,
-    (unlockedID: string | undefined) => {
-      if (unlockedID) Crashlytics.setUserIdentifier(unlockedID)
-    })
 }
