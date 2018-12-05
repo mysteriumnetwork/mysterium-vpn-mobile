@@ -21,7 +21,7 @@ class FavoriteProposal extends Proposal {
   public readonly isFavorite: boolean
 
   constructor (proposal: Proposal, isFavorite: boolean) {
-    super(proposal.providerID, proposal.countryCode)
+    super(proposal.providerID, proposal.countryCode, proposal.countryName)
     this.isFavorite = isFavorite
   }
 }

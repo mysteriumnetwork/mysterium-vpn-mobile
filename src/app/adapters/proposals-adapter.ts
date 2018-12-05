@@ -16,6 +16,7 @@
  */
 
 import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { Countries } from '../../libraries/countries'
 import Proposal from '../domain/proposal'
 
 class ProposalsAdapter {
@@ -30,11 +31,23 @@ class ProposalsAdapter {
 }
 
 function proposalDtoToModel (p: ProposalDTO): Proposal {
-  let countryCode = null
+  const countryCode = getCountryCode(p)
+  const countryName = getCountryName(countryCode)
+  return new Proposal(p.providerId, countryCode, countryName)
+}
+
+function getCountryCode (p: ProposalDTO): string | null {
   if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
-    countryCode = p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
+    return p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
   }
-  return new Proposal(p.providerId, countryCode)
+  return null
+}
+
+function getCountryName (countryCode: string | null) {
+  if (countryCode === null) {
+    return null
+  }
+  return Countries[countryCode]
 }
 
 export default ProposalsAdapter

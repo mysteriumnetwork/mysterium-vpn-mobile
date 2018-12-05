@@ -16,24 +16,15 @@
  *
  */
 
-import { Countries } from '../../libraries/countries'
-
 class Proposal {
   public readonly providerID: string
   public readonly countryCode: string | null
   public readonly countryName: string | null
 
-  constructor (providerID: string, countryCode: string | null) {
+  constructor (providerID: string, countryCode: string | null, countryName: string | null) {
     this.providerID = providerID
     this.countryCode = countryCode
-    this.countryName = this.getCountryName(this.countryCode)
-  }
-
-  private getCountryName (countryCode: string | null) {
-    if (countryCode === null) {
-      return null
-    }
-    return Countries[countryCode]
+    this.countryName = countryName
   }
 }
 
