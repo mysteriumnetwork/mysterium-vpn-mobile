@@ -15,23 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
 
 class ConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {}
 
-  // TODO: return model
-  public async connect (consumerId: string, providerId: string): Promise<ConnectionStatusDTO> {
-    return this.tequilapiClient.connectionCreate({
-      consumerId,
-      providerId,
-      providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
-    })
+  public async connect (consumerId: string, providerId: string) {
+    try {
+      const connection = this.tequilapiClient.connectionCreate({
+        consumerId,
+        providerId,
+        providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
+      })
+      console.log(`Connect returned status: ${connection}`)
+    } catch (e) {
+      if (isConnectionCancelled(e)) {
+        console.log('Connect was cancelled')
+        return
+      }
+      throw e
+    }
   }
 
   public async disconnect (): Promise<void> {
     await this.tequilapiClient.connectionCancel()
   }
+}
+
+function isConnectionCancelled (e: TequilapiError) {
+  return e.isRequestClosedError
 }
 
 export default ConnectionAdapter

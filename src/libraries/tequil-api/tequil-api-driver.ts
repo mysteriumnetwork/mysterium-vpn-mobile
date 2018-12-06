@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
-import ConnectionAdapter from '../../app/adapters/connection-adapter'
+import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
 import Connection from '../../app/core/connection'
 
 import IMessageDisplay from '../../app/messages/message-display'
@@ -30,7 +29,6 @@ import TequilApiState from './tequil-api-state'
 
 export default class TequilApiDriver {
   public readonly tequilApiState: TequilApiState
-  private readonly connectionAdapter: ConnectionAdapter
 
   constructor (
     private api: TequilapiClient,
@@ -38,7 +36,6 @@ export default class TequilApiDriver {
     private connection: Connection,
     private messageDisplay: IMessageDisplay) {
     this.tequilApiState = apiState
-    this.connectionAdapter = new ConnectionAdapter(this.api)
   }
 
   /***
@@ -52,15 +49,9 @@ export default class TequilApiDriver {
       return
     }
 
-    this.connection.resetIP()
-    this.connection.setStatusToConnecting()
-
     try {
-      const connection = await this.connectionAdapter.connect(consumerId, selectedProviderId)
-      console.log(`Connected: ${connection}`)
+      await this.connection.connect(consumerId, selectedProviderId)
     } catch (e) {
-      if (isConnectionCancelled(e)) return
-
       this.messageDisplay.showError(messages.CONNECT_FAILED)
       console.warn('Connect failed', e)
     }
@@ -70,15 +61,11 @@ export default class TequilApiDriver {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.connection.resetIP()
-    this.connection.setStatusToDisconnecting()
-
     try {
-      await this.connectionAdapter.disconnect()
-      console.log('Disconnected')
+      await this.connection.disconnect()
     } catch (e) {
       this.messageDisplay.showError(messages.DISCONNECT_FAILED)
-      console.warn('api.connectionCancel failed', e)
+      console.warn('Disconnect failed', e)
     }
   }
 
@@ -126,8 +113,4 @@ export default class TequilApiDriver {
     )
     return newIdentity
   }
-}
-
-function isConnectionCancelled (e: TequilapiError) {
-  return e.isRequestClosedError
 }

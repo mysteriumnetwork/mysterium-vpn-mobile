@@ -22,6 +22,7 @@ import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
+import ConnectionAdapter from '../adapters/connection-adapter'
 import ConnectionData from '../domain/connection-data'
 import Ip from '../domain/ip'
 import Publisher, { Callback } from './publisher'
@@ -35,8 +36,12 @@ class Connection {
   private dataPublisher = new Publisher<ConnectionData>()
   private statusPublisher = new Publisher<ConnectionStatus>()
   private ipPublisher = new Publisher<Ip>()
+  private readonly connectionAdapter: ConnectionAdapter
 
-  constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {}
+  // TODO: receive ConnectionAdapter instead of TequilapiClient
+  constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {
+    this.connectionAdapter = new ConnectionAdapter(this.api)
+  }
 
   public startUpdating () {
     const statusFetcher = new StatusFetcher(this.api.connectionStatus.bind(this.api), this.tequilApiState, status => {
@@ -53,6 +58,22 @@ class Connection {
     statusFetcher.start(intervals.CONNECTION)
     ipFetcher.start(intervals.IP)
     statsFetcher.start(intervals.STATS)
+  }
+
+  public async connect (consumerId: string, providerId: string) {
+    this.resetIP()
+    this.setStatusToConnecting()
+
+    await this.connectionAdapter.connect(consumerId, providerId)
+    console.log('Connected')
+  }
+
+  public async disconnect () {
+    this.resetIP()
+    this.setStatusToDisconnecting()
+
+    await this.connectionAdapter.disconnect()
+    console.log('Disconnected')
   }
 
   public onDataChange (callback: Callback<ConnectionData>) {
