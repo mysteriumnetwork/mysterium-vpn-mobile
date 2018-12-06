@@ -22,7 +22,7 @@ import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
-import ConnectionAdapter from '../adapters/connection-adapter'
+import IConnectionAdapter from '../adapters/connection-adapter'
 import ConnectionData from '../domain/connection-data'
 import Ip from '../domain/ip'
 import Publisher, { Callback } from './publisher'
@@ -38,7 +38,7 @@ class Connection {
   private ipPublisher = new Publisher<Ip>()
 
   constructor (
-    private readonly connectionAdapter: ConnectionAdapter,
+    private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState) {}
 
   public startUpdating () {
@@ -48,8 +48,8 @@ class Connection {
     })
 
     const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
-    const ipFetcher = new IPFetcher(fetchIp, this, connectionIpDto => {
-      this.updateIP(connectionIpDto.ip)
+    const ipFetcher = new IPFetcher(fetchIp, this, ip => {
+      this.updateIP(ip)
     })
 
     const fetchStatistics = this.connectionAdapter.fetchStatistics.bind(this.connectionAdapter)

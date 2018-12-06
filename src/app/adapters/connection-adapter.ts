@@ -15,56 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  ConnectionIPDTO,
-  ConnectionStatisticsDTO,
-  ConnectionStatusDTO,
-  TequilapiClient,
-  TequilapiError
-} from 'mysterium-tequilapi'
+import { ConnectionStatisticsDTO, ConnectionStatusDTO } from 'mysterium-tequilapi'
+import Ip from '../domain/ip'
 
-class ConnectionAdapter {
-  constructor (private tequilapiClient: TequilapiClient) {}
-
-  public async connect (consumerId: string, providerId: string) {
-    try {
-      const connection = this.tequilapiClient.connectionCreate({
-        consumerId,
-        providerId,
-        providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
-      })
-      console.log(`Connect returned status: ${connection}`)
-    } catch (e) {
-      if (isConnectionCancelled(e)) {
-        console.log('Connect was cancelled')
-        return
-      }
-      throw e
-    }
-  }
-
-  public async disconnect (): Promise<void> {
-    await this.tequilapiClient.connectionCancel()
-  }
-
-  // TODO: return model
-  public async fetchStatus (): Promise<ConnectionStatusDTO> {
-    return this.tequilapiClient.connectionStatus()
-  }
-
-  // TODO: return model
-  public async fetchStatistics (): Promise<ConnectionStatisticsDTO> {
-    return this.tequilapiClient.connectionStatistics()
-  }
-
-  // TODO: return model
-  public async fetchIp (): Promise<ConnectionIPDTO> {
-    return this.tequilapiClient.connectionIP()
-  }
+// TODO: uncouple from mysterium-tequilapi by using domain models for response data
+interface IConnectionAdapter {
+  connect (consumerId: string, providerId: string): Promise<void>
+  disconnect (): Promise<void>
+  fetchStatus (): Promise<ConnectionStatusDTO>
+  fetchStatistics (): Promise<ConnectionStatisticsDTO>
+  fetchIp (): Promise<Ip>
 }
 
-function isConnectionCancelled (e: TequilapiError) {
-  return e.isRequestClosedError
-}
-
-export default ConnectionAdapter
+export default IConnectionAdapter
