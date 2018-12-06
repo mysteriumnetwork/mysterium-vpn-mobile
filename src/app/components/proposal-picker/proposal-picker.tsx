@@ -15,23 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  Col,
-  Grid,
-  Icon,
-  Text
-} from 'native-base'
+import { Col, Grid, Icon, Text } from 'native-base'
 import React, { ReactNode } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
-import { ICountry } from './country'
 import CountryFlag from './country-flag'
-import CountryList from './country-list'
-import CountryModal from './country-modal'
+import { IProposal } from './proposal'
+import ProposalList from './proposal-list'
+import ProposalModal from './proposal-modal'
 
 type PickerProps = {
-  countries: ICountry[]
-  onSelect: (country: ICountry) => void
+  proposals: IProposal[]
+  onSelect: (proposal: IProposal) => void
   onFavoriteToggle: () => void
   isFavoriteSelected: boolean
   placeholder: string
@@ -39,40 +34,40 @@ type PickerProps = {
 
 type PickerState = {
   modalIsOpen: boolean
-  selectedCountry: ICountry | null
+  selectedProposal: IProposal | null
 }
 
-class CountryPicker extends React.Component<PickerProps, PickerState> {
+class ProposalPicker extends React.Component<PickerProps, PickerState> {
   constructor (props: PickerProps) {
     super(props)
 
     this.state = {
       modalIsOpen: false,
-      selectedCountry: null
+      selectedProposal: null
     }
   }
 
   public render (): ReactNode {
     return (
       <View style={styles.container}>
-        <CountryModal
+        <ProposalModal
           isOpen={this.state.modalIsOpen}
-          onClose={() => this.closeCountryModal()}
+          onClose={() => this.closeProposalModal()}
         >
-          <CountryList
-            countries={this.props.countries}
-            onClose={() => this.closeCountryModal()}
-            onSelect={(country: ICountry) => this.onCountrySelect(country)}
+          <ProposalList
+            proposals={this.props.proposals}
+            onClose={() => this.closeProposalModal()}
+            onSelect={(proposal: IProposal) => this.onProposalSelect(proposal)}
           />
-        </CountryModal>
+        </ProposalModal>
 
-        <View style={styles.countryPicker}>
+        <View style={styles.proposalPicker}>
           <Grid>
             <Col size={85}>
-              <TouchableOpacity style={styles.pickerButton} onPress={() => this.openCountryModal()}>
+              <TouchableOpacity style={styles.pickerButton} onPress={() => this.openProposalModal()}>
                 <Grid>
                   <Col size={15} style={styles.countryFlagBox}>
-                    <CountryFlag countryCode={this.countryCode}/>
+                    <CountryFlag countryCode={this.countryCode || ''}/>
                   </Col>
 
                   <Col size={90} style={styles.countryNameBox}>
@@ -100,34 +95,38 @@ class CountryPicker extends React.Component<PickerProps, PickerState> {
   }
 
   private get countryCode (): string | null {
-    if (!this.state.selectedCountry) {
+    if (!this.state.selectedProposal) {
       return null
     }
 
-    return this.state.selectedCountry.countryCode.toLowerCase()
+    const code = this.state.selectedProposal.countryCode
+    if (code === null) {
+      return null
+    }
+    return code.toLowerCase()
   }
 
   private get countryName (): string {
-    if (!this.state.selectedCountry) {
+    if (!this.state.selectedProposal) {
       return this.props.placeholder
     }
 
-    return this.state.selectedCountry.name
+    return this.state.selectedProposal.countryName || ''
   }
 
-  private openCountryModal () {
+  private openProposalModal () {
     this.setState({ modalIsOpen: true })
   }
 
-  private closeCountryModal () {
+  private closeProposalModal () {
     this.setState({ modalIsOpen: false })
   }
 
-  private onCountrySelect (country: ICountry) {
-    this.props.onSelect(country)
+  private onProposalSelect (proposal: IProposal) {
+    this.props.onSelect(proposal)
 
     this.setState({
-      selectedCountry: country,
+      selectedProposal: proposal,
       modalIsOpen: false
     })
   }
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff'
   },
-  countryPicker: {
+  proposalPicker: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
@@ -186,4 +185,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CountryPicker
+export default ProposalPicker

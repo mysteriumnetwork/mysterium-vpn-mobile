@@ -22,9 +22,9 @@ import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
 import styles from './app-styles'
 import ErrorDropdown from './components/error-dropdown'
-import CountryList from './countries/country-list'
-import Favorites from './countries/favorites'
 import ErrorDisplayDelegate from './errors/error-display-delegate'
+import Favorites from './proposals/favorites'
+import ProposalList from './proposals/proposal-list'
 import LoadingScreen from './screens/loading-screen'
 import VpnScreen from './screens/vpn-screen'
 import ConnectionStore from './stores/connection-store'
@@ -35,7 +35,7 @@ type AppProps = {
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
   errorDisplayDelegate: ErrorDisplayDelegate,
-  countryList: CountryList,
+  proposalList: ProposalList,
   favorites: Favorites,
   appLoader: AppLoader
 }
@@ -46,7 +46,7 @@ export default class App extends React.Component<AppProps> {
   private readonly connectionStore: ConnectionStore
   private readonly errorDisplayDelegate: ErrorDisplayDelegate
   private readonly vpnAppState: VpnAppState
-  private readonly countryList: CountryList
+  private readonly proposalList: ProposalList
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
 
@@ -56,7 +56,7 @@ export default class App extends React.Component<AppProps> {
     this.connectionStore = props.connectionStore
     this.errorDisplayDelegate = props.errorDisplayDelegate
     this.vpnAppState = props.vpnAppState
-    this.countryList = props.countryList
+    this.proposalList = props.proposalList
     this.favorites = props.favorites
     this.appLoader = props.appLoader
   }
@@ -88,7 +88,7 @@ export default class App extends React.Component<AppProps> {
         tequilAPIDriver={this.tequilAPIDriver}
         connectionStore={this.connectionStore}
         vpnAppState={this.vpnAppState}
-        countryList={this.countryList}
+        proposalList={this.proposalList}
         favorites={this.favorites}
       />
     )

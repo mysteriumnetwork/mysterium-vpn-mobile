@@ -24,7 +24,7 @@ type ModalProps = {
   onClose: () => void
 }
 
-const CountryModal: React.SFC<ModalProps> = ({ isOpen, onClose, children }) => {
+const ProposalModal: React.SFC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <Modal
       animationType="slide"
@@ -46,4 +46,4 @@ const styles: any = StyleSheet.create({
   }
 })
 
-export default CountryModal
+export default ProposalModal
