@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,19 +13,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
-import { Crashlytics } from 'react-native-fabric'
+import { UserInfo } from './user-info'
 
-const setupErrorHandlers = () => {
-  const defaultHandler = ErrorUtils.getGlobalHandler()
-  const wrapGlobalHandler = async (error, isFatal) => {
-    // following Android only
-    Crashlytics.logException(error.message);
+export interface IBugReporter {
+  sendException (e: Error): void
 
-    defaultHandler(error, isFatal)
-  }
-  ErrorUtils.setGlobalHandler(wrapGlobalHandler)
+  setUserInfo (userInfo: UserInfo): void
 }
-
-export { setupErrorHandlers }
