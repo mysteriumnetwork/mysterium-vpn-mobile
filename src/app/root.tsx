@@ -1,6 +1,7 @@
 import TequilapiClientFactory from 'mysterium-tequilapi'
 import { Root as RootBase } from 'native-base'
 import * as React from 'react'
+import { crashlyticsToBugReporter } from '../bug-reporter/bug-reporter-fabric'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
@@ -42,8 +43,10 @@ class Root extends React.PureComponent {
   private readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   private readonly favorites = new Favorites(this.favoritesStore)
   private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
+  private readonly bugReporter = crashlyticsToBugReporter()
 
   public async componentWillMount () {
+    this.tequilApiState.setBugReporterUserDataOnChange(this.bugReporter)
     const logger = new Logger(this.tequilApiState, this.vpnAppState, this.connection, this.proposalsStore)
     logger.logObservableChanges()
     await this.favoritesStore.fetch()
