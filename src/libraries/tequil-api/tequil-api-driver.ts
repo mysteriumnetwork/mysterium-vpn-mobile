@@ -16,6 +16,7 @@
  */
 
 import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
+import ConnectionAdapter from '../../app/adapters/connection-adapter'
 import Connection from '../../app/core/connection'
 
 import IMessageDisplay from '../../app/messages/message-display'
@@ -29,6 +30,7 @@ import TequilApiState from './tequil-api-state'
 
 export default class TequilApiDriver {
   public readonly tequilApiState: TequilApiState
+  private readonly connectionAdapter: ConnectionAdapter
 
   constructor (
     private api: TequilapiClient,
@@ -36,6 +38,7 @@ export default class TequilApiDriver {
     private connection: Connection,
     private messageDisplay: IMessageDisplay) {
     this.tequilApiState = apiState
+    this.connectionAdapter = new ConnectionAdapter(this.api)
   }
 
   /***
@@ -43,7 +46,8 @@ export default class TequilApiDriver {
    * @returns {Promise<void>}
    */
   public async connect (selectedProviderId: string): Promise<void> {
-    if (!this.tequilApiState.identityId) {
+    const consumerId = this.tequilApiState.identityId
+    if (!consumerId) {
       console.error('Identity required for connect is not set', this.tequilApiState)
       return
     }
@@ -52,17 +56,13 @@ export default class TequilApiDriver {
     this.connection.setStatusToConnecting()
 
     try {
-      const connection = await this.api.connectionCreate({
-        consumerId: this.tequilApiState.identityId,
-        providerCountry: '',
-        providerId: selectedProviderId
-      })
-      console.log('connected', connection)
+      const connection = await this.connectionAdapter.connect(consumerId, selectedProviderId)
+      console.log(`Connected: ${connection}`)
     } catch (e) {
       if (isConnectionCancelled(e)) return
 
       this.messageDisplay.showError(messages.CONNECT_FAILED)
-      console.warn('api.connectionCreate failed', e)
+      console.warn('Connect failed', e)
     }
   }
 
@@ -74,8 +74,8 @@ export default class TequilApiDriver {
     this.connection.setStatusToDisconnecting()
 
     try {
-      await this.api.connectionCancel()
-      console.log('disconnected')
+      await this.connectionAdapter.disconnect()
+      console.log('Disconnected')
     } catch (e) {
       this.messageDisplay.showError(messages.DISCONNECT_FAILED)
       console.warn('api.connectionCancel failed', e)
