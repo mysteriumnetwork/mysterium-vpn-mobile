@@ -22,7 +22,7 @@ import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
 import styles from './app-styles'
 import ErrorDropdown from './components/error-dropdown'
-import ErrorDisplayDelegate from './errors/error-display-delegate'
+import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
 import ProposalList from './proposals/proposal-list'
 import LoadingScreen from './screens/loading-screen'
@@ -34,7 +34,7 @@ type AppProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
-  errorDisplayDelegate: ErrorDisplayDelegate,
+  messageDisplayDelegate: MessageDisplayDelegate,
   proposalList: ProposalList,
   favorites: Favorites,
   appLoader: AppLoader
@@ -44,7 +44,7 @@ type AppProps = {
 export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly connectionStore: ConnectionStore
-  private readonly errorDisplayDelegate: ErrorDisplayDelegate
+  private readonly messageDisplayDelegate: MessageDisplayDelegate
   private readonly vpnAppState: VpnAppState
   private readonly proposalList: ProposalList
   private readonly favorites: Favorites
@@ -54,7 +54,7 @@ export default class App extends React.Component<AppProps> {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
     this.connectionStore = props.connectionStore
-    this.errorDisplayDelegate = props.errorDisplayDelegate
+    this.messageDisplayDelegate = props.messageDisplayDelegate
     this.vpnAppState = props.vpnAppState
     this.proposalList = props.proposalList
     this.favorites = props.favorites
@@ -65,7 +65,7 @@ export default class App extends React.Component<AppProps> {
     return (
       <View style={styles.app}>
         {this.renderCurrentScreen()}
-        <ErrorDropdown ref={(ref: ErrorDropdown) => this.errorDisplayDelegate.errorDisplay = ref}/>
+        <ErrorDropdown ref={(ref: ErrorDropdown) => this.messageDisplayDelegate.messageDisplay = ref}/>
       </View>
     )
   }
@@ -90,6 +90,7 @@ export default class App extends React.Component<AppProps> {
         vpnAppState={this.vpnAppState}
         proposalList={this.proposalList}
         favorites={this.favorites}
+        messageDisplay={this.messageDisplayDelegate}
       />
     )
   }

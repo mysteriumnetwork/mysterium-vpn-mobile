@@ -18,23 +18,31 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
 import DropdownAlert from 'react-native-dropdownalert'
-import IErrorDisplay from '../errors/error-display'
+import IMessageDisplay from '../messages/message-display'
 
 /**
  * Allowing show error messages as a dropdowns.
  */
-class ErrorDropdown extends React.Component implements IErrorDisplay {
+class ErrorDropdown extends React.Component implements IMessageDisplay {
   private dropdown: DropdownAlert
 
   public render (): ReactNode {
     return <DropdownAlert ref={(ref: DropdownAlert) => this.dropdown = ref}/>
   }
 
-  public showError (error: string) {
+  public showError (message: string) {
+    this.alert('error', 'Error', message)
+  }
+
+  public showInfo (message: string) {
+    this.alert('info', 'Info', message)
+  }
+
+  private alert (type: string, title: string, message: string) {
     if (this.dropdown === undefined) {
       throw new Error('DropdownAlert not set yet')
     }
-    this.dropdown.alertWithType('error', 'Error', error)
+    this.dropdown.alertWithType(type, title, message)
   }
 }
 
