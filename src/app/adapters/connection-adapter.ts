@@ -15,7 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
+import {
+  ConnectionIPDTO,
+  ConnectionStatisticsDTO,
+  ConnectionStatusDTO,
+  TequilapiClient,
+  TequilapiError
+} from 'mysterium-tequilapi'
 
 class ConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {}
@@ -39,6 +45,21 @@ class ConnectionAdapter {
 
   public async disconnect (): Promise<void> {
     await this.tequilapiClient.connectionCancel()
+  }
+
+  // TODO: return model
+  public async fetchStatus (): Promise<ConnectionStatusDTO> {
+    return this.tequilapiClient.connectionStatus()
+  }
+
+  // TODO: return model
+  public async fetchStatistics (): Promise<ConnectionStatisticsDTO> {
+    return this.tequilapiClient.connectionStatistics()
+  }
+
+  // TODO: return model
+  public async fetchIp (): Promise<ConnectionIPDTO> {
+    return this.tequilapiClient.connectionIP()
   }
 }
 

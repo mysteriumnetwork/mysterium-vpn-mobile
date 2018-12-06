@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatus, TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
@@ -36,21 +36,24 @@ class Connection {
   private dataPublisher = new Publisher<ConnectionData>()
   private statusPublisher = new Publisher<ConnectionStatus>()
   private ipPublisher = new Publisher<Ip>()
-  private readonly connectionAdapter: ConnectionAdapter
 
-  // TODO: receive ConnectionAdapter instead of TequilapiClient
-  constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {
-    this.connectionAdapter = new ConnectionAdapter(this.api)
-  }
+  constructor (
+    private readonly connectionAdapter: ConnectionAdapter,
+    private readonly tequilApiState: TequilApiState) {}
 
   public startUpdating () {
-    const statusFetcher = new StatusFetcher(this.api.connectionStatus.bind(this.api), this.tequilApiState, status => {
+    const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
+    const statusFetcher = new StatusFetcher(fetchStatus, this.tequilApiState, status => {
       this.updateStatus(status.status)
     })
-    const ipFetcher = new IPFetcher(this.api.connectionIP.bind(this.api), this, connectionIpDto => {
+
+    const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
+    const ipFetcher = new IPFetcher(fetchIp, this, connectionIpDto => {
       this.updateIP(connectionIpDto.ip)
     })
-    const statsFetcher = new StatsFetcher(this.api.connectionStatistics.bind(this.api), this, stats => {
+
+    const fetchStatistics = this.connectionAdapter.fetchStatistics.bind(this.connectionAdapter)
+    const statsFetcher = new StatsFetcher(fetchStatistics, this, stats => {
       this.updateStatistics(stats)
     })
 
