@@ -19,7 +19,7 @@ import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from
 import Connection from '../../app/core/connection'
 
 import IMessageDisplay from '../../app/messages/message-display'
-import errors from '../../app/messages/messages'
+import messages from '../../app/messages/messages'
 import { CONFIG } from '../../config'
 import TequilApiState from './tequil-api-state'
 
@@ -61,7 +61,7 @@ export default class TequilApiDriver {
     } catch (e) {
       if (isConnectionCancelled(e)) return
 
-      this.messageDisplay.showError(errors.CONNECT_FAILED)
+      this.messageDisplay.showError(messages.CONNECT_FAILED)
       console.warn('api.connectionCreate failed', e)
     }
   }
@@ -77,7 +77,7 @@ export default class TequilApiDriver {
       await this.api.connectionCancel()
       console.log('disconnected')
     } catch (e) {
-      this.messageDisplay.showError(errors.DISCONNECT_FAILED)
+      this.messageDisplay.showError(messages.DISCONNECT_FAILED)
       console.warn('api.connectionCancel failed', e)
     }
   }

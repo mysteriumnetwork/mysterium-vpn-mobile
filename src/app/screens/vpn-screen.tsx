@@ -29,7 +29,7 @@ import { IProposal } from '../components/proposal-picker/proposal'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
 import IMessageDisplay from '../messages/message-display'
-import errors from '../messages/messages'
+import messages from '../messages/messages'
 import Favorites from '../proposals/favorites'
 import ProposalList from '../proposals/proposal-list'
 import ConnectionStore from '../stores/connection-store'
@@ -107,7 +107,7 @@ class VpnScreen extends React.Component<HomeProps> {
   private async connect () {
     const providerId = this.vpnAppState.selectedProviderId
     if (providerId === null) {
-      this.messageDisplay.showInfo(errors.COUNTRY_NOT_SELECTED)
+      this.messageDisplay.showInfo(messages.COUNTRY_NOT_SELECTED)
       return
     }
     await this.tequilAPIDriver.connect(providerId)
