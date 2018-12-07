@@ -60,6 +60,31 @@ or
 - `cd android`
 - `./gradlew assembleRelease`
 
+#### Release using Fastlane
+
+## Android
+
+Get `google-services.json`:
+- Go to https://console.firebase.google.com
+- Open android project
+- Download `google-services.json`
+- Put it to `android/app/google-services.json`
+
+Create or get signing key and setup values in environment:
+```bash
+export FASTLANE_ANDROID_SIGNING_FILE_PATH=...
+export FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS=...
+export FASTLANE_ANDROID_SIGNING_KEY_ALIAS=...
+export FASTLANE_ANDROID_SIGNING_KEY_PASS=...
+```
+
+Be sure to use full path for `FASTLANE_ANDROID_SIGNING_FILE_PATH`
+
+
+Make a release: read *fastlane/README.md* about that.
+
+APK will be available under `android/app/build/outputs/apk/release/app-release.apk`
+
 ### iOS
 
 * Setup crash reporting:
