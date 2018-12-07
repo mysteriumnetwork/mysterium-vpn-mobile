@@ -48,6 +48,7 @@
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.3",
     "react-native-dropdownalert": "^3.7.0",
+    "react-native-fabric": "^0.5.2",
     "react-native-vector-icons": "^6.1.0"
   },
   "detox": {

@@ -121,7 +121,20 @@ Print: Entry, ":CFBundleIdentifier", Does Not Exist
     Index Datastore: Index/DataStore 
 * Product -> Build
 
+### Android build error
+```bash
+* What went wrong:
+A problem occurred configuring project ':react-native-fabric'.
+> Could not resolve all artifacts for configuration ':react-native-fabric:classpath'.
+   > Could not find lint-gradle-api.jar (com.android.tools.lint:lint-gradle-api:26.1.2).
+```
+related to [issue](https://github.com/corymsmith/react-native-fabric/issues/200#issuecomment-442051777)
+waiting on [fix](https://github.com/corymsmith/react-native-fabric/pull/208)
 
+to fix run:
+```bash
+./util_scripts/fix-react-native-fabric-gradle
+```
 ## Contributing
 
 ### Android
