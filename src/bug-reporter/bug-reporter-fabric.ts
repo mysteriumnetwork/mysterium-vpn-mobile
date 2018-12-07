@@ -19,7 +19,7 @@ import { Crashlytics } from 'react-native-fabric'
 import { IBugReporter } from './bug-reporter'
 import { UserInfo } from './user-info'
 
-function crashlyticsToBugReporter (): IBugReporter {
+function getBugReporter (): IBugReporter {
   return {
     sendException: (e: Error) => {
       Crashlytics.logException(e.message)
@@ -41,4 +41,4 @@ const setupFabricErrorHandlers = () => {
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-export { crashlyticsToBugReporter, setupFabricErrorHandlers }
+export { getBugReporter, setupFabricErrorHandlers }
