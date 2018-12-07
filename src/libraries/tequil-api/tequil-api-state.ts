@@ -27,7 +27,7 @@ export default class TequilApiState {
       () => this.identityId,
       (consumerId: string | undefined) => {
         if (!consumerId) return
-        bugReporter.setUserInfo({ type: 'consumerId', value: consumerId })
+        bugReporter.setUserId(consumerId)
       })
   }
 }

@@ -15,10 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { UserInfo } from './user-info'
-
 export interface IBugReporter {
   sendException (e: Error): void
 
-  setUserInfo (userInfo: UserInfo): void
+  setUserId (userInfo: string): void
 }

@@ -20,10 +20,10 @@ import { AppRegistry } from 'react-native'
 import Root from './src/app/root'
 import { name as appName } from './app.json'
 
-import { setupFabricErrorHandlers } from './src/bug-reporter/bug-reporter-fabric'
+import { setupGlobalErrorHandler, getBugReporter } from './src/bug-reporter/bug-reporter-fabric'
 
 if (!__DEV__) {
-  setupFabricErrorHandlers()
+  setupGlobalErrorHandler(getBugReporter())
 }
 
 AppRegistry.registerComponent(appName, () => Root)
