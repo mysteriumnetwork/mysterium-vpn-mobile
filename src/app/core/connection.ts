@@ -36,31 +36,41 @@ class Connection {
   private dataPublisher = new Publisher<ConnectionData>()
   private statusPublisher = new Publisher<ConnectionStatus>()
   private ipPublisher = new Publisher<Ip>()
+  private readonly statusFetcher: StatusFetcher
+  private readonly ipFetcher: IPFetcher
+  private readonly statsFetcher: StatsFetcher
 
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
-    private readonly tequilApiState: TequilApiState) {}
-
-  public startUpdating () {
+    private readonly tequilApiState: TequilApiState) {
     const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
-    const statusFetcher = new StatusFetcher(fetchStatus, this.tequilApiState, status => {
+    this.statusFetcher = new StatusFetcher(fetchStatus, this.tequilApiState, status => {
       this.updateStatus(status.status)
     })
 
     const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
-    const ipFetcher = new IPFetcher(fetchIp, this, ip => {
+    this.ipFetcher = new IPFetcher(fetchIp, this, ip => {
       this.updateIP(ip)
     })
 
     const fetchStatistics = this.connectionAdapter.fetchStatistics.bind(this.connectionAdapter)
-    const statsFetcher = new StatsFetcher(fetchStatistics, this, stats => {
+    this.statsFetcher = new StatsFetcher(fetchStatistics, this, stats => {
       this.updateStatistics(stats)
     })
 
+  }
+
+  public startUpdating () {
     const intervals = CONFIG.REFRESH_INTERVALS
-    statusFetcher.start(intervals.CONNECTION)
-    ipFetcher.start(intervals.IP)
-    statsFetcher.start(intervals.STATS)
+    this.statusFetcher.start(intervals.CONNECTION)
+    this.ipFetcher.start(intervals.IP)
+    this.statsFetcher.start(intervals.STATS)
+  }
+
+  public stopUpdating () {
+    this.statusFetcher.stop()
+    this.ipFetcher.stop()
+    this.statsFetcher.stop()
   }
 
   public async connect (consumerId: string, providerId: string) {

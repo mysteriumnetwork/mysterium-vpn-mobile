@@ -67,6 +67,9 @@ describe('Connection', () => {
   })
 
   describe('.startUpdating', () => {
+    afterEach(() => {
+      connection.stopUpdating()
+    })
     it('fetches status when identity is set', async () => {
       state.identityId = 'mock identity'
 
