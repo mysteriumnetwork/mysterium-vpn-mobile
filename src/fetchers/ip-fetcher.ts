@@ -17,7 +17,7 @@
 
 import { ConnectionStatus } from 'mysterium-tequilapi'
 import Connection from '../app/core/connection'
-import Ip from '../app/domain/ip'
+import Ip from '../app/models/ip'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 import { FetcherBase } from './fetcher-base'
 

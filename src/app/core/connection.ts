@@ -23,8 +23,8 @@ import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
-import ConnectionData from '../domain/connection-data'
-import Ip from '../domain/ip'
+import ConnectionData from '../models/connection-data'
+import Ip from '../models/ip'
 import Publisher, { Callback } from './publisher'
 
 class Connection {

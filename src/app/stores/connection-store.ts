@@ -17,7 +17,7 @@
 
 import { action, computed, observable } from 'mobx'
 import Connection from '../core/connection'
-import ConnectionData from '../domain/connection-data'
+import ConnectionData from '../models/connection-data'
 
 class ConnectionStore {
   @computed

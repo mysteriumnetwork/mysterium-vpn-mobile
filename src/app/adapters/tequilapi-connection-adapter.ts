@@ -16,7 +16,7 @@
  */
 
 import { ConnectionStatisticsDTO, ConnectionStatusDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
-import Ip from '../domain/ip'
+import Ip from '../models/ip'
 import IConnectionAdapter from './connection-adapter'
 
 class TequilapiConnectionAdapter implements IConnectionAdapter {
