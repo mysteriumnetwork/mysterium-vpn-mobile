@@ -1,6 +1,6 @@
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import Connection from './core/connection'
+import Connection from './domain/connection'
 import ProposalsStore from './stores/proposals-store'
 
 /**

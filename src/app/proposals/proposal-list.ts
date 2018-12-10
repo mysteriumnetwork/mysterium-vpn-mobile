@@ -1,6 +1,6 @@
 import { IProposal } from '../components/proposal-picker/proposal'
-import { FavoriteProposal } from '../domain/favorite-proposal'
-import Proposal from '../domain/proposal'
+import { FavoriteProposal } from '../models/favorite-proposal'
+import Proposal from '../models/proposal'
 import translations from '../translations'
 
 interface IProposalList {

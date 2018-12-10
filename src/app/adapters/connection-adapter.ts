@@ -16,7 +16,7 @@
  */
 
 import { ConnectionStatisticsDTO, ConnectionStatusDTO } from 'mysterium-tequilapi'
-import Ip from '../domain/ip'
+import Ip from '../models/ip'
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
 interface IConnectionAdapter {

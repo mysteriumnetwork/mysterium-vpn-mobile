@@ -16,7 +16,7 @@
  */
 
 import ProposalsAdapter from '../app/adapters/proposals-adapter'
-import Proposal from '../app/domain/proposal'
+import Proposal from '../app/models/proposal'
 import { FetcherBase } from './fetcher-base'
 
 export class ProposalsFetcher extends FetcherBase<Proposal[]> {

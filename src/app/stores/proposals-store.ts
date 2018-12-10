@@ -19,7 +19,7 @@ import { observable } from 'mobx'
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import ProposalsAdapter from '../adapters/proposals-adapter'
-import Proposal from '../domain/proposal'
+import Proposal from '../models/proposal'
 
 class ProposalsStore {
   @observable

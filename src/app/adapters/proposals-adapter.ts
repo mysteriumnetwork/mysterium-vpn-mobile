@@ -17,7 +17,7 @@
 
 import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { Countries } from '../../libraries/countries'
-import Proposal from '../domain/proposal'
+import Proposal from '../models/proposal'
 
 class ProposalsAdapter {
   constructor (private tequilapiClient: TequilapiClient) {}

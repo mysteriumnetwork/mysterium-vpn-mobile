@@ -16,7 +16,7 @@
  */
 
 import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
-import Connection from '../../app/core/connection'
+import Connection from '../../app/domain/connection'
 
 import IMessageDisplay from '../../app/messages/message-display'
 import messages from '../../app/messages/messages'
