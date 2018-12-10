@@ -18,21 +18,18 @@
 import { Crashlytics } from 'react-native-fabric'
 import { IBugReporter } from './bug-reporter'
 
-function getBugReporter (): IBugReporter {
-  return {
-    sendException: (e: Error) => {
-      Crashlytics.logException(e.message)
-    },
-    setUserId: (uid: string) => {
-      Crashlytics.setUserIdentifier(uid)
-    }
+class BugReporterFabric implements IBugReporter {
+  public sendException (e: Error) {
+    Crashlytics.logException(e.message)
+  }
+  public setUserId (uid: string) {
+    Crashlytics.setUserIdentifier(uid)
   }
 }
 
 const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
   const defaultHandler = ErrorUtils.getGlobalHandler()
   const wrapGlobalHandler = async (error: Error, isFatal: boolean | undefined) => {
-    // following Android only
     bugReporter.sendException(error)
 
     defaultHandler(error, isFatal)
@@ -40,4 +37,4 @@ const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-export { getBugReporter, setupGlobalErrorHandler }
+export { BugReporterFabric, setupGlobalErrorHandler }

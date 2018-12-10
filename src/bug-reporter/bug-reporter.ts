@@ -18,5 +18,5 @@
 export interface IBugReporter {
   sendException (e: Error): void
 
-  setUserId (userInfo: string): void
+  setUserId (uid: string): void
 }
