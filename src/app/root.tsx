@@ -10,7 +10,7 @@ import ProposalsAdapter from './adapters/proposals-adapter'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
 import App from './app'
 import AppLoader from './app-loader'
-import Connection from './core/connection'
+import Connection from './domain/connection'
 import Logger from './logger'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
@@ -30,7 +30,7 @@ class Root extends React.PureComponent {
   private readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   private readonly proposalsAdapter = new ProposalsAdapter(this.api)
 
-  // core
+  // domain
   private readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
 
   // stores

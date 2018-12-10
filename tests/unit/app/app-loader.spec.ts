@@ -1,5 +1,5 @@
 import AppLoader from '../../../src/app/app-loader'
-import Connection from '../../../src/app/core/connection'
+import Connection from '../../../src/app/domain/connection'
 import ProposalsStore from '../../../src/app/stores/proposals-store'
 import TequilApiDriver from '../../../src/libraries/tequil-api/tequil-api-driver'
 

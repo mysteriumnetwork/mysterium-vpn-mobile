@@ -16,7 +16,7 @@
  */
 
 import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
-import Connection from '../app/core/connection'
+import Connection from '../app/domain/connection'
 import { FetcherBase } from './fetcher-base'
 
 type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>

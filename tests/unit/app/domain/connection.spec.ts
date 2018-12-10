@@ -17,7 +17,7 @@
 
 import { ConnectionStatisticsDTO, ConnectionStatusDTO } from 'mysterium-tequilapi'
 import IConnectionAdapter from '../../../../src/app/adapters/connection-adapter'
-import Connection from '../../../../src/app/core/connection'
+import Connection from '../../../../src/app/domain/connection'
 import Ip from '../../../../src/app/models/ip'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 

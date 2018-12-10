@@ -1,6 +1,6 @@
 import { reaction } from 'mobx'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
-import Connection from './core/connection'
+import Connection from './domain/connection'
 import ProposalsStore from './stores/proposals-store'
 import VpnAppState from './vpn-app-state'
 
