@@ -43,47 +43,39 @@ Run app on default device (connected or emulator)
 yarn android
 ```
 
-#### Build release locally
+#### Build release locally for Android
 
-- Generate Javascript bundle:
+- Get `google-services.json`:
+    - Go to https://console.firebase.google.com
+    - Open android project
+    - Download `google-services.json`
+    - Put it to `android/app/google-services.json`
 
+
+- Create or get signing key using one of the methods:
+    - Generate using command-line: https://facebook.github.io/react-native/docs/signed-apk-android#generating-a-signing-key
+    - Android Studio
+
+- Setup values in environment:
 ```bash
-yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-```
-
-- Generate APK release:
-    - Open Android Studio
-    - Open menu "Build" -> "Generate Signed Bundle / APK" and build APK using generated key
-    
-or
-
-- `cd android`
-- `./gradlew assembleRelease`
-
-#### Release using Fastlane
-
-## Android
-
-Get `google-services.json`:
-- Go to https://console.firebase.google.com
-- Open android project
-- Download `google-services.json`
-- Put it to `android/app/google-services.json`
-
-Create or get signing key and setup values in environment:
-```bash
-export FASTLANE_ANDROID_SIGNING_FILE_PATH=...
+export FASTLANE_ANDROID_SIGNING_FILE_PATH=... # full path
 export FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS=...
 export FASTLANE_ANDROID_SIGNING_KEY_ALIAS=...
 export FASTLANE_ANDROID_SIGNING_KEY_PASS=...
 ```
 
-Be sure to use full path for `FASTLANE_ANDROID_SIGNING_FILE_PATH`
+- Setup Fastlane, more info in *fastlane/README.md*
 
-
-Make a release: read *fastlane/README.md* about that.
-
+- Make release build:
+    ```bash
+    fastlane android build
+    ```
+    
 APK will be available under `android/app/build/outputs/apk/release/app-release.apk`
+
+You can install this APK by:
+- uploading it to phone, or
+- using `adb install android/app/build/outputs/apk/release/app-release.apk`
 
 ### iOS
 
