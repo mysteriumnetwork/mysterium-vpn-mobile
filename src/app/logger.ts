@@ -1,4 +1,5 @@
 import { reaction } from 'mobx'
+import { IBugReporter } from '../bug-reporter/bug-reporter'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import Connection from './domain/connection'
 import ProposalsStore from './stores/proposals-store'
@@ -12,6 +13,15 @@ export default class Logger {
     private readonly vpnAppState: VpnAppState,
     private readonly connection: Connection,
     private readonly proposalsStore: ProposalsStore) {
+  }
+
+  public onIdentityUnlockSetUserIdInBugReporter (bugReporter: IBugReporter) {
+    reaction(
+      () => this.tequilApiState.identityId,
+      (userId: string | undefined) => {
+        if (!userId) return
+        bugReporter.setUserId(userId)
+      })
   }
 
   public logObservableChanges (): void {

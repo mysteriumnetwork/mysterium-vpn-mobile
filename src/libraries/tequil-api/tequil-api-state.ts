@@ -15,19 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable, reaction } from 'mobx'
-import { IBugReporter } from '../../bug-reporter/bug-reporter'
+import { observable} from 'mobx'
 
 export default class TequilApiState {
   @observable
   public identityId?: string
-
-  public setBugReporterUserDataOnChange (bugReporter: IBugReporter) {
-    reaction(
-      () => this.identityId,
-      (userId: string | undefined) => {
-        if (!userId) return
-        bugReporter.setUserId(userId)
-      })
-  }
 }

@@ -46,9 +46,9 @@ class Root extends React.PureComponent {
   private readonly bugReporter = new BugReporterFabric()
 
   public async componentWillMount () {
-    this.tequilApiState.setBugReporterUserDataOnChange(this.bugReporter)
     const logger = new Logger(this.tequilApiState, this.vpnAppState, this.connection, this.proposalsStore)
     logger.logObservableChanges()
+    logger.onIdentityUnlockSetUserIdInBugReporter(this.bugReporter)
     await this.favoritesStore.fetch()
   }
 
