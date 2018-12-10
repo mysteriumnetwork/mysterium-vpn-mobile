@@ -12,8 +12,8 @@ module.exports = {
     "js"
   ],
   transform: {
-    "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
-    "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    "^.+\\.(js)$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
+    "\\.(ts|tsx)$": "ts-jest"
   },
   testRegex: "(/*\\.(test|spec))\\.(ts|tsx|js)$",
   testPathIgnorePatterns: [
