@@ -1,9 +1,9 @@
-import { ConnectionStatus } from 'mysterium-tequilapi'
 import React, { Component } from 'react'
 import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import { CONFIG } from '../../config'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import { STYLES } from '../../styles'
+import ConnectionStatus from '../models/connection-status'
 
 type ButtonConnectProps = {
   connectionStatus: ConnectionStatus

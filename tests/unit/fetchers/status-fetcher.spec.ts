@@ -1,4 +1,5 @@
-import { ConnectionStatus, TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi'
+import ConnectionStatus from '../../../src/app/models/connection-status'
 import { ConnectionStatusEnum } from '../../../src/libraries/tequil-api/enums'
 import TequilApiState from '../../../src/libraries/tequil-api/tequil-api-state'
 import { CONFIG } from './../../../src/config'

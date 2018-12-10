@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatus } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
@@ -25,6 +24,7 @@ import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
+import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
 import Publisher, { Callback } from './publisher'
 
