@@ -43,21 +43,9 @@ class Connection {
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState) {
-    const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
-    this.statusFetcher = new StatusFetcher(fetchStatus, this.tequilApiState, status => {
-      this.updateStatus(status.status)
-    })
-
-    const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
-    this.ipFetcher = new IPFetcher(fetchIp, this, ip => {
-      this.updateIP(ip)
-    })
-
-    const fetchStatistics = this.connectionAdapter.fetchStatistics.bind(this.connectionAdapter)
-    this.statsFetcher = new StatsFetcher(fetchStatistics, this, stats => {
-      this.updateStatistics(stats)
-    })
-
+    this.statusFetcher = this.buildStatusFetcher()
+    this.ipFetcher = this.buildIpFetcher()
+    this.statsFetcher = this.buildStatsFetcher()
   }
 
   public startUpdating () {
@@ -118,6 +106,27 @@ class Connection {
 
   private updateIP (ip: string | null) {
     this.setData(new ConnectionData(this.data.status, ip, this.data.connectionStatistics))
+  }
+
+  private buildStatusFetcher (): StatusFetcher {
+    const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
+    return new StatusFetcher(fetchStatus, this.tequilApiState, status => {
+      this.updateStatus(status.status)
+    })
+  }
+
+  private buildIpFetcher (): IPFetcher {
+    const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
+    return new IPFetcher(fetchIp, this, ip => {
+      this.updateIP(ip)
+    })
+  }
+
+  private buildStatsFetcher (): StatsFetcher {
+    const fetchStatistics = this.connectionAdapter.fetchStatistics.bind(this.connectionAdapter)
+    return new StatsFetcher(fetchStatistics, this, stats => {
+      this.updateStatistics(stats)
+    })
   }
 
   private updateStatistics (statistics: ConnectionStatisticsDTO) {
