@@ -135,6 +135,12 @@ to fix run:
 ```bash
 ./util_scripts/fix-react-native-fabric-gradle
 ```
+
+If you come across an error `command not found: gsed`, you can fix it on OSX by running:
+```bash
+brew install gnu-sed
+```
+
 ## Contributing
 
 ### Android
