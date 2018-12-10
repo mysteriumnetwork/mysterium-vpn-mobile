@@ -5,7 +5,9 @@ import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import IConnectionAdapter from './adapters/connection-adapter'
 import ProposalsAdapter from './adapters/proposals-adapter'
+import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
 import App from './app'
 import AppLoader from './app-loader'
 import Connection from './core/connection'
@@ -23,12 +25,20 @@ class Root extends React.PureComponent {
   private readonly vpnAppState = new VpnAppState()
   private readonly messageDisplayDelegate = new MessageDisplayDelegate()
   private readonly favoritesStore = new FavoritesStorage()
-  private readonly connection = new Connection(this.api, this.tequilApiState)
-  private readonly connectionStore = new ConnectionStore(this.connection)
+
+  // adapters
+  private readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   private readonly proposalsAdapter = new ProposalsAdapter(this.api)
+
+  // core
+  private readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
+
+  // stores
+  private readonly connectionStore = new ConnectionStore(this.connection)
   private readonly proposalsStore = new ProposalsStore(this.proposalsAdapter)
   private readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
+
   private readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   private readonly favorites = new Favorites(this.favoritesStore)
   private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)

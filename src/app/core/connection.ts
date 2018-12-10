@@ -15,13 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatus, TequilapiClient } from 'mysterium-tequilapi'
+import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
+import IConnectionAdapter from '../adapters/connection-adapter'
 import ConnectionData from '../domain/connection-data'
 import Ip from '../domain/ip'
 import Publisher, { Callback } from './publisher'
@@ -35,24 +36,45 @@ class Connection {
   private dataPublisher = new Publisher<ConnectionData>()
   private statusPublisher = new Publisher<ConnectionStatus>()
   private ipPublisher = new Publisher<Ip>()
+  private readonly statusFetcher: StatusFetcher
+  private readonly ipFetcher: IPFetcher
+  private readonly statsFetcher: StatsFetcher
 
-  constructor (private api: TequilapiClient, private tequilApiState: TequilApiState) {}
+  constructor (
+    private readonly connectionAdapter: IConnectionAdapter,
+    private readonly tequilApiState: TequilApiState) {
+    this.statusFetcher = this.buildStatusFetcher()
+    this.ipFetcher = this.buildIpFetcher()
+    this.statsFetcher = this.buildStatsFetcher()
+  }
 
   public startUpdating () {
-    const statusFetcher = new StatusFetcher(this.api.connectionStatus.bind(this.api), this.tequilApiState, status => {
-      this.updateStatus(status.status)
-    })
-    const ipFetcher = new IPFetcher(this.api.connectionIP.bind(this.api), this, connectionIpDto => {
-      this.updateIP(connectionIpDto.ip)
-    })
-    const statsFetcher = new StatsFetcher(this.api.connectionStatistics.bind(this.api), this, stats => {
-      this.updateStatistics(stats)
-    })
-
     const intervals = CONFIG.REFRESH_INTERVALS
-    statusFetcher.start(intervals.CONNECTION)
-    ipFetcher.start(intervals.IP)
-    statsFetcher.start(intervals.STATS)
+    this.statusFetcher.start(intervals.CONNECTION)
+    this.ipFetcher.start(intervals.IP)
+    this.statsFetcher.start(intervals.STATS)
+  }
+
+  public stopUpdating () {
+    this.statusFetcher.stop()
+    this.ipFetcher.stop()
+    this.statsFetcher.stop()
+  }
+
+  public async connect (consumerId: string, providerId: string) {
+    this.resetIP()
+    this.setStatusToConnecting()
+
+    await this.connectionAdapter.connect(consumerId, providerId)
+    console.log('Connected')
+  }
+
+  public async disconnect () {
+    this.resetIP()
+    this.setStatusToDisconnecting()
+
+    await this.connectionAdapter.disconnect()
+    console.log('Disconnected')
   }
 
   public onDataChange (callback: Callback<ConnectionData>) {
@@ -84,6 +106,27 @@ class Connection {
 
   private updateIP (ip: string | null) {
     this.setData(new ConnectionData(this.data.status, ip, this.data.connectionStatistics))
+  }
+
+  private buildStatusFetcher (): StatusFetcher {
+    const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
+    return new StatusFetcher(fetchStatus, this.tequilApiState, status => {
+      this.updateStatus(status.status)
+    })
+  }
+
+  private buildIpFetcher (): IPFetcher {
+    const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
+    return new IPFetcher(fetchIp, this, ip => {
+      this.updateIP(ip)
+    })
+  }
+
+  private buildStatsFetcher (): StatsFetcher {
+    const fetchStatistics = this.connectionAdapter.fetchStatistics.bind(this.connectionAdapter)
+    return new StatsFetcher(fetchStatistics, this, stats => {
+      this.updateStatistics(stats)
+    })
   }
 
   private updateStatistics (statistics: ConnectionStatisticsDTO) {

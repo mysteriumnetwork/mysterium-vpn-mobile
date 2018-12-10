@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
+import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
 import Connection from '../../app/core/connection'
 
 import IMessageDisplay from '../../app/messages/message-display'
@@ -43,26 +43,17 @@ export default class TequilApiDriver {
    * @returns {Promise<void>}
    */
   public async connect (selectedProviderId: string): Promise<void> {
-    if (!this.tequilApiState.identityId) {
+    const consumerId = this.tequilApiState.identityId
+    if (!consumerId) {
       console.error('Identity required for connect is not set', this.tequilApiState)
       return
     }
 
-    this.connection.resetIP()
-    this.connection.setStatusToConnecting()
-
     try {
-      const connection = await this.api.connectionCreate({
-        consumerId: this.tequilApiState.identityId,
-        providerCountry: '',
-        providerId: selectedProviderId
-      })
-      console.log('connected', connection)
+      await this.connection.connect(consumerId, selectedProviderId)
     } catch (e) {
-      if (isConnectionCancelled(e)) return
-
       this.messageDisplay.showError(messages.CONNECT_FAILED)
-      console.warn('api.connectionCreate failed', e)
+      console.warn('Connect failed', e)
     }
   }
 
@@ -70,15 +61,11 @@ export default class TequilApiDriver {
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
-    this.connection.resetIP()
-    this.connection.setStatusToDisconnecting()
-
     try {
-      await this.api.connectionCancel()
-      console.log('disconnected')
+      await this.connection.disconnect()
     } catch (e) {
       this.messageDisplay.showError(messages.DISCONNECT_FAILED)
-      console.warn('api.connectionCancel failed', e)
+      console.warn('Disconnect failed', e)
     }
   }
 
@@ -126,8 +113,4 @@ export default class TequilApiDriver {
     )
     return newIdentity
   }
-}
-
-function isConnectionCancelled (e: TequilapiError) {
-  return e.isRequestClosedError
 }

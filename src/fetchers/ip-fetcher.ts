@@ -15,20 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionIPDTO, ConnectionStatus } from 'mysterium-tequilapi'
+import { ConnectionStatus } from 'mysterium-tequilapi'
 import Connection from '../app/core/connection'
+import Ip from '../app/domain/ip'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 import { FetcherBase } from './fetcher-base'
 
-type ConnectionIP = () => Promise<ConnectionIPDTO>
+type ConnectionIP = () => Promise<Ip>
 
-export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
+export class IPFetcher extends FetcherBase<Ip> {
   private lastStatus?: ConnectionStatus
 
-  constructor (
-    private connectionIP: ConnectionIP,
-    connection: Connection,
-    update: (data: ConnectionIPDTO) => void) {
+  constructor (private connectionIP: ConnectionIP, connection: Connection, update: (ip: Ip) => void) {
     super('IP', update)
 
     connection.onDataChange(data => {
@@ -36,7 +34,7 @@ export class IPFetcher extends FetcherBase<ConnectionIPDTO> {
     })
   }
 
-  protected async fetch (): Promise<ConnectionIPDTO> {
+  protected async fetch (): Promise<Ip> {
     return this.connectionIP()
   }
 
