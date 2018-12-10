@@ -15,9 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatusDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import IConnectionAdapter from '../../../../src/app/adapters/connection-adapter'
 import Connection from '../../../../src/app/domain/connection'
+import ConnectionStatistics from '../../../../src/app/models/connection-statistics'
 import Ip from '../../../../src/app/models/ip'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 
@@ -42,7 +43,7 @@ class MockConnectionAdapter implements IConnectionAdapter {
     return { status: 'Connected' }
   }
 
-  public async fetchStatistics (): Promise<ConnectionStatisticsDTO> {
+  public async fetchStatistics (): Promise<ConnectionStatistics> {
     return {
       duration: 1,
       bytesReceived: 1,

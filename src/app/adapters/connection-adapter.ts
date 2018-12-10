@@ -15,7 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatusDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi'
+import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
@@ -23,7 +24,7 @@ interface IConnectionAdapter {
   connect (consumerId: string, providerId: string): Promise<void>
   disconnect (): Promise<void>
   fetchStatus (): Promise<ConnectionStatusDTO>
-  fetchStatistics (): Promise<ConnectionStatisticsDTO>
+  fetchStatistics (): Promise<ConnectionStatistics>
   fetchIp (): Promise<Ip>
 }
 
