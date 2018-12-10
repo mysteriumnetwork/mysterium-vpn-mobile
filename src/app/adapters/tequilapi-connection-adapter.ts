@@ -23,7 +23,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {
   }
 
-  public async connect (consumerId: string, providerId: string) {
+  public async connect (consumerId: string, providerId: string): Promise<void> {
     try {
       const connection = this.tequilapiClient.connectionCreate({
         consumerId,
@@ -40,7 +40,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
     }
   }
 
-  public async disconnect () {
+  public async disconnect (): Promise<void> {
     await this.tequilapiClient.connectionCancel()
   }
 
