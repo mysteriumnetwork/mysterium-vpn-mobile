@@ -58,7 +58,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
   }
 }
 
-function isConnectionCancelled (e: Error) {
+function isConnectionCancelled (e: Error): boolean {
   if (!(e instanceof TequilapiError)) {
     return false
   }
