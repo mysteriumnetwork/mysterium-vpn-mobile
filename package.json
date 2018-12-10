@@ -8,7 +8,7 @@
     "ios": "react-native run-ios",
     "test:unit": "jest",
     "test:e2e:ios": "detox test -o tests/e2e/config.json --configuration=ios.sim.debug",
-    "lint": "tsc --noEmit --skipLibCheck && tslint -p . -c tslint.json 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
+    "lint": "tsc --noEmit --skipLibCheck && tslint -p . 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
     "ci": "yarn lint && yarn test:unit"
   },
   "devDependencies": {
