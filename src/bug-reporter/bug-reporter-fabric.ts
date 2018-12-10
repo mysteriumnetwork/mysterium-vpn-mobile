@@ -22,8 +22,8 @@ class BugReporterFabric implements IBugReporter {
   public sendException (e: Error) {
     Crashlytics.logException(e.message)
   }
-  public setUserId (uid: string) {
-    Crashlytics.setUserIdentifier(uid)
+  public setUserId (userId: string) {
+    Crashlytics.setUserIdentifier(userId)
   }
 }
 

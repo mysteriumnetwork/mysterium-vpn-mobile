@@ -25,9 +25,9 @@ export default class TequilApiState {
   public setBugReporterUserDataOnChange (bugReporter: IBugReporter) {
     reaction(
       () => this.identityId,
-      (consumerId: string | undefined) => {
-        if (!consumerId) return
-        bugReporter.setUserId(consumerId)
+      (userId: string | undefined) => {
+        if (!userId) return
+        bugReporter.setUserId(userId)
       })
   }
 }
