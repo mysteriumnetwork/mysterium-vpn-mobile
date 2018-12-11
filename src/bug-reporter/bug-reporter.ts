@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,18 +13,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/** @format */
+*/
 
-import { AppRegistry } from 'react-native'
-import Root from './src/app/root'
-import { name as appName } from './app.json'
+export interface IBugReporter {
+  sendException (e: Error): void
 
-import { BugReporterFabric } from './src/bug-reporter/bug-reporter-fabric'
-import { setupGlobalErrorHandler } from './src/bug-reporter/utils'
-
-if (!__DEV__) {
-  setupGlobalErrorHandler(new BugReporterFabric())
+  setUserId (userId: string): void
 }
-
-AppRegistry.registerComponent(appName, () => Root)

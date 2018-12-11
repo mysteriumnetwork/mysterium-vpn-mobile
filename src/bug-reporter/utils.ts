@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn' Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Crashlytics } from 'react-native-fabric'
+import { reaction } from 'mobx'
+import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import { IBugReporter } from './bug-reporter'
 
-const setupErrorHandlers = () => {
+function setupGlobalErrorHandler (bugReporter: IBugReporter) {
   const defaultHandler = ErrorUtils.getGlobalHandler()
-  const wrapGlobalHandler = async (error, isFatal) => {
-    // following Android only
-    Crashlytics.logException(error.message);
+  const wrapGlobalHandler = async (error: Error, isFatal: boolean | undefined) => {
+    bugReporter.sendException(error)
 
     defaultHandler(error, isFatal)
   }
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-export { setupErrorHandlers }
+function onIdentityUnlockSetUserIdInBugReporter (tequilApiState: TequilApiState, bugReporter: IBugReporter) {
+  reaction(
+    () => tequilApiState.identityId,
+    (userId: string | undefined) => {
+      if (!userId) return
+      bugReporter.setUserId(userId)
+    })
+}
+
+export { setupGlobalErrorHandler, onIdentityUnlockSetUserIdInBugReporter }
