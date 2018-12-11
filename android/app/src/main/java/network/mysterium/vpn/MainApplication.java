@@ -9,7 +9,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import network.mysterium.vpn.BuildConfig;
+
+import cat.ereza.logcatreporter.LogcatReporter;
 
 
 import com.crashlytics.android.Crashlytics;
@@ -49,9 +50,12 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     Fabric.with(this, new Crashlytics());
+    LogcatReporter.install();
     Crashlytics.setInt("android_sdk_int", android.os.Build.VERSION.SDK_INT);
 
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    Crashlytics.log("Application started");
   }
 }
