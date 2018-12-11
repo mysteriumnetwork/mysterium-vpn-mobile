@@ -1,5 +1,5 @@
 ### Android
-package_name("network.mysterium.vpn")
+package_name("testing.network.mysterium.vpn")
 
 ### iOS
 app_identifier("network.mysterium.MysteriumVPN") # The bundle identifier of your app
