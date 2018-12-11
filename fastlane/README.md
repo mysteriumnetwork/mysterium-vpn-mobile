@@ -25,11 +25,16 @@ Push a new beta build to TestFlight
 ----
 
 ## Android
+### android build
+```
+fastlane android build
+```
+Build release build locally
 ### android beta
 ```
 fastlane android beta
 ```
-Push a new beta build to Playstore
+Push a new beta build to Play Store
 
 ----
 

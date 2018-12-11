@@ -24,15 +24,14 @@ platform :android do
                           " --assets-dest android/app/src/main/res")
   end
 
-  desc "Push a new beta build to Playstore"
-  lane :beta do
+  def build_release
     bundle_offline_js
     gradle(
-      task: "clean assembleRelease", 
+      task: "clean assembleRelease",
       project_dir: "android",
       print_command: false, # to prevent outputting passwords
-      properties: { 
-        'versionCode' => number_of_commits, 
+      properties: {
+        'versionCode' => number_of_commits,
         'versionName' => last_git_tag,
         'applyGoogleServices' => true,
         "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
@@ -40,6 +39,16 @@ platform :android do
         "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["FASTLANE_ANDROID_SIGNING_KEY_PASS"],
       })
+  end
+
+  desc "Build release build locally"
+  lane :build do
+    build_release
+  end
+
+  desc "Push a new beta build to Play Store"
+  lane :beta do
+    build_release
     upload_to_play_store(
       track: "internal",
       json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]
