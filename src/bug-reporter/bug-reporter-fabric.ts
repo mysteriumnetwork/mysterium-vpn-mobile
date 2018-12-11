@@ -22,19 +22,10 @@ class BugReporterFabric implements IBugReporter {
   public sendException (e: Error) {
     Crashlytics.logException(e.message)
   }
+
   public setUserId (userId: string) {
     Crashlytics.setUserIdentifier(userId)
   }
 }
 
-const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
-  const defaultHandler = ErrorUtils.getGlobalHandler()
-  const wrapGlobalHandler = async (error: Error, isFatal: boolean | undefined) => {
-    bugReporter.sendException(error)
-
-    defaultHandler(error, isFatal)
-  }
-  ErrorUtils.setGlobalHandler(wrapGlobalHandler)
-}
-
-export { BugReporterFabric, setupGlobalErrorHandler }
+export { BugReporterFabric }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,11 +13,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
-import { observable } from 'mobx'
+import { IBugReporter } from './bug-reporter'
 
-export default class TequilApiState {
-  @observable
-  public identityId?: string
+const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
+  const defaultHandler = ErrorUtils.getGlobalHandler()
+  const wrapGlobalHandler = async (error: Error, isFatal: boolean | undefined) => {
+    bugReporter.sendException(error)
+
+    defaultHandler(error, isFatal)
+  }
+  ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
+
+export { setupGlobalErrorHandler }

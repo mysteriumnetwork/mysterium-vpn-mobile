@@ -20,7 +20,8 @@ import { AppRegistry } from 'react-native'
 import Root from './src/app/root'
 import { name as appName } from './app.json'
 
-import { setupGlobalErrorHandler, BugReporterFabric } from './src/bug-reporter/bug-reporter-fabric'
+import { BugReporterFabric } from './src/bug-reporter/bug-reporter-fabric'
+import { setupGlobalErrorHandler } from './src/bug-reporter/setup-global-error-handler'
 
 if (!__DEV__) {
   setupGlobalErrorHandler(new BugReporterFabric())
