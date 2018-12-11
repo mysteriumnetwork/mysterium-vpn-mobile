@@ -19,7 +19,7 @@ import { reaction } from 'mobx'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { IBugReporter } from './bug-reporter'
 
-const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
+function setupGlobalErrorHandler (bugReporter: IBugReporter) {
   const defaultHandler = ErrorUtils.getGlobalHandler()
   const wrapGlobalHandler = async (error: Error, isFatal: boolean | undefined) => {
     bugReporter.sendException(error)
