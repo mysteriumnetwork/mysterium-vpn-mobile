@@ -43,7 +43,7 @@ Run app on default device (connected or emulator)
 yarn android
 ```
 
-#### Build release locally for Android
+#### Android Releases
 
 - Get `google-services.json`:
     - Go to https://console.firebase.google.com
@@ -52,9 +52,11 @@ yarn android
     - Put it to `android/app/google-services.json`
 
 
-- Create or get signing key using one of the methods:
-    - Generate using command-line: https://facebook.github.io/react-native/docs/signed-apk-android#generating-a-signing-key
-    - Android Studio
+- Create signing key:
+    ```bash
+    keytool -genkey -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+    ```
+    More info: https://facebook.github.io/react-native/docs/signed-apk-android#generating-a-signing-key
 
 - Setup values in environment:
 ```bash
@@ -66,6 +68,8 @@ export FASTLANE_ANDROID_SIGNING_KEY_PASS=...
 
 - Setup Fastlane, more info in *fastlane/README.md*
 
+##### Building release APK
+
 - Make release build:
     ```bash
     fastlane android build
@@ -76,6 +80,20 @@ APK will be available under `android/app/build/outputs/apk/release/app-release.a
 You can install this APK by:
 - uploading it to phone, or
 - using `adb install android/app/build/outputs/apk/release/app-release.apk`
+
+##### Internal release
+
+- Download android secret json from Play Console
+
+- Specify downloaded file location
+    ```bash
+    export FASTLANE_ANDROID_SECRET_JSON_PATH=... # full path
+    ```
+
+- Build and publish internal release:
+```bash
+fastlane android beta
+```
 
 ### iOS
 
