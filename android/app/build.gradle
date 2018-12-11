@@ -178,7 +178,7 @@ dependencies {
     // From node_modules
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'mysterium.network:mobile-node:0.5-rc'
+    implementation 'mysterium.network:mobile-node:0.0.0-dev'
 }
 
 // Run this once to be able to run the application with BUCK

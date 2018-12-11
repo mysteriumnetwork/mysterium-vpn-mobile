@@ -17,7 +17,8 @@ class MysteriumAndroidCoreService : VpnService() {
     options.experimentIdentityCheck = true
     options.experimentPromiseCheck = true
 
-    mobileNode = Mysterium.newNode(filesPath, options, androidOpenvpnBridge)
+    mobileNode = Mysterium.newNode(filesPath, options)
+    mobileNode?.overrideOpenvpnConnection(androidOpenvpnBridge)
     Log.i(TAG, "started")
   }
 
