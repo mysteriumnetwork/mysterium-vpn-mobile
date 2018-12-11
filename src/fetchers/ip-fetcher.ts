@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatus } from 'mysterium-tequilapi'
 import Connection from '../app/domain/connection'
+import ConnectionStatus from '../app/models/connection-status'
 import Ip from '../app/models/ip'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 import { FetcherBase } from './fetcher-base'

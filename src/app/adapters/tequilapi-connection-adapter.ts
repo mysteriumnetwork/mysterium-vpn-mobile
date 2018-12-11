@@ -15,7 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatusDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO, TequilapiClient, TequilapiError } from 'mysterium-tequilapi'
+import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
 import IConnectionAdapter from './connection-adapter'
 
@@ -48,7 +49,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
     return this.tequilapiClient.connectionStatus()
   }
 
-  public async fetchStatistics (): Promise<ConnectionStatisticsDTO> {
+  public async fetchStatistics (): Promise<ConnectionStatistics> {
     return this.tequilapiClient.connectionStatistics()
   }
 

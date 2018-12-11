@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
 import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
@@ -24,6 +23,8 @@ import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
 import ConnectionData from '../models/connection-data'
+import ConnectionStatistics from '../models/connection-statistics'
+import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
 import Publisher, { Callback } from './publisher'
 
@@ -129,7 +130,7 @@ class Connection {
     })
   }
 
-  private updateStatistics (statistics: ConnectionStatisticsDTO) {
+  private updateStatistics (statistics: ConnectionStatistics) {
     this.setData(new ConnectionData(this.data.status, this.data.IP, statistics))
   }
 
@@ -155,7 +156,7 @@ class Connection {
   }
 }
 
-const initialStatistics: ConnectionStatisticsDTO = {
+const initialStatistics: ConnectionStatistics = {
   duration: 0,
   bytesSent: 0,
   bytesReceived: 0

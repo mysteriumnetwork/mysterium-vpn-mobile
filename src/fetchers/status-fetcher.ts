@@ -19,11 +19,9 @@ import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { FetcherBase } from './fetcher-base'
 
-type ConnectionStatus = () => Promise<ConnectionStatusDTO>
-
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   constructor (
-    private connectionStatus: ConnectionStatus,
+    private connectionStatus: () => Promise<ConnectionStatusDTO>,
     private readonly tequilApiState: TequilApiState,
     update: (data: ConnectionStatusDTO) => void
   ) {

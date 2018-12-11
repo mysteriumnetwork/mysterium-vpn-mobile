@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO, ConnectionStatus } from 'mysterium-tequilapi'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
+import ConnectionStatistics from './connection-statistics'
+import ConnectionStatus from './connection-status'
 import Ip from './ip'
 
 class ConnectionData {
-  // TODO: uncouple from 'mysterium-tequilapi'
   constructor (public readonly status: ConnectionStatus,
                public readonly IP: Ip,
-               public readonly connectionStatistics: ConnectionStatisticsDTO) {
+               public readonly connectionStatistics: ConnectionStatistics) {
   }
 
   get isConnected (): boolean {

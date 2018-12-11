@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import ConnectionStatistics from '../models/connection-statistics'
-import Ip from '../models/ip'
+type ConnectionStatus = 'Connected' | 'NotConnected' | 'Disconnecting' | 'Connecting'
 
-// TODO: uncouple from mysterium-tequilapi by using domain models for response data
-interface IConnectionAdapter {
-  connect (consumerId: string, providerId: string): Promise<void>
-  disconnect (): Promise<void>
-  fetchStatus (): Promise<ConnectionStatusDTO>
-  fetchStatistics (): Promise<ConnectionStatistics>
-  fetchIp (): Promise<Ip>
-}
-
-export default IConnectionAdapter
+export default ConnectionStatus

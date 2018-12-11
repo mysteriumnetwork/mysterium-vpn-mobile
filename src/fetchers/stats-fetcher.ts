@@ -15,17 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatisticsDTO } from 'mysterium-tequilapi'
 import Connection from '../app/domain/connection'
+import ConnectionStatistics from '../app/models/connection-statistics'
 import { FetcherBase } from './fetcher-base'
 
-type ConnectionStatistics = () => Promise<ConnectionStatisticsDTO>
-
-export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
+export class StatsFetcher extends FetcherBase<ConnectionStatistics> {
   constructor (
-    private connectionStatistics: ConnectionStatistics,
+    private connectionStatistics: () => Promise<ConnectionStatistics>,
     private readonly connection: Connection,
-    update: (data: ConnectionStatisticsDTO) => void
+    update: (data: ConnectionStatistics) => void
   ) {
     super('Statistics', update)
   }
@@ -34,7 +32,7 @@ export class StatsFetcher extends FetcherBase<ConnectionStatisticsDTO> {
     return this.connection.data.isConnected
   }
 
-  protected async fetch (): Promise<ConnectionStatisticsDTO> {
+  protected async fetch (): Promise<ConnectionStatistics> {
     return this.connectionStatistics()
   }
 }
