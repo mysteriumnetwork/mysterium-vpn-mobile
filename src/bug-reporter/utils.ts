@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,8 +13,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
+import { reaction } from 'mobx'
+import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import { IBugReporter } from './bug-reporter'
 
 const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
@@ -27,4 +29,13 @@ const setupGlobalErrorHandler = (bugReporter: IBugReporter) => {
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-export { setupGlobalErrorHandler }
+function onIdentityUnlockSetUserIdInBugReporter (tequilApiState: TequilApiState, bugReporter: IBugReporter) {
+  reaction(
+    () => tequilApiState.identityId,
+    (userId: string | undefined) => {
+      if (!userId) return
+      bugReporter.setUserId(userId)
+    })
+}
+
+export { setupGlobalErrorHandler, onIdentityUnlockSetUserIdInBugReporter }

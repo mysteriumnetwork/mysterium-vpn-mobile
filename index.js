@@ -21,7 +21,7 @@ import Root from './src/app/root'
 import { name as appName } from './app.json'
 
 import { BugReporterFabric } from './src/bug-reporter/bug-reporter-fabric'
-import { setupGlobalErrorHandler } from './src/bug-reporter/setup-global-error-handler'
+import { setupGlobalErrorHandler } from './src/bug-reporter/utils'
 
 if (!__DEV__) {
   setupGlobalErrorHandler(new BugReporterFabric())
