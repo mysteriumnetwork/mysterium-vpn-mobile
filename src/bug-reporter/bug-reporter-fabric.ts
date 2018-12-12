@@ -17,14 +17,20 @@
 
 import { Crashlytics } from 'react-native-fabric'
 import { IBugReporter } from './bug-reporter'
+import { IFeedbackReporter, UserFeedback } from './feedback-reporter'
 
-class BugReporterFabric implements IBugReporter {
+class BugReporterFabric implements IBugReporter, IFeedbackReporter {
   public sendException (e: Error) {
     Crashlytics.logException(e.message)
   }
 
   public setUserId (userId: string) {
     Crashlytics.setUserIdentifier(userId)
+  }
+
+  public sendFeedback (feedback: UserFeedback) {
+    Crashlytics.setString('feedbackMessage', feedback.message)
+    Crashlytics.setString('feedbackType', feedback.type)
   }
 }
 
