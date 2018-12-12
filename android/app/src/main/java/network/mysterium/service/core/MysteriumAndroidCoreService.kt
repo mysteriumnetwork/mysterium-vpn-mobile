@@ -14,7 +14,6 @@ class MysteriumAndroidCoreService : VpnService() {
   fun startMobileNode(filesPath: String) {
     val androidOpenvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
     var options = Mysterium.defaultNetworkOptions()
-    options.experimentIdentityCheck = true
 
     mobileNode = Mysterium.newNode(filesPath, options)
     mobileNode?.overrideOpenvpnConnection(androidOpenvpnBridge)
