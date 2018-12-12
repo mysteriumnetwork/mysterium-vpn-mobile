@@ -1,9 +1,9 @@
 package network.mysterium.vpn;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.smixx.fabric.FabricPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -15,11 +15,13 @@ import cat.ereza.logcatreporter.LogcatReporter;
 
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
+import network.mysterium.logging.BugReporterPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
+  private static final String TAG = "MainApplication";
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -29,9 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
+      return Arrays.asList(
               new MainReactPackage(),
-              new FabricPackage(),
+              new BugReporterPackage(),
               new VectorIconsPackage()
       );
     }
@@ -56,6 +58,6 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
 
-    Crashlytics.log("Application started");
+    Log.i(TAG, "Application started");
   }
 }
