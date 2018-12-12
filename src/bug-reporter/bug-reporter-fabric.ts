@@ -17,9 +17,10 @@
 
 import { Platform } from 'react-native'
 import { IBugReporter } from './bug-reporter'
+import { IFeedbackReporter, UserFeedback } from './feedback-reporter'
 import NativeBugReporter from './native-bug-reporter'
 
-class BugReporterFabric implements IBugReporter {
+class BugReporterFabric implements IBugReporter, IFeedbackReporter {
   public sendException (e: Error) {
     if (Platform.OS === 'android') {
       NativeBugReporter.logException(e.message)
@@ -30,6 +31,11 @@ class BugReporterFabric implements IBugReporter {
     if (Platform.OS === 'android') {
       NativeBugReporter.setUserIdentifier(userId)
     }
+  }
+
+  public sendFeedback (feedback: UserFeedback) {
+    NativeBugReporter.setString('feedbackMessage', feedback.message)
+    NativeBugReporter.setString('feedbackType', feedback.type)
   }
 }
 
