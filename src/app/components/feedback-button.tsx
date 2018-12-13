@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import { Icon } from 'native-base'
+import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import colors from '../styles/colors'
 
