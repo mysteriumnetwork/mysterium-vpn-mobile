@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,24 +13,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-import { Platform } from 'react-native'
-import { IBugReporter } from './bug-reporter'
-import NativeBugReporter from './native-bug-reporter'
+import { NativeModules } from 'react-native'
 
-class BugReporterFabric implements IBugReporter {
-  public sendException (e: Error) {
-    if (Platform.OS === 'android') {
-      NativeBugReporter.logException(e.message)
-    }
-  }
+const NativeBugReporter: INativeBugReporter = NativeModules.BugReporter
 
-  public setUserId (userId: string) {
-    if (Platform.OS === 'android') {
-      NativeBugReporter.setUserIdentifier(userId)
-    }
-  }
+interface INativeBugReporter {
+  logException (value: string): void
+
+  setUserIdentifier (userIdentifier: string): void
 }
 
-export { BugReporterFabric }
+export default NativeBugReporter
