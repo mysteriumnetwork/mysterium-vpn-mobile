@@ -20,4 +20,9 @@ class BugReporter(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
     fun setUserIdentifier(userIdentifier: String) {
         Crashlytics.setUserIdentifier(userIdentifier)
     }
+
+    @ReactMethod
+    fun setString(key: String, value: String) {
+        Crashlytics.setString(key, value)
+    }
 }

@@ -23,6 +23,8 @@ interface INativeBugReporter {
   logException (value: string): void
 
   setUserIdentifier (userIdentifier: string): void
+
+  setString (key: string, value: string): void
 }
 
 export default NativeBugReporter
