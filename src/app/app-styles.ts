@@ -15,18 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StyleSheet, ViewStyle } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { STYLES } from '../styles'
-
-type AppStyles = {
-  app: ViewStyle,
-  screen: ViewStyle,
-  controls: ViewStyle,
-  footer: ViewStyle,
-  imageBackground: ViewStyle,
-  textIp: ViewStyle,
-  proposalPicker: ViewStyle
-}
 
 export default StyleSheet.create({
   app: {
@@ -36,6 +26,11 @@ export default StyleSheet.create({
   screen: {
     alignItems: 'center',
     flex: 1
+  },
+  feedback: {
+    position: 'absolute',
+    top: 10,
+    left: 10
   },
   controls: {
     width: '100%',
@@ -61,4 +56,4 @@ export default StyleSheet.create({
     marginTop: 10,
     marginBottom: 10
   }
-}) as AppStyles
+})
