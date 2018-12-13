@@ -15,30 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Container, Content, Form, Picker, Text, Textarea } from 'native-base'
+import { Button, Col, Container, Content, Form, Grid, Picker, Text, Textarea } from 'native-base'
 import React, { ReactNode } from 'react'
-import { FeedbackType, IFeedbackReporter } from '../../bug-reporter/feedback-reporter'
+import { FeedbackType, UserFeedback } from '../../bug-reporter/feedback-reporter'
 import { STYLES } from '../../styles'
 
-type FeedbackReporterProp = { feedbackReporter: IFeedbackReporter }
-type Option = {
+type FeedbackFormProps = {
+  onSubmit: (feedback: UserFeedback) => void,
+
+  options: FeedbackTypeOption[]
+}
+
+type FeedbackTypeOption = {
   value: FeedbackType,
   label: string
 }
-type PickerOptionsProp = {
-  options: Option[]
-}
-
-type FeedbackFormState = {
-  feedbackType: FeedbackType,
-  feedbackMessage: string
-}
 
 export default class FeedbackForm extends React.PureComponent
-  <FeedbackReporterProp & PickerOptionsProp, FeedbackFormState> {
-  public state: FeedbackFormState = {
-    feedbackType: 'bug',
-    feedbackMessage: ''
+  <FeedbackFormProps, UserFeedback> {
+  public state: UserFeedback = {
+    type: 'bug',
+    message: ''
   }
 
   public render (): ReactNode {
@@ -46,26 +43,31 @@ export default class FeedbackForm extends React.PureComponent
       <Container>
         <Content padder={true}>
           <Form>
-            <Text style={{ paddingLeft: 10 }}>Please select your feedback type</Text>
-            <Picker
-              inlineLabel={true}
-              placeholder="Select your SIM"
-              selectedValue={this.state.feedbackType}
-              onValueChange={this.selectType}
-            >
-              {this.props.options.map((opt: Option) =>
-                <Picker.Item label={opt.label} key={opt.value} value={opt.value}/>)}
-            </Picker>
+            <Grid>
+              <Col>
+                <Text style={{ paddingTop: 14, textAlign: 'right' }}>Feedback type:</Text>
+              </Col>
+              <Col size={2}>
+                <Picker
+                  selectedValue={this.state.type}
+                  onValueChange={this.selectType}
+                >
+                  {this.props.options.map((option: FeedbackTypeOption) =>
+                    <Picker.Item label={option.label} key={option.value} value={option.value}/>)}
+                </Picker>
+              </Col>
+            </Grid>
             <Textarea
               placeholder={'You may enter your feedback here...'}
               rowSpan={5}
             />
             <Button
               color={STYLES.COLOR_MAIN}
-              onPress={() => this.props.feedbackReporter.sendFeedback({
-                type: this.state.feedbackType,
-                message: this.state.feedbackMessage
-              })}
+              onPress={() => {
+                if (this.state.type) {
+                  this.props.onSubmit(this.state)
+                }
+              }}
             >
               <Text>Send Feedback</Text>
             </Button>
@@ -76,6 +78,6 @@ export default class FeedbackForm extends React.PureComponent
   }
 
   private selectType = (type: FeedbackType) => {
-    this.setState({ ...this.state, feedbackType: type })
+    this.setState({ ...this.state, type })
   }
 }
