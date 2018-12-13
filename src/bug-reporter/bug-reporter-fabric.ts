@@ -24,18 +24,24 @@ class BugReporterFabric implements IBugReporter, IFeedbackReporter {
   public sendException (e: Error) {
     if (Platform.OS === 'android') {
       NativeBugReporter.logException(e.message)
+    } else {
+      console.log('Bug reported:', e)
     }
   }
 
   public setUserId (userId: string) {
     if (Platform.OS === 'android') {
       NativeBugReporter.setUserIdentifier(userId)
+    } else {
+      console.log('Bug reporter user identifier set:', userId)
     }
   }
 
   public sendFeedback (feedback: UserFeedback) {
     if (Platform.OS === 'android') {
       NativeBugReporter.sendFeedback(feedback.type, feedback.message)
+    } else {
+      console.log(`Feedback reported: ${feedback.type}, ${feedback.message}`)
     }
   }
 }
