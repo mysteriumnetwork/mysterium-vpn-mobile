@@ -168,7 +168,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-fabric')
     implementation project(':react-native-vector-icons')
     implementation compile('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
       transitive = true;
