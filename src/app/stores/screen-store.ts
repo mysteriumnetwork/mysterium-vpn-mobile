@@ -42,13 +42,13 @@ export default class ScreenStore {
 
   @action
   public navigateToVpnScreen () {
-    console.log('to vpn')
+    console.log('Opening VPN screen')
     this.screen = VPN_SCREEN
   }
 
   @action
   public navigateToFeedbackScreen () {
-    console.log('to feedback')
+    console.log('Opening Feedback screen')
     this.screen = FEEDBACK_SCREEN
   }
 }
