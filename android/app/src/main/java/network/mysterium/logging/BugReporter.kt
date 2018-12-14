@@ -25,6 +25,6 @@ class BugReporter(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
 
     @ReactMethod
     fun sendFeedback(type: String, message: String) {
-        Crashlytics.logException(FeedbackException(type + ":" + message))
+        LogcatReporter.reportExceptionWithLogcat(FeedbackException(type + ":" + message))
     }
 }
