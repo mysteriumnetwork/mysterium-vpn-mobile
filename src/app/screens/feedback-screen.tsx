@@ -40,10 +40,6 @@ class FeedbackScreen extends React.Component<FeedbackScreenProps> {
         value: 'bug'
       },
       {
-        label: 'Crash',
-        value: 'crash'
-      },
-      {
         label: 'Connectivity issues',
         value: 'connectivity'
       },
