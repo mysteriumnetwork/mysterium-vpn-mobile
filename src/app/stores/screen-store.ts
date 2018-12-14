@@ -17,38 +17,40 @@
 
 import { action, computed, observable } from 'mobx'
 
-const LOADING_SCREEN = 0
-const VPN_SCREEN = 1
-const FEEDBACK_SCREEN = 2
-
 export default class ScreenStore {
   @observable
-  private screen: number = LOADING_SCREEN
+  private screen: Screen = Screen.Loading
 
   @computed
   public get inLoadingScreen (): boolean {
-    return this.screen === LOADING_SCREEN
+    return this.screen === Screen.Loading
   }
 
   @computed
   public get inVpnScreen (): boolean {
-    return this.screen === VPN_SCREEN
+    return this.screen === Screen.Vpn
   }
 
   @computed
   public get inFeedbackScreen (): boolean {
-    return this.screen === FEEDBACK_SCREEN
+    return this.screen === Screen.Feedback
   }
 
   @action
   public navigateToVpnScreen () {
     console.log('Opening VPN screen')
-    this.screen = VPN_SCREEN
+    this.screen = Screen.Vpn
   }
 
   @action
   public navigateToFeedbackScreen () {
     console.log('Opening Feedback screen')
-    this.screen = FEEDBACK_SCREEN
+    this.screen = Screen.Feedback
   }
+}
+
+enum Screen {
+  Loading,
+  Vpn,
+  Feedback
 }
