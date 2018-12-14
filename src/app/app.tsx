@@ -18,7 +18,7 @@
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { View } from 'react-native'
-import { IFeedbackReporter } from '../bug-reporter/feedback-reporter'
+import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
 import styles from './app-styles'

@@ -24,4 +24,5 @@ interface IFeedbackReporter {
   sendFeedback (feedback: UserFeedback): void
 }
 
-export { UserFeedback, IFeedbackReporter }
+export { UserFeedback }
+export default IFeedbackReporter

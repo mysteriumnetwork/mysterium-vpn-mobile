@@ -17,7 +17,7 @@
 
 import { Platform } from 'react-native'
 import { IBugReporter } from './bug-reporter'
-import { IFeedbackReporter, UserFeedback } from './feedback-reporter'
+import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
 import NativeBugReporter from './native-bug-reporter'
 
 class BugReporterFabric implements IBugReporter, IFeedbackReporter {
