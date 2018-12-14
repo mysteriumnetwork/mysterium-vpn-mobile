@@ -24,7 +24,7 @@ interface INativeBugReporter {
 
   setUserIdentifier (userIdentifier: string): void
 
-  setString (key: string, value: string): void
+  sendFeedback (type: string, message: string): void
 }
 
 export default NativeBugReporter

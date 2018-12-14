@@ -50,7 +50,7 @@ class FeedbackForm extends React.PureComponent
           <Row style={styles.input}>
             <Picker
               selectedValue={this.state.type}
-              onValueChange={this.selectType}
+              onValueChange={this.setType}
             >
               {this.props.options.map((option: FeedbackTypeOption) =>
                 <Picker.Item label={option.label} key={option.value} value={option.value}/>)}
@@ -64,6 +64,7 @@ class FeedbackForm extends React.PureComponent
             style={[styles.messageBox, styles.input]}
             placeholder={'You may enter your feedback here...'}
             rowSpan={5}
+            onChangeText={this.setMessage}
           />
           </Row>
         </Grid>
@@ -79,8 +80,12 @@ class FeedbackForm extends React.PureComponent
     )
   }
 
-  private selectType = (type: string) => {
+  private setType = (type: string) => {
     this.setState({ type })
+  }
+
+  private setMessage = (message: string) => {
+    this.setState({ message })
   }
 }
 

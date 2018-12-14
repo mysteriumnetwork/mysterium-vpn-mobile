@@ -35,9 +35,7 @@ class BugReporterFabric implements IBugReporter, IFeedbackReporter {
 
   public sendFeedback (feedback: UserFeedback) {
     if (Platform.OS === 'android') {
-      NativeBugReporter.setString('feedbackMessage', feedback.message)
-      NativeBugReporter.setString('feedbackType', feedback.type)
-      this.sendException(new Error('User submitted feedback'))
+      NativeBugReporter.sendFeedback(feedback.type, feedback.message)
     }
   }
 }
