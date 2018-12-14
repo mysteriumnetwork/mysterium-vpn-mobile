@@ -65,6 +65,7 @@ class Root extends React.PureComponent {
           proposalList={this.proposalList}
           favorites={this.favorites}
           appLoader={this.appLoader}
+          feedbackReporter={this.bugReporter}
         />
       </RootBase>
     )

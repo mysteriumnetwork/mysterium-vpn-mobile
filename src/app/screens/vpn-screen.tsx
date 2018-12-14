@@ -24,7 +24,7 @@ import TequilApiDriver from '../../libraries/tequil-api/tequil-api-driver'
 import styles from '../app-styles'
 import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
-import FeedbackButton from '../components/feedback-button'
+import IconButton from '../components/icon-button'
 import LogoBackground from '../components/logo-background'
 import { IProposal } from '../components/proposal-picker/proposal'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
@@ -77,7 +77,10 @@ class VpnScreen extends React.Component<HomeProps> {
         <LogoBackground/>
 
         <View style={styles.feedback}>
-          <FeedbackButton onClick={() => this.screenStore.navigateToFeedbackScreen()}/>
+          <IconButton
+            icon="ios-help-circle-outline"
+            onClick={() => this.screenStore.navigateToFeedbackScreen()}
+          />
         </View>
 
         <ConnectionStatus status={connectionData.status}/>

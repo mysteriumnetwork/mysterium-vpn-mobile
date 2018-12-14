@@ -10,7 +10,8 @@ const translations = {
   IP_UPDATING: 'Updating...',
   UNKNOWN: 'Unknown',
   UNSELECTED_COUNTRY: 'Please select a country',
-  COUNTRY_SEARCH: 'Search countries'
+  COUNTRY_SEARCH: 'Search countries',
+  FEEDBACK_SUBMIT: 'Thanks! Your feedback will be submitted the next time you start the app.'
 }
 
 export default translations

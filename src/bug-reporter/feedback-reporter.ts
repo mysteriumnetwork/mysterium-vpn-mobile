@@ -15,10 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type FeedbackType = 'bug' | 'crash' | 'connection issue'
-
 type UserFeedback = {
-  type: FeedbackType,
+  type: string,
   message: string
 }
 
@@ -26,4 +24,4 @@ interface IFeedbackReporter {
   sendFeedback (feedback: UserFeedback): void
 }
 
-export { FeedbackType, UserFeedback, IFeedbackReporter }
+export { UserFeedback, IFeedbackReporter }
