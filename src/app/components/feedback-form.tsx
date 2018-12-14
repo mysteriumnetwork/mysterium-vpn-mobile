@@ -17,9 +17,9 @@
 
 import { Button, Form, Grid, Picker, Row, Text, Textarea } from 'native-base'
 import React, { ReactNode } from 'react'
+import { StyleSheet } from 'react-native'
 import { UserFeedback } from '../../bug-reporter/feedback-reporter'
 import { STYLES } from '../../styles'
-import { StyleSheet } from 'react-native'
 import colors from '../styles/colors'
 
 type FeedbackFormProps = {
