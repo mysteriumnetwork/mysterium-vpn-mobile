@@ -18,6 +18,7 @@
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { View } from 'react-native'
+import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
 import styles from './app-styles'
@@ -25,19 +26,23 @@ import ErrorDropdown from './components/error-dropdown'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
 import ProposalList from './proposals/proposal-list'
+import FeedbackScreen from './screens/feedback-screen'
 import LoadingScreen from './screens/loading-screen'
 import VpnScreen from './screens/vpn-screen'
 import ConnectionStore from './stores/connection-store'
+import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
+  screenStore: ScreenStore,
   messageDisplayDelegate: MessageDisplayDelegate,
   proposalList: ProposalList,
   favorites: Favorites,
-  appLoader: AppLoader
+  appLoader: AppLoader,
+  feedbackReporter: IFeedbackReporter
 }
 
 @observer
@@ -46,9 +51,11 @@ export default class App extends React.Component<AppProps> {
   private readonly connectionStore: ConnectionStore
   private readonly messageDisplayDelegate: MessageDisplayDelegate
   private readonly vpnAppState: VpnAppState
+  private readonly screenStore: ScreenStore
   private readonly proposalList: ProposalList
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
+  private readonly feedbackReporter: IFeedbackReporter
 
   constructor (props: AppProps) {
     super(props)
@@ -56,9 +63,11 @@ export default class App extends React.Component<AppProps> {
     this.connectionStore = props.connectionStore
     this.messageDisplayDelegate = props.messageDisplayDelegate
     this.vpnAppState = props.vpnAppState
+    this.screenStore = props.screenStore
     this.proposalList = props.proposalList
     this.favorites = props.favorites
     this.appLoader = props.appLoader
+    this.feedbackReporter = props.feedbackReporter
   }
 
   public render (): ReactNode {
@@ -73,21 +82,34 @@ export default class App extends React.Component<AppProps> {
   public async componentDidMount () {
     try {
       await this.appLoader.load()
-      this.vpnAppState.markAppAsLoaded()
+      this.screenStore.navigateToVpnScreen()
     } catch (err) {
       console.log('App loading failed', err)
     }
   }
 
   private renderCurrentScreen (): ReactNode {
-    if (!this.vpnAppState.isAppLoaded) {
-      return <LoadingScreen/>
+    if (this.screenStore.inLoadingScreen) {
+      return (
+        <LoadingScreen/>
+      )
     }
+
+    if (this.screenStore.inFeedbackScreen) {
+      return (
+        <FeedbackScreen
+          feedbackReporter={this.feedbackReporter}
+          navigateBack={() => this.screenStore.navigateToVpnScreen()}
+        />
+      )
+    }
+
     return (
       <VpnScreen
         tequilAPIDriver={this.tequilAPIDriver}
         connectionStore={this.connectionStore}
         vpnAppState={this.vpnAppState}
+        screenStore={this.screenStore}
         proposalList={this.proposalList}
         favorites={this.favorites}
         messageDisplay={this.messageDisplayDelegate}

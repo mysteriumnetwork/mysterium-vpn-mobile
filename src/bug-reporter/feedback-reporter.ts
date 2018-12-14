@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2018 The "MysteriumNetwork/mysterium-vpn-mobile" Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,16 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NativeModules } from 'react-native'
-
-const NativeBugReporter: INativeBugReporter = NativeModules.BugReporter
-
-interface INativeBugReporter {
-  logException (value: string): void
-
-  setUserIdentifier (userIdentifier: string): void
-
-  sendFeedback (type: string, message: string): void
+type UserFeedback = {
+  type: string,
+  message: string
 }
 
-export default NativeBugReporter
+interface IFeedbackReporter {
+  sendFeedback (feedback: UserFeedback): void
+}
+
+export { UserFeedback }
+export default IFeedbackReporter

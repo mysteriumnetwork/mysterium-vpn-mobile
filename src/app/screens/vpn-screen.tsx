@@ -24,6 +24,7 @@ import TequilApiDriver from '../../libraries/tequil-api/tequil-api-driver'
 import styles from '../app-styles'
 import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
+import IconButton from '../components/icon-button'
 import LogoBackground from '../components/logo-background'
 import { IProposal } from '../components/proposal-picker/proposal'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
@@ -33,6 +34,7 @@ import messages from '../messages/messages'
 import Favorites from '../proposals/favorites'
 import ProposalList from '../proposals/proposal-list'
 import ConnectionStore from '../stores/connection-store'
+import ScreenStore from '../stores/screen-store'
 import translations from '../translations'
 import VpnAppState from '../vpn-app-state'
 
@@ -40,6 +42,7 @@ type HomeProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
+  screenStore: ScreenStore,
   proposalList: ProposalList,
   favorites: Favorites,
   messageDisplay: IMessageDisplay
@@ -50,6 +53,7 @@ class VpnScreen extends React.Component<HomeProps> {
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly connectionStore: ConnectionStore
   private readonly vpnAppState: VpnAppState
+  private readonly screenStore: ScreenStore
   private readonly proposalList: ProposalList
   private readonly favorites: Favorites
   private readonly messageDisplay: IMessageDisplay
@@ -59,6 +63,7 @@ class VpnScreen extends React.Component<HomeProps> {
     this.tequilAPIDriver = props.tequilAPIDriver
     this.connectionStore = props.connectionStore
     this.vpnAppState = props.vpnAppState
+    this.screenStore = props.screenStore
     this.proposalList = props.proposalList
     this.favorites = props.favorites
     this.messageDisplay = props.messageDisplay
@@ -70,6 +75,13 @@ class VpnScreen extends React.Component<HomeProps> {
     return (
       <View style={styles.screen}>
         <LogoBackground/>
+
+        <View style={styles.feedback}>
+          <IconButton
+            icon="ios-help-circle-outline"
+            onClick={() => this.screenStore.navigateToFeedbackScreen()}
+          />
+        </View>
 
         <ConnectionStatus status={connectionData.status}/>
 

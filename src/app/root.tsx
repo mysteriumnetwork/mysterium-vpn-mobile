@@ -18,6 +18,7 @@ import Favorites from './proposals/favorites'
 import ProposalList from './proposals/proposal-list'
 import ConnectionStore from './stores/connection-store'
 import ProposalsStore from './stores/proposals-store'
+import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
 
 class Root extends React.PureComponent {
@@ -37,6 +38,7 @@ class Root extends React.PureComponent {
   // stores
   private readonly connectionStore = new ConnectionStore(this.connection)
   private readonly proposalsStore = new ProposalsStore(this.proposalsAdapter)
+  private readonly screenStore = new ScreenStore()
   private readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
 
@@ -47,6 +49,7 @@ class Root extends React.PureComponent {
 
   public async componentWillMount () {
     onIdentityUnlockSetUserIdInBugReporter(this.tequilApiState, this.bugReporter)
+
     await this.favoritesStore.fetch()
   }
 
@@ -57,10 +60,12 @@ class Root extends React.PureComponent {
           tequilAPIDriver={this.tequilAPIDriver}
           connectionStore={this.connectionStore}
           vpnAppState={this.vpnAppState}
+          screenStore={this.screenStore}
           messageDisplayDelegate={this.messageDisplayDelegate}
           proposalList={this.proposalList}
           favorites={this.favorites}
           appLoader={this.appLoader}
+          feedbackReporter={this.bugReporter}
         />
       </RootBase>
     )

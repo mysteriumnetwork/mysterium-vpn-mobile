@@ -6,6 +6,8 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 
+class FeedbackException(message: String) : Exception(message)
+
 class BugReporter(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
     override fun getName(): String {
         return "BugReporter"
@@ -19,5 +21,10 @@ class BugReporter(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
     @ReactMethod
     fun setUserIdentifier(userIdentifier: String) {
         Crashlytics.setUserIdentifier(userIdentifier)
+    }
+
+    @ReactMethod
+    fun sendFeedback(type: String, message: String) {
+        LogcatReporter.reportExceptionWithLogcat(FeedbackException(type + ":" + message))
     }
 }

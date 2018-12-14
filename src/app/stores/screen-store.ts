@@ -15,9 +15,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
 
-export default class VpnAppState {
+export default class ScreenStore {
   @observable
-  public selectedProviderId: string | null = null
+  private screen: Screen = Screen.Loading
+
+  @computed
+  public get inLoadingScreen (): boolean {
+    return this.screen === Screen.Loading
+  }
+
+  @computed
+  public get inVpnScreen (): boolean {
+    return this.screen === Screen.Vpn
+  }
+
+  @computed
+  public get inFeedbackScreen (): boolean {
+    return this.screen === Screen.Feedback
+  }
+
+  @action
+  public navigateToVpnScreen () {
+    console.log('Opening VPN screen')
+    this.screen = Screen.Vpn
+  }
+
+  @action
+  public navigateToFeedbackScreen () {
+    console.log('Opening Feedback screen')
+    this.screen = Screen.Feedback
+  }
+}
+
+enum Screen {
+  Loading,
+  Vpn,
+  Feedback
 }
