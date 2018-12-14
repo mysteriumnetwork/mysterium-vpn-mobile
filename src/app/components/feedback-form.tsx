@@ -19,6 +19,8 @@ import { Button, Form, Grid, Picker, Row, Text, Textarea } from 'native-base'
 import React, { ReactNode } from 'react'
 import { UserFeedback } from '../../bug-reporter/feedback-reporter'
 import { STYLES } from '../../styles'
+import { StyleSheet } from 'react-native'
+import colors from '../styles/colors'
 
 type FeedbackFormProps = {
   onSubmit: (feedback: UserFeedback) => void,
@@ -43,9 +45,9 @@ class FeedbackForm extends React.PureComponent
       <Form>
         <Grid>
           <Row>
-            <Text style={{ paddingTop: 14, textAlign: 'right' }}>Feedback type:</Text>
+            <Text style={styles.label}>Feedback type:</Text>
           </Row>
-          <Row>
+          <Row style={styles.input}>
             <Picker
               selectedValue={this.state.type}
               onValueChange={this.selectType}
@@ -55,11 +57,11 @@ class FeedbackForm extends React.PureComponent
             </Picker>
           </Row>
           <Row>
-            <Text style={{ paddingTop: 14, textAlign: 'right' }}>Message:</Text>
+            <Text style={styles.label}>Message:</Text>
           </Row>
           <Row>
           <Textarea
-            style={{ width: '100%' }}
+            style={[styles.messageBox, styles.input]}
             placeholder={'You may enter your feedback here...'}
             rowSpan={5}
           />
@@ -81,6 +83,22 @@ class FeedbackForm extends React.PureComponent
     this.setState({ type })
   }
 }
+
+const styles = StyleSheet.create({
+  label: {
+    paddingTop: 14,
+    textAlign: 'right'
+  },
+  input: {
+    borderColor: colors.border,
+    borderWidth: 0.5,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  messageBox: {
+    width: '100%'
+  }
+})
 
 export { FeedbackTypeOption }
 export default FeedbackForm
