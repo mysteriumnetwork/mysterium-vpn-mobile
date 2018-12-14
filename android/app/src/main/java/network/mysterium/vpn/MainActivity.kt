@@ -68,7 +68,7 @@ class MainActivity : ReactActivity() {
       VPN_SERVICE_REQUEST -> {
         if (resultCode != Activity.RESULT_OK) {
           Log.w(TAG, "User forbidden VPN service")
-          showMessage("VPN connection has to be granted for Mysterium VPN to work.")
+          showMessage("VPN connection has to be granted for MysteriumVPN to work.")
           finish()
           return
         }
