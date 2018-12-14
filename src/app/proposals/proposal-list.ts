@@ -42,11 +42,13 @@ function compareFavoriteProposals (one: FavoriteProposal, other: FavoriteProposa
   } else if (!one.isFavorite && other.isFavorite) {
     return 1
   }
+
   const oneName = one.countryName || translations.UNKNOWN
   const otherName = other.countryName || translations.UNKNOWN
+
   if (oneName > otherName) {
     return 1
-  } else if (oneName < oneName) {
+  } else if (oneName < otherName) {
     return -1
   }
   return 0
