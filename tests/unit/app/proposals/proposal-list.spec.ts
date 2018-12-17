@@ -38,7 +38,7 @@ const items = [
     countryName: 'Italy'
   },
   {
-    providerID: '0x1',
+    providerID: '0x8',
     countryCode: 'al',
     countryName: 'Albania'
   }
@@ -47,25 +47,28 @@ const items = [
 const proposals = { proposals: items }
 const favorites = ['0x2', '0x6']
 
-let list: ProposalList
-
 describe('ProposalList', () => {
+  let list: ProposalList
+
   beforeEach(() => {
     list = new ProposalList(proposals, new FavoritesStorageMock(favorites))
   })
 
-  it('is sorted', () => {
-    const expected = ['0x6', '0x2', '0x1', '0x5', '0x7', '0x1', '0x4', '0x3']
-    const providerIds = list.proposals.map((i) => i.providerID)
+  describe('.proposals', () => {
+    it('returns sorted proposals by country name and favorite flag', () => {
+      const expected = [
+        'Italy',
+        'United States',
+        'Albania',
+        'Italy',
+        'Italy',
+        'Lithuania',
+        'United Kingdom',
+        'United States'
+      ]
 
-    expect(expected).toEqual(providerIds)
-  })
-
-  it('is favorite', () => {
-    const favoriteProviders = list.proposals
-      .filter((i) => i.isFavorite === true)
-      .map((i) => i.providerID)
-
-    expect(['0x6', '0x2']).toEqual(favoriteProviders)
+      const countryNames = list.proposals.map((i) => i.countryName)
+      expect(countryNames).toEqual(expected)
+    })
   })
 })
