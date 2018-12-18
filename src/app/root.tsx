@@ -1,6 +1,8 @@
 import TequilapiClientFactory from 'mysterium-tequilapi'
 import { Root as RootBase } from 'native-base'
 import * as React from 'react'
+import { Platform } from 'react-native'
+import BugReporterConsole from '../bug-reporter/bug-reporter-console'
 import { BugReporterFabric } from '../bug-reporter/bug-reporter-fabric'
 import { onIdentityUnlockSetUserIdInBugReporter, setupGlobalErrorHandler } from '../bug-reporter/utils'
 import { CONFIG } from '../config'
@@ -45,7 +47,7 @@ class Root extends React.PureComponent {
   private readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   private readonly favorites = new Favorites(this.favoritesStore)
   private readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
-  private readonly bugReporter = new BugReporterFabric()
+  private readonly bugReporter = this.buildBugReporter()
 
   public async componentWillMount () {
     onIdentityUnlockSetUserIdInBugReporter(this.tequilApiState, this.bugReporter)
@@ -73,6 +75,14 @@ class Root extends React.PureComponent {
         />
       </RootBase>
     )
+  }
+
+  private buildBugReporter () {
+    if (Platform.OS === 'android') {
+      return new BugReporterFabric()
+    } else {
+      return new BugReporterConsole()
+    }
   }
 }
 
