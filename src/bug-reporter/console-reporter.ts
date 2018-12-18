@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** @format */
 
-import { AppRegistry } from 'react-native'
-import Root from './src/app/root'
-import { name as appName } from './app.json'
+import { IBugReporter } from './bug-reporter'
+import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
 
-AppRegistry.registerComponent(appName, () => Root)
+class ConsoleReporter implements IBugReporter, IFeedbackReporter {
+  public sendException (e: Error) {
+    console.log('Bug reported:', e)
+  }
+
+  public setUserId (userId: string) {
+    console.log('Bug reporter user identifier set:', userId)
+  }
+
+  public sendFeedback (feedback: UserFeedback) {
+    console.log(`Feedback reported: ${feedback.type}, ${feedback.message}`)
+  }
+}
+
+export default ConsoleReporter
