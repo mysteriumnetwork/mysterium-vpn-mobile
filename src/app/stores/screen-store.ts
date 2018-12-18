@@ -19,7 +19,12 @@ import { action, computed, observable } from 'mobx'
 
 export default class ScreenStore {
   @observable
-  private screen: Screen = Screen.Loading
+  private screen: Screen = Screen.Terms
+
+  @computed
+  public get inTermsScreen (): boolean {
+    return this.screen === Screen.Terms
+  }
 
   @computed
   public get inLoadingScreen (): boolean {
@@ -37,6 +42,12 @@ export default class ScreenStore {
   }
 
   @action
+  public navigateToLoadingScreen () {
+    console.log('Opening loading screen')
+    this.screen = Screen.Loading
+  }
+
+  @action
   public navigateToVpnScreen () {
     console.log('Opening VPN screen')
     this.screen = Screen.Vpn
@@ -50,6 +61,7 @@ export default class ScreenStore {
 }
 
 enum Screen {
+  Terms,
   Loading,
   Vpn,
   Feedback

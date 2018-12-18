@@ -30,6 +30,7 @@ import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
+import Terms from './domain/terms'
 import { FavoritesStorage } from './favorites-storage'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
@@ -52,6 +53,7 @@ class Container {
 
   // domain
   public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
+  public readonly terms: Terms = this.buildTerms()
 
   // stores
   public readonly connectionStore = new ConnectionStore(this.connection)
@@ -79,6 +81,11 @@ class Container {
   private buildFavoriteStorage () {
     const FAVORITE_KEY = '@Favorites:KEY'
     return new FavoritesStorage(new ReactNativeStorage(FAVORITE_KEY))
+  }
+
+  private buildTerms () {
+    const TERMS_KEY = '@MainStore:acceptedTerms'
+    return new Terms(new ReactNativeStorage<boolean>(TERMS_KEY))
   }
 
   private useFabric () {
