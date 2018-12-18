@@ -15,17 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import { Platform } from 'react-native'
 import { IBugReporter } from './bug-reporter'
+import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
 import NativeBugReporter from './native-bug-reporter'
 
-class BugReporterFabric implements IBugReporter {
+class BugReporterFabric implements IBugReporter, IFeedbackReporter {
   public sendException (e: Error) {
-    NativeBugReporter.logException(e.message)
+    if (Platform.OS === 'android') {
+      NativeBugReporter.logException(e.message)
+    }
   }
 
   public setUserId (userId: string) {
-    NativeBugReporter.setUserIdentifier(userId)
+    if (Platform.OS === 'android') {
+      NativeBugReporter.setUserIdentifier(userId)
+    }
+  }
+
+  public sendFeedback (feedback: UserFeedback) {
+    if (Platform.OS === 'android') {
+      NativeBugReporter.sendFeedback(feedback.type, feedback.message)
+    }
   }
 }
 
-export default BugReporterFabric
+export { BugReporterFabric }
