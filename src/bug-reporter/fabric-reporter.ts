@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,23 +13,24 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
 import { IBugReporter } from './bug-reporter'
 import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
+import NativeBugReporter from './native-bug-reporter'
 
-class BugReporterConsole implements IBugReporter, IFeedbackReporter {
+class FabricReporter implements IBugReporter, IFeedbackReporter {
   public sendException (e: Error) {
-    console.log('Bug reported:', e)
+    NativeBugReporter.logException(e.message)
   }
 
   public setUserId (userId: string) {
-    console.log('Bug reporter user identifier set:', userId)
+    NativeBugReporter.setUserIdentifier(userId)
   }
 
   public sendFeedback (feedback: UserFeedback) {
-    console.log(`Feedback reported: ${feedback.type}, ${feedback.message}`)
+    NativeBugReporter.sendFeedback(feedback.type, feedback.message)
   }
 }
 
-export default BugReporterConsole
+export { FabricReporter }

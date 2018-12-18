@@ -8,13 +8,11 @@ class Root extends React.PureComponent {
   private readonly container = new Container()
 
   public async componentWillMount () {
+    setupGlobalErrorHandler(this.container.bugReporter)
+
     onIdentityUnlockSetUserIdInBugReporter(this.container.tequilApiState, this.container.bugReporter)
 
     await this.container.favoritesStore.fetch()
-
-    if (!__DEV__) {
-      setupGlobalErrorHandler(this.container.bugReporter)
-    }
   }
 
   public render () {
@@ -29,7 +27,7 @@ class Root extends React.PureComponent {
           proposalList={this.container.proposalList}
           favorites={this.container.favorites}
           appLoader={this.container.appLoader}
-          feedbackReporter={this.container.bugReporter}
+          feedbackReporter={this.container.feedbackReporter}
         />
       </RootBase>
     )

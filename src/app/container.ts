@@ -17,8 +17,10 @@
 
 import TequilapiClientFactory from 'mysterium-tequilapi'
 import { Platform } from 'react-native'
-import BugReporterConsole from '../bug-reporter/bug-reporter-console'
-import { BugReporterFabric } from '../bug-reporter/bug-reporter-fabric'
+import { IBugReporter } from '../bug-reporter/bug-reporter'
+import ConsoleReporter from '../bug-reporter/console-reporter'
+import { FabricReporter } from '../bug-reporter/fabric-reporter'
+import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
@@ -60,14 +62,21 @@ class Container {
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   public readonly favorites = new Favorites(this.favoritesStore)
   public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
-  public readonly bugReporter = this.buildBugReporter()
+  public readonly bugReporter: IBugReporter
+  public readonly feedbackReporter: IFeedbackReporter
+
+  constructor () {
+    const reporter = this.buildBugReporter()
+    this.bugReporter = reporter
+    this.feedbackReporter = reporter
+  }
 
   private buildBugReporter () {
-    if (Platform.OS === 'android') {
-      return new BugReporterFabric()
-    } else {
-      return new BugReporterConsole()
-    }
+    return this.useFabric() ? new FabricReporter() : new ConsoleReporter()
+  }
+
+  private useFabric () {
+    return Platform.OS === 'android' && !__DEV__
   }
 }
 
