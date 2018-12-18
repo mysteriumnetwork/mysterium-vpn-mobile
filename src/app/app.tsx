@@ -79,19 +79,10 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
-  public async componentDidMount () {
-    try {
-      await this.appLoader.load()
-      this.screenStore.navigateToVpnScreen()
-    } catch (err) {
-      console.log('App loading failed', err)
-    }
-  }
-
   private renderCurrentScreen (): ReactNode {
     if (this.screenStore.inLoadingScreen) {
       return (
-        <LoadingScreen/>
+        <LoadingScreen load={() => this.load()} />
       )
     }
 
@@ -117,4 +108,12 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
+  private async load () {
+    try {
+      await this.appLoader.load()
+      this.screenStore.navigateToVpnScreen()
+    } catch (err) {
+      console.log('App loading failed', err)
+    }
+  }
 }
