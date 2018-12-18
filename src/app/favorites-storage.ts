@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The "MysteriumNetwork/mysterion" Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +16,23 @@
  */
 
 import { action, get, observable, set } from 'mobx'
-import { AsyncStorage } from 'react-native'
-
-const FAVORITE_KEY = '@Favorites:KEY'
+import StorageAdapter from './adapters/storage-adapter'
 
 export type FavoriteProposals = Map<string, boolean>
 
+// TODO: uncouple from mobx, put into domain
 export class FavoritesStorage {
-  @observable public favorites: FavoriteProposals = new Map()
+  @observable private favorites: FavoriteProposals = new Map()
+
+  constructor (private storage: StorageAdapter<FavoriteProposals>) {}
 
   public async fetch () {
-    const values = (await AsyncStorage.getItem(FAVORITE_KEY)) || '{}'
-    this.favorites = JSON.parse(values)
+    const data = await this.storage.load()
+    if (data === null) {
+      return
+    }
+
+    this.favorites = data
   }
 
   @action
@@ -47,6 +52,6 @@ export class FavoritesStorage {
   }
 
   private async saveToStorage () {
-    await AsyncStorage.setItem(FAVORITE_KEY, JSON.stringify(this.favorites))
+    await this.storage.save(this.favorites)
   }
 }
