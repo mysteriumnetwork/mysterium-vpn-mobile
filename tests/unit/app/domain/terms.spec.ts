@@ -21,35 +21,39 @@ import MockStorage from '../../mocks/mock-storage'
 
 describe('Terms', () => {
   let terms: Terms
-  let storage: StorageAdapter<boolean>
+  let storage: StorageAdapter<number>
 
   beforeEach(() => {
     storage = new MockStorage()
-    terms = new Terms(storage)
+    terms = new Terms(storage, 1)
   })
 
   describe('.areAccepted', () => {
     it('return false initially', async () => {
       expect(await terms.areAccepted()).toBe(false)
     })
-  })
 
-  describe('.accept', () => {
-    it('marks terms as accepted', async () => {
+    it('return true when terms were accepted', async () => {
       await terms.accept()
       expect(await terms.areAccepted()).toBe(true)
     })
 
-    it('remembers terms are accepted even after re-initiating Terms', async () => {
+    it('return true when different terms with same storage were accepted', async () => {
       await terms.accept()
-      const newTerms = new Terms(storage)
+      const newTerms = new Terms(storage, 1)
       expect(await newTerms.areAccepted()).toBe(true)
     })
 
-    it('does not remember terms with new storage', async () => {
+    it('returns false when different terms with different storage were accepted', async () => {
       await terms.accept()
-      const newStorage = new MockStorage<boolean>()
-      const newTerms = new Terms(newStorage)
+      const newStorage = new MockStorage<number>()
+      const newTerms = new Terms(newStorage, 1)
+      expect(await newTerms.areAccepted()).toBe(false)
+    })
+
+    it('returns false when different terms version with same storage were accepted', async () => {
+      await terms.accept()
+      const newTerms = new Terms(storage, 2)
       expect(await newTerms.areAccepted()).toBe(false)
     })
   })

@@ -84,8 +84,9 @@ class Container {
   }
 
   private buildTerms () {
-    const TERMS_KEY = '@MainStore:acceptedTerms'
-    return new Terms(new ReactNativeStorage<boolean>(TERMS_KEY))
+    const TERMS_KEY = '@MainStore:acceptedTermsVersion'
+    const CURRENT_TERMS_VERSION = 1
+    return new Terms(new ReactNativeStorage<number>(TERMS_KEY), CURRENT_TERMS_VERSION)
   }
 
   private useFabric () {
