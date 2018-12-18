@@ -17,8 +17,8 @@
 
 import { Container } from 'native-base'
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { STYLES } from '../../styles'
+import { StyleSheet, Text } from 'react-native'
+import TextButton from '../components/text-button'
 import Terms from '../domain/terms'
 
 type TermsScreenProps = {
@@ -39,9 +39,9 @@ class TermsScreen extends React.Component<TermsScreenProps> {
         <Text>
           These are the terms.
         </Text>
-        <TouchableOpacity onPress={() => this.acceptTerms()} style={styles.button}>
-          <Text style={styles.buttonContent}>Accept</Text>
-        </TouchableOpacity>
+        <TextButton onPress={() => this.acceptTerms()}>
+          Accept
+        </TextButton>
       </Container>
     )
   }
@@ -64,16 +64,6 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     width: '100%'
-  },
-  button: {
-    alignItems: 'center',
-    borderRadius: 10,
-    padding: STYLES.PADDING,
-    borderColor: STYLES.COLOR_MAIN,
-    borderWidth: 1
-  },
-  buttonContent: {
-    color: STYLES.COLOR_MAIN
   }
 })
 
