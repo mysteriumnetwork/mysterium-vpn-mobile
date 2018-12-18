@@ -2,7 +2,7 @@ import TequilapiClientFactory from 'mysterium-tequilapi'
 import { Root as RootBase } from 'native-base'
 import * as React from 'react'
 import { BugReporterFabric } from '../bug-reporter/bug-reporter-fabric'
-import { onIdentityUnlockSetUserIdInBugReporter } from '../bug-reporter/utils'
+import { onIdentityUnlockSetUserIdInBugReporter, setupGlobalErrorHandler } from '../bug-reporter/utils'
 import { CONFIG } from '../config'
 import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
@@ -51,6 +51,10 @@ class Root extends React.PureComponent {
     onIdentityUnlockSetUserIdInBugReporter(this.tequilApiState, this.bugReporter)
 
     await this.favoritesStore.fetch()
+
+    if (!__DEV__) {
+      setupGlobalErrorHandler(this.bugReporter)
+    }
   }
 
   public render () {
