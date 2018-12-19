@@ -26,10 +26,17 @@ type ConnectionIP = () => Promise<Ip>
 export class IPFetcher extends FetcherBase<Ip> {
   private lastStatus?: ConnectionStatus
 
-  constructor (private connectionIP: ConnectionIP, connection: Connection, update: (ip: Ip) => void) {
+  constructor (private connectionIP: ConnectionIP, private connection: Connection, update: (ip: Ip) => void) {
     super('IP', update)
+  }
 
-    connection.onDataChange(data => {
+  public start (interval: number) {
+    super.start(interval)
+
+    if (this.isStarted) {
+      return
+    }
+    this.connection.onDataChange(data => {
       this.handleConnectionStatusChange(data.status)
     })
   }

@@ -16,17 +16,31 @@
  *
  */
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { View } from 'react-native'
 import styles from '../app-styles'
 import LogoBackground from '../components/logo-background'
 
-const LoadingScreen: React.SFC = () => {
-  return (
-    <View style={styles.screen}>
-      <LogoBackground/>
-    </View>
-  )
+type LoadingScreenProps = {
+  load: () => Promise<void>
+}
+
+class LoadingScreen extends React.Component<LoadingScreenProps> {
+  public async componentDidMount () {
+    try {
+      await this.props.load()
+    } catch (err) {
+      console.log('App loading failed', err)
+    }
+  }
+
+  public render (): ReactNode {
+    return (
+      <View style={styles.screen}>
+        <LogoBackground/>
+      </View>
+    )
+  }
 }
 
 export default LoadingScreen

@@ -25,7 +25,7 @@ export abstract class FetcherBase<T> implements IFetcher {
 
   private interval?: Timer
 
-  constructor (protected name: string, private update: (data: T) => void) {
+  protected constructor (protected name: string, private update: (data: T) => void) {
   }
 
   public get isStarted (): boolean {

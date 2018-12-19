@@ -23,11 +23,13 @@ import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
 import styles from './app-styles'
 import ErrorDropdown from './components/error-dropdown'
+import Terms from './domain/terms'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
 import ProposalList from './proposals/proposal-list'
 import FeedbackScreen from './screens/feedback-screen'
 import LoadingScreen from './screens/loading-screen'
+import TermsScreen from './screens/terms-screen'
 import VpnScreen from './screens/vpn-screen'
 import ConnectionStore from './stores/connection-store'
 import ScreenStore from './stores/screen-store'
@@ -39,6 +41,7 @@ type AppProps = {
   vpnAppState: VpnAppState,
   screenStore: ScreenStore,
   messageDisplayDelegate: MessageDisplayDelegate,
+  terms: Terms,
   proposalList: ProposalList,
   favorites: Favorites,
   appLoader: AppLoader,
@@ -50,6 +53,7 @@ export default class App extends React.Component<AppProps> {
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly connectionStore: ConnectionStore
   private readonly messageDisplayDelegate: MessageDisplayDelegate
+  private readonly terms: Terms
   private readonly vpnAppState: VpnAppState
   private readonly screenStore: ScreenStore
   private readonly proposalList: ProposalList
@@ -62,6 +66,7 @@ export default class App extends React.Component<AppProps> {
     this.tequilAPIDriver = props.tequilAPIDriver
     this.connectionStore = props.connectionStore
     this.messageDisplayDelegate = props.messageDisplayDelegate
+    this.terms = props.terms
     this.vpnAppState = props.vpnAppState
     this.screenStore = props.screenStore
     this.proposalList = props.proposalList
@@ -79,20 +84,13 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
-  public async componentDidMount () {
-    try {
-      await this.appLoader.load()
-      this.screenStore.navigateToVpnScreen()
-    } catch (err) {
-      console.log('App loading failed', err)
-    }
-  }
-
   private renderCurrentScreen (): ReactNode {
+    if (this.screenStore.inTermsScreen) {
+      return <TermsScreen terms={this.terms} close={() => this.screenStore.navigateToLoadingScreen()}/>
+    }
+
     if (this.screenStore.inLoadingScreen) {
-      return (
-        <LoadingScreen/>
-      )
+      return <LoadingScreen load={() => this.load()} />
     }
 
     if (this.screenStore.inFeedbackScreen) {
@@ -117,4 +115,12 @@ export default class App extends React.Component<AppProps> {
     )
   }
 
+  private async load () {
+    try {
+      await this.appLoader.load()
+      this.screenStore.navigateToVpnScreen()
+    } catch (err) {
+      console.log('App loading failed', err)
+    }
+  }
 }

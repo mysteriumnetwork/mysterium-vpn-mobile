@@ -1,5 +1,6 @@
+import { FavoritesStorage } from '../../../../src/app/favorites-storage'
 import ProposalList from '../../../../src/app/proposals/proposal-list'
-import FavoritesStorageMock from '../../mocks/favorites-storage-mock'
+import MockStorage from '../../mocks/mock-storage'
 
 const items = [
   {
@@ -45,13 +46,16 @@ const items = [
 ]
 
 const proposals = { proposals: items }
-const favorites = ['0x2', '0x6']
 
 describe('ProposalList', () => {
   let list: ProposalList
 
-  beforeEach(() => {
-    list = new ProposalList(proposals, new FavoritesStorageMock(favorites))
+  beforeEach(async () => {
+    const favoritesStorage = new FavoritesStorage(new MockStorage())
+    await favoritesStorage.add('0x2')
+    await favoritesStorage.add('0x6')
+
+    list = new ProposalList(proposals, favoritesStorage)
   })
 
   describe('.proposals', () => {

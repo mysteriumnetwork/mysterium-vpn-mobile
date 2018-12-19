@@ -24,6 +24,7 @@ class Root extends React.PureComponent {
           vpnAppState={this.container.vpnAppState}
           screenStore={this.container.screenStore}
           messageDisplayDelegate={this.container.messageDisplayDelegate}
+          terms={this.container.terms}
           proposalList={this.container.proposalList}
           favorites={this.container.favorites}
           appLoader={this.container.appLoader}

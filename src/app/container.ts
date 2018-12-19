@@ -22,14 +22,16 @@ import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
-import { FavoritesStorage } from '../libraries/favorites-storage'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
 import ProposalsAdapter from './adapters/proposals-adapter'
+import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
+import Terms from './domain/terms'
+import { FavoritesStorage } from './favorites-storage'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
 import ProposalList from './proposals/proposal-list'
@@ -43,7 +45,7 @@ class Container {
   public readonly tequilApiState = new TequilApiState()
   public readonly vpnAppState = new VpnAppState()
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
-  public readonly favoritesStore = new FavoritesStorage()
+  public readonly favoritesStore = this.buildFavoriteStorage()
 
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
@@ -51,6 +53,7 @@ class Container {
 
   // domain
   public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
+  public readonly terms: Terms = this.buildTerms()
 
   // stores
   public readonly connectionStore = new ConnectionStore(this.connection)
@@ -73,6 +76,17 @@ class Container {
 
   private buildBugReporter () {
     return this.useFabric() ? new FabricReporter() : new ConsoleReporter()
+  }
+
+  private buildFavoriteStorage () {
+    const FAVORITE_KEY = '@Favorites:KEY'
+    return new FavoritesStorage(new ReactNativeStorage(FAVORITE_KEY))
+  }
+
+  private buildTerms () {
+    const TERMS_KEY = '@MainStore:acceptedTermsVersion'
+    const CURRENT_TERMS_VERSION = 1
+    return new Terms(new ReactNativeStorage<number>(TERMS_KEY), CURRENT_TERMS_VERSION)
   }
 
   private useFabric () {

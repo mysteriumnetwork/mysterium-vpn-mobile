@@ -21,8 +21,13 @@ import React from 'react'
 import LoadingScreen from '../../../../src/app/screens/loading-screen'
 
 describe('LoadingScreen', () => {
-  it('matches snapshot', () => {
-    const wrapper = shallow(<LoadingScreen/>)
+  it('loads and matches snapshot', () => {
+    let loaded = false
+    const load = async () => {
+      loaded = true
+    }
+    const wrapper = shallow(<LoadingScreen load={load} />)
     expect(wrapper).toMatchSnapshot()
+    expect(loaded).toBe(true)
   })
 })

@@ -36,6 +36,7 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
+    "@types/react-native-htmlview": "^0.12.2",
     "axios": "^0.18.0",
     "computed-async-mobx": "^4.1.0",
     "mobx": "^4.3.1",
@@ -46,6 +47,7 @@
     "react": "^16.4.1",
     "react-native": "^0.56",
     "react-native-dropdownalert": "^3.7.0",
+    "react-native-htmlview": "^0.13.0",
     "react-native-vector-icons": "^6.1.0"
   }
 }
