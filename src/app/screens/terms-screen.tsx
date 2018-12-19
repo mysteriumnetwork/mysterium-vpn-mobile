@@ -17,9 +17,11 @@
 
 import { Container } from 'native-base'
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
+import HTMLView from 'react-native-htmlview'
 import TextButton from '../components/text-button'
 import Terms from '../domain/terms'
+import { TERMS_TEXT } from './terms-text'
 
 type TermsScreenProps = {
   terms: Terms,
@@ -36,9 +38,9 @@ class TermsScreen extends React.Component<TermsScreenProps> {
   public render () {
     return (
       <Container style={styles.root}>
-        <Text>
-          These are the terms.
-        </Text>
+        <ScrollView style={styles.text}>
+          <HTMLView stylesheet={htmlStyles} value={TERMS_TEXT} />
+        </ScrollView>
         <TextButton onPress={() => this.acceptTerms()}>
           Accept
         </TextButton>
@@ -63,7 +65,19 @@ class TermsScreen extends React.Component<TermsScreenProps> {
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
+    padding: 20
+  },
+  text: {
+    marginBottom: 20
+  }
+})
+
+const htmlStyles = StyleSheet.create({
+  h3: {
+    textAlign: 'center',
+    fontWeight: '500',
+    fontSize: 18
   }
 })
 
