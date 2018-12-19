@@ -79,7 +79,6 @@ const StatsBlock: React.SFC<StatsBlockProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
     padding: STYLES.PADDING
   },

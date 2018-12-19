@@ -18,10 +18,11 @@
 
 import { observer } from 'mobx-react'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { CONFIG } from '../../config'
 import TequilApiDriver from '../../libraries/tequil-api/tequil-api-driver'
-import styles from '../app-styles'
+import { STYLES } from '../../styles'
+import appStyles from '../app-styles'
 import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
 import IconButton from '../components/icon-button'
@@ -73,9 +74,7 @@ class VpnScreen extends React.Component<HomeProps> {
     const connectionData = this.connectionStore.data
 
     return (
-      <View style={styles.screen}>
-        <LogoBackground/>
-
+      <View style={appStyles.screen}>
         <View style={styles.feedback}>
           <IconButton
             icon="ios-help-circle-outline"
@@ -87,31 +86,33 @@ class VpnScreen extends React.Component<HomeProps> {
 
         <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
-        <View style={styles.controls}>
-          <View style={styles.proposalPicker}>
-            <ProposalPicker
-              placeholder={translations.COUNTRY_PICKER_LABEL}
-              proposals={this.proposalList.proposals}
-              onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
-              onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
-              isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+        <View style={styles.controlsWithLogoContainer}>
+          <LogoBackground/>
+
+          <View style={styles.controls}>
+            <View style={appStyles.proposalPicker}>
+              <ProposalPicker
+                placeholder={translations.COUNTRY_PICKER_LABEL}
+                proposals={this.proposalList.proposals}
+                onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
+                onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
+                isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+              />
+            </View>
+
+            <ButtonConnect
+              connectionStatus={connectionData.status}
+              connect={() => this.connect()}
+              disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
             />
           </View>
-
-          <ButtonConnect
-            connectionStatus={connectionData.status}
-            connect={() => this.connect()}
-            disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
-          />
         </View>
 
-        <View style={styles.footer}>
-          <Stats
-            duration={connectionData.connectionStatistics.duration}
-            bytesReceived={connectionData.connectionStatistics.bytesReceived}
-            bytesSent={connectionData.connectionStatistics.bytesSent}
-          />
-        </View>
+        <Stats
+          duration={connectionData.connectionStatistics.duration}
+          bytesReceived={connectionData.connectionStatistics.bytesReceived}
+          bytesSent={connectionData.connectionStatistics.bytesSent}
+        />
       </View>
     )
   }
@@ -125,5 +126,28 @@ class VpnScreen extends React.Component<HomeProps> {
     await this.tequilAPIDriver.connect(providerId)
   }
 }
+
+const styles = StyleSheet.create({
+  feedback: {
+    position: 'absolute',
+    top: 10,
+    left: 10
+  },
+  controls: {
+    width: '100%',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 30
+  },
+  textIp: {
+    marginTop: STYLES.MARGIN,
+    fontSize: STYLES.FONT_NORMAL,
+    color: STYLES.COLOR_SECONDARY
+  },
+  controlsWithLogoContainer: {
+    flex: 1,
+    width: '100%'
+  }
+})
 
 export default VpnScreen
