@@ -74,8 +74,6 @@ class VpnScreen extends React.Component<HomeProps> {
 
     return (
       <View style={styles.screen}>
-        <LogoBackground/>
-
         <View style={styles.feedback}>
           <IconButton
             icon="ios-help-circle-outline"
@@ -87,31 +85,33 @@ class VpnScreen extends React.Component<HomeProps> {
 
         <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
 
-        <View style={styles.controls}>
-          <View style={styles.proposalPicker}>
-            <ProposalPicker
-              placeholder={translations.COUNTRY_PICKER_LABEL}
-              proposals={this.proposalList.proposals}
-              onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
-              onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
-              isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+        <View style={styles.controlsWithLogoContainer}>
+          <LogoBackground/>
+
+          <View style={styles.controls}>
+            <View style={styles.proposalPicker}>
+              <ProposalPicker
+                placeholder={translations.COUNTRY_PICKER_LABEL}
+                proposals={this.proposalList.proposals}
+                onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
+                onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
+                isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+              />
+            </View>
+
+            <ButtonConnect
+              connectionStatus={connectionData.status}
+              connect={() => this.connect()}
+              disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
             />
           </View>
-
-          <ButtonConnect
-            connectionStatus={connectionData.status}
-            connect={() => this.connect()}
-            disconnect={this.tequilAPIDriver.disconnect.bind(this.tequilAPIDriver)}
-          />
         </View>
 
-        <View style={styles.footer}>
-          <Stats
-            duration={connectionData.connectionStatistics.duration}
-            bytesReceived={connectionData.connectionStatistics.bytesReceived}
-            bytesSent={connectionData.connectionStatistics.bytesSent}
-          />
-        </View>
+        <Stats
+          duration={connectionData.connectionStatistics.duration}
+          bytesReceived={connectionData.connectionStatistics.bytesReceived}
+          bytesSent={connectionData.connectionStatistics.bytesSent}
+        />
       </View>
     )
   }

@@ -34,17 +34,13 @@ export default StyleSheet.create({
   },
   controls: {
     width: '100%',
-    top: 270,
-    alignItems: 'center'
-  },
-  footer: {
+    alignItems: 'center',
     position: 'absolute',
-    bottom: 0
+    bottom: 30
   },
   imageBackground: {
-    top: 10,
-    position: 'absolute',
-    width: '100%'
+    width: '100%',
+    flex: 1
   },
   textIp: {
     marginTop: STYLES.MARGIN,
@@ -55,5 +51,9 @@ export default StyleSheet.create({
     width: '90%',
     marginTop: 10,
     marginBottom: 10
+  },
+  controlsWithLogoContainer: {
+    flex: 1,
+    width: '100%'
   }
 })
