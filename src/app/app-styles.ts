@@ -16,7 +16,6 @@
  */
 
 import { StyleSheet } from 'react-native'
-import { STYLES } from '../styles'
 
 export default StyleSheet.create({
   app: {
@@ -27,33 +26,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: 1
   },
-  feedback: {
-    position: 'absolute',
-    top: 10,
-    left: 10
-  },
-  controls: {
-    width: '100%',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 30
-  },
   imageBackground: {
     width: '100%',
     flex: 1
-  },
-  textIp: {
-    marginTop: STYLES.MARGIN,
-    fontSize: STYLES.FONT_NORMAL,
-    color: STYLES.COLOR_SECONDARY
   },
   proposalPicker: {
     width: '90%',
     marginTop: 10,
     marginBottom: 10
-  },
-  controlsWithLogoContainer: {
-    flex: 1,
-    width: '100%'
   }
 })
