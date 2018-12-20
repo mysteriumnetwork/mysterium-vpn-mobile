@@ -29,7 +29,6 @@ class Root extends React.PureComponent {
           favorites={this.container.favorites}
           appLoader={this.container.appLoader}
           feedbackReporter={this.container.feedbackReporter}
-          notificationAdapter={this.container.notificationAdapter}
         />
       </RootBase>
     )

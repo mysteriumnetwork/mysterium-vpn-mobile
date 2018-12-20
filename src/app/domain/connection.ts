@@ -22,10 +22,12 @@ import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
+import NotificationAdapter from '../adapters/notification-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
+import translations from '../translations'
 import Publisher, { Callback } from './publisher'
 
 class Connection {
@@ -43,6 +45,7 @@ class Connection {
 
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
+    private readonly notificationAdapter: NotificationAdapter,
     private readonly tequilApiState: TequilApiState) {
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
@@ -135,6 +138,9 @@ class Connection {
   }
 
   private updateStatus (status: ConnectionStatus) {
+    if (this.data.status === 'Connected' && status !== 'Connected') {
+      this.showDisconnectedNotification()
+    }
     this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics))
   }
 
@@ -153,6 +159,12 @@ class Connection {
 
     this.dataPublisher.publish(data)
     this._data = data
+  }
+
+  private showDisconnectedNotification () {
+    const title = translations.DISCONNECTED_NOTIFICATION.TITLE
+    const message = translations.DISCONNECTED_NOTIFICATION.MESSAGE
+    this.notificationAdapter.show(title, message)
   }
 }
 

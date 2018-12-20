@@ -55,7 +55,7 @@ class Container {
   public readonly notificationAdapter: NotificationAdapter = new ReactNativeNotificationAdapter()
 
   // domain
-  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
+  public readonly connection = new Connection(this.connectionAdapter, this.notificationAdapter, this.tequilApiState)
   public readonly terms: Terms = this.buildTerms()
 
   // stores

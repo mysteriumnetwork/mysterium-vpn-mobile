@@ -20,7 +20,6 @@ import React, { ReactNode } from 'react'
 import { View } from 'react-native'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import NotificationAdapter from './adapters/notification-adapter'
 import AppLoader from './app-loader'
 import styles from './app-styles'
 import ErrorDropdown from './components/error-dropdown'
@@ -34,7 +33,6 @@ import TermsScreen from './screens/terms-screen'
 import VpnScreen from './screens/vpn-screen'
 import ConnectionStore from './stores/connection-store'
 import ScreenStore from './stores/screen-store'
-import translations from './translations'
 import VpnAppState from './vpn-app-state'
 
 type AppProps = {
@@ -47,8 +45,7 @@ type AppProps = {
   proposalList: ProposalList,
   favorites: Favorites,
   appLoader: AppLoader,
-  feedbackReporter: IFeedbackReporter,
-  notificationAdapter: NotificationAdapter
+  feedbackReporter: IFeedbackReporter
 }
 
 @observer
@@ -63,7 +60,6 @@ export default class App extends React.Component<AppProps> {
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
   private readonly feedbackReporter: IFeedbackReporter
-  private readonly notificationAdapter: NotificationAdapter
 
   constructor (props: AppProps) {
     super(props)
@@ -77,7 +73,6 @@ export default class App extends React.Component<AppProps> {
     this.favorites = props.favorites
     this.appLoader = props.appLoader
     this.feedbackReporter = props.feedbackReporter
-    this.notificationAdapter = props.notificationAdapter
   }
 
   public render (): ReactNode {
@@ -125,15 +120,8 @@ export default class App extends React.Component<AppProps> {
       await this.appLoader.load()
       this.screenStore.navigateToVpnScreen()
 
-      this.showDisconnectedNotification()
     } catch (err) {
       console.log('App loading failed', err)
     }
-  }
-
-  private showDisconnectedNotification () {
-    const title = translations.DISCONNECTED_NOTIFICATION.TITLE
-    const message = translations.DISCONNECTED_NOTIFICATION.MESSAGE
-    this.notificationAdapter.show(title, message)
   }
 }
