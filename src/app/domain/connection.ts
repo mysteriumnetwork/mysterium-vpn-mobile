@@ -105,7 +105,7 @@ class Connection {
   }
 
   public setStatusToDisconnecting () {
-    this.updateStatus(ConnectionStatusEnum.DISCONNECTING)
+    this.updateStatus(ConnectionStatusEnum.DISCONNECTING, true)
   }
 
   private updateIP (ip: string | null) {
@@ -137,8 +137,8 @@ class Connection {
     this.setData(new ConnectionData(this.data.status, this.data.IP, statistics))
   }
 
-  private updateStatus (status: ConnectionStatus) {
-    if (this.data.status === 'Connected' && status !== 'Connected') {
+  private updateStatus (status: ConnectionStatus, userIntention: boolean = false) {
+    if (userIntention === false && this.data.status === 'Connected' && status !== 'Connected') {
       this.showDisconnectedNotification()
     }
     this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics))

@@ -97,23 +97,34 @@ describe('Connection', () => {
       expect(connection.data.IP).toEqual('100.101.102.103')
     })
 
-    it('shows notification when connected status finishes', async () => {
-      jest.useFakeTimers()
+    describe('when connected', () => {
+      beforeEach(() => {
+        jest.useFakeTimers()
 
-      state.identityId = 'mock identity'
-      connection.startUpdating()
-      jest.runAllTicks()
+        state.identityId = 'mock identity'
+        connection.startUpdating()
+        jest.runAllTicks()
 
-      expect(connection.data.status).toEqual('Connected')
-      expect(notificationAdapter.shownTitle).toBeUndefined()
+        expect(connection.data.status).toEqual('Connected')
+      })
 
-      connectionAdapter.mockStatus = 'NotConnected'
-      jest.runOnlyPendingTimers()
-      jest.runAllTicks()
+      it('shows notification when status changes', () => {
+        expect(notificationAdapter.shownTitle).toBeUndefined()
 
-      expect(connection.data.status).toEqual('NotConnected')
-      expect(notificationAdapter.shownTitle).toEqual('Connection lost')
-      expect(notificationAdapter.shownMessage).toEqual('VPN connection was closed.')
+        connectionAdapter.mockStatus = 'NotConnected'
+        jest.runOnlyPendingTimers()
+        jest.runAllTicks()
+
+        expect(connection.data.status).toEqual('NotConnected')
+        expect(notificationAdapter.shownTitle).toEqual('Connection lost')
+        expect(notificationAdapter.shownMessage).toEqual('VPN connection was closed.')
+      })
+
+      it('does not show notification when user disconnects', async () => {
+        await connection.disconnect()
+
+        expect(notificationAdapter.shownTitle).toBeUndefined()
+      })
     })
   })
 
