@@ -742,6 +742,11 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-push-notification@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-3.0.3.tgz#738e64fe38ccff15b3d4957a2bae51780d670e5f"
+  integrity sha512-d4YUl+antDzCsmHKSojuMpCrWq1DAr+S3NbGu+LvmLGvQT6cpMrP7Nvr4OCAZUPJiGNsORP8PNkFnJcaOZSvFQ==
+
 "@types/react-native@*":
   version "0.57.18"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.18.tgz#f9c18fc59a3d038ed1f9414b84a8d9ba7078fc45"
@@ -6589,6 +6594,11 @@ react-native-mock@^0.3.1:
     react-dom "^15.4.0"
     react-timer-mixin "^0.13.3"
     warning "^2.1.0"
+
+react-native-push-notification@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.2.tgz#a6129fb2897773a19c7b42bba1b51a9a4aac7df3"
+  integrity sha512-MjjPNXb2Cw7g1D41DtVbTVuGFCAtADxb91pAEFSkQ0AZ2gIooqYkWFHBL6woc15QHhtaZS8VT2GQoyW5OWlxIg==
 
 react-native-scripts@1.14.0:
   version "1.14.0"
