@@ -22,6 +22,7 @@ import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
+import ElkEventSender from '../libraries/statistics/elk-event-sender'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
@@ -50,9 +51,10 @@ class Container {
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter = new ProposalsAdapter(this.api)
+  public readonly eventSender = new ElkEventSender()
 
   // domain
-  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
+  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState, this.eventSender)
   public readonly terms: Terms = this.buildTerms()
 
   // stores

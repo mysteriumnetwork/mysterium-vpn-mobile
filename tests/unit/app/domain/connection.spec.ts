@@ -18,6 +18,7 @@
 import Connection from '../../../../src/app/domain/connection'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
+import { IEventSender } from '../../../../src/libraries/statistics/event-sender'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -25,6 +26,13 @@ function nextTick (): Promise<void> {
       resolve()
     })
   })
+}
+
+// tslint:disable:max-classes-per-file
+class MockEventSender implements IEventSender {
+  public send (): void {
+    // empty mock
+  }
 }
 
 describe('Connection', () => {
@@ -35,7 +43,7 @@ describe('Connection', () => {
   beforeEach(() => {
     state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
-    connection = new Connection(connectionAdapter, state)
+    connection = new Connection(connectionAdapter, state, new MockEventSender())
   })
 
   describe('.startUpdating', () => {
