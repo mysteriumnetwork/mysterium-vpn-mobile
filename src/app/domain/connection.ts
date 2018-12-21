@@ -19,9 +19,12 @@ import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
+import { IEventSender } from '../../libraries/statistics/event-sender'
+import ConnectEvent from '../../libraries/statistics/events/connect-event'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
+import { ConnectionCanceled } from '../adapters/tequilapi-connection-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
@@ -43,7 +46,9 @@ class Connection {
 
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
-    private readonly tequilApiState: TequilApiState) {
+    private readonly tequilApiState: TequilApiState,
+    private readonly eventSender: IEventSender
+  ) {
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
     this.statsFetcher = this.buildStatsFetcher()
@@ -62,12 +67,24 @@ class Connection {
     this.statsFetcher.stop()
   }
 
-  public async connect (consumerId: string, providerId: string) {
+  public async connect (consumerId: string, providerId: string, providerCountry: string) {
     this.resetIP()
     this.setStatusToConnecting()
 
-    await this.connectionAdapter.connect(consumerId, providerId)
-    console.log('Connected')
+    // add location fetching
+    const event = await this.createConnectionEvent(consumerId, providerId, providerCountry)
+    try {
+      await this.connectionAdapter.connect(consumerId, providerId)
+      event.markAsEnded()
+    } catch (e) {
+      if (e instanceof ConnectionCanceled) {
+        event.markAsCancelled()
+      } else {
+        event.markAsFailed(e.message)
+      }
+    }
+
+    this.eventSender.send(event)
   }
 
   public async disconnect () {
@@ -153,6 +170,40 @@ class Connection {
 
     this.dataPublisher.publish(data)
     this._data = data
+  }
+
+  private async getOriginalCountry () {
+    const location = await this.connectionAdapter.fetchLocation()
+
+    return location.originalCountry
+  }
+
+  private async createConnectionEvent (providerId: string, consumerId: string, providerCountry: string) {
+    const countryDetails = {
+      originalCountry: await this.getOriginalCountry(),
+      providerCountry
+    }
+
+    const connectionDetails = {
+      consumerId,
+      providerId
+    }
+
+    const event = new ConnectEvent(timeProvider, connectionDetails, countryDetails)
+    event.markAsStarted()
+
+    return event
+  }
+}
+
+function timeProvider () {
+  const currentDate = new Date()
+  const utcTimestamp = currentDate.getTime()
+  const localOffsetInMillis = currentDate.getTimezoneOffset() * 60 * 1000
+
+  return {
+    utcTime: utcTimestamp,
+    localTime: utcTimestamp + localOffsetInMillis
   }
 }
 

@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO, ConsumerLocationDTO } from 'mysterium-tequilapi'
 import IConnectionAdapter from '../../../../src/app/adapters/connection-adapter'
 import Connection from '../../../../src/app/domain/connection'
 import ConnectionStatistics from '../../../../src/app/models/connection-statistics'
 import Ip from '../../../../src/app/models/ip'
+import { IEventSender } from '../../../../src/libraries/statistics/event-sender'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 
 function nextTick (): Promise<void> {
@@ -55,6 +56,22 @@ class MockConnectionAdapter implements IConnectionAdapter {
   public async fetchIp (): Promise<Ip> {
     return '100.101.102.103'
   }
+
+  public async fetchLocation (): Promise<ConsumerLocationDTO> {
+    return {
+      originalCountry: '',
+      originalIP: '',
+      currentCountry: '',
+      currentIP: ''
+    }
+  }
+}
+
+// tslint:disable:max-classes-per-file
+class MockEventSender implements IEventSender {
+  public send (): void {
+    // empty mock
+  }
 }
 
 describe('Connection', () => {
@@ -64,7 +81,8 @@ describe('Connection', () => {
   beforeEach(() => {
     state = new TequilApiState()
     const adapter = new MockConnectionAdapter()
-    connection = new Connection(adapter, state)
+    const eventSender = new MockEventSender()
+    connection = new Connection(adapter, state, eventSender)
   })
 
   describe('.startUpdating', () => {
@@ -94,7 +112,7 @@ describe('Connection', () => {
 
   describe('.connect', () => {
     it('changes connecting status to connecting', async () => {
-      const promise = connection.connect('consumer id', 'provider id')
+      const promise = connection.connect('consumer id', 'provider id', 'lt')
       expect(connection.data.status).toEqual('Connecting')
       await promise
     })

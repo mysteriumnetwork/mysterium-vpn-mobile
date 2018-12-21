@@ -50,7 +50,7 @@ export default class TequilApiDriver {
     }
 
     try {
-      await this.connection.connect(consumerId, selectedProviderId)
+      await this.connection.connect(consumerId, selectedProviderId, '')
     } catch (e) {
       this.messageDisplay.showError(messages.CONNECT_FAILED)
       console.warn('Connect failed', e)
