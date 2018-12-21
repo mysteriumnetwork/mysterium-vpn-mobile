@@ -22,13 +22,16 @@ import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
-import NotificationAdapter from '../adapters/notification-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
-import translations from '../translations'
 import Publisher, { Callback } from './publisher'
+
+type ConnectionStatusChange = {
+  newStatus: ConnectionStatus,
+  userIntent: boolean
+}
 
 class Connection {
   public get data (): ConnectionData {
@@ -37,7 +40,7 @@ class Connection {
 
   private _data: ConnectionData = initialConnectionData
   private dataPublisher = new Publisher<ConnectionData>()
-  private statusPublisher = new Publisher<ConnectionStatus>()
+  private statusPublisher = new Publisher<ConnectionStatusChange>()
   private ipPublisher = new Publisher<Ip>()
   private readonly statusFetcher: StatusFetcher
   private readonly ipFetcher: IPFetcher
@@ -45,7 +48,6 @@ class Connection {
 
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
-    private readonly notificationAdapter: NotificationAdapter,
     private readonly tequilApiState: TequilApiState) {
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
@@ -86,9 +88,9 @@ class Connection {
     callback(this.data)
   }
 
-  public onStatusChange (callback: Callback<ConnectionStatus>) {
+  public onStatusChange (callback: Callback<ConnectionStatusChange>) {
     this.statusPublisher.subscribe(callback)
-    callback(this.data.status)
+    callback({ newStatus: this.data.status, userIntent: false })
   }
 
   public onIpChange (callback: Callback<Ip>) {
@@ -101,7 +103,7 @@ class Connection {
   }
 
   public setStatusToConnecting () {
-    this.updateStatus(ConnectionStatusEnum.CONNECTING)
+    this.updateStatus(ConnectionStatusEnum.CONNECTING, true)
   }
 
   public setStatusToDisconnecting () {
@@ -115,7 +117,7 @@ class Connection {
   private buildStatusFetcher (): StatusFetcher {
     const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
     return new StatusFetcher(fetchStatus, this.tequilApiState, status => {
-      this.updateStatus(status.status)
+      this.updateStatus(status.status, false)
     })
   }
 
@@ -137,20 +139,17 @@ class Connection {
     this.setData(new ConnectionData(this.data.status, this.data.IP, statistics))
   }
 
-  private updateStatus (status: ConnectionStatus, userIntention: boolean = false) {
-    if (userIntention === false && this.data.status === 'Connected' && status !== 'Connected') {
-      this.showDisconnectedNotification()
-    }
-    this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics))
+  private updateStatus (status: ConnectionStatus, userIntent: boolean) {
+    this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics), userIntent)
   }
 
-  private setData (data: ConnectionData) {
+  private setData (data: ConnectionData, userIntent: boolean = false) {
     if (this._data === data) {
       return
     }
 
     if (this._data.status !== data.status) {
-      this.statusPublisher.publish(data.status)
+      this.statusPublisher.publish({ newStatus: data.status, userIntent })
     }
 
     if (this._data.IP !== data.IP) {
@@ -161,11 +160,6 @@ class Connection {
     this._data = data
   }
 
-  private showDisconnectedNotification () {
-    const title = translations.DISCONNECTED_NOTIFICATION.TITLE
-    const message = translations.DISCONNECTED_NOTIFICATION.MESSAGE
-    this.notificationAdapter.show(title, message)
-  }
 }
 
 const initialStatistics: ConnectionStatistics = {

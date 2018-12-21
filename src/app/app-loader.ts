@@ -1,6 +1,7 @@
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import Connection from './domain/connection'
+import DisconnectNotifier from './domain/disconnect-notifier'
 import ProposalsStore from './stores/proposals-store'
 
 /**
@@ -10,11 +11,13 @@ import ProposalsStore from './stores/proposals-store'
 class AppLoader {
   constructor (private tequilAPIDriver: TequilApiDriver,
                private connection: Connection,
+               private disconnectNotifier: DisconnectNotifier,
                private proposals: ProposalsStore) {}
 
   public async load () {
     await this.waitForClient()
     this.proposals.startUpdating()
+    this.disconnectNotifier.notifyOnDisconnect()
     this.connection.startUpdating()
     await this.tequilAPIDriver.unlock()
   }

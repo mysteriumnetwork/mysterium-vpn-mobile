@@ -32,6 +32,7 @@ import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
+import DisconnectNotifier from './domain/disconnect-notifier'
 import Terms from './domain/terms'
 import { FavoritesStorage } from './favorites-storage'
 import MessageDisplayDelegate from './messages/message-display-delegate'
@@ -55,8 +56,9 @@ class Container {
   public readonly notificationAdapter: NotificationAdapter = new ReactNativeNotificationAdapter()
 
   // domain
-  public readonly connection = new Connection(this.connectionAdapter, this.notificationAdapter, this.tequilApiState)
+  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
   public readonly terms: Terms = this.buildTerms()
+  public readonly disconnectNotifier = new DisconnectNotifier(this.connection, this.notificationAdapter)
 
   // stores
   public readonly connectionStore = new ConnectionStore(this.connection)
@@ -67,7 +69,8 @@ class Container {
 
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   public readonly favorites = new Favorites(this.favoritesStore)
-  public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
+  public readonly appLoader =
+    new AppLoader(this.tequilAPIDriver, this.connection, this.disconnectNotifier, this.proposalsStore)
   public readonly bugReporter: BugReporter
   public readonly feedbackReporter: IFeedbackReporter
 

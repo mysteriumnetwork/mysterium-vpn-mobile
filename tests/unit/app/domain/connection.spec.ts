@@ -15,14 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import IConnectionAdapter from '../../../../src/app/adapters/connection-adapter'
 import Connection from '../../../../src/app/domain/connection'
-import ConnectionStatistics from '../../../../src/app/models/connection-statistics'
-import ConnectionStatus from '../../../../src/app/models/connection-status'
-import Ip from '../../../../src/app/models/ip'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
-import MockNotificationAdapter from '../../mocks/mock-notification-adapter'
+import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -32,44 +27,15 @@ function nextTick (): Promise<void> {
   })
 }
 
-class MockConnectionAdapter implements IConnectionAdapter {
-  public mockStatus: ConnectionStatus = 'Connected'
-  public async connect (_consumerId: string, _providerId: string) {
-    // empty mock
-  }
-
-  public async disconnect () {
-    // empty mock
-  }
-
-  public async fetchStatus (): Promise<ConnectionStatusDTO> {
-    return { status: this.mockStatus }
-  }
-
-  public async fetchStatistics (): Promise<ConnectionStatistics> {
-    return {
-      duration: 1,
-      bytesReceived: 1,
-      bytesSent: 1
-    }
-  }
-
-  public async fetchIp (): Promise<Ip> {
-    return '100.101.102.103'
-  }
-}
-
 describe('Connection', () => {
   let connection: Connection
   let connectionAdapter: MockConnectionAdapter
-  let notificationAdapter: MockNotificationAdapter
   let state: TequilApiState
 
   beforeEach(() => {
     state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
-    notificationAdapter = new MockNotificationAdapter()
-    connection = new Connection(connectionAdapter, notificationAdapter, state)
+    connection = new Connection(connectionAdapter, state)
   })
 
   describe('.startUpdating', () => {
@@ -95,36 +61,6 @@ describe('Connection', () => {
       await nextTick()
 
       expect(connection.data.IP).toEqual('100.101.102.103')
-    })
-
-    describe('when connected', () => {
-      beforeEach(() => {
-        jest.useFakeTimers()
-
-        state.identityId = 'mock identity'
-        connection.startUpdating()
-        jest.runAllTicks()
-
-        expect(connection.data.status).toEqual('Connected')
-      })
-
-      it('shows notification when status changes', () => {
-        expect(notificationAdapter.shownTitle).toBeUndefined()
-
-        connectionAdapter.mockStatus = 'NotConnected'
-        jest.runOnlyPendingTimers()
-        jest.runAllTicks()
-
-        expect(connection.data.status).toEqual('NotConnected')
-        expect(notificationAdapter.shownTitle).toEqual('Connection lost')
-        expect(notificationAdapter.shownMessage).toEqual('VPN connection was closed.')
-      })
-
-      it('does not show notification when user disconnects', async () => {
-        await connection.disconnect()
-
-        expect(notificationAdapter.shownTitle).toBeUndefined()
-      })
     })
   })
 
