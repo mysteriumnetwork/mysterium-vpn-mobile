@@ -23,6 +23,7 @@ import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
 import ElkEventSender from '../libraries/statistics/elk-event-sender'
+import StatisticsConfig from '../libraries/statistics/statistics-config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
@@ -51,7 +52,7 @@ class Container {
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter = new ProposalsAdapter(this.api)
-  public readonly eventSender = new ElkEventSender()
+  public readonly eventSender = new ElkEventSender(this.statisticsConfig)
 
   // domain
   public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState, this.eventSender)
@@ -93,6 +94,16 @@ class Container {
 
   private useFabric () {
     return Platform.OS === 'android' && !__DEV__
+  }
+
+  private get statisticsConfig (): StatisticsConfig {
+    return {
+      applicationInfo: {
+        name: 'mobile',
+        version: 'alpha'
+      },
+      elkUrl: 'http://metrics.mysterium.network:8091'
+    }
   }
 }
 

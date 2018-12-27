@@ -1,13 +1,5 @@
-interface IEvent {
-  getCreatedAt (): number,
-
-  getName (): string,
-
-  getDetails (): object
-}
-
 interface IEventSender {
-  send (event: IEvent): void
+  send (event: Event): void
 }
 
-export { IEvent, IEventSender }
+export { IEventSender }
