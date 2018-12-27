@@ -20,7 +20,7 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { IEventSender } from '../../libraries/statistics/event-sender'
-import ConnectEvent from '../../libraries/statistics/events/connect-event'
+import ConnectEventBuilder from '../../libraries/statistics/events/connect-event-builder'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
@@ -71,17 +71,16 @@ class Connection {
     this.resetIP()
     this.setStatusToConnecting()
 
-    // add location fetching
-    const event = await this.createConnectionEvent(consumerId, providerId, providerCountry)
+    let event
+    const connectionEventBuilder = await this.getConnectionEventBuilder(consumerId, providerId, providerCountry)
+
     try {
       await this.connectionAdapter.connect(consumerId, providerId)
-      event.markAsEnded()
-    } catch (e) {
-      if (e instanceof ConnectionCanceled) {
-        event.markAsCancelled()
-      } else {
-        event.markAsFailed(e.message)
-      }
+      event = connectionEventBuilder.getEndedEvent()
+    } catch (error) {
+      event = error instanceof ConnectionCanceled
+        ? connectionEventBuilder.getCanceledEvent()
+        : connectionEventBuilder.getFailedEvent(error.message)
     }
 
     this.eventSender.send(event)
@@ -172,13 +171,7 @@ class Connection {
     this._data = data
   }
 
-  private async getOriginalCountry () {
-    const location = await this.connectionAdapter.fetchLocation()
-
-    return location.originalCountry
-  }
-
-  private async createConnectionEvent (providerId: string, consumerId: string, providerCountry: string) {
+  private async getConnectionEventBuilder (providerId: string, consumerId: string, providerCountry: string) {
     const countryDetails = {
       originalCountry: await this.getOriginalCountry(),
       providerCountry
@@ -189,10 +182,13 @@ class Connection {
       providerId
     }
 
-    const event = new ConnectEvent(timeProvider, connectionDetails, countryDetails)
-    event.markAsStarted()
+    return new ConnectEventBuilder(timeProvider, connectionDetails, countryDetails)
+  }
 
-    return event
+  private async getOriginalCountry () {
+    const location = await this.connectionAdapter.fetchLocation()
+
+    return location.originalCountry
   }
 }
 

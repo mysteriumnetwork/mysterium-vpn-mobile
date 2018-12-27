@@ -1,47 +1,32 @@
 import Axios, { AxiosInstance } from 'axios'
-import Config from './config'
-import { IEvent, IEventSender } from './event-sender'
-
-type ApplicationInfo = {
-  name: string,
-  version: string
-}
-
-const app: ApplicationInfo = {
-  name: Config.applicationName,
-  version: Config.applicationVersion
-}
-
-type Event = {
-  application: ApplicationInfo,
-  createdAt: number,
-  eventName: string,
-  context: any
-}
+import { IEventSender } from './event-sender'
+import { Event } from './events'
+import StatisticsConfig from './statistics-config'
 
 class ElkEventSender implements IEventSender {
   private api: AxiosInstance
 
-  constructor () {
+  constructor (private config: StatisticsConfig) {
     this.api = Axios.create({
-      baseURL: Config.elkUrl,
+      baseURL: this.config.elkUrl,
       timeout: 60000
     })
   }
 
-  public async send (event: IEvent): Promise<void> {
-    const eventDetails: Event = {
-      application: app,
-      createdAt: event.getCreatedAt(),
-      eventName: event.getName(),
-      context: event.getDetails()
-    }
+  public async send (event: Event): Promise<void> {
+    event = this.setApplicationInfoToEvent(event)
 
-    const res = await this.api.post('/', eventDetails)
+    const res = await this.api.post('/', event)
 
     if ((res.status !== 200) || (res.data.toUpperCase() !== 'OK')) {
       throw new Error('Invalid response from ELK service: ' + res.status + ' : ' + res.data)
     }
+  }
+
+  private setApplicationInfoToEvent (event: Event) {
+    event.application = this.config.applicationInfo
+
+    return event
   }
 }
 

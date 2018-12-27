@@ -1,5 +1,4 @@
-import { IEvent } from '../event-sender'
-import Events from '../events'
+import Events, { Event } from '../events'
 
 const UNKNOWN_COUNTRY = '<unknown>'
 
@@ -20,7 +19,7 @@ type CountryDetails = {
   providerCountry: string | null
 }
 
-type EventDetails = {
+type EventContext = {
   startedAt: Time
   endedAt: Time
   timeDelta: number
@@ -30,66 +29,45 @@ type EventDetails = {
   error?: string
 }
 
-class ConnectEvent implements IEvent {
-  private name?: string
-  private createdAt: number = new Date().getTime()
-  private eventDetails?: EventDetails
-  private startedAt?: Time
+class ConnectEventBuilder {
+  private eventDetails?: EventContext
+  private readonly startedAt: Time
 
   constructor (
     private timeProvider: TimeProvider,
     private connectionDetails: ConnectionDetails,
     private countryDetails: CountryDetails) {
-  }
-
-  public markAsStarted () {
     this.startedAt = this.timeProvider()
   }
 
-  public markAsEnded (): ConnectEvent {
+  public getEndedEvent (): Event {
     this.finishBuildingEvent()
-    console.log('ended')
-    this.name = Events.connectSucceeded
 
-    return this
+    return this.getEvent(Events.connectSucceeded)
   }
 
-  public markAsCancelled (): ConnectEvent {
+  public getCanceledEvent (): Event {
     this.finishBuildingEvent()
-    console.log('canceled')
 
-    this.name = Events.connectCanceled
-
-    return this
+    return this.getEvent(Events.connectCanceled)
   }
 
-  public markAsFailed (error: string): ConnectEvent {
+  public getFailedEvent (error: string): Event {
     this.finishBuildingEvent(error)
-    console.log('failed')
 
-    this.name = Events.connectFailed
-
-    return this
+    return this.getEvent(Events.connectFailed)
   }
 
-  public getCreatedAt (): number {
-    return this.createdAt
-  }
-
-  public getName (): string {
-    if (!this.name) {
-      throw new Error('ConnectEvent name not set. Event was probably not marked as ended.')
-    }
-
-    return this.name
-  }
-
-  public getDetails (): EventDetails {
+  private getEvent (name: string): Event {
     if (!this.eventDetails) {
       throw new Error('ConnectEvent details not set.')
     }
 
-    return this.eventDetails
+    return {
+      eventName: name,
+      context: this.eventDetails,
+      createdAt: this.startedAt.utcTime
+    }
   }
 
   private finishBuildingEvent (error?: string) {
@@ -112,5 +90,5 @@ class ConnectEvent implements IEvent {
   }
 }
 
-export default ConnectEvent
+export default ConnectEventBuilder
 export { ConnectionDetails }
