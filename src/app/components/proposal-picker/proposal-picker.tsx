@@ -73,7 +73,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
                   </Col>
 
                   <Col size={90} style={styles.countryNameBox}>
-                    {this.renderCountryName()}
+                    {this.renderProposalLabel()}
                   </Col>
 
                   <Col size={10} style={styles.arrowBox}>
@@ -108,7 +108,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
     return code.toLowerCase()
   }
 
-  private renderCountryName () {
+  private renderProposalLabel () {
     if (!this.state.selectedProposal) {
       return (
         <Text>{this.countryName}</Text>
