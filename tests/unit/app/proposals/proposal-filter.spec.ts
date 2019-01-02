@@ -21,6 +21,10 @@ describe('ProposalFilter', () => {
       expect(proposalFilter.filterByText('United')).toHaveLength(3)
     })
 
+    it('should find proposal label by case insensitive country name', () => {
+      expect(proposalFilter.filterByText('united')).toHaveLength(3)
+    })
+
     it('should find proposal by partial id', () => {
       const list = proposalFilter.filterByText('x6')
       expect(list[0].providerID).toEqual('0x6')
