@@ -57,6 +57,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
         >
           <ProposalList
             proposals={this.props.proposals}
+            selectedProposal={this.state.selectedProposal}
             onClose={() => this.closeProposalModal()}
             onSelect={(proposal: IProposal) => this.onProposalSelect(proposal)}
           />

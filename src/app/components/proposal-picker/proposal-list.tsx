@@ -18,9 +18,11 @@ import { Platform, StyleSheet } from 'react-native'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { IProposal } from './proposal'
+import colors from '../../../app/styles/colors'
 
 type ListProps = {
   proposals: IProposal[],
+  selectedProposal: IProposal | null,
   onClose: () => void,
   onSelect: (proposal: IProposal) => void
 }
@@ -67,7 +69,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
   private renderProposal (proposal: IProposal): ReactNode {
     return (
       <ListItem
-        style={styles.listItem}
+        style={this.listItemStyle(proposal)}
         icon={true}
         key={proposal.providerID}
         onPress={() => this.props.onSelect(proposal)}
@@ -76,7 +78,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
           <CountryFlag countryCode={proposal.countryCode}/>
         </Left>
         <Body>
-        <Text>{proposal.countryName}</Text>
+        <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
         </Body>
         <Right>
           <Icon
@@ -85,6 +87,26 @@ class ProposalList extends React.Component<ListProps, ListState> {
         </Right>
       </ListItem>
     )
+  }
+
+  private listItemStyle (current: IProposal) {
+    const style = [styles.listItem]
+
+    if (this.isProposalSelected(current)) {
+      style.push(styles.selectedListItem)
+    }
+
+    return style
+  }
+
+  private listItemTextStyle (current: IProposal) {
+    return this.isProposalSelected(current) ? [styles.selectedListItemText] : []
+  }
+
+  private isProposalSelected (proposal: IProposal) {
+    const selected = this.props.selectedProposal
+
+    return selected && selected.providerID === proposal.providerID
   }
 
   private onSearchValueChange (text: string) {
@@ -129,6 +151,12 @@ if (Platform.OS !== 'ios') {
 
 const styles: any = StyleSheet.create({
   listItem: listItemStyles,
+  selectedListItem: {
+    backgroundColor: colors.primary
+  },
+  selectedListItemText: {
+    color: '#fff'
+  },
   headerItem: {
     borderWidth: 0,
     width: '70%',
