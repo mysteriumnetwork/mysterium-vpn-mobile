@@ -28,7 +28,7 @@ describe('ProposalFilter', () => {
       expect(list).toHaveLength(1)
     })
 
-    it(`shouldn't find any proposals`, () => {
+    it('should return empty list when no matches are found', () => {
       expect(proposalFilter.filterByText('0x007')).toHaveLength(0)
     })
   })
