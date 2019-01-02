@@ -133,7 +133,11 @@ class ProposalList extends React.Component<ListProps, ListState> {
 
     filteredProposals = filteredProposals.filter((proposal: IProposal) => {
       const name = proposal.countryName || ''
-      return name.toLowerCase().includes(text.toLowerCase())
+
+      const matchesName = name.toLowerCase().includes(text.toLowerCase())
+      const matchesId = proposal.providerID.toLowerCase().includes(text.toLowerCase())
+
+      return matchesName || matchesId
     })
 
     return filteredProposals
