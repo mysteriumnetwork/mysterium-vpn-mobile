@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-export interface IBugReporter {
+export interface BugReporter {
   sendException (e: Error): void
 
   setUserId (userId: string): void

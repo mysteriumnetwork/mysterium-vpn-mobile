@@ -17,7 +17,7 @@
 
 import TequilapiClientFactory from 'mysterium-tequilapi'
 import { Platform } from 'react-native'
-import { IBugReporter } from '../bug-reporter/bug-reporter'
+import { BugReporter } from '../bug-reporter/bug-reporter'
 import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
@@ -65,7 +65,7 @@ class Container {
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
   public readonly favorites = new Favorites(this.favoritesStore)
   public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
-  public readonly bugReporter: IBugReporter
+  public readonly bugReporter: BugReporter
   public readonly feedbackReporter: IFeedbackReporter
 
   constructor () {

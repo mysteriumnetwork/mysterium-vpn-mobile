@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IBugReporter } from './bug-reporter'
+import { BugReporter } from './bug-reporter'
 import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
 
-class ConsoleReporter implements IBugReporter, IFeedbackReporter {
+class ConsoleReporter implements BugReporter, IFeedbackReporter {
   public sendException (e: Error) {
     console.log('Bug reported:', e)
   }
