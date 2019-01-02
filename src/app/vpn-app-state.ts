@@ -15,9 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
+import { computed, observable } from 'mobx'
+import { IProposal } from './components/proposal-picker/proposal'
 
 export default class VpnAppState {
   @observable
-  public selectedProviderId: string | null = null
+  public selectedProvider: IProposal | null = null
+
+  @computed
+  public get selectedProviderId (): string | null {
+    if (this.selectedProvider) {
+      return this.selectedProvider.providerID
+    }
+
+    return null
+  }
 }

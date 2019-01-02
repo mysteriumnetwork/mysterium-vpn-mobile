@@ -94,7 +94,8 @@ class VpnScreen extends React.Component<HomeProps> {
               <ProposalPicker
                 placeholder={translations.COUNTRY_PICKER_LABEL}
                 proposals={this.proposalList.proposals}
-                onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
+                selectedProposal={this.vpnAppState.selectedProvider}
+                onSelect={(proposal: IProposal) => this.vpnAppState.selectedProvider = proposal}
                 onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
                 isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
               />
@@ -119,10 +120,12 @@ class VpnScreen extends React.Component<HomeProps> {
 
   private async connect () {
     const providerId = this.vpnAppState.selectedProviderId
-    if (providerId === null) {
+
+    if (!providerId) {
       this.messageDisplay.showInfo(messages.COUNTRY_NOT_SELECTED)
       return
     }
+
     await this.tequilAPIDriver.connect(providerId)
   }
 }
