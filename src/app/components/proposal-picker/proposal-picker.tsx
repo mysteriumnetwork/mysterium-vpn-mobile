@@ -73,7 +73,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
                   </Col>
 
                   <Col size={90} style={styles.countryNameBox}>
-                    <Text>{this.countryName}</Text>
+                    {this.renderCountryName()}
                   </Col>
 
                   <Col size={10} style={styles.arrowBox}>
@@ -108,12 +108,35 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
     return code.toLowerCase()
   }
 
+  private renderCountryName () {
+    if (!this.state.selectedProposal) {
+      return (
+        <Text>{this.countryName}</Text>
+      )
+    }
+
+    return (
+      <View>
+        <Text>{this.countryName}</Text>
+        <Text style={styles.providerId}>{this.providerId}</Text>
+      </View>
+    )
+  }
+
   private get countryName (): string {
     if (!this.state.selectedProposal) {
       return this.props.placeholder
     }
 
     return this.state.selectedProposal.countryName || ''
+  }
+
+  private get providerId (): string {
+    if (!this.state.selectedProposal) {
+      return ''
+    }
+
+    return this.state.selectedProposal.providerID.substring(0, 25) + '...'
   }
 
   private openProposalModal () {
@@ -163,6 +186,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: boxHeight
+  },
+  providerId: {
+    color: '#666666',
+    fontSize: 12,
+    marginBottom: 4
   },
   arrowBox: {
     justifyContent: 'center',

@@ -79,6 +79,9 @@ class ProposalList extends React.Component<ListProps, ListState> {
         </Left>
         <Body>
         <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
+        <Text style={this.providerIdStyle(proposal)}>
+          {proposal.providerID.substring(0, 25) + '...'}
+        </Text>
         </Body>
         <Right>
           <Icon
@@ -89,18 +92,24 @@ class ProposalList extends React.Component<ListProps, ListState> {
     )
   }
 
-  private listItemStyle (current: IProposal) {
+  private listItemStyle (proposal: IProposal) {
     const style = [styles.listItem]
 
-    if (this.isProposalSelected(current)) {
+    if (this.isProposalSelected(proposal)) {
       style.push(styles.selectedListItem)
     }
 
     return style
   }
 
-  private listItemTextStyle (current: IProposal) {
-    return this.isProposalSelected(current) ? [styles.selectedListItemText] : []
+  private listItemTextStyle (proposal: IProposal) {
+    return this.isProposalSelected(proposal) ? [styles.selectedListItemText] : []
+  }
+
+  private providerIdStyle (proposal: IProposal) {
+    return this.isProposalSelected(proposal)
+      ? [styles.providerIdText, styles.selectedListItemText]
+      : [styles.providerIdText]
   }
 
   private isProposalSelected (proposal: IProposal) {
@@ -153,6 +162,11 @@ const styles: any = StyleSheet.create({
   listItem: listItemStyles,
   selectedListItem: {
     backgroundColor: colors.primary
+  },
+  providerIdText: {
+    fontSize: 12,
+    color: '#666666',
+    marginBottom: 4
   },
   selectedListItemText: {
     color: '#fff'
