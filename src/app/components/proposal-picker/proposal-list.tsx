@@ -15,10 +15,10 @@ import {
 } from 'native-base'
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
+import colors from '../../../app/styles/colors'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { IProposal } from './proposal'
-import colors from '../../../app/styles/colors'
 
 type ListProps = {
   proposals: IProposal[],
