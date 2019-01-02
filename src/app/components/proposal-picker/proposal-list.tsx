@@ -16,6 +16,7 @@ import {
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import colors from '../../../app/styles/colors'
+import ProposalFilter from '../../proposals/proposal-filter'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { IProposal } from './proposal'
@@ -32,10 +33,13 @@ type ListState = {
 }
 
 class ProposalList extends React.Component<ListProps, ListState> {
+  private proposalFilter: ProposalFilter
+
   constructor (props: ListProps) {
     super(props)
 
     this.state = { filteredProposals: this.props.proposals }
+    this.proposalFilter = new ProposalFilter(this.props.proposals)
   }
 
   public render (): ReactNode {
@@ -119,28 +123,9 @@ class ProposalList extends React.Component<ListProps, ListState> {
   }
 
   private onSearchValueChange (text: string) {
-    const filteredProposals = this.filteredProposals(text)
+    const filteredProposals = this.proposalFilter.filterByText(text)
 
     this.setState({ filteredProposals })
-  }
-
-  private filteredProposals (text: string): IProposal[] {
-    let filteredProposals = this.props.proposals
-
-    if (!text.trim().length) {
-      return filteredProposals
-    }
-
-    filteredProposals = filteredProposals.filter((proposal: IProposal) => {
-      const name = proposal.countryName || ''
-
-      const matchesName = name.toLowerCase().includes(text.toLowerCase())
-      const matchesId = proposal.providerID.toLowerCase().includes(text.toLowerCase())
-
-      return matchesName || matchesId
-    })
-
-    return filteredProposals
   }
 }
 
