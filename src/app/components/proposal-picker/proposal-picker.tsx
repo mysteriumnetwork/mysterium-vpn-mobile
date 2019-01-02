@@ -29,7 +29,8 @@ type PickerProps = {
   onSelect: (proposal: IProposal) => void
   onFavoriteToggle: () => void
   isFavoriteSelected: boolean
-  placeholder: string
+  placeholder: string,
+  selectedProposal: IProposal | null
 }
 
 type PickerState = {
@@ -43,7 +44,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
 
     this.state = {
       modalIsOpen: false,
-      selectedProposal: null
+      selectedProposal: this.props.selectedProposal
     }
   }
 
