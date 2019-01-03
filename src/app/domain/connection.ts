@@ -28,11 +28,6 @@ import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
 import Publisher, { Callback } from './publisher'
 
-type ConnectionStatusChange = {
-  newStatus: ConnectionStatus,
-  userIntent: boolean
-}
-
 class Connection {
   public get data (): ConnectionData {
     return this._data
@@ -40,7 +35,7 @@ class Connection {
 
   private _data: ConnectionData = initialConnectionData
   private dataPublisher = new Publisher<ConnectionData>()
-  private statusPublisher = new Publisher<ConnectionStatusChange>()
+  private statusPublisher = new Publisher<ConnectionStatus>()
   private ipPublisher = new Publisher<Ip>()
   private readonly statusFetcher: StatusFetcher
   private readonly ipFetcher: IPFetcher
@@ -88,9 +83,9 @@ class Connection {
     callback(this.data)
   }
 
-  public onStatusChange (callback: Callback<ConnectionStatusChange>) {
+  public onStatusChange (callback: Callback<ConnectionStatus>) {
     this.statusPublisher.subscribe(callback)
-    callback({ newStatus: this.data.status, userIntent: false })
+    callback(this.data.status)
   }
 
   public onIpChange (callback: Callback<Ip>) {
@@ -103,11 +98,11 @@ class Connection {
   }
 
   public setStatusToConnecting () {
-    this.updateStatus(ConnectionStatusEnum.CONNECTING, true)
+    this.updateStatus(ConnectionStatusEnum.CONNECTING)
   }
 
   public setStatusToDisconnecting () {
-    this.updateStatus(ConnectionStatusEnum.DISCONNECTING, true)
+    this.updateStatus(ConnectionStatusEnum.DISCONNECTING)
   }
 
   private updateIP (ip: string | null) {
@@ -117,7 +112,7 @@ class Connection {
   private buildStatusFetcher (): StatusFetcher {
     const fetchStatus = this.connectionAdapter.fetchStatus.bind(this.connectionAdapter)
     return new StatusFetcher(fetchStatus, this.tequilApiState, status => {
-      this.updateStatus(status.status, false)
+      this.updateStatus(status.status)
     })
   }
 
@@ -139,17 +134,17 @@ class Connection {
     this.setData(new ConnectionData(this.data.status, this.data.IP, statistics))
   }
 
-  private updateStatus (status: ConnectionStatus, userIntent: boolean) {
-    this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics), userIntent)
+  private updateStatus (status: ConnectionStatus) {
+    this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics))
   }
 
-  private setData (data: ConnectionData, userIntent: boolean = false) {
+  private setData (data: ConnectionData) {
     if (this._data === data) {
       return
     }
 
     if (this._data.status !== data.status) {
-      this.statusPublisher.publish({ newStatus: data.status, userIntent })
+      this.statusPublisher.publish(data.status)
     }
 
     if (this._data.IP !== data.IP) {
@@ -159,7 +154,6 @@ class Connection {
     this.dataPublisher.publish(data)
     this._data = data
   }
-
 }
 
 const initialStatistics: ConnectionStatistics = {

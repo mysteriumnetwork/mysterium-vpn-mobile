@@ -119,7 +119,6 @@ export default class App extends React.Component<AppProps> {
     try {
       await this.appLoader.load()
       this.screenStore.navigateToVpnScreen()
-
     } catch (err) {
       console.log('App loading failed', err)
     }
