@@ -22,16 +22,24 @@ import translations from '../translations'
 
 class ConnectionChecker {
   private lastStatus: ConnectionStatus | null = null
+  private running: boolean = false
 
   constructor (private connectionAdapter: IConnectionAdapter, private notificationAdapter: NotificationAdapter) {}
 
-  // TODO: skip if it's still running
   public async run () {
+    if (this.running) {
+      return
+    }
+
+    this.running = true
+
     const status = (await this.connectionAdapter.fetchStatus()).status
     if (this.wasDisconnected(this.lastStatus, status)) {
       this.showDisconnectedNotification()
     }
     this.lastStatus = status
+
+    this.running = false
   }
 
   private wasDisconnected (oldStatus: ConnectionStatus | null, newStatus: ConnectionStatus): boolean {
