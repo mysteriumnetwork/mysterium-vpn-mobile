@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** @format */
 
-import { name as appName } from './app.json'
-import { buildApp } from "./src/main";
+import PushNotification from 'react-native-push-notification'
+import NotificationAdapter from './notification-adapter'
 
+class ReactNativeNotificationAdapter implements NotificationAdapter {
+  public show (title: string, message: string) {
+    PushNotification.localNotification({ title, message })
+  }
+}
 
-buildApp(appName)
+export default ReactNativeNotificationAdapter
