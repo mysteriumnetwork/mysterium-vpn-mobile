@@ -15,12 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import IConnectionAdapter from '../../../../src/app/adapters/connection-adapter'
 import Connection from '../../../../src/app/domain/connection'
-import ConnectionStatistics from '../../../../src/app/models/connection-statistics'
-import Ip from '../../../../src/app/models/ip'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
+import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -30,47 +27,22 @@ function nextTick (): Promise<void> {
   })
 }
 
-class MockConnectionAdapter implements IConnectionAdapter {
-  public async connect (_consumerId: string, _providerId: string) {
-    // empty mock
-  }
-
-  public async disconnect () {
-    // empty mock
-  }
-
-  public async fetchStatus (): Promise<ConnectionStatusDTO> {
-    return { status: 'Connected' }
-  }
-
-  public async fetchStatistics (): Promise<ConnectionStatistics> {
-    return {
-      duration: 1,
-      bytesReceived: 1,
-      bytesSent: 1
-    }
-  }
-
-  // TODO: use existing Ip model
-  public async fetchIp (): Promise<Ip> {
-    return '100.101.102.103'
-  }
-}
-
 describe('Connection', () => {
   let connection: Connection
+  let connectionAdapter: MockConnectionAdapter
   let state: TequilApiState
 
   beforeEach(() => {
     state = new TequilApiState()
-    const adapter = new MockConnectionAdapter()
-    connection = new Connection(adapter, state)
+    connectionAdapter = new MockConnectionAdapter()
+    connection = new Connection(connectionAdapter, state)
   })
 
   describe('.startUpdating', () => {
     afterEach(() => {
       connection.stopUpdating()
     })
+
     it('fetches status when identity is set', async () => {
       state.identityId = 'mock identity'
 
