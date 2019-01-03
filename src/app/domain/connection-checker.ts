@@ -18,6 +18,7 @@
 import { ConnectionStatus } from 'mysterium-tequilapi'
 import IConnectionAdapter from '../adapters/connection-adapter'
 import NotificationAdapter from '../adapters/notification-adapter'
+import translations from '../translations'
 
 class ConnectionChecker {
   private lastStatus: ConnectionStatus | null = null
@@ -27,8 +28,20 @@ class ConnectionChecker {
   // TODO: skip if it's still running
   public async run () {
     const status = (await this.connectionAdapter.fetchStatus()).status
-    this.notificationAdapter.show('Connection', `Your status: ${status}, last: ${this.lastStatus}`)
+    if (this.wasDisconnected(this.lastStatus, status)) {
+      this.showDisconnectedNotification()
+    }
     this.lastStatus = status
+  }
+
+  private wasDisconnected (oldStatus: ConnectionStatus | null, newStatus: ConnectionStatus): boolean {
+    return oldStatus === 'Connected' && newStatus !== this.lastStatus
+  }
+
+  private showDisconnectedNotification () {
+    const title = translations.DISCONNECTED_NOTIFICATION.TITLE
+    const message = translations.DISCONNECTED_NOTIFICATION.MESSAGE
+    this.notificationAdapter.show(title, message)
   }
 }
 
