@@ -27,7 +27,8 @@ function buildApp (appName: string) {
   AppRegistry.registerComponent(appName, () => Root)
 
   const connectionChecker = buildConnectionChecker()
-  AppRegistry.registerHeadlessTask('ConnectionChecker', () => connectionChecker.run)
+  const run = () => connectionChecker.run()
+  AppRegistry.registerHeadlessTask('ConnectionChecker', () => run)
 }
 
 function buildConnectionChecker () {
