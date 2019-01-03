@@ -13,7 +13,7 @@ import com.facebook.soloader.SoLoader;
 
 import cat.ereza.logcatreporter.LogcatReporter;
 
-
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import network.mysterium.logging.BugReporterPackage;
@@ -53,13 +53,24 @@ public class MainApplication extends Application implements ReactApplication {
 
   @Override
   public void onCreate() {
-    Fabric.with(this, new Crashlytics());
-    LogcatReporter.install();
-    Crashlytics.setInt("android_sdk_int", android.os.Build.VERSION.SDK_INT);
-
+    setupLogging();
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
 
     Log.i(TAG, "Application started");
+  }
+
+  private void setupLogging() {
+    // https://docs.fabric.io/android/crashlytics/build-tools.html?highlight=crashlyticscore
+    // Set up Crashlytics, disabled for debug builds
+    Crashlytics crashlyticsKit = new Crashlytics.Builder()
+            .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+            .build();
+
+    // Initialize Fabric with the debug-disabled crashlytics.
+    Fabric.with(this, crashlyticsKit);
+
+    LogcatReporter.install();
+    Crashlytics.setInt("android_sdk_int", android.os.Build.VERSION.SDK_INT);
   }
 }
