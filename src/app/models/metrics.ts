@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,19 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computed, observable } from 'mobx'
-import { ProposalListItem } from './components/proposal-picker/proposal-list-item'
-
-export default class VpnAppState {
-  @observable
-  public selectedProposal: ProposalListItem | null = null
-
-  @computed
-  public get selectedProviderId (): string | null {
-    if (this.selectedProposal) {
-      return this.selectedProposal.providerID
-    }
-
-    return null
+export type Metrics = {
+  connectCount: {
+    success: number,
+    fail: number,
+    timeout: number
   }
 }

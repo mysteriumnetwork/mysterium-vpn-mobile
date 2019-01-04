@@ -1,5 +1,5 @@
-import { IProposal } from '../components/proposal-picker/proposal'
-import { FavoriteProposal } from '../models/favorite-proposal'
+import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import { QualityCalculator } from '../domain/quality-calculator'
 import Proposal from '../models/proposal'
 import translations from '../translations'
 
@@ -14,29 +14,33 @@ interface IFavoritesStorage {
 class ProposalList {
   protected proposalList: IProposalList
   protected favorites: IFavoritesStorage
+  private readonly qualityCalculator: QualityCalculator = new QualityCalculator()
 
   constructor (proposalList: IProposalList, favorites: IFavoritesStorage) {
     this.proposalList = proposalList
     this.favorites = favorites
   }
 
-  public get proposals (): IProposal[] {
+  public get proposals (): ProposalListItem[] {
     const proposals = this.proposalList.proposals
-      .map((proposal: Proposal) => this.proposalToFavoriteProposal(proposal))
-      .sort(compareFavoriteProposals)
+      .map((proposal: Proposal) => this.proposalToProposalItem(proposal))
+      .sort(compareProposalItems)
 
     return proposals
   }
 
-  private proposalToFavoriteProposal (proposal: Proposal): FavoriteProposal {
-    return new FavoriteProposal(
-      proposal,
-      this.favorites.has(proposal.providerID)
-    )
+  private proposalToProposalItem (proposal: Proposal): ProposalListItem {
+    return {
+      providerID: proposal.providerID,
+      countryCode: proposal.countryCode,
+      countryName: proposal.countryName,
+      isFavorite: this.favorites.has(proposal.providerID),
+      quality: this.qualityCalculator.calculate(proposal.metrics)
+    }
   }
 }
 
-function compareFavoriteProposals (one: FavoriteProposal, other: FavoriteProposal): number {
+function compareProposalItems (one: ProposalListItem, other: ProposalListItem): number {
   if (one.isFavorite && !other.isFavorite) {
     return -1
   } else if (!one.isFavorite && other.isFavorite) {

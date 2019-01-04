@@ -16,16 +16,15 @@
  *
  */
 
-class Proposal {
-  public readonly providerID: string
-  public readonly countryCode: string | null
-  public readonly countryName: string | null
+import { Metrics } from './metrics'
 
-  constructor (providerID: string, countryCode: string | null, countryName: string | null) {
-    this.providerID = providerID
-    this.countryCode = countryCode
-    this.countryName = countryName
-  }
+class Proposal {
+  constructor (
+    public readonly providerID: string,
+    public readonly countryCode: string | null,
+    public readonly countryName: string | null,
+    public readonly metrics: Metrics
+  ) {}
 }
 
 export default Proposal
