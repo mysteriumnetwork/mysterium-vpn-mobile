@@ -20,6 +20,7 @@ import ProposalFilter from '../../proposals/proposal-filter'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { IProposal } from './proposal'
+import { QualityIndicator } from './quality-indicator'
 
 type ListProps = {
   proposals: IProposal[],
@@ -82,13 +83,13 @@ class ProposalList extends React.Component<ListProps, ListState> {
           <CountryFlag countryCode={proposal.countryCode}/>
         </Left>
         <Body>
-        <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
-        <Text style={this.providerIdStyle(proposal)}>
-          {proposal.providerID.substring(0, 25) + '...'}
-        </Text>
+          <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
+          <Text style={this.providerIdStyle(proposal)}>
+            {proposal.providerID.substring(0, 25) + '...'}
+          </Text>
         </Body>
         <Right>
-          <Text>{proposal.quality ? Math.round(proposal.quality * 100) + '%' : '?'}</Text>
+          <QualityIndicator quality={proposal.quality}/>
           <Icon
             name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
           />
