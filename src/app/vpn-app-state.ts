@@ -20,12 +20,12 @@ import { ProposalListItem } from './components/proposal-picker/proposal-list-ite
 
 export default class VpnAppState {
   @observable
-  public selectedProvider: ProposalListItem | null = null
+  public selectedProposal: ProposalListItem | null = null
 
   @computed
   public get selectedProviderId (): string | null {
-    if (this.selectedProvider) {
-      return this.selectedProvider.providerID
+    if (this.selectedProposal) {
+      return this.selectedProposal.providerID
     }
 
     return null
