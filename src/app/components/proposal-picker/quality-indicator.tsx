@@ -16,7 +16,7 @@
  */
 
 import React from 'react'
-import { Image, ImageRequireSource } from 'react-native'
+import { Image, ImageRequireSource, StyleSheet } from 'react-native'
 
 type QualityIndicatorProps = {
   quality: number | null
@@ -25,11 +25,7 @@ type QualityIndicatorProps = {
 const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality }) => {
   const icon = getIconName(quality)
   return (
-    <Image
-      style={{ width: ICON_SIZE, height: ICON_SIZE }}
-      source={icon}
-      resizeMode="contain"
-    />
+    <Image style={styles.image} source={icon} resizeMode="contain" />
   )
 }
 
@@ -46,9 +42,15 @@ function getIconName (quality: number | null): ImageRequireSource {
   return require('../../../assets/quality/low.png')
 }
 
-const ICON_SIZE = 30
-
 const MEDIUM_QUALITY = 0.2
 const HIGH_QUALITY = 0.5
+
+const ICON_SIZE = 30
+const styles = StyleSheet.create({
+  image: {
+    width: ICON_SIZE,
+    height: ICON_SIZE
+  }
+})
 
 export { QualityIndicator }
