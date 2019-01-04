@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface IProposal {
-  providerID: string,
-  countryCode: string | null,
-  countryName: string | null,
-  isFavorite: boolean,
-  quality: number | null
+import Proposal from './proposal'
+
+class ProposalItem extends Proposal {
+  constructor (proposal: Proposal, public readonly isFavorite: boolean, public readonly quality: number | null) {
+    super(proposal.providerID, proposal.countryCode, proposal.countryName, proposal.metrics)
+  }
 }
 
-export {
-  IProposal
-}
+export { ProposalItem }

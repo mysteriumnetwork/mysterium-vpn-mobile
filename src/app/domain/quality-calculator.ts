@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,15 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Proposal from './proposal'
+import { Metrics } from '../models/metrics'
 
-class FavoriteProposal extends Proposal {
-  public readonly isFavorite: boolean
+export class QualityCalculator {
+  /**
+   * Calculates quality number for given metrics.
+   *
+   * @return number between 0 and 1. If metrics are empty, null is returned.
+   */
+  public calculate (metrics: Metrics): number | null {
+    const counts = metrics.connectCount
+    const total = counts.success + counts.fail + counts.timeout
 
-  constructor (proposal: Proposal, isFavorite: boolean) {
-    super(proposal.providerID, proposal.countryCode, proposal.countryName)
-    this.isFavorite = isFavorite
+    if (total === 0) {
+      return null
+    }
+
+    return counts.success / total
   }
 }
-
-export { FavoriteProposal }

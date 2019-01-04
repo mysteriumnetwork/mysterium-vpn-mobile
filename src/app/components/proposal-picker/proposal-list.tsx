@@ -88,6 +88,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
         </Text>
         </Body>
         <Right>
+          <Text>{proposal.quality ? Math.round(proposal.quality * 100) + '%' : '?'}</Text>
           <Icon
             name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
           />

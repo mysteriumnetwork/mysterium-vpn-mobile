@@ -15,14 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface IProposal {
-  providerID: string,
-  countryCode: string | null,
-  countryName: string | null,
-  isFavorite: boolean,
-  quality: number | null
-}
-
-export {
-  IProposal
+export type Metrics = {
+  connectCount: {
+    success: number,
+    fail: number,
+    timeout: number
+  }
 }

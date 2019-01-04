@@ -32,5 +32,12 @@ describe('ProposalList', () => {
       const countryNames = list.proposals.map((i) => i.countryName)
       expect(countryNames).toEqual(expected)
     })
+
+    it('returns proposals quality', () => {
+      const items = list.proposals
+      expect(items[0].quality).toEqual(0.5)
+      expect(items[1].quality).toEqual(0.25)
+      expect(items[2].quality).toBeNull()
+    })
   })
 })

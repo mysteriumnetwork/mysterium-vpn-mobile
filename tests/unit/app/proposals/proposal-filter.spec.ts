@@ -1,5 +1,6 @@
 import { IProposal } from '../../../../src/app/components/proposal-picker/proposal'
 import Proposal from '../../../../src/app/models/proposal'
+import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import ProposalFilter from '../../../../src/app/proposals/proposal-filter'
 import proposalData from './proposal-data'
 
@@ -39,5 +40,5 @@ describe('ProposalFilter', () => {
 })
 
 const convertProposalToIProposal = (proposal: Proposal): IProposal => {
-  return { ...proposal, isFavorite: true }
+  return new ProposalItem(proposal, true, null)
 }
