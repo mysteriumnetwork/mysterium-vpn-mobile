@@ -16,11 +16,11 @@
  */
 
 import { computed, observable } from 'mobx'
-import { IProposal } from './components/proposal-picker/proposal'
+import { ProposalListItem } from './components/proposal-picker/proposal-list-item'
 
 export default class VpnAppState {
   @observable
-  public selectedProvider: IProposal | null = null
+  public selectedProvider: ProposalListItem | null = null
 
   @computed
   public get selectedProviderId (): string | null {

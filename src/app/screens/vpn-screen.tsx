@@ -27,7 +27,7 @@ import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
 import IconButton from '../components/icon-button'
 import LogoBackground from '../components/logo-background'
-import { IProposal } from '../components/proposal-picker/proposal'
+import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
 import IMessageDisplay from '../messages/message-display'
@@ -95,7 +95,7 @@ class VpnScreen extends React.Component<HomeProps> {
                 placeholder={translations.COUNTRY_PICKER_LABEL}
                 proposals={this.proposalList.proposals}
                 selectedProposal={this.vpnAppState.selectedProvider}
-                onSelect={(proposal: IProposal) => this.vpnAppState.selectedProvider = proposal}
+                onSelect={(proposal: ProposalListItem) => this.vpnAppState.selectedProvider = proposal}
                 onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
                 isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
               />

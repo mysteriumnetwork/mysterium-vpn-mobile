@@ -19,18 +19,18 @@ import colors from '../../../app/styles/colors'
 import ProposalFilter from '../../proposals/proposal-filter'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
-import { IProposal } from './proposal'
+import { ProposalListItem } from './proposal-list-item'
 import { QualityIndicator } from './quality-indicator'
 
 type ListProps = {
-  proposals: IProposal[],
-  selectedProposal: IProposal | null,
+  proposals: ProposalListItem[],
+  selectedProposal: ProposalListItem | null,
   onClose: () => void,
-  onSelect: (proposal: IProposal) => void
+  onSelect: (proposal: ProposalListItem) => void
 }
 
 type ListState = {
-  filteredProposals: IProposal[]
+  filteredProposals: ProposalListItem[]
 }
 
 class ProposalList extends React.Component<ListProps, ListState> {
@@ -64,14 +64,14 @@ class ProposalList extends React.Component<ListProps, ListState> {
         </Header>
         <Content>
           <List>
-            {this.state.filteredProposals.map((proposal: IProposal) => this.renderProposal(proposal))}
+            {this.state.filteredProposals.map((proposal: ProposalListItem) => this.renderProposal(proposal))}
           </List>
         </Content>
       </Container>
     )
   }
 
-  private renderProposal (proposal: IProposal): ReactNode {
+  private renderProposal (proposal: ProposalListItem): ReactNode {
     return (
       <ListItem
         style={this.listItemStyle(proposal)}
@@ -98,7 +98,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
     )
   }
 
-  private listItemStyle (proposal: IProposal) {
+  private listItemStyle (proposal: ProposalListItem) {
     const style = [styles.listItem]
 
     if (this.isProposalSelected(proposal)) {
@@ -108,17 +108,17 @@ class ProposalList extends React.Component<ListProps, ListState> {
     return style
   }
 
-  private listItemTextStyle (proposal: IProposal) {
+  private listItemTextStyle (proposal: ProposalListItem) {
     return this.isProposalSelected(proposal) ? [styles.selectedListItemText] : []
   }
 
-  private providerIdStyle (proposal: IProposal) {
+  private providerIdStyle (proposal: ProposalListItem) {
     return this.isProposalSelected(proposal)
       ? [styles.providerIdText, styles.selectedListItemText]
       : [styles.providerIdText]
   }
 
-  private isProposalSelected (proposal: IProposal) {
+  private isProposalSelected (proposal: ProposalListItem) {
     const selected = this.props.selectedProposal
 
     return selected && selected.providerID === proposal.providerID
