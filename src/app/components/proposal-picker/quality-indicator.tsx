@@ -15,15 +15,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react'
-import { Text } from 'react-native'
+import React from 'react'
+import { Image, ImageRequireSource } from 'react-native'
 
 type QualityIndicatorProps = {
   quality: number | null
 }
 
 const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality }) => {
-  return (<Text>{quality ? Math.round(quality * 100) + '%' : '?'}</Text>)
+  const icon = getIconName(quality)
+  return (
+    <Image
+      style={{ width: ICON_SIZE, height: ICON_SIZE }}
+      source={icon}
+      resizeMode="contain"
+    />
+  )
 }
+
+function getIconName (quality: number | null): ImageRequireSource {
+  if (quality === null) {
+    return require('../../../assets/quality/unknown.png')
+  }
+  if (quality >= HIGH_QUALITY) {
+    return require('../../../assets/quality/high.png')
+  }
+  if (quality >= MEDIUM_QUALITY) {
+    return require('../../../assets/quality/medium.png')
+  }
+  return require('../../../assets/quality/low.png')
+}
+
+const ICON_SIZE = 30
+
+const MEDIUM_QUALITY = 0.2
+const HIGH_QUALITY = 0.5
 
 export { QualityIndicator }
