@@ -17,10 +17,9 @@ const ProposalsStoreMock = jest.fn<ProposalsStore>(() => ({
   startUpdating: jest.fn().mockReturnValue(null)
 }))
 
-// TODO: destroy this cancer - integration tests should cover this
 describe('AppLoader', () => {
   describe('.load', () => {
-    it('waits for healthcheck and initializes dependencies', async () => {
+    it('unlocks identity and starts fetchers', async () => {
       const tequilApiDriver = new TequilApiDriverMock()
       const connection = new ConnectionMock()
       const proposalsStore = new ProposalsStoreMock()

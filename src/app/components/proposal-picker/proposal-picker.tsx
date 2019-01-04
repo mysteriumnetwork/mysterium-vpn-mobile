@@ -20,22 +20,21 @@ import React, { ReactNode } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
 import CountryFlag from './country-flag'
+import { IProposal } from './proposal'
 import ProposalList from './proposal-list'
-import { ProposalListItem } from './proposal-list-item'
 import ProposalModal from './proposal-modal'
 
 type PickerProps = {
-  proposals: ProposalListItem[]
-  onSelect: (proposal: ProposalListItem) => void
+  proposals: IProposal[]
+  onSelect: (proposal: IProposal) => void
   onFavoriteToggle: () => void
   isFavoriteSelected: boolean
-  placeholder: string,
-  selectedProposal: ProposalListItem | null
+  placeholder: string
 }
 
 type PickerState = {
   modalIsOpen: boolean
-  selectedProposal: ProposalListItem | null
+  selectedProposal: IProposal | null
 }
 
 class ProposalPicker extends React.Component<PickerProps, PickerState> {
@@ -44,7 +43,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
 
     this.state = {
       modalIsOpen: false,
-      selectedProposal: this.props.selectedProposal
+      selectedProposal: null
     }
   }
 
@@ -57,9 +56,8 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
         >
           <ProposalList
             proposals={this.props.proposals}
-            selectedProposal={this.state.selectedProposal}
             onClose={() => this.closeProposalModal()}
-            onSelect={(proposal: ProposalListItem) => this.onProposalSelect(proposal)}
+            onSelect={(proposal: IProposal) => this.onProposalSelect(proposal)}
           />
         </ProposalModal>
 
@@ -73,7 +71,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
                   </Col>
 
                   <Col size={90} style={styles.countryNameBox}>
-                    {this.renderProposalLabel()}
+                    <Text>{this.countryName}</Text>
                   </Col>
 
                   <Col size={10} style={styles.arrowBox}>
@@ -108,35 +106,12 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
     return code.toLowerCase()
   }
 
-  private renderProposalLabel () {
-    if (!this.state.selectedProposal) {
-      return (
-        <Text>{this.countryName}</Text>
-      )
-    }
-
-    return (
-      <View>
-        <Text>{this.countryName}</Text>
-        <Text style={styles.providerId}>{this.providerId}</Text>
-      </View>
-    )
-  }
-
   private get countryName (): string {
     if (!this.state.selectedProposal) {
       return this.props.placeholder
     }
 
     return this.state.selectedProposal.countryName || ''
-  }
-
-  private get providerId (): string {
-    if (!this.state.selectedProposal) {
-      return ''
-    }
-
-    return this.state.selectedProposal.providerID.substring(0, 25) + '...'
   }
 
   private openProposalModal () {
@@ -147,7 +122,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
     this.setState({ modalIsOpen: false })
   }
 
-  private onProposalSelect (proposal: ProposalListItem) {
+  private onProposalSelect (proposal: IProposal) {
     this.props.onSelect(proposal)
 
     this.setState({
@@ -186,11 +161,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: boxHeight
-  },
-  providerId: {
-    color: '#666666',
-    fontSize: 12,
-    marginBottom: 4
   },
   arrowBox: {
     justifyContent: 'center',

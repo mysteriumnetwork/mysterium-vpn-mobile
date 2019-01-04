@@ -37,19 +37,17 @@
   },
   "dependencies": {
     "@types/react-native-htmlview": "^0.12.2",
-    "@types/react-native-push-notification": "^3.0.3",
     "axios": "^0.18.0",
     "computed-async-mobx": "^4.1.0",
     "mobx": "^4.3.1",
     "mobx-react": "^5.1.0",
     "mobx-utils": "^5.0.2",
-    "mysterium-tequilapi": "^0.3.1",
+    "mysterium-tequilapi": "^0.2.2",
     "native-base": "^2.8.1",
     "react": "^16.4.1",
     "react-native": "^0.56",
     "react-native-dropdownalert": "^3.7.0",
     "react-native-htmlview": "^0.13.0",
-    "react-native-push-notification": "^3.1.2",
     "react-native-vector-icons": "^6.1.0"
   }
 }

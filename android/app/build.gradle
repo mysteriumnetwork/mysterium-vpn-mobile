@@ -88,9 +88,9 @@ apply from: "../../node_modules/react-native/react.gradle"
 def getVersionCode = { ->
 
     def code = project.hasProperty('versionCode') ? versionCode.toInteger() : -1
-
+    
     println "VersionCode is set to $code"
-
+    
     return code
 }
 
@@ -102,9 +102,9 @@ def getVersionCode = { ->
 def getVersionName = { ->
 
     def name = project.hasProperty('versionName') ? versionName.toString() : "0.1"
-
+    
     println "VersionName is set to $name"
-
+    
     return name
 }
 
@@ -151,10 +151,6 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
-        debug {
-            // Disable fabric build ID generation for debug builds
-            ext.enableCrashlytics = false
-        }
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -172,7 +168,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-push-notification')
     implementation project(':react-native-vector-icons')
     implementation compile('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
       transitive = true;

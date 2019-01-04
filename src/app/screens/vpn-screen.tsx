@@ -27,7 +27,7 @@ import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
 import IconButton from '../components/icon-button'
 import LogoBackground from '../components/logo-background'
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import { IProposal } from '../components/proposal-picker/proposal'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
 import IMessageDisplay from '../messages/message-display'
@@ -94,8 +94,7 @@ class VpnScreen extends React.Component<HomeProps> {
               <ProposalPicker
                 placeholder={translations.COUNTRY_PICKER_LABEL}
                 proposals={this.proposalList.proposals}
-                selectedProposal={this.vpnAppState.selectedProposal}
-                onSelect={(proposal: ProposalListItem) => this.vpnAppState.selectedProposal = proposal}
+                onSelect={(proposal: IProposal) => this.vpnAppState.selectedProviderId = proposal.providerID}
                 onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
                 isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
               />
@@ -120,12 +119,10 @@ class VpnScreen extends React.Component<HomeProps> {
 
   private async connect () {
     const providerId = this.vpnAppState.selectedProviderId
-
-    if (!providerId) {
+    if (providerId === null) {
       this.messageDisplay.showInfo(messages.COUNTRY_NOT_SELECTED)
       return
     }
-
     await this.tequilAPIDriver.connect(providerId)
   }
 }

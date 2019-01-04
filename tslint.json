@@ -18,8 +18,6 @@
       "jsx-no-lambda": false,
       "jsx-no-multiline-js": false,
 
-      "interface-name": false,
-
       "no-implicit-dependencies": [true, "dev"]
     },
     "rulesDirectory": []

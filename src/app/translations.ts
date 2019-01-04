@@ -11,11 +11,7 @@ const translations = {
   UNKNOWN: 'Unknown',
   UNSELECTED_COUNTRY: 'Please select a country',
   COUNTRY_SEARCH: 'Search countries',
-  FEEDBACK_SUBMIT: 'Thanks! Your feedback will be submitted the next time you start the app.',
-  DISCONNECTED_NOTIFICATION: {
-    TITLE: 'Connection lost',
-    MESSAGE: 'VPN connection was closed.'
-  }
+  FEEDBACK_SUBMIT: 'Thanks! Your feedback will be submitted the next time you start the app.'
 }
 
 export default translations

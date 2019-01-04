@@ -15,32 +15,25 @@ import {
 } from 'native-base'
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet } from 'react-native'
-import colors from '../../../app/styles/colors'
-import ProposalFilter from '../../proposals/proposal-filter'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
-import { ProposalListItem } from './proposal-list-item'
-import { QualityIndicator } from './quality-indicator'
+import { IProposal } from './proposal'
 
 type ListProps = {
-  proposals: ProposalListItem[],
-  selectedProposal: ProposalListItem | null,
+  proposals: IProposal[],
   onClose: () => void,
-  onSelect: (proposal: ProposalListItem) => void
+  onSelect: (proposal: IProposal) => void
 }
 
 type ListState = {
-  filteredProposals: ProposalListItem[]
+  filteredProposals: IProposal[]
 }
 
 class ProposalList extends React.Component<ListProps, ListState> {
-  private proposalFilter: ProposalFilter
-
   constructor (props: ListProps) {
     super(props)
 
     this.state = { filteredProposals: this.props.proposals }
-    this.proposalFilter = new ProposalFilter(this.props.proposals)
   }
 
   public render (): ReactNode {
@@ -64,17 +57,17 @@ class ProposalList extends React.Component<ListProps, ListState> {
         </Header>
         <Content>
           <List>
-            {this.state.filteredProposals.map((proposal: ProposalListItem) => this.renderProposal(proposal))}
+            {this.state.filteredProposals.map((proposal: IProposal) => this.renderProposal(proposal))}
           </List>
         </Content>
       </Container>
     )
   }
 
-  private renderProposal (proposal: ProposalListItem): ReactNode {
+  private renderProposal (proposal: IProposal): ReactNode {
     return (
       <ListItem
-        style={this.listItemStyle(proposal)}
+        style={styles.listItem}
         icon={true}
         key={proposal.providerID}
         onPress={() => this.props.onSelect(proposal)}
@@ -83,13 +76,9 @@ class ProposalList extends React.Component<ListProps, ListState> {
           <CountryFlag countryCode={proposal.countryCode}/>
         </Left>
         <Body>
-          <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
-          <Text style={this.providerIdStyle(proposal)}>
-            {proposal.providerID.substring(0, 25) + '...'}
-          </Text>
+        <Text>{proposal.countryName}</Text>
         </Body>
         <Right>
-          <QualityIndicator quality={proposal.quality}/>
           <Icon
             name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
           />
@@ -98,36 +87,25 @@ class ProposalList extends React.Component<ListProps, ListState> {
     )
   }
 
-  private listItemStyle (proposal: ProposalListItem) {
-    const style = [styles.listItem]
-
-    if (this.isProposalSelected(proposal)) {
-      style.push(styles.selectedListItem)
-    }
-
-    return style
-  }
-
-  private listItemTextStyle (proposal: ProposalListItem) {
-    return this.isProposalSelected(proposal) ? [styles.selectedListItemText] : []
-  }
-
-  private providerIdStyle (proposal: ProposalListItem) {
-    return this.isProposalSelected(proposal)
-      ? [styles.providerIdText, styles.selectedListItemText]
-      : [styles.providerIdText]
-  }
-
-  private isProposalSelected (proposal: ProposalListItem) {
-    const selected = this.props.selectedProposal
-
-    return selected && selected.providerID === proposal.providerID
-  }
-
   private onSearchValueChange (text: string) {
-    const filteredProposals = this.proposalFilter.filterByText(text)
+    const filteredProposals = this.filteredProposals(text)
 
     this.setState({ filteredProposals })
+  }
+
+  private filteredProposals (text: string): IProposal[] {
+    let filteredProposals = this.props.proposals
+
+    if (!text.trim().length) {
+      return filteredProposals
+    }
+
+    filteredProposals = filteredProposals.filter((proposal: IProposal) => {
+      const name = proposal.countryName || ''
+      return name.toLowerCase().includes(text.toLowerCase())
+    })
+
+    return filteredProposals
   }
 }
 
@@ -151,17 +129,6 @@ if (Platform.OS !== 'ios') {
 
 const styles: any = StyleSheet.create({
   listItem: listItemStyles,
-  selectedListItem: {
-    backgroundColor: colors.primary
-  },
-  providerIdText: {
-    fontSize: 12,
-    color: '#666666',
-    marginBottom: 4
-  },
-  selectedListItemText: {
-    color: '#fff'
-  },
   headerItem: {
     borderWidth: 0,
     width: '70%',

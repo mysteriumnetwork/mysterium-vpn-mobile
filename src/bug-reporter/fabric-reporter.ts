@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { BugReporter } from './bug-reporter'
+import { IBugReporter } from './bug-reporter'
 import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
 import NativeBugReporter from './native-bug-reporter'
 
-class FabricReporter implements BugReporter, IFeedbackReporter {
+class FabricReporter implements IBugReporter, IFeedbackReporter {
   public sendException (e: Error) {
     NativeBugReporter.logException(e.message)
   }

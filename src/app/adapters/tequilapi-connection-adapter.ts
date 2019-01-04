@@ -26,12 +26,12 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
 
   public async connect (consumerId: string, providerId: string): Promise<void> {
     try {
-      const connection = await this.tequilapiClient.connectionCreate({
+      const connection = this.tequilapiClient.connectionCreate({
         consumerId,
         providerId,
         providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
       })
-      console.log(`Connect returned status: ${JSON.stringify(connection)}`)
+      console.log(`Connect returned status: ${connection}`)
     } catch (e) {
       if (isConnectionCancelled(e)) {
         console.log('Connect was cancelled')

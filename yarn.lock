@@ -742,11 +742,6 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native-push-notification@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-3.0.3.tgz#738e64fe38ccff15b3d4957a2bae51780d670e5f"
-  integrity sha512-d4YUl+antDzCsmHKSojuMpCrWq1DAr+S3NbGu+LvmLGvQT6cpMrP7Nvr4OCAZUPJiGNsORP8PNkFnJcaOZSvFQ==
-
 "@types/react-native@*":
   version "0.57.18"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.18.tgz#f9c18fc59a3d038ed1f9414b84a8d9ba7078fc45"
@@ -5527,10 +5522,10 @@ mv@^2.1.1, mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-mysterium-tequilapi@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/mysterium-tequilapi/-/mysterium-tequilapi-0.3.1.tgz#e00b771f85529063eabe20f9bc9c3e6790656e0b"
-  integrity sha512-1dVi5b9aoEpGg/CkqxCqPlmA6Y2TNWWMrc1twRzfuRfkHRQ4CyVNN2sFTgd9ngcUzG0gY3o/3Fop6L+/sGdFHg==
+mysterium-tequilapi@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/mysterium-tequilapi/-/mysterium-tequilapi-0.2.3.tgz#75156aacf1e687fee5fca6caa3f0eb1a4127f1ed"
+  integrity sha512-ZMXZurrrFYd9dgp31i4le2GZlFvYoMGP89g0oiFjQe+xiw91D/3CDWgw+OOZX1oDBMbpDX7OKg3cQig9Xx6DYg==
   dependencies:
     "@babel/runtime" "^7.1.5"
     axios "^0.18.0"
@@ -6594,11 +6589,6 @@ react-native-mock@^0.3.1:
     react-dom "^15.4.0"
     react-timer-mixin "^0.13.3"
     warning "^2.1.0"
-
-react-native-push-notification@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.2.tgz#a6129fb2897773a19c7b42bba1b51a9a4aac7df3"
-  integrity sha512-MjjPNXb2Cw7g1D41DtVbTVuGFCAtADxb91pAEFSkQ0AZ2gIooqYkWFHBL6woc15QHhtaZS8VT2GQoyW5OWlxIg==
 
 react-native-scripts@1.14.0:
   version "1.14.0"

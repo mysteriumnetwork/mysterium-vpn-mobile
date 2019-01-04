@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { MetricsDTO, ProposalDTO, ProposalQueryOptions, TequilapiClient } from 'mysterium-tequilapi'
+import { ProposalDTO, TequilapiClient } from 'mysterium-tequilapi'
 import { Countries } from '../../libraries/countries'
-import { Metrics } from '../models/metrics'
 import Proposal from '../models/proposal'
 
 class ProposalsAdapter {
   constructor (private tequilapiClient: TequilapiClient) {}
 
   public async findProposals (): Promise<Proposal[]> {
-    const options: ProposalQueryOptions = { fetchConnectCounts: true }
-    const proposalsDTO: ProposalDTO[] = await this.tequilapiClient.findProposals(options)
+    // TODO: remove ts-ignore once mysterium-tequilapi findProposals definition is fixed
+    // @ts-ignore
+    const proposalsDTO: ProposalDTO[] = await this.tequilapiClient.findProposals()
     return proposalsDTO.map(proposalDtoToModel)
   }
 }
@@ -33,8 +33,7 @@ class ProposalsAdapter {
 function proposalDtoToModel (p: ProposalDTO): Proposal {
   const countryCode = getCountryCode(p)
   const countryName = getCountryName(countryCode)
-  const metrics = metricsDtoToModel(p.metrics)
-  return new Proposal(p.providerId, countryCode, countryName, metrics)
+  return new Proposal(p.providerId, countryCode, countryName)
 }
 
 function getCountryCode (p: ProposalDTO): string | null {
@@ -49,17 +48,6 @@ function getCountryName (countryCode: string | null) {
     return null
   }
   return Countries[countryCode]
-}
-
-function metricsDtoToModel (metrics?: MetricsDTO): Metrics {
-  const nullMetrics: Metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
-  if (metrics === undefined) {
-    return nullMetrics
-  }
-  if (metrics.connectCount === undefined) {
-    return nullMetrics
-  }
-  return { connectCount: metrics.connectCount }
 }
 
 export default ProposalsAdapter

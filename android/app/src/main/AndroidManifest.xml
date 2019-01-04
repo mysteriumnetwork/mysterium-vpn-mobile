@@ -32,13 +32,5 @@
               <action android:name="android.net.VpnService" />
           </intent-filter>
       </service>
-      <service android:name=".connection.ConnectionCheckerService" />
-
-      <meta-data
-        android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-        android:value="MysteriumVPN notifications" />
-      <meta-data
-        android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-        android:value="Notifications of MysteriumVPN" />
     </application>
 </manifest>

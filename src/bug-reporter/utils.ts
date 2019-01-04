@@ -17,9 +17,9 @@
 
 import { reaction } from 'mobx'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
-import { BugReporter } from './bug-reporter'
+import { IBugReporter } from './bug-reporter'
 
-function setupGlobalErrorHandler (bugReporter: BugReporter) {
+function setupGlobalErrorHandler (bugReporter: IBugReporter) {
   const defaultHandler = ErrorUtils.getGlobalHandler()
   const wrapGlobalHandler = async (error: Error, isFatal: boolean | undefined) => {
     bugReporter.sendException(error)
@@ -29,7 +29,7 @@ function setupGlobalErrorHandler (bugReporter: BugReporter) {
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-function onIdentityUnlockSetUserIdInBugReporter (tequilApiState: TequilApiState, bugReporter: BugReporter) {
+function onIdentityUnlockSetUserIdInBugReporter (tequilApiState: TequilApiState, bugReporter: IBugReporter) {
   reaction(
     () => tequilApiState.identityId,
     (userId: string | undefined) => {
