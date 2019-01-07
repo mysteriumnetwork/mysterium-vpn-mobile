@@ -52,12 +52,25 @@ class MainActivity : ReactActivity() {
     }
   }
 
+  private lateinit var connectionChecker: ConnectionChecker
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     bindMysteriumService()
     ensureVpnServicePermission()
-    startConnectionChecker()
+
+    connectionChecker = ConnectionChecker(applicationContext, CONNECTION_CHECKER_INTERVAL)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    connectionChecker.stop()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    connectionChecker.start()
   }
 
   override fun onDestroy() {
@@ -99,11 +112,6 @@ class MainActivity : ReactActivity() {
       return
     }
     startActivityForResult(intent, MainActivity.VPN_SERVICE_REQUEST)
-  }
-
-  private fun startConnectionChecker() {
-    val checker = ConnectionChecker(applicationContext, CONNECTION_CHECKER_INTERVAL)
-    checker.start()
   }
 
   private fun startIfReady() {
