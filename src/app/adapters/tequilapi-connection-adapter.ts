@@ -17,20 +17,12 @@
 
 import {
   ConnectionStatusDTO,
-  ConsumerLocationDTO,
   TequilapiClient,
   TequilapiError
 } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
-import IConnectionAdapter from './connection-adapter'
-
-/* tslint:disable:max-classes-per-file */
-class ConnectionCanceled extends Error {
-  constructor () {
-    super('Connection canceled.')
-  }
-}
+import IConnectionAdapter, { ConnectionCanceled } from './connection-adapter'
 
 class TequilapiConnectionAdapter implements IConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {
@@ -45,7 +37,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
         providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
       })
 
-      console.log(`Connect returned status: ${connection}`)
+      console.log(`Connect returned status: ${JSON.stringify(connection)}`)
     } catch (e) {
       if (isConnectionCancelled(e)) {
         console.log('Connect canceled')
@@ -77,8 +69,10 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
     return dto.ip
   }
 
-  public async fetchLocation (): Promise<ConsumerLocationDTO> {
-    return this.tequilapiClient.location()
+  public async fetchOriginalLocation (): Promise<string> {
+    const location = await this.tequilapiClient.location()
+
+    return location.originalCountry
   }
 }
 

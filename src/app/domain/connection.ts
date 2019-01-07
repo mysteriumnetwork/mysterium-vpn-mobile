@@ -173,7 +173,7 @@ class Connection {
 
   private async getConnectionEventBuilder (providerId: string, consumerId: string, providerCountry: string) {
     const countryDetails = {
-      originalCountry: await this.getOriginalCountry(),
+      originalCountry: await this.connectionAdapter.fetchOriginalLocation(),
       providerCountry
     }
 
@@ -183,12 +183,6 @@ class Connection {
     }
 
     return new ConnectEventBuilder(timeProvider, connectionDetails, countryDetails)
-  }
-
-  private async getOriginalCountry () {
-    const location = await this.connectionAdapter.fetchLocation()
-
-    return location.originalCountry
   }
 }
 

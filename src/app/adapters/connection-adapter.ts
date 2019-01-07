@@ -15,18 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO, ConsumerLocationDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
+
+class ConnectionCanceled extends Error {
+  constructor () {
+    super('Connection canceled.')
+  }
+}
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
 interface IConnectionAdapter {
   connect (consumerId: string, providerId: string): Promise<void>
+
   disconnect (): Promise<void>
+
   fetchStatus (): Promise<ConnectionStatusDTO>
+
   fetchStatistics (): Promise<ConnectionStatistics>
-  fetchLocation (): Promise<ConsumerLocationDTO>
+
+  fetchOriginalLocation (): Promise<string>
+
   fetchIp (): Promise<Ip>
 }
 
 export default IConnectionAdapter
+export { ConnectionCanceled }

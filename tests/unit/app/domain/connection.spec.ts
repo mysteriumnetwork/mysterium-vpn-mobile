@@ -30,8 +30,10 @@ function nextTick (): Promise<void> {
 
 // tslint:disable:max-classes-per-file
 class MockEventSender implements IEventSender {
-  public send (): void {
-    // empty mock
+  public sentEvent?: Event
+
+  public send (event: Event): void {
+    this.sentEvent = event
   }
 }
 

@@ -41,6 +41,7 @@ import ConnectionStore from './stores/connection-store'
 import ProposalsStore from './stores/proposals-store'
 import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
+import NullEventSender from '../libraries/statistics/null-event-sender'
 
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
@@ -52,10 +53,9 @@ class Container {
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter = new ProposalsAdapter(this.api)
-  public readonly eventSender = new ElkEventSender(this.statisticsConfig)
 
   // domain
-  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState, this.eventSender)
+  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState, this.buildEventSender())
   public readonly terms: Terms = this.buildTerms()
 
   // stores
@@ -94,6 +94,14 @@ class Container {
 
   private useFabric () {
     return Platform.OS === 'android' && !__DEV__
+  }
+
+  private buildEventSender () {
+    if (__DEV__) {
+      return new NullEventSender()
+    }
+
+    return new ElkEventSender(this.statisticsConfig)
   }
 
   private get statisticsConfig (): StatisticsConfig {
