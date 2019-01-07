@@ -1,7 +1,7 @@
-import { IEventSender } from './event-sender'
+import { EventSender } from './event-sender'
 import { Event } from './events'
 
-class NullEventSender implements IEventSender {
+class NullEventSender implements EventSender {
   public async send (event: Event): Promise<void> {
     console.log('Sending statistics event to null', event)
   }

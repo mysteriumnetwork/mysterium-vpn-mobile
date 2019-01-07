@@ -23,6 +23,7 @@ import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
 import ElkEventSender from '../libraries/statistics/elk-event-sender'
+import NullEventSender from '../libraries/statistics/null-event-sender'
 import StatisticsConfig from '../libraries/statistics/statistics-config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
@@ -41,7 +42,6 @@ import ConnectionStore from './stores/connection-store'
 import ProposalsStore from './stores/proposals-store'
 import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
-import NullEventSender from '../libraries/statistics/null-event-sender'
 
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()

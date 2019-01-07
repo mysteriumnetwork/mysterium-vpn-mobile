@@ -1,9 +1,9 @@
 import Axios, { AxiosInstance } from 'axios'
-import { IEventSender } from './event-sender'
+import { EventSender } from './event-sender'
 import { Event } from './events'
 import StatisticsConfig from './statistics-config'
 
-class ElkEventSender implements IEventSender {
+class ElkEventSender implements EventSender {
   private api: AxiosInstance
 
   constructor (private config: StatisticsConfig) {

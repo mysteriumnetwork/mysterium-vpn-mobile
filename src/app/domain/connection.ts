@@ -19,7 +19,7 @@ import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
-import { IEventSender } from '../../libraries/statistics/event-sender'
+import { EventSender } from '../../libraries/statistics/event-sender'
 import ConnectEventBuilder from '../../libraries/statistics/events/connect-event-builder'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
@@ -47,7 +47,7 @@ class Connection {
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState,
-    private readonly eventSender: IEventSender
+    private readonly eventSender: EventSender
   ) {
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
