@@ -16,8 +16,6 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.connection.ConnectionChecker
 
 class MainActivity : ReactActivity() {
-  private var connectionChecker: ConnectionChecker? = null
-
   /**
    * Returns the name of the main component registered from JavaScript.
    * This is used to schedule rendering of the component.
@@ -59,20 +57,7 @@ class MainActivity : ReactActivity() {
 
     bindMysteriumService()
     ensureVpnServicePermission()
-  }
-
-  override fun onResume() {
-    super.onResume()
-
-    connectionChecker?.stop()
-  }
-
-  override fun onPause() {
-    super.onPause()
-
-    val checker = ConnectionChecker(applicationContext, CONNECTION_CHECKER_INTERVAL)
-    connectionChecker = checker
-    checker.start()
+    startConnectionChecker()
   }
 
   override fun onDestroy() {
@@ -114,6 +99,11 @@ class MainActivity : ReactActivity() {
       return
     }
     startActivityForResult(intent, MainActivity.VPN_SERVICE_REQUEST)
+  }
+
+  private fun startConnectionChecker() {
+    val checker = ConnectionChecker(applicationContext, CONNECTION_CHECKER_INTERVAL)
+    checker.start()
   }
 
   private fun startIfReady() {
