@@ -19,7 +19,7 @@ class ConnectionChecker(private val context: Context, private val interval: Long
 
     Log.d(TAG, "Starting ConnectionChecker")
     running = true
-    this.loopService()
+    this.loopService(ignoreLastStatus = true)
   }
 
   fun stop() {
@@ -31,19 +31,21 @@ class ConnectionChecker(private val context: Context, private val interval: Long
     running = false
   }
 
-  private fun loopService() {
+  private fun loopService(ignoreLastStatus: Boolean) {
     if (!running) {
       return
     }
-    startService()
+    startService(ignoreLastStatus)
 
-    Handler().postDelayed(this::loopService, interval)
+    Handler().postDelayed({ this.loopService(ignoreLastStatus = false) }, interval)
   }
 
-  private fun startService() {
+  private fun startService(ignoreLastStatus: Boolean) {
     Log.d(TAG, "Starting ConnectionCheckerService")
     val service = Intent(context, ConnectionCheckerService::class.java)
-    service.putExtras(Bundle())
+    val bundle = Bundle()
+    bundle.putBoolean("ignoreLastStatus", ignoreLastStatus)
+    service.putExtras(bundle)
     context.startService(service)
   }
 

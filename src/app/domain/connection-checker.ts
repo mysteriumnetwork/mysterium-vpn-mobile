@@ -20,6 +20,10 @@ import IConnectionAdapter from '../adapters/connection-adapter'
 import NotificationAdapter from '../adapters/notification-adapter'
 import translations from '../translations'
 
+type ConnectionCheckerData = {
+  ignoreLastStatus?: boolean
+}
+
 class ConnectionChecker {
   private lastStatus: ConnectionStatus | null = null
   private running: boolean = false
@@ -27,12 +31,16 @@ class ConnectionChecker {
 
   constructor (private connectionAdapter: IConnectionAdapter, private notificationAdapter: NotificationAdapter) {}
 
-  public async run () {
+  public async run (data: ConnectionCheckerData) {
     if (this.running) {
       return
     }
 
     this.running = true
+
+    if (data.ignoreLastStatus) {
+      this.lastStatus = null
+    }
 
     const status = await this.fetchStatus()
     console.log(`${this.NAME}, status fetched:`, status)
