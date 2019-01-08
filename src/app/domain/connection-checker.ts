@@ -20,20 +20,30 @@ import IConnectionAdapter from '../adapters/connection-adapter'
 import NotificationAdapter from '../adapters/notification-adapter'
 import translations from '../translations'
 
+type ConnectionCheckerData = {
+  ignoreLastStatus?: boolean
+}
+
 class ConnectionChecker {
   private lastStatus: ConnectionStatus | null = null
   private running: boolean = false
+  private readonly NAME = 'ConnectionChecker'
 
   constructor (private connectionAdapter: IConnectionAdapter, private notificationAdapter: NotificationAdapter) {}
 
-  public async run () {
+  public async run (data: ConnectionCheckerData) {
     if (this.running) {
       return
     }
 
     this.running = true
 
-    const status = (await this.connectionAdapter.fetchStatus()).status
+    if (data.ignoreLastStatus) {
+      this.lastStatus = null
+    }
+
+    const status = await this.fetchStatus()
+    console.log(`${this.NAME}, status fetched:`, status)
     if (this.wasDisconnected(this.lastStatus, status)) {
       this.showDisconnectedNotification()
     }
@@ -42,7 +52,17 @@ class ConnectionChecker {
     this.running = false
   }
 
-  private wasDisconnected (oldStatus: ConnectionStatus | null, newStatus: ConnectionStatus): boolean {
+  private async fetchStatus (): Promise<ConnectionStatus | null> {
+    try {
+      const statusDTO = await this.connectionAdapter.fetchStatus()
+      return statusDTO.status
+    } catch (err) {
+      console.log(`${this.NAME}, fetching connection status failed:`, err)
+      return null
+    }
+  }
+
+  private wasDisconnected (oldStatus: ConnectionStatus | null, newStatus: ConnectionStatus | null): boolean {
     return oldStatus === 'Connected' && newStatus !== this.lastStatus
   }
 

@@ -12,10 +12,11 @@ class ConnectionCheckerService : HeadlessJsTaskService() {
             return null
         }
         val extras = intent.extras ?: return null
-        return HeadlessJsTaskConfig("ConnectionChecker", Arguments.fromBundle(extras), TIMEOUT)
+        return HeadlessJsTaskConfig(NAME, Arguments.fromBundle(extras), TIMEOUT, true)
     }
 
     companion object {
+        private const val NAME = "ConnectionChecker"
         private const val TIMEOUT: Long = 60000
     }
 }

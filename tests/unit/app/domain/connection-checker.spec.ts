@@ -33,12 +33,12 @@ describe('ConnectionChecker', () => {
   describe('.run', () => {
     it('shows notification when status changes from connected', async () => {
       connectionAdapter.mockStatus = 'Connected'
-      await checker.run()
+      await checker.run({})
 
       expect(notificationAdapter.shownTitle).toBeUndefined()
 
       connectionAdapter.mockStatus = 'NotConnected'
-      await checker.run()
+      await checker.run({})
 
       expect(notificationAdapter.shownTitle).toEqual('Connection lost')
       expect(notificationAdapter.shownMessage).toEqual('VPN connection was closed.')
@@ -46,19 +46,29 @@ describe('ConnectionChecker', () => {
 
     it('does not show notification when connected status does not change', async () => {
       connectionAdapter.mockStatus = 'Connected'
-      await checker.run()
+      await checker.run({})
 
-      await checker.run()
+      await checker.run({})
 
       expect(notificationAdapter.shownTitle).toBeUndefined()
     })
 
     it('does not show notification when status changes from other states', async () => {
       connectionAdapter.mockStatus = 'NotConnected'
-      await checker.run()
+      await checker.run({})
 
       connectionAdapter.mockStatus = 'Connected'
-      await checker.run()
+      await checker.run({})
+
+      expect(notificationAdapter.shownTitle).toBeUndefined()
+    })
+
+    it('does not show notification when status changes to disconnected when ignoring last status', async () => {
+      connectionAdapter.mockStatus = 'Connected'
+      await checker.run({})
+
+      connectionAdapter.mockStatus = 'NotConnected'
+      await checker.run({ ignoreLastStatus: true })
 
       expect(notificationAdapter.shownTitle).toBeUndefined()
     })
