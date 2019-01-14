@@ -21,7 +21,12 @@ import Ip from '../models/ip'
 
 class ConnectionCanceled extends Error {
   constructor () {
-    super('Connection canceled.')
+    super('Connection canceled')
+
+    // instanceof doesn't work out of the box for Errors
+    // https://github.com/Microsoft/TypeScript
+    // /wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
+    Object.setPrototypeOf(this, ConnectionCanceled.prototype)
   }
 }
 

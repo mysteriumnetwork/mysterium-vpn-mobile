@@ -17,8 +17,7 @@
 
 import {
   ConnectionStatusDTO,
-  TequilapiClient,
-  TequilapiError
+  TequilapiClient
 } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
@@ -32,7 +31,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
     const connectionDetails = { consumerId, providerId }
 
     try {
-      const connection = this.tequilapiClient.connectionCreate({
+      const connection = await this.tequilapiClient.connectionCreate({
         ...connectionDetails,
         providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
       })
@@ -77,10 +76,9 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
 }
 
 function isConnectionCancelled (e: Error): boolean {
-  if (!(e instanceof TequilapiError)) {
-    return false
-  }
-  return e.isRequestClosedError
+  const matches = e.message.match('code 499')
+
+  return !!matches
 }
 
 export default TequilapiConnectionAdapter

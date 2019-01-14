@@ -25,6 +25,7 @@ import { CONFIG } from '../config'
 import ElkEventSender from '../libraries/statistics/elk-event-sender'
 import NullEventSender from '../libraries/statistics/null-event-sender'
 import StatisticsConfig from '../libraries/statistics/statistics-config'
+import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
@@ -55,7 +56,9 @@ class Container {
   public readonly proposalsAdapter = new ProposalsAdapter(this.api)
 
   // domain
-  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState, this.buildEventSender())
+  public readonly connection =
+    new Connection(this.connectionAdapter, this.tequilApiState, timeProvider, this.buildEventSender())
+
   public readonly terms: Terms = this.buildTerms()
 
   // stores

@@ -20,7 +20,7 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { EventSender } from '../../libraries/statistics/event-sender'
-import ConnectEventBuilder from '../../libraries/statistics/events/connect-event-builder'
+import ConnectEventBuilder, { TimeProvider } from '../../libraries/statistics/events/connect-event-builder'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from '../adapters/connection-adapter'
@@ -47,6 +47,7 @@ class Connection {
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState,
+    private readonly timeProvider: TimeProvider,
     private readonly eventSender: EventSender
   ) {
     this.statusFetcher = this.buildStatusFetcher()
@@ -72,7 +73,7 @@ class Connection {
     this.setStatusToConnecting()
 
     let event
-    const connectionEventBuilder = await this.getConnectionEventBuilder(consumerId, providerId, providerCountry)
+    const connectionEventBuilder = await this.getConnectionEventBuilder(providerId, consumerId, providerCountry)
 
     try {
       await this.connectionAdapter.connect(consumerId, providerId)
@@ -97,16 +98,6 @@ class Connection {
   public onDataChange (callback: Callback<ConnectionData>) {
     this.dataPublisher.subscribe(callback)
     callback(this.data)
-  }
-
-  public onStatusChange (callback: Callback<ConnectionStatus>) {
-    this.statusPublisher.subscribe(callback)
-    callback(this.data.status)
-  }
-
-  public onIpChange (callback: Callback<Ip>) {
-    this.ipPublisher.subscribe(callback)
-    callback(this.data.IP)
   }
 
   public resetIP () {
@@ -182,18 +173,7 @@ class Connection {
       providerId
     }
 
-    return new ConnectEventBuilder(timeProvider, connectionDetails, countryDetails)
-  }
-}
-
-function timeProvider () {
-  const currentDate = new Date()
-  const utcTimestamp = currentDate.getTime()
-  const localOffsetInMillis = currentDate.getTimezoneOffset() * 60 * 1000
-
-  return {
-    utcTime: utcTimestamp,
-    localTime: utcTimestamp + localOffsetInMillis
+    return new ConnectEventBuilder(this.timeProvider, connectionDetails, countryDetails)
   }
 }
 

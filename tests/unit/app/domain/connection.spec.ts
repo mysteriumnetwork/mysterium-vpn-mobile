@@ -18,7 +18,7 @@
 import Connection from '../../../../src/app/domain/connection'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
-import { EventSender } from '../../../../src/libraries/statistics/event-sender'
+import MockEventSender from '../../mocks/mock-event-sender'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -28,24 +28,17 @@ function nextTick (): Promise<void> {
   })
 }
 
-// tslint:disable:max-classes-per-file
-class MockEventSender implements EventSender {
-  public sentEvent?: Event
-
-  public send (event: Event): void {
-    this.sentEvent = event
-  }
-}
-
 describe('Connection', () => {
   let connection: Connection
   let connectionAdapter: MockConnectionAdapter
   let state: TequilApiState
+  let eventSender: MockEventSender
 
   beforeEach(() => {
     state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
-    connection = new Connection(connectionAdapter, state, new MockEventSender())
+    eventSender = new MockEventSender()
+    connection = new Connection(connectionAdapter, state, timeProvider, eventSender)
   })
 
   describe('.startUpdating', () => {
@@ -76,9 +69,26 @@ describe('Connection', () => {
 
   describe('.connect', () => {
     it('changes connecting status to connecting', async () => {
-      const promise = connection.connect('consumer id', 'provider id')
+      const promise = connection.connect('consumer id', 'provider id', '')
       expect(connection.data.status).toEqual('Connecting')
       await promise
+    })
+
+    it('sends successful connection event', async () => {
+      await connection.connect('consumer id', 'provider id', '')
+      expect(eventSender.sentEvent).toEqual(buildEvent('connect_successful'))
+    })
+
+    it('sends failed connection event', async () => {
+      connectionAdapter.throwConnectError = true
+      await connection.connect('consumer id', 'provider id', '')
+      expect(eventSender.sentEvent).toEqual(buildEvent('connect_failed', 'Connection failed'))
+    })
+
+    it('sends connection canceled event', async () => {
+      connectionAdapter.throwConnectCancelledError = true
+      await connection.connect('consumer id', 'provider id', '')
+      expect(eventSender.sentEvent).toEqual(buildEvent('connect_canceled'))
     })
   })
 
@@ -90,3 +100,26 @@ describe('Connection', () => {
     })
   })
 })
+
+function timeProvider () {
+  return {
+    utcTime: 0,
+    localTime: 0
+  }
+}
+
+function buildEvent (name: string, error?: string) {
+  return {
+    eventName: name,
+    context: {
+      startedAt: { utcTime: 0, localTime: 0 },
+      endedAt: { utcTime: 0, localTime: 0 },
+      timeDelta: 0,
+      originalCountry: '',
+      providerCountry: '<unknown>',
+      connectDetails: { consumerId: 'consumer id', providerId: 'provider id' },
+      error
+    },
+    createdAt: 0
+  }
+}

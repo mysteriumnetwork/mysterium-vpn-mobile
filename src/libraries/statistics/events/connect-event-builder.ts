@@ -91,4 +91,4 @@ class ConnectEventBuilder {
 }
 
 export default ConnectEventBuilder
-export { ConnectionDetails }
+export { ConnectionDetails, TimeProvider }
