@@ -75,6 +75,7 @@ class MainActivity : ReactActivity() {
 
   override fun onDestroy() {
     unbindMysteriumService()
+    connectionChecker.stop()
     super.onDestroy()
   }
 
