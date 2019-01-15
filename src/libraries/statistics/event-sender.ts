@@ -1,5 +1,7 @@
+import { StatisticsEvent } from './events'
+
 interface EventSender {
-  send (event: Event): void
+  send (event: StatisticsEvent): void
 }
 
 export { EventSender }

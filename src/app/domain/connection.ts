@@ -19,12 +19,11 @@ import { CONFIG } from '../../config'
 import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
-import { EventSender } from '../../libraries/statistics/event-sender'
 import ConnectEventBuilder, { TimeProvider } from '../../libraries/statistics/events/connect-event-builder'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
-import IConnectionAdapter from '../adapters/connection-adapter'
-import { ConnectionCanceled } from '../adapters/tequilapi-connection-adapter'
+import IConnectionAdapter, { ConnectionCanceled } from '../adapters/connection-adapter'
+import { EventSenderAdapter } from '../adapters/event-sender-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
@@ -48,7 +47,7 @@ class Connection {
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState,
     private readonly timeProvider: TimeProvider,
-    private readonly eventSender: EventSender
+    private readonly eventSender: EventSenderAdapter
   ) {
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()

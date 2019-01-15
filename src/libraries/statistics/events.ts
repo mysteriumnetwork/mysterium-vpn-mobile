@@ -1,5 +1,5 @@
 enum Events {
-  connectSucceeded = 'connect_successful',
+  connectSuccessful = 'connect_successful',
   connectCanceled = 'connect_canceled',
   connectFailed = 'connect_failed'
 }
@@ -9,7 +9,7 @@ type ApplicationInfo = {
   version: string
 }
 
-type Event = {
+type StatisticsEvent = {
   application?: ApplicationInfo,
   createdAt: number,
   eventName: string,
@@ -17,4 +17,4 @@ type Event = {
 }
 
 export default Events
-export { Event, ApplicationInfo }
+export { StatisticsEvent, ApplicationInfo }

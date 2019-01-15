@@ -16,9 +16,11 @@
  */
 
 import Connection from '../../../../src/app/domain/connection'
+import { TimeProvider } from '../../../../src/libraries/statistics/events/connect-event-builder'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 import MockEventSender from '../../mocks/mock-event-sender'
+import MockTimeProvider from '../../mocks/mock-time-provider'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -33,11 +35,13 @@ describe('Connection', () => {
   let connectionAdapter: MockConnectionAdapter
   let state: TequilApiState
   let eventSender: MockEventSender
+  let timeProvider: TimeProvider
 
   beforeEach(() => {
     state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
     eventSender = new MockEventSender()
+    timeProvider = (new MockTimeProvider()).timeProvider
     connection = new Connection(connectionAdapter, state, timeProvider, eventSender)
   })
 
@@ -75,19 +79,21 @@ describe('Connection', () => {
     })
 
     it('sends successful connection event', async () => {
-      await connection.connect('consumer id', 'provider id', '')
+      await connection.connect('consumer id', 'provider id', 'us')
       expect(eventSender.sentEvent).toEqual(buildEvent('connect_successful'))
     })
 
     it('sends failed connection event', async () => {
+      const event = buildEvent('connect_failed', 'Connection failed')
+
       connectionAdapter.throwConnectError = true
-      await connection.connect('consumer id', 'provider id', '')
-      expect(eventSender.sentEvent).toEqual(buildEvent('connect_failed', 'Connection failed'))
+      await connection.connect('consumer id', 'provider id', 'us')
+      expect(eventSender.sentEvent).toEqual(event)
     })
 
     it('sends connection canceled event', async () => {
       connectionAdapter.throwConnectCancelledError = true
-      await connection.connect('consumer id', 'provider id', '')
+      await connection.connect('consumer id', 'provider id', 'us')
       expect(eventSender.sentEvent).toEqual(buildEvent('connect_canceled'))
     })
   })
@@ -101,25 +107,18 @@ describe('Connection', () => {
   })
 })
 
-function timeProvider () {
-  return {
-    utcTime: 0,
-    localTime: 0
-  }
-}
-
-function buildEvent (name: string, error?: string) {
+function buildEvent (name: string, error?: string | null) {
   return {
     eventName: name,
     context: {
-      startedAt: { utcTime: 0, localTime: 0 },
-      endedAt: { utcTime: 0, localTime: 0 },
-      timeDelta: 0,
-      originalCountry: '',
-      providerCountry: '<unknown>',
+      startedAt: { utcTime: 1, localTime: 1 },
+      endedAt: { utcTime: 2, localTime: 2 },
+      timeDelta: 1,
+      originalCountry: 'lt',
+      providerCountry: 'us',
       connectDetails: { consumerId: 'consumer id', providerId: 'provider id' },
       error
     },
-    createdAt: 0
+    createdAt: 1
   }
 }

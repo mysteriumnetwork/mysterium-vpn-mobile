@@ -57,6 +57,6 @@ export class MockConnectionAdapter implements IConnectionAdapter {
   }
 
   public async fetchOriginalLocation (): Promise<string> {
-    return ''
+    return 'lt'
   }
 }

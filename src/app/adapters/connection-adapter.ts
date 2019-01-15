@@ -19,6 +19,16 @@ import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
 
+// TODO: uncouple from mysterium-tequilapi by using domain models for response data
+interface IConnectionAdapter {
+  connect (consumerId: string, providerId: string): Promise<void>
+  disconnect (): Promise<void>
+  fetchStatus (): Promise<ConnectionStatusDTO>
+  fetchStatistics (): Promise<ConnectionStatistics>
+  fetchOriginalLocation (): Promise<string>
+  fetchIp (): Promise<Ip>
+}
+
 class ConnectionCanceled extends Error {
   constructor () {
     super('Connection canceled')
@@ -28,21 +38,6 @@ class ConnectionCanceled extends Error {
     // /wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
     Object.setPrototypeOf(this, ConnectionCanceled.prototype)
   }
-}
-
-// TODO: uncouple from mysterium-tequilapi by using domain models for response data
-interface IConnectionAdapter {
-  connect (consumerId: string, providerId: string): Promise<void>
-
-  disconnect (): Promise<void>
-
-  fetchStatus (): Promise<ConnectionStatusDTO>
-
-  fetchStatistics (): Promise<ConnectionStatistics>
-
-  fetchOriginalLocation (): Promise<string>
-
-  fetchIp (): Promise<Ip>
 }
 
 export default IConnectionAdapter

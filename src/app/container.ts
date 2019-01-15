@@ -29,6 +29,7 @@ import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
+import { EventSenderAdapter } from './adapters/event-sender-adapter'
 import ProposalsAdapter from './adapters/proposals-adapter'
 import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
@@ -99,19 +100,21 @@ class Container {
     return Platform.OS === 'android' && !__DEV__
   }
 
-  private buildEventSender () {
+  private buildEventSender (): EventSenderAdapter {
     if (__DEV__) {
-      return new NullEventSender()
+      return new NullEventSender(this.statisticsConfig)
     }
 
     return new ElkEventSender(this.statisticsConfig)
   }
 
   private get statisticsConfig (): StatisticsConfig {
+    const pkg = require('./../../package.json')
+
     return {
       applicationInfo: {
         name: 'mobile',
-        version: 'alpha'
+        version: pkg.version
       },
       elkUrl: 'http://metrics.mysterium.network:8091'
     }
