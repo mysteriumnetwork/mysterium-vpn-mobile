@@ -4,8 +4,6 @@ interface IFavoritesStorage {
   add (id: string): Promise<void>
 
   remove (id: string): Promise<void>
-
-  addOnChangeListener (listener: () => void): void
 }
 
 class Favorites {

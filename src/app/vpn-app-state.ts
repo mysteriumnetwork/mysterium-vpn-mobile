@@ -26,7 +26,7 @@ export default class VpnAppState {
   private _selectedProposal: ProposalListItem | null = null
 
   constructor (private readonly favoritesStorage: FavoritesStorage) {
-    this.favoritesStorage.addOnChangeListener(() => this.calculateIsFavoriteSelected())
+    this.favoritesStorage.onChange(() => this.calculateIsFavoriteSelected())
   }
 
   public get selectedProposal (): ProposalListItem | null {

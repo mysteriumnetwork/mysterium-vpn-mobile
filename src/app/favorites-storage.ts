@@ -51,8 +51,8 @@ export class FavoritesStorage {
     return !!this.favorites.get(proposalId)
   }
 
-  public addOnChangeListener (listener: Listener) {
-    this.notifier.subscribe(listener)
+  public onChange (callback: Callback) {
+    this.notifier.subscribe(callback)
   }
 
   private parseStoredData (data: any): FavoriteProposals {
@@ -84,4 +84,4 @@ export class FavoritesStorage {
 }
 
 type FavoriteProposals = Map<string, boolean>
-type Listener = () => void
+type Callback = () => void

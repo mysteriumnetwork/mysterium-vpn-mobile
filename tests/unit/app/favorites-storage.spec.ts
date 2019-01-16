@@ -28,7 +28,7 @@ describe('FavoritesStorage', () => {
     storage = new MockStorage()
     favoritesStorage = new FavoritesStorage(storage)
     notifiedCount = 0
-    favoritesStorage.addOnChangeListener(() => {
+    favoritesStorage.onChange(() => {
       notifiedCount++
     })
   })
@@ -71,7 +71,7 @@ describe('FavoritesStorage', () => {
     })
   })
 
-  describe('.addOnChangeListener', () => {
+  describe('.onChange', () => {
     it('notifies instantly and about changes', async () => {
       expect(notifiedCount).toEqual(1)
 
@@ -92,7 +92,7 @@ describe('FavoritesStorage', () => {
 
     it('works with multiple subscribers', async () => {
       let notifiedCount2 = 0
-      favoritesStorage.addOnChangeListener(() => {
+      favoritesStorage.onChange(() => {
         notifiedCount2++
       })
       await favoritesStorage.add('1')
