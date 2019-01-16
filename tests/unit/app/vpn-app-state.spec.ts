@@ -18,16 +18,28 @@
 import { autorun, IReactionDisposer } from 'mobx'
 import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
 import { FavoritesStorage } from '../../../src/app/favorites-storage'
+import Proposal from '../../../src/app/models/proposal'
+import ProposalList from '../../../src/app/proposals/proposal-list'
+import ProposalsStore from '../../../src/app/stores/proposals-store'
 import VpnAppState from '../../../src/app/vpn-app-state'
+import { MockProposalsAdapter } from '../mocks/mock-proposals-adapter'
 import MockStorage from '../mocks/mock-storage'
+import proposals from './proposals/proposal-data'
 
 describe('VpnAppState', () => {
   let favoritesStorage: FavoritesStorage
+  let proposalsStore: ProposalsStore
   let state: VpnAppState
+
+  let mockProposalsAdapter: MockProposalsAdapter
+  const initialMockProposals: Proposal[] = [proposals[0]]
 
   beforeEach(() => {
     favoritesStorage = new FavoritesStorage(new MockStorage())
-    state = new VpnAppState(favoritesStorage)
+    mockProposalsAdapter = new MockProposalsAdapter(initialMockProposals)
+    proposalsStore = new ProposalsStore(mockProposalsAdapter)
+    const proposalList = new ProposalList(proposalsStore, favoritesStorage)
+    state = new VpnAppState(favoritesStorage, proposalList)
   })
 
   describe('.isFavoriteSelected', () => {
@@ -74,6 +86,42 @@ describe('VpnAppState', () => {
       expect(favoriteSelected).toBe(false)
       await favoritesStorage.add(proposal.providerID)
       expect(favoriteSelected).toBe(true)
+    })
+  })
+
+  describe('.proposalListItems', () => {
+    let autorunDisposer: IReactionDisposer
+    let listItems: ProposalListItem[] | null
+
+    beforeEach(() => {
+      listItems = null
+
+      autorunDisposer = autorun(() => {
+        listItems = state.proposalListItems
+      })
+
+      jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+      autorunDisposer()
+
+      jest.useRealTimers()
+    })
+
+    it('changes when list changes', () => {
+      expect(listItems).toEqual([])
+
+      proposalsStore.startUpdating()
+      jest.runAllTicks()
+      expect(listItems).toHaveLength(initialMockProposals.length)
+
+      mockProposalsAdapter.mockProposals = proposals
+      jest.runOnlyPendingTimers()
+      jest.runAllTicks()
+      expect(listItems).toHaveLength(proposals.length)
+
+      proposalsStore.stopUpdating()
     })
   })
 })

@@ -1,19 +1,30 @@
+import { ProposalsAdapter } from '../../../../src/app/adapters/proposals-adapter'
 import { FavoritesStorage } from '../../../../src/app/favorites-storage'
 import ProposalList from '../../../../src/app/proposals/proposal-list'
+import ProposalsStore from '../../../../src/app/stores/proposals-store'
+import { MockProposalsAdapter } from '../../mocks/mock-proposals-adapter'
 import MockStorage from '../../mocks/mock-storage'
-import proposalData from './proposal-data'
-
-const proposals = { proposals: proposalData }
+import proposals from './proposal-data'
 
 describe('ProposalList', () => {
+  let favoritesStorage: FavoritesStorage
+  let proposalsStore: ProposalsStore
   let list: ProposalList
 
   beforeEach(async () => {
-    const favoritesStorage = new FavoritesStorage(new MockStorage())
+    favoritesStorage = new FavoritesStorage(new MockStorage())
     await favoritesStorage.add('0x2')
     await favoritesStorage.add('0x6')
 
-    list = new ProposalList(proposals, favoritesStorage)
+    const proposalsAdapter: ProposalsAdapter = new MockProposalsAdapter(proposals)
+    proposalsStore = new ProposalsStore(proposalsAdapter)
+    proposalsStore.startUpdating()
+
+    list = new ProposalList(proposalsStore, favoritesStorage)
+  })
+
+  afterEach(() => {
+    proposalsStore.stopUpdating()
   })
 
   describe('.proposals', () => {
@@ -38,6 +49,41 @@ describe('ProposalList', () => {
       expect(items[0].quality).toEqual(0.5)
       expect(items[1].quality).toEqual(0.25)
       expect(items[2].quality).toBeNull()
+    })
+  })
+
+  describe('.addOnChangeListener', () => {
+    let invokedCount: number
+
+    beforeAll(() => {
+      jest.useFakeTimers()
+    })
+
+    afterAll(() => {
+      jest.useRealTimers()
+    })
+
+    beforeEach(() => {
+      invokedCount = 0
+
+      list.onChange(() => {
+        invokedCount++
+      })
+    })
+
+    it('notifies instantly', async () => {
+      expect(invokedCount).toEqual(1)
+    })
+
+    it('notifies when favorite changes', async () => {
+      await favoritesStorage.add('0x1')
+      expect(invokedCount).toEqual(2)
+    })
+
+    it('notifies when proposals are fetched', async () => {
+      jest.runOnlyPendingTimers()
+      jest.runAllTicks()
+      expect(invokedCount).toEqual(2)
     })
   })
 })

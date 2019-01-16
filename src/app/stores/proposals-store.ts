@@ -15,26 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { observable } from 'mobx'
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
 import { ProposalsAdapter } from '../adapters/proposals-adapter'
+import { EventNotifier } from '../domain/observables/event-notifier'
 import Proposal from '../models/proposal'
 
 class ProposalsStore {
-  @observable
   public proposals: Proposal[] = []
 
   private proposalFetcher: ProposalsFetcher
 
+  private notifier: EventNotifier = new EventNotifier()
+
   constructor (proposalsAdapter: ProposalsAdapter) {
     this.proposalFetcher = new ProposalsFetcher(proposalsAdapter, proposals => {
       this.proposals = proposals
+      this.notifier.notify()
     })
   }
 
   public startUpdating () {
     this.proposalFetcher.start(CONFIG.REFRESH_INTERVALS.PROPOSALS)
+  }
+
+  public stopUpdating () {
+    this.proposalFetcher.stop()
+  }
+
+  public onChange (callback: () => void) {
+    this.notifier.subscribe(callback)
   }
 }
 

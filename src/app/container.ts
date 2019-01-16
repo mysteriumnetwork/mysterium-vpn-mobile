@@ -45,7 +45,6 @@ class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
   public readonly tequilApiState = new TequilApiState()
   public readonly favoritesStorage = this.buildFavoriteStorage()
-  public readonly vpnAppState = new VpnAppState(this.favoritesStorage)
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
   // adapters
@@ -68,6 +67,7 @@ class Container {
   public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
   public readonly bugReporter: BugReporter
   public readonly feedbackReporter: IFeedbackReporter
+  public readonly vpnAppState = new VpnAppState(this.favoritesStorage, this.proposalList)
 
   constructor () {
     const reporter = this.buildBugReporter()
