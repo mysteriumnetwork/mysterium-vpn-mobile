@@ -43,9 +43,9 @@ import VpnAppState from './vpn-app-state'
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
   public readonly tequilApiState = new TequilApiState()
-  public readonly vpnAppState = new VpnAppState()
-  public readonly messageDisplayDelegate = new MessageDisplayDelegate()
   public readonly favoritesStorage = this.buildFavoriteStorage()
+  public readonly vpnAppState = new VpnAppState(this.favoritesStorage)
+  public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)

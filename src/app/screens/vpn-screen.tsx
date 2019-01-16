@@ -97,7 +97,7 @@ class VpnScreen extends React.Component<HomeProps> {
                 selectedProposal={this.vpnAppState.selectedProposal}
                 onSelect={(proposal: ProposalListItem) => this.vpnAppState.selectedProposal = proposal}
                 onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
-                isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+                isFavoriteSelected={this.vpnAppState.isFavoriteSelected}
               />
             </View>
 

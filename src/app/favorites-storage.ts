@@ -52,6 +52,7 @@ export class FavoritesStorage {
 
   public addOnChangeListener (listener: Listener) {
     this.listeners.push(listener)
+    listener()
   }
 
   private parseStoredData (data: any): FavoriteProposals {

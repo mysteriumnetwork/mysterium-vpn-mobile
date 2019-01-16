@@ -72,22 +72,22 @@ describe('FavoritesStorage', () => {
   })
 
   describe('.addOnChangeListener', () => {
-    it('notifies about change', async () => {
-      expect(notifiedCount).toEqual(0)
-
-      await favoritesStorage.add('3')
+    it('notifies instantly and about changes', async () => {
       expect(notifiedCount).toEqual(1)
 
-      await favoritesStorage.remove('3')
+      await favoritesStorage.add('3')
       expect(notifiedCount).toEqual(2)
+
+      await favoritesStorage.remove('3')
+      expect(notifiedCount).toEqual(3)
     })
 
     it('notifies after fetching', async () => {
       await storage.save(new Map([['1', true]]))
 
-      expect(notifiedCount).toEqual(0)
-      await favoritesStorage.fetch()
       expect(notifiedCount).toEqual(1)
+      await favoritesStorage.fetch()
+      expect(notifiedCount).toEqual(2)
     })
 
     it('works with multiple subscribers', async () => {
@@ -96,8 +96,8 @@ describe('FavoritesStorage', () => {
         notifiedCount2++
       })
       await favoritesStorage.add('1')
-      expect(notifiedCount).toEqual(1)
-      expect(notifiedCount2).toEqual(1)
+      expect(notifiedCount).toEqual(2)
+      expect(notifiedCount2).toEqual(2)
     })
   })
 })
