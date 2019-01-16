@@ -67,12 +67,12 @@ class Connection {
     this.statsFetcher.stop()
   }
 
-  public async connect (consumerId: string, providerId: string, providerCountry: string) {
+  public async connect (consumerId: string, providerId: string, providerCountryCode: string) {
     this.resetIP()
     this.setStatusToConnecting()
 
     let event
-    const connectionEventBuilder = await this.getConnectionEventBuilder(providerId, consumerId, providerCountry)
+    const connectionEventBuilder = await this.getConnectionEventBuilder(providerId, consumerId, providerCountryCode)
 
     try {
       await this.connectionAdapter.connect(consumerId, providerId)
@@ -161,10 +161,10 @@ class Connection {
     this._data = data
   }
 
-  private async getConnectionEventBuilder (providerId: string, consumerId: string, providerCountry: string) {
+  private async getConnectionEventBuilder (providerId: string, consumerId: string, providerCountryCode: string) {
     const countryDetails = {
       originalCountry: await this.connectionAdapter.fetchOriginalLocation(),
-      providerCountry
+      providerCountry: providerCountryCode
     }
 
     const connectionDetails = {

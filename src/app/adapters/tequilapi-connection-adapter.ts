@@ -38,7 +38,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
 
       console.log(`Connect returned status: ${JSON.stringify(connection)}`)
     } catch (e) {
-      if (isConnectionCancelled(e)) {
+      if (isConnectionCanceled(e)) {
         console.log('Connect canceled')
 
         throw new ConnectionCanceled()
@@ -75,7 +75,7 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
   }
 }
 
-function isConnectionCancelled (e: Error): boolean {
+function isConnectionCanceled (e: Error): boolean {
   const matches = e.message.match('code 499')
 
   return !!matches
