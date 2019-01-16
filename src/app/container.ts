@@ -25,9 +25,10 @@ import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
-import ProposalsAdapter from './adapters/proposals-adapter'
+import { ProposalsAdapter } from './adapters/proposals-adapter'
 import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
+import TequilapiProposalsAdapter from './adapters/tequilapi-proposals-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
 import Terms from './domain/terms'
@@ -49,7 +50,7 @@ class Container {
 
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
-  public readonly proposalsAdapter = new ProposalsAdapter(this.api)
+  public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   // domain
   public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
