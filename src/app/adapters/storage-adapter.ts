@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type StorageAdapter<T> = {
-  save (data: T): Promise<void>
-  load (): Promise<T | null>
+type StorageAdapter = {
+  save (data: any): Promise<void>
+  load (): Promise<any | null>
 }
 
 export default StorageAdapter

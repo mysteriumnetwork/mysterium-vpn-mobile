@@ -12,7 +12,7 @@ class Root extends React.PureComponent {
 
     onIdentityUnlockSetUserIdInBugReporter(this.container.tequilApiState, this.container.bugReporter)
 
-    await this.container.favoritesStore.fetch()
+    await this.container.favoritesStorage.fetch()
   }
 
   public render () {

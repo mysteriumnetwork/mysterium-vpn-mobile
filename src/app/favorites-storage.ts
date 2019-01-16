@@ -15,43 +15,72 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action, get, observable, set } from 'mobx'
 import StorageAdapter from './adapters/storage-adapter'
 
-export type FavoriteProposals = Map<string, boolean>
-
-// TODO: uncouple from mobx, put into domain
 export class FavoritesStorage {
-  @observable private favorites: FavoriteProposals = new Map()
+  private favorites: FavoriteProposals = new Map()
+  private listeners: Listener[] = []
 
-  constructor (private storage: StorageAdapter<FavoriteProposals>) {}
+  constructor (private storage: StorageAdapter) {}
 
   public async fetch () {
-    const data = await this.storage.load()
-    if (data === null) {
+    const storedData = await this.storage.load()
+    if (storedData === null) {
       return
     }
+    const map = this.parseStoredData(storedData)
+    this.invokeListener()
 
-    this.favorites = data
+    this.favorites = map
   }
 
-  @action
   public async add (proposalId: string): Promise<void> {
-    set(this.favorites, proposalId, true)
+    this.favorites.set(proposalId, true)
+    this.invokeListener()
     await this.saveToStorage()
   }
 
-  @action
   public async remove (proposalId: string): Promise<void> {
-    set(this.favorites, proposalId, undefined)
+    this.favorites.delete(proposalId)
+    this.invokeListener()
     await this.saveToStorage()
   }
 
   public has (proposalId: string): boolean {
-    return !!get(this.favorites, proposalId)
+    return !!this.favorites.get(proposalId)
+  }
+
+  public addOnChangeListener (listener: Listener) {
+    this.listeners.push(listener)
+  }
+
+  private parseStoredData (data: any): FavoriteProposals {
+    if (data instanceof Array) {
+      return new Map(data)
+    } else {
+      return this.parseMapObject(data)
+    }
+  }
+
+  private parseMapObject (obj: any): FavoriteProposals {
+    const map = new Map<string, boolean>()
+    for (const key of Object.keys(obj)) {
+      const value: any = obj[key]
+      if (typeof value === 'boolean') {
+        map.set(key, value)
+      }
+    }
+    return map
   }
 
   private async saveToStorage () {
-    await this.storage.save(this.favorites)
+    await this.storage.save(Array.from(this.favorites))
+  }
+
+  private invokeListener () {
+    this.listeners.forEach(listener => listener())
   }
 }
+
+type FavoriteProposals = Map<string, boolean>
+type Listener = () => void

@@ -45,7 +45,7 @@ class Container {
   public readonly tequilApiState = new TequilApiState()
   public readonly vpnAppState = new VpnAppState()
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
-  public readonly favoritesStore = this.buildFavoriteStorage()
+  public readonly favoritesStorage = this.buildFavoriteStorage()
 
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
@@ -62,8 +62,8 @@ class Container {
   public readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
 
-  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
-  public readonly favorites = new Favorites(this.favoritesStore)
+  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
+  public readonly favorites = new Favorites(this.favoritesStorage)
   public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
   public readonly bugReporter: BugReporter
   public readonly feedbackReporter: IFeedbackReporter
@@ -86,7 +86,7 @@ class Container {
   private buildTerms () {
     const TERMS_KEY = '@MainStore:acceptedTermsVersion'
     const CURRENT_TERMS_VERSION = 1
-    return new Terms(new ReactNativeStorage<number>(TERMS_KEY), CURRENT_TERMS_VERSION)
+    return new Terms(new ReactNativeStorage(TERMS_KEY), CURRENT_TERMS_VERSION)
   }
 
   private useFabric () {

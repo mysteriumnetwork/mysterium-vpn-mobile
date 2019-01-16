@@ -15,21 +15,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FavoriteProposals, FavoritesStorage } from '../../../src/app/favorites-storage'
+import { observable } from 'mobx'
+import { FavoritesStorage } from '../../../src/app/favorites-storage'
 import { MockStorage } from '../mocks/mock-storage'
 
 describe('FavoritesStorage', () => {
-  let storage: MockStorage<FavoriteProposals>
+  let storage: MockStorage
   let favoritesStorage: FavoritesStorage
+  let notifiedCount: number
 
   beforeEach(() => {
     storage = new MockStorage()
     favoritesStorage = new FavoritesStorage(storage)
+    notifiedCount = 0
+    favoritesStorage.addOnChangeListener(() => {
+      notifiedCount++
+    })
   })
 
   describe('.fetch', () => {
-    it('loads data from storage', async () => {
-      await storage.save(new Map([['1', true]]))
+    it('loads previously saved data', async () => {
+      const anotherStorage = new FavoritesStorage(storage)
+      await anotherStorage.add('1')
+
+      await favoritesStorage.fetch()
+      expect(favoritesStorage.has('1')).toBe(true)
+    })
+
+    it('loads observable map', async () => {
+      const observableMap = observable.map()
+      observableMap.set('1', true)
+      await storage.save(observableMap)
+
       await favoritesStorage.fetch()
       expect(favoritesStorage.has('1')).toBe(true)
     })
@@ -48,10 +65,39 @@ describe('FavoritesStorage', () => {
 
   describe('.remove', () => {
     it('removes passed proposalId from favorites', async () => {
-      // mockFavorites = '{"1":true}'
       await favoritesStorage.add('3')
       await favoritesStorage.remove('3')
       expect(favoritesStorage.has('3')).toBe(false)
+    })
+  })
+
+  describe('.addOnChangeListener', () => {
+    it('notifies about change', async () => {
+      expect(notifiedCount).toEqual(0)
+
+      await favoritesStorage.add('3')
+      expect(notifiedCount).toEqual(1)
+
+      await favoritesStorage.remove('3')
+      expect(notifiedCount).toEqual(2)
+    })
+
+    it('notifies after fetching', async () => {
+      await storage.save(new Map([['1', true]]))
+
+      expect(notifiedCount).toEqual(0)
+      await favoritesStorage.fetch()
+      expect(notifiedCount).toEqual(1)
+    })
+
+    it('works with multiple subscribers', async () => {
+      let notifiedCount2 = 0
+      favoritesStorage.addOnChangeListener(() => {
+        notifiedCount2++
+      })
+      await favoritesStorage.add('1')
+      expect(notifiedCount).toEqual(1)
+      expect(notifiedCount2).toEqual(1)
     })
   })
 })

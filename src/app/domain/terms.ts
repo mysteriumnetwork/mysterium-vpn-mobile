@@ -18,7 +18,7 @@
 import StorageAdapter from '../adapters/storage-adapter'
 
 class Terms {
-  constructor (private storage: StorageAdapter<number>, private currentVersion: number) {}
+  constructor (private storage: StorageAdapter, private currentVersion: number) {}
 
   public async areAccepted (): Promise<boolean> {
     return (await this.storage.load()) === this.currentVersion
