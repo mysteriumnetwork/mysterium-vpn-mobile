@@ -16,10 +16,11 @@
  */
 
 import StorageAdapter from './adapters/storage-adapter'
+import { EventNotifier } from './domain/observables/event-notifier'
 
 export class FavoritesStorage {
   private favorites: FavoriteProposals = new Map()
-  private listeners: Listener[] = []
+  private notifier: EventNotifier = new EventNotifier()
 
   constructor (private storage: StorageAdapter) {}
 
@@ -29,20 +30,20 @@ export class FavoritesStorage {
       return
     }
     const map = this.parseStoredData(storedData)
-    this.invokeListener()
+    this.invokeListeners()
 
     this.favorites = map
   }
 
   public async add (proposalId: string): Promise<void> {
     this.favorites.set(proposalId, true)
-    this.invokeListener()
+    this.invokeListeners()
     await this.saveToStorage()
   }
 
   public async remove (proposalId: string): Promise<void> {
     this.favorites.delete(proposalId)
-    this.invokeListener()
+    this.invokeListeners()
     await this.saveToStorage()
   }
 
@@ -51,8 +52,7 @@ export class FavoritesStorage {
   }
 
   public addOnChangeListener (listener: Listener) {
-    this.listeners.push(listener)
-    listener()
+    this.notifier.subscribe(listener)
   }
 
   private parseStoredData (data: any): FavoriteProposals {
@@ -78,8 +78,8 @@ export class FavoritesStorage {
     await this.storage.save(Array.from(this.favorites))
   }
 
-  private invokeListener () {
-    this.listeners.forEach(listener => listener())
+  private invokeListeners () {
+    this.notifier.notify()
   }
 }
 

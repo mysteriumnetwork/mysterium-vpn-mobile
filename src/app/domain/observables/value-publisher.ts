@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Publisher<T> {
+/**
+ * Allows subscribing and publishing value update.
+ */
+class ValuePublisher<T> {
   private callbacks: Array<Callback<T>> = []
   private lastValue: T
 
@@ -25,7 +28,6 @@ class Publisher<T> {
 
   public subscribe (callback: Callback<T>) {
     this.callbacks.push(callback)
-
     callback(this.lastValue)
   }
 
@@ -39,4 +41,4 @@ type Callback<T> = (data: T) => void
 
 export { Callback }
 
-export default Publisher
+export default ValuePublisher

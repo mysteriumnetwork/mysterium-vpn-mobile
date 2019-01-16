@@ -26,7 +26,7 @@ import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
-import Publisher, { Callback } from './publisher'
+import ValuePublisher, { Callback } from './observables/value-publisher'
 
 class Connection {
   public get data (): ConnectionData {
@@ -34,9 +34,9 @@ class Connection {
   }
 
   private _data: ConnectionData
-  private dataPublisher: Publisher<ConnectionData>
-  private statusPublisher: Publisher<ConnectionStatus>
-  private ipPublisher: Publisher<Ip>
+  private dataPublisher: ValuePublisher<ConnectionData>
+  private statusPublisher: ValuePublisher<ConnectionStatus>
+  private ipPublisher: ValuePublisher<Ip>
   private readonly statusFetcher: StatusFetcher
   private readonly ipFetcher: IPFetcher
   private readonly statsFetcher: StatsFetcher
@@ -46,9 +46,9 @@ class Connection {
     private readonly tequilApiState: TequilApiState) {
     this._data = initialConnectionData
 
-    this.dataPublisher = new Publisher<ConnectionData>(this.data)
-    this.statusPublisher = new Publisher<ConnectionStatus>(this.data.status)
-    this.ipPublisher = new Publisher<Ip>(this.data.IP)
+    this.dataPublisher = new ValuePublisher<ConnectionData>(this.data)
+    this.statusPublisher = new ValuePublisher<ConnectionStatus>(this.data.status)
+    this.ipPublisher = new ValuePublisher<Ip>(this.data.IP)
 
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
