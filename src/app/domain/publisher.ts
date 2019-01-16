@@ -17,13 +17,21 @@
 
 class Publisher<T> {
   private callbacks: Array<Callback<T>> = []
+  private lastValue: T
+
+  constructor (initialValue: T) {
+    this.lastValue = initialValue
+  }
 
   public subscribe (callback: Callback<T>) {
     this.callbacks.push(callback)
+
+    callback(this.lastValue)
   }
 
   public publish (value: T) {
     this.callbacks.forEach(callback => callback(value))
+    this.lastValue = value
   }
 }
 

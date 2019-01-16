@@ -33,10 +33,10 @@ class Connection {
     return this._data
   }
 
-  private _data: ConnectionData = initialConnectionData
-  private dataPublisher = new Publisher<ConnectionData>()
-  private statusPublisher = new Publisher<ConnectionStatus>()
-  private ipPublisher = new Publisher<Ip>()
+  private _data: ConnectionData
+  private dataPublisher: Publisher<ConnectionData>
+  private statusPublisher: Publisher<ConnectionStatus>
+  private ipPublisher: Publisher<Ip>
   private readonly statusFetcher: StatusFetcher
   private readonly ipFetcher: IPFetcher
   private readonly statsFetcher: StatsFetcher
@@ -44,6 +44,12 @@ class Connection {
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState) {
+    this._data = initialConnectionData
+
+    this.dataPublisher = new Publisher<ConnectionData>(this.data)
+    this.statusPublisher = new Publisher<ConnectionStatus>(this.data.status)
+    this.ipPublisher = new Publisher<Ip>(this.data.IP)
+
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
     this.statsFetcher = this.buildStatsFetcher()
@@ -80,17 +86,14 @@ class Connection {
 
   public onDataChange (callback: Callback<ConnectionData>) {
     this.dataPublisher.subscribe(callback)
-    callback(this.data)
   }
 
   public onStatusChange (callback: Callback<ConnectionStatus>) {
     this.statusPublisher.subscribe(callback)
-    callback(this.data.status)
   }
 
   public onIpChange (callback: Callback<Ip>) {
     this.ipPublisher.subscribe(callback)
-    callback(this.data.IP)
   }
 
   public resetIP () {
