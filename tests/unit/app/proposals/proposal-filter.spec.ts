@@ -40,6 +40,7 @@ describe('ProposalFilter', () => {
 
 const convertProposalToIProposal = (proposal: Proposal): ProposalListItem => {
   return {
+    id: proposal.id,
     providerID: proposal.providerID,
     serviceType: proposal.serviceType,
     countryCode: proposal.countryCode,

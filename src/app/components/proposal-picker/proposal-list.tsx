@@ -76,7 +76,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
       <ListItem
         style={this.listItemStyle(proposal)}
         icon={true}
-        key={proposal.providerID}
+        key={proposal.id}
         onPress={() => this.props.onSelect(proposal)}
       >
         <Left style={styles.flagImage}>
@@ -120,8 +120,11 @@ class ProposalList extends React.Component<ListProps, ListState> {
 
   private isProposalSelected (proposal: ProposalListItem) {
     const selected = this.props.selectedProposal
+    if (selected === null) {
+      return false
+    }
 
-    return selected && selected.providerID === proposal.providerID
+    return selected.id === proposal.id
   }
 
   private onSearchValueChange (text: string) {

@@ -26,6 +26,10 @@ class Proposal {
     public readonly countryName: string | null,
     public readonly metrics: Metrics
   ) {}
+
+  public get id (): string {
+    return `${this.providerID}'-'${this.serviceType}`
+  }
 }
 
 export default Proposal
