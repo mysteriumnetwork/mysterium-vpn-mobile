@@ -22,10 +22,12 @@ import Proposal from '../models/proposal'
 import { ProposalsAdapter } from './proposals-adapter'
 
 class TequilapiProposalsAdapter implements ProposalsAdapter {
+  private readonly SERVICE_TYPE = 'openvpn'
+
   constructor (private tequilapiClient: TequilapiClient) {}
 
   public async findProposals (): Promise<Proposal[]> {
-    const options: ProposalQueryOptions = { fetchConnectCounts: true }
+    const options: ProposalQueryOptions = { fetchConnectCounts: true, serviceType: this.SERVICE_TYPE }
     const proposalsDTO: ProposalDTO[] = await this.tequilapiClient.findProposals(options)
     return proposalsDTO.map(proposalDtoToModel)
   }
