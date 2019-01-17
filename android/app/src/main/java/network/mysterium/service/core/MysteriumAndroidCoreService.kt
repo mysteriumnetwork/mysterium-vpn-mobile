@@ -12,11 +12,13 @@ class MysteriumAndroidCoreService : VpnService() {
   private var mobileNode: MobileNode? = null
 
   fun startMobileNode(filesPath: String) {
-    val androidOpenvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
-    var options = Mysterium.defaultNetworkOptions()
+    val openvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
+    val wireguardBridge = WireguardAndroidTunnelSetup(this)
+    val options = Mysterium.defaultNetworkOptions()
 
     mobileNode = Mysterium.newNode(filesPath, options)
-    mobileNode?.overrideOpenvpnConnection(androidOpenvpnBridge)
+    mobileNode?.overrideOpenvpnConnection(openvpnBridge)
+    mobileNode?.overrideWireguardConnection(wireguardBridge)
     Log.i(TAG, "started")
   }
 
