@@ -1,24 +1,30 @@
 import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import { EventNotifier } from '../domain/observables/event-notifier'
 import { QualityCalculator } from '../domain/quality-calculator'
 import Proposal from '../models/proposal'
 import translations from '../translations'
 
 interface IProposalList {
   proposals: Proposal[]
+  onChange (callback: () => void): void
 }
 
 interface IFavoritesStorage {
   has (id: string): boolean
+  onChange (listener: Callback): void
 }
 
 class ProposalList {
   protected proposalList: IProposalList
   protected favorites: IFavoritesStorage
   private readonly qualityCalculator: QualityCalculator = new QualityCalculator()
+  private changeNotifier: EventNotifier = new EventNotifier()
 
   constructor (proposalList: IProposalList, favorites: IFavoritesStorage) {
     this.proposalList = proposalList
     this.favorites = favorites
+
+    this.receiveChangesFromDependencies()
   }
 
   public get proposals (): ProposalListItem[] {
@@ -27,6 +33,16 @@ class ProposalList {
       .sort(compareProposalItems)
 
     return proposals
+  }
+
+  public onChange (callback: Callback) {
+    this.changeNotifier.subscribe(callback)
+  }
+
+  private receiveChangesFromDependencies () {
+    const notifyChange = () => this.changeNotifier.notify()
+    this.favorites.onChange(notifyChange)
+    this.proposalList.onChange(notifyChange)
   }
 
   private proposalToProposalItem (proposal: Proposal): ProposalListItem {
@@ -39,6 +55,8 @@ class ProposalList {
     }
   }
 }
+
+type Callback = () => void
 
 function compareProposalItems (one: ProposalListItem, other: ProposalListItem): number {
   if (one.isFavorite && !other.isFavorite) {

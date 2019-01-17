@@ -17,15 +17,19 @@
 
 import StorageAdapter from '../../../src/app/adapters/storage-adapter'
 
-export class MockStorage<T> implements StorageAdapter<T> {
-  private data: T | null = null
+export class MockStorage implements StorageAdapter {
+  private data: string | null = null
 
-  public async save (data: T) {
-    this.data = data
+  public async save (data: any) {
+    this.data = JSON.stringify(data)
   }
 
   public async load () {
-    return this.data
+    const data = this.data
+    if (data === null) {
+      return null
+    }
+    return JSON.parse(data)
   }
 }
 

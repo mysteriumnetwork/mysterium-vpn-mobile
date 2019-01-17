@@ -33,7 +33,6 @@ import Stats from '../components/stats'
 import IMessageDisplay from '../messages/message-display'
 import messages from '../messages/messages'
 import Favorites from '../proposals/favorites'
-import ProposalList from '../proposals/proposal-list'
 import ConnectionStore from '../stores/connection-store'
 import ScreenStore from '../stores/screen-store'
 import translations from '../translations'
@@ -44,7 +43,6 @@ type HomeProps = {
   connectionStore: ConnectionStore,
   vpnAppState: VpnAppState,
   screenStore: ScreenStore,
-  proposalList: ProposalList,
   favorites: Favorites,
   messageDisplay: IMessageDisplay
 }
@@ -55,7 +53,6 @@ class VpnScreen extends React.Component<HomeProps> {
   private readonly connectionStore: ConnectionStore
   private readonly vpnAppState: VpnAppState
   private readonly screenStore: ScreenStore
-  private readonly proposalList: ProposalList
   private readonly favorites: Favorites
   private readonly messageDisplay: IMessageDisplay
 
@@ -65,7 +62,6 @@ class VpnScreen extends React.Component<HomeProps> {
     this.connectionStore = props.connectionStore
     this.vpnAppState = props.vpnAppState
     this.screenStore = props.screenStore
-    this.proposalList = props.proposalList
     this.favorites = props.favorites
     this.messageDisplay = props.messageDisplay
   }
@@ -93,11 +89,11 @@ class VpnScreen extends React.Component<HomeProps> {
             <View style={appStyles.proposalPicker}>
               <ProposalPicker
                 placeholder={translations.COUNTRY_PICKER_LABEL}
-                proposals={this.proposalList.proposals}
+                proposals={this.vpnAppState.proposalListItems}
                 selectedProposal={this.vpnAppState.selectedProposal}
                 onSelect={(proposal: ProposalListItem) => this.vpnAppState.selectedProposal = proposal}
                 onFavoriteToggle={() => this.favorites.toggle(this.vpnAppState.selectedProviderId)}
-                isFavoriteSelected={this.favorites.isFavored(this.vpnAppState.selectedProviderId)}
+                isFavoriteSelected={this.vpnAppState.isFavoriteSelected}
               />
             </View>
 

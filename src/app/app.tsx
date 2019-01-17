@@ -26,7 +26,6 @@ import ErrorDropdown from './components/error-dropdown'
 import Terms from './domain/terms'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import Favorites from './proposals/favorites'
-import ProposalList from './proposals/proposal-list'
 import FeedbackScreen from './screens/feedback-screen'
 import LoadingScreen from './screens/loading-screen'
 import TermsScreen from './screens/terms-screen'
@@ -42,7 +41,6 @@ type AppProps = {
   screenStore: ScreenStore,
   messageDisplayDelegate: MessageDisplayDelegate,
   terms: Terms,
-  proposalList: ProposalList,
   favorites: Favorites,
   appLoader: AppLoader,
   feedbackReporter: IFeedbackReporter
@@ -56,7 +54,6 @@ export default class App extends React.Component<AppProps> {
   private readonly terms: Terms
   private readonly vpnAppState: VpnAppState
   private readonly screenStore: ScreenStore
-  private readonly proposalList: ProposalList
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
   private readonly feedbackReporter: IFeedbackReporter
@@ -69,7 +66,6 @@ export default class App extends React.Component<AppProps> {
     this.terms = props.terms
     this.vpnAppState = props.vpnAppState
     this.screenStore = props.screenStore
-    this.proposalList = props.proposalList
     this.favorites = props.favorites
     this.appLoader = props.appLoader
     this.feedbackReporter = props.feedbackReporter
@@ -108,7 +104,6 @@ export default class App extends React.Component<AppProps> {
         connectionStore={this.connectionStore}
         vpnAppState={this.vpnAppState}
         screenStore={this.screenStore}
-        proposalList={this.proposalList}
         favorites={this.favorites}
         messageDisplay={this.messageDisplayDelegate}
       />

@@ -25,9 +25,10 @@ import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
-import ProposalsAdapter from './adapters/proposals-adapter'
+import { ProposalsAdapter } from './adapters/proposals-adapter'
 import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
+import TequilapiProposalsAdapter from './adapters/tequilapi-proposals-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
 import Terms from './domain/terms'
@@ -43,13 +44,12 @@ import VpnAppState from './vpn-app-state'
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
   public readonly tequilApiState = new TequilApiState()
-  public readonly vpnAppState = new VpnAppState()
+  public readonly favoritesStorage = this.buildFavoriteStorage()
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
-  public readonly favoritesStore = this.buildFavoriteStorage()
 
   // adapters
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
-  public readonly proposalsAdapter = new ProposalsAdapter(this.api)
+  public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   // domain
   public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
@@ -62,11 +62,12 @@ class Container {
   public readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
 
-  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStore)
-  public readonly favorites = new Favorites(this.favoritesStore)
+  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
+  public readonly favorites = new Favorites(this.favoritesStorage)
   public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
   public readonly bugReporter: BugReporter
   public readonly feedbackReporter: IFeedbackReporter
+  public readonly vpnAppState = new VpnAppState(this.favoritesStorage, this.proposalList)
 
   constructor () {
     const reporter = this.buildBugReporter()
@@ -86,7 +87,7 @@ class Container {
   private buildTerms () {
     const TERMS_KEY = '@MainStore:acceptedTermsVersion'
     const CURRENT_TERMS_VERSION = 1
-    return new Terms(new ReactNativeStorage<number>(TERMS_KEY), CURRENT_TERMS_VERSION)
+    return new Terms(new ReactNativeStorage(TERMS_KEY), CURRENT_TERMS_VERSION)
   }
 
   private useFabric () {

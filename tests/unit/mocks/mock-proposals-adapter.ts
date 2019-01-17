@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,20 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Publisher<T> {
-  private callbacks: Array<Callback<T>> = []
+import { ProposalsAdapter } from '../../../src/app/adapters/proposals-adapter'
+import Proposal from '../../../src/app/models/proposal'
 
-  public subscribe (callback: Callback<T>) {
-    this.callbacks.push(callback)
-  }
+export class MockProposalsAdapter implements ProposalsAdapter {
+  constructor (public mockProposals: Proposal[]) {}
 
-  public publish (value: T) {
-    this.callbacks.forEach(callback => callback(value))
+  public async findProposals (): Promise<Proposal[]> {
+    return this.mockProposals
   }
 }
-
-type Callback<T> = (data: T) => void
-
-export { Callback }
-
-export default Publisher
