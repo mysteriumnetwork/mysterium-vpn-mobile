@@ -18,15 +18,13 @@ class ProposalList {
   protected proposalList: IProposalList
   protected favorites: IFavoritesStorage
   private readonly qualityCalculator: QualityCalculator = new QualityCalculator()
-  private notifier: EventNotifier = new EventNotifier()
+  private changeNotifier: EventNotifier = new EventNotifier()
 
   constructor (proposalList: IProposalList, favorites: IFavoritesStorage) {
     this.proposalList = proposalList
     this.favorites = favorites
 
-    const notify = () => this.notifier.notify()
-    favorites.onChange(notify)
-    proposalList.onChange(notify)
+    this.receiveChangesFromDependencies()
   }
 
   public get proposals (): ProposalListItem[] {
@@ -38,7 +36,13 @@ class ProposalList {
   }
 
   public onChange (callback: Callback) {
-    this.notifier.subscribe(callback)
+    this.changeNotifier.subscribe(callback)
+  }
+
+  private receiveChangesFromDependencies () {
+    const notifyChange = () => this.changeNotifier.notify()
+    this.favorites.onChange(notifyChange)
+    this.proposalList.onChange(notifyChange)
   }
 
   private proposalToProposalItem (proposal: Proposal): ProposalListItem {
