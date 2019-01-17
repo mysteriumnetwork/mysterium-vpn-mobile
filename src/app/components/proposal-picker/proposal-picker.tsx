@@ -23,6 +23,7 @@ import CountryFlag from './country-flag'
 import ProposalList from './proposal-list'
 import { ProposalListItem } from './proposal-list-item'
 import ProposalModal from './proposal-modal'
+import { ServiceIndicator } from './service-indicator'
 
 type PickerProps = {
   proposals: ProposalListItem[]
@@ -70,6 +71,10 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
                 <Grid>
                   <Col size={15} style={styles.countryFlagBox}>
                     <CountryFlag countryCode={this.countryCode || ''}/>
+                  </Col>
+
+                  <Col size={15} style={styles.serviceIndicatorBox}>
+                    {this.renderServiceIndicator()}
                   </Col>
 
                   <Col size={90} style={styles.countryNameBox}>
@@ -121,6 +126,13 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
         <Text style={styles.providerId}>{this.providerId}</Text>
       </View>
     )
+  }
+
+  private renderServiceIndicator () {
+    if (!this.props.selectedProposal) {
+      return
+    }
+    return <ServiceIndicator serviceType={this.props.selectedProposal.serviceType}/>
   }
 
   private get countryName (): string {
@@ -182,9 +194,14 @@ const styles = StyleSheet.create({
     borderRightWidth: 0.5,
     height: boxHeight
   },
-  countryNameBox: {
+  serviceIndicatorBox: {
     justifyContent: 'center',
     alignItems: 'center',
+    height: boxHeight
+  },
+  countryNameBox: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     height: boxHeight
   },
   providerId: {
