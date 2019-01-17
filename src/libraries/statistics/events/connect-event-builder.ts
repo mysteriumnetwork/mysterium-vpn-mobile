@@ -2,13 +2,27 @@ import Events, { StatisticsEvent } from '../events'
 
 class ConnectEventBuilder {
   private eventDetails?: EventContext
-  private readonly startedAt: Time
+  private connectionDetails?: ConnectionDetails
+  private countryDetails?: CountryDetails
+  private startedAt?: Time
 
-  constructor (
-    private timeProvider: TimeProvider,
-    private connectionDetails: ConnectionDetails,
-    private countryDetails: CountryDetails) {
+  constructor (private timeProvider: TimeProvider) {
+  }
+
+  public setStartedAt () {
     this.startedAt = this.timeProvider()
+  }
+
+  public setConnectionDetails (connectionDetails: ConnectionDetails) {
+    this.connectionDetails = connectionDetails
+
+    return this
+  }
+
+  public setCountryDetails (countryDetails: CountryDetails) {
+    this.countryDetails = countryDetails
+
+    return this
   }
 
   public getEndedEvent (): StatisticsEvent {
@@ -30,6 +44,10 @@ class ConnectEventBuilder {
   }
 
   private getEvent (name: string): StatisticsEvent {
+    if (!this.startedAt) {
+      throw new Error('ConnectEventBuilder startedAt not set.')
+    }
+
     if (!this.eventDetails) {
       throw new Error('ConnectEvent details not set.')
     }
@@ -43,7 +61,15 @@ class ConnectEventBuilder {
 
   private finishBuildingEvent (error?: string) {
     if (!this.startedAt) {
-      throw new Error('ConnectEvent startedAt not set. StatisticsEvent was probably not marked as started.')
+      throw new Error('ConnectEventBuilder startedAt not set.')
+    }
+
+    if (!this.connectionDetails) {
+      throw new Error('ConnectEventBuilder connectionDetails not set.')
+    }
+
+    if (!this.countryDetails) {
+      throw new Error('ConnectEventBuilder countryDetails not set.')
     }
 
     const endedAt = this.timeProvider()
@@ -91,4 +117,4 @@ type EventContext = {
 }
 
 export default ConnectEventBuilder
-export { ConnectionDetails, TimeProvider, Time }
+export { ConnectionDetails, CountryDetails, TimeProvider, Time }

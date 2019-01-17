@@ -1,9 +1,9 @@
 import Axios, { AxiosInstance } from 'axios'
-import { EventSender } from './event-sender'
-import { StatisticsEvent } from './events'
-import StatisticsConfig from './statistics-config'
+import { StatisticsTransport } from './statistics-transport'
+import { StatisticsEvent } from '../events'
+import StatisticsConfig from '../statistics-config'
 
-class ElkEventSender implements EventSender {
+class ElkTransport implements StatisticsTransport {
   private api: AxiosInstance
 
   constructor (private config: StatisticsConfig) {
@@ -30,4 +30,4 @@ class ElkEventSender implements EventSender {
   }
 }
 
-export default ElkEventSender
+export default ElkTransport

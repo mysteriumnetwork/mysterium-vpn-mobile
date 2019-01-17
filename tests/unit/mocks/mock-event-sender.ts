@@ -1,7 +1,7 @@
-import { EventSender } from '../../../src/libraries/statistics/event-sender'
+import { StatisticsTransport } from '../../../src/libraries/statistics/transports/event-sender'
 import { StatisticsEvent } from '../../../src/libraries/statistics/events'
 
-class MockEventSender implements EventSender {
+class MockEventSender implements StatisticsTransport {
   public sentEvent?: StatisticsEvent
 
   public send (event: StatisticsEvent): void {

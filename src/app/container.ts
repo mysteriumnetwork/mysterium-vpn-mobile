@@ -22,14 +22,13 @@ import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
-import ElkEventSender from '../libraries/statistics/elk-event-sender'
-import NullEventSender from '../libraries/statistics/null-event-sender'
 import StatisticsConfig from '../libraries/statistics/statistics-config'
+import ElkTransport from '../libraries/statistics/transports/elk-transport'
+import NullTransport from '../libraries/statistics/transports/null-transport'
 import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
-import { EventSenderAdapter } from './adapters/event-sender-adapter'
 import ProposalsAdapter from './adapters/proposals-adapter'
 import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
@@ -45,6 +44,11 @@ import ProposalsStore from './stores/proposals-store'
 import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
 
+import { StatisticsTransport } from '../libraries/statistics/transports/statistics-transport'
+import ConnectEventBuilder from '../libraries/statistics/events/connect-event-builder'
+import { StatisticsEventManagerAdapter } from '../app/adapters/statistics-event-manager-adapter'
+import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
+
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
   public readonly tequilApiState = new TequilApiState()
@@ -56,9 +60,10 @@ class Container {
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter = new ProposalsAdapter(this.api)
 
+  public readonly statisticsEventManager: StatisticsEventManagerAdapter = this.buildStatisticsEventManager()
   // domain
   public readonly connection =
-    new Connection(this.connectionAdapter, this.tequilApiState, timeProvider, this.buildEventSender())
+    new Connection(this.connectionAdapter, this.tequilApiState, this.statisticsEventManager)
 
   public readonly terms: Terms = this.buildTerms()
 
@@ -100,12 +105,19 @@ class Container {
     return Platform.OS === 'android' && !__DEV__
   }
 
-  private buildEventSender (): EventSenderAdapter {
+  private buildStatisticsEventManager () {
+    const connectEventBuilder = new ConnectEventBuilder(timeProvider)
+    const statisticsTransport: StatisticsTransport = this.buildStatisticsTransport()
+
+    return new StatisticsEventManager(statisticsTransport, connectEventBuilder)
+  }
+
+  private buildStatisticsTransport (): StatisticsTransport {
     if (__DEV__) {
-      return new NullEventSender(this.statisticsConfig)
+      return new NullTransport(this.statisticsConfig)
     }
 
-    return new ElkEventSender(this.statisticsConfig)
+    return new ElkTransport(this.statisticsConfig)
   }
 
   private get statisticsConfig (): StatisticsConfig {
