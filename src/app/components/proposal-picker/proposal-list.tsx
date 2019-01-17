@@ -52,7 +52,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
             <Icon name="ios-search" style={styles.searchIcon}/>
             <Input
               placeholderTextColor={platformStyles.search.inputColor}
-              placeholder={translations.COUNTRY_SEARCH}
+              placeholder={translations.PROPOSAL_SEARCH}
               onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
               style={styles.searchInput}
             />

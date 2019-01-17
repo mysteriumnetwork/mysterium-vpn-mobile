@@ -1,5 +1,5 @@
 const translations = {
-  COUNTRY_PICKER_LABEL: 'Select country...',
+  PROPOSAL_PICKER_LABEL: 'Select proposal...',
   CONNECTION_STATUS: {
     UNKNOWN: 'Loading...',
     NOT_CONNECTED: 'Disconnected',
@@ -9,8 +9,8 @@ const translations = {
   },
   IP_UPDATING: 'Updating...',
   UNKNOWN: 'Unknown',
-  UNSELECTED_COUNTRY: 'Please select a country',
-  COUNTRY_SEARCH: 'Search countries',
+  UNSELECTED_PROPOSAL: 'Please select a proposal',
+  PROPOSAL_SEARCH: 'Search proposals',
   FEEDBACK_SUBMIT: 'Thanks! Your feedback will be submitted the next time you start the app.',
   DISCONNECTED_NOTIFICATION: {
     TITLE: 'Connection lost',

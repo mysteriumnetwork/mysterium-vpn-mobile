@@ -88,7 +88,7 @@ class VpnScreen extends React.Component<HomeProps> {
           <View style={styles.controls}>
             <View style={appStyles.proposalPicker}>
               <ProposalPicker
-                placeholder={translations.COUNTRY_PICKER_LABEL}
+                placeholder={translations.PROPOSAL_PICKER_LABEL}
                 proposals={this.vpnAppState.proposalListItems}
                 selectedProposal={this.vpnAppState.selectedProposal}
                 onSelect={(proposal: ProposalListItem) => this.vpnAppState.selectedProposal = proposal}
