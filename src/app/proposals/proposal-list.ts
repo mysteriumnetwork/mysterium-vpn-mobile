@@ -48,6 +48,7 @@ class ProposalList {
   private proposalToProposalItem (proposal: Proposal): ProposalListItem {
     return {
       providerID: proposal.providerID,
+      serviceType: proposal.serviceType,
       countryCode: proposal.countryCode,
       countryName: proposal.countryName,
       isFavorite: this.favorites.has(proposal.providerID),

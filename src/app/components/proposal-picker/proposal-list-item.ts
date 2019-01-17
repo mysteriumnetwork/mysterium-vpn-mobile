@@ -17,6 +17,7 @@
 
 interface ProposalListItem {
   providerID: string,
+  serviceType: string,
   countryCode: string | null,
   countryName: string | null,
   isFavorite: boolean,

@@ -21,6 +21,7 @@ import { Metrics } from './metrics'
 class Proposal {
   constructor (
     public readonly providerID: string,
+    public readonly serviceType: string,
     public readonly countryCode: string | null,
     public readonly countryName: string | null,
     public readonly metrics: Metrics

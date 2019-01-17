@@ -60,6 +60,7 @@ describe('VpnAppState', () => {
 
     it('becomes true when selecting favorite proposal', async () => {
       const proposal: ProposalListItem = {
+        serviceType: 'openvpn',
         providerID: 'test proposal',
         countryCode: null,
         countryName: null,
@@ -75,6 +76,7 @@ describe('VpnAppState', () => {
 
     it('becomes true when marking selected proposal as favorite', async () => {
       const proposal: ProposalListItem = {
+        serviceType: 'openvpn',
         providerID: 'test proposal',
         countryCode: null,
         countryName: null,

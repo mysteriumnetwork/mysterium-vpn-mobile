@@ -35,7 +35,7 @@ function proposalDtoToModel (p: ProposalDTO): Proposal {
   const countryCode = getCountryCode(p)
   const countryName = getCountryName(countryCode)
   const metrics = metricsDtoToModel(p.metrics)
-  return new Proposal(p.providerId, countryCode, countryName, metrics)
+  return new Proposal(p.providerId, p.serviceType, countryCode, countryName, metrics)
 }
 
 function getCountryCode (p: ProposalDTO): string | null {

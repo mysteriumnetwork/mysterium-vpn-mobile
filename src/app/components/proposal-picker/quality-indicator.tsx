@@ -23,13 +23,13 @@ type QualityIndicatorProps = {
 }
 
 const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality }) => {
-  const icon = getIconName(quality)
+  const icon = getIconImage(quality)
   return (
     <Image style={styles.image} source={icon} resizeMode="contain" />
   )
 }
 
-function getIconName (quality: number | null): ImageRequireSource {
+function getIconImage (quality: number | null): ImageRequireSource {
   if (quality === null) {
     return require('../../../assets/quality/unknown.png')
   }
