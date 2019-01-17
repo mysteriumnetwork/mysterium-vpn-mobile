@@ -21,6 +21,7 @@ import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { ProposalListItem } from './proposal-list-item'
 import { QualityIndicator } from './quality-indicator'
+import { ServiceIndicator } from './service-indicator'
 
 type ListProps = {
   proposals: ProposalListItem[],
@@ -89,6 +90,10 @@ class ProposalList extends React.Component<ListProps, ListState> {
           </Text>
         </Body>
         <Right>
+          <ServiceIndicator
+            serviceType={proposal.serviceType}
+            style={styles.serviceIndicator}
+          />
           <QualityIndicator quality={proposal.quality}/>
           <Icon
             name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
@@ -181,6 +186,9 @@ const styles: any = StyleSheet.create({
   },
   searchInput: {
     color: platformStyles.search.inputColor
+  },
+  serviceIndicator: {
+    marginRight: 10
   }
 })
 
