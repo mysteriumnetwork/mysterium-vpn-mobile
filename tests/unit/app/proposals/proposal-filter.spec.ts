@@ -14,7 +14,7 @@ describe('ProposalFilter', () => {
     })
 
     it('should find all', () => {
-      expect(proposalFilter.filterByText('')).toHaveLength(8)
+      expect(proposalFilter.filterByText('')).toHaveLength(9)
     })
 
     it('should find proposal label by country name', () => {

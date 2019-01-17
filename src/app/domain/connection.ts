@@ -68,11 +68,11 @@ class Connection {
     this.statsFetcher.stop()
   }
 
-  public async connect (consumerId: string, providerId: string) {
+  public async connect (consumerId: string, providerId: string, serviceType: string) {
     this.resetIP()
     this.setStatusToConnecting()
 
-    await this.connectionAdapter.connect(consumerId, providerId)
+    await this.connectionAdapter.connect(consumerId, providerId, serviceType)
     console.log('Connected')
   }
 

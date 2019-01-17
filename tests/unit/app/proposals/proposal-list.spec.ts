@@ -36,6 +36,7 @@ describe('ProposalList', () => {
         'Italy',
         'Italy',
         'Lithuania',
+        'Lithuania',
         'United Kingdom',
         'United States'
       ]

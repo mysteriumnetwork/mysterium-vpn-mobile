@@ -24,8 +24,14 @@ import Ip from '../../../src/app/models/ip'
 export class MockConnectionAdapter implements IConnectionAdapter {
   public mockStatus: ConnectionStatus = 'Connected'
 
-  public async connect (_consumerId: string, _providerId: string) {
-    // empty mock
+  public connectedConsumerId?: string
+  public connectedProviderId?: string
+  public connectedServiceType?: string
+
+  public async connect (consumerId: string, providerId: string, serviceType: string) {
+    this.connectedConsumerId = consumerId
+    this.connectedProviderId = providerId
+    this.connectedServiceType = serviceType
   }
 
   public async disconnect () {

@@ -24,12 +24,12 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {
   }
 
-  public async connect (consumerId: string, providerId: string): Promise<void> {
+  public async connect (consumerId: string, providerId: string, serviceType: string): Promise<void> {
     try {
       const connection = await this.tequilapiClient.connectionCreate({
         consumerId,
         providerId,
-        providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
+        serviceType
       })
       console.log(`Connect returned status: ${JSON.stringify(connection)}`)
     } catch (e) {

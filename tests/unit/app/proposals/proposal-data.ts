@@ -27,6 +27,7 @@ const emptyMetrics = {
 
 const proposals: Proposal[] = [
   new Proposal('0x1', 'openvpn', 'lt', 'Lithuania', emptyMetrics),
+  new Proposal('0x1', 'wireguard', 'lt', 'Lithuania', emptyMetrics),
   new Proposal('0x2', 'openvpn', 'us', 'United States', {
     connectCount: {
       success: 2,

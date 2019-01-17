@@ -22,7 +22,7 @@ import Proposal from '../models/proposal'
 import { ProposalsAdapter } from './proposals-adapter'
 
 class TequilapiProposalsAdapter implements ProposalsAdapter {
-  private readonly SERVICE_TYPE = 'openvpn'
+  private readonly SERVICE_TYPE = 'all'
 
   constructor (private tequilapiClient: TequilapiClient) {}
 

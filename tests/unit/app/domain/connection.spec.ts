@@ -66,9 +66,16 @@ describe('Connection', () => {
 
   describe('.connect', () => {
     it('changes connecting status to connecting', async () => {
-      const promise = connection.connect('consumer id', 'provider id')
+      const promise = connection.connect('consumer id', 'provider id', 'openvpn')
       expect(connection.data.status).toEqual('Connecting')
       await promise
+    })
+
+    it('connects to service', async () => {
+      await connection.connect('consumer id', 'provider id', 'openvpn')
+      expect(connectionAdapter.connectedConsumerId).toEqual('consumer id')
+      expect(connectionAdapter.connectedProviderId).toEqual('provider id')
+      expect(connectionAdapter.connectedServiceType).toEqual('openvpn')
     })
   })
 

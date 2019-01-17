@@ -42,7 +42,7 @@ export default class TequilApiDriver {
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  public async connect (selectedProviderId: string): Promise<void> {
+  public async connect (selectedProviderId: string, selectedServiceType: string): Promise<void> {
     const consumerId = this.tequilApiState.identityId
     if (!consumerId) {
       console.error('Identity required for connect is not set', this.tequilApiState)
@@ -50,7 +50,7 @@ export default class TequilApiDriver {
     }
 
     try {
-      await this.connection.connect(consumerId, selectedProviderId)
+      await this.connection.connect(consumerId, selectedProviderId, selectedServiceType)
     } catch (e) {
       this.messageDisplay.showError(messages.CONNECT_FAILED)
       console.warn('Connect failed', e)

@@ -21,7 +21,7 @@ import Ip from '../models/ip'
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
 interface IConnectionAdapter {
-  connect (consumerId: string, providerId: string): Promise<void>
+  connect (consumerId: string, providerId: string, serviceType: string): Promise<void>
   disconnect (): Promise<void>
   fetchStatus (): Promise<ConnectionStatusDTO>
   fetchStatistics (): Promise<ConnectionStatistics>
