@@ -20,7 +20,7 @@ import { ProposalListItem } from './components/proposal-picker/proposal-list-ite
 import { FavoritesStorage } from './favorites-storage'
 import ProposalList from './proposals/proposal-list'
 
-// TODO: rename to VpnAppStore?
+// TODO: rename to VpnAppStore and move to app/stores/
 export default class VpnAppState {
   @observable
   private _isFavoriteSelected: boolean = false

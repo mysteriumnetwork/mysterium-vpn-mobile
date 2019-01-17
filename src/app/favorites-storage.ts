@@ -18,6 +18,7 @@
 import StorageAdapter from './adapters/storage-adapter'
 import { EventNotifier } from './domain/observables/event-notifier'
 
+// TODO: move to domain
 export class FavoritesStorage {
   private favorites: FavoriteProposals = new Map()
   private notifier: EventNotifier = new EventNotifier()

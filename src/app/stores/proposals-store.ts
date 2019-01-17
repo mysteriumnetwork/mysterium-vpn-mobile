@@ -21,6 +21,7 @@ import { ProposalsAdapter } from '../adapters/proposals-adapter'
 import { EventNotifier } from '../domain/observables/event-notifier'
 import Proposal from '../models/proposal'
 
+// TODO: move to domain
 class ProposalsStore {
   public proposals: Proposal[] = []
 
