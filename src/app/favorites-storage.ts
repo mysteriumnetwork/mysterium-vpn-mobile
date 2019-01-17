@@ -18,6 +18,11 @@
 import StorageAdapter from './adapters/storage-adapter'
 import { EventNotifier } from './domain/observables/event-notifier'
 
+interface Proposal {
+  id: string,
+  legacyId: string | null
+}
+
 // TODO: move to domain
 export class FavoritesStorage {
   private favorites: FavoriteProposals = new Map()
@@ -30,26 +35,38 @@ export class FavoritesStorage {
     if (storedData === null) {
       return
     }
+
     const map = this.parseStoredData(storedData)
     this.invokeListeners()
 
     this.favorites = map
   }
 
-  public async add (proposalId: string): Promise<void> {
-    this.favorites.set(proposalId, true)
+  public async add (proposal: Proposal): Promise<void> {
+    if (proposal.legacyId === null) {
+      return
+    }
+
+    this.favorites.set(proposal.legacyId, true)
     this.invokeListeners()
     await this.saveToStorage()
   }
 
-  public async remove (proposalId: string): Promise<void> {
-    this.favorites.delete(proposalId)
+  public async remove (proposal: Proposal): Promise<void> {
+    if (proposal.legacyId === null) {
+      return
+    }
+
+    this.favorites.delete(proposal.legacyId)
     this.invokeListeners()
     await this.saveToStorage()
   }
 
-  public has (proposalId: string): boolean {
-    return !!this.favorites.get(proposalId)
+  public has (proposal: Proposal): boolean {
+    if (proposal.legacyId === null) {
+      return false
+    }
+    return !!this.favorites.get(proposal.legacyId)
   }
 
   public onChange (callback: Callback) {

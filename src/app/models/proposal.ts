@@ -30,6 +30,14 @@ class Proposal {
   public get id (): string {
     return `${this.providerID}'-'${this.serviceType}`
   }
+
+  /**
+   * Previously used id, which was used when only openvpn service existed.
+   * Only openvpn services have this id.
+   */
+  public get legacyId (): string | null {
+    return this.serviceType == 'openvpn' ? this.providerID : null
+  }
 }
 
 export default Proposal

@@ -1,23 +1,24 @@
+import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+
 interface IFavoritesStorage {
-  has (id: string): boolean
+  has (proposal: Proposal): boolean
+  add (proposal: Proposal): Promise<void>
+  remove (proposal: Proposal): Promise<void>
+}
 
-  add (id: string): Promise<void>
-
-  remove (id: string): Promise<void>
+interface Proposal {
+  id: string,
+  legacyId: string | null
 }
 
 class Favorites {
   constructor (private favoritesStorage: IFavoritesStorage) {}
 
-  public async toggle (id: string | null) {
-    if (!id) {
-      return
-    }
-
-    if (!this.favoritesStorage.has(id)) {
-      await this.favoritesStorage.add(id)
+  public async toggle (proposal: ProposalListItem) {
+    if (!this.favoritesStorage.has(proposal)) {
+      await this.favoritesStorage.add(proposal)
     } else {
-      await this.favoritesStorage.remove(id)
+      await this.favoritesStorage.remove(proposal)
     }
   }
 }

@@ -18,15 +18,26 @@
 import Proposal from '../../../../src/app/models/proposal'
 
 describe('Proposal', () => {
+  function buildProposal (providerId: string, serviceType: string) {
+    const metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
+    return new Proposal(providerId, serviceType, 'lt', 'Lithuania', metrics)
+  }
+
   describe('.id', () => {
     it('returns same id for proposals with same provider id and service type', () => {
-      function buildProposal (providerId: string, serviceType: string) {
-        const metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
-        return new Proposal(providerId, serviceType, 'lt', 'Lithuania', metrics)
-      }
       expect(buildProposal('X', 'wireguard').id).toEqual(buildProposal('X', 'wireguard').id)
       expect(buildProposal('X', 'wireguard').id).not.toEqual(buildProposal('Y', 'wireguard').id)
       expect(buildProposal('X', 'wireguard').id).not.toEqual(buildProposal('X', 'openvpn').id)
+    })
+  })
+
+  describe('.legacyId', () => {
+    it('returns providerId for openvpn services', () => {
+      expect(buildProposal('provider id', 'openvpn').legacyId).toEqual('provider id')
+    })
+
+    it('returns null for other services', () => {
+      expect(buildProposal('provider id', 'wireguard').legacyId).toBeNull()
     })
   })
 })

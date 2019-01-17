@@ -24,6 +24,8 @@ describe('FavoritesStorage', () => {
   let favoritesStorage: FavoritesStorage
   let notifiedCount: number
 
+  const openvpnProposal = { id: '1-openvpn', legacyId: '1' }
+
   beforeEach(() => {
     storage = new MockStorage()
     favoritesStorage = new FavoritesStorage(storage)
@@ -36,10 +38,10 @@ describe('FavoritesStorage', () => {
   describe('.fetch', () => {
     it('loads previously saved data', async () => {
       const anotherStorage = new FavoritesStorage(storage)
-      await anotherStorage.add('1')
+      await anotherStorage.add(openvpnProposal)
 
       await favoritesStorage.fetch()
-      expect(favoritesStorage.has('1')).toBe(true)
+      expect(favoritesStorage.has(openvpnProposal)).toBe(true)
     })
 
     it('loads observable map', async () => {
@@ -48,26 +50,26 @@ describe('FavoritesStorage', () => {
       await storage.save(observableMap)
 
       await favoritesStorage.fetch()
-      expect(favoritesStorage.has('1')).toBe(true)
+      expect(favoritesStorage.has({ id: '1-openvpn', legacyId: '1' })).toBe(true)
     })
   })
 
   describe('.has', () => {
     it('returns true if storage contains requested key', async () => {
-      await favoritesStorage.add('3')
-      expect(favoritesStorage.has('3')).toBe(true)
+      await favoritesStorage.add(openvpnProposal)
+      expect(favoritesStorage.has(openvpnProposal)).toBe(true)
     })
 
     it('returns false if storage does not contain requested key', async () => {
-      expect(favoritesStorage.has('3')).toBe(false)
+      expect(favoritesStorage.has(openvpnProposal)).toBe(false)
     })
   })
 
   describe('.remove', () => {
     it('removes passed proposalId from favorites', async () => {
-      await favoritesStorage.add('3')
-      await favoritesStorage.remove('3')
-      expect(favoritesStorage.has('3')).toBe(false)
+      await favoritesStorage.add(openvpnProposal)
+      await favoritesStorage.remove(openvpnProposal)
+      expect(favoritesStorage.has(openvpnProposal)).toBe(false)
     })
   })
 
@@ -75,10 +77,10 @@ describe('FavoritesStorage', () => {
     it('notifies instantly and about changes', async () => {
       expect(notifiedCount).toEqual(1)
 
-      await favoritesStorage.add('3')
+      await favoritesStorage.add(openvpnProposal)
       expect(notifiedCount).toEqual(2)
 
-      await favoritesStorage.remove('3')
+      await favoritesStorage.remove(openvpnProposal)
       expect(notifiedCount).toEqual(3)
     })
 
@@ -95,7 +97,7 @@ describe('FavoritesStorage', () => {
       favoritesStorage.onChange(() => {
         notifiedCount2++
       })
-      await favoritesStorage.add('1')
+      await favoritesStorage.add({ id: '1-openvpn', legacyId: '1' })
       expect(notifiedCount).toEqual(2)
       expect(notifiedCount2).toEqual(2)
     })
