@@ -43,30 +43,29 @@ export class FavoritesStorage {
   }
 
   public async add (proposal: Proposal): Promise<void> {
-    if (proposal.legacyId === null) {
-      return
-    }
-
-    this.favorites.set(proposal.legacyId, true)
+    this.favorites.set(proposal.id, true)
     this.invokeListeners()
     await this.saveToStorage()
   }
 
   public async remove (proposal: Proposal): Promise<void> {
-    if (proposal.legacyId === null) {
-      return
+    this.favorites.delete(proposal.id)
+    if (proposal.legacyId) {
+      this.favorites.delete(proposal.legacyId)
     }
 
-    this.favorites.delete(proposal.legacyId)
     this.invokeListeners()
     await this.saveToStorage()
   }
 
   public has (proposal: Proposal): boolean {
-    if (proposal.legacyId === null) {
-      return false
+    if (this.hasId(proposal.id)) {
+      return true
     }
-    return !!this.favorites.get(proposal.legacyId)
+    if (proposal.legacyId !== null && this.hasId(proposal.legacyId)) {
+      return true
+    }
+    return false
   }
 
   public onChange (callback: Callback) {
@@ -98,6 +97,10 @@ export class FavoritesStorage {
 
   private invokeListeners () {
     this.notifier.notify()
+  }
+
+  private hasId (id: string): boolean {
+    return !!this.favorites.get(id)
   }
 }
 

@@ -25,6 +25,7 @@ describe('FavoritesStorage', () => {
   let notifiedCount: number
 
   const openvpnProposal = { id: '1-openvpn', legacyId: '1' }
+  const wireguardProposal = { id: '1-wireguard', legacyId: null }
 
   beforeEach(() => {
     storage = new MockStorage()
@@ -58,10 +59,18 @@ describe('FavoritesStorage', () => {
     it('returns true if storage contains requested key', async () => {
       await favoritesStorage.add(openvpnProposal)
       expect(favoritesStorage.has(openvpnProposal)).toBe(true)
+
+      await favoritesStorage.add(wireguardProposal)
+      expect(favoritesStorage.has(wireguardProposal)).toBe(true)
     })
 
     it('returns false if storage does not contain requested key', async () => {
       expect(favoritesStorage.has(openvpnProposal)).toBe(false)
+    })
+
+    it('returns true for openvpn proposal without legacy id', async () => {
+      await favoritesStorage.add({ id: '1-openvpn', legacyId: '1' })
+      expect(favoritesStorage.has({ id: '1-openvpn', legacyId: null })).toBe(true)
     })
   })
 
@@ -70,6 +79,10 @@ describe('FavoritesStorage', () => {
       await favoritesStorage.add(openvpnProposal)
       await favoritesStorage.remove(openvpnProposal)
       expect(favoritesStorage.has(openvpnProposal)).toBe(false)
+
+      await favoritesStorage.add(wireguardProposal)
+      await favoritesStorage.remove(wireguardProposal)
+      expect(favoritesStorage.has(wireguardProposal)).toBe(false)
     })
   })
 
