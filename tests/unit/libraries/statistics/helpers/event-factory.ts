@@ -15,23 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StatisticsTransport } from '../transports/statistics-transport'
-import ConnectionEventBuilder from './connection-event-builder'
-
-class ConnectionEventSender {
-  constructor (private transport: StatisticsTransport, private connectEventBuilder: ConnectionEventBuilder) {}
-
-  public sendSuccessfulConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.getEndedEvent())
-  }
-
-  public sendFailedConnectionEvent (error: string) {
-    this.transport.send(this.connectEventBuilder.getFailedEvent(error))
-  }
-
-  public sendCanceledConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.getCanceledEvent())
+function eventFactory (name: string, error?: string | null) {
+  return {
+    eventName: name,
+    context: {
+      startedAt: { utcTime: 1, localTime: 1 },
+      endedAt: { utcTime: 2, localTime: 2 },
+      timeDelta: 1,
+      originalCountry: 'original country',
+      providerCountry: 'provider country',
+      connectDetails: { consumerId: 'consumer id', providerId: 'provider id' },
+      error
+    },
+    createdAt: 1
   }
 }
 
-export default ConnectionEventSender
+export default eventFactory

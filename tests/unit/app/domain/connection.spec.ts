@@ -16,11 +16,10 @@
  */
 
 import Connection from '../../../../src/app/domain/connection'
-import { TimeProvider } from '../../../../src/libraries/statistics/events/connect-event-builder'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
-import MockEventSender from '../../mocks/mock-event-sender'
-import MockTimeProvider from '../../mocks/mock-time-provider'
+import MockConnectionEventAdapter from '../../mocks/mock-connection-event-adapter'
+import MockStatisticsAdapter from '../../mocks/mock-statistics-adapter'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -34,15 +33,15 @@ describe('Connection', () => {
   let connection: Connection
   let connectionAdapter: MockConnectionAdapter
   let state: TequilApiState
-  let eventSender: MockEventSender
-  let timeProvider: TimeProvider
+  let connectionEventAdapter: MockConnectionEventAdapter
+  let statisticsAdapter: MockStatisticsAdapter
 
   beforeEach(() => {
     state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
-    eventSender = new MockEventSender()
-    timeProvider = (new MockTimeProvider()).timeProvider
-    connection = new Connection(connectionAdapter, state, timeProvider, eventSender)
+    connectionEventAdapter = new MockConnectionEventAdapter()
+    statisticsAdapter = new MockStatisticsAdapter(connectionEventAdapter)
+    connection = new Connection(connectionAdapter, state, statisticsAdapter)
   })
 
   describe('.startUpdating', () => {
@@ -80,21 +79,20 @@ describe('Connection', () => {
 
     it('sends successful connection event', async () => {
       await connection.connect('consumer id', 'provider id', 'us')
-      expect(eventSender.sentEvent).toEqual(buildEvent('connect_successful'))
+      expect(connectionEventAdapter.sentSuccessEvent).toBeTruthy()
     })
 
     it('sends failed connection event', async () => {
-      const event = buildEvent('connect_failed', 'Connection failed')
-
       connectionAdapter.throwConnectError = true
       await connection.connect('consumer id', 'provider id', 'us')
-      expect(eventSender.sentEvent).toEqual(event)
+      expect(connectionEventAdapter.sentFailedEvent).toBeTruthy()
+      expect(connectionEventAdapter.eventErrorMessage).toEqual('Connection failed')
     })
 
     it('sends connection canceled event', async () => {
       connectionAdapter.throwConnectCancelledError = true
       await connection.connect('consumer id', 'provider id', 'us')
-      expect(eventSender.sentEvent).toEqual(buildEvent('connect_canceled'))
+      expect(connectionEventAdapter.sentCanceledEvent).toBeTruthy()
     })
   })
 
@@ -106,19 +104,3 @@ describe('Connection', () => {
     })
   })
 })
-
-function buildEvent (name: string, error?: string | null) {
-  return {
-    eventName: name,
-    context: {
-      startedAt: { utcTime: 1, localTime: 1 },
-      endedAt: { utcTime: 2, localTime: 2 },
-      timeDelta: 1,
-      originalCountry: 'lt',
-      providerCountry: 'us',
-      connectDetails: { consumerId: 'consumer id', providerId: 'provider id' },
-      error
-    },
-    createdAt: 1
-  }
-}

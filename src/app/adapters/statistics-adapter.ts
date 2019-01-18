@@ -1,11 +1,11 @@
-interface StatisticsEventManagerAdapter {
+interface StatisticsAdapter {
   startConnectionTracking (
     connectionDetails: ConnectionDetails,
     countryDetails: CountryDetails
-  ): ConnectionEventSenderAdapter
+  ): ConnectionEventAdapter
 }
 
-interface ConnectionEventSenderAdapter {
+interface ConnectionEventAdapter {
   sendSuccessfulConnectionEvent (): void
   sendFailedConnectionEvent (error: string): void
   sendCanceledConnectionEvent (): void
@@ -21,4 +21,4 @@ type CountryDetails = {
   providerCountry: string | null
 }
 
-export { StatisticsEventManagerAdapter, ConnectionEventSenderAdapter }
+export { StatisticsAdapter, ConnectionEventAdapter }

@@ -1,6 +1,23 @@
+/*
+ * Copyright (C) 2019 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import Events, { StatisticsEvent } from '../events'
 
-class ConnectEventBuilder {
+class ConnectionEventBuilder {
   private eventDetails?: EventContext
   private connectionDetails?: ConnectionDetails
   private countryDetails?: CountryDetails
@@ -11,6 +28,8 @@ class ConnectEventBuilder {
 
   public setStartedAt () {
     this.startedAt = this.timeProvider()
+
+    return this
   }
 
   public setConnectionDetails (connectionDetails: ConnectionDetails) {
@@ -45,7 +64,7 @@ class ConnectEventBuilder {
 
   private getEvent (name: string): StatisticsEvent {
     if (!this.startedAt) {
-      throw new Error('ConnectEventBuilder startedAt not set.')
+      throw new Error('ConnectionEventBuilder startedAt not set.')
     }
 
     if (!this.eventDetails) {
@@ -61,15 +80,15 @@ class ConnectEventBuilder {
 
   private finishBuildingEvent (error?: string) {
     if (!this.startedAt) {
-      throw new Error('ConnectEventBuilder startedAt not set.')
+      throw new Error('ConnectionEventBuilder startedAt not set.')
     }
 
     if (!this.connectionDetails) {
-      throw new Error('ConnectEventBuilder connectionDetails not set.')
+      throw new Error('ConnectionEventBuilder connectionDetails not set.')
     }
 
     if (!this.countryDetails) {
-      throw new Error('ConnectEventBuilder countryDetails not set.')
+      throw new Error('ConnectionEventBuilder countryDetails not set.')
     }
 
     const endedAt = this.timeProvider()
@@ -116,5 +135,5 @@ type EventContext = {
   error?: string
 }
 
-export default ConnectEventBuilder
+export default ConnectionEventBuilder
 export { ConnectionDetails, CountryDetails, TimeProvider, Time }

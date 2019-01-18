@@ -15,36 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Axios, { AxiosInstance } from 'axios'
 import { StatisticsEvent } from '../events'
 import StatisticsConfig from '../statistics-config'
 import { StatisticsTransport } from './statistics-transport'
 
-class ElkTransport implements StatisticsTransport {
-  private api: AxiosInstance
-
+class ConsoleTransport implements StatisticsTransport {
   constructor (private config: StatisticsConfig) {
-    this.api = Axios.create({
-      baseURL: this.config.elkUrl,
-      timeout: 60000
-    })
+
   }
 
   public async send (event: StatisticsEvent): Promise<void> {
-    event = this.setApplicationInfoToEvent(event)
-
-    const res = await this.api.post('/', event)
-
-    if ((res.status !== 200) || (res.data.toUpperCase() !== 'OK')) {
-      throw new Error('Invalid response from ELK service: ' + res.status + ' : ' + res.data)
-    }
-  }
-
-  private setApplicationInfoToEvent (event: StatisticsEvent) {
     event.application = this.config.applicationInfo
 
-    return event
+    console.log('Sending statistics event to null', event)
   }
 }
 
-export default ElkTransport
+export default ConsoleTransport

@@ -23,9 +23,9 @@ import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter, { ConnectionCanceled } from '../adapters/connection-adapter'
 import {
-  ConnectionEventSenderAdapter,
-  StatisticsEventManagerAdapter
-} from '../adapters/statistics-event-manager-adapter'
+  ConnectionEventAdapter,
+  StatisticsAdapter
+} from '../adapters/statistics-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
@@ -48,7 +48,7 @@ class Connection {
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState,
-    private readonly statisticsManager: StatisticsEventManagerAdapter
+    private readonly statisticsManager: StatisticsAdapter
   ) {
     this.statusFetcher = this.buildStatusFetcher()
     this.ipFetcher = this.buildIpFetcher()
@@ -163,16 +163,13 @@ class Connection {
   private async startConnectionTracking (
     providerId: string,
     consumerId: string,
-    providerCountryCode: string): Promise<ConnectionEventSenderAdapter> {
+    providerCountryCode: string): Promise<ConnectionEventAdapter> {
     const countryDetails = {
       originalCountry: await this.connectionAdapter.fetchOriginalLocation(),
       providerCountry: providerCountryCode
     }
 
-    const connectionDetails = {
-      consumerId,
-      providerId
-    }
+    const connectionDetails = { consumerId, providerId }
 
     return this.statisticsManager.startConnectionTracking(connectionDetails, countryDetails)
   }

@@ -1,11 +1,11 @@
-import ConnectEventBuilder, { ConnectionDetails, CountryDetails } from './events/connect-event-builder'
+import ConnectionEventBuilder, { ConnectionDetails, CountryDetails } from './events/connection-event-builder'
 import ConnectionEventSender from './events/connection-event-sender'
 import { StatisticsTransport } from './transports/statistics-transport'
 
 class StatisticsEventManager {
   constructor (
     private transport: StatisticsTransport,
-    private eventBuilder: ConnectEventBuilder) {
+    private eventBuilder: ConnectionEventBuilder) {
   }
 
   public startConnectionTracking (

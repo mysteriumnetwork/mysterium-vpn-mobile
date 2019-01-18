@@ -15,23 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StatisticsTransport } from '../transports/statistics-transport'
-import ConnectionEventBuilder from './connection-event-builder'
+import {
+  ConnectionEventAdapter,
+  StatisticsAdapter
+} from '../../../src/app/adapters/statistics-adapter'
+import MockConnectionEventAdapter from './mock-connection-event-adapter'
 
-class ConnectionEventSender {
-  constructor (private transport: StatisticsTransport, private connectEventBuilder: ConnectionEventBuilder) {}
+class MockStatisticsAdapter implements StatisticsAdapter {
+  constructor (private connectionEventAdapter: MockConnectionEventAdapter) {
 
-  public sendSuccessfulConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.getEndedEvent())
   }
 
-  public sendFailedConnectionEvent (error: string) {
-    this.transport.send(this.connectEventBuilder.getFailedEvent(error))
-  }
-
-  public sendCanceledConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.getCanceledEvent())
+  public startConnectionTracking (): ConnectionEventAdapter {
+    return this.connectionEventAdapter
   }
 }
 
-export default ConnectionEventSender
+export default MockStatisticsAdapter
