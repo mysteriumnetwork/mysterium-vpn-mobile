@@ -18,15 +18,12 @@
 import StorageAdapter from './adapters/storage-adapter'
 import { EventNotifier } from './domain/observables/event-notifier'
 
-interface Proposal {
-  id: string,
-  legacyId: string | null
-}
-
 // TODO: move to domain
 export class FavoritesStorage {
   private favorites: FavoriteProposals = new Map()
   private notifier: EventNotifier = new EventNotifier()
+
+  private readonly DEFAULT_SERVICE_TYPE = 'openvpn'
 
   constructor (private storage: StorageAdapter) {}
 
@@ -36,48 +33,55 @@ export class FavoritesStorage {
       return
     }
 
-    const map = this.parseStoredData(storedData)
+    this.favorites = this.replaceLegacyIds(this.parseStoredData(storedData))
     this.invokeListeners()
-
-    this.favorites = map
   }
 
-  public async add (proposal: Proposal): Promise<void> {
-    this.favorites.set(proposal.id, true)
-    this.invokeListeners()
-    await this.saveToStorage()
-  }
-
-  public async remove (proposal: Proposal): Promise<void> {
-    this.favorites.delete(proposal.id)
-    if (proposal.legacyId) {
-      this.favorites.delete(proposal.legacyId)
-    }
+  public async add (proposalId: string): Promise<void> {
+    this.favorites.set(proposalId, true)
 
     this.invokeListeners()
     await this.saveToStorage()
   }
 
-  public has (proposal: Proposal): boolean {
-    if (this.hasId(proposal.id)) {
-      return true
-    }
-    if (proposal.legacyId !== null && this.hasId(proposal.legacyId)) {
-      return true
-    }
-    return false
+  public async remove (proposalId: string): Promise<void> {
+    this.favorites.delete(proposalId)
+
+    this.invokeListeners()
+    await this.saveToStorage()
+  }
+
+  public has (proposalId: string): boolean {
+    return !!this.favorites.get(proposalId)
   }
 
   public onChange (callback: Callback) {
     this.notifier.subscribe(callback)
   }
 
+  private replaceLegacyIds (proposals: FavoriteProposals): FavoriteProposals {
+    const newProposals = new Map()
+    proposals.forEach((value: boolean, key: string) => {
+      const newKey = this.isLegacyId(key) ? this.legacyIdToId(key) : key
+      newProposals.set(newKey, value)
+    })
+    return newProposals
+  }
+
+  private isLegacyId (id: string): boolean {
+    return id.indexOf('-') === -1
+  }
+
+  private legacyIdToId (legacyId: string): string {
+    return `${legacyId}-${this.DEFAULT_SERVICE_TYPE}`
+  }
+
   private parseStoredData (data: any): FavoriteProposals {
     if (data instanceof Array) {
       return new Map(data)
-    } else {
-      return this.parseMapObject(data)
     }
+
+    return this.parseMapObject(data)
   }
 
   private parseMapObject (obj: any): FavoriteProposals {
@@ -97,10 +101,6 @@ export class FavoritesStorage {
 
   private invokeListeners () {
     this.notifier.notify()
-  }
-
-  private hasId (id: string): boolean {
-    return !!this.favorites.get(id)
   }
 }
 

@@ -30,14 +30,4 @@ describe('Proposal', () => {
       expect(buildProposal('X', 'wireguard').id).not.toEqual(buildProposal('X', 'openvpn').id)
     })
   })
-
-  describe('.legacyId', () => {
-    it('returns providerId for openvpn services', () => {
-      expect(buildProposal('provider id', 'openvpn').legacyId).toEqual('provider id')
-    })
-
-    it('returns null for other services', () => {
-      expect(buildProposal('provider id', 'wireguard').legacyId).toBeNull()
-    })
-  })
 })

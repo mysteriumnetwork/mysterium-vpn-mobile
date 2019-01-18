@@ -24,9 +24,6 @@ describe('FavoritesStorage', () => {
   let favoritesStorage: FavoritesStorage
   let notifiedCount: number
 
-  const openvpnProposal = { id: '1-openvpn', legacyId: '1' }
-  const wireguardProposal = { id: '1-wireguard', legacyId: null }
-
   beforeEach(() => {
     storage = new MockStorage()
     favoritesStorage = new FavoritesStorage(storage)
@@ -39,50 +36,53 @@ describe('FavoritesStorage', () => {
   describe('.fetch', () => {
     it('loads previously saved data', async () => {
       const anotherStorage = new FavoritesStorage(storage)
-      await anotherStorage.add(openvpnProposal)
+      await anotherStorage.add('1-openvpn')
 
       await favoritesStorage.fetch()
-      expect(favoritesStorage.has(openvpnProposal)).toBe(true)
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
     })
 
-    it('loads observable map', async () => {
+    it('loads observable map with legacy ids', async () => {
       const observableMap = observable.map()
       observableMap.set('1', true)
       await storage.save(observableMap)
 
       await favoritesStorage.fetch()
-      expect(favoritesStorage.has({ id: '1-openvpn', legacyId: '1' })).toBe(true)
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
+    })
+
+    it('loads legacy ids', async () => {
+      const anotherStorage = new FavoritesStorage(storage)
+      await anotherStorage.add('1')
+
+      await favoritesStorage.fetch()
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
     })
   })
 
   describe('.has', () => {
     it('returns true if storage contains requested key', async () => {
-      await favoritesStorage.add(openvpnProposal)
-      expect(favoritesStorage.has(openvpnProposal)).toBe(true)
+      await favoritesStorage.add('1-openvpn')
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
 
-      await favoritesStorage.add(wireguardProposal)
-      expect(favoritesStorage.has(wireguardProposal)).toBe(true)
+      await favoritesStorage.add('1-wireguard')
+      expect(favoritesStorage.has('1-wireguard')).toBe(true)
     })
 
     it('returns false if storage does not contain requested key', async () => {
-      expect(favoritesStorage.has(openvpnProposal)).toBe(false)
-    })
-
-    it('returns true for openvpn proposal without legacy id', async () => {
-      await favoritesStorage.add({ id: '1-openvpn', legacyId: '1' })
-      expect(favoritesStorage.has({ id: '1-openvpn', legacyId: null })).toBe(true)
+      expect(favoritesStorage.has('1-openvpn')).toBe(false)
     })
   })
 
   describe('.remove', () => {
     it('removes passed proposalId from favorites', async () => {
-      await favoritesStorage.add(openvpnProposal)
-      await favoritesStorage.remove(openvpnProposal)
-      expect(favoritesStorage.has(openvpnProposal)).toBe(false)
+      await favoritesStorage.add('1-openvpn')
+      await favoritesStorage.remove('1-openvpn')
+      expect(favoritesStorage.has('1-openvpn')).toBe(false)
 
-      await favoritesStorage.add(wireguardProposal)
-      await favoritesStorage.remove(wireguardProposal)
-      expect(favoritesStorage.has(wireguardProposal)).toBe(false)
+      await favoritesStorage.add('1-wireguard')
+      await favoritesStorage.remove('1-wireguard')
+      expect(favoritesStorage.has('1-wireguard')).toBe(false)
     })
   })
 
@@ -90,19 +90,31 @@ describe('FavoritesStorage', () => {
     it('notifies instantly and about changes', async () => {
       expect(notifiedCount).toEqual(1)
 
-      await favoritesStorage.add(openvpnProposal)
+      await favoritesStorage.add('1-openvpn')
       expect(notifiedCount).toEqual(2)
 
-      await favoritesStorage.remove(openvpnProposal)
+      await favoritesStorage.remove('1-openvpn')
       expect(notifiedCount).toEqual(3)
     })
 
     it('notifies after fetching', async () => {
-      await storage.save(new Map([['1', true]]))
+      await storage.save([['1-openvpn', true]])
 
       expect(notifiedCount).toEqual(1)
       await favoritesStorage.fetch()
       expect(notifiedCount).toEqual(2)
+    })
+
+    it('notifies when fetched value is available', async () => {
+      await storage.save([['1-openvpn', true]])
+
+      let hasProposal = null
+      favoritesStorage.onChange(() => {
+        hasProposal = favoritesStorage.has('1-openvpn')
+      })
+      expect(hasProposal).toBe(false)
+      await favoritesStorage.fetch()
+      expect(hasProposal).toBe(true)
     })
 
     it('works with multiple subscribers', async () => {
@@ -110,7 +122,7 @@ describe('FavoritesStorage', () => {
       favoritesStorage.onChange(() => {
         notifiedCount2++
       })
-      await favoritesStorage.add({ id: '1-openvpn', legacyId: '1' })
+      await favoritesStorage.add('1-openvpn')
       expect(notifiedCount).toEqual(2)
       expect(notifiedCount2).toEqual(2)
     })

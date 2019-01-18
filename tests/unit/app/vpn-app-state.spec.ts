@@ -61,7 +61,6 @@ describe('VpnAppState', () => {
     it('becomes true when selecting favorite proposal', async () => {
       const proposal: ProposalListItem = {
         id: 'testProviderId-openvpn',
-        legacyId: 'testProviderId',
         serviceType: 'openvpn',
         providerID: 'testProviderId',
         countryCode: null,
@@ -69,7 +68,7 @@ describe('VpnAppState', () => {
         isFavorite: true,
         quality: null
       }
-      await favoritesStorage.add(proposal)
+      await favoritesStorage.add(proposal.id)
 
       expect(favoriteSelected).toBe(false)
       state.selectedProposal = proposal
@@ -79,7 +78,6 @@ describe('VpnAppState', () => {
     it('becomes true when marking selected proposal as favorite', async () => {
       const proposal: ProposalListItem = {
         id: 'testProviderId-openvpn',
-        legacyId: 'testProviderId',
         serviceType: 'openvpn',
         providerID: 'testProviderId',
         countryCode: null,
@@ -90,7 +88,7 @@ describe('VpnAppState', () => {
       state.selectedProposal = proposal
 
       expect(favoriteSelected).toBe(false)
-      await favoritesStorage.add(proposal)
+      await favoritesStorage.add(proposal.id)
       expect(favoriteSelected).toBe(true)
     })
   })

@@ -17,7 +17,6 @@
 
 interface ProposalListItem {
   id: string,
-  legacyId: string | null,
   providerID: string,
   serviceType: string,
   countryCode: string | null,

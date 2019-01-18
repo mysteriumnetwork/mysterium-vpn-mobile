@@ -65,6 +65,6 @@ export default class VpnAppState {
       return
     }
 
-    this._isFavoriteSelected = this.favoritesStorage.has({ id: proposal.id, legacyId: proposal.legacyId })
+    this._isFavoriteSelected = this.favoritesStorage.has(proposal.id)
   }
 }

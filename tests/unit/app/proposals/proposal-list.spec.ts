@@ -13,8 +13,8 @@ describe('ProposalList', () => {
 
   beforeEach(async () => {
     favoritesStorage = new FavoritesStorage(new MockStorage())
-    await favoritesStorage.add({ id: '0x2-openvpn', legacyId: '0x2' })
-    await favoritesStorage.add({ id: '0x6-openvpn', legacyId: '0x6' })
+    await favoritesStorage.add('0x2-openvpn')
+    await favoritesStorage.add('0x6-openvpn')
 
     const proposalsAdapter: ProposalsAdapter = new MockProposalsAdapter(proposals)
     proposalsStore = new ProposalsStore(proposalsAdapter)
@@ -77,7 +77,7 @@ describe('ProposalList', () => {
     })
 
     it('notifies when favorite changes', async () => {
-      await favoritesStorage.add({ id: '0x1-openvpn', legacyId: '0x1' })
+      await favoritesStorage.add('0x1-openvpn')
       expect(invokedCount).toEqual(2)
     })
 

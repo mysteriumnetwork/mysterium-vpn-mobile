@@ -10,7 +10,7 @@ interface IProposalList {
 }
 
 interface IFavoritesStorage {
-  has (proposal: {id: string, legacyId: string | null}): boolean
+  has (proposalId: string): boolean
   onChange (listener: Callback): void
 }
 
@@ -48,12 +48,11 @@ class ProposalList {
   private proposalToProposalItem (proposal: Proposal): ProposalListItem {
     return {
       id: proposal.id,
-      legacyId: proposal.legacyId,
       providerID: proposal.providerID,
       serviceType: proposal.serviceType,
       countryCode: proposal.countryCode,
       countryName: proposal.countryName,
-      isFavorite: this.favorites.has({ id: proposal.id, legacyId: proposal.legacyId }),
+      isFavorite: this.favorites.has(proposal.id),
       quality: this.qualityCalculator.calculate(proposal.metrics)
     }
   }
