@@ -28,7 +28,7 @@ class Proposal {
   ) {}
 
   public get id (): string {
-    return `${this.providerID}'-'${this.serviceType}`
+    return `${this.providerID}-${this.serviceType}`
   }
 
   /**
