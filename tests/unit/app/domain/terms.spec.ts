@@ -21,7 +21,7 @@ import MockStorage from '../../mocks/mock-storage'
 
 describe('Terms', () => {
   let terms: Terms
-  let storage: StorageAdapter<number>
+  let storage: StorageAdapter
 
   beforeEach(() => {
     storage = new MockStorage()
@@ -46,7 +46,7 @@ describe('Terms', () => {
 
     it('returns false when different terms with different storage were accepted', async () => {
       await terms.accept()
-      const newStorage = new MockStorage<number>()
+      const newStorage = new MockStorage()
       const newTerms = new Terms(newStorage, 1)
       expect(await newTerms.areAccepted()).toBe(false)
     })

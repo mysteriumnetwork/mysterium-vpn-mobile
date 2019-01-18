@@ -18,14 +18,14 @@
 import { AsyncStorage } from 'react-native'
 import StorageAdapter from './storage-adapter'
 
-export class ReactNativeStorage<T> implements StorageAdapter<T> {
+export class ReactNativeStorage implements StorageAdapter {
   constructor (private key: string) {}
 
-  public async save (data: T) {
+  public async save (data: any) {
     await AsyncStorage.setItem(this.key, JSON.stringify(data))
   }
 
-  public async load (): Promise<T | null> {
+  public async load (): Promise<any | null> {
     const data = await this.getValue()
     if (data === null) {
       return null

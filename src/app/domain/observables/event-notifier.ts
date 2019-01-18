@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from '../adapters/storage-adapter'
+/**
+ * Allows subscribing and notifying about specific event.
+ */
+class EventNotifier {
+  protected callbacks: EmptyCallback[] = []
 
-class Terms {
-  constructor (private storage: StorageAdapter, private currentVersion: number) {}
-
-  public async areAccepted (): Promise<boolean> {
-    return (await this.storage.load()) === this.currentVersion
+  public subscribe (callback: EmptyCallback) {
+    this.callbacks.push(callback)
+    callback()
   }
 
-  public async accept (): Promise<void> {
-    await this.storage.save(this.currentVersion)
+  public notify () {
+    this.callbacks.forEach(callback => callback())
   }
 }
 
-export default Terms
+type EmptyCallback = () => void
+
+export { EventNotifier }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from '../adapters/storage-adapter'
+/**
+ * Allows subscribing and publishing value update.
+ */
+class ValuePublisher<T> {
+  private callbacks: Array<Callback<T>> = []
+  private lastValue: T
 
-class Terms {
-  constructor (private storage: StorageAdapter, private currentVersion: number) {}
-
-  public async areAccepted (): Promise<boolean> {
-    return (await this.storage.load()) === this.currentVersion
+  constructor (initialValue: T) {
+    this.lastValue = initialValue
   }
 
-  public async accept (): Promise<void> {
-    await this.storage.save(this.currentVersion)
+  public subscribe (callback: Callback<T>) {
+    this.callbacks.push(callback)
+    callback(this.lastValue)
+  }
+
+  public publish (value: T) {
+    this.callbacks.forEach(callback => callback(value))
+    this.lastValue = value
   }
 }
 
-export default Terms
+type Callback<T> = (data: T) => void
+
+export { Callback }
+
+export default ValuePublisher

@@ -12,7 +12,7 @@ class Root extends React.PureComponent {
 
     onIdentityUnlockSetUserIdInBugReporter(this.container.tequilApiState, this.container.bugReporter)
 
-    await this.container.favoritesStore.fetch()
+    await this.container.favoritesStorage.fetch()
   }
 
   public render () {
@@ -25,7 +25,6 @@ class Root extends React.PureComponent {
           screenStore={this.container.screenStore}
           messageDisplayDelegate={this.container.messageDisplayDelegate}
           terms={this.container.terms}
-          proposalList={this.container.proposalList}
           favorites={this.container.favorites}
           appLoader={this.container.appLoader}
           feedbackReporter={this.container.feedbackReporter}

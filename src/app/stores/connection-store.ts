@@ -22,14 +22,16 @@ import ConnectionData from '../models/connection-data'
 class ConnectionStore {
   @computed
   public get data (): ConnectionData {
+    if (this._data === undefined) {
+      throw new Error('Connection data is not yet available')
+    }
     return this._data
   }
 
   @observable
-  private _data: ConnectionData
+  private _data?: ConnectionData
 
   constructor (public readonly connection: Connection) {
-    this._data = this.connection.data
     this.connection.onDataChange(data => this.updateData(data))
   }
 

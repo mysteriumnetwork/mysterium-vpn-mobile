@@ -15,12 +15,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computed, observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
 import { ProposalListItem } from './components/proposal-picker/proposal-list-item'
+import { FavoritesStorage } from './favorites-storage'
+import ProposalList from './proposals/proposal-list'
 
+// TODO: rename to VpnAppStore and move to app/stores/
 export default class VpnAppState {
   @observable
-  public selectedProposal: ProposalListItem | null = null
+  private _isFavoriteSelected: boolean = false
+  @observable
+  private _selectedProposal: ProposalListItem | null = null
+  @observable
+  private _proposalListItems: ProposalListItem[] = []
+
+  constructor (private readonly favoritesStorage: FavoritesStorage,
+               proposalList: ProposalList) {
+    this.favoritesStorage.onChange(() => this.calculateIsFavoriteSelected())
+    proposalList.onChange(() => {
+      this._proposalListItems = proposalList.proposals
+    })
+  }
+
+  @computed
+  public get selectedProposal (): ProposalListItem | null {
+    return this._selectedProposal
+  }
+
+  public set selectedProposal (value: ProposalListItem | null) {
+    this._selectedProposal = value
+    this.calculateIsFavoriteSelected()
+  }
+
+  @computed
+  public get proposalListItems (): ProposalListItem[] {
+    return this._proposalListItems
+  }
+
+  @computed
+  public get isFavoriteSelected (): boolean {
+    return this._isFavoriteSelected
+  }
 
   @computed
   public get selectedProviderId (): string | null {
@@ -29,5 +64,16 @@ export default class VpnAppState {
     }
 
     return null
+  }
+
+  @action
+  private calculateIsFavoriteSelected () {
+    const proposal = this.selectedProposal
+    if (proposal === null) {
+      this._isFavoriteSelected = false
+      return
+    }
+
+    this._isFavoriteSelected = this.favoritesStorage.has(proposal.providerID)
   }
 }
