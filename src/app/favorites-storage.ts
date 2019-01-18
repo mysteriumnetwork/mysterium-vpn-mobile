@@ -20,7 +20,7 @@ import { EventNotifier } from './domain/observables/event-notifier'
 
 // TODO: move to domain
 export class FavoritesStorage {
-  private favorites: FavoriteProposals = new Map()
+  private favorites: FavoriteProposals = new Set<string>()
   private notifier: EventNotifier = new EventNotifier()
 
   private readonly DEFAULT_SERVICE_TYPE = 'openvpn'
@@ -33,12 +33,18 @@ export class FavoritesStorage {
       return
     }
 
-    this.favorites = this.replaceLegacyIds(this.parseStoredData(storedData))
+    try {
+      this.favorites = this.replaceLegacyIds(this.parseStoredData(storedData))
+    } catch (err) {
+      console.error('Failed to parse data in favorites storage, ignoring')
+      return
+    }
+
     this.invokeListeners()
   }
 
   public async add (proposalId: string): Promise<void> {
-    this.favorites.set(proposalId, true)
+    this.favorites.add(proposalId)
 
     this.invokeListeners()
     await this.saveToStorage()
@@ -52,7 +58,7 @@ export class FavoritesStorage {
   }
 
   public has (proposalId: string): boolean {
-    return !!this.favorites.get(proposalId)
+    return this.favorites.has(proposalId)
   }
 
   public onChange (callback: Callback) {
@@ -60,10 +66,10 @@ export class FavoritesStorage {
   }
 
   private replaceLegacyIds (proposals: FavoriteProposals): FavoriteProposals {
-    const newProposals = new Map()
-    proposals.forEach((value: boolean, key: string) => {
-      const newKey = this.isLegacyId(key) ? this.legacyIdToId(key) : key
-      newProposals.set(newKey, value)
+    const newProposals = new Set()
+    proposals.forEach((id: string) => {
+      const newId = this.isLegacyId(id) ? this.legacyIdToId(id) : id
+      newProposals.add(newId)
     })
     return newProposals
   }
@@ -78,21 +84,20 @@ export class FavoritesStorage {
 
   private parseStoredData (data: any): FavoriteProposals {
     if (data instanceof Array) {
-      return new Map(data)
+      return new Set(data)
     }
 
-    return this.parseMapObject(data)
+    return this.parseSetObject(data)
   }
 
-  private parseMapObject (obj: any): FavoriteProposals {
-    const map = new Map<string, boolean>()
+  private parseSetObject (obj: any): FavoriteProposals {
+    const set = new Set<string>()
     for (const key of Object.keys(obj)) {
-      const value: any = obj[key]
-      if (typeof value === 'boolean') {
-        map.set(key, value)
+      if (obj[key] === true) {
+        set.add(key)
       }
     }
-    return map
+    return set
   }
 
   private async saveToStorage () {
@@ -104,5 +109,5 @@ export class FavoritesStorage {
   }
 }
 
-type FavoriteProposals = Map<string, boolean>
+type FavoriteProposals = Set<string>
 type Callback = () => void

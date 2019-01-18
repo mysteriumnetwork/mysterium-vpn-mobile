@@ -58,6 +58,13 @@ describe('FavoritesStorage', () => {
       await favoritesStorage.fetch()
       expect(favoritesStorage.has('1-openvpn')).toBe(true)
     })
+
+    it('does not change when storage contains invalid data', async () => {
+      await storage.save([null])
+
+      await favoritesStorage.fetch()
+      expect(favoritesStorage.has('1-openvpn')).toBe(false)
+    })
   })
 
   describe('.has', () => {
@@ -98,7 +105,7 @@ describe('FavoritesStorage', () => {
     })
 
     it('notifies after fetching', async () => {
-      await storage.save([['1-openvpn', true]])
+      await storage.save(['1-openvpn'])
 
       expect(notifiedCount).toEqual(1)
       await favoritesStorage.fetch()
@@ -106,11 +113,12 @@ describe('FavoritesStorage', () => {
     })
 
     it('notifies when fetched value is available', async () => {
-      await storage.save([['1-openvpn', true]])
+      await storage.save(['1-openvpn'])
 
       let hasProposal = null
       favoritesStorage.onChange(() => {
         hasProposal = favoritesStorage.has('1-openvpn')
+        console.log('has', hasProposal)
       })
       expect(hasProposal).toBe(false)
       await favoritesStorage.fetch()
@@ -125,6 +133,13 @@ describe('FavoritesStorage', () => {
       await favoritesStorage.add('1-openvpn')
       expect(notifiedCount).toEqual(2)
       expect(notifiedCount2).toEqual(2)
+    })
+
+    it('does not notify when fetching invalid data', async () => {
+      await storage.save([null])
+
+      await favoritesStorage.fetch()
+      expect(notifiedCount).toEqual(1)
     })
   })
 })
