@@ -1,10 +1,10 @@
 import ConnectionEventBuilder, { ConnectionDetails, CountryDetails } from './events/connection-event-builder'
 import ConnectionEventSender from './events/connection-event-sender'
-import { StatisticsTransport } from './transports/statistics-transport'
+import { StatisticsSender } from './senders/statistics-sender'
 
 class StatisticsEventManager {
   constructor (
-    private transport: StatisticsTransport,
+    private transport: StatisticsSender,
     private eventBuilder: ConnectionEventBuilder) {
   }
 

@@ -22,14 +22,14 @@ import ConnectionEventBuilder,
   TimeProvider
 } from '../../../../src/libraries/statistics/events/connection-event-builder'
 import ConnectionEventSender from '../../../../src/libraries/statistics/events/connection-event-sender'
-import MockStatisticsTransport from '../../mocks/mock-statistics-transport'
+import MockStatisticsSender from '../../mocks/mock-statistics-sender'
 import MockTimeProvider from '../../mocks/mock-time-provider'
 import eventFactory from './helpers/event-factory'
 
 describe('StatisticsEventManager', () => {
   let eventBuilder: ConnectionEventBuilder
   let timeProvider: TimeProvider
-  let transport: MockStatisticsTransport
+  let transport: MockStatisticsSender
   let sender: ConnectionEventSender
 
   const emptyCountryDetails: CountryDetails = {
@@ -47,7 +47,7 @@ describe('StatisticsEventManager', () => {
       .setConnectionDetails(emptyConnectionDetails)
       .setCountryDetails(emptyCountryDetails)
 
-    transport = new MockStatisticsTransport()
+    transport = new MockStatisticsSender()
     sender = new ConnectionEventSender(transport, eventBuilder)
   })
 

@@ -15,18 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type StatisticsEvent = {
-  application?: {
-    name: string,
-    version: string
-  },
-  createdAt: number,
-  eventName: string,
-  context: any
+import { StatisticsEvent } from '../../../src/libraries/statistics/events'
+import { StatisticsSender } from '../../../src/libraries/statistics/senders/statistics-sender'
+
+class MockStatisticsSender implements StatisticsSender {
+  public sentEvent?: StatisticsEvent
+
+  public send (event: StatisticsEvent): void {
+    this.sentEvent = event
+  }
 }
 
-interface StatisticsTransport {
-  send (event: StatisticsEvent): void
-}
-
-export { StatisticsTransport }
+export default MockStatisticsSender

@@ -22,10 +22,10 @@ import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
+import ConsoleSender from '../libraries/statistics/senders/console-sender'
+import ElkSender from '../libraries/statistics/senders/elk-sender'
 import StatisticsConfig from '../libraries/statistics/statistics-config'
 import timeProvider from '../libraries/statistics/time-provider'
-import ConsoleTransport from '../libraries/statistics/transports/console-transport'
-import ElkTransport from '../libraries/statistics/transports/elk-transport'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
@@ -46,8 +46,8 @@ import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
 
 import ConnectionEventBuilder from '../libraries/statistics/events/connection-event-builder'
+import { StatisticsSender } from '../libraries/statistics/senders/statistics-sender'
 import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
-import { StatisticsTransport } from '../libraries/statistics/transports/statistics-transport'
 import { StatisticsAdapter } from './adapters/statistics-adapter'
 
 class Container {
@@ -108,17 +108,17 @@ class Container {
 
   private buildStatisticsAdapter () {
     const connectEventBuilder = new ConnectionEventBuilder(timeProvider)
-    const statisticsTransport: StatisticsTransport = this.buildStatisticsTransport()
+    const statisticsTransport: StatisticsSender = this.buildStatisticsTransport()
 
     return new StatisticsEventManager(statisticsTransport, connectEventBuilder)
   }
 
-  private buildStatisticsTransport (): StatisticsTransport {
+  private buildStatisticsTransport (): StatisticsSender {
     if (__DEV__) {
-      return new ConsoleTransport(this.statisticsConfig)
+      return new ConsoleSender(this.statisticsConfig)
     }
 
-    return new ElkTransport(this.statisticsConfig)
+    return new ElkSender(this.statisticsConfig)
   }
 
   private get statisticsConfig (): StatisticsConfig {

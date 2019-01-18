@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StatisticsTransport } from '../transports/statistics-transport'
+import { StatisticsSender } from '../senders/statistics-sender'
 import ConnectionEventBuilder from './connection-event-builder'
 
 class ConnectionEventSender {
-  constructor (private transport: StatisticsTransport, private connectEventBuilder: ConnectionEventBuilder) {}
+  constructor (private transport: StatisticsSender, private connectEventBuilder: ConnectionEventBuilder) {}
 
   public sendSuccessfulConnectionEvent () {
     this.transport.send(this.connectEventBuilder.getEndedEvent())
