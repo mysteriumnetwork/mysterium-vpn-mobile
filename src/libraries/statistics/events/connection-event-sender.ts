@@ -22,15 +22,15 @@ class ConnectionEventSender {
   constructor (private transport: StatisticsSender, private connectEventBuilder: ConnectionEventBuilder) {}
 
   public sendSuccessfulConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.getEndedEvent())
+    this.transport.send(this.connectEventBuilder.buildEndedEvent())
   }
 
   public sendFailedConnectionEvent (error: string) {
-    this.transport.send(this.connectEventBuilder.getFailedEvent(error))
+    this.transport.send(this.connectEventBuilder.buildFailedEvent(error))
   }
 
   public sendCanceledConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.getCanceledEvent())
+    this.transport.send(this.connectEventBuilder.buildCanceledEvent())
   }
 }
 

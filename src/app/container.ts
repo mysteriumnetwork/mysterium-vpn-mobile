@@ -108,12 +108,12 @@ class Container {
 
   private buildStatisticsAdapter () {
     const connectEventBuilder = new ConnectionEventBuilder(timeProvider)
-    const statisticsTransport: StatisticsSender = this.buildStatisticsTransport()
+    const statisticsTransport: StatisticsSender = this.buildStatisticsSender()
 
     return new StatisticsEventManager(statisticsTransport, connectEventBuilder)
   }
 
-  private buildStatisticsTransport (): StatisticsSender {
+  private buildStatisticsSender (): StatisticsSender {
     if (__DEV__) {
       return new ConsoleSender(this.statisticsConfig)
     }

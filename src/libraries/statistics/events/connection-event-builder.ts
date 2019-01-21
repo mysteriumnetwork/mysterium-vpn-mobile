@@ -44,19 +44,19 @@ class ConnectionEventBuilder {
     return this
   }
 
-  public getEndedEvent (): StatisticsEvent {
+  public buildEndedEvent (): StatisticsEvent {
     this.finishBuildingEvent()
 
     return this.getEvent(Events.connectSuccessful)
   }
 
-  public getCanceledEvent (): StatisticsEvent {
+  public buildCanceledEvent (): StatisticsEvent {
     this.finishBuildingEvent()
 
     return this.getEvent(Events.connectCanceled)
   }
 
-  public getFailedEvent (error: string): StatisticsEvent {
+  public buildFailedEvent (error: string): StatisticsEvent {
     this.finishBuildingEvent(error)
 
     return this.getEvent(Events.connectFailed)

@@ -48,7 +48,7 @@ class Connection {
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
     private readonly tequilApiState: TequilApiState,
-    private readonly statisticsManager: StatisticsAdapter
+    private readonly statisticsAdapter: StatisticsAdapter
   ) {
     this._data = initialConnectionData
 
@@ -184,7 +184,7 @@ class Connection {
 
     const connectionDetails = { consumerId, providerId }
 
-    return this.statisticsManager.startConnectionTracking(connectionDetails, countryDetails)
+    return this.statisticsAdapter.startConnectionTracking(connectionDetails, countryDetails)
   }
 }
 

@@ -77,8 +77,8 @@ describe('ConnectionEventBuilder', () => {
     })
   }
 
-  describe('.getEndedEvent', () => {
-    const getEvent = () => eventBuilder.getEndedEvent()
+  describe('.buildEndedEvent', () => {
+    const getEvent = () => eventBuilder.buildEndedEvent()
 
     testStartedAtNotSet(getEvent)
     testCountryDetailsNotSet(getEvent)
@@ -86,9 +86,9 @@ describe('ConnectionEventBuilder', () => {
     testReturnsEvent(getEvent, 'connect_successful')
   })
 
-  describe('.getFailedEvent', () => {
+  describe('.buildFailedEvent', () => {
     const errorMessage = 'Connection failed'
-    const getEvent = () => eventBuilder.getFailedEvent(errorMessage)
+    const getEvent = () => eventBuilder.buildFailedEvent(errorMessage)
 
     testStartedAtNotSet(getEvent)
     testCountryDetailsNotSet(getEvent)
@@ -96,8 +96,8 @@ describe('ConnectionEventBuilder', () => {
     testReturnsEvent(getEvent, 'connect_failed', errorMessage)
   })
 
-  describe('.getCanceledEvent', () => {
-    const getEvent = () => eventBuilder.getCanceledEvent()
+  describe('.buildCanceledEvent', () => {
+    const getEvent = () => eventBuilder.buildCanceledEvent()
 
     testStartedAtNotSet(getEvent)
     testCountryDetailsNotSet(getEvent)
