@@ -19,6 +19,7 @@ import { MetricsDTO, ProposalDTO, ProposalQueryOptions, TequilapiClient } from '
 import { Countries } from '../../libraries/countries'
 import { Metrics } from '../models/metrics'
 import Proposal from '../models/proposal'
+import { stringToServiceType } from '../models/service-type'
 import { ProposalsAdapter } from './proposals-adapter'
 
 class TequilapiProposalsAdapter implements ProposalsAdapter {
@@ -28,16 +29,32 @@ class TequilapiProposalsAdapter implements ProposalsAdapter {
 
   public async findProposals (): Promise<Proposal[]> {
     const options: ProposalQueryOptions = { fetchConnectCounts: true, serviceType: this.SERVICE_TYPE }
-    const proposalsDTO: ProposalDTO[] = await this.tequilapiClient.findProposals(options)
-    return proposalsDTO.map(proposalDtoToModel)
+    const proposalDtos: ProposalDTO[] = await this.tequilapiClient.findProposals(options)
+
+    return proposalDtosToModels(proposalDtos)
   }
 }
 
-function proposalDtoToModel (p: ProposalDTO): Proposal {
-  const countryCode = getCountryCode(p)
+function proposalDtosToModels (dtos: ProposalDTO[]): Proposal[] {
+  const proposals: Proposal[] = []
+  dtos.forEach(dto => {
+    const proposal = proposalDtoToModel(dto)
+    if (proposal !== null) {
+      proposals.push(proposal)
+    }
+  })
+  return proposals
+}
+
+function proposalDtoToModel (dto: ProposalDTO): Proposal | null {
+  const serviceType = stringToServiceType(dto.serviceType)
+  if (serviceType === null) {
+    return null
+  }
+  const countryCode = getCountryCode(dto)
   const countryName = getCountryName(countryCode)
-  const metrics = metricsDtoToModel(p.metrics)
-  return new Proposal(p.providerId, p.serviceType, countryCode, countryName, metrics)
+  const metrics = metricsDtoToModel(dto.metrics)
+  return new Proposal(dto.providerId, serviceType, countryCode, countryName, metrics)
 }
 
 function getCountryCode (p: ProposalDTO): string | null {

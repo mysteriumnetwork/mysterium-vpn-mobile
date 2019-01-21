@@ -16,6 +16,7 @@
  */
 
 import Proposal from '../../../../src/app/models/proposal'
+import { ServiceType } from '../../../../src/app/models/service-type'
 
 const emptyMetrics = {
   connectCount: {
@@ -26,27 +27,27 @@ const emptyMetrics = {
 }
 
 const proposals: Proposal[] = [
-  new Proposal('0x1', 'openvpn', 'lt', 'Lithuania', emptyMetrics),
-  new Proposal('0x1', 'wireguard', 'lt', 'Lithuania', emptyMetrics),
-  new Proposal('0x2', 'openvpn', 'us', 'United States', {
+  new Proposal('0x1', ServiceType.Openvpn, 'lt', 'Lithuania', emptyMetrics),
+  new Proposal('0x1', ServiceType.Wireguard, 'lt', 'Lithuania', emptyMetrics),
+  new Proposal('0x2', ServiceType.Openvpn, 'us', 'United States', {
     connectCount: {
       success: 2,
       fail: 6,
       timeout: 0
     }
   }),
-  new Proposal('0x3', 'openvpn', 'us', 'United States', emptyMetrics),
-  new Proposal('0x4', 'openvpn', 'gb', 'United Kingdom', emptyMetrics),
-  new Proposal('0x5', 'openvpn', 'it', 'Italy', emptyMetrics),
-  new Proposal('0x6', 'openvpn', 'it', 'Italy', {
+  new Proposal('0x3', ServiceType.Openvpn, 'us', 'United States', emptyMetrics),
+  new Proposal('0x4', ServiceType.Openvpn, 'gb', 'United Kingdom', emptyMetrics),
+  new Proposal('0x5', ServiceType.Openvpn, 'it', 'Italy', emptyMetrics),
+  new Proposal('0x6', ServiceType.Openvpn, 'it', 'Italy', {
     connectCount: {
       success: 5,
       fail: 3,
       timeout: 2
     }
   }),
-  new Proposal('0x7', 'openvpn', 'it', 'Italy', emptyMetrics),
-  new Proposal('0x8', 'openvpn', 'al', 'Albania', emptyMetrics)
+  new Proposal('0x7', ServiceType.Openvpn, 'it', 'Italy', emptyMetrics),
+  new Proposal('0x8', ServiceType.Openvpn, 'al', 'Albania', emptyMetrics)
 ]
 
 export default proposals

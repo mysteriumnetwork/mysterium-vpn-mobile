@@ -16,18 +16,19 @@
  */
 
 import Proposal from '../../../../src/app/models/proposal'
+import { ServiceType } from '../../../../src/app/models/service-type'
 
 describe('Proposal', () => {
-  function buildProposal (providerId: string, serviceType: string) {
+  function buildProposal (providerId: string, serviceType: ServiceType) {
     const metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
     return new Proposal(providerId, serviceType, 'lt', 'Lithuania', metrics)
   }
 
   describe('.id', () => {
     it('returns same id for proposals with same provider id and service type', () => {
-      expect(buildProposal('X', 'wireguard').id).toEqual(buildProposal('X', 'wireguard').id)
-      expect(buildProposal('X', 'wireguard').id).not.toEqual(buildProposal('Y', 'wireguard').id)
-      expect(buildProposal('X', 'wireguard').id).not.toEqual(buildProposal('X', 'openvpn').id)
+      expect(buildProposal('X', ServiceType.Wireguard).id).toEqual(buildProposal('X', ServiceType.Wireguard).id)
+      expect(buildProposal('X', ServiceType.Wireguard).id).not.toEqual(buildProposal('Y', ServiceType.Wireguard).id)
+      expect(buildProposal('X', ServiceType.Wireguard).id).not.toEqual(buildProposal('X', ServiceType.Openvpn).id)
     })
   })
 })
