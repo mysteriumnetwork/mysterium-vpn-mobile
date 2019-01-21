@@ -20,7 +20,7 @@ import { Image, ImageRequireSource, StyleSheet, ViewStyle } from 'react-native'
 import { ServiceType } from '../../models/service-type'
 
 type ServiceIndicatorProps = {
-  serviceType: string,
+  serviceType: ServiceType,
   style?: ViewStyle
 }
 
@@ -31,11 +31,14 @@ const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, style
   )
 }
 
-function getIconImage (serviceType: string): ImageRequireSource {
+function getIconImage (serviceType: ServiceType): ImageRequireSource {
   if (serviceType === ServiceType.Openvpn) {
     return require('../../../assets/services/openvpn.png')
   }
-  return require('../../../assets/services/wireguard.png')
+  if (serviceType === ServiceType.Wireguard) {
+    return require('../../../assets/services/wireguard.png')
+  }
+  throw new Error('Unknown service type')
 }
 
 const ICON_SIZE = 20
