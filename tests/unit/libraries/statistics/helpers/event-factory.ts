@@ -24,7 +24,7 @@ function eventFactory (name: string, error?: string | null) {
       timeDelta: 1,
       originalCountry: 'original country',
       providerCountry: 'provider country',
-      connectDetails: { consumerId: 'consumer id', providerId: 'provider id' },
+      connectDetails: { consumerId: 'consumer id', serviceType: 'openvpn', providerId: 'provider id' },
       error
     },
     createdAt: 1

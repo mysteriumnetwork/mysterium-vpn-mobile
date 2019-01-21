@@ -37,7 +37,11 @@ describe('ConnectionEventSender', () => {
     originalCountry: 'original country'
   }
 
-  const emptyConnectionDetails: ConnectionDetails = { providerId: 'provider id', consumerId: 'consumer id' }
+  const emptyConnectionDetails: ConnectionDetails = {
+    providerId: 'provider id',
+    serviceType: 'openvpn',
+    consumerId: 'consumer id'
+  }
 
   beforeEach(() => {
     timeProvider = (new MockTimeProvider()).timeProvider
