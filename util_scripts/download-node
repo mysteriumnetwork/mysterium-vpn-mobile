@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
 NODE_VERSION=0.5
+
+mkdir android/app/libs
+
 curl -L https://github.com/mysteriumnetwork/node/releases/download/${NODE_VERSION}/Mysterium.aar \
     --output android/app/libs/Mysterium.aar
