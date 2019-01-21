@@ -115,14 +115,17 @@ class VpnScreen extends React.Component<HomeProps> {
   }
 
   private async connect () {
-    const providerId = this.vpnAppState.selectedProviderId
+    const proposal = this.vpnAppState.selectedProposal
 
-    if (!providerId) {
+    if (!proposal) {
       this.messageDisplay.showInfo(messages.COUNTRY_NOT_SELECTED)
       return
     }
 
-    await this.tequilAPIDriver.connect(providerId)
+    await this.tequilAPIDriver.connect(
+      proposal.providerID,
+      proposal.countryCode ? proposal.countryCode : ''
+    )
   }
 }
 

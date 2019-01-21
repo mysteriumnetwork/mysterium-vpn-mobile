@@ -41,6 +41,14 @@ import ProposalsStore from './stores/proposals-store'
 import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
 
+import ConsoleSender from '../libraries/statistics/senders/console-sender'
+import ElkSender from '../libraries/statistics/senders/elk-sender'
+import { StatisticsSender } from '../libraries/statistics/senders/statistics-sender'
+import StatisticsConfig from '../libraries/statistics/statistics-config'
+import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
+import timeProvider from '../libraries/statistics/time-provider'
+import { StatisticsAdapter } from './adapters/statistics-adapter'
+
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
   public readonly tequilApiState = new TequilApiState()
@@ -51,8 +59,11 @@ class Container {
   public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
+  public readonly statisticsAdapter: StatisticsAdapter = this.buildStatisticsAdapter()
   // domain
-  public readonly connection = new Connection(this.connectionAdapter, this.tequilApiState)
+  public readonly connection =
+    new Connection(this.connectionAdapter, this.tequilApiState, this.statisticsAdapter)
+
   public readonly terms: Terms = this.buildTerms()
 
   // stores
@@ -92,6 +103,32 @@ class Container {
 
   private useFabric () {
     return Platform.OS === 'android' && !__DEV__
+  }
+
+  private buildStatisticsAdapter () {
+    const statisticsSender: StatisticsSender = this.buildStatisticsSender()
+
+    return new StatisticsEventManager(statisticsSender, timeProvider)
+  }
+
+  private buildStatisticsSender (): StatisticsSender {
+    if (__DEV__) {
+      return new ConsoleSender(this.statisticsConfig)
+    }
+
+    return new ElkSender(this.statisticsConfig)
+  }
+
+  private get statisticsConfig (): StatisticsConfig {
+    const pkg = require('./../../package.json')
+
+    return {
+      applicationInfo: {
+        name: 'mobile',
+        version: pkg.version
+      },
+      elkUrl: 'http://metrics.mysterium.network:8091'
+    }
   }
 }
 
