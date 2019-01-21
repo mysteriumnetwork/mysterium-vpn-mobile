@@ -16,19 +16,29 @@
  */
 
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import IConnectionAdapter from '../../../src/app/adapters/connection-adapter'
+import IConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapters/connection-adapter'
 import ConnectionStatistics from '../../../src/app/models/connection-statistics'
 import ConnectionStatus from '../../../src/app/models/connection-status'
 import Ip from '../../../src/app/models/ip'
 
 export class MockConnectionAdapter implements IConnectionAdapter {
   public mockStatus: ConnectionStatus = 'Connected'
+  public throwConnectError: boolean = false
+  public throwConnectCancelledError: boolean = false
 
   public connectedConsumerId?: string
   public connectedProviderId?: string
   public connectedServiceType?: string
 
   public async connect (consumerId: string, providerId: string, serviceType: string) {
+    if (this.throwConnectError) {
+      throw new Error('Connection failed')
+    }
+
+    if (this.throwConnectCancelledError) {
+      throw new ConnectionCanceled()
+    }
+
     this.connectedConsumerId = consumerId
     this.connectedProviderId = providerId
     this.connectedServiceType = serviceType
@@ -52,5 +62,9 @@ export class MockConnectionAdapter implements IConnectionAdapter {
 
   public async fetchIp (): Promise<Ip> {
     return '100.101.102.103'
+  }
+
+  public async fetchOriginalLocation (): Promise<string> {
+    return 'lt'
   }
 }

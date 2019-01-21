@@ -19,6 +19,8 @@ import Connection from '../../../../src/app/domain/connection'
 import { ServiceType } from '../../../../src/app/models/service-type'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
+import MockConnectionEventAdapter from '../../mocks/mock-connection-event-adapter'
+import MockStatisticsAdapter from '../../mocks/mock-statistics-adapter'
 
 function nextTick (): Promise<void> {
   return new Promise((resolve) => {
@@ -32,11 +34,15 @@ describe('Connection', () => {
   let connection: Connection
   let connectionAdapter: MockConnectionAdapter
   let state: TequilApiState
+  let connectionEventAdapter: MockConnectionEventAdapter
+  let statisticsAdapter: MockStatisticsAdapter
 
   beforeEach(() => {
     state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
-    connection = new Connection(connectionAdapter, state)
+    connectionEventAdapter = new MockConnectionEventAdapter()
+    statisticsAdapter = new MockStatisticsAdapter(connectionEventAdapter)
+    connection = new Connection(connectionAdapter, state, statisticsAdapter)
   })
 
   describe('.startUpdating', () => {
@@ -67,16 +73,34 @@ describe('Connection', () => {
 
   describe('.connect', () => {
     it('changes connecting status to connecting', async () => {
-      const promise = connection.connect('consumer id', 'provider id', ServiceType.Openvpn)
+      const promise = connection.connect('consumer id', 'provider id', ServiceType.Openvpn, '')
       expect(connection.data.status).toEqual('Connecting')
       await promise
     })
 
     it('connects to service', async () => {
-      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn)
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, '')
       expect(connectionAdapter.connectedConsumerId).toEqual('consumer id')
       expect(connectionAdapter.connectedProviderId).toEqual('provider id')
       expect(connectionAdapter.connectedServiceType).toEqual(ServiceType.Openvpn)
+    })
+
+    it('sends successful connection event', async () => {
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, 'us')
+      expect(connectionEventAdapter.sentSuccessEvent).toBeTruthy()
+    })
+
+    it('sends failed connection event', async () => {
+      connectionAdapter.throwConnectError = true
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, 'us')
+      expect(connectionEventAdapter.sentFailedEvent).toBeTruthy()
+      expect(connectionEventAdapter.eventErrorMessage).toEqual('Connection failed')
+    })
+
+    it('sends connection canceled event', async () => {
+      connectionAdapter.throwConnectCancelledError = true
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, 'us')
+      expect(connectionEventAdapter.sentCanceledEvent).toBeTruthy()
     })
   })
 

@@ -21,7 +21,11 @@ import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import TequilApiState from '../../libraries/tequil-api/tequil-api-state'
-import IConnectionAdapter from '../adapters/connection-adapter'
+import IConnectionAdapter, { ConnectionCanceled } from '../adapters/connection-adapter'
+import {
+  ConnectionEventAdapter,
+  StatisticsAdapter
+} from '../adapters/statistics-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
@@ -44,7 +48,9 @@ class Connection {
 
   constructor (
     private readonly connectionAdapter: IConnectionAdapter,
-    private readonly tequilApiState: TequilApiState) {
+    private readonly tequilApiState: TequilApiState,
+    private readonly statisticsAdapter: StatisticsAdapter
+  ) {
     this._data = initialConnectionData
 
     this.dataPublisher = new ValuePublisher<ConnectionData>(this.data)
@@ -69,12 +75,22 @@ class Connection {
     this.statsFetcher.stop()
   }
 
-  public async connect (consumerId: string, providerId: string, serviceType: ServiceType) {
+  public async connect (consumerId: string, providerId: string, serviceType: ServiceType, providerCountryCode: string) {
     this.resetIP()
     this.setStatusToConnecting()
 
-    await this.connectionAdapter.connect(consumerId, providerId, serviceType)
-    console.log('Connected')
+    const connectionEventBuilder = await this.startConnectionTracking(providerId, consumerId, providerCountryCode)
+
+    try {
+      await this.connectionAdapter.connect(consumerId, providerId, serviceType)
+      console.log('Connected')
+
+      connectionEventBuilder.sendSuccessfulConnectionEvent()
+    } catch (error) {
+      error instanceof ConnectionCanceled
+        ? connectionEventBuilder.sendCanceledConnectionEvent()
+        : connectionEventBuilder.sendFailedConnectionEvent(error.message)
+    }
   }
 
   public async disconnect () {
@@ -157,6 +173,20 @@ class Connection {
 
     this.dataPublisher.publish(data)
     this._data = data
+  }
+
+  private async startConnectionTracking (
+    providerId: string,
+    consumerId: string,
+    providerCountryCode: string): Promise<ConnectionEventAdapter> {
+    const countryDetails = {
+      originalCountry: await this.connectionAdapter.fetchOriginalLocation(),
+      providerCountry: providerCountryCode
+    }
+
+    const connectionDetails = { consumerId, providerId }
+
+    return this.statisticsAdapter.startConnectionTracking(connectionDetails, countryDetails)
   }
 }
 
