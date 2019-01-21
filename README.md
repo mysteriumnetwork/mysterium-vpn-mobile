@@ -38,6 +38,12 @@ Install Android SDK, export `ANDROID_HOME` to SDK location, i.e.:
 export ANDROID_HOME=/Users/<username>/Library/Android/sdk/
 ```
 
+Download mobile node dependency:
+
+```bash
+./util_scripts/download-node
+```
+
 Run app on default device (connected or emulator)
 ```bash
 yarn android
