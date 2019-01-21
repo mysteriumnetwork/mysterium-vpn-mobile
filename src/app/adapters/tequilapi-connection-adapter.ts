@@ -29,11 +29,8 @@ class TequilapiConnectionAdapter implements IConnectionAdapter {
   }
 
   public async connect (consumerId: string, providerId: string, serviceType: ServiceType): Promise<void> {
-    const connectionDetails = { consumerId, providerId, serviceType }
     try {
-      const connection = await this.tequilapiClient.connectionCreate({
-        ...connectionDetails
-      })
+      const connection = await this.tequilapiClient.connectionCreate({ consumerId, providerId, serviceType })
 
       console.log(`Connect returned status: ${JSON.stringify(connection)}`)
     } catch (e) {

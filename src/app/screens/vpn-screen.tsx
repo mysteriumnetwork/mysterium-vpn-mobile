@@ -120,7 +120,7 @@ class VpnScreen extends React.Component<HomeProps> {
       return
     }
 
-    return this.favorites.toggle(proposal)
+    return this.favorites.toggle(proposal.id)
   }
 
   private async connect () {

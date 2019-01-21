@@ -1,5 +1,3 @@
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
-
 interface IFavoritesStorage {
   has (proposalId: string): boolean
   add (proposalId: string): Promise<void>
@@ -9,11 +7,11 @@ interface IFavoritesStorage {
 class Favorites {
   constructor (private favoritesStorage: IFavoritesStorage) {}
 
-  public async toggle (proposal: ProposalListItem) {
-    if (!this.favoritesStorage.has(proposal.id)) {
-      await this.favoritesStorage.add(proposal.id)
+  public async toggle (proposalId: string) {
+    if (!this.favoritesStorage.has(proposalId)) {
+      await this.favoritesStorage.add(proposalId)
     } else {
-      await this.favoritesStorage.remove(proposal.id)
+      await this.favoritesStorage.remove(proposalId)
     }
   }
 }
