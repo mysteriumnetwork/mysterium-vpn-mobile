@@ -15,10 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ServiceType } from '../../models/service-type'
+
 interface ProposalListItem {
   id: string,
   providerID: string,
-  serviceType: string,
+  serviceType: ServiceType,
   countryCode: string | null,
   countryName: string | null,
   isFavorite: boolean,

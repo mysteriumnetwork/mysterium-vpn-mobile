@@ -19,6 +19,7 @@ import { autorun, IReactionDisposer } from 'mobx'
 import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
 import { FavoritesStorage } from '../../../src/app/favorites-storage'
 import Proposal from '../../../src/app/models/proposal'
+import { ServiceType } from '../../../src/app/models/service-type'
 import ProposalList from '../../../src/app/proposals/proposal-list'
 import ProposalsStore from '../../../src/app/stores/proposals-store'
 import VpnAppState from '../../../src/app/vpn-app-state'
@@ -61,7 +62,7 @@ describe('VpnAppState', () => {
     it('becomes true when selecting favorite proposal', async () => {
       const proposal: ProposalListItem = {
         id: 'testProviderId-openvpn',
-        serviceType: 'openvpn',
+        serviceType: ServiceType.Openvpn,
         providerID: 'testProviderId',
         countryCode: null,
         countryName: null,
@@ -78,7 +79,7 @@ describe('VpnAppState', () => {
     it('becomes true when marking selected proposal as favorite', async () => {
       const proposal: ProposalListItem = {
         id: 'testProviderId-openvpn',
-        serviceType: 'openvpn',
+        serviceType: ServiceType.Openvpn,
         providerID: 'testProviderId',
         countryCode: null,
         countryName: null,

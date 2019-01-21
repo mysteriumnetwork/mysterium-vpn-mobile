@@ -16,6 +16,7 @@
  */
 
 import Connection from '../../../../src/app/domain/connection'
+import { ServiceType } from '../../../../src/app/models/service-type'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 
@@ -66,16 +67,16 @@ describe('Connection', () => {
 
   describe('.connect', () => {
     it('changes connecting status to connecting', async () => {
-      const promise = connection.connect('consumer id', 'provider id', 'openvpn')
+      const promise = connection.connect('consumer id', 'provider id', ServiceType.Openvpn)
       expect(connection.data.status).toEqual('Connecting')
       await promise
     })
 
     it('connects to service', async () => {
-      await connection.connect('consumer id', 'provider id', 'openvpn')
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn)
       expect(connectionAdapter.connectedConsumerId).toEqual('consumer id')
       expect(connectionAdapter.connectedProviderId).toEqual('provider id')
-      expect(connectionAdapter.connectedServiceType).toEqual('openvpn')
+      expect(connectionAdapter.connectedServiceType).toEqual(ServiceType.Openvpn)
     })
   })
 

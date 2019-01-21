@@ -26,6 +26,7 @@ import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
+import { ServiceType } from '../models/service-type'
 import ValuePublisher, { Callback } from './observables/value-publisher'
 
 class Connection {
@@ -68,7 +69,7 @@ class Connection {
     this.statsFetcher.stop()
   }
 
-  public async connect (consumerId: string, providerId: string, serviceType: string) {
+  public async connect (consumerId: string, providerId: string, serviceType: ServiceType) {
     this.resetIP()
     this.setStatusToConnecting()
 

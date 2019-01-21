@@ -17,6 +17,7 @@
 
 import React from 'react'
 import { Image, ImageRequireSource, StyleSheet, ViewStyle } from 'react-native'
+import { ServiceType } from '../../models/service-type'
 
 type ServiceIndicatorProps = {
   serviceType: string,
@@ -31,7 +32,7 @@ const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, style
 }
 
 function getIconImage (serviceType: string): ImageRequireSource {
-  if (serviceType === 'openvpn') {
+  if (serviceType === ServiceType.Openvpn) {
     return require('../../../assets/services/openvpn.png')
   }
   return require('../../../assets/services/wireguard.png')

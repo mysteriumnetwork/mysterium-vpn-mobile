@@ -17,13 +17,14 @@
 
 import StorageAdapter from './adapters/storage-adapter'
 import { EventNotifier } from './domain/observables/event-notifier'
+import { ServiceType } from './models/service-type'
 
 // TODO: move to domain
 export class FavoritesStorage {
   private favorites: FavoriteProposals = new Set<string>()
   private notifier: EventNotifier = new EventNotifier()
 
-  private readonly DEFAULT_SERVICE_TYPE = 'openvpn'
+  private readonly DEFAULT_SERVICE_TYPE = ServiceType.Openvpn
 
   constructor (private storage: StorageAdapter) {}
 
