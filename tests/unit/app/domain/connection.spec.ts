@@ -16,6 +16,7 @@
  */
 
 import Connection from '../../../../src/app/domain/connection'
+import { ServiceType } from '../../../../src/app/models/service-type'
 import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 import MockConnectionEventAdapter from '../../mocks/mock-connection-event-adapter'
@@ -72,26 +73,33 @@ describe('Connection', () => {
 
   describe('.connect', () => {
     it('changes connecting status to connecting', async () => {
-      const promise = connection.connect('consumer id', 'provider id', '')
+      const promise = connection.connect('consumer id', 'provider id', ServiceType.Openvpn, '')
       expect(connection.data.status).toEqual('Connecting')
       await promise
     })
 
+    it('connects to service', async () => {
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, '')
+      expect(connectionAdapter.connectedConsumerId).toEqual('consumer id')
+      expect(connectionAdapter.connectedProviderId).toEqual('provider id')
+      expect(connectionAdapter.connectedServiceType).toEqual(ServiceType.Openvpn)
+    })
+
     it('sends successful connection event', async () => {
-      await connection.connect('consumer id', 'provider id', 'us')
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, 'us')
       expect(connectionEventAdapter.sentSuccessEvent).toBeTruthy()
     })
 
     it('sends failed connection event', async () => {
       connectionAdapter.throwConnectError = true
-      await connection.connect('consumer id', 'provider id', 'us')
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, 'us')
       expect(connectionEventAdapter.sentFailedEvent).toBeTruthy()
       expect(connectionEventAdapter.eventErrorMessage).toEqual('Connection failed')
     })
 
     it('sends connection canceled event', async () => {
       connectionAdapter.throwConnectCancelledError = true
-      await connection.connect('consumer id', 'provider id', 'us')
+      await connection.connect('consumer id', 'provider id', ServiceType.Openvpn, 'us')
       expect(connectionEventAdapter.sentCanceledEvent).toBeTruthy()
     })
   })

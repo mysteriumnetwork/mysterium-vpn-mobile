@@ -36,38 +36,60 @@ describe('FavoritesStorage', () => {
   describe('.fetch', () => {
     it('loads previously saved data', async () => {
       const anotherStorage = new FavoritesStorage(storage)
-      await anotherStorage.add('1')
+      await anotherStorage.add('1-openvpn')
 
       await favoritesStorage.fetch()
-      expect(favoritesStorage.has('1')).toBe(true)
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
     })
 
-    it('loads observable map', async () => {
+    it('loads observable map with legacy ids', async () => {
       const observableMap = observable.map()
       observableMap.set('1', true)
       await storage.save(observableMap)
 
       await favoritesStorage.fetch()
-      expect(favoritesStorage.has('1')).toBe(true)
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
+    })
+
+    it('loads legacy ids', async () => {
+      const anotherStorage = new FavoritesStorage(storage)
+      await anotherStorage.add('1')
+
+      await favoritesStorage.fetch()
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
+    })
+
+    it('does not change when storage contains invalid data', async () => {
+      await storage.save([null])
+
+      await favoritesStorage.fetch()
+      expect(favoritesStorage.has('1-openvpn')).toBe(false)
     })
   })
 
   describe('.has', () => {
     it('returns true if storage contains requested key', async () => {
-      await favoritesStorage.add('3')
-      expect(favoritesStorage.has('3')).toBe(true)
+      await favoritesStorage.add('1-openvpn')
+      expect(favoritesStorage.has('1-openvpn')).toBe(true)
+
+      await favoritesStorage.add('1-wireguard')
+      expect(favoritesStorage.has('1-wireguard')).toBe(true)
     })
 
     it('returns false if storage does not contain requested key', async () => {
-      expect(favoritesStorage.has('3')).toBe(false)
+      expect(favoritesStorage.has('1-openvpn')).toBe(false)
     })
   })
 
   describe('.remove', () => {
     it('removes passed proposalId from favorites', async () => {
-      await favoritesStorage.add('3')
-      await favoritesStorage.remove('3')
-      expect(favoritesStorage.has('3')).toBe(false)
+      await favoritesStorage.add('1-openvpn')
+      await favoritesStorage.remove('1-openvpn')
+      expect(favoritesStorage.has('1-openvpn')).toBe(false)
+
+      await favoritesStorage.add('1-wireguard')
+      await favoritesStorage.remove('1-wireguard')
+      expect(favoritesStorage.has('1-wireguard')).toBe(false)
     })
   })
 
@@ -75,19 +97,32 @@ describe('FavoritesStorage', () => {
     it('notifies instantly and about changes', async () => {
       expect(notifiedCount).toEqual(1)
 
-      await favoritesStorage.add('3')
+      await favoritesStorage.add('1-openvpn')
       expect(notifiedCount).toEqual(2)
 
-      await favoritesStorage.remove('3')
+      await favoritesStorage.remove('1-openvpn')
       expect(notifiedCount).toEqual(3)
     })
 
     it('notifies after fetching', async () => {
-      await storage.save(new Map([['1', true]]))
+      await storage.save(['1-openvpn'])
 
       expect(notifiedCount).toEqual(1)
       await favoritesStorage.fetch()
       expect(notifiedCount).toEqual(2)
+    })
+
+    it('notifies when fetched value is available', async () => {
+      await storage.save(['1-openvpn'])
+
+      let hasProposal = null
+      favoritesStorage.onChange(() => {
+        hasProposal = favoritesStorage.has('1-openvpn')
+        console.log('has', hasProposal)
+      })
+      expect(hasProposal).toBe(false)
+      await favoritesStorage.fetch()
+      expect(hasProposal).toBe(true)
     })
 
     it('works with multiple subscribers', async () => {
@@ -95,9 +130,16 @@ describe('FavoritesStorage', () => {
       favoritesStorage.onChange(() => {
         notifiedCount2++
       })
-      await favoritesStorage.add('1')
+      await favoritesStorage.add('1-openvpn')
       expect(notifiedCount).toEqual(2)
       expect(notifiedCount2).toEqual(2)
+    })
+
+    it('does not notify when fetching invalid data', async () => {
+      await storage.save([null])
+
+      await favoritesStorage.fetch()
+      expect(notifiedCount).toEqual(1)
     })
   })
 })

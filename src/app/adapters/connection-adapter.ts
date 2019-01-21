@@ -18,10 +18,11 @@
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
+import { ServiceType } from '../models/service-type'
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
 interface IConnectionAdapter {
-  connect (consumerId: string, providerId: string): Promise<void>
+  connect (consumerId: string, providerId: string, serviceType: ServiceType): Promise<void>
   disconnect (): Promise<void>
   fetchStatus (): Promise<ConnectionStatusDTO>
   fetchStatistics (): Promise<ConnectionStatistics>

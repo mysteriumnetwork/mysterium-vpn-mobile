@@ -20,6 +20,7 @@ import Connection from '../../app/domain/connection'
 
 import IMessageDisplay from '../../app/messages/message-display'
 import messages from '../../app/messages/messages'
+import { ServiceType } from '../../app/models/service-type'
 import { CONFIG } from '../../config'
 import TequilApiState from './tequil-api-state'
 
@@ -42,7 +43,7 @@ export default class TequilApiDriver {
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
-  public async connect (providerId: string, providerCountryCode: string): Promise<void> {
+  public async connect (providerId: string, serviceType: ServiceType, providerCountryCode: string): Promise<void> {
     const consumerId = this.tequilApiState.identityId
     if (!consumerId) {
       console.error('Identity required for connect is not set', this.tequilApiState)
@@ -50,7 +51,7 @@ export default class TequilApiDriver {
     }
 
     try {
-      await this.connection.connect(consumerId, providerId, providerCountryCode)
+      await this.connection.connect(consumerId, providerId, serviceType, providerCountryCode)
     } catch (e) {
       this.messageDisplay.showError(messages.CONNECT_FAILED)
       console.warn('Connect failed', e)

@@ -117,6 +117,7 @@ type TimeProvider = () => Time
 
 type ConnectionDetails = {
   consumerId: string,
+  serviceType: string,
   providerId: string
 }
 

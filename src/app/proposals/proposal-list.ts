@@ -4,31 +4,31 @@ import { QualityCalculator } from '../domain/quality-calculator'
 import Proposal from '../models/proposal'
 import translations from '../translations'
 
-interface IProposalList {
+interface IProposalsStore {
   proposals: Proposal[]
   onChange (callback: () => void): void
 }
 
 interface IFavoritesStorage {
-  has (id: string): boolean
+  has (proposalId: string): boolean
   onChange (listener: Callback): void
 }
 
 class ProposalList {
-  protected proposalList: IProposalList
+  protected proposalsStore: IProposalsStore
   protected favorites: IFavoritesStorage
   private readonly qualityCalculator: QualityCalculator = new QualityCalculator()
   private changeNotifier: EventNotifier = new EventNotifier()
 
-  constructor (proposalList: IProposalList, favorites: IFavoritesStorage) {
-    this.proposalList = proposalList
+  constructor (proposalsStore: IProposalsStore, favorites: IFavoritesStorage) {
+    this.proposalsStore = proposalsStore
     this.favorites = favorites
 
     this.receiveChangesFromDependencies()
   }
 
   public get proposals (): ProposalListItem[] {
-    const proposals = this.proposalList.proposals
+    const proposals = this.proposalsStore.proposals
       .map((proposal: Proposal) => this.proposalToProposalItem(proposal))
       .sort(compareProposalItems)
 
@@ -42,15 +42,17 @@ class ProposalList {
   private receiveChangesFromDependencies () {
     const notifyChange = () => this.changeNotifier.notify()
     this.favorites.onChange(notifyChange)
-    this.proposalList.onChange(notifyChange)
+    this.proposalsStore.onChange(notifyChange)
   }
 
   private proposalToProposalItem (proposal: Proposal): ProposalListItem {
     return {
+      id: proposal.id,
       providerID: proposal.providerID,
+      serviceType: proposal.serviceType,
       countryCode: proposal.countryCode,
       countryName: proposal.countryName,
-      isFavorite: this.favorites.has(proposal.providerID),
+      isFavorite: this.favorites.has(proposal.id),
       quality: this.qualityCalculator.calculate(proposal.metrics)
     }
   }

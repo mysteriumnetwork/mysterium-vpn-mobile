@@ -1,23 +1,17 @@
 interface IFavoritesStorage {
-  has (id: string): boolean
-
-  add (id: string): Promise<void>
-
-  remove (id: string): Promise<void>
+  has (proposalId: string): boolean
+  add (proposalId: string): Promise<void>
+  remove (proposalId: string): Promise<void>
 }
 
 class Favorites {
   constructor (private favoritesStorage: IFavoritesStorage) {}
 
-  public async toggle (id: string | null) {
-    if (!id) {
-      return
-    }
-
-    if (!this.favoritesStorage.has(id)) {
-      await this.favoritesStorage.add(id)
+  public async toggle (proposalId: string) {
+    if (!this.favoritesStorage.has(proposalId)) {
+      await this.favoritesStorage.add(proposalId)
     } else {
-      await this.favoritesStorage.remove(id)
+      await this.favoritesStorage.remove(proposalId)
     }
   }
 }

@@ -19,6 +19,7 @@ import { autorun, IReactionDisposer } from 'mobx'
 import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
 import { FavoritesStorage } from '../../../src/app/favorites-storage'
 import Proposal from '../../../src/app/models/proposal'
+import { ServiceType } from '../../../src/app/models/service-type'
 import ProposalList from '../../../src/app/proposals/proposal-list'
 import ProposalsStore from '../../../src/app/stores/proposals-store'
 import VpnAppState from '../../../src/app/vpn-app-state'
@@ -60,13 +61,15 @@ describe('VpnAppState', () => {
 
     it('becomes true when selecting favorite proposal', async () => {
       const proposal: ProposalListItem = {
-        providerID: 'test proposal',
+        id: 'testProviderId-openvpn',
+        serviceType: ServiceType.Openvpn,
+        providerID: 'testProviderId',
         countryCode: null,
         countryName: null,
         isFavorite: true,
         quality: null
       }
-      await favoritesStorage.add(proposal.providerID)
+      await favoritesStorage.add(proposal.id)
 
       expect(favoriteSelected).toBe(false)
       state.selectedProposal = proposal
@@ -75,7 +78,9 @@ describe('VpnAppState', () => {
 
     it('becomes true when marking selected proposal as favorite', async () => {
       const proposal: ProposalListItem = {
-        providerID: 'test proposal',
+        id: 'testProviderId-openvpn',
+        serviceType: ServiceType.Openvpn,
+        providerID: 'testProviderId',
         countryCode: null,
         countryName: null,
         isFavorite: true,
@@ -84,7 +89,7 @@ describe('VpnAppState', () => {
       state.selectedProposal = proposal
 
       expect(favoriteSelected).toBe(false)
-      await favoritesStorage.add(proposal.providerID)
+      await favoritesStorage.add(proposal.id)
       expect(favoriteSelected).toBe(true)
     })
   })

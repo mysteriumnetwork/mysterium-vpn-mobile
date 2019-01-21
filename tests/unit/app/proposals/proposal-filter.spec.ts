@@ -14,7 +14,7 @@ describe('ProposalFilter', () => {
     })
 
     it('should find all', () => {
-      expect(proposalFilter.filterByText('')).toHaveLength(8)
+      expect(proposalFilter.filterByText('')).toHaveLength(9)
     })
 
     it('should find proposal label by country name', () => {
@@ -40,7 +40,9 @@ describe('ProposalFilter', () => {
 
 const convertProposalToIProposal = (proposal: Proposal): ProposalListItem => {
   return {
+    id: proposal.id,
     providerID: proposal.providerID,
+    serviceType: proposal.serviceType,
     countryCode: proposal.countryCode,
     countryName: proposal.countryName,
     isFavorite: true,

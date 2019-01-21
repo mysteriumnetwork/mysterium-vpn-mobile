@@ -30,6 +30,7 @@ import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
 import Ip from '../models/ip'
+import { ServiceType } from '../models/service-type'
 import ValuePublisher, { Callback } from './observables/value-publisher'
 
 class Connection {
@@ -74,14 +75,15 @@ class Connection {
     this.statsFetcher.stop()
   }
 
-  public async connect (consumerId: string, providerId: string, providerCountryCode: string) {
+  public async connect (consumerId: string, providerId: string, serviceType: ServiceType, providerCountryCode: string) {
     this.resetIP()
     this.setStatusToConnecting()
 
     const connectionEventBuilder = await this.startConnectionTracking(providerId, consumerId, providerCountryCode)
 
     try {
-      await this.connectionAdapter.connect(consumerId, providerId)
+      await this.connectionAdapter.connect(consumerId, providerId, serviceType)
+      console.log('Connected')
 
       connectionEventBuilder.sendSuccessfulConnectionEvent()
     } catch (error) {

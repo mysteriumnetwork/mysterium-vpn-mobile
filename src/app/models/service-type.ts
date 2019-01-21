@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,20 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function eventFactory (name: string, error?: string | null) {
-  return {
-    eventName: name,
-    context: {
-      startedAt: { utcTime: 1, localTime: 1 },
-      endedAt: { utcTime: 2, localTime: 2 },
-      timeDelta: 1,
-      originalCountry: 'original country',
-      providerCountry: 'provider country',
-      connectDetails: { consumerId: 'consumer id', serviceType: 'openvpn', providerId: 'provider id' },
-      error
-    },
-    createdAt: 1
-  }
+export enum ServiceType {
+  Wireguard = 'wireguard',
+  Openvpn = 'openvpn'
 }
 
-export default eventFactory
+export function stringToServiceType(string: string): ServiceType | null {
+  for (let key in ServiceType) {
+    const value = ServiceType[key]
+    if (string === value) {
+      return value as ServiceType
+    }
+  }
+  return null
+}

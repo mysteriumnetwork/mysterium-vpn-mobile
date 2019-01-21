@@ -17,11 +17,14 @@
 
 import StorageAdapter from './adapters/storage-adapter'
 import { EventNotifier } from './domain/observables/event-notifier'
+import { ServiceType } from './models/service-type'
 
 // TODO: move to domain
 export class FavoritesStorage {
-  private favorites: FavoriteProposals = new Map()
+  private favorites: FavoriteProposals = new Set<string>()
   private notifier: EventNotifier = new EventNotifier()
+
+  private readonly DEFAULT_SERVICE_TYPE = ServiceType.Openvpn
 
   constructor (private storage: StorageAdapter) {}
 
@@ -30,49 +33,72 @@ export class FavoritesStorage {
     if (storedData === null) {
       return
     }
-    const map = this.parseStoredData(storedData)
-    this.invokeListeners()
 
-    this.favorites = map
+    try {
+      this.favorites = this.replaceLegacyIds(this.parseStoredData(storedData))
+    } catch (err) {
+      console.error('Failed to parse data in favorites storage, ignoring')
+      return
+    }
+
+    this.invokeListeners()
   }
 
   public async add (proposalId: string): Promise<void> {
-    this.favorites.set(proposalId, true)
+    this.favorites.add(proposalId)
+
     this.invokeListeners()
     await this.saveToStorage()
   }
 
   public async remove (proposalId: string): Promise<void> {
     this.favorites.delete(proposalId)
+
     this.invokeListeners()
     await this.saveToStorage()
   }
 
   public has (proposalId: string): boolean {
-    return !!this.favorites.get(proposalId)
+    return this.favorites.has(proposalId)
   }
 
   public onChange (callback: Callback) {
     this.notifier.subscribe(callback)
   }
 
-  private parseStoredData (data: any): FavoriteProposals {
-    if (data instanceof Array) {
-      return new Map(data)
-    } else {
-      return this.parseMapObject(data)
-    }
+  private replaceLegacyIds (proposals: FavoriteProposals): FavoriteProposals {
+    const newProposals = new Set()
+    proposals.forEach((id: string) => {
+      const newId = this.isLegacyId(id) ? this.legacyIdToId(id) : id
+      newProposals.add(newId)
+    })
+    return newProposals
   }
 
-  private parseMapObject (obj: any): FavoriteProposals {
-    const map = new Map<string, boolean>()
+  private isLegacyId (id: string): boolean {
+    return id.indexOf('-') === -1
+  }
+
+  private legacyIdToId (legacyId: string): string {
+    return `${legacyId}-${this.DEFAULT_SERVICE_TYPE}`
+  }
+
+  private parseStoredData (data: any): FavoriteProposals {
+    if (data instanceof Array) {
+      return new Set(data)
+    }
+
+    return this.parseSetObject(data)
+  }
+
+  private parseSetObject (obj: any): FavoriteProposals {
+    const set = new Set<string>()
     for (const key of Object.keys(obj)) {
-      const value: any = obj[key]
-      if (typeof value === 'boolean') {
-        map.set(key, value)
+      if (obj[key] === true) {
+        set.add(key)
       }
     }
-    return map
+    return set
   }
 
   private async saveToStorage () {
@@ -84,5 +110,5 @@ export class FavoritesStorage {
   }
 }
 
-type FavoriteProposals = Map<string, boolean>
+type FavoriteProposals = Set<string>
 type Callback = () => void

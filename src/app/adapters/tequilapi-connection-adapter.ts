@@ -21,20 +21,16 @@ import {
 } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../models/connection-statistics'
 import Ip from '../models/ip'
+import { ServiceType } from '../models/service-type'
 import IConnectionAdapter, { ConnectionCanceled } from './connection-adapter'
 
 class TequilapiConnectionAdapter implements IConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {
   }
 
-  public async connect (consumerId: string, providerId: string): Promise<void> {
-    const connectionDetails = { consumerId, providerId }
-
+  public async connect (consumerId: string, providerId: string, serviceType: ServiceType): Promise<void> {
     try {
-      const connection = await this.tequilapiClient.connectionCreate({
-        ...connectionDetails,
-        providerCountry: '' // TODO: remove this unused param when js-tequilapi is fixed
-      })
+      const connection = await this.tequilapiClient.connectionCreate({ consumerId, providerId, serviceType })
 
       console.log(`Connect returned status: ${JSON.stringify(connection)}`)
     } catch (e) {

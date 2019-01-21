@@ -20,13 +20,18 @@ import IConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapter
 import ConnectionStatistics from '../../../src/app/models/connection-statistics'
 import ConnectionStatus from '../../../src/app/models/connection-status'
 import Ip from '../../../src/app/models/ip'
+import { ServiceType } from '../../../src/app/models/service-type'
 
 export class MockConnectionAdapter implements IConnectionAdapter {
   public mockStatus: ConnectionStatus = 'Connected'
   public throwConnectError: boolean = false
   public throwConnectCancelledError: boolean = false
 
-  public async connect (_consumerId: string, _providerId: string) {
+  public connectedConsumerId?: string
+  public connectedProviderId?: string
+  public connectedServiceType?: string
+
+  public async connect (consumerId: string, providerId: string, serviceType: ServiceType) {
     if (this.throwConnectError) {
       throw new Error('Connection failed')
     }
@@ -34,6 +39,10 @@ export class MockConnectionAdapter implements IConnectionAdapter {
     if (this.throwConnectCancelledError) {
       throw new ConnectionCanceled()
     }
+
+    this.connectedConsumerId = consumerId
+    this.connectedProviderId = providerId
+    this.connectedServiceType = serviceType
   }
 
   public async disconnect () {

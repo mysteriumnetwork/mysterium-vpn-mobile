@@ -57,15 +57,6 @@ export default class VpnAppState {
     return this._isFavoriteSelected
   }
 
-  @computed
-  public get selectedProviderId (): string | null {
-    if (this.selectedProposal) {
-      return this.selectedProposal.providerID
-    }
-
-    return null
-  }
-
   @action
   private calculateIsFavoriteSelected () {
     const proposal = this.selectedProposal
@@ -74,6 +65,6 @@ export default class VpnAppState {
       return
     }
 
-    this._isFavoriteSelected = this.favoritesStorage.has(proposal.providerID)
+    this._isFavoriteSelected = this.favoritesStorage.has(proposal.id)
   }
 }

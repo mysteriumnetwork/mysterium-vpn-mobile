@@ -16,36 +16,33 @@
  */
 
 import React from 'react'
-import { Image, ImageRequireSource, StyleSheet } from 'react-native'
+import { Image, ImageRequireSource, StyleSheet, ViewStyle } from 'react-native'
+import { ServiceType } from '../../models/service-type'
 
-type QualityIndicatorProps = {
-  quality: number | null
+type ServiceIndicatorProps = {
+  serviceType: ServiceType,
+  style?: ViewStyle
 }
 
-const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality }) => {
-  const icon = getIconImage(quality)
+const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, style }) => {
+  const icon = getIconImage(serviceType)
   return (
-    <Image style={styles.image} source={icon} resizeMode="contain" />
+    <Image style={[styles.image, style]} source={icon} resizeMode="contain" />
   )
 }
 
-function getIconImage (quality: number | null): ImageRequireSource {
-  if (quality === null) {
-    return require('../../../assets/quality/unknown.png')
+function getIconImage (serviceType: ServiceType): ImageRequireSource {
+  if (serviceType === ServiceType.Openvpn) {
+    return require('../../../assets/services/openvpn.png')
   }
-  if (quality >= HIGH_QUALITY) {
-    return require('../../../assets/quality/high.png')
+  if (serviceType === ServiceType.Wireguard) {
+    return require('../../../assets/services/wireguard.png')
   }
-  if (quality >= MEDIUM_QUALITY) {
-    return require('../../../assets/quality/medium.png')
-  }
-  return require('../../../assets/quality/low.png')
+  throw new Error('Unknown service type')
 }
 
-const MEDIUM_QUALITY = 0.2
-const HIGH_QUALITY = 0.5
+const ICON_SIZE = 20
 
-const ICON_SIZE = 30
 const styles = StyleSheet.create({
   image: {
     width: ICON_SIZE,
@@ -53,4 +50,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export { QualityIndicator }
+export { ServiceIndicator }

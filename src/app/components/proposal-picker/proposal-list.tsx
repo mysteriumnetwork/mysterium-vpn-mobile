@@ -21,6 +21,7 @@ import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { ProposalListItem } from './proposal-list-item'
 import { QualityIndicator } from './quality-indicator'
+import { ServiceIndicator } from './service-indicator'
 
 type ListProps = {
   proposals: ProposalListItem[],
@@ -51,7 +52,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
             <Icon name="ios-search" style={styles.searchIcon}/>
             <Input
               placeholderTextColor={platformStyles.search.inputColor}
-              placeholder={translations.COUNTRY_SEARCH}
+              placeholder={translations.PROPOSAL_SEARCH}
               onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
               style={styles.searchInput}
             />
@@ -76,7 +77,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
       <ListItem
         style={this.listItemStyle(proposal)}
         icon={true}
-        key={proposal.providerID}
+        key={proposal.id}
         onPress={() => this.props.onSelect(proposal)}
       >
         <Left style={styles.flagImage}>
@@ -89,6 +90,10 @@ class ProposalList extends React.Component<ListProps, ListState> {
           </Text>
         </Body>
         <Right>
+          <ServiceIndicator
+            serviceType={proposal.serviceType}
+            style={styles.serviceIndicator}
+          />
           <QualityIndicator quality={proposal.quality}/>
           <Icon
             name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
@@ -120,8 +125,11 @@ class ProposalList extends React.Component<ListProps, ListState> {
 
   private isProposalSelected (proposal: ProposalListItem) {
     const selected = this.props.selectedProposal
+    if (selected === null) {
+      return false
+    }
 
-    return selected && selected.providerID === proposal.providerID
+    return selected.id === proposal.id
   }
 
   private onSearchValueChange (text: string) {
@@ -178,6 +186,9 @@ const styles: any = StyleSheet.create({
   },
   searchInput: {
     color: platformStyles.search.inputColor
+  },
+  serviceIndicator: {
+    marginRight: 10
   }
 })
 

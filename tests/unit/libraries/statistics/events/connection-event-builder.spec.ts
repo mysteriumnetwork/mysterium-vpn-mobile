@@ -29,7 +29,7 @@ describe('ConnectionEventBuilder', () => {
   let timeProvider: TimeProvider
 
   const emptyCountryDetails: CountryDetails = { providerCountry: '', originalCountry: '' }
-  const emptyConnectionDetails: ConnectionDetails = { providerId: '', consumerId: '' }
+  const emptyConnectionDetails: ConnectionDetails = { providerId: '', serviceType: '', consumerId: '' }
 
   beforeEach(() => {
     timeProvider = (new MockTimeProvider()).timeProvider
@@ -69,8 +69,15 @@ describe('ConnectionEventBuilder', () => {
   const testReturnsEvent = (method: () => void, eventName: string, error?: string) => {
     it('returns event', async () => {
       eventBuilder.setStartedAt()
-      eventBuilder.setConnectionDetails({ providerId: 'provider id', consumerId: 'consumer id' })
-      eventBuilder.setCountryDetails({ providerCountry: 'provider country', originalCountry: 'original country' })
+      eventBuilder.setConnectionDetails({
+        providerId: 'provider id',
+        serviceType: 'openvpn',
+        consumerId: 'consumer id'
+      })
+      eventBuilder.setCountryDetails({
+        providerCountry: 'provider country',
+        originalCountry: 'original country'
+      })
 
       const event = method()
       expect(event).toEqual(eventFactory(eventName, error))
