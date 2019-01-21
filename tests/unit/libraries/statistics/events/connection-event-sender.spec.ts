@@ -29,8 +29,8 @@ import eventFactory from '../helpers/event-factory'
 describe('ConnectionEventSender', () => {
   let eventBuilder: ConnectionEventBuilder
   let timeProvider: TimeProvider
-  let transport: MockStatisticsSender
-  let sender: ConnectionEventSender
+  let statisticsSender: MockStatisticsSender
+  let connectionEventSender: ConnectionEventSender
 
   const emptyCountryDetails: CountryDetails = {
     providerCountry: 'provider country',
@@ -47,31 +47,31 @@ describe('ConnectionEventSender', () => {
       .setConnectionDetails(emptyConnectionDetails)
       .setCountryDetails(emptyCountryDetails)
 
-    transport = new MockStatisticsSender()
-    sender = new ConnectionEventSender(transport, eventBuilder)
+    statisticsSender = new MockStatisticsSender()
+    connectionEventSender = new ConnectionEventSender(statisticsSender, eventBuilder)
   })
 
   describe('.sendSuccessfulConnectionEvent', () => {
     it('sends event', () => {
-      sender.sendSuccessfulConnectionEvent()
+      connectionEventSender.sendSuccessfulConnectionEvent()
 
-      expect(transport.sentEvent).toEqual(eventFactory('connect_successful'))
+      expect(statisticsSender.sentEvent).toEqual(eventFactory('connect_successful'))
     })
   })
 
   describe('.sendFailedConnectionEvent', () => {
     it('sends event', () => {
-      sender.sendFailedConnectionEvent('error message')
+      connectionEventSender.sendFailedConnectionEvent('error message')
 
-      expect(transport.sentEvent).toEqual(eventFactory('connect_failed', 'error message'))
+      expect(statisticsSender.sentEvent).toEqual(eventFactory('connect_failed', 'error message'))
     })
   })
 
   describe('.sendCanceledConnectionEvent', () => {
     it('sends event', () => {
-      sender.sendCanceledConnectionEvent()
+      connectionEventSender.sendCanceledConnectionEvent()
 
-      expect(transport.sentEvent).toEqual(eventFactory('connect_canceled'))
+      expect(statisticsSender.sentEvent).toEqual(eventFactory('connect_canceled'))
     })
   })
 })

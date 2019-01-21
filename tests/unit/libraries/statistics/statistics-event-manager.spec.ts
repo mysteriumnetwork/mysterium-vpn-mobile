@@ -15,22 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import ConnectionEventBuilder,
-{
+import {
   ConnectionDetails,
   CountryDetails,
   TimeProvider
 } from '../../../../src/libraries/statistics/events/connection-event-builder'
 import ConnectionEventSender from '../../../../src/libraries/statistics/events/connection-event-sender'
+import StatisticsEventManager from '../../../../src/libraries/statistics/statistics-event-manager'
 import MockStatisticsSender from '../../mocks/mock-statistics-sender'
 import MockTimeProvider from '../../mocks/mock-time-provider'
 import eventFactory from './helpers/event-factory'
 
 describe('StatisticsEventManager', () => {
-  let eventBuilder: ConnectionEventBuilder
   let timeProvider: TimeProvider
-  let transport: MockStatisticsSender
-  let sender: ConnectionEventSender
+  let statisticsSender: MockStatisticsSender
+  let manager: StatisticsEventManager
+  let connectionEventSender: ConnectionEventSender
 
   const emptyCountryDetails: CountryDetails = {
     providerCountry: 'provider country',
@@ -42,36 +42,31 @@ describe('StatisticsEventManager', () => {
   beforeEach(() => {
     timeProvider = (new MockTimeProvider()).timeProvider
 
-    eventBuilder = new ConnectionEventBuilder(timeProvider)
-    eventBuilder.setStartedAt()
-      .setConnectionDetails(emptyConnectionDetails)
-      .setCountryDetails(emptyCountryDetails)
-
-    transport = new MockStatisticsSender()
-    sender = new ConnectionEventSender(transport, eventBuilder)
+    statisticsSender = new MockStatisticsSender()
+    manager = new StatisticsEventManager(statisticsSender, timeProvider)
   })
 
-  describe('.sendSuccessfulConnectionEvent', () => {
-    it('sends event', () => {
-      sender.sendSuccessfulConnectionEvent()
-
-      expect(transport.sentEvent).toEqual(eventFactory('connect_successful'))
+  describe('.startConnectionTracking', () => {
+    beforeEach(() => {
+      connectionEventSender = manager.startConnectionTracking(emptyConnectionDetails, emptyCountryDetails)
     })
-  })
 
-  describe('.sendFailedConnectionEvent', () => {
-    it('sends event', () => {
-      sender.sendFailedConnectionEvent('error message')
+    it('starts connection tracking and sets successful event details', () => {
+      connectionEventSender.sendSuccessfulConnectionEvent()
 
-      expect(transport.sentEvent).toEqual(eventFactory('connect_failed', 'error message'))
+      expect(statisticsSender.sentEvent).toEqual(eventFactory('connect_successful'))
     })
-  })
 
-  describe('.sendCanceledConnectionEvent', () => {
-    it('sends event', () => {
-      sender.sendCanceledConnectionEvent()
+    it('starts connection tracking and sets failed event details', () => {
+      connectionEventSender.sendFailedConnectionEvent('error message')
 
-      expect(transport.sentEvent).toEqual(eventFactory('connect_canceled'))
+      expect(statisticsSender.sentEvent).toEqual(eventFactory('connect_failed', 'error message'))
+    })
+
+    it('starts connection tracking and sets canceled event details', () => {
+      connectionEventSender.sendCanceledConnectionEvent()
+
+      expect(statisticsSender.sentEvent).toEqual(eventFactory('connect_canceled'))
     })
   })
 })

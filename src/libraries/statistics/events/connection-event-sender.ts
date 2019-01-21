@@ -19,18 +19,18 @@ import { StatisticsSender } from '../senders/statistics-sender'
 import ConnectionEventBuilder from './connection-event-builder'
 
 class ConnectionEventSender {
-  constructor (private transport: StatisticsSender, private connectEventBuilder: ConnectionEventBuilder) {}
+  constructor (private sender: StatisticsSender, private connectEventBuilder: ConnectionEventBuilder) {}
 
   public sendSuccessfulConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.buildEndedEvent())
+    this.sender.send(this.connectEventBuilder.buildEndedEvent())
   }
 
   public sendFailedConnectionEvent (error: string) {
-    this.transport.send(this.connectEventBuilder.buildFailedEvent(error))
+    this.sender.send(this.connectEventBuilder.buildFailedEvent(error))
   }
 
   public sendCanceledConnectionEvent () {
-    this.transport.send(this.connectEventBuilder.buildCanceledEvent())
+    this.sender.send(this.connectEventBuilder.buildCanceledEvent())
   }
 }
 

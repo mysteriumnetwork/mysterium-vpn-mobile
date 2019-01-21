@@ -22,10 +22,6 @@ import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
-import ConsoleSender from '../libraries/statistics/senders/console-sender'
-import ElkSender from '../libraries/statistics/senders/elk-sender'
-import StatisticsConfig from '../libraries/statistics/statistics-config'
-import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
@@ -45,9 +41,12 @@ import ProposalsStore from './stores/proposals-store'
 import ScreenStore from './stores/screen-store'
 import VpnAppState from './vpn-app-state'
 
-import ConnectionEventBuilder from '../libraries/statistics/events/connection-event-builder'
+import ConsoleSender from '../libraries/statistics/senders/console-sender'
+import ElkSender from '../libraries/statistics/senders/elk-sender'
 import { StatisticsSender } from '../libraries/statistics/senders/statistics-sender'
+import StatisticsConfig from '../libraries/statistics/statistics-config'
 import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
+import timeProvider from '../libraries/statistics/time-provider'
 import { StatisticsAdapter } from './adapters/statistics-adapter'
 
 class Container {
@@ -107,10 +106,9 @@ class Container {
   }
 
   private buildStatisticsAdapter () {
-    const connectEventBuilder = new ConnectionEventBuilder(timeProvider)
-    const statisticsTransport: StatisticsSender = this.buildStatisticsSender()
+    const statisticsSender: StatisticsSender = this.buildStatisticsSender()
 
-    return new StatisticsEventManager(statisticsTransport, connectEventBuilder)
+    return new StatisticsEventManager(statisticsSender, timeProvider)
   }
 
   private buildStatisticsSender (): StatisticsSender {

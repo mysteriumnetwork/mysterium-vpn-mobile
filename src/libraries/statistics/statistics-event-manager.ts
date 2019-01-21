@@ -1,11 +1,16 @@
-import ConnectionEventBuilder, { ConnectionDetails, CountryDetails } from './events/connection-event-builder'
+import ConnectionEventBuilder, {
+  ConnectionDetails,
+  CountryDetails,
+  TimeProvider
+} from './events/connection-event-builder'
 import ConnectionEventSender from './events/connection-event-sender'
 import { StatisticsSender } from './senders/statistics-sender'
 
 class StatisticsEventManager {
-  constructor (
-    private transport: StatisticsSender,
-    private eventBuilder: ConnectionEventBuilder) {
+  private readonly eventBuilder: ConnectionEventBuilder
+
+  constructor (private sender: StatisticsSender, timeProvider: TimeProvider) {
+    this.eventBuilder = new ConnectionEventBuilder(timeProvider)
   }
 
   public startConnectionTracking (
@@ -16,7 +21,7 @@ class StatisticsEventManager {
     this.eventBuilder.setCountryDetails(countryDetails)
     this.eventBuilder.setConnectionDetails(connectionDetails)
 
-    return new ConnectionEventSender(this.transport, this.eventBuilder)
+    return new ConnectionEventSender(this.sender, this.eventBuilder)
   }
 }
 
