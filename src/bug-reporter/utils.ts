@@ -32,7 +32,7 @@ function setupGlobalErrorHandler (bugReporter: BugReporter) {
 function onIdentityUnlockSetUserIdInBugReporter (tequilApiState: TequilApiState, bugReporter: BugReporter) {
   reaction(
     () => tequilApiState.identityId,
-    (userId: string | undefined) => {
+    (userId: string | null) => {
       if (!userId) return
       bugReporter.setUserId(userId)
     })

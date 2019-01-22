@@ -29,7 +29,7 @@ export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
   }
 
   protected get canRun (): boolean {
-    return this.tequilApiState.identityId !== undefined
+    return this.tequilApiState.identityId !== null
   }
 
   protected async fetch (): Promise<ConnectionStatusDTO> {

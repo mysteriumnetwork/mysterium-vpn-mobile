@@ -79,7 +79,7 @@ export default class TequilApiDriver {
    * Tries to login to API, must be completed once before connect
    */
   public async unlock (): Promise<void> {
-    const identity = await this.identityManager.unlock()
-    this.tequilApiState.identityId = identity
+    await this.identityManager.unlock()
+    this.tequilApiState.identityId = this.identityManager.currentIdentity
   }
 }

@@ -16,15 +16,28 @@
  */
 
 import { IdentityAdapter } from '../adapters/identity-adapter'
-import { Identity } from '../models/identity'
+import { EventNotifier } from './observables/event-notifier'
 
 class IdentityManager {
+  private _currentIdentity: string | null = null
+  private notifier: EventNotifier = new EventNotifier()
+
   constructor (private identityAdapter: IdentityAdapter, private defaultPassphrase: string) {}
 
-  public async unlock (): Promise<Identity> {
+  public async unlock (): Promise<void> {
     const identity = await this.findOrCreateIdentity()
     await this.identityAdapter.unlock(identity, this.defaultPassphrase)
-    return identity
+
+    this._currentIdentity = identity
+    this.notifier.notify()
+  }
+
+  public get currentIdentity (): string | null {
+    return this._currentIdentity
+  }
+
+  public onCurrentIdentityChange (callback: () => void) {
+    this.notifier.subscribe(callback)
   }
 
   private async findOrCreateIdentity () {

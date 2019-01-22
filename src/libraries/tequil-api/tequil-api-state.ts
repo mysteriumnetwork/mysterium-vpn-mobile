@@ -19,5 +19,5 @@ import { observable } from 'mobx'
 
 export default class TequilApiState {
   @observable
-  public identityId?: string
+  public identityId: string | null = null
 }

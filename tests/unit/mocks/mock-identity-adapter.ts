@@ -21,6 +21,7 @@ import { Identity } from '../../../src/app/models/identity'
 class MockIdentityAdapter implements IdentityAdapter {
   public mockListedIdentities: Identity[] = []
   public mockCreatedIdentity: Identity = 'mock created identity'
+  public unlockIdentityFails: boolean = false
 
   public created: boolean = false
   public unlockedIdentity?: Identity
@@ -35,6 +36,9 @@ class MockIdentityAdapter implements IdentityAdapter {
   }
 
   public async unlock (identity: Identity) {
+    if (this.unlockIdentityFails) {
+      throw new Error('Mock identity unlock error')
+    }
     this.unlockedIdentity = identity
   }
 }

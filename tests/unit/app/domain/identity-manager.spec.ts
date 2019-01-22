@@ -28,9 +28,8 @@ describe('IdentityManager', () => {
   })
 
   describe('.unlock', () => {
-    it('creates, unlocks and returns new identity', async () => {
-      const identity = await identityManager.unlock()
-      expect(identity).toEqual(mockAdapter.mockCreatedIdentity)
+    it('creates and unlocks new identity', async () => {
+      await identityManager.unlock()
 
       expect(mockAdapter.created).toBe(true)
       expect(mockAdapter.unlockedIdentity).toEqual(mockAdapter.mockCreatedIdentity)
@@ -41,9 +40,8 @@ describe('IdentityManager', () => {
         mockAdapter.mockListedIdentities = ['mock identity']
       })
 
-      it('unlocks and returns existing identity', async () => {
-        const identity = await identityManager.unlock()
-        expect(identity).toEqual('mock identity')
+      it('unlocks existing identity', async () => {
+        await identityManager.unlock()
         expect(mockAdapter.unlockedIdentity).toEqual('mock identity')
       })
 
@@ -51,6 +49,37 @@ describe('IdentityManager', () => {
         await identityManager.unlock()
         expect(mockAdapter.created).toBe(false)
       })
+    })
+  })
+
+  describe('.currentIdentity', () => {
+    it('returns null initially', () => {
+      expect(identityManager.currentIdentity).toBeNull()
+    })
+
+    it('returns identity when it is unlocked', async () => {
+      await identityManager.unlock()
+      expect(identityManager.currentIdentity).toEqual(mockAdapter.mockCreatedIdentity)
+    })
+
+    it('returns null if created identity unlocking failed', async () => {
+      mockAdapter.unlockIdentityFails = true
+      await expect(identityManager.unlock()).rejects.toThrow(Error)
+      expect(identityManager.currentIdentity).toBeNull()
+    })
+  })
+
+  describe('.onCurrentIdentityChange', () => {
+    it('notifies when current identity changes', async () => {
+      let currentIdentity = null
+      identityManager.onCurrentIdentityChange(() => {
+        currentIdentity = identityManager.currentIdentity
+      })
+      expect(currentIdentity).toBeNull()
+
+      await identityManager.unlock()
+
+      expect(currentIdentity).toEqual(mockAdapter.mockCreatedIdentity)
     })
   })
 })
