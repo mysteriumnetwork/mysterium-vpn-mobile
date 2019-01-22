@@ -15,7 +15,10 @@ const translations = {
   DISCONNECTED_NOTIFICATION: {
     TITLE: 'Connection lost',
     MESSAGE: 'VPN connection was closed.'
-  }
+  },
+  CONNECT_FAILED: 'Connection failed',
+  DISCONNECT_FAILED: 'Disconnect failed',
+  PROPOSAL_NOT_SELECTED: 'Please select a proposal'
 }
 
 export default translations

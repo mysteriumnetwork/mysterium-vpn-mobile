@@ -20,8 +20,8 @@ import Connection from '../../app/domain/connection'
 import { IdentityManager } from '../../app/domain/identity-manager'
 
 import IMessageDisplay from '../../app/messages/message-display'
-import messages from '../../app/messages/messages'
 import { ServiceType } from '../../app/models/service-type'
+import translations from '../../app/translations'
 
 /**
  * API operations level
@@ -48,7 +48,7 @@ export default class TequilApiDriver {
     try {
       await this.connection.connect(consumerId, providerId, serviceType, providerCountryCode)
     } catch (e) {
-      this.messageDisplay.showError(messages.CONNECT_FAILED)
+      this.messageDisplay.showError(translations.CONNECT_FAILED)
       console.warn('Connect failed', e)
     }
   }
@@ -60,7 +60,7 @@ export default class TequilApiDriver {
     try {
       await this.connection.disconnect()
     } catch (e) {
-      this.messageDisplay.showError(messages.DISCONNECT_FAILED)
+      this.messageDisplay.showError(translations.DISCONNECT_FAILED)
       console.warn('Disconnect failed', e)
     }
   }

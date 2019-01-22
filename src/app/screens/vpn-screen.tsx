@@ -31,7 +31,6 @@ import { ProposalListItem } from '../components/proposal-picker/proposal-list-it
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
 import IMessageDisplay from '../messages/message-display'
-import messages from '../messages/messages'
 import Favorites from '../proposals/favorites'
 import ConnectionStore from '../stores/connection-store'
 import ScreenStore from '../stores/screen-store'
@@ -127,7 +126,7 @@ class VpnScreen extends React.Component<HomeProps> {
     const proposal = this.vpnAppState.selectedProposal
 
     if (!proposal) {
-      this.messageDisplay.showInfo(messages.COUNTRY_NOT_SELECTED)
+      this.messageDisplay.showInfo(translations.UNSELECTED_PROPOSAL)
       return
     }
 
