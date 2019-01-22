@@ -83,7 +83,7 @@ class Container {
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
   public readonly favorites = new Favorites(this.favoritesStorage)
   public readonly appLoader =
-    new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore, this.bugReporter)
+    new AppLoader(this.tequilAPIDriver, this.identityManager, this.connection, this.proposalsStore, this.bugReporter)
   public readonly vpnAppState = new VpnAppState(this.favoritesStorage, this.proposalList)
 
   constructor () {

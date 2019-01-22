@@ -69,11 +69,4 @@ export default class TequilApiDriver {
   public async healthcheck (): Promise<NodeHealthcheckDTO> {
     return this.api.healthCheck()
   }
-
-  /**
-   * Tries to login to API, must be completed once before connect
-   */
-  public async unlock (): Promise<void> {
-    await this.identityManager.unlock()
-  }
 }
