@@ -1,13 +1,11 @@
 import { TequilapiClient } from 'mysterium-tequilapi'
 import ConnectionStatus from '../../../src/app/models/connection-status'
 import { ConnectionStatusEnum } from '../../../src/libraries/tequil-api/enums'
-import TequilApiState from '../../../src/libraries/tequil-api/tequil-api-state'
 import { CONFIG } from './../../../src/config'
 import { StatusFetcher } from './../../../src/fetchers/status-fetcher'
 import { TequilapiClientMock } from './../mocks/tequilapi-mock'
 
 describe('StatusFetcher', () => {
-  const tequilApiState = new TequilApiState()
   const refreshInterval = CONFIG.REFRESH_INTERVALS.CONNECTION
   let api: TequilapiClient
   let status: ConnectionStatus | null
@@ -22,10 +20,9 @@ describe('StatusFetcher', () => {
   })
 
   beforeEach(() => {
-    tequilApiState.identityId = 'MOCKED_IDENTITY_ID'
     api = new TequilapiClientMock()
     status = null
-    fetcher = new StatusFetcher(api.connectionStatus, tequilApiState, dto => {
+    fetcher = new StatusFetcher(api.connectionStatus, dto => {
       status = dto.status
     })
   })

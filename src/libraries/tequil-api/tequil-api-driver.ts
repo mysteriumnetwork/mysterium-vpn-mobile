@@ -22,32 +22,26 @@ import { IdentityManager } from '../../app/domain/identity-manager'
 import IMessageDisplay from '../../app/messages/message-display'
 import messages from '../../app/messages/messages'
 import { ServiceType } from '../../app/models/service-type'
-import TequilApiState from './tequil-api-state'
 
 /**
  * API operations level
  */
 
 export default class TequilApiDriver {
-  public readonly tequilApiState: TequilApiState
-
   constructor (
     private api: TequilapiClient,
-    apiState: TequilApiState,
     private connection: Connection,
     private identityManager: IdentityManager,
-    private messageDisplay: IMessageDisplay) {
-    this.tequilApiState = apiState
-  }
+    private messageDisplay: IMessageDisplay) {}
 
   /**
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
   public async connect (providerId: string, serviceType: ServiceType, providerCountryCode: string): Promise<void> {
-    const consumerId = this.tequilApiState.identityId
+    const consumerId = this.identityManager.currentIdentity
     if (!consumerId) {
-      console.error('Identity required for connect is not set', this.tequilApiState)
+      console.error('Identity required for connect is not set')
       return
     }
 
@@ -80,6 +74,5 @@ export default class TequilApiDriver {
    */
   public async unlock (): Promise<void> {
     await this.identityManager.unlock()
-    this.tequilApiState.identityId = this.identityManager.currentIdentity
   }
 }
