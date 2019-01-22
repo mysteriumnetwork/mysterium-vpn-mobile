@@ -77,11 +77,13 @@ class Container {
   public readonly tequilAPIDriver =
     new TequilApiDriver(this.api, this.connection, this.identityManager,this.messageDisplayDelegate)
 
-  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
-  public readonly favorites = new Favorites(this.favoritesStorage)
-  public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
   public readonly bugReporter: BugReporter
   public readonly feedbackReporter: IFeedbackReporter
+
+  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
+  public readonly favorites = new Favorites(this.favoritesStorage)
+  public readonly appLoader =
+    new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore, this.bugReporter)
   public readonly vpnAppState = new VpnAppState(this.favoritesStorage, this.proposalList)
 
   constructor () {

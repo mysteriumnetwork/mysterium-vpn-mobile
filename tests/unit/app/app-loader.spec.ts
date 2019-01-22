@@ -1,6 +1,7 @@
 import AppLoader from '../../../src/app/app-loader'
 import Connection from '../../../src/app/domain/connection'
 import ProposalsStore from '../../../src/app/stores/proposals-store'
+import ConsoleReporter from '../../../src/bug-reporter/console-reporter'
 import TequilApiDriver from '../../../src/libraries/tequil-api/tequil-api-driver'
 
 const emptyPromise = new Promise((resolve) => resolve({}))
@@ -24,7 +25,7 @@ describe('AppLoader', () => {
       const tequilApiDriver = new TequilApiDriverMock()
       const connection = new ConnectionMock()
       const proposalsStore = new ProposalsStoreMock()
-      const loader = new AppLoader(tequilApiDriver, connection, proposalsStore)
+      const loader = new AppLoader(tequilApiDriver, connection, proposalsStore, new ConsoleReporter())
 
       await loader.load()
 
