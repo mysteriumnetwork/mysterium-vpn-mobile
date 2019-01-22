@@ -25,12 +25,15 @@ import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
+import { IdentityAdapter } from './adapters/identity-adapter'
 import { ProposalsAdapter } from './adapters/proposals-adapter'
 import ReactNativeStorage from './adapters/react-native-storage'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
+import { TequilapiIdentityAdapter } from './adapters/tequilapi-identity-adapter'
 import TequilapiProposalsAdapter from './adapters/tequilapi-proposals-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
+import { IdentityManager } from './domain/identity-manager'
 import Terms from './domain/terms'
 import { FavoritesStorage } from './favorites-storage'
 import MessageDisplayDelegate from './messages/message-display-delegate'
@@ -60,9 +63,12 @@ class Container {
   public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   public readonly statisticsAdapter: StatisticsAdapter = this.buildStatisticsAdapter()
+  public readonly identityAdapter: IdentityAdapter = new TequilapiIdentityAdapter(this.api)
+
   // domain
   public readonly connection =
     new Connection(this.connectionAdapter, this.tequilApiState, this.statisticsAdapter)
+  public readonly identityManager = new IdentityManager(this.identityAdapter, CONFIG.PASSPHRASE)
 
   public readonly terms: Terms = this.buildTerms()
 
@@ -70,8 +76,8 @@ class Container {
   public readonly connectionStore = new ConnectionStore(this.connection)
   public readonly proposalsStore = new ProposalsStore(this.proposalsAdapter)
   public readonly screenStore = new ScreenStore()
-  public readonly tequilAPIDriver =
-    new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
+  public readonly tequilAPIDriver = new TequilApiDriver(this.api, this.tequilApiState, this.connection,
+    this.identityManager, this.messageDisplayDelegate)
 
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
   public readonly favorites = new Favorites(this.favoritesStorage)

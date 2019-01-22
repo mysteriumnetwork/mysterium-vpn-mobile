@@ -16,7 +16,12 @@ class AppLoader {
     await this.waitForClient()
     this.proposals.startUpdating()
     this.connection.startUpdating()
-    await this.tequilAPIDriver.unlock()
+    try {
+      await this.tequilAPIDriver.unlock()
+    } catch (err) {
+      // TODO: report error
+      console.error('Unlocking identity failed', err)
+    }
   }
 
   private async waitForClient () {

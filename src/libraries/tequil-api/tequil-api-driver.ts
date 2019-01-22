@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
 import Connection from '../../app/domain/connection'
+import { IdentityManager } from '../../app/domain/identity-manager'
 
 import IMessageDisplay from '../../app/messages/message-display'
 import messages from '../../app/messages/messages'
 import { ServiceType } from '../../app/models/service-type'
-import { CONFIG } from '../../config'
 import TequilApiState from './tequil-api-state'
 
-/***
+/**
  * API operations level
  */
 
@@ -35,11 +35,12 @@ export default class TequilApiDriver {
     private api: TequilapiClient,
     apiState: TequilApiState,
     private connection: Connection,
+    private identityManager: IdentityManager,
     private messageDisplay: IMessageDisplay) {
     this.tequilApiState = apiState
   }
 
-  /***
+  /**
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
@@ -58,7 +59,7 @@ export default class TequilApiDriver {
     }
   }
 
-  /***
+  /**
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
@@ -74,44 +75,11 @@ export default class TequilApiDriver {
     return this.api.healthCheck()
   }
 
-  /***
+  /**
    * Tries to login to API, must be completed once before connect
    */
   public async unlock (): Promise<void> {
-    let identities: IdentityDTO[]
-    try {
-      identities = await this.api.identitiesList()
-    } catch (e) {
-      console.warn('api.identitiesList failed', e)
-      return
-    }
-
-    let identityId: string | null = null
-
-    try {
-      const identity = await this.findOrCreateIdentity(identities)
-      identityId = identity.id
-    } catch (e) {
-      console.warn('api.identityCreate failed', e)
-      return
-    }
-
-    try {
-      await this.api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-      this.tequilApiState.identityId = identityId
-    } catch (e) {
-      console.warn('api.identityUnlock failed', e)
-    }
-  }
-
-  private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {
-    if (identities.length) {
-      return identities[0]
-    }
-
-    const newIdentity: IdentityDTO = await this.api.identityCreate(
-      CONFIG.PASSPHRASE
-    )
-    return newIdentity
+    const identity = await this.identityManager.unlock()
+    this.tequilApiState.identityId = identity
   }
 }
