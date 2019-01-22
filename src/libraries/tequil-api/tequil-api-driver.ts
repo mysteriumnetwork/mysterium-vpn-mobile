@@ -42,6 +42,7 @@ export default class TequilApiDriver {
     const consumerId = this.identityManager.currentIdentity
     if (!consumerId) {
       console.error('Identity required for connect is not set')
+      this.messageDisplay.showError(translations.CONNECT_WITHOUT_IDENTITY)
       return
     }
 
