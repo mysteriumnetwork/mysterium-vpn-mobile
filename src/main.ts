@@ -32,7 +32,7 @@ function buildApp (appName: string) {
 }
 
 function buildConnectionChecker () {
-  const api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
+  const api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUTS.DEFAULT).build()
   const connectionAdapter = new TequilapiConnectionAdapter(api)
   const notificationAdapter = new ReactNativeNotificationAdapter()
   return new ConnectionChecker(connectionAdapter, notificationAdapter)
