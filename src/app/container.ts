@@ -52,7 +52,7 @@ import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 
 class Container {
-  public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
+  public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUTS.DEFAULT).build()
   public readonly favoritesStorage = this.buildFavoriteStorage()
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
@@ -61,7 +61,8 @@ class Container {
   public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   public readonly statisticsAdapter: StatisticsAdapter = this.buildStatisticsAdapter()
-  public readonly identityAdapter: IdentityAdapter = new TequilapiIdentityAdapter(this.api)
+  public readonly identityAdapter: IdentityAdapter =
+    new TequilapiIdentityAdapter(this.api, CONFIG.TEQUILAPI_TIMEOUTS.IDENTITY_UNLOCK)
 
   // domain
   public readonly connection =

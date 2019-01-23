@@ -20,7 +20,10 @@ import { STYLES } from './styles'
 export const CONFIG = {
   PASSPHRASE: '',
   TEQUILAPI_ADDRESS: 'http://localhost:4050/',
-  TEQUILAPI_TIMEOUT: 6000,
+  TEQUILAPI_TIMEOUTS: {
+    DEFAULT: 6000,
+    IDENTITY_UNLOCK: 12000
+  },
   TEXTS: {
     IP_UPDATING: 'updating...',
     UNKNOWN: 'unknown',

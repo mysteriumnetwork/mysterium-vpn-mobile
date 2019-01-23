@@ -20,7 +20,7 @@ import { Identity } from '../models/identity'
 import { IdentityAdapter } from './identity-adapter'
 
 class TequilapiIdentityAdapter implements IdentityAdapter {
-  constructor (private tequilapiClient: TequilapiClient) {}
+  constructor (private tequilapiClient: TequilapiClient, private unlockTimeout: number) {}
 
   public async list (): Promise<Identity[]> {
     const dtos = await this.tequilapiClient.identitiesList()
@@ -33,7 +33,7 @@ class TequilapiIdentityAdapter implements IdentityAdapter {
   }
 
   public async unlock (identity: Identity, passphrase: string): Promise<void> {
-    await this.tequilapiClient.identityUnlock(identity, passphrase)
+    await this.tequilapiClient.identityUnlock(identity, passphrase, this.unlockTimeout)
   }
 }
 
