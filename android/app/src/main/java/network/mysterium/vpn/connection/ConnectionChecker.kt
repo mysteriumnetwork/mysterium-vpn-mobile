@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import java.lang.IllegalStateException
 
 /**
  * Starts ConnectionCheckerService periodically at a given interval.
@@ -46,7 +47,13 @@ class ConnectionChecker(private val context: Context, private val interval: Long
     val bundle = Bundle()
     bundle.putBoolean("ignoreLastStatus", ignoreLastStatus)
     service.putExtras(bundle)
-    context.startService(service)
+    try {
+      context.startService(service)
+    } catch (e: IllegalStateException) {
+      // We stop checker, because app is in a state where the service can not be started.
+      // This is usually because app was in the background for too long.
+      stop()
+    }
   }
 
   companion object {
