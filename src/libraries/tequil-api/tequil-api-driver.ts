@@ -15,103 +15,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IdentityDTO, NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
 import Connection from '../../app/domain/connection'
+import { IdentityManager } from '../../app/domain/identity-manager'
 
 import IMessageDisplay from '../../app/messages/message-display'
-import messages from '../../app/messages/messages'
 import { ServiceType } from '../../app/models/service-type'
-import { CONFIG } from '../../config'
-import TequilApiState from './tequil-api-state'
+import translations from '../../app/translations'
 
-/***
+/**
  * API operations level
  */
 
 export default class TequilApiDriver {
-  public readonly tequilApiState: TequilApiState
-
   constructor (
     private api: TequilapiClient,
-    apiState: TequilApiState,
     private connection: Connection,
-    private messageDisplay: IMessageDisplay) {
-    this.tequilApiState = apiState
-  }
+    private identityManager: IdentityManager,
+    private messageDisplay: IMessageDisplay) {}
 
-  /***
+  /**
    * Tries to connect to selected VPN server
    * @returns {Promise<void>}
    */
   public async connect (providerId: string, serviceType: ServiceType, providerCountryCode: string): Promise<void> {
-    const consumerId = this.tequilApiState.identityId
+    const consumerId = this.identityManager.currentIdentity
     if (!consumerId) {
-      console.error('Identity required for connect is not set', this.tequilApiState)
+      console.error('Identity required for connect is not set')
+      this.messageDisplay.showError(translations.CONNECT_WITHOUT_IDENTITY)
       return
     }
 
     try {
       await this.connection.connect(consumerId, providerId, serviceType, providerCountryCode)
     } catch (e) {
-      this.messageDisplay.showError(messages.CONNECT_FAILED)
+      this.messageDisplay.showError(translations.CONNECT_FAILED)
       console.warn('Connect failed', e)
     }
   }
 
-  /***
+  /**
    * Tries to disconnect from VPN server
    */
   public async disconnect (): Promise<void> {
     try {
       await this.connection.disconnect()
     } catch (e) {
-      this.messageDisplay.showError(messages.DISCONNECT_FAILED)
+      this.messageDisplay.showError(translations.DISCONNECT_FAILED)
       console.warn('Disconnect failed', e)
     }
   }
 
   public async healthcheck (): Promise<NodeHealthcheckDTO> {
     return this.api.healthCheck()
-  }
-
-  /***
-   * Tries to login to API, must be completed once before connect
-   */
-  public async unlock (): Promise<void> {
-    let identities: IdentityDTO[]
-    try {
-      identities = await this.api.identitiesList()
-    } catch (e) {
-      console.warn('api.identitiesList failed', e)
-      return
-    }
-
-    let identityId: string | null = null
-
-    try {
-      const identity = await this.findOrCreateIdentity(identities)
-      identityId = identity.id
-    } catch (e) {
-      console.warn('api.identityCreate failed', e)
-      return
-    }
-
-    try {
-      await this.api.identityUnlock(identityId, CONFIG.PASSPHRASE)
-      this.tequilApiState.identityId = identityId
-    } catch (e) {
-      console.warn('api.identityUnlock failed', e)
-    }
-  }
-
-  private async findOrCreateIdentity (identities: IdentityDTO[]): Promise<IdentityDTO> {
-    if (identities.length) {
-      return identities[0]
-    }
-
-    const newIdentity: IdentityDTO = await this.api.identityCreate(
-      CONFIG.PASSPHRASE
-    )
-    return newIdentity
   }
 }

@@ -17,7 +17,6 @@
 
 import Connection from '../../../../src/app/domain/connection'
 import { ServiceType } from '../../../../src/app/models/service-type'
-import TequilApiState from '../../../../src/libraries/tequil-api/tequil-api-state'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 import MockConnectionEventAdapter from '../../mocks/mock-connection-event-adapter'
 import MockStatisticsAdapter from '../../mocks/mock-statistics-adapter'
@@ -33,16 +32,14 @@ function nextTick (): Promise<void> {
 describe('Connection', () => {
   let connection: Connection
   let connectionAdapter: MockConnectionAdapter
-  let state: TequilApiState
   let connectionEventAdapter: MockConnectionEventAdapter
   let statisticsAdapter: MockStatisticsAdapter
 
   beforeEach(() => {
-    state = new TequilApiState()
     connectionAdapter = new MockConnectionAdapter()
     connectionEventAdapter = new MockConnectionEventAdapter()
     statisticsAdapter = new MockStatisticsAdapter(connectionEventAdapter)
-    connection = new Connection(connectionAdapter, state, statisticsAdapter)
+    connection = new Connection(connectionAdapter, statisticsAdapter)
   })
 
   describe('.startUpdating', () => {
@@ -50,9 +47,7 @@ describe('Connection', () => {
       connection.stopUpdating()
     })
 
-    it('fetches status when identity is set', async () => {
-      state.identityId = 'mock identity'
-
+    it('fetches status', async () => {
       expect(connection.data.status).toEqual('NotConnected')
 
       connection.startUpdating()

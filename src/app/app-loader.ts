@@ -1,6 +1,8 @@
+import { BugReporter } from '../bug-reporter/bug-reporter'
 import { CONFIG } from '../config'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import Connection from './domain/connection'
+import { IdentityManager } from './domain/identity-manager'
 import ProposalsStore from './stores/proposals-store'
 
 /**
@@ -9,14 +11,21 @@ import ProposalsStore from './stores/proposals-store'
  */
 class AppLoader {
   constructor (private tequilAPIDriver: TequilApiDriver,
+               private identityManager: IdentityManager,
                private connection: Connection,
-               private proposals: ProposalsStore) {}
+               private proposals: ProposalsStore,
+               private bugReporter: BugReporter) {}
 
   public async load () {
     await this.waitForClient()
     this.proposals.startUpdating()
     this.connection.startUpdating()
-    await this.tequilAPIDriver.unlock()
+    try {
+      await this.identityManager.unlock()
+    } catch (err) {
+      console.error('Unlocking identity failed', err)
+      this.bugReporter.sendException(err)
+    }
   }
 
   private async waitForClient () {

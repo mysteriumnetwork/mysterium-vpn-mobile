@@ -15,8 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { reaction } from 'mobx'
-import TequilApiState from '../libraries/tequil-api/tequil-api-state'
+import { IdentityManager } from '../app/domain/identity-manager'
 import { BugReporter } from './bug-reporter'
 
 function setupGlobalErrorHandler (bugReporter: BugReporter) {
@@ -29,13 +28,13 @@ function setupGlobalErrorHandler (bugReporter: BugReporter) {
   ErrorUtils.setGlobalHandler(wrapGlobalHandler)
 }
 
-function onIdentityUnlockSetUserIdInBugReporter (tequilApiState: TequilApiState, bugReporter: BugReporter) {
-  reaction(
-    () => tequilApiState.identityId,
-    (userId: string | undefined) => {
-      if (!userId) return
-      bugReporter.setUserId(userId)
-    })
+function onIdentityUnlockSetUserIdInBugReporter (identityManager: IdentityManager, bugReporter: BugReporter) {
+  identityManager.onCurrentIdentityChange(() => {
+    const identity = identityManager.currentIdentity
+    if (identity !== null) {
+      bugReporter.setUserId(identity)
+    }
+  })
 }
 
 export { setupGlobalErrorHandler, onIdentityUnlockSetUserIdInBugReporter }

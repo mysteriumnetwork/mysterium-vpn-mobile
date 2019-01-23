@@ -10,7 +10,7 @@ class Root extends React.PureComponent {
   public async componentWillMount () {
     setupGlobalErrorHandler(this.container.bugReporter)
 
-    onIdentityUnlockSetUserIdInBugReporter(this.container.tequilApiState, this.container.bugReporter)
+    onIdentityUnlockSetUserIdInBugReporter(this.container.identityManager, this.container.bugReporter)
 
     await this.container.favoritesStorage.fetch()
   }

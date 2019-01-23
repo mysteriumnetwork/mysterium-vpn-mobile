@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import { FetcherBase } from './fetcher-base'
+import { Identity } from '../models/identity'
 
-export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {
-  constructor (
-    private connectionStatus: () => Promise<ConnectionStatusDTO>,
-    update: (data: ConnectionStatusDTO) => void
-  ) {
-    super('ConnectionStatus', update)
-  }
-
-  protected async fetch (): Promise<ConnectionStatusDTO> {
-    return this.connectionStatus()
-  }
+interface IdentityAdapter {
+  list (): Promise<Identity[]>
+  create (passphrase: string): Promise<Identity>
+  unlock (identity: Identity, passphrase: string): Promise<void>
 }
+
+export { IdentityAdapter }

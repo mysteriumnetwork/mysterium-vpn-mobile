@@ -22,15 +22,17 @@ import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
 import IFeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
-import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import TequilApiState from '../libraries/tequil-api/tequil-api-state'
 import IConnectionAdapter from './adapters/connection-adapter'
+import { IdentityAdapter } from './adapters/identity-adapter'
 import { ProposalsAdapter } from './adapters/proposals-adapter'
 import ReactNativeStorage from './adapters/react-native-storage'
+import { StatisticsAdapter } from './adapters/statistics-adapter'
 import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
+import { TequilapiIdentityAdapter } from './adapters/tequilapi-identity-adapter'
 import TequilapiProposalsAdapter from './adapters/tequilapi-proposals-adapter'
 import AppLoader from './app-loader'
 import Connection from './domain/connection'
+import { IdentityManager } from './domain/identity-manager'
 import Terms from './domain/terms'
 import { FavoritesStorage } from './favorites-storage'
 import MessageDisplayDelegate from './messages/message-display-delegate'
@@ -47,11 +49,10 @@ import { StatisticsSender } from '../libraries/statistics/senders/statistics-sen
 import StatisticsConfig from '../libraries/statistics/statistics-config'
 import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
 import timeProvider from '../libraries/statistics/time-provider'
-import { StatisticsAdapter } from './adapters/statistics-adapter'
+import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUT).build()
-  public readonly tequilApiState = new TequilApiState()
   public readonly favoritesStorage = this.buildFavoriteStorage()
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
@@ -60,9 +61,12 @@ class Container {
   public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   public readonly statisticsAdapter: StatisticsAdapter = this.buildStatisticsAdapter()
+  public readonly identityAdapter: IdentityAdapter = new TequilapiIdentityAdapter(this.api)
+
   // domain
   public readonly connection =
-    new Connection(this.connectionAdapter, this.tequilApiState, this.statisticsAdapter)
+    new Connection(this.connectionAdapter, this.statisticsAdapter)
+  public readonly identityManager = new IdentityManager(this.identityAdapter, CONFIG.PASSPHRASE)
 
   public readonly terms: Terms = this.buildTerms()
 
@@ -71,13 +75,15 @@ class Container {
   public readonly proposalsStore = new ProposalsStore(this.proposalsAdapter)
   public readonly screenStore = new ScreenStore()
   public readonly tequilAPIDriver =
-    new TequilApiDriver(this.api, this.tequilApiState, this.connection, this.messageDisplayDelegate)
+    new TequilApiDriver(this.api, this.connection, this.identityManager,this.messageDisplayDelegate)
+
+  public readonly bugReporter: BugReporter
+  public readonly feedbackReporter: IFeedbackReporter
 
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
   public readonly favorites = new Favorites(this.favoritesStorage)
-  public readonly appLoader = new AppLoader(this.tequilAPIDriver, this.connection, this.proposalsStore)
-  public readonly bugReporter: BugReporter
-  public readonly feedbackReporter: IFeedbackReporter
+  public readonly appLoader =
+    new AppLoader(this.tequilAPIDriver, this.identityManager, this.connection, this.proposalsStore, this.bugReporter)
   public readonly vpnAppState = new VpnAppState(this.favoritesStorage, this.proposalList)
 
   constructor () {
