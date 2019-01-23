@@ -74,7 +74,8 @@ class Connection {
     this.resetIP()
     this.setStatusToConnecting()
 
-    const connectionEventBuilder = await this.startConnectionTracking(providerId, consumerId, providerCountryCode)
+    const connectionEventBuilder
+      = await this.startConnectionTracking(providerId, serviceType, consumerId, providerCountryCode)
 
     try {
       await this.connectionAdapter.connect(consumerId, providerId, serviceType)
@@ -172,6 +173,7 @@ class Connection {
 
   private async startConnectionTracking (
     providerId: string,
+    serviceType: ServiceType,
     consumerId: string,
     providerCountryCode: string): Promise<ConnectionEventAdapter> {
     const countryDetails = {
@@ -179,7 +181,7 @@ class Connection {
       providerCountry: providerCountryCode
     }
 
-    const connectionDetails = { consumerId, providerId }
+    const connectionDetails = { consumerId, serviceType, providerId }
 
     return this.statisticsAdapter.startConnectionTracking(connectionDetails, countryDetails)
   }
