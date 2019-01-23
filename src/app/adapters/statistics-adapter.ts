@@ -13,6 +13,7 @@ interface ConnectionEventAdapter {
 
 type ConnectionDetails = {
   consumerId: string,
+  serviceType: string,
   providerId: string
 }
 
