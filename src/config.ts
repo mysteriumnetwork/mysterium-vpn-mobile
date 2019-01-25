@@ -45,7 +45,7 @@ export const CONFIG = {
     CONNECTION: 2 * 1000,
     STATS: 1 * 1000,
     PROPOSALS: 10 * 1000,
-    IP: 10 * 1000
+    LOCATION: 10 * 1000
   },
   HEALTHCHECK_DELAY: 200,
   STYLES,

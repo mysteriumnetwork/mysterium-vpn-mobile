@@ -17,16 +17,17 @@
 
 import Connection from '../app/domain/connection'
 import ConnectionStatus from '../app/models/connection-status'
-import Ip from '../app/models/ip'
+import { Location } from '../app/models/location'
 import { ConnectionStatusEnum } from '../libraries/tequil-api/enums'
 import { FetcherBase } from './fetcher-base'
 
-type ConnectionIP = () => Promise<Ip>
-
-export class IPFetcher extends FetcherBase<Ip> {
+export class LocationFetcher extends FetcherBase<Location> {
   private lastStatus?: ConnectionStatus
 
-  constructor (private connectionIP: ConnectionIP, private connection: Connection, update: (ip: Ip) => void) {
+  constructor (
+    private location: () => Promise<Location>,
+    private connection: Connection,
+    update: (location: Location) => void) {
     super('IP', update)
   }
 
@@ -41,8 +42,8 @@ export class IPFetcher extends FetcherBase<Ip> {
     })
   }
 
-  protected async fetch (): Promise<Ip> {
-    return this.connectionIP()
+  protected async fetch (): Promise<Location> {
+    return this.location()
   }
 
   // TODO: move this logic out to Connection and move fetchers into /core

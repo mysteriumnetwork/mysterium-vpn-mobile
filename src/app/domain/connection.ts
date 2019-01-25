@@ -16,7 +16,7 @@
  */
 
 import { CONFIG } from '../../config'
-import { IPFetcher } from '../../fetchers/ip-fetcher'
+import { LocationFetcher } from '../../fetchers/location-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
@@ -39,7 +39,7 @@ class Connection {
   private statusPublisher: ValuePublisher<ConnectionStatus>
   private ipPublisher: ValuePublisher<Ip>
   private readonly statusFetcher: StatusFetcher
-  private readonly ipFetcher: IPFetcher
+  private readonly locationFetcher: LocationFetcher
   private readonly statsFetcher: StatsFetcher
 
   constructor (
@@ -53,20 +53,20 @@ class Connection {
     this.ipPublisher = new ValuePublisher<Ip>(this.data.IP)
 
     this.statusFetcher = this.buildStatusFetcher()
-    this.ipFetcher = this.buildIpFetcher()
+    this.locationFetcher = this.buildLocationFetcher()
     this.statsFetcher = this.buildStatsFetcher()
   }
 
   public startUpdating () {
     const intervals = CONFIG.REFRESH_INTERVALS
     this.statusFetcher.start(intervals.CONNECTION)
-    this.ipFetcher.start(intervals.IP)
+    this.locationFetcher.start(intervals.LOCATION)
     this.statsFetcher.start(intervals.STATS)
   }
 
   public stopUpdating () {
     this.statusFetcher.stop()
-    this.ipFetcher.stop()
+    this.locationFetcher.stop()
     this.statsFetcher.stop()
   }
 
@@ -132,13 +132,10 @@ class Connection {
     })
   }
 
-  private buildIpFetcher (): IPFetcher {
-    const fetchIp = async () => {
-      const location = await this.connectionAdapter.fetchLocation()
-      return location.ip
-    }
-    return new IPFetcher(fetchIp, this, ip => {
-      this.updateIP(ip)
+  private buildLocationFetcher (): LocationFetcher {
+    const fetchLocation = this.connectionAdapter.fetchLocation.bind(this.connectionAdapter)
+    return new LocationFetcher(fetchLocation, this, location => {
+      this.updateIP(location.ip)
     })
   }
 
