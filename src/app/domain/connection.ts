@@ -133,7 +133,10 @@ class Connection {
   }
 
   private buildIpFetcher (): IPFetcher {
-    const fetchIp = this.connectionAdapter.fetchIp.bind(this.connectionAdapter)
+    const fetchIp = async () => {
+      const location = await this.connectionAdapter.fetchLocation()
+      return location.ip
+    }
     return new IPFetcher(fetchIp, this, ip => {
       this.updateIP(ip)
     })
