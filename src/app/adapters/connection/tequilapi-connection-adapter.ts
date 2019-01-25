@@ -59,9 +59,9 @@ class TequilapiConnectionAdapter implements ConnectionAdapter {
   }
 
   public async fetchIp (): Promise<Ip> {
-    const dto = await this.tequilapiClient.connectionIP()
+    const dto = await this.tequilapiClient.location()
 
-    return dto.ip
+    return dto.currentIP
   }
 
   public async fetchOriginalLocation (): Promise<string> {
