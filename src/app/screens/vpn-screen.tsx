@@ -79,7 +79,7 @@ class VpnScreen extends React.Component<HomeProps> {
 
         <ConnectionStatus status={connectionData.status}/>
 
-        <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <Text style={styles.textIp}>IP: {connectionData.location.ip || CONFIG.TEXTS.IP_UPDATING}</Text>
 
         <View style={styles.controlsWithLogoContainer}>
           <LogoBackground/>

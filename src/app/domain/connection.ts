@@ -25,7 +25,7 @@ import { ConnectionEventAdapter, StatisticsAdapter } from '../adapters/statistic
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
-import Ip from '../models/ip'
+import { Location } from '../models/location'
 import { ServiceType } from '../models/service-type'
 import ValuePublisher, { Callback } from './observables/value-publisher'
 
@@ -37,7 +37,7 @@ class Connection {
   private _data: ConnectionData
   private dataPublisher: ValuePublisher<ConnectionData>
   private statusPublisher: ValuePublisher<ConnectionStatus>
-  private ipPublisher: ValuePublisher<Ip>
+  private locationPublisher: ValuePublisher<Location>
   private readonly statusFetcher: StatusFetcher
   private readonly locationFetcher: LocationFetcher
   private readonly statsFetcher: StatsFetcher
@@ -50,7 +50,7 @@ class Connection {
 
     this.dataPublisher = new ValuePublisher<ConnectionData>(this.data)
     this.statusPublisher = new ValuePublisher<ConnectionStatus>(this.data.status)
-    this.ipPublisher = new ValuePublisher<Ip>(this.data.IP)
+    this.locationPublisher = new ValuePublisher<Location>(this.data.location)
 
     this.statusFetcher = this.buildStatusFetcher()
     this.locationFetcher = this.buildLocationFetcher()
@@ -71,7 +71,7 @@ class Connection {
   }
 
   public async connect (consumerId: string, providerId: string, serviceType: ServiceType, providerCountryCode: string) {
-    this.resetIP()
+    this.resetLocation()
     this.setStatusToConnecting()
 
     const connectionEventBuilder
@@ -90,7 +90,7 @@ class Connection {
   }
 
   public async disconnect () {
-    this.resetIP()
+    this.resetLocation()
     this.setStatusToDisconnecting()
 
     await this.connectionAdapter.disconnect()
@@ -105,12 +105,12 @@ class Connection {
     this.statusPublisher.subscribe(callback)
   }
 
-  public onIpChange (callback: Callback<Ip>) {
-    this.ipPublisher.subscribe(callback)
+  public onLocationChange (callback: Callback<Location>) {
+    this.locationPublisher.subscribe(callback)
   }
 
-  public resetIP () {
-    this.updateIP(null)
+  public resetLocation () {
+    this.updateLocation({ ip: null, country: null })
   }
 
   public setStatusToConnecting () {
@@ -119,10 +119,6 @@ class Connection {
 
   public setStatusToDisconnecting () {
     this.updateStatus(ConnectionStatusEnum.DISCONNECTING)
-  }
-
-  private updateIP (ip: string | null) {
-    this.setData(new ConnectionData(this.data.status, ip, this.data.connectionStatistics))
   }
 
   private buildStatusFetcher (): StatusFetcher {
@@ -135,7 +131,7 @@ class Connection {
   private buildLocationFetcher (): LocationFetcher {
     const fetchLocation = this.connectionAdapter.fetchLocation.bind(this.connectionAdapter)
     return new LocationFetcher(fetchLocation, this, location => {
-      this.updateIP(location.ip)
+      this.updateLocation(location)
     })
   }
 
@@ -146,12 +142,16 @@ class Connection {
     })
   }
 
-  private updateStatistics (statistics: ConnectionStatistics) {
-    this.setData(new ConnectionData(this.data.status, this.data.IP, statistics))
+  private updateStatus (status: ConnectionStatus) {
+    this.setData(new ConnectionData(status, this.data.location, this.data.connectionStatistics))
   }
 
-  private updateStatus (status: ConnectionStatus) {
-    this.setData(new ConnectionData(status, this.data.IP, this.data.connectionStatistics))
+  private updateLocation (location: Location) {
+    this.setData(new ConnectionData(this.data.status, location, this.data.connectionStatistics))
+  }
+
+  private updateStatistics (statistics: ConnectionStatistics) {
+    this.setData(new ConnectionData(this.data.status, this.data.location, statistics))
   }
 
   private setData (data: ConnectionData) {
@@ -163,8 +163,8 @@ class Connection {
       this.statusPublisher.publish(data.status)
     }
 
-    if (this._data.IP !== data.IP) {
-      this.ipPublisher.publish(data.IP)
+    if (this._data.location !== data.location) {
+      this.locationPublisher.publish(data.location)
     }
 
     this.dataPublisher.publish(data)
@@ -192,9 +192,9 @@ const initialStatistics: ConnectionStatistics = {
   bytesSent: 0,
   bytesReceived: 0
 }
-const initialIp = null
+const initialLocation: Location = { ip: null, country: null }
 const initialStatus = ConnectionStatusEnum.NOT_CONNECTED
 
-const initialConnectionData = new ConnectionData(initialStatus, initialIp, initialStatistics)
+const initialConnectionData = new ConnectionData(initialStatus, initialLocation, initialStatistics)
 
 export default Connection

@@ -18,11 +18,11 @@
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import ConnectionStatistics from './connection-statistics'
 import ConnectionStatus from './connection-status'
-import Ip from './ip'
+import { Location } from './location'
 
 class ConnectionData {
   constructor (public readonly status: ConnectionStatus,
-               public readonly IP: Ip,
+               public readonly location: Location,
                public readonly connectionStatistics: ConnectionStatistics) {
   }
 
