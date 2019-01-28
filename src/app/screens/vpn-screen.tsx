@@ -27,6 +27,7 @@ import ButtonConnect from '../components/button-connect'
 import ConnectionStatus from '../components/connection-status'
 import IconButton from '../components/icon-button'
 import LogoBackground from '../components/logo-background'
+import CountryFlag from '../components/proposal-picker/country-flag'
 import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
@@ -79,7 +80,10 @@ class VpnScreen extends React.Component<HomeProps> {
 
         <ConnectionStatus status={connectionData.status}/>
 
-        <Text style={styles.textIp}>IP: {connectionData.IP || CONFIG.TEXTS.IP_UPDATING}</Text>
+        <View style={styles.ipLine}>
+          <Text style={styles.textIp}>IP: {connectionData.location.ip || CONFIG.TEXTS.IP_UPDATING}</Text>
+          <CountryFlag countryCode={this.currentCountryCode} showPlaceholder={false}/>
+        </View>
 
         <View style={styles.controlsWithLogoContainer}>
           <LogoBackground/>
@@ -114,6 +118,14 @@ class VpnScreen extends React.Component<HomeProps> {
     )
   }
 
+  private get currentCountryCode (): string | null {
+    const countryCode = this.connectionStore.data.location.countryCode
+    if (countryCode === null) {
+      return null
+    }
+    return countryCode.toLowerCase()
+  }
+
   private toggleSelectedProposalFavorite () {
     const proposal = this.vpnScreenStore.selectedProposal
     if (!proposal) {
@@ -145,6 +157,10 @@ const styles = StyleSheet.create({
     top: 10,
     left: 10
   },
+  ipLine: {
+    flexDirection: 'row',
+    alignItems: 'flex-end'
+  },
   controls: {
     width: '100%',
     alignItems: 'center',
@@ -154,7 +170,8 @@ const styles = StyleSheet.create({
   textIp: {
     marginTop: STYLES.MARGIN,
     fontSize: STYLES.FONT_NORMAL,
-    color: STYLES.COLOR_SECONDARY
+    color: STYLES.COLOR_SECONDARY,
+    paddingRight: STYLES.PADDING
   },
   controlsWithLogoContainer: {
     flex: 1,

@@ -81,7 +81,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
         onPress={() => this.props.onSelect(proposal)}
       >
         <Left style={styles.flagImage}>
-          <CountryFlag countryCode={proposal.countryCode}/>
+          <CountryFlag countryCode={proposal.countryCode} showPlaceholder={true}/>
         </Left>
         <Body>
           <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>

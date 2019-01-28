@@ -22,15 +22,18 @@ import colors from '../../styles/colors'
 import countries from './countries'
 
 type FlagProps = {
-  countryCode: string | null
+  countryCode: string | null,
+  showPlaceholder: boolean
 }
 
-const CountryFlag: React.SFC<FlagProps> = ({ countryCode }) => {
+const CountryFlag: React.SFC<FlagProps> = ({ countryCode, showPlaceholder }) => {
   const uri = getCountryImageUri(countryCode)
   if (!uri) {
-    return (
-      <Icon style={styles.globeIcon} name={'ios-globe'}/>
-    )
+    if (showPlaceholder) {
+      return (<Icon style={styles.globeIcon} name={'ios-globe'}/>)
+    }
+
+    return (null)
   }
 
   return (

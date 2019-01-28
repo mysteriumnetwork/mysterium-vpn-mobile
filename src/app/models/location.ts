@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,20 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
-import ConnectionStatistics from './connection-statistics'
-import ConnectionStatus from './connection-status'
-import { Location } from './location'
+import Ip from './ip'
 
-class ConnectionData {
-  constructor (public readonly status: ConnectionStatus,
-               public readonly location: Location,
-               public readonly connectionStatistics: ConnectionStatistics) {
-  }
-
-  get isConnected (): boolean {
-    return this.status === ConnectionStatusEnum.CONNECTED
-  }
+type Location = {
+  ip: Ip,
+  countryCode: string | null
 }
 
-export default ConnectionData
+export { Location }

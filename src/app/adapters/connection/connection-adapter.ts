@@ -17,7 +17,7 @@
 
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
 import ConnectionStatistics from '../../models/connection-statistics'
-import Ip from '../../models/ip'
+import { Location } from '../../models/location'
 import { ServiceType } from '../../models/service-type'
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
@@ -27,7 +27,7 @@ interface ConnectionAdapter {
   fetchStatus (): Promise<ConnectionStatusDTO>
   fetchStatistics (): Promise<ConnectionStatistics>
   fetchOriginalLocation (): Promise<string>
-  fetchIp (): Promise<Ip>
+  fetchLocation (): Promise<Location>
 }
 
 class ConnectionCanceled extends Error {
