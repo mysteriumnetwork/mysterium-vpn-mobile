@@ -119,11 +119,11 @@ class VpnScreen extends React.Component<HomeProps> {
   }
 
   private get currentCountryCode (): string | null {
-    const country = this.connectionStore.data.location.country
-    if (country === null) {
+    const countryCode = this.connectionStore.data.location.countryCode
+    if (countryCode === null) {
       return null
     }
-    return country.toLowerCase()
+    return countryCode.toLowerCase()
   }
 
   private toggleSelectedProposalFavorite () {

@@ -58,13 +58,13 @@ describe('Connection', () => {
 
     it('fetches location', async () => {
       expect(connection.data.location.ip).toBeNull()
-      expect(connection.data.location.country).toBeNull()
+      expect(connection.data.location.countryCode).toBeNull()
 
       connection.startUpdating()
       await nextTick()
 
       expect(connection.data.location.ip).toEqual('100.101.102.103')
-      expect(connection.data.location.country).toEqual('lt')
+      expect(connection.data.location.countryCode).toEqual('lt')
     })
   })
 
