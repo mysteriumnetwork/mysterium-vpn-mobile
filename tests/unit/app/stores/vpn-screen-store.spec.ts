@@ -16,21 +16,21 @@
  */
 
 import { autorun, IReactionDisposer } from 'mobx'
-import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
-import { FavoritesStorage } from '../../../src/app/favorites-storage'
-import Proposal from '../../../src/app/models/proposal'
-import { ServiceType } from '../../../src/app/models/service-type'
-import ProposalList from '../../../src/app/proposals/proposal-list'
-import ProposalsStore from '../../../src/app/stores/proposals-store'
-import VpnAppState from '../../../src/app/vpn-app-state'
-import { MockProposalsAdapter } from '../mocks/mock-proposals-adapter'
-import MockStorage from '../mocks/mock-storage'
-import proposals from './proposals/proposal-data'
+import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
+import { FavoritesStorage } from '../../../../src/app/favorites-storage'
+import Proposal from '../../../../src/app/models/proposal'
+import { ServiceType } from '../../../../src/app/models/service-type'
+import ProposalList from '../../../../src/app/proposals/proposal-list'
+import ProposalsStore from '../../../../src/app/stores/proposals-store'
+import VpnScreenStore from '../../../../src/app/stores/vpn-screen-store'
+import { MockProposalsAdapter } from '../../mocks/mock-proposals-adapter'
+import MockStorage from '../../mocks/mock-storage'
+import proposals from '../proposals/proposal-data'
 
-describe('VpnAppState', () => {
+describe('VpnScreenStore', () => {
   let favoritesStorage: FavoritesStorage
   let proposalsStore: ProposalsStore
-  let state: VpnAppState
+  let store: VpnScreenStore
 
   let mockProposalsAdapter: MockProposalsAdapter
   const initialMockProposals: Proposal[] = [proposals[0]]
@@ -40,7 +40,7 @@ describe('VpnAppState', () => {
     mockProposalsAdapter = new MockProposalsAdapter(initialMockProposals)
     proposalsStore = new ProposalsStore(mockProposalsAdapter)
     const proposalList = new ProposalList(proposalsStore, favoritesStorage)
-    state = new VpnAppState(favoritesStorage, proposalList)
+    store = new VpnScreenStore(favoritesStorage, proposalList)
   })
 
   describe('.isFavoriteSelected', () => {
@@ -51,7 +51,7 @@ describe('VpnAppState', () => {
       favoriteSelected = false
 
       autorunDisposer = autorun(() => {
-        favoriteSelected = state.isFavoriteSelected
+        favoriteSelected = store.isFavoriteSelected
       })
     })
 
@@ -72,7 +72,7 @@ describe('VpnAppState', () => {
       await favoritesStorage.add(proposal.id)
 
       expect(favoriteSelected).toBe(false)
-      state.selectedProposal = proposal
+      store.selectedProposal = proposal
       expect(favoriteSelected).toBe(true)
     })
 
@@ -86,7 +86,7 @@ describe('VpnAppState', () => {
         isFavorite: true,
         quality: null
       }
-      state.selectedProposal = proposal
+      store.selectedProposal = proposal
 
       expect(favoriteSelected).toBe(false)
       await favoritesStorage.add(proposal.id)
@@ -102,7 +102,7 @@ describe('VpnAppState', () => {
       listItems = null
 
       autorunDisposer = autorun(() => {
-        listItems = state.proposalListItems
+        listItems = store.proposalListItems
       })
 
       jest.useFakeTimers()

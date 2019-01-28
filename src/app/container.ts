@@ -41,7 +41,7 @@ import ProposalList from './proposals/proposal-list'
 import ConnectionStore from './stores/connection-store'
 import ProposalsStore from './stores/proposals-store'
 import ScreenStore from './stores/screen-store'
-import VpnAppState from './vpn-app-state'
+import VpnScreenStore from './stores/vpn-screen-store'
 
 import ConsoleSender from '../libraries/statistics/senders/console-sender'
 import ElkSender from '../libraries/statistics/senders/elk-sender'
@@ -85,7 +85,7 @@ class Container {
   public readonly favorites = new Favorites(this.favoritesStorage)
   public readonly appLoader =
     new AppLoader(this.tequilAPIDriver, this.identityManager, this.connection, this.proposalsStore, this.bugReporter)
-  public readonly vpnAppState = new VpnAppState(this.favoritesStorage, this.proposalList)
+  public readonly vpnScreenStore = new VpnScreenStore(this.favoritesStorage, this.proposalList)
 
   constructor () {
     const reporter = this.buildBugReporter()

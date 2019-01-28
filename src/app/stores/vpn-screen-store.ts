@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,11 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import { ProposalListItem } from './components/proposal-picker/proposal-list-item'
-import { FavoritesStorage } from './favorites-storage'
-import ProposalList from './proposals/proposal-list'
+import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import { FavoritesStorage } from '../favorites-storage'
+import ProposalList from '../proposals/proposal-list'
 
-// TODO: rename to VpnAppStore and move to app/stores/
-export default class VpnAppState {
+export default class VpnScreenStore {
   @observable
   private _isFavoriteSelected: boolean = false
   @observable

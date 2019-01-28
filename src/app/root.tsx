@@ -21,7 +21,7 @@ class Root extends React.PureComponent {
         <App
           tequilAPIDriver={this.container.tequilAPIDriver}
           connectionStore={this.container.connectionStore}
-          vpnAppState={this.container.vpnAppState}
+          vpnScreenStore={this.container.vpnScreenStore}
           screenStore={this.container.screenStore}
           messageDisplayDelegate={this.container.messageDisplayDelegate}
           terms={this.container.terms}
