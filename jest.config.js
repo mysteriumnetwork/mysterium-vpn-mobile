@@ -22,5 +22,8 @@ module.exports = {
     "<rootDir>/lib/",
     "<rootDir>/tests/e2e/"
   ],
+  transformIgnorePatterns: [
+    "node_modules/(?!react-native|native-base-shoutem-theme|native-base/node_modules)"
+  ],
   cacheDirectory: ".jest/cache"
 }
