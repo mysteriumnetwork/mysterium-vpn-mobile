@@ -17,7 +17,9 @@
 
 import { action, computed, observable } from 'mobx'
 import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import Connection from '../domain/connection'
 import { FavoritesStorage } from '../favorites-storage'
+import ConnectionStatus from '../models/connection-status'
 import ProposalList from '../proposals/proposal-list'
 
 export default class VpnScreenStore {
@@ -27,12 +29,19 @@ export default class VpnScreenStore {
   private _selectedProposal: ProposalListItem | null = null
   @observable
   private _proposalListItems: ProposalListItem[] = []
+  @observable
+  private _connectionStatus: ConnectionStatus
 
   constructor (private readonly favoritesStorage: FavoritesStorage,
-               proposalList: ProposalList) {
+               proposalList: ProposalList,
+               connection: Connection) {
     this.favoritesStorage.onChange(() => this.calculateIsFavoriteSelected())
     proposalList.onChange(() => {
       this._proposalListItems = proposalList.proposals
+    })
+    this._connectionStatus = connection.data.status
+    connection.onStatusChange(status => {
+      this._connectionStatus = status
     })
   }
 
@@ -54,6 +63,11 @@ export default class VpnScreenStore {
   @computed
   public get isFavoriteSelected (): boolean {
     return this._isFavoriteSelected
+  }
+
+  @computed
+  public get proposalPickerDisabled (): boolean {
+    return this._connectionStatus !== 'NotConnected'
   }
 
   @action

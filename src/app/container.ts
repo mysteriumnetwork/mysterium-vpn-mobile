@@ -85,7 +85,7 @@ class Container {
   public readonly favorites = new Favorites(this.favoritesStorage)
   public readonly appLoader =
     new AppLoader(this.tequilAPIDriver, this.identityManager, this.connection, this.proposalsStore, this.bugReporter)
-  public readonly vpnScreenStore = new VpnScreenStore(this.favoritesStorage, this.proposalList)
+  public readonly vpnScreenStore = new VpnScreenStore(this.favoritesStorage, this.proposalList, this.connection)
 
   constructor () {
     const reporter = this.buildBugReporter()
