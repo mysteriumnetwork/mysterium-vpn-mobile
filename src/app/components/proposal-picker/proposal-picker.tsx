@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     height: boxHeight
   },
   pickerButtonDisabled: {
-    opacity: 0.2
+    opacity: 0.5
   },
   countryFlagBox: {
     justifyContent: 'center',
