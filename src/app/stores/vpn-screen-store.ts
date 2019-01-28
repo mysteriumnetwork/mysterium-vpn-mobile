@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterion' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,32 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import { ProposalListItem } from './components/proposal-picker/proposal-list-item'
-import { FavoritesStorage } from './favorites-storage'
-import ProposalList from './proposals/proposal-list'
+import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import Connection from '../domain/connection'
+import { FavoritesStorage } from '../favorites-storage'
+import ConnectionStatus from '../models/connection-status'
+import ProposalList from '../proposals/proposal-list'
 
-// TODO: rename to VpnAppStore and move to app/stores/
-export default class VpnAppState {
+export default class VpnScreenStore {
   @observable
   private _isFavoriteSelected: boolean = false
   @observable
   private _selectedProposal: ProposalListItem | null = null
   @observable
   private _proposalListItems: ProposalListItem[] = []
+  @observable
+  private _connectionStatus: ConnectionStatus
 
   constructor (private readonly favoritesStorage: FavoritesStorage,
-               proposalList: ProposalList) {
+               proposalList: ProposalList,
+               connection: Connection) {
     this.favoritesStorage.onChange(() => this.calculateIsFavoriteSelected())
     proposalList.onChange(() => {
       this._proposalListItems = proposalList.proposals
+    })
+    this._connectionStatus = connection.data.status
+    connection.onStatusChange(status => {
+      this._connectionStatus = status
     })
   }
 
@@ -55,6 +63,11 @@ export default class VpnAppState {
   @computed
   public get isFavoriteSelected (): boolean {
     return this._isFavoriteSelected
+  }
+
+  @computed
+  public get proposalPickerDisabled (): boolean {
+    return this._connectionStatus !== 'NotConnected'
   }
 
   @action

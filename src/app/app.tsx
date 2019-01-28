@@ -32,12 +32,12 @@ import TermsScreen from './screens/terms-screen'
 import VpnScreen from './screens/vpn-screen'
 import ConnectionStore from './stores/connection-store'
 import ScreenStore from './stores/screen-store'
-import VpnAppState from './vpn-app-state'
+import VpnScreenStore from './stores/vpn-screen-store'
 
 type AppProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
-  vpnAppState: VpnAppState,
+  vpnScreenStore: VpnScreenStore,
   screenStore: ScreenStore,
   messageDisplayDelegate: MessageDisplayDelegate,
   terms: Terms,
@@ -52,7 +52,7 @@ export default class App extends React.Component<AppProps> {
   private readonly connectionStore: ConnectionStore
   private readonly messageDisplayDelegate: MessageDisplayDelegate
   private readonly terms: Terms
-  private readonly vpnAppState: VpnAppState
+  private readonly vpnScreenStore: VpnScreenStore
   private readonly screenStore: ScreenStore
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
@@ -64,7 +64,7 @@ export default class App extends React.Component<AppProps> {
     this.connectionStore = props.connectionStore
     this.messageDisplayDelegate = props.messageDisplayDelegate
     this.terms = props.terms
-    this.vpnAppState = props.vpnAppState
+    this.vpnScreenStore = props.vpnScreenStore
     this.screenStore = props.screenStore
     this.favorites = props.favorites
     this.appLoader = props.appLoader
@@ -102,7 +102,7 @@ export default class App extends React.Component<AppProps> {
       <VpnScreen
         tequilAPIDriver={this.tequilAPIDriver}
         connectionStore={this.connectionStore}
-        vpnAppState={this.vpnAppState}
+        vpnScreenStore={this.vpnScreenStore}
         screenStore={this.screenStore}
         favorites={this.favorites}
         messageDisplay={this.messageDisplayDelegate}

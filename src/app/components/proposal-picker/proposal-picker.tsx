@@ -31,7 +31,8 @@ type PickerProps = {
   onFavoriteToggle: () => void
   isFavoriteSelected: boolean
   placeholder: string,
-  selectedProposal: ProposalListItem | null
+  selectedProposal: ProposalListItem | null,
+  disabled: boolean
 }
 
 type PickerState = {
@@ -50,6 +51,11 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
   }
 
   public render (): ReactNode {
+    const pickerButtonStyles = [styles.pickerButton]
+    if (this.props.disabled) {
+      pickerButtonStyles.push(styles.pickerButtonDisabled)
+    }
+
     return (
       <View style={styles.container}>
         <ProposalModal
@@ -67,7 +73,11 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
         <View style={styles.proposalPicker}>
           <Grid>
             <Col size={85}>
-              <TouchableOpacity style={styles.pickerButton} onPress={() => this.openProposalModal()}>
+              <TouchableOpacity
+                style={pickerButtonStyles}
+                onPress={() => this.openProposalModal()}
+                disabled={this.props.disabled}
+              >
                 <Grid>
                   <Col size={15} style={styles.countryFlagBox}>
                     <CountryFlag countryCode={this.countryCode || ''}/>
@@ -185,6 +195,9 @@ const styles = StyleSheet.create({
   },
   pickerButton: {
     height: boxHeight
+  },
+  pickerButtonDisabled: {
+    opacity: 0.5
   },
   countryFlagBox: {
     justifyContent: 'center',

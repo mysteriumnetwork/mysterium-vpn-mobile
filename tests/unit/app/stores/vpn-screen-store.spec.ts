@@ -16,31 +16,44 @@
  */
 
 import { autorun, IReactionDisposer } from 'mobx'
-import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
-import { FavoritesStorage } from '../../../src/app/favorites-storage'
-import Proposal from '../../../src/app/models/proposal'
-import { ServiceType } from '../../../src/app/models/service-type'
-import ProposalList from '../../../src/app/proposals/proposal-list'
-import ProposalsStore from '../../../src/app/stores/proposals-store'
-import VpnAppState from '../../../src/app/vpn-app-state'
-import { MockProposalsAdapter } from '../mocks/mock-proposals-adapter'
-import MockStorage from '../mocks/mock-storage'
-import proposals from './proposals/proposal-data'
+import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
+import Connection from '../../../../src/app/domain/connection'
+import { FavoritesStorage } from '../../../../src/app/favorites-storage'
+import ConnectionStatus from '../../../../src/app/models/connection-status'
+import Proposal from '../../../../src/app/models/proposal'
+import { ServiceType } from '../../../../src/app/models/service-type'
+import ProposalList from '../../../../src/app/proposals/proposal-list'
+import ProposalsStore from '../../../../src/app/stores/proposals-store'
+import VpnScreenStore from '../../../../src/app/stores/vpn-screen-store'
+import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
+import MockConnectionEventAdapter from '../../mocks/mock-connection-event-adapter'
+import { MockProposalsAdapter } from '../../mocks/mock-proposals-adapter'
+import MockStatisticsAdapter from '../../mocks/mock-statistics-adapter'
+import MockStorage from '../../mocks/mock-storage'
+import proposals from '../proposals/proposal-data'
 
-describe('VpnAppState', () => {
+describe('VpnScreenStore', () => {
   let favoritesStorage: FavoritesStorage
   let proposalsStore: ProposalsStore
-  let state: VpnAppState
+  let store: VpnScreenStore
 
   let mockProposalsAdapter: MockProposalsAdapter
   const initialMockProposals: Proposal[] = [proposals[0]]
+
+  let connectionAdapter: MockConnectionAdapter
+  let connection: Connection
 
   beforeEach(() => {
     favoritesStorage = new FavoritesStorage(new MockStorage())
     mockProposalsAdapter = new MockProposalsAdapter(initialMockProposals)
     proposalsStore = new ProposalsStore(mockProposalsAdapter)
     const proposalList = new ProposalList(proposalsStore, favoritesStorage)
-    state = new VpnAppState(favoritesStorage, proposalList)
+
+    connectionAdapter = new MockConnectionAdapter()
+    const statisticsAdapter = new MockStatisticsAdapter(new MockConnectionEventAdapter())
+    connection = new Connection(connectionAdapter, statisticsAdapter)
+
+    store = new VpnScreenStore(favoritesStorage, proposalList, connection)
   })
 
   describe('.isFavoriteSelected', () => {
@@ -51,7 +64,7 @@ describe('VpnAppState', () => {
       favoriteSelected = false
 
       autorunDisposer = autorun(() => {
-        favoriteSelected = state.isFavoriteSelected
+        favoriteSelected = store.isFavoriteSelected
       })
     })
 
@@ -72,7 +85,7 @@ describe('VpnAppState', () => {
       await favoritesStorage.add(proposal.id)
 
       expect(favoriteSelected).toBe(false)
-      state.selectedProposal = proposal
+      store.selectedProposal = proposal
       expect(favoriteSelected).toBe(true)
     })
 
@@ -86,7 +99,7 @@ describe('VpnAppState', () => {
         isFavorite: true,
         quality: null
       }
-      state.selectedProposal = proposal
+      store.selectedProposal = proposal
 
       expect(favoriteSelected).toBe(false)
       await favoritesStorage.add(proposal.id)
@@ -102,7 +115,7 @@ describe('VpnAppState', () => {
       listItems = null
 
       autorunDisposer = autorun(() => {
-        listItems = state.proposalListItems
+        listItems = store.proposalListItems
       })
 
       jest.useFakeTimers()
@@ -127,6 +140,53 @@ describe('VpnAppState', () => {
       expect(listItems).toHaveLength(proposals.length)
 
       proposalsStore.stopUpdating()
+    })
+  })
+
+  describe('.proposalPickerDisabled', () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    function changeConnectionStatus (status: ConnectionStatus) {
+      connectionAdapter.mockStatus = status
+      connection.startUpdating()
+      jest.runOnlyPendingTimers()
+      jest.runAllTicks()
+      expect(connection.data.status).toEqual(status)
+    }
+
+    it('returns false when not connected', () => {
+      changeConnectionStatus('NotConnected')
+      expect(store.proposalPickerDisabled).toBe(false)
+    })
+
+    it('returns true for when connection is in progress', () => {
+      changeConnectionStatus('Connected')
+      expect(store.proposalPickerDisabled).toBe(true)
+
+      changeConnectionStatus('Connecting')
+      expect(store.proposalPickerDisabled).toBe(true)
+
+      changeConnectionStatus('Disconnecting')
+      expect(store.proposalPickerDisabled).toBe(true)
+    })
+
+    it('updates when value changes', () => {
+      let disabled = null
+      const disposer = autorun(() => {
+        disabled = store.proposalPickerDisabled
+      })
+      changeConnectionStatus('NotConnected')
+      expect(disabled).toBe(false)
+
+      changeConnectionStatus('Connecting')
+      expect(disabled).toBe(true)
+      disposer()
     })
   })
 })

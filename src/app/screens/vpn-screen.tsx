@@ -34,13 +34,13 @@ import IMessageDisplay from '../messages/message-display'
 import Favorites from '../proposals/favorites'
 import ConnectionStore from '../stores/connection-store'
 import ScreenStore from '../stores/screen-store'
+import VpnScreenStore from '../stores/vpn-screen-store'
 import translations from '../translations'
-import VpnAppState from '../vpn-app-state'
 
 type HomeProps = {
   tequilAPIDriver: TequilApiDriver,
   connectionStore: ConnectionStore,
-  vpnAppState: VpnAppState,
+  vpnScreenStore: VpnScreenStore,
   screenStore: ScreenStore,
   favorites: Favorites,
   messageDisplay: IMessageDisplay
@@ -50,7 +50,7 @@ type HomeProps = {
 class VpnScreen extends React.Component<HomeProps> {
   private readonly tequilAPIDriver: TequilApiDriver
   private readonly connectionStore: ConnectionStore
-  private readonly vpnAppState: VpnAppState
+  private readonly vpnScreenStore: VpnScreenStore
   private readonly screenStore: ScreenStore
   private readonly favorites: Favorites
   private readonly messageDisplay: IMessageDisplay
@@ -59,7 +59,7 @@ class VpnScreen extends React.Component<HomeProps> {
     super(props)
     this.tequilAPIDriver = props.tequilAPIDriver
     this.connectionStore = props.connectionStore
-    this.vpnAppState = props.vpnAppState
+    this.vpnScreenStore = props.vpnScreenStore
     this.screenStore = props.screenStore
     this.favorites = props.favorites
     this.messageDisplay = props.messageDisplay
@@ -88,11 +88,12 @@ class VpnScreen extends React.Component<HomeProps> {
             <View style={appStyles.proposalPicker}>
               <ProposalPicker
                 placeholder={translations.PROPOSAL_PICKER_LABEL}
-                proposals={this.vpnAppState.proposalListItems}
-                selectedProposal={this.vpnAppState.selectedProposal}
-                onSelect={(proposal: ProposalListItem) => this.vpnAppState.selectedProposal = proposal}
+                proposals={this.vpnScreenStore.proposalListItems}
+                selectedProposal={this.vpnScreenStore.selectedProposal}
+                onSelect={(proposal: ProposalListItem) => this.vpnScreenStore.selectedProposal = proposal}
                 onFavoriteToggle={() => this.toggleSelectedProposalFavorite()}
-                isFavoriteSelected={this.vpnAppState.isFavoriteSelected}
+                isFavoriteSelected={this.vpnScreenStore.isFavoriteSelected}
+                disabled={this.vpnScreenStore.proposalPickerDisabled}
               />
             </View>
 
@@ -114,7 +115,7 @@ class VpnScreen extends React.Component<HomeProps> {
   }
 
   private toggleSelectedProposalFavorite () {
-    const proposal = this.vpnAppState.selectedProposal
+    const proposal = this.vpnScreenStore.selectedProposal
     if (!proposal) {
       return
     }
@@ -123,7 +124,7 @@ class VpnScreen extends React.Component<HomeProps> {
   }
 
   private async connect () {
-    const proposal = this.vpnAppState.selectedProposal
+    const proposal = this.vpnScreenStore.selectedProposal
 
     if (!proposal) {
       this.messageDisplay.showInfo(translations.UNSELECTED_PROPOSAL)
