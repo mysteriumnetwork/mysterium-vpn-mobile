@@ -1,7 +1,7 @@
-import IMessageDisplay from '../../../src/app/messages/message-display'
+import MessageDisplay from '../../../src/app/messages/message-display'
 import MessageDisplayDelegate from '../../../src/app/messages/message-display-delegate'
 
-class MessageDisplayKeeper implements IMessageDisplay {
+class MessageDisplayKeeper implements MessageDisplay {
   public error?: string
   public info?: string
 

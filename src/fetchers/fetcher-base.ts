@@ -17,9 +17,9 @@
 
 import { observable, reaction } from 'mobx'
 import Timer = NodeJS.Timer
-import { IFetcher } from './fetcher'
+import { Fetcher } from './fetcher'
 
-export abstract class FetcherBase<T> implements IFetcher {
+export abstract class FetcherBase<T> implements Fetcher {
   @observable
   public isRunning: boolean = false
 

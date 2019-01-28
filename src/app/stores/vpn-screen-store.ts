@@ -18,7 +18,7 @@
 import { action, computed, observable } from 'mobx'
 import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import Connection from '../domain/connection'
-import { FavoritesStorage } from '../favorites-storage'
+import { FavoritesStorage } from '../domain/favorites-storage'
 import ConnectionStatus from '../models/connection-status'
 import ProposalList from '../proposals/proposal-list'
 

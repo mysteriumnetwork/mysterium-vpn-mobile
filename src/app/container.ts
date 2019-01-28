@@ -20,28 +20,8 @@ import { Platform } from 'react-native'
 import { BugReporter } from '../bug-reporter/bug-reporter'
 import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
-import IFeedbackReporter from '../bug-reporter/feedback-reporter'
+import FeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
-import IConnectionAdapter from './adapters/connection-adapter'
-import { IdentityAdapter } from './adapters/identity-adapter'
-import { ProposalsAdapter } from './adapters/proposals-adapter'
-import ReactNativeStorage from './adapters/react-native-storage'
-import { StatisticsAdapter } from './adapters/statistics-adapter'
-import TequilapiConnectionAdapter from './adapters/tequilapi-connection-adapter'
-import { TequilapiIdentityAdapter } from './adapters/tequilapi-identity-adapter'
-import TequilapiProposalsAdapter from './adapters/tequilapi-proposals-adapter'
-import AppLoader from './app-loader'
-import Connection from './domain/connection'
-import { IdentityManager } from './domain/identity-manager'
-import Terms from './domain/terms'
-import { FavoritesStorage } from './favorites-storage'
-import MessageDisplayDelegate from './messages/message-display-delegate'
-import Favorites from './proposals/favorites'
-import ProposalList from './proposals/proposal-list'
-import ConnectionStore from './stores/connection-store'
-import ProposalsStore from './stores/proposals-store'
-import ScreenStore from './stores/screen-store'
-import VpnScreenStore from './stores/vpn-screen-store'
 
 import ConsoleSender from '../libraries/statistics/senders/console-sender'
 import ElkSender from '../libraries/statistics/senders/elk-sender'
@@ -50,6 +30,26 @@ import StatisticsConfig from '../libraries/statistics/statistics-config'
 import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
 import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
+import ConnectionAdapter from './adapters/connection/connection-adapter'
+import TequilapiConnectionAdapter from './adapters/connection/tequilapi-connection-adapter'
+import { IdentityAdapter } from './adapters/identity/identity-adapter'
+import { TequilapiIdentityAdapter } from './adapters/identity/tequilapi-identity-adapter'
+import { ProposalsAdapter } from './adapters/proposals/proposals-adapter'
+import TequilapiProposalsAdapter from './adapters/proposals/tequilapi-proposals-adapter'
+import { StatisticsAdapter } from './adapters/statistics/statistics-adapter'
+import ReactNativeStorage from './adapters/storage/react-native-storage'
+import AppLoader from './app-loader'
+import Connection from './domain/connection'
+import { FavoritesStorage } from './domain/favorites-storage'
+import { IdentityManager } from './domain/identity-manager'
+import Terms from './domain/terms'
+import MessageDisplayDelegate from './messages/message-display-delegate'
+import Favorites from './proposals/favorites'
+import ProposalList from './proposals/proposal-list'
+import ConnectionStore from './stores/connection-store'
+import ProposalsStore from './stores/proposals-store'
+import ScreenStore from './stores/screen-store'
+import VpnScreenStore from './stores/vpn-screen-store'
 
 class Container {
   public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUTS.DEFAULT).build()
@@ -57,7 +57,7 @@ class Container {
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
   // adapters
-  public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
+  public readonly connectionAdapter: ConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   public readonly statisticsAdapter: StatisticsAdapter = this.buildStatisticsAdapter()
@@ -79,7 +79,7 @@ class Container {
     new TequilApiDriver(this.api, this.connection, this.identityManager,this.messageDisplayDelegate)
 
   public readonly bugReporter: BugReporter
-  public readonly feedbackReporter: IFeedbackReporter
+  public readonly feedbackReporter: FeedbackReporter
 
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
   public readonly favorites = new Favorites(this.favoritesStorage)

@@ -1,14 +1,14 @@
 import { Container, Content, Toast } from 'native-base'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import IFeedbackReporter, { UserFeedback } from '../../bug-reporter/feedback-reporter'
+import FeedbackReporter, { UserFeedback } from '../../bug-reporter/feedback-reporter'
 import FeedbackForm, { FeedbackTypeOption } from '../components/feedback-form'
 import IconButton from '../components/icon-button'
 import colors from '../styles/colors'
 import translations from '../translations'
 
 type FeedbackScreenProps = {
-  feedbackReporter: IFeedbackReporter,
+  feedbackReporter: FeedbackReporter,
   navigateBack: () => void
 }
 

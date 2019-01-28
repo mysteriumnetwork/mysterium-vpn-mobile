@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@ import {
   ConnectionStatusDTO,
   TequilapiClient
 } from 'mysterium-tequilapi'
-import ConnectionStatistics from '../models/connection-statistics'
-import Ip from '../models/ip'
-import { ServiceType } from '../models/service-type'
-import IConnectionAdapter, { ConnectionCanceled } from './connection-adapter'
+import ConnectionStatistics from '../../models/connection-statistics'
+import Ip from '../../models/ip'
+import { ServiceType } from '../../models/service-type'
+import ConnectionAdapter, { ConnectionCanceled } from './connection-adapter'
 
-class TequilapiConnectionAdapter implements IConnectionAdapter {
+class TequilapiConnectionAdapter implements ConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {
   }
 

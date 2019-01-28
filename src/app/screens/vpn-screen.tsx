@@ -30,7 +30,7 @@ import LogoBackground from '../components/logo-background'
 import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
-import IMessageDisplay from '../messages/message-display'
+import MessageDisplay from '../messages/message-display'
 import Favorites from '../proposals/favorites'
 import ConnectionStore from '../stores/connection-store'
 import ScreenStore from '../stores/screen-store'
@@ -43,7 +43,7 @@ type HomeProps = {
   vpnScreenStore: VpnScreenStore,
   screenStore: ScreenStore,
   favorites: Favorites,
-  messageDisplay: IMessageDisplay
+  messageDisplay: MessageDisplay
 }
 
 @observer
@@ -53,7 +53,7 @@ class VpnScreen extends React.Component<HomeProps> {
   private readonly vpnScreenStore: VpnScreenStore
   private readonly screenStore: ScreenStore
   private readonly favorites: Favorites
-  private readonly messageDisplay: IMessageDisplay
+  private readonly messageDisplay: MessageDisplay
 
   constructor (props: HomeProps) {
     super(props)

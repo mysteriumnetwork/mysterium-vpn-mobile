@@ -18,7 +18,7 @@
 import { observer } from 'mobx-react/native'
 import React, { ReactNode } from 'react'
 import { View } from 'react-native'
-import IFeedbackReporter from '../bug-reporter/feedback-reporter'
+import FeedbackReporter from '../bug-reporter/feedback-reporter'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
 import AppLoader from './app-loader'
 import styles from './app-styles'
@@ -43,7 +43,7 @@ type AppProps = {
   terms: Terms,
   favorites: Favorites,
   appLoader: AppLoader,
-  feedbackReporter: IFeedbackReporter
+  feedbackReporter: FeedbackReporter
 }
 
 @observer
@@ -56,7 +56,7 @@ export default class App extends React.Component<AppProps> {
   private readonly screenStore: ScreenStore
   private readonly favorites: Favorites
   private readonly appLoader: AppLoader
-  private readonly feedbackReporter: IFeedbackReporter
+  private readonly feedbackReporter: FeedbackReporter
 
   constructor (props: AppProps) {
     super(props)

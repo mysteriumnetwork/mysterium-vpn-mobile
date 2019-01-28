@@ -20,8 +20,8 @@ import { IPFetcher } from '../../fetchers/ip-fetcher'
 import { StatsFetcher } from '../../fetchers/stats-fetcher'
 import { StatusFetcher } from '../../fetchers/status-fetcher'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
-import IConnectionAdapter, { ConnectionCanceled } from '../adapters/connection-adapter'
-import { ConnectionEventAdapter, StatisticsAdapter } from '../adapters/statistics-adapter'
+import ConnectionAdapter, { ConnectionCanceled } from '../adapters/connection/connection-adapter'
+import { ConnectionEventAdapter, StatisticsAdapter } from '../adapters/statistics/statistics-adapter'
 import ConnectionData from '../models/connection-data'
 import ConnectionStatistics from '../models/connection-statistics'
 import ConnectionStatus from '../models/connection-status'
@@ -43,7 +43,7 @@ class Connection {
   private readonly statsFetcher: StatsFetcher
 
   constructor (
-    private readonly connectionAdapter: IConnectionAdapter,
+    private readonly connectionAdapter: ConnectionAdapter,
     private readonly statisticsAdapter: StatisticsAdapter
   ) {
     this._data = initialConnectionData

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type StorageAdapter = {
-  save (data: any): Promise<void>
-  load (): Promise<any | null>
+import { Identity } from '../../models/identity'
+
+interface IdentityAdapter {
+  list (): Promise<Identity[]>
+  create (passphrase: string): Promise<Identity>
+  unlock (identity: Identity, passphrase: string): Promise<void>
 }
 
-export default StorageAdapter
+export { IdentityAdapter }

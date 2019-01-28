@@ -1,5 +1,5 @@
-interface IMessageDisplay {
+interface MessageDisplay {
   showError (message: string): void
   showInfo (message: string): void
 }
-export default IMessageDisplay
+export default MessageDisplay

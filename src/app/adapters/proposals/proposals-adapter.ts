@@ -15,12 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Identity } from '../models/identity'
+import Proposal from '../../models/proposal'
 
-interface IdentityAdapter {
-  list (): Promise<Identity[]>
-  create (passphrase: string): Promise<Identity>
-  unlock (identity: Identity, passphrase: string): Promise<void>
+interface ProposalsAdapter {
+  findProposals (): Promise<Proposal[]>
 }
 
-export { IdentityAdapter }
+export { ProposalsAdapter }

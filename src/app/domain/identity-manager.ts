@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IdentityAdapter } from '../adapters/identity-adapter'
+import { IdentityAdapter } from '../adapters/identity/identity-adapter'
 import { EventNotifier } from './observables/event-notifier'
 
 class IdentityManager {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface IStyles {
+export interface Styles {
   FONT_LARGE: number,
   FONT_NORMAL: number,
   COLOR_MAIN: string,
@@ -26,7 +26,7 @@ export interface IStyles {
   MARGIN: number
 }
 
-export const STYLES: IStyles = {
+export const STYLES: Styles = {
   FONT_LARGE: 32,
   FONT_NORMAL: 18,
   COLOR_MAIN: '#622461',

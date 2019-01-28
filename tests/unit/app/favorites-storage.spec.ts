@@ -16,7 +16,7 @@
  */
 
 import { observable } from 'mobx'
-import { FavoritesStorage } from '../../../src/app/favorites-storage'
+import { FavoritesStorage } from '../../../src/app/domain/favorites-storage'
 import { MockStorage } from '../mocks/mock-storage'
 
 describe('FavoritesStorage', () => {

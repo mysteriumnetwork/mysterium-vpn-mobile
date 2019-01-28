@@ -17,8 +17,8 @@
 
 import TequilapiClientFactory from 'mysterium-tequilapi'
 import { AppRegistry } from 'react-native'
-import ReactNativeNotificationAdapter from './app/adapters/react-native-notification-adapter'
-import TequilapiConnectionAdapter from './app/adapters/tequilapi-connection-adapter'
+import TequilapiConnectionAdapter from './app/adapters/connection/tequilapi-connection-adapter'
+import ReactNativeNotificationAdapter from './app/adapters/notification/react-native-notification-adapter'
 import { ConnectionChecker } from './app/domain/connection-checker'
 import Root from './app/root'
 import { CONFIG } from './config'

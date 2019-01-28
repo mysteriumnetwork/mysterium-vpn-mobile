@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalsAdapter } from '../../../src/app/adapters/proposals-adapter'
+import { ProposalsAdapter } from '../../../src/app/adapters/proposals/proposals-adapter'
 import Proposal from '../../../src/app/models/proposal'
 
 export class MockProposalsAdapter implements ProposalsAdapter {

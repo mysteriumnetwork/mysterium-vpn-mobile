@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from '../../../../src/app/adapters/storage-adapter'
+import StorageAdapter from '../../../../src/app/adapters/storage/storage-adapter'
 import Terms from '../../../../src/app/domain/terms'
 import MockStorage from '../../mocks/mock-storage'
 

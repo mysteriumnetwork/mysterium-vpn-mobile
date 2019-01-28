@@ -15,10 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Proposal from '../models/proposal'
-
-interface ProposalsAdapter {
-  findProposals (): Promise<Proposal[]>
+type StorageAdapter = {
+  save (data: any): Promise<void>
+  load (): Promise<any | null>
 }
 
-export { ProposalsAdapter }
+export default StorageAdapter

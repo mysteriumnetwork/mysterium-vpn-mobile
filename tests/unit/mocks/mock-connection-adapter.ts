@@ -16,13 +16,13 @@
  */
 
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import IConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapters/connection-adapter'
+import ConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapters/connection/connection-adapter'
 import ConnectionStatistics from '../../../src/app/models/connection-statistics'
 import ConnectionStatus from '../../../src/app/models/connection-status'
 import Ip from '../../../src/app/models/ip'
 import { ServiceType } from '../../../src/app/models/service-type'
 
-export class MockConnectionAdapter implements IConnectionAdapter {
+export class MockConnectionAdapter implements ConnectionAdapter {
   public mockStatus: ConnectionStatus = 'Connected'
   public throwConnectError: boolean = false
   public throwConnectCancelledError: boolean = false

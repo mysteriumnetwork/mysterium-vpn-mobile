@@ -17,7 +17,7 @@
 
 import { CONFIG } from '../../config'
 import { ProposalsFetcher } from '../../fetchers/proposals-fetcher'
-import { ProposalsAdapter } from '../adapters/proposals-adapter'
+import { ProposalsAdapter } from '../adapters/proposals/proposals-adapter'
 import { EventNotifier } from '../domain/observables/event-notifier'
 import Proposal from '../models/proposal'
 

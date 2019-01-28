@@ -16,8 +16,8 @@
  */
 
 import { ConnectionStatus } from 'mysterium-tequilapi'
-import IConnectionAdapter from '../adapters/connection-adapter'
-import NotificationAdapter from '../adapters/notification-adapter'
+import ConnectionAdapter from '../adapters/connection/connection-adapter'
+import NotificationAdapter from '../adapters/notification/notification-adapter'
 import translations from '../translations'
 
 type ConnectionCheckerData = {
@@ -29,7 +29,7 @@ class ConnectionChecker {
   private running: boolean = false
   private readonly NAME = 'ConnectionChecker'
 
-  constructor (private connectionAdapter: IConnectionAdapter, private notificationAdapter: NotificationAdapter) {}
+  constructor (private connectionAdapter: ConnectionAdapter, private notificationAdapter: NotificationAdapter) {}
 
   public async run (data: ConnectionCheckerData) {
     if (this.running) {

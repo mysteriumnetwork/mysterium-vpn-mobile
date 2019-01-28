@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IdentityAdapter } from '../../../src/app/adapters/identity-adapter'
+import { IdentityAdapter } from '../../../src/app/adapters/identity/identity-adapter'
 import { Identity } from '../../../src/app/models/identity'
 
 class MockIdentityAdapter implements IdentityAdapter {
