@@ -16,7 +16,7 @@
  */
 
 import { TequilapiClient } from 'mysterium-tequilapi'
-import { Identity } from '../models/identity'
+import { Identity } from '../../models/identity'
 import { IdentityAdapter } from './identity-adapter'
 
 class TequilapiIdentityAdapter implements IdentityAdapter {

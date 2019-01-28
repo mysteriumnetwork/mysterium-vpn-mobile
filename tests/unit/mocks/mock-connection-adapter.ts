@@ -16,7 +16,7 @@
  */
 
 import { ConnectionStatusDTO } from 'mysterium-tequilapi'
-import IConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapters/connection-adapter'
+import IConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapters/connection/connection-adapter'
 import ConnectionStatistics from '../../../src/app/models/connection-statistics'
 import ConnectionStatus from '../../../src/app/models/connection-status'
 import Ip from '../../../src/app/models/ip'

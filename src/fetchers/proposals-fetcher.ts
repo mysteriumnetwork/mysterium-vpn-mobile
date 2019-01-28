@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalsAdapter } from '../app/adapters/proposals-adapter'
+import { ProposalsAdapter } from '../app/adapters/proposals/proposals-adapter'
 import Proposal from '../app/models/proposal'
 import { FetcherBase } from './fetcher-base'
 

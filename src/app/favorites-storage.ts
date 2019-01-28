@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from './adapters/storage-adapter'
+import StorageAdapter from './adapters/storage/storage-adapter'
 import { EventNotifier } from './domain/observables/event-notifier'
 import { ServiceType } from './models/service-type'
 

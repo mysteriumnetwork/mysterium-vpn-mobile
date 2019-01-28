@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'MysteriumNetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,10 @@
  */
 
 import { MetricsDTO, ProposalDTO, ProposalQueryOptions, TequilapiClient } from 'mysterium-tequilapi'
-import { Countries } from '../../libraries/countries'
-import { Metrics } from '../models/metrics'
-import Proposal from '../models/proposal'
-import { stringToServiceType } from '../models/service-type'
+import { Countries } from '../../../libraries/countries'
+import { Metrics } from '../../models/metrics'
+import Proposal from '../../models/proposal'
+import { stringToServiceType } from '../../models/service-type'
 import { ProposalsAdapter } from './proposals-adapter'
 
 class TequilapiProposalsAdapter implements ProposalsAdapter {

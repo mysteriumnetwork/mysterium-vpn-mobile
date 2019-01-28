@@ -18,7 +18,7 @@
 import {
   ConnectionEventAdapter,
   StatisticsAdapter
-} from '../../../src/app/adapters/statistics-adapter'
+} from '../../../src/app/adapters/statistics/statistics-adapter'
 import MockConnectionEventAdapter from './mock-connection-event-adapter'
 
 class MockStatisticsAdapter implements StatisticsAdapter {

@@ -16,8 +16,8 @@
  */
 
 import { ConnectionStatus } from 'mysterium-tequilapi'
-import IConnectionAdapter from '../adapters/connection-adapter'
-import NotificationAdapter from '../adapters/notification-adapter'
+import IConnectionAdapter from '../adapters/connection/connection-adapter'
+import NotificationAdapter from '../adapters/notification/notification-adapter'
 import translations from '../translations'
 
 type ConnectionCheckerData = {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from '../adapters/storage-adapter'
+import StorageAdapter from '../adapters/storage/storage-adapter'
 
 class Terms {
   constructor (private storage: StorageAdapter, private currentVersion: number) {}

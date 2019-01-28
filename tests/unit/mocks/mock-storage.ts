@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from '../../../src/app/adapters/storage-adapter'
+import StorageAdapter from '../../../src/app/adapters/storage/storage-adapter'
 
 export class MockStorage implements StorageAdapter {
   private data: string | null = null

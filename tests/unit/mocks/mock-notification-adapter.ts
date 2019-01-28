@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import NotificationAdapter from '../../../src/app/adapters/notification-adapter'
+import NotificationAdapter from '../../../src/app/adapters/notification/notification-adapter'
 
 class MockNotificationAdapter implements NotificationAdapter {
   public shownTitle?: string

@@ -1,6 +1,6 @@
 import {
   ConnectionEventAdapter
-} from '../../../src/app/adapters/statistics-adapter'
+} from '../../../src/app/adapters/statistics/statistics-adapter'
 
 class MockConnectionEventAdapter implements ConnectionEventAdapter {
   public sentCanceledEvent: boolean = false

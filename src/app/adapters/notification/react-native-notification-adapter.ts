@@ -15,10 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Proposal from '../models/proposal'
+import PushNotification from 'react-native-push-notification'
+import NotificationAdapter from './notification-adapter'
 
-interface ProposalsAdapter {
-  findProposals (): Promise<Proposal[]>
+class ReactNativeNotificationAdapter implements NotificationAdapter {
+  public show (title: string, message: string) {
+    PushNotification.localNotification({ title, message })
+  }
 }
 
-export { ProposalsAdapter }
+export default ReactNativeNotificationAdapter

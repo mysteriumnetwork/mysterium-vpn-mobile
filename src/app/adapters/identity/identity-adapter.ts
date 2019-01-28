@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Identity } from '../models/identity'
+import { Identity } from '../../models/identity'
 
 interface IdentityAdapter {
   list (): Promise<Identity[]>
