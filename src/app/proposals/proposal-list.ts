@@ -4,23 +4,23 @@ import { QualityCalculator } from '../domain/quality-calculator'
 import Proposal from '../models/proposal'
 import translations from '../translations'
 
-interface IProposalsStore {
+interface ProposalsStore {
   proposals: Proposal[]
   onChange (callback: () => void): void
 }
 
-interface IFavoritesStorage {
+interface FavoritesStorage {
   has (proposalId: string): boolean
   onChange (listener: Callback): void
 }
 
 class ProposalList {
-  protected proposalsStore: IProposalsStore
-  protected favorites: IFavoritesStorage
+  protected proposalsStore: ProposalsStore
+  protected favorites: FavoritesStorage
   private readonly qualityCalculator: QualityCalculator = new QualityCalculator()
   private changeNotifier: EventNotifier = new EventNotifier()
 
-  constructor (proposalsStore: IProposalsStore, favorites: IFavoritesStorage) {
+  constructor (proposalsStore: ProposalsStore, favorites: FavoritesStorage) {
     this.proposalsStore = proposalsStore
     this.favorites = favorites
 

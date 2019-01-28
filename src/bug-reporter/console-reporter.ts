@@ -16,9 +16,9 @@
  */
 
 import { BugReporter } from './bug-reporter'
-import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
+import FeedbackReporter, { UserFeedback } from './feedback-reporter'
 
-class ConsoleReporter implements BugReporter, IFeedbackReporter {
+class ConsoleReporter implements BugReporter, FeedbackReporter {
   public sendException (e: Error) {
     console.log('Bug reported:', e)
   }

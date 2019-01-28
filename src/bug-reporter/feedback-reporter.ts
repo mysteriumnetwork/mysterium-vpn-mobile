@@ -20,9 +20,9 @@ type UserFeedback = {
   message: string
 }
 
-interface IFeedbackReporter {
+interface FeedbackReporter {
   sendFeedback (feedback: UserFeedback): void
 }
 
 export { UserFeedback }
-export default IFeedbackReporter
+export default FeedbackReporter

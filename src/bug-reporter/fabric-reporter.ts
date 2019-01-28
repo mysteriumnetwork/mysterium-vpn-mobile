@@ -16,10 +16,10 @@
 */
 
 import { BugReporter } from './bug-reporter'
-import IFeedbackReporter, { UserFeedback } from './feedback-reporter'
+import FeedbackReporter, { UserFeedback } from './feedback-reporter'
 import NativeBugReporter from './native-bug-reporter'
 
-class FabricReporter implements BugReporter, IFeedbackReporter {
+class FabricReporter implements BugReporter, FeedbackReporter {
   public sendException (e: Error) {
     NativeBugReporter.logException(e.message)
   }

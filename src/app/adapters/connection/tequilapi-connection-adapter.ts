@@ -22,9 +22,9 @@ import {
 import ConnectionStatistics from '../../models/connection-statistics'
 import Ip from '../../models/ip'
 import { ServiceType } from '../../models/service-type'
-import IConnectionAdapter, { ConnectionCanceled } from './connection-adapter'
+import ConnectionAdapter, { ConnectionCanceled } from './connection-adapter'
 
-class TequilapiConnectionAdapter implements IConnectionAdapter {
+class TequilapiConnectionAdapter implements ConnectionAdapter {
   constructor (private tequilapiClient: TequilapiClient) {
   }
 

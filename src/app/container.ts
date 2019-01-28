@@ -20,7 +20,7 @@ import { Platform } from 'react-native'
 import { BugReporter } from '../bug-reporter/bug-reporter'
 import ConsoleReporter from '../bug-reporter/console-reporter'
 import { FabricReporter } from '../bug-reporter/fabric-reporter'
-import IFeedbackReporter from '../bug-reporter/feedback-reporter'
+import FeedbackReporter from '../bug-reporter/feedback-reporter'
 import { CONFIG } from '../config'
 
 import ConsoleSender from '../libraries/statistics/senders/console-sender'
@@ -30,7 +30,7 @@ import StatisticsConfig from '../libraries/statistics/statistics-config'
 import StatisticsEventManager from '../libraries/statistics/statistics-event-manager'
 import timeProvider from '../libraries/statistics/time-provider'
 import TequilApiDriver from '../libraries/tequil-api/tequil-api-driver'
-import IConnectionAdapter from './adapters/connection/connection-adapter'
+import ConnectionAdapter from './adapters/connection/connection-adapter'
 import TequilapiConnectionAdapter from './adapters/connection/tequilapi-connection-adapter'
 import { IdentityAdapter } from './adapters/identity/identity-adapter'
 import { TequilapiIdentityAdapter } from './adapters/identity/tequilapi-identity-adapter'
@@ -57,7 +57,7 @@ class Container {
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
   // adapters
-  public readonly connectionAdapter: IConnectionAdapter = new TequilapiConnectionAdapter(this.api)
+  public readonly connectionAdapter: ConnectionAdapter = new TequilapiConnectionAdapter(this.api)
   public readonly proposalsAdapter: ProposalsAdapter = new TequilapiProposalsAdapter(this.api)
 
   public readonly statisticsAdapter: StatisticsAdapter = this.buildStatisticsAdapter()
@@ -79,7 +79,7 @@ class Container {
     new TequilApiDriver(this.api, this.connection, this.identityManager,this.messageDisplayDelegate)
 
   public readonly bugReporter: BugReporter
-  public readonly feedbackReporter: IFeedbackReporter
+  public readonly feedbackReporter: FeedbackReporter
 
   public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
   public readonly favorites = new Favorites(this.favoritesStorage)

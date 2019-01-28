@@ -18,12 +18,12 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
 import DropdownAlert from 'react-native-dropdownalert'
-import IMessageDisplay from '../messages/message-display'
+import MessageDisplay from '../messages/message-display'
 
 /**
  * Allowing show error messages as a dropdowns.
  */
-class ErrorDropdown extends React.Component implements IMessageDisplay {
+class ErrorDropdown extends React.Component implements MessageDisplay {
   private dropdown: DropdownAlert
 
   public render (): ReactNode {

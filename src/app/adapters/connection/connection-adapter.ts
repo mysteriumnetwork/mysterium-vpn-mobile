@@ -21,7 +21,7 @@ import Ip from '../../models/ip'
 import { ServiceType } from '../../models/service-type'
 
 // TODO: uncouple from mysterium-tequilapi by using domain models for response data
-interface IConnectionAdapter {
+interface ConnectionAdapter {
   connect (consumerId: string, providerId: string, serviceType: ServiceType): Promise<void>
   disconnect (): Promise<void>
   fetchStatus (): Promise<ConnectionStatusDTO>
@@ -41,5 +41,5 @@ class ConnectionCanceled extends Error {
   }
 }
 
-export default IConnectionAdapter
+export default ConnectionAdapter
 export { ConnectionCanceled }

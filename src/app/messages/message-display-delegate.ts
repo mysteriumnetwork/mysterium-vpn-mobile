@@ -1,12 +1,12 @@
-import IMessageDisplay from './message-display'
+import MessageDisplay from './message-display'
 
 /**
  * Message display delegating to another implementation.
  */
-class MessageDisplayDelegate implements IMessageDisplay {
-  private _messageDisplay?: IMessageDisplay
+class MessageDisplayDelegate implements MessageDisplay {
+  private _messageDisplay?: MessageDisplay
 
-  public set messageDisplay (value: IMessageDisplay) {
+  public set messageDisplay (value: MessageDisplay) {
     this._messageDisplay = value
   }
 
@@ -18,7 +18,7 @@ class MessageDisplayDelegate implements IMessageDisplay {
     this.getMessageDisplayOrFail().showInfo(message)
   }
 
-  private getMessageDisplayOrFail (): IMessageDisplay {
+  private getMessageDisplayOrFail (): MessageDisplay {
     if (this._messageDisplay === undefined) {
       throw new Error('MessageDisplayDelegate failed - messageDisplay not set')
     }

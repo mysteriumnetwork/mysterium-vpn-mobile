@@ -17,9 +17,9 @@
 
 import { NativeModules } from 'react-native'
 
-const NativeBugReporter: INativeBugReporter = NativeModules.BugReporter
+const NativeBugReporter: NativeBugReporterInterface = NativeModules.BugReporter
 
-interface INativeBugReporter {
+interface NativeBugReporterInterface {
   logException (value: string): void
 
   setUserIdentifier (userIdentifier: string): void

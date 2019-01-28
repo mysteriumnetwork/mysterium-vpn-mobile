@@ -19,7 +19,7 @@ import { NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
 import Connection from '../../app/domain/connection'
 import { IdentityManager } from '../../app/domain/identity-manager'
 
-import IMessageDisplay from '../../app/messages/message-display'
+import MessageDisplay from '../../app/messages/message-display'
 import { ServiceType } from '../../app/models/service-type'
 import translations from '../../app/translations'
 
@@ -32,7 +32,7 @@ export default class TequilApiDriver {
     private api: TequilapiClient,
     private connection: Connection,
     private identityManager: IdentityManager,
-    private messageDisplay: IMessageDisplay) {}
+    private messageDisplay: MessageDisplay) {}
 
   /**
    * Tries to connect to selected VPN server
