@@ -18,7 +18,7 @@
 import { autorun, IReactionDisposer } from 'mobx'
 import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
 import Connection from '../../../../src/app/domain/connection'
-import { FavoritesStorage } from '../../../../src/app/favorites-storage'
+import { FavoritesStorage } from '../../../../src/app/domain/favorites-storage'
 import ConnectionStatus from '../../../../src/app/models/connection-status'
 import Proposal from '../../../../src/app/models/proposal'
 import { ServiceType } from '../../../../src/app/models/service-type'

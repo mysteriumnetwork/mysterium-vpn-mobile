@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import StorageAdapter from './adapters/storage/storage-adapter'
-import { EventNotifier } from './domain/observables/event-notifier'
-import { ServiceType } from './models/service-type'
+import StorageAdapter from '../adapters/storage/storage-adapter'
+import { ServiceType } from '../models/service-type'
+import { EventNotifier } from './observables/event-notifier'
 
-// TODO: move to domain
 export class FavoritesStorage {
   private favorites: FavoriteProposals = new Set<string>()
   private notifier: EventNotifier = new EventNotifier()
