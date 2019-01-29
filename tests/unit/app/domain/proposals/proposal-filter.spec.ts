@@ -35,11 +35,11 @@ describe('ProposalFilter', () => {
     })
 
     it('finds proposal label by country name', () => {
-      expect(proposalFilter.filter('United')).toHaveLength(3)
+      expect(proposalFilter.filter('United')).toHaveLength(2)
     })
 
     it('finds proposal label by case insensitive country name', () => {
-      expect(proposalFilter.filter('united')).toHaveLength(3)
+      expect(proposalFilter.filter('united')).toHaveLength(2)
     })
 
     it('finds proposal by partial id', () => {
@@ -61,11 +61,11 @@ describe('ProposalFilter', () => {
     })
 
     it('finds proposal by service type and text', () => {
-      const result = proposalFilter.filter('United States', ServiceType.Openvpn)
+      const result = proposalFilter.filter('Italy', ServiceType.Openvpn)
 
       expect(result).toHaveLength(2)
       result.forEach(proposal => {
-        expect(proposal.countryName).toEqual('United States')
+        expect(proposal.countryName).toEqual('Italy')
         expect(proposal.serviceType).toEqual(ServiceType.Openvpn)
       })
     })

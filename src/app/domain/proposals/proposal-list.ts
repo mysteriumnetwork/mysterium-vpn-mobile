@@ -1,6 +1,5 @@
 import Proposal from '../../models/proposal'
 import { ProposalItem } from '../../models/proposal-item'
-import translations from '../../translations'
 import { EventNotifier } from '../observables/event-notifier'
 import { QualityCalculator } from '../quality-calculator'
 
@@ -67,12 +66,23 @@ function compareProposalItems (one: ProposalItem, other: ProposalItem): number {
     return 1
   }
 
-  const oneName = one.countryName || translations.UNKNOWN
-  const otherName = other.countryName || translations.UNKNOWN
+  return compareNames(one.countryName, other.countryName)
+}
 
-  if (oneName > otherName) {
+function compareNames (one: string | null, other: string | null): number {
+  if (one === null && other === null) {
+    return 0
+  }
+  if (one === null) {
     return 1
-  } else if (oneName < otherName) {
+  }
+  if (other === null) {
+    return -1
+  }
+
+  if (one > other) {
+    return 1
+  } else if (one < other) {
     return -1
   }
   return 0

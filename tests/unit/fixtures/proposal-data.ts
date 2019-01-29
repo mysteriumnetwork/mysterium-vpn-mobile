@@ -36,8 +36,8 @@ const proposalData: Proposal[] = [
       timeout: 0
     }
   }),
-  new Proposal('0x3', ServiceType.Openvpn, 'us', 'United States', emptyMetrics),
-  new Proposal('0x4', ServiceType.Openvpn, 'gb', 'United Kingdom', emptyMetrics),
+  new Proposal('0x3', ServiceType.Openvpn, 'gb', 'United Kingdom', emptyMetrics),
+  new Proposal('0x4', ServiceType.Openvpn, 'zw', 'Zimbabwe', emptyMetrics),
   new Proposal('0x5', ServiceType.Openvpn, 'it', 'Italy', emptyMetrics),
   new Proposal('0x6', ServiceType.Openvpn, 'it', 'Italy', {
     connectCount: {
@@ -46,7 +46,7 @@ const proposalData: Proposal[] = [
       timeout: 2
     }
   }),
-  new Proposal('0x7', ServiceType.Openvpn, 'it', 'Italy', emptyMetrics),
+  new Proposal('0x7', ServiceType.Openvpn, 'it', null, emptyMetrics),
   new Proposal('0x8', ServiceType.Openvpn, 'al', 'Albania', emptyMetrics)
 ]
 

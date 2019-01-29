@@ -34,11 +34,11 @@ describe('ProposalList', () => {
         'United States',
         'Albania',
         'Italy',
-        'Italy',
         'Lithuania',
         'Lithuania',
         'United Kingdom',
-        'United States'
+        'Zimbabwe',
+        null
       ]
 
       const countryNames = list.proposals.map((i) => i.countryName)
