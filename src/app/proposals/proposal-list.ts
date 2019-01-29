@@ -1,7 +1,7 @@
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import { EventNotifier } from '../domain/observables/event-notifier'
 import { QualityCalculator } from '../domain/quality-calculator'
 import Proposal from '../models/proposal'
+import { ProposalItem } from '../models/proposal-item'
 import translations from '../translations'
 
 interface ProposalsStore {
@@ -27,7 +27,7 @@ class ProposalList {
     this.receiveChangesFromDependencies()
   }
 
-  public get proposals (): ProposalListItem[] {
+  public get proposals (): ProposalItem[] {
     const proposals = this.proposalsStore.proposals
       .map((proposal: Proposal) => this.proposalToProposalItem(proposal))
       .sort(compareProposalItems)
@@ -45,7 +45,7 @@ class ProposalList {
     this.proposalsStore.onChange(notifyChange)
   }
 
-  private proposalToProposalItem (proposal: Proposal): ProposalListItem {
+  private proposalToProposalItem (proposal: Proposal): ProposalItem {
     return {
       id: proposal.id,
       providerID: proposal.providerID,
@@ -60,7 +60,7 @@ class ProposalList {
 
 type Callback = () => void
 
-function compareProposalItems (one: ProposalListItem, other: ProposalListItem): number {
+function compareProposalItems (one: ProposalItem, other: ProposalItem): number {
   if (one.isFavorite && !other.isFavorite) {
     return -1
   } else if (!one.isFavorite && other.isFavorite) {

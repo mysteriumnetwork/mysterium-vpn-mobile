@@ -16,7 +16,7 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
+import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
 import ProposalFilter from '../proposals/proposal-filter'
 
@@ -26,7 +26,7 @@ class ProposalsListStore {
   @observable
   private _filteredServiceType: ServiceType | null = null
 
-  constructor (private readonly proposals: ProposalListItem[]) {}
+  constructor (private readonly proposals: ProposalItem[]) {}
 
   @computed
   public get filteredProposals () {

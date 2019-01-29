@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
+import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import { ServiceType } from '../../../../src/app/models/service-type'
 import ProposalFilter from '../../../../src/app/proposals/proposal-filter'
 import { proposalListItemData } from '../../fixtures/proposal-list-item-data'
 
 describe('ProposalFilter', () => {
-  let proposals: ProposalListItem[]
+  let proposals: ProposalItem[]
   let proposalFilter: ProposalFilter
 
   describe('.filter', () => {

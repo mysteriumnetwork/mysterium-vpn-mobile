@@ -19,25 +19,25 @@ import { Col, Grid, Icon, Text } from 'native-base'
 import React, { ReactNode } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
+import { ProposalItem } from '../../models/proposal-item'
 import CountryFlag from './country-flag'
 import ProposalList from './proposal-list'
-import { ProposalListItem } from './proposal-list-item'
 import ProposalModal from './proposal-modal'
 import { ServiceIndicator } from './service-indicator'
 
 type PickerProps = {
-  proposals: ProposalListItem[]
-  onSelect: (proposal: ProposalListItem) => void
+  proposals: ProposalItem[]
+  onSelect: (proposal: ProposalItem) => void
   onFavoriteToggle: () => void
   isFavoriteSelected: boolean
   placeholder: string,
-  selectedProposal: ProposalListItem | null,
+  selectedProposal: ProposalItem | null,
   disabled: boolean
 }
 
 type PickerState = {
   modalIsOpen: boolean
-  selectedProposal: ProposalListItem | null
+  selectedProposal: ProposalItem | null
 }
 
 class ProposalPicker extends React.Component<PickerProps, PickerState> {
@@ -66,7 +66,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
             proposals={this.props.proposals}
             selectedProposal={this.state.selectedProposal}
             onClose={() => this.closeProposalModal()}
-            onSelect={(proposal: ProposalListItem) => this.onProposalSelect(proposal)}
+            onSelect={(proposal: ProposalItem) => this.onProposalSelect(proposal)}
           />
         </ProposalModal>
 
@@ -169,7 +169,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
     this.setState({ modalIsOpen: false })
   }
 
-  private onProposalSelect (proposal: ProposalListItem) {
+  private onProposalSelect (proposal: ProposalItem) {
     this.props.onSelect(proposal)
 
     this.setState({
