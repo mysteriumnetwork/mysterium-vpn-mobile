@@ -16,10 +16,9 @@
  */
 
 import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
-import Proposal from '../../../../src/app/models/proposal'
 import { ServiceType } from '../../../../src/app/models/service-type'
 import ProposalFilter from '../../../../src/app/proposals/proposal-filter'
-import proposalData from './proposal-data'
+import { proposalListItemData } from '../../fixtures/proposal-list-item-data'
 
 describe('ProposalFilter', () => {
   let proposals: ProposalListItem[]
@@ -27,7 +26,7 @@ describe('ProposalFilter', () => {
 
   describe('.filter', () => {
     beforeEach(() => {
-      proposals = proposalData.map(convertProposalToIProposal)
+      proposals = proposalListItemData
       proposalFilter = new ProposalFilter(proposals)
     })
 
@@ -72,15 +71,3 @@ describe('ProposalFilter', () => {
     })
   })
 })
-
-const convertProposalToIProposal = (proposal: Proposal): ProposalListItem => {
-  return {
-    id: proposal.id,
-    providerID: proposal.providerID,
-    serviceType: proposal.serviceType,
-    countryCode: proposal.countryCode,
-    countryName: proposal.countryName,
-    isFavorite: true,
-    quality: null
-  }
-}

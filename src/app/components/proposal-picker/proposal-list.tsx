@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { observer } from 'mobx-react/native'
 import {
   Body,
   Button,
@@ -33,7 +34,8 @@ import {
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import colors from '../../../app/styles/colors'
-import ProposalFilter from '../../proposals/proposal-filter'
+import { ServiceType } from '../../models/service-type'
+import { ProposalsListStore } from '../../stores/proposals-list-store'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { ProposalListItem } from './proposal-list-item'
@@ -44,29 +46,22 @@ type ListProps = {
   proposals: ProposalListItem[],
   selectedProposal: ProposalListItem | null,
   onClose: () => void,
-  onSelect: (proposal: ProposalListItem) => void,
-  serviceFilterOptions: string[]
+  onSelect: (proposal: ProposalListItem) => void
 }
 
-type ListState = {
-  selectedFilterOption: number,
-  filteredProposals: ProposalListItem[]
-}
+@observer
+class ProposalList extends React.Component<ListProps> {
+  private store: ProposalsListStore = new ProposalsListStore(this.props.proposals)
 
-class ProposalList extends React.Component<ListProps, ListState> {
-  private proposalFilter: ProposalFilter
+  private readonly SERVICE_TYPE_ALL_LABEL = 'all'
 
   constructor (props: ListProps) {
     super(props)
-
-    this.state = {
-      selectedFilterOption: 0,
-      filteredProposals: this.props.proposals
-    }
-    this.proposalFilter = new ProposalFilter(this.props.proposals)
   }
 
   public render (): ReactNode {
+    const filteredProposals = this.store.filteredProposals
+
     return (
       <Container>
         <Header hasSegment={true}>
@@ -90,7 +85,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
         {this.renderServiceFilterOptions()}
         <Content>
           <List>
-            {this.state.filteredProposals.map((proposal: ProposalListItem) => this.renderProposal(proposal))}
+            {filteredProposals.map((proposal: ProposalListItem) => this.renderProposal(proposal))}
           </List>
         </Content>
       </Container>
@@ -98,9 +93,9 @@ class ProposalList extends React.Component<ListProps, ListState> {
   }
 
   private renderServiceFilterOptions (): ReactNode {
-    const options = this.props.serviceFilterOptions
-    const items = options.map((filterItem, index) => {
-      return this.renderServiceFilterOption(filterItem, index, options.length)
+    const options = this.store.serviceFilterOptions
+    const items = options.map((serviceType, index) => {
+      return this.renderServiceFilterOption(serviceType, index, options.length)
     })
     return (
       <Segment>
@@ -109,22 +104,19 @@ class ProposalList extends React.Component<ListProps, ListState> {
     )
   }
 
-  private renderServiceFilterOption (text: string, index: number, total: number): ReactNode {
+  private renderServiceFilterOption (serviceType: ServiceType | null, index: number, total: number): ReactNode {
+    const label = serviceType || this.SERVICE_TYPE_ALL_LABEL
     return (
       <Button
-        key={text}
+        key={label}
         first={index === 0}
         last={index + 1 === total}
-        active={index === this.state.selectedFilterOption}
-        onPress={() => this.onFilterOptionPressed(index)}
+        active={serviceType === this.store.filteredServiceType}
+        onPress={() => this.onFilterOptionPressed(serviceType)}
       >
-        <Text>{text}</Text>
+        <Text>{label}</Text>
       </Button>
     )
-  }
-
-  private onFilterOptionPressed (index: number) {
-    this.setState({ selectedFilterOption: index })
   }
 
   private renderProposal (proposal: ProposalListItem): ReactNode {
@@ -187,10 +179,12 @@ class ProposalList extends React.Component<ListProps, ListState> {
     return selected.id === proposal.id
   }
 
-  private onSearchValueChange (text: string) {
-    const filteredProposals = this.proposalFilter.filter(text)
+  private onFilterOptionPressed (serviceType: ServiceType | null) {
+    this.store.filterByServiceType(serviceType)
+  }
 
-    this.setState({ filteredProposals })
+  private onSearchValueChange (text: string) {
+    this.store.filterByText(text)
   }
 }
 

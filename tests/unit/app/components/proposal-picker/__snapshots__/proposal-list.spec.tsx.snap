@@ -9,7 +9,6 @@ ShallowWrapper {
     onSelect={[Function]}
     proposals={Array []}
     selectedProposal={null}
-    serviceFilterOptions={Array []}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -75,7 +74,38 @@ ShallowWrapper {
             </Styled(Button)>
           </Styled(Right)>
         </Styled(Header)>,
-        <Styled(Segment) />,
+        <Styled(Segment)>
+          <Styled(Button)
+            active={true}
+            first={true}
+            last={false}
+            onPress={[Function]}
+          >
+            <Styled(Text)>
+              all
+            </Styled(Text)>
+          </Styled(Button)>
+          <Styled(Button)
+            active={false}
+            first={false}
+            last={false}
+            onPress={[Function]}
+          >
+            <Styled(Text)>
+              openvpn
+            </Styled(Text)>
+          </Styled(Button)>
+          <Styled(Button)
+            active={false}
+            first={false}
+            last={true}
+            onPress={[Function]}
+          >
+            <Styled(Text)>
+              wireguard
+            </Styled(Text)>
+          </Styled(Button)>
+        </Styled(Segment)>,
         <Styled(Content)>
           <Styled(List) />
         </Styled(Content)>,
@@ -305,11 +335,130 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": Array [],
+          "children": Array [
+            <Styled(Button)
+              active={true}
+              first={true}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                all
+              </Styled(Text)>
+            </Styled(Button)>,
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                openvpn
+              </Styled(Text)>
+            </Styled(Button)>,
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={true}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                wireguard
+              </Styled(Text)>
+            </Styled(Button)>,
+          ],
           "virtual": undefined,
         },
         "ref": null,
-        "rendered": Array [],
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": "all",
+            "nodeType": "class",
+            "props": Object {
+              "active": true,
+              "children": <Styled(Text)>
+                all
+              </Styled(Text)>,
+              "first": true,
+              "last": false,
+              "onPress": [Function],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "all",
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": "all",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "openvpn",
+            "nodeType": "class",
+            "props": Object {
+              "active": false,
+              "children": <Styled(Text)>
+                openvpn
+              </Styled(Text)>,
+              "first": false,
+              "last": false,
+              "onPress": [Function],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "openvpn",
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": "openvpn",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "wireguard",
+            "nodeType": "class",
+            "props": Object {
+              "active": false,
+              "children": <Styled(Text)>
+                wireguard
+              </Styled(Text)>,
+              "first": false,
+              "last": true,
+              "onPress": [Function],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "wireguard",
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": "wireguard",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+        ],
         "type": [Function],
       },
       Object {
@@ -396,7 +545,38 @@ ShallowWrapper {
               </Styled(Button)>
             </Styled(Right)>
           </Styled(Header)>,
-          <Styled(Segment) />,
+          <Styled(Segment)>
+            <Styled(Button)
+              active={true}
+              first={true}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                all
+              </Styled(Text)>
+            </Styled(Button)>
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                openvpn
+              </Styled(Text)>
+            </Styled(Button)>
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={true}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                wireguard
+              </Styled(Text)>
+            </Styled(Button)>
+          </Styled(Segment)>,
           <Styled(Content)>
             <Styled(List) />
           </Styled(Content)>,
@@ -626,11 +806,130 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": Array [],
+            "children": Array [
+              <Styled(Button)
+                active={true}
+                first={true}
+                last={false}
+                onPress={[Function]}
+              >
+                <Styled(Text)>
+                  all
+                </Styled(Text)>
+              </Styled(Button)>,
+              <Styled(Button)
+                active={false}
+                first={false}
+                last={false}
+                onPress={[Function]}
+              >
+                <Styled(Text)>
+                  openvpn
+                </Styled(Text)>
+              </Styled(Button)>,
+              <Styled(Button)
+                active={false}
+                first={false}
+                last={true}
+                onPress={[Function]}
+              >
+                <Styled(Text)>
+                  wireguard
+                </Styled(Text)>
+              </Styled(Button)>,
+            ],
             "virtual": undefined,
           },
           "ref": null,
-          "rendered": Array [],
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "all",
+              "nodeType": "class",
+              "props": Object {
+                "active": true,
+                "children": <Styled(Text)>
+                  all
+                </Styled(Text)>,
+                "first": true,
+                "last": false,
+                "onPress": [Function],
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "all",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "all",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "openvpn",
+              "nodeType": "class",
+              "props": Object {
+                "active": false,
+                "children": <Styled(Text)>
+                  openvpn
+                </Styled(Text)>,
+                "first": false,
+                "last": false,
+                "onPress": [Function],
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "openvpn",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "openvpn",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "wireguard",
+              "nodeType": "class",
+              "props": Object {
+                "active": false,
+                "children": <Styled(Text)>
+                  wireguard
+                </Styled(Text)>,
+                "first": false,
+                "last": true,
+                "onPress": [Function],
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "wireguard",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "wireguard",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
           "type": [Function],
         },
         Object {

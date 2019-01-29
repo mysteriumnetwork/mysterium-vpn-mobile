@@ -15,24 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { shallow } from 'enzyme'
-import React from 'react'
-import ProposalList from '../../../../../src/app/components/proposal-picker/proposal-list'
+import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
+import Proposal from '../../../src/app/models/proposal'
+import { proposalData } from './proposal-data'
 
-describe('ProposalList', () => {
-  it('matches snapshot', () => {
-    const emptyHandler = () => {
-      // does nothing
-    }
-    const wrapper = shallow(
-      <ProposalList
-        proposals={[]}
-        selectedProposal={null}
-        onClose={emptyHandler}
-        onSelect={emptyHandler}
-      />
-    )
+const convertProposalToIProposal = (proposal: Proposal): ProposalListItem => {
+  return {
+    id: proposal.id,
+    providerID: proposal.providerID,
+    serviceType: proposal.serviceType,
+    countryCode: proposal.countryCode,
+    countryName: proposal.countryName,
+    isFavorite: true,
+    quality: null
+  }
+}
 
-    expect(wrapper).toMatchSnapshot()
-  })
-})
+const proposalListItemData: ProposalListItem[] = proposalData.map(convertProposalToIProposal)
+
+export { proposalListItemData }

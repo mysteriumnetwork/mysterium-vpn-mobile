@@ -20,7 +20,6 @@ import { ProposalListItem } from '../components/proposal-picker/proposal-list-it
 import Connection from '../domain/connection'
 import { FavoritesStorage } from '../domain/favorites-storage'
 import ConnectionStatus from '../models/connection-status'
-import { ServiceType } from '../models/service-type'
 import ProposalList from '../proposals/proposal-list'
 
 export default class VpnScreenStore {
@@ -32,8 +31,6 @@ export default class VpnScreenStore {
   private _proposalListItems: ProposalListItem[] = []
   @observable
   private _connectionStatus: ConnectionStatus
-
-  private readonly SERVICE_TYPE_ALL = 'all'
 
   constructor (private readonly favoritesStorage: FavoritesStorage,
                proposalList: ProposalList,
@@ -82,9 +79,5 @@ export default class VpnScreenStore {
     }
 
     this._isFavoriteSelected = this.favoritesStorage.has(proposal.id)
-  }
-
-  public get serviceFilterOptions () {
-    return [this.SERVICE_TYPE_ALL, ServiceType.Openvpn, ServiceType.Wireguard]
   }
 }
