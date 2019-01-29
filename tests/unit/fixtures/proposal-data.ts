@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Proposal from '../../../../src/app/models/proposal'
-import { ServiceType } from '../../../../src/app/models/service-type'
+import Proposal from '../../../src/app/models/proposal'
+import { ServiceType } from '../../../src/app/models/service-type'
 
 const emptyMetrics = {
   connectCount: {
@@ -26,7 +26,7 @@ const emptyMetrics = {
   }
 }
 
-const proposals: Proposal[] = [
+const proposalData: Proposal[] = [
   new Proposal('0x1', ServiceType.Openvpn, 'lt', 'Lithuania', emptyMetrics),
   new Proposal('0x1', ServiceType.Wireguard, 'lt', 'Lithuania', emptyMetrics),
   new Proposal('0x2', ServiceType.Openvpn, 'us', 'United States', {
@@ -50,4 +50,4 @@ const proposals: Proposal[] = [
   new Proposal('0x8', ServiceType.Openvpn, 'al', 'Albania', emptyMetrics)
 ]
 
-export default proposals
+export { proposalData }

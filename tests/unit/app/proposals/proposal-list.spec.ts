@@ -2,9 +2,9 @@ import { ProposalsAdapter } from '../../../../src/app/adapters/proposals/proposa
 import { FavoritesStorage } from '../../../../src/app/domain/favorites-storage'
 import ProposalList from '../../../../src/app/proposals/proposal-list'
 import ProposalsStore from '../../../../src/app/stores/proposals-store'
+import { proposalData } from '../../fixtures/proposal-data'
 import { MockProposalsAdapter } from '../../mocks/mock-proposals-adapter'
 import MockStorage from '../../mocks/mock-storage'
-import proposals from './proposal-data'
 
 describe('ProposalList', () => {
   let favoritesStorage: FavoritesStorage
@@ -16,7 +16,7 @@ describe('ProposalList', () => {
     await favoritesStorage.add('0x2-openvpn')
     await favoritesStorage.add('0x6-openvpn')
 
-    const proposalsAdapter: ProposalsAdapter = new MockProposalsAdapter(proposals)
+    const proposalsAdapter: ProposalsAdapter = new MockProposalsAdapter(proposalData)
     proposalsStore = new ProposalsStore(proposalsAdapter)
     proposalsStore.startUpdating()
 

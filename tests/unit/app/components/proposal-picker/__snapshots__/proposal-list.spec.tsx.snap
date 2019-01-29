@@ -1,0 +1,970 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProposalList matches snapshot 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ProposalList
+    onClose={[Function]}
+    onSelect={[Function]}
+    proposals={Array []}
+    selectedProposal={null}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": Array [
+        <Styled(Header)
+          hasSegment={true}
+        >
+          <Styled(Body)
+            style={
+              Object {
+                "borderColor": "transparent",
+                "borderWidth": 0,
+                "width": "70%",
+              }
+            }
+          >
+            <Component
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <Styled(Icon)
+                name="ios-search"
+                style={
+                  Object {
+                    "color": "#222",
+                  }
+                }
+              />
+              <Styled(Input)
+                onChange={[Function]}
+                placeholder="Search proposals"
+                placeholderTextColor="#222"
+                style={
+                  Object {
+                    "color": "#222",
+                  }
+                }
+              />
+            </Component>
+          </Styled(Body)>
+          <Styled(Right)>
+            <Styled(Button)
+              onPress={[Function]}
+              transparent={true}
+            >
+              <Styled(Text)>
+                Close
+              </Styled(Text)>
+            </Styled(Button)>
+          </Styled(Right)>
+        </Styled(Header)>,
+        <Styled(Segment)>
+          <Styled(Button)
+            active={true}
+            first={true}
+            last={false}
+            onPress={[Function]}
+          >
+            <Styled(Text)>
+              all
+            </Styled(Text)>
+          </Styled(Button)>
+          <Styled(Button)
+            active={false}
+            first={false}
+            last={false}
+            onPress={[Function]}
+          >
+            <Styled(Text)>
+              openvpn
+            </Styled(Text)>
+          </Styled(Button)>
+          <Styled(Button)
+            active={false}
+            first={false}
+            last={true}
+            onPress={[Function]}
+          >
+            <Styled(Text)>
+              wireguard
+            </Styled(Text)>
+          </Styled(Button)>
+        </Styled(Segment)>,
+        <Styled(Content)>
+          <Styled(List) />
+        </Styled(Content)>,
+      ],
+      "virtual": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Styled(Body)
+              style={
+                Object {
+                  "borderColor": "transparent",
+                  "borderWidth": 0,
+                  "width": "70%",
+                }
+              }
+            >
+              <Component
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Styled(Icon)
+                  name="ios-search"
+                  style={
+                    Object {
+                      "color": "#222",
+                    }
+                  }
+                />
+                <Styled(Input)
+                  onChange={[Function]}
+                  placeholder="Search proposals"
+                  placeholderTextColor="#222"
+                  style={
+                    Object {
+                      "color": "#222",
+                    }
+                  }
+                />
+              </Component>
+            </Styled(Body)>,
+            <Styled(Right)>
+              <Styled(Button)
+                onPress={[Function]}
+                transparent={true}
+              >
+                <Styled(Text)>
+                  Close
+                </Styled(Text)>
+              </Styled(Button)>
+            </Styled(Right)>,
+          ],
+          "hasSegment": true,
+          "virtual": undefined,
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Component
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Styled(Icon)
+                  name="ios-search"
+                  style={
+                    Object {
+                      "color": "#222",
+                    }
+                  }
+                />
+                <Styled(Input)
+                  onChange={[Function]}
+                  placeholder="Search proposals"
+                  placeholderTextColor="#222"
+                  style={
+                    Object {
+                      "color": "#222",
+                    }
+                  }
+                />
+              </Component>,
+              "style": Object {
+                "borderColor": "transparent",
+                "borderWidth": 0,
+                "width": "70%",
+              },
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <Styled(Icon)
+                    name="ios-search"
+                    style={
+                      Object {
+                        "color": "#222",
+                      }
+                    }
+                  />,
+                  <Styled(Input)
+                    onChange={[Function]}
+                    placeholder="Search proposals"
+                    placeholderTextColor="#222"
+                    style={
+                      Object {
+                        "color": "#222",
+                      }
+                    }
+                  />,
+                ],
+                "style": Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                },
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "name": "ios-search",
+                    "style": Object {
+                      "color": "#222",
+                    },
+                    "virtual": undefined,
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "onChange": [Function],
+                    "placeholder": "Search proposals",
+                    "placeholderTextColor": "#222",
+                    "style": Object {
+                      "color": "#222",
+                    },
+                    "virtual": undefined,
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Styled(Button)
+                onPress={[Function]}
+                transparent={true}
+              >
+                <Styled(Text)>
+                  Close
+                </Styled(Text)>
+              </Styled(Button)>,
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Styled(Text)>
+                  Close
+                </Styled(Text)>,
+                "onPress": [Function],
+                "transparent": true,
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Close",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "Close",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Styled(Button)
+              active={true}
+              first={true}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                all
+              </Styled(Text)>
+            </Styled(Button)>,
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                openvpn
+              </Styled(Text)>
+            </Styled(Button)>,
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={true}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                wireguard
+              </Styled(Text)>
+            </Styled(Button)>,
+          ],
+          "virtual": undefined,
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": "all",
+            "nodeType": "class",
+            "props": Object {
+              "active": true,
+              "children": <Styled(Text)>
+                all
+              </Styled(Text)>,
+              "first": true,
+              "last": false,
+              "onPress": [Function],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "all",
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": "all",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "openvpn",
+            "nodeType": "class",
+            "props": Object {
+              "active": false,
+              "children": <Styled(Text)>
+                openvpn
+              </Styled(Text)>,
+              "first": false,
+              "last": false,
+              "onPress": [Function],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "openvpn",
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": "openvpn",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "wireguard",
+            "nodeType": "class",
+            "props": Object {
+              "active": false,
+              "children": <Styled(Text)>
+                wireguard
+              </Styled(Text)>,
+              "first": false,
+              "last": true,
+              "onPress": [Function],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "wireguard",
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": "wireguard",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Styled(List) />,
+          "virtual": undefined,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [],
+            "virtual": undefined,
+          },
+          "ref": null,
+          "rendered": Array [],
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <Styled(Header)
+            hasSegment={true}
+          >
+            <Styled(Body)
+              style={
+                Object {
+                  "borderColor": "transparent",
+                  "borderWidth": 0,
+                  "width": "70%",
+                }
+              }
+            >
+              <Component
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Styled(Icon)
+                  name="ios-search"
+                  style={
+                    Object {
+                      "color": "#222",
+                    }
+                  }
+                />
+                <Styled(Input)
+                  onChange={[Function]}
+                  placeholder="Search proposals"
+                  placeholderTextColor="#222"
+                  style={
+                    Object {
+                      "color": "#222",
+                    }
+                  }
+                />
+              </Component>
+            </Styled(Body)>
+            <Styled(Right)>
+              <Styled(Button)
+                onPress={[Function]}
+                transparent={true}
+              >
+                <Styled(Text)>
+                  Close
+                </Styled(Text)>
+              </Styled(Button)>
+            </Styled(Right)>
+          </Styled(Header)>,
+          <Styled(Segment)>
+            <Styled(Button)
+              active={true}
+              first={true}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                all
+              </Styled(Text)>
+            </Styled(Button)>
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={false}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                openvpn
+              </Styled(Text)>
+            </Styled(Button)>
+            <Styled(Button)
+              active={false}
+              first={false}
+              last={true}
+              onPress={[Function]}
+            >
+              <Styled(Text)>
+                wireguard
+              </Styled(Text)>
+            </Styled(Button)>
+          </Styled(Segment)>,
+          <Styled(Content)>
+            <Styled(List) />
+          </Styled(Content)>,
+        ],
+        "virtual": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Styled(Body)
+                style={
+                  Object {
+                    "borderColor": "transparent",
+                    "borderWidth": 0,
+                    "width": "70%",
+                  }
+                }
+              >
+                <Component
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Styled(Icon)
+                    name="ios-search"
+                    style={
+                      Object {
+                        "color": "#222",
+                      }
+                    }
+                  />
+                  <Styled(Input)
+                    onChange={[Function]}
+                    placeholder="Search proposals"
+                    placeholderTextColor="#222"
+                    style={
+                      Object {
+                        "color": "#222",
+                      }
+                    }
+                  />
+                </Component>
+              </Styled(Body)>,
+              <Styled(Right)>
+                <Styled(Button)
+                  onPress={[Function]}
+                  transparent={true}
+                >
+                  <Styled(Text)>
+                    Close
+                  </Styled(Text)>
+                </Styled(Button)>
+              </Styled(Right)>,
+            ],
+            "hasSegment": true,
+            "virtual": undefined,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Component
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Styled(Icon)
+                    name="ios-search"
+                    style={
+                      Object {
+                        "color": "#222",
+                      }
+                    }
+                  />
+                  <Styled(Input)
+                    onChange={[Function]}
+                    placeholder="Search proposals"
+                    placeholderTextColor="#222"
+                    style={
+                      Object {
+                        "color": "#222",
+                      }
+                    }
+                  />
+                </Component>,
+                "style": Object {
+                  "borderColor": "transparent",
+                  "borderWidth": 0,
+                  "width": "70%",
+                },
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <Styled(Icon)
+                      name="ios-search"
+                      style={
+                        Object {
+                          "color": "#222",
+                        }
+                      }
+                    />,
+                    <Styled(Input)
+                      onChange={[Function]}
+                      placeholder="Search proposals"
+                      placeholderTextColor="#222"
+                      style={
+                        Object {
+                          "color": "#222",
+                        }
+                      }
+                    />,
+                  ],
+                  "style": Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  },
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "name": "ios-search",
+                      "style": Object {
+                        "color": "#222",
+                      },
+                      "virtual": undefined,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "onChange": [Function],
+                      "placeholder": "Search proposals",
+                      "placeholderTextColor": "#222",
+                      "style": Object {
+                        "color": "#222",
+                      },
+                      "virtual": undefined,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Styled(Button)
+                  onPress={[Function]}
+                  transparent={true}
+                >
+                  <Styled(Text)>
+                    Close
+                  </Styled(Text)>
+                </Styled(Button)>,
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Styled(Text)>
+                    Close
+                  </Styled(Text)>,
+                  "onPress": [Function],
+                  "transparent": true,
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Close",
+                    "virtual": undefined,
+                  },
+                  "ref": null,
+                  "rendered": "Close",
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Styled(Button)
+                active={true}
+                first={true}
+                last={false}
+                onPress={[Function]}
+              >
+                <Styled(Text)>
+                  all
+                </Styled(Text)>
+              </Styled(Button)>,
+              <Styled(Button)
+                active={false}
+                first={false}
+                last={false}
+                onPress={[Function]}
+              >
+                <Styled(Text)>
+                  openvpn
+                </Styled(Text)>
+              </Styled(Button)>,
+              <Styled(Button)
+                active={false}
+                first={false}
+                last={true}
+                onPress={[Function]}
+              >
+                <Styled(Text)>
+                  wireguard
+                </Styled(Text)>
+              </Styled(Button)>,
+            ],
+            "virtual": undefined,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "all",
+              "nodeType": "class",
+              "props": Object {
+                "active": true,
+                "children": <Styled(Text)>
+                  all
+                </Styled(Text)>,
+                "first": true,
+                "last": false,
+                "onPress": [Function],
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "all",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "all",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "openvpn",
+              "nodeType": "class",
+              "props": Object {
+                "active": false,
+                "children": <Styled(Text)>
+                  openvpn
+                </Styled(Text)>,
+                "first": false,
+                "last": false,
+                "onPress": [Function],
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "openvpn",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "openvpn",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "wireguard",
+              "nodeType": "class",
+              "props": Object {
+                "active": false,
+                "children": <Styled(Text)>
+                  wireguard
+                </Styled(Text)>,
+                "first": false,
+                "last": true,
+                "onPress": [Function],
+                "virtual": undefined,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "wireguard",
+                  "virtual": undefined,
+                },
+                "ref": null,
+                "rendered": "wireguard",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Styled(List) />,
+            "virtual": undefined,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [],
+              "virtual": undefined,
+            },
+            "ref": null,
+            "rendered": Array [],
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

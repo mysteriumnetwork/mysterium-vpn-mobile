@@ -25,12 +25,12 @@ import { ServiceType } from '../../../../src/app/models/service-type'
 import ProposalList from '../../../../src/app/proposals/proposal-list'
 import ProposalsStore from '../../../../src/app/stores/proposals-store'
 import VpnScreenStore from '../../../../src/app/stores/vpn-screen-store'
+import { proposalData } from '../../fixtures/proposal-data'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 import MockConnectionEventAdapter from '../../mocks/mock-connection-event-adapter'
 import { MockProposalsAdapter } from '../../mocks/mock-proposals-adapter'
 import MockStatisticsAdapter from '../../mocks/mock-statistics-adapter'
 import MockStorage from '../../mocks/mock-storage'
-import proposals from '../proposals/proposal-data'
 
 describe('VpnScreenStore', () => {
   let favoritesStorage: FavoritesStorage
@@ -38,7 +38,7 @@ describe('VpnScreenStore', () => {
   let store: VpnScreenStore
 
   let mockProposalsAdapter: MockProposalsAdapter
-  const initialMockProposals: Proposal[] = [proposals[0]]
+  const initialMockProposals: Proposal[] = [proposalData[0]]
 
   let connectionAdapter: MockConnectionAdapter
   let connection: Connection
@@ -134,10 +134,10 @@ describe('VpnScreenStore', () => {
       jest.runAllTicks()
       expect(listItems).toHaveLength(initialMockProposals.length)
 
-      mockProposalsAdapter.mockProposals = proposals
+      mockProposalsAdapter.mockProposals = proposalData
       jest.runOnlyPendingTimers()
       jest.runAllTicks()
-      expect(listItems).toHaveLength(proposals.length)
+      expect(listItems).toHaveLength(proposalData.length)
 
       proposalsStore.stopUpdating()
     })
