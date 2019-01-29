@@ -1,10 +1,10 @@
-import { ProposalsAdapter } from '../../../../src/app/adapters/proposals/proposals-adapter'
-import { FavoritesStorage } from '../../../../src/app/domain/favorites-storage'
-import ProposalList from '../../../../src/app/proposals/proposal-list'
-import ProposalsStore from '../../../../src/app/stores/proposals-store'
-import { proposalData } from '../../fixtures/proposal-data'
-import { MockProposalsAdapter } from '../../mocks/mock-proposals-adapter'
-import MockStorage from '../../mocks/mock-storage'
+import { ProposalsAdapter } from '../../../../../src/app/adapters/proposals/proposals-adapter'
+import { FavoritesStorage } from '../../../../../src/app/domain/favorites-storage'
+import ProposalList from '../../../../../src/app/domain/proposals/proposal-list'
+import ProposalsStore from '../../../../../src/app/stores/proposals-store'
+import { proposalData } from '../../../fixtures/proposal-data'
+import { MockProposalsAdapter } from '../../../mocks/mock-proposals-adapter'
+import MockStorage from '../../../mocks/mock-storage'
 
 describe('ProposalList', () => {
   let favoritesStorage: FavoritesStorage

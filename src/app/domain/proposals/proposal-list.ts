@@ -1,8 +1,8 @@
-import { EventNotifier } from '../domain/observables/event-notifier'
-import { QualityCalculator } from '../domain/quality-calculator'
-import Proposal from '../models/proposal'
-import { ProposalItem } from '../models/proposal-item'
-import translations from '../translations'
+import Proposal from '../../models/proposal'
+import { ProposalItem } from '../../models/proposal-item'
+import translations from '../../translations'
+import { EventNotifier } from '../observables/event-notifier'
+import { QualityCalculator } from '../quality-calculator'
 
 interface ProposalsStore {
   proposals: Proposal[]

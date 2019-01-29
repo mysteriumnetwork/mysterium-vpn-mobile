@@ -16,9 +16,9 @@
  */
 
 import { action, computed, observable } from 'mobx'
+import ProposalFilter from '../domain/proposals/proposal-filter'
 import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
-import ProposalFilter from '../proposals/proposal-filter'
 
 class ProposalsListStore {
   @observable

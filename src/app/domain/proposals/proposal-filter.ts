@@ -15,10 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalItem } from '../models/proposal-item'
-import { ServiceType } from '../models/service-type'
+import { ProposalItem } from '../../models/proposal-item'
+import { ServiceType } from '../../models/service-type'
 
-// TODO: move to domain
 class ProposalFilter {
   constructor (private proposals: ProposalItem[]) {
   }

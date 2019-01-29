@@ -18,9 +18,9 @@
 import { action, computed, observable } from 'mobx'
 import Connection from '../domain/connection'
 import { FavoritesStorage } from '../domain/favorites-storage'
+import ProposalList from '../domain/proposals/proposal-list'
 import ConnectionStatus from '../models/connection-status'
 import { ProposalItem } from '../models/proposal-item'
-import ProposalList from '../proposals/proposal-list'
 
 export default class VpnScreenStore {
   @observable
