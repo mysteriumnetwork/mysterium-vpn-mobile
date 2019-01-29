@@ -32,7 +32,8 @@ type PickerProps = {
   isFavoriteSelected: boolean
   placeholder: string,
   selectedProposal: ProposalListItem | null,
-  disabled: boolean
+  disabled: boolean,
+  serviceFilterOptions: string[]
 }
 
 type PickerState = {
@@ -67,6 +68,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
             selectedProposal={this.state.selectedProposal}
             onClose={() => this.closeProposalModal()}
             onSelect={(proposal: ProposalListItem) => this.onProposalSelect(proposal)}
+            serviceFilterOptions={this.props.serviceFilterOptions}
           />
         </ProposalModal>
 

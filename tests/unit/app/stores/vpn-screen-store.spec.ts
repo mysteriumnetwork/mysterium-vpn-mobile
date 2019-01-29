@@ -189,4 +189,10 @@ describe('VpnScreenStore', () => {
       disposer()
     })
   })
+
+  describe('.serviceFilterOptions', () => {
+    it('returns options for filtering by all or by service type', () => {
+      expect(store.serviceFilterOptions).toEqual(['all', 'openvpn', 'wireguard'])
+    })
+  })
 })

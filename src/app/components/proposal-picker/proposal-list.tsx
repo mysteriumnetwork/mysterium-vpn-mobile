@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2019 The 'mysteriumnetwork/mysterium-vpn-mobile' Authors.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import {
   Body,
   Button,
@@ -6,15 +23,15 @@ import {
   Header,
   Icon,
   Input,
-  Item,
   Left,
   List,
   ListItem,
   Right,
+  Segment,
   Text
 } from 'native-base'
 import React, { ReactNode } from 'react'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import colors from '../../../app/styles/colors'
 import ProposalFilter from '../../proposals/proposal-filter'
 import translations from '../../translations'
@@ -27,10 +44,12 @@ type ListProps = {
   proposals: ProposalListItem[],
   selectedProposal: ProposalListItem | null,
   onClose: () => void,
-  onSelect: (proposal: ProposalListItem) => void
+  onSelect: (proposal: ProposalListItem) => void,
+  serviceFilterOptions: string[]
 }
 
 type ListState = {
+  selectedFilterOption: number,
   filteredProposals: ProposalListItem[]
 }
 
@@ -40,29 +59,35 @@ class ProposalList extends React.Component<ListProps, ListState> {
   constructor (props: ListProps) {
     super(props)
 
-    this.state = { filteredProposals: this.props.proposals }
+    this.state = {
+      selectedFilterOption: 0,
+      filteredProposals: this.props.proposals
+    }
     this.proposalFilter = new ProposalFilter(this.props.proposals)
   }
 
   public render (): ReactNode {
     return (
       <Container>
-        <Header>
-          <Item style={styles.headerItem}>
-            <Icon name="ios-search" style={styles.searchIcon}/>
-            <Input
-              placeholderTextColor={platformStyles.search.inputColor}
-              placeholder={translations.PROPOSAL_SEARCH}
-              onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
-              style={styles.searchInput}
-            />
-          </Item>
+        <Header hasSegment={true}>
+          <Body style={styles.headerItem}>
+            <View style={styles.searchBar}>
+              <Icon name="ios-search" style={styles.searchIcon}/>
+              <Input
+                placeholderTextColor={platformStyles.search.inputColor}
+                placeholder={translations.PROPOSAL_SEARCH}
+                onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
+                style={styles.searchInput}
+              />
+            </View>
+          </Body>
           <Right>
             <Button transparent={true} onPress={() => this.props.onClose()}>
               <Text>Close</Text>
             </Button>
           </Right>
         </Header>
+        {this.renderServiceFilterOptions()}
         <Content>
           <List>
             {this.state.filteredProposals.map((proposal: ProposalListItem) => this.renderProposal(proposal))}
@@ -70,6 +95,36 @@ class ProposalList extends React.Component<ListProps, ListState> {
         </Content>
       </Container>
     )
+  }
+
+  private renderServiceFilterOptions (): ReactNode {
+    const options = this.props.serviceFilterOptions
+    const items = options.map((filterItem, index) => {
+      return this.renderServiceFilterOption(filterItem, index, options.length)
+    })
+    return (
+      <Segment>
+        {items}
+      </Segment>
+    )
+  }
+
+  private renderServiceFilterOption (text: string, index: number, total: number): ReactNode {
+    return (
+      <Button
+        key={text}
+        first={index === 0}
+        last={index + 1 === total}
+        active={index === this.state.selectedFilterOption}
+        onPress={() => this.onFilterOptionPressed(index)}
+      >
+        <Text>{text}</Text>
+      </Button>
+    )
+  }
+
+  private onFilterOptionPressed (index: number) {
+    this.setState({ selectedFilterOption: index })
   }
 
   private renderProposal (proposal: ProposalListItem): ReactNode {
@@ -180,6 +235,10 @@ const styles: any = StyleSheet.create({
     height: 26,
     margin: 0,
     padding: 0
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   searchIcon: {
     color: platformStyles.search.iconColor
