@@ -188,7 +188,7 @@ class ProposalList extends React.Component<ListProps, ListState> {
   }
 
   private onSearchValueChange (text: string) {
-    const filteredProposals = this.proposalFilter.filterByText(text)
+    const filteredProposals = this.proposalFilter.filter(text)
 
     this.setState({ filteredProposals })
   }
