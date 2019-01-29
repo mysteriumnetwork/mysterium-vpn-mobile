@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalListItem } from '../../../src/app/components/proposal-picker/proposal-list-item'
 import Proposal from '../../../src/app/models/proposal'
+import { ProposalItem } from '../../../src/app/models/proposal-item'
 import { proposalData } from './proposal-data'
 
-const convertProposalToIProposal = (proposal: Proposal): ProposalListItem => {
+const convertProposalToIProposal = (proposal: Proposal): ProposalItem => {
   return {
     id: proposal.id,
     providerID: proposal.providerID,
@@ -31,6 +31,6 @@ const convertProposalToIProposal = (proposal: Proposal): ProposalListItem => {
   }
 }
 
-const proposalListItemData: ProposalListItem[] = proposalData.map(convertProposalToIProposal)
+const proposalListItemData: ProposalItem[] = proposalData.map(convertProposalToIProposal)
 
 export { proposalListItemData }

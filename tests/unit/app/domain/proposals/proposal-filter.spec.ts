@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
-import { ServiceType } from '../../../../src/app/models/service-type'
-import ProposalFilter from '../../../../src/app/proposals/proposal-filter'
-import { proposalListItemData } from '../../fixtures/proposal-list-item-data'
+import ProposalFilter from '../../../../../src/app/domain/proposals/proposal-filter'
+import { ProposalItem } from '../../../../../src/app/models/proposal-item'
+import { ServiceType } from '../../../../../src/app/models/service-type'
+import { proposalListItemData } from '../../../fixtures/proposal-list-item-data'
 
 describe('ProposalFilter', () => {
-  let proposals: ProposalListItem[]
+  let proposals: ProposalItem[]
   let proposalFilter: ProposalFilter
 
   describe('.filter', () => {
@@ -35,11 +35,11 @@ describe('ProposalFilter', () => {
     })
 
     it('finds proposal label by country name', () => {
-      expect(proposalFilter.filter('United')).toHaveLength(3)
+      expect(proposalFilter.filter('United')).toHaveLength(2)
     })
 
     it('finds proposal label by case insensitive country name', () => {
-      expect(proposalFilter.filter('united')).toHaveLength(3)
+      expect(proposalFilter.filter('united')).toHaveLength(2)
     })
 
     it('finds proposal by partial id', () => {
@@ -61,11 +61,11 @@ describe('ProposalFilter', () => {
     })
 
     it('finds proposal by service type and text', () => {
-      const result = proposalFilter.filter('United States', ServiceType.Openvpn)
+      const result = proposalFilter.filter('Italy', ServiceType.Openvpn)
 
       expect(result).toHaveLength(2)
       result.forEach(proposal => {
-        expect(proposal.countryName).toEqual('United States')
+        expect(proposal.countryName).toEqual('Italy')
         expect(proposal.serviceType).toEqual(ServiceType.Openvpn)
       })
     })

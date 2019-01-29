@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ServiceType } from '../../models/service-type'
+import { ServiceType } from './service-type'
 
-interface ProposalListItem {
+interface ProposalItem {
   id: string,
   providerID: string,
   serviceType: ServiceType,
@@ -27,4 +27,4 @@ interface ProposalListItem {
   quality: number | null
 }
 
-export { ProposalListItem }
+export { ProposalItem }

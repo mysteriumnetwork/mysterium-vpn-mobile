@@ -16,13 +16,13 @@
  */
 
 import { autorun } from 'mobx'
-import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
+import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import { ServiceType } from '../../../../src/app/models/service-type'
 import { ProposalsListStore } from '../../../../src/app/stores/proposals-list-store'
 import { proposalListItemData } from '../../fixtures/proposal-list-item-data'
 
 describe('ProposalsListStore', () => {
-  let allProposals: ProposalListItem[]
+  let allProposals: ProposalItem[]
   let store: ProposalsListStore
 
   beforeEach(() => {

@@ -34,19 +34,19 @@ import {
 import React, { ReactNode } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import colors from '../../../app/styles/colors'
+import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
 import { ProposalsListStore } from '../../stores/proposals-list-store'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
-import { ProposalListItem } from './proposal-list-item'
 import { QualityIndicator } from './quality-indicator'
 import { ServiceIndicator } from './service-indicator'
 
 type ListProps = {
-  proposals: ProposalListItem[],
-  selectedProposal: ProposalListItem | null,
+  proposals: ProposalItem[],
+  selectedProposal: ProposalItem | null,
   onClose: () => void,
-  onSelect: (proposal: ProposalListItem) => void
+  onSelect: (proposal: ProposalItem) => void
 }
 
 @observer
@@ -85,7 +85,7 @@ class ProposalList extends React.Component<ListProps> {
         {this.renderServiceFilterOptions()}
         <Content>
           <List>
-            {filteredProposals.map((proposal: ProposalListItem) => this.renderProposal(proposal))}
+            {filteredProposals.map((proposal: ProposalItem) => this.renderProposal(proposal))}
           </List>
         </Content>
       </Container>
@@ -119,7 +119,7 @@ class ProposalList extends React.Component<ListProps> {
     )
   }
 
-  private renderProposal (proposal: ProposalListItem): ReactNode {
+  private renderProposal (proposal: ProposalItem): ReactNode {
     return (
       <ListItem
         style={this.listItemStyle(proposal)}
@@ -150,7 +150,7 @@ class ProposalList extends React.Component<ListProps> {
     )
   }
 
-  private listItemStyle (proposal: ProposalListItem) {
+  private listItemStyle (proposal: ProposalItem) {
     const style = [styles.listItem]
 
     if (this.isProposalSelected(proposal)) {
@@ -160,17 +160,17 @@ class ProposalList extends React.Component<ListProps> {
     return style
   }
 
-  private listItemTextStyle (proposal: ProposalListItem) {
+  private listItemTextStyle (proposal: ProposalItem) {
     return this.isProposalSelected(proposal) ? [styles.selectedListItemText] : []
   }
 
-  private providerIdStyle (proposal: ProposalListItem) {
+  private providerIdStyle (proposal: ProposalItem) {
     return this.isProposalSelected(proposal)
       ? [styles.providerIdText, styles.selectedListItemText]
       : [styles.providerIdText]
   }
 
-  private isProposalSelected (proposal: ProposalListItem) {
+  private isProposalSelected (proposal: ProposalItem) {
     const selected = this.props.selectedProposal
     if (selected === null) {
       return false

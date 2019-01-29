@@ -15,30 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
-import { ServiceType } from '../models/service-type'
+import { ProposalItem } from '../../models/proposal-item'
+import { ServiceType } from '../../models/service-type'
 
-// TODO: move to domain
 class ProposalFilter {
-  constructor (private proposals: ProposalListItem[]) {
+  constructor (private proposals: ProposalItem[]) {
   }
 
-  public filter (text: string, serviceType: ServiceType | null = null): ProposalListItem[] {
+  public filter (text: string, serviceType: ServiceType | null = null): ProposalItem[] {
     const serviceTypeFiltered = this.filterByServiceType(this.proposals, serviceType)
     return this.filterByText(serviceTypeFiltered, text)
   }
 
-  private filterByText (proposals: ProposalListItem[], text: string): ProposalListItem[] {
+  private filterByText (proposals: ProposalItem[], text: string): ProposalItem[] {
     if (!text.trim().length) {
       return proposals
     }
 
-    return proposals.filter((proposal: ProposalListItem) => {
+    return proposals.filter((proposal: ProposalItem) => {
       return this.matchProposalNameOrId(proposal, text)
     })
   }
 
-  private filterByServiceType (proposals: ProposalListItem[], serviceType: ServiceType | null): ProposalListItem[] {
+  private filterByServiceType (proposals: ProposalItem[], serviceType: ServiceType | null): ProposalItem[] {
     if (!serviceType) {
       return proposals
     }
@@ -46,7 +45,7 @@ class ProposalFilter {
     return this.proposals.filter(proposal => proposal.serviceType === serviceType)
   }
 
-  private matchProposalNameOrId (proposal: ProposalListItem, text: string) {
+  private matchProposalNameOrId (proposal: ProposalItem, text: string) {
     const name = proposal.countryName || ''
 
     const matchesName = name.toLowerCase().includes(text.toLowerCase())

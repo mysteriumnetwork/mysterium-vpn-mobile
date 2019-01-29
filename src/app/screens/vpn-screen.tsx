@@ -28,11 +28,11 @@ import ConnectionStatus from '../components/connection-status'
 import IconButton from '../components/icon-button'
 import LogoBackground from '../components/logo-background'
 import CountryFlag from '../components/proposal-picker/country-flag'
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import ProposalPicker from '../components/proposal-picker/proposal-picker'
 import Stats from '../components/stats'
+import Favorites from '../domain/proposals/favorites'
 import MessageDisplay from '../messages/message-display'
-import Favorites from '../proposals/favorites'
+import { ProposalItem } from '../models/proposal-item'
 import ConnectionStore from '../stores/connection-store'
 import ScreenStore from '../stores/screen-store'
 import VpnScreenStore from '../stores/vpn-screen-store'
@@ -92,9 +92,9 @@ class VpnScreen extends React.Component<HomeProps> {
             <View style={appStyles.proposalPicker}>
               <ProposalPicker
                 placeholder={translations.PROPOSAL_PICKER_LABEL}
-                proposals={this.vpnScreenStore.proposalListItems}
+                proposals={this.vpnScreenStore.proposalItems}
                 selectedProposal={this.vpnScreenStore.selectedProposal}
-                onSelect={(proposal: ProposalListItem) => this.vpnScreenStore.selectedProposal = proposal}
+                onSelect={(proposal: ProposalItem) => this.vpnScreenStore.selectedProposal = proposal}
                 onFavoriteToggle={() => this.toggleSelectedProposalFavorite()}
                 isFavoriteSelected={this.vpnScreenStore.isFavoriteSelected}
                 disabled={this.vpnScreenStore.proposalPickerDisabled}

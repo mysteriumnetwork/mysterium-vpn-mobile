@@ -16,19 +16,19 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import { ProposalListItem } from '../components/proposal-picker/proposal-list-item'
 import Connection from '../domain/connection'
 import { FavoritesStorage } from '../domain/favorites-storage'
+import ProposalList from '../domain/proposals/proposal-list'
 import ConnectionStatus from '../models/connection-status'
-import ProposalList from '../proposals/proposal-list'
+import { ProposalItem } from '../models/proposal-item'
 
 export default class VpnScreenStore {
   @observable
   private _isFavoriteSelected: boolean = false
   @observable
-  private _selectedProposal: ProposalListItem | null = null
+  private _selectedProposal: ProposalItem | null = null
   @observable
-  private _proposalListItems: ProposalListItem[] = []
+  private _proposalItems: ProposalItem[] = []
   @observable
   private _connectionStatus: ConnectionStatus
 
@@ -37,7 +37,7 @@ export default class VpnScreenStore {
                connection: Connection) {
     this.favoritesStorage.onChange(() => this.calculateIsFavoriteSelected())
     proposalList.onChange(() => {
-      this._proposalListItems = proposalList.proposals
+      this._proposalItems = proposalList.proposals
     })
     this._connectionStatus = connection.data.status
     connection.onStatusChange(status => {
@@ -46,18 +46,18 @@ export default class VpnScreenStore {
   }
 
   @computed
-  public get selectedProposal (): ProposalListItem | null {
+  public get selectedProposal (): ProposalItem | null {
     return this._selectedProposal
   }
 
-  public set selectedProposal (value: ProposalListItem | null) {
+  public set selectedProposal (value: ProposalItem | null) {
     this._selectedProposal = value
     this.calculateIsFavoriteSelected()
   }
 
   @computed
-  public get proposalListItems (): ProposalListItem[] {
-    return this._proposalListItems
+  public get proposalItems (): ProposalItem[] {
+    return this._proposalItems
   }
 
   @computed

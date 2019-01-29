@@ -16,13 +16,13 @@
  */
 
 import { autorun, IReactionDisposer } from 'mobx'
-import { ProposalListItem } from '../../../../src/app/components/proposal-picker/proposal-list-item'
 import Connection from '../../../../src/app/domain/connection'
 import { FavoritesStorage } from '../../../../src/app/domain/favorites-storage'
+import ProposalList from '../../../../src/app/domain/proposals/proposal-list'
 import ConnectionStatus from '../../../../src/app/models/connection-status'
 import Proposal from '../../../../src/app/models/proposal'
+import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import { ServiceType } from '../../../../src/app/models/service-type'
-import ProposalList from '../../../../src/app/proposals/proposal-list'
 import ProposalsStore from '../../../../src/app/stores/proposals-store'
 import VpnScreenStore from '../../../../src/app/stores/vpn-screen-store'
 import { proposalData } from '../../fixtures/proposal-data'
@@ -73,7 +73,7 @@ describe('VpnScreenStore', () => {
     })
 
     it('becomes true when selecting favorite proposal', async () => {
-      const proposal: ProposalListItem = {
+      const proposal: ProposalItem = {
         id: 'testProviderId-openvpn',
         serviceType: ServiceType.Openvpn,
         providerID: 'testProviderId',
@@ -90,7 +90,7 @@ describe('VpnScreenStore', () => {
     })
 
     it('becomes true when marking selected proposal as favorite', async () => {
-      const proposal: ProposalListItem = {
+      const proposal: ProposalItem = {
         id: 'testProviderId-openvpn',
         serviceType: ServiceType.Openvpn,
         providerID: 'testProviderId',
@@ -107,15 +107,15 @@ describe('VpnScreenStore', () => {
     })
   })
 
-  describe('.proposalListItems', () => {
+  describe('.proposalItems', () => {
     let autorunDisposer: IReactionDisposer
-    let listItems: ProposalListItem[] | null
+    let proposals: ProposalItem[] | null
 
     beforeEach(() => {
-      listItems = null
+      proposals = null
 
       autorunDisposer = autorun(() => {
-        listItems = store.proposalListItems
+        proposals = store.proposalItems
       })
 
       jest.useFakeTimers()
@@ -128,16 +128,16 @@ describe('VpnScreenStore', () => {
     })
 
     it('changes when list changes', () => {
-      expect(listItems).toEqual([])
+      expect(proposals).toEqual([])
 
       proposalsStore.startUpdating()
       jest.runAllTicks()
-      expect(listItems).toHaveLength(initialMockProposals.length)
+      expect(proposals).toHaveLength(initialMockProposals.length)
 
       mockProposalsAdapter.mockProposals = proposalData
       jest.runOnlyPendingTimers()
       jest.runAllTicks()
-      expect(listItems).toHaveLength(proposalData.length)
+      expect(proposals).toHaveLength(proposalData.length)
 
       proposalsStore.stopUpdating()
     })
