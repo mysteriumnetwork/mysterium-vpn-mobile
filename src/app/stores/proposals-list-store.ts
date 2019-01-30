@@ -20,17 +20,22 @@ import ProposalFilter from '../domain/proposals/proposal-filter'
 import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
 
+// TODO: refactor to avoid filtering 4 times
 class ProposalsListStore {
   @observable
   private _filteredText: string = ''
   @observable
   private _filteredServiceType: ServiceType | null = null
 
-  constructor (private readonly proposals: ProposalItem[]) {}
+  private proposalFilter: ProposalFilter
+
+  constructor (private readonly proposals: ProposalItem[]) {
+    this.proposalFilter = new ProposalFilter(this.proposals)
+  }
 
   @computed
   public get filteredProposals () {
-    return new ProposalFilter(this.proposals).filter(this._filteredText, this._filteredServiceType)
+    return this.proposalFilter.filter(this._filteredText, this._filteredServiceType)
   }
 
   @action
@@ -50,6 +55,10 @@ class ProposalsListStore {
 
   public get serviceFilterOptions (): Array<ServiceType | null> {
     return [null, ServiceType.Openvpn, ServiceType.Wireguard]
+  }
+
+  public proposalsCountByServiceType (serviceType: ServiceType | null = null): number {
+    return this.proposalFilter.filter(this._filteredText, serviceType).length
   }
 }
 
