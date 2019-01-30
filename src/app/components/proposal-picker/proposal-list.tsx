@@ -76,7 +76,7 @@ class ProposalList extends React.Component<ListProps> {
               />
             </View>
           </Body>
-          <Right>
+          <Right style={styles.rightItem}>
             <Button transparent={true} onPress={() => this.props.onClose()}>
               <Text>Close</Text>
             </Button>
@@ -221,7 +221,11 @@ const styles: any = StyleSheet.create({
   },
   headerItem: {
     borderWidth: 0,
-    width: '70%',
+    width: '100%',
+    borderColor: 'transparent'
+  },
+  rightItem: {
+    flex: 0,
     borderColor: 'transparent'
   },
   flagImage: {
