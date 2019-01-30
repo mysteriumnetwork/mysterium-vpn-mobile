@@ -56,11 +56,11 @@ describe('ProposalsListStore', () => {
     })
   })
 
-  describe('.filteredServiceType', () => {
+  describe('.serviceTypeFilter', () => {
     it('returns set filter', () => {
-      expect(store.filteredServiceType).toBeNull()
+      expect(store.serviceTypeFilter).toBeNull()
       store.filterByServiceType(ServiceType.Wireguard)
-      expect(store.filteredServiceType).toEqual(ServiceType.Wireguard)
+      expect(store.serviceTypeFilter).toEqual(ServiceType.Wireguard)
     })
   })
 

@@ -19,30 +19,27 @@ import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
 
 class ProposalFilter {
-  constructor (private proposals: ProposalItem[]) {
+  constructor (public readonly proposals: ProposalItem[]) {
   }
 
-  public filter (text: string, serviceType: ServiceType | null = null): ProposalItem[] {
-    const serviceTypeFiltered = this.filterByServiceType(this.proposals, serviceType)
-    return this.filterByText(serviceTypeFiltered, text)
-  }
-
-  private filterByText (proposals: ProposalItem[], text: string): ProposalItem[] {
+  public filterByText (text: string): ProposalFilter {
     if (!text.trim().length) {
-      return proposals
+      return this
     }
 
-    return proposals.filter((proposal: ProposalItem) => {
+    const proposals = this.proposals.filter((proposal: ProposalItem) => {
       return this.matchProposalNameOrId(proposal, text)
     })
+    return new ProposalFilter(proposals)
   }
 
-  private filterByServiceType (proposals: ProposalItem[], serviceType: ServiceType | null): ProposalItem[] {
+  public filterByServiceType (serviceType: ServiceType | null): ProposalFilter {
     if (!serviceType) {
-      return proposals
+      return this
     }
 
-    return this.proposals.filter(proposal => proposal.serviceType === serviceType)
+    const proposals = this.proposals.filter(proposal => proposal.serviceType === serviceType)
+    return new ProposalFilter(proposals)
   }
 
   private matchProposalNameOrId (proposal: ProposalItem, text: string) {

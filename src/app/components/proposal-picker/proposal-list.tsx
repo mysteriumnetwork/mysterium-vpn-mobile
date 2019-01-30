@@ -112,7 +112,7 @@ class ProposalList extends React.Component<ListProps> {
         key={label}
         first={index === 0}
         last={index + 1 === total}
-        active={serviceType === this.store.filteredServiceType}
+        active={serviceType === this.store.serviceTypeFilter}
         onPress={() => this.onFilterOptionPressed(serviceType)}
       >
         <Text>{label}</Text>

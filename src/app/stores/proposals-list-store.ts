@@ -20,45 +20,53 @@ import ProposalFilter from '../domain/proposals/proposal-filter'
 import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
 
-// TODO: refactor to avoid filtering 4 times
 class ProposalsListStore {
   @observable
-  private _filteredText: string = ''
+  private _textFilter: string = ''
   @observable
-  private _filteredServiceType: ServiceType | null = null
+  private _serviceTypeFilter: ServiceType | null = null
 
-  private proposalFilter: ProposalFilter
+  private readonly proposalFilter: ProposalFilter
 
   constructor (private readonly proposals: ProposalItem[]) {
     this.proposalFilter = new ProposalFilter(this.proposals)
   }
 
   @computed
-  public get filteredProposals () {
-    return this.proposalFilter.filter(this._filteredText, this._filteredServiceType)
+  public get filteredProposals (): ProposalItem[] {
+    return this.proposalsByTextAndServiceType(this._serviceTypeFilter).proposals
   }
 
-  @action
-  public filterByText (text: string) {
-    this._filteredText = text
-  }
-
-  @action
-  public filterByServiceType (serviceType: ServiceType | null) {
-    this._filteredServiceType = serviceType
-  }
-
-  @computed
-  public get filteredServiceType (): ServiceType | null {
-    return this._filteredServiceType
+  public proposalsCountByServiceType (serviceType: ServiceType | null = null): number {
+    return this.proposalsByTextAndServiceType(serviceType).proposals.length
   }
 
   public get serviceFilterOptions (): Array<ServiceType | null> {
     return [null, ServiceType.Openvpn, ServiceType.Wireguard]
   }
 
-  public proposalsCountByServiceType (serviceType: ServiceType | null = null): number {
-    return this.proposalFilter.filter(this._filteredText, serviceType).length
+  @action
+  public filterByText (text: string) {
+    this._textFilter = text
+  }
+
+  @action
+  public filterByServiceType (serviceType: ServiceType | null) {
+    this._serviceTypeFilter = serviceType
+  }
+
+  @computed
+  public get serviceTypeFilter (): ServiceType | null {
+    return this._serviceTypeFilter
+  }
+
+  private proposalsByTextAndServiceType (serviceType: ServiceType | null) {
+    return this.proposalsByText.filterByServiceType(serviceType)
+  }
+
+  @computed
+  private get proposalsByText () {
+    return this.proposalFilter.filterByText(this._textFilter)
   }
 }
 
