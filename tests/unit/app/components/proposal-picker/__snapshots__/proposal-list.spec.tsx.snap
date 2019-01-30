@@ -31,7 +31,7 @@ ShallowWrapper {
               Object {
                 "borderColor": "transparent",
                 "borderWidth": 0,
-                "width": "70%",
+                "width": "100%",
               }
             }
           >
@@ -63,7 +63,14 @@ ShallowWrapper {
               />
             </Component>
           </Styled(Body)>
-          <Styled(Right)>
+          <Styled(Right)
+            style={
+              Object {
+                "borderColor": "transparent",
+                "flex": 0,
+              }
+            }
+          >
             <Styled(Button)
               onPress={[Function]}
               transparent={true}
@@ -125,7 +132,7 @@ ShallowWrapper {
                 Object {
                   "borderColor": "transparent",
                   "borderWidth": 0,
-                  "width": "70%",
+                  "width": "100%",
                 }
               }
             >
@@ -157,7 +164,14 @@ ShallowWrapper {
                 />
               </Component>
             </Styled(Body)>,
-            <Styled(Right)>
+            <Styled(Right)
+              style={
+                Object {
+                  "borderColor": "transparent",
+                  "flex": 0,
+                }
+              }
+            >
               <Styled(Button)
                 onPress={[Function]}
                 transparent={true}
@@ -208,7 +222,7 @@ ShallowWrapper {
               "style": Object {
                 "borderColor": "transparent",
                 "borderWidth": 0,
-                "width": "70%",
+                "width": "100%",
               },
               "virtual": undefined,
             },
@@ -295,6 +309,10 @@ ShallowWrapper {
                   Close
                 </Styled(Text)>
               </Styled(Button)>,
+              "style": Object {
+                "borderColor": "transparent",
+                "flex": 0,
+              },
               "virtual": undefined,
             },
             "ref": null,
@@ -502,7 +520,7 @@ ShallowWrapper {
                 Object {
                   "borderColor": "transparent",
                   "borderWidth": 0,
-                  "width": "70%",
+                  "width": "100%",
                 }
               }
             >
@@ -534,7 +552,14 @@ ShallowWrapper {
                 />
               </Component>
             </Styled(Body)>
-            <Styled(Right)>
+            <Styled(Right)
+              style={
+                Object {
+                  "borderColor": "transparent",
+                  "flex": 0,
+                }
+              }
+            >
               <Styled(Button)
                 onPress={[Function]}
                 transparent={true}
@@ -596,7 +621,7 @@ ShallowWrapper {
                   Object {
                     "borderColor": "transparent",
                     "borderWidth": 0,
-                    "width": "70%",
+                    "width": "100%",
                   }
                 }
               >
@@ -628,7 +653,14 @@ ShallowWrapper {
                   />
                 </Component>
               </Styled(Body)>,
-              <Styled(Right)>
+              <Styled(Right)
+                style={
+                  Object {
+                    "borderColor": "transparent",
+                    "flex": 0,
+                  }
+                }
+              >
                 <Styled(Button)
                   onPress={[Function]}
                   transparent={true}
@@ -679,7 +711,7 @@ ShallowWrapper {
                 "style": Object {
                   "borderColor": "transparent",
                   "borderWidth": 0,
-                  "width": "70%",
+                  "width": "100%",
                 },
                 "virtual": undefined,
               },
@@ -766,6 +798,10 @@ ShallowWrapper {
                     Close
                   </Styled(Text)>
                 </Styled(Button)>,
+                "style": Object {
+                  "borderColor": "transparent",
+                  "flex": 0,
+                },
                 "virtual": undefined,
               },
               "ref": null,
