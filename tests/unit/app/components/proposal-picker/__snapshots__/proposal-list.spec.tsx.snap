@@ -82,7 +82,7 @@ ShallowWrapper {
             onPress={[Function]}
           >
             <Styled(Text)>
-              all
+              all (0)
             </Styled(Text)>
           </Styled(Button)>
           <Styled(Button)
@@ -92,7 +92,7 @@ ShallowWrapper {
             onPress={[Function]}
           >
             <Styled(Text)>
-              openvpn
+              openvpn (0)
             </Styled(Text)>
           </Styled(Button)>
           <Styled(Button)
@@ -102,7 +102,7 @@ ShallowWrapper {
             onPress={[Function]}
           >
             <Styled(Text)>
-              wireguard
+              wireguard (0)
             </Styled(Text)>
           </Styled(Button)>
         </Styled(Segment)>,
@@ -343,7 +343,7 @@ ShallowWrapper {
               onPress={[Function]}
             >
               <Styled(Text)>
-                all
+                all (0)
               </Styled(Text)>
             </Styled(Button)>,
             <Styled(Button)
@@ -353,7 +353,7 @@ ShallowWrapper {
               onPress={[Function]}
             >
               <Styled(Text)>
-                openvpn
+                openvpn (0)
               </Styled(Text)>
             </Styled(Button)>,
             <Styled(Button)
@@ -363,7 +363,7 @@ ShallowWrapper {
               onPress={[Function]}
             >
               <Styled(Text)>
-                wireguard
+                wireguard (0)
               </Styled(Text)>
             </Styled(Button)>,
           ],
@@ -373,12 +373,12 @@ ShallowWrapper {
         "rendered": Array [
           Object {
             "instance": null,
-            "key": "all",
+            "key": "all (0)",
             "nodeType": "class",
             "props": Object {
               "active": true,
               "children": <Styled(Text)>
-                all
+                all (0)
               </Styled(Text)>,
               "first": true,
               "last": false,
@@ -391,23 +391,23 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "all",
+                "children": "all (0)",
                 "virtual": undefined,
               },
               "ref": null,
-              "rendered": "all",
+              "rendered": "all (0)",
               "type": [Function],
             },
             "type": [Function],
           },
           Object {
             "instance": null,
-            "key": "openvpn",
+            "key": "openvpn (0)",
             "nodeType": "class",
             "props": Object {
               "active": false,
               "children": <Styled(Text)>
-                openvpn
+                openvpn (0)
               </Styled(Text)>,
               "first": false,
               "last": false,
@@ -420,23 +420,23 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "openvpn",
+                "children": "openvpn (0)",
                 "virtual": undefined,
               },
               "ref": null,
-              "rendered": "openvpn",
+              "rendered": "openvpn (0)",
               "type": [Function],
             },
             "type": [Function],
           },
           Object {
             "instance": null,
-            "key": "wireguard",
+            "key": "wireguard (0)",
             "nodeType": "class",
             "props": Object {
               "active": false,
               "children": <Styled(Text)>
-                wireguard
+                wireguard (0)
               </Styled(Text)>,
               "first": false,
               "last": true,
@@ -449,11 +449,11 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "wireguard",
+                "children": "wireguard (0)",
                 "virtual": undefined,
               },
               "ref": null,
-              "rendered": "wireguard",
+              "rendered": "wireguard (0)",
               "type": [Function],
             },
             "type": [Function],
@@ -553,7 +553,7 @@ ShallowWrapper {
               onPress={[Function]}
             >
               <Styled(Text)>
-                all
+                all (0)
               </Styled(Text)>
             </Styled(Button)>
             <Styled(Button)
@@ -563,7 +563,7 @@ ShallowWrapper {
               onPress={[Function]}
             >
               <Styled(Text)>
-                openvpn
+                openvpn (0)
               </Styled(Text)>
             </Styled(Button)>
             <Styled(Button)
@@ -573,7 +573,7 @@ ShallowWrapper {
               onPress={[Function]}
             >
               <Styled(Text)>
-                wireguard
+                wireguard (0)
               </Styled(Text)>
             </Styled(Button)>
           </Styled(Segment)>,
@@ -814,7 +814,7 @@ ShallowWrapper {
                 onPress={[Function]}
               >
                 <Styled(Text)>
-                  all
+                  all (0)
                 </Styled(Text)>
               </Styled(Button)>,
               <Styled(Button)
@@ -824,7 +824,7 @@ ShallowWrapper {
                 onPress={[Function]}
               >
                 <Styled(Text)>
-                  openvpn
+                  openvpn (0)
                 </Styled(Text)>
               </Styled(Button)>,
               <Styled(Button)
@@ -834,7 +834,7 @@ ShallowWrapper {
                 onPress={[Function]}
               >
                 <Styled(Text)>
-                  wireguard
+                  wireguard (0)
                 </Styled(Text)>
               </Styled(Button)>,
             ],
@@ -844,12 +844,12 @@ ShallowWrapper {
           "rendered": Array [
             Object {
               "instance": null,
-              "key": "all",
+              "key": "all (0)",
               "nodeType": "class",
               "props": Object {
                 "active": true,
                 "children": <Styled(Text)>
-                  all
+                  all (0)
                 </Styled(Text)>,
                 "first": true,
                 "last": false,
@@ -862,23 +862,23 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "all",
+                  "children": "all (0)",
                   "virtual": undefined,
                 },
                 "ref": null,
-                "rendered": "all",
+                "rendered": "all (0)",
                 "type": [Function],
               },
               "type": [Function],
             },
             Object {
               "instance": null,
-              "key": "openvpn",
+              "key": "openvpn (0)",
               "nodeType": "class",
               "props": Object {
                 "active": false,
                 "children": <Styled(Text)>
-                  openvpn
+                  openvpn (0)
                 </Styled(Text)>,
                 "first": false,
                 "last": false,
@@ -891,23 +891,23 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "openvpn",
+                  "children": "openvpn (0)",
                   "virtual": undefined,
                 },
                 "ref": null,
-                "rendered": "openvpn",
+                "rendered": "openvpn (0)",
                 "type": [Function],
               },
               "type": [Function],
             },
             Object {
               "instance": null,
-              "key": "wireguard",
+              "key": "wireguard (0)",
               "nodeType": "class",
               "props": Object {
                 "active": false,
                 "children": <Styled(Text)>
-                  wireguard
+                  wireguard (0)
                 </Styled(Text)>,
                 "first": false,
                 "last": true,
@@ -920,11 +920,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "wireguard",
+                  "children": "wireguard (0)",
                   "virtual": undefined,
                 },
                 "ref": null,
-                "rendered": "wireguard",
+                "rendered": "wireguard (0)",
                 "type": [Function],
               },
               "type": [Function],

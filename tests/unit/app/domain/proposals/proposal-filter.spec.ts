@@ -24,50 +24,52 @@ describe('ProposalFilter', () => {
   let proposals: ProposalItem[]
   let proposalFilter: ProposalFilter
 
-  describe('.filter', () => {
-    beforeEach(() => {
-      proposals = proposalListItemData
-      proposalFilter = new ProposalFilter(proposals)
-    })
+  beforeEach(() => {
+    proposals = proposalListItemData
+    proposalFilter = new ProposalFilter(proposals)
+  })
 
+  describe('.filterByText', () => {
     it('finds all', () => {
-      expect(proposalFilter.filter('')).toHaveLength(9)
+      expect(proposalFilter.filterByText('').proposals).toHaveLength(9)
     })
 
     it('finds proposal label by country name', () => {
-      expect(proposalFilter.filter('United')).toHaveLength(2)
+      expect(proposalFilter.filterByText('United').proposals).toHaveLength(2)
     })
 
     it('finds proposal label by case insensitive country name', () => {
-      expect(proposalFilter.filter('united')).toHaveLength(2)
+      expect(proposalFilter.filterByText('united').proposals).toHaveLength(2)
     })
 
     it('finds proposal by partial id', () => {
-      const list = proposalFilter.filter('x6')
+      const list = proposalFilter.filterByText('x6').proposals
       expect(list[0].providerID).toEqual('0x6')
       expect(list[0].countryCode).toEqual('it')
       expect(list).toHaveLength(1)
     })
 
     it('returns empty list when no matches are found', () => {
-      expect(proposalFilter.filter('0x007')).toHaveLength(0)
+      expect(proposalFilter.filterByText('0x007').proposals).toHaveLength(0)
     })
+  })
 
-    it('finds proposal by service type', () => {
-      const result = proposalFilter.filter('', ServiceType.Wireguard)
+  describe('.filterByServiceType', () => {
+    it('returns proposals filtered by service type', () => {
+      const result = proposalFilter.filterByServiceType(ServiceType.Wireguard).proposals
 
       expect(result).toHaveLength(1)
       expect(result[0].serviceType).toEqual(ServiceType.Wireguard)
     })
+  })
 
-    it('finds proposal by service type and text', () => {
-      const result = proposalFilter.filter('Italy', ServiceType.Openvpn)
+  describe('when chaining filters', () => {
+    it('returns proposals filtered by both filters', () => {
+      const result = proposalFilter.filterByText('Lithuania').filterByServiceType(ServiceType.Wireguard).proposals
 
-      expect(result).toHaveLength(2)
-      result.forEach(proposal => {
-        expect(proposal.countryName).toEqual('Italy')
-        expect(proposal.serviceType).toEqual(ServiceType.Openvpn)
-      })
+      expect(result).toHaveLength(1)
+      expect(result[0].countryName).toEqual('Lithuania')
+      expect(result[0].serviceType).toEqual(ServiceType.Wireguard)
     })
   })
 })

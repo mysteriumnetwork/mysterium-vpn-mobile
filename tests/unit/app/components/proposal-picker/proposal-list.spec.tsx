@@ -35,4 +35,6 @@ describe('ProposalList', () => {
 
     expect(wrapper).toMatchSnapshot()
   })
+
+  // TODO: render with counts
 })

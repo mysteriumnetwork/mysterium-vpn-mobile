@@ -22,34 +22,51 @@ import { ServiceType } from '../models/service-type'
 
 class ProposalsListStore {
   @observable
-  private _filteredText: string = ''
+  private _textFilter: string = ''
   @observable
-  private _filteredServiceType: ServiceType | null = null
+  private _serviceTypeFilter: ServiceType | null = null
 
-  constructor (private readonly proposals: ProposalItem[]) {}
+  private readonly proposalFilter: ProposalFilter
 
-  @computed
-  public get filteredProposals () {
-    return new ProposalFilter(this.proposals).filter(this._filteredText, this._filteredServiceType)
-  }
-
-  @action
-  public filterByText (text: string) {
-    this._filteredText = text
-  }
-
-  @action
-  public filterByServiceType (serviceType: ServiceType | null) {
-    this._filteredServiceType = serviceType
+  constructor (private readonly proposals: ProposalItem[]) {
+    this.proposalFilter = new ProposalFilter(this.proposals)
   }
 
   @computed
-  public get filteredServiceType (): ServiceType | null {
-    return this._filteredServiceType
+  public get filteredProposals (): ProposalItem[] {
+    return this.proposalsByTextAndServiceType(this._serviceTypeFilter).proposals
+  }
+
+  public proposalsCountByServiceType (serviceType: ServiceType | null = null): number {
+    return this.proposalsByTextAndServiceType(serviceType).proposals.length
   }
 
   public get serviceFilterOptions (): Array<ServiceType | null> {
     return [null, ServiceType.Openvpn, ServiceType.Wireguard]
+  }
+
+  @action
+  public filterByText (text: string) {
+    this._textFilter = text
+  }
+
+  @action
+  public filterByServiceType (serviceType: ServiceType | null) {
+    this._serviceTypeFilter = serviceType
+  }
+
+  @computed
+  public get serviceTypeFilter (): ServiceType | null {
+    return this._serviceTypeFilter
+  }
+
+  private proposalsByTextAndServiceType (serviceType: ServiceType | null) {
+    return this.proposalsByText.filterByServiceType(serviceType)
+  }
+
+  @computed
+  private get proposalsByText () {
+    return this.proposalFilter.filterByText(this._textFilter)
   }
 }
 

@@ -56,11 +56,27 @@ describe('ProposalsListStore', () => {
     })
   })
 
-  describe('.filteredServiceType', () => {
+  describe('.serviceTypeFilter', () => {
     it('returns set filter', () => {
-      expect(store.filteredServiceType).toBeNull()
+      expect(store.serviceTypeFilter).toBeNull()
       store.filterByServiceType(ServiceType.Wireguard)
-      expect(store.filteredServiceType).toEqual(ServiceType.Wireguard)
+      expect(store.serviceTypeFilter).toEqual(ServiceType.Wireguard)
+    })
+  })
+
+  describe('.proposalsCountByServiceType', () => {
+    it('returns number of all proposals filtered by text', () => {
+      store.filterByText('Lithuania')
+      store.filterByServiceType(ServiceType.Wireguard)
+
+      expect(store.proposalsCountByServiceType()).toEqual(2)
+    })
+
+    it('returns number of proposals filtered by text and service type', () => {
+      store.filterByText('Lithuania')
+      store.filterByServiceType(ServiceType.Wireguard)
+
+      expect(store.proposalsCountByServiceType(ServiceType.Openvpn)).toEqual(1)
     })
   })
 })

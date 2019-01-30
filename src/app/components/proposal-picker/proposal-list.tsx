@@ -105,13 +105,14 @@ class ProposalList extends React.Component<ListProps> {
   }
 
   private renderServiceFilterOption (serviceType: ServiceType | null, index: number, total: number): ReactNode {
-    const label = serviceType || this.SERVICE_TYPE_ALL_LABEL
+    const count = this.store.proposalsCountByServiceType(serviceType)
+    const label = (serviceType || this.SERVICE_TYPE_ALL_LABEL) + ` (${count})`
     return (
       <Button
         key={label}
         first={index === 0}
         last={index + 1 === total}
-        active={serviceType === this.store.filteredServiceType}
+        active={serviceType === this.store.serviceTypeFilter}
         onPress={() => this.onFilterOptionPressed(serviceType)}
       >
         <Text>{label}</Text>
