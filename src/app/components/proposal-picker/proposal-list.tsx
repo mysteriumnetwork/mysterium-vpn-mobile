@@ -16,23 +16,9 @@
  */
 
 import { observer } from 'mobx-react/native'
-import {
-  Body,
-  Button,
-  Container,
-  Content,
-  Header,
-  Icon,
-  Input,
-  Left,
-  List,
-  ListItem,
-  Right,
-  Segment,
-  Text
-} from 'native-base'
-import React, { ReactNode } from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Body, Button as NativeButton, Container, Header, Icon, Input, NativeBase, Right, Text } from 'native-base'
+import React, { ReactElement, ReactNode } from 'react'
+import { Button, FlatList, Picker, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
 import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
@@ -54,6 +40,8 @@ class ProposalList extends React.Component<ListProps> {
   private store: ProposalsListStore = new ProposalsListStore(this.props.proposals)
 
   private readonly SERVICE_TYPE_ALL_LABEL = 'all'
+  private readonly SORTING_VALUE = 'country'
+  private readonly SORTING_LABEL = 'Country'
 
   constructor (props: ListProps) {
     super(props)
@@ -77,77 +65,80 @@ class ProposalList extends React.Component<ListProps> {
             </View>
           </Body>
           <Right style={styles.rightItem}>
-            <Button transparent={true} onPress={() => this.props.onClose()}>
+            <NativeButton transparent={true} onPress={() => this.props.onClose()}>
               <Text>Close</Text>
-            </Button>
+            </NativeButton>
           </Right>
         </Header>
-        {this.renderServiceFilterOptions()}
-        <Content>
-          <List>
-            {filteredProposals.map((proposal: ProposalItem) => this.renderProposal(proposal))}
-          </List>
-        </Content>
+        <View style={styles.content}>
+          <View style={styles.toolbar}>
+            <Picker selectedValue={this.SORTING_VALUE} style={styles.sortingPicker}>
+              <Picker.Item label={this.SORTING_LABEL} value={this.SORTING_VALUE}/>
+            </Picker>
+            {this.renderServiceFilterOptions()}
+          </View>
+          <FlatList
+            keyExtractor={(item) => item.id}
+            data={filteredProposals}
+            renderItem={({ item }) => this.renderProposal(item)}
+          />
+        </View>
       </Container>
     )
   }
 
-  private renderServiceFilterOptions (): ReactNode {
-    const options = this.store.serviceFilterOptions
-    const items = options.map((serviceType, index) => {
-      return this.renderServiceFilterOption(serviceType, index, options.length)
+  private renderServiceFilterOptions (): ReactNode[] {
+    const options = this.store.serviceFilterOptions.map((serviceType) => {
+      return this.renderServiceFilterOption(serviceType)
     })
-    return (
-      <Segment>
-        {items}
-      </Segment>
-    )
+    return options
   }
 
-  private renderServiceFilterOption (serviceType: ServiceType | null, index: number, total: number): ReactNode {
+  private renderServiceFilterOption (serviceType: ServiceType | null): ReactNode {
     const count = this.store.proposalsCountByServiceType(serviceType)
     const label = (serviceType || this.SERVICE_TYPE_ALL_LABEL) + ` (${count})`
+    const active = serviceType === this.store.serviceTypeFilter
+
     return (
       <Button
         key={label}
-        first={index === 0}
-        last={index + 1 === total}
-        active={serviceType === this.store.serviceTypeFilter}
+        color={active ? colors.primary : colors.secondary}
         onPress={() => this.onFilterOptionPressed(serviceType)}
-      >
-        <Text>{label}</Text>
-      </Button>
+        title={label}
+      />
     )
   }
 
-  private renderProposal (proposal: ProposalItem): ReactNode {
+  private renderProposal (proposal: ProposalItem): ReactElement<NativeBase.ListItem> {
     return (
-      <ListItem
+      <TouchableOpacity
         style={this.listItemStyle(proposal)}
-        icon={true}
-        key={proposal.id}
         onPress={() => this.props.onSelect(proposal)}
       >
-        <Left style={styles.flagImage}>
-          <CountryFlag countryCode={proposal.countryCode} showPlaceholder={true}/>
-        </Left>
-        <Body>
-          <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
-          <Text style={this.providerIdStyle(proposal)}>
-            {proposal.providerID.substring(0, 25) + '...'}
-          </Text>
-        </Body>
-        <Right>
+          <CountryFlag
+            countryCode={proposal.countryCode}
+            showPlaceholder={true}
+            style={styles.proposalItemElement}
+          />
+          <View style={[styles.proposalItemElement, styles.proposalLabelContainer]}>
+              <Text style={this.listItemTextStyle(proposal)}>{proposal.countryName}</Text>
+              <Text style={this.providerIdStyle(proposal)}>
+                {proposal.providerID.substring(0, 25) + '...'}
+              </Text>
+          </View>
           <ServiceIndicator
-            serviceType={proposal.serviceType}
-            style={styles.serviceIndicator}
+              serviceType={proposal.serviceType}
+              style={styles.proposalItemElement}
           />
-          <QualityIndicator quality={proposal.quality}/>
+          <QualityIndicator
+            quality={proposal.quality}
+            style={styles.proposalItemElement}
+          />
           <Icon
-            name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
+              name={proposal.isFavorite ? 'md-star' : 'md-star-outline'}
+              style={[styles.proposalItemElement, styles.favoritesIcon]}
           />
-        </Right>
-      </ListItem>
+      </TouchableOpacity>
     )
   }
 
@@ -199,18 +190,29 @@ const platformStyles = {
   }
 }
 
-let listItemStyles = {}
-if (Platform.OS !== 'ios') {
-  listItemStyles = {
-    paddingLeft: 15,
-    marginLeft: 0
-  }
-}
-
 const styles: any = StyleSheet.create({
-  listItem: listItemStyles,
+  listItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border
+  },
   selectedListItem: {
     backgroundColor: colors.primary
+  },
+  content: {
+    flex: 1
+  },
+  sortingPicker: {
+    flex: 1
+  },
+  toolbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap'
+  },
+  serviceFilterButtonActive: {
+    color: 'red'
   },
   providerIdText: {
     fontSize: 12,
@@ -229,12 +231,6 @@ const styles: any = StyleSheet.create({
     flex: 0,
     borderColor: 'transparent'
   },
-  flagImage: {
-    width: 26,
-    height: 26,
-    margin: 0,
-    padding: 0
-  },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -245,8 +241,15 @@ const styles: any = StyleSheet.create({
   searchInput: {
     color: platformStyles.search.inputColor
   },
-  serviceIndicator: {
-    marginRight: 10
+  proposalItemElement: {
+    marginHorizontal: 5
+  },
+  proposalLabelContainer: {
+    flex: 1
+  },
+  favoritesIcon: {
+    color: colors.secondary,
+    fontSize: 26
   }
 })
 

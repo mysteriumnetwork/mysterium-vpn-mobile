@@ -21,10 +21,10 @@ import { bytesDisplay, timeDisplay } from '../../libraries/unitConverter'
 import { STYLES } from '../../styles'
 
 type StatsProps = {
-  style?: StyleProp<ViewStyle>
   duration: number,
   bytesReceived: number,
-  bytesSent: number
+  bytesSent: number,
+  style?: StyleProp<ViewStyle>
 }
 
 const Stats: React.SFC<StatsProps> = ({

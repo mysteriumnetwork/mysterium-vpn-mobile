@@ -81,41 +81,67 @@ ShallowWrapper {
             </Styled(Button)>
           </Styled(Right)>
         </Styled(Header)>,
-        <Styled(Segment)>
-          <Styled(Button)
-            active={true}
-            first={true}
-            last={false}
-            onPress={[Function]}
+        <Component
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <Component
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
           >
-            <Styled(Text)>
-              all (0)
-            </Styled(Text)>
-          </Styled(Button)>
-          <Styled(Button)
-            active={false}
-            first={false}
-            last={false}
-            onPress={[Function]}
-          >
-            <Styled(Text)>
-              openvpn (0)
-            </Styled(Text)>
-          </Styled(Button)>
-          <Styled(Button)
-            active={false}
-            first={false}
-            last={true}
-            onPress={[Function]}
-          >
-            <Styled(Text)>
-              wireguard (0)
-            </Styled(Text)>
-          </Styled(Button)>
-        </Styled(Segment)>,
-        <Styled(Content)>
-          <Styled(List) />
-        </Styled(Content)>,
+            <Picker
+              mode="dialog"
+              selectedValue="country"
+              style={
+                Object {
+                  "flex": 1,
+                }
+              }
+            >
+              <PickerItem
+                label="Country"
+                value="country"
+              />
+            </Picker>
+            <Button
+              color="#622461"
+              onPress={[Function]}
+              title="all (0)"
+            />
+            <Button
+              color="#999"
+              onPress={[Function]}
+              title="openvpn (0)"
+            />
+            <Button
+              color="#999"
+              onPress={[Function]}
+              title="wireguard (0)"
+            />
+          </Component>
+          <FlatList
+            data={Array []}
+            disableVirtualization={false}
+            horizontal={false}
+            initialNumToRender={10}
+            keyExtractor={[Function]}
+            maxToRenderPerBatch={10}
+            numColumns={1}
+            onEndReachedThreshold={2}
+            renderItem={[Function]}
+            scrollEventThrottle={50}
+            updateCellsBatchingPeriod={50}
+            windowSize={21}
+          />
+        </Component>,
       ],
       "virtual": undefined,
     },
@@ -354,152 +380,207 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            <Styled(Button)
-              active={true}
-              first={true}
-              last={false}
-              onPress={[Function]}
+            <Component
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                }
+              }
             >
-              <Styled(Text)>
-                all (0)
-              </Styled(Text)>
-            </Styled(Button)>,
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={false}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                openvpn (0)
-              </Styled(Text)>
-            </Styled(Button)>,
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={true}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                wireguard (0)
-              </Styled(Text)>
-            </Styled(Button)>,
+              <Picker
+                mode="dialog"
+                selectedValue="country"
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                <PickerItem
+                  label="Country"
+                  value="country"
+                />
+              </Picker>
+              <Button
+                color="#622461"
+                onPress={[Function]}
+                title="all (0)"
+              />
+              <Button
+                color="#999"
+                onPress={[Function]}
+                title="openvpn (0)"
+              />
+              <Button
+                color="#999"
+                onPress={[Function]}
+                title="wireguard (0)"
+              />
+            </Component>,
+            <FlatList
+              data={Array []}
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={1}
+              onEndReachedThreshold={2}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />,
           ],
-          "virtual": undefined,
+          "style": Object {
+            "flex": 1,
+          },
         },
         "ref": null,
         "rendered": Array [
           Object {
             "instance": null,
-            "key": "all (0)",
+            "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "active": true,
-              "children": <Styled(Text)>
-                all (0)
-              </Styled(Text)>,
-              "first": true,
-              "last": false,
-              "onPress": [Function],
-              "virtual": undefined,
+              "children": Array [
+                <Picker
+                  mode="dialog"
+                  selectedValue="country"
+                  style={
+                    Object {
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <PickerItem
+                    label="Country"
+                    value="country"
+                  />
+                </Picker>,
+                Array [
+                  <Button
+                    color="#622461"
+                    onPress={[Function]}
+                    title="all (0)"
+                  />,
+                  <Button
+                    color="#999"
+                    onPress={[Function]}
+                    title="openvpn (0)"
+                  />,
+                  <Button
+                    color="#999"
+                    onPress={[Function]}
+                    title="wireguard (0)"
+                  />,
+                ],
+              ],
+              "style": Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              },
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "all (0)",
-                "virtual": undefined,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <PickerItem
+                    label="Country"
+                    value="country"
+                  />,
+                  "mode": "dialog",
+                  "selectedValue": "country",
+                  "style": Object {
+                    "flex": 1,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "label": "Country",
+                    "value": "country",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
               },
-              "ref": null,
-              "rendered": "all (0)",
-              "type": [Function],
-            },
+              Object {
+                "instance": null,
+                "key": "all (0)",
+                "nodeType": "class",
+                "props": Object {
+                  "color": "#622461",
+                  "onPress": [Function],
+                  "title": "all (0)",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "openvpn (0)",
+                "nodeType": "class",
+                "props": Object {
+                  "color": "#999",
+                  "onPress": [Function],
+                  "title": "openvpn (0)",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "wireguard (0)",
+                "nodeType": "class",
+                "props": Object {
+                  "color": "#999",
+                  "onPress": [Function],
+                  "title": "wireguard (0)",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+            ],
             "type": [Function],
           },
           Object {
             "instance": null,
-            "key": "openvpn (0)",
+            "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "active": false,
-              "children": <Styled(Text)>
-                openvpn (0)
-              </Styled(Text)>,
-              "first": false,
-              "last": false,
-              "onPress": [Function],
-              "virtual": undefined,
+              "data": Array [],
+              "disableVirtualization": false,
+              "horizontal": false,
+              "initialNumToRender": 10,
+              "keyExtractor": [Function],
+              "maxToRenderPerBatch": 10,
+              "numColumns": 1,
+              "onEndReachedThreshold": 2,
+              "renderItem": [Function],
+              "scrollEventThrottle": 50,
+              "updateCellsBatchingPeriod": 50,
+              "windowSize": 21,
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "openvpn (0)",
-                "virtual": undefined,
-              },
-              "ref": null,
-              "rendered": "openvpn (0)",
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": "wireguard (0)",
-            "nodeType": "class",
-            "props": Object {
-              "active": false,
-              "children": <Styled(Text)>
-                wireguard (0)
-              </Styled(Text)>,
-              "first": false,
-              "last": true,
-              "onPress": [Function],
-              "virtual": undefined,
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "wireguard (0)",
-                "virtual": undefined,
-              },
-              "ref": null,
-              "rendered": "wireguard (0)",
-              "type": [Function],
-            },
+            "rendered": null,
             "type": [Function],
           },
         ],
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": <Styled(List) />,
-          "virtual": undefined,
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [],
-            "virtual": undefined,
-          },
-          "ref": null,
-          "rendered": Array [],
-          "type": [Function],
-        },
         "type": [Function],
       },
     ],
@@ -570,41 +651,67 @@ ShallowWrapper {
               </Styled(Button)>
             </Styled(Right)>
           </Styled(Header)>,
-          <Styled(Segment)>
-            <Styled(Button)
-              active={true}
-              first={true}
-              last={false}
-              onPress={[Function]}
+          <Component
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+          >
+            <Component
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                }
+              }
             >
-              <Styled(Text)>
-                all (0)
-              </Styled(Text)>
-            </Styled(Button)>
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={false}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                openvpn (0)
-              </Styled(Text)>
-            </Styled(Button)>
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={true}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                wireguard (0)
-              </Styled(Text)>
-            </Styled(Button)>
-          </Styled(Segment)>,
-          <Styled(Content)>
-            <Styled(List) />
-          </Styled(Content)>,
+              <Picker
+                mode="dialog"
+                selectedValue="country"
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                <PickerItem
+                  label="Country"
+                  value="country"
+                />
+              </Picker>
+              <Button
+                color="#622461"
+                onPress={[Function]}
+                title="all (0)"
+              />
+              <Button
+                color="#999"
+                onPress={[Function]}
+                title="openvpn (0)"
+              />
+              <Button
+                color="#999"
+                onPress={[Function]}
+                title="wireguard (0)"
+              />
+            </Component>
+            <FlatList
+              data={Array []}
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={1}
+              onEndReachedThreshold={2}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+          </Component>,
         ],
         "virtual": undefined,
       },
@@ -843,152 +950,207 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <Styled(Button)
-                active={true}
-                first={true}
-                last={false}
-                onPress={[Function]}
+              <Component
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                  }
+                }
               >
-                <Styled(Text)>
-                  all (0)
-                </Styled(Text)>
-              </Styled(Button)>,
-              <Styled(Button)
-                active={false}
-                first={false}
-                last={false}
-                onPress={[Function]}
-              >
-                <Styled(Text)>
-                  openvpn (0)
-                </Styled(Text)>
-              </Styled(Button)>,
-              <Styled(Button)
-                active={false}
-                first={false}
-                last={true}
-                onPress={[Function]}
-              >
-                <Styled(Text)>
-                  wireguard (0)
-                </Styled(Text)>
-              </Styled(Button)>,
+                <Picker
+                  mode="dialog"
+                  selectedValue="country"
+                  style={
+                    Object {
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <PickerItem
+                    label="Country"
+                    value="country"
+                  />
+                </Picker>
+                <Button
+                  color="#622461"
+                  onPress={[Function]}
+                  title="all (0)"
+                />
+                <Button
+                  color="#999"
+                  onPress={[Function]}
+                  title="openvpn (0)"
+                />
+                <Button
+                  color="#999"
+                  onPress={[Function]}
+                  title="wireguard (0)"
+                />
+              </Component>,
+              <FlatList
+                data={Array []}
+                disableVirtualization={false}
+                horizontal={false}
+                initialNumToRender={10}
+                keyExtractor={[Function]}
+                maxToRenderPerBatch={10}
+                numColumns={1}
+                onEndReachedThreshold={2}
+                renderItem={[Function]}
+                scrollEventThrottle={50}
+                updateCellsBatchingPeriod={50}
+                windowSize={21}
+              />,
             ],
-            "virtual": undefined,
+            "style": Object {
+              "flex": 1,
+            },
           },
           "ref": null,
           "rendered": Array [
             Object {
               "instance": null,
-              "key": "all (0)",
+              "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "active": true,
-                "children": <Styled(Text)>
-                  all (0)
-                </Styled(Text)>,
-                "first": true,
-                "last": false,
-                "onPress": [Function],
-                "virtual": undefined,
+                "children": Array [
+                  <Picker
+                    mode="dialog"
+                    selectedValue="country"
+                    style={
+                      Object {
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <PickerItem
+                      label="Country"
+                      value="country"
+                    />
+                  </Picker>,
+                  Array [
+                    <Button
+                      color="#622461"
+                      onPress={[Function]}
+                      title="all (0)"
+                    />,
+                    <Button
+                      color="#999"
+                      onPress={[Function]}
+                      title="openvpn (0)"
+                    />,
+                    <Button
+                      color="#999"
+                      onPress={[Function]}
+                      title="wireguard (0)"
+                    />,
+                  ],
+                ],
+                "style": Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                },
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "all (0)",
-                  "virtual": undefined,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <PickerItem
+                      label="Country"
+                      value="country"
+                    />,
+                    "mode": "dialog",
+                    "selectedValue": "country",
+                    "style": Object {
+                      "flex": 1,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "label": "Country",
+                      "value": "country",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": "all (0)",
-                "type": [Function],
-              },
+                Object {
+                  "instance": null,
+                  "key": "all (0)",
+                  "nodeType": "class",
+                  "props": Object {
+                    "color": "#622461",
+                    "onPress": [Function],
+                    "title": "all (0)",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": "openvpn (0)",
+                  "nodeType": "class",
+                  "props": Object {
+                    "color": "#999",
+                    "onPress": [Function],
+                    "title": "openvpn (0)",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": "wireguard (0)",
+                  "nodeType": "class",
+                  "props": Object {
+                    "color": "#999",
+                    "onPress": [Function],
+                    "title": "wireguard (0)",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+              ],
               "type": [Function],
             },
             Object {
               "instance": null,
-              "key": "openvpn (0)",
+              "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "active": false,
-                "children": <Styled(Text)>
-                  openvpn (0)
-                </Styled(Text)>,
-                "first": false,
-                "last": false,
-                "onPress": [Function],
-                "virtual": undefined,
+                "data": Array [],
+                "disableVirtualization": false,
+                "horizontal": false,
+                "initialNumToRender": 10,
+                "keyExtractor": [Function],
+                "maxToRenderPerBatch": 10,
+                "numColumns": 1,
+                "onEndReachedThreshold": 2,
+                "renderItem": [Function],
+                "scrollEventThrottle": 50,
+                "updateCellsBatchingPeriod": 50,
+                "windowSize": 21,
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "openvpn (0)",
-                  "virtual": undefined,
-                },
-                "ref": null,
-                "rendered": "openvpn (0)",
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": "wireguard (0)",
-              "nodeType": "class",
-              "props": Object {
-                "active": false,
-                "children": <Styled(Text)>
-                  wireguard (0)
-                </Styled(Text)>,
-                "first": false,
-                "last": true,
-                "onPress": [Function],
-                "virtual": undefined,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "wireguard (0)",
-                  "virtual": undefined,
-                },
-                "ref": null,
-                "rendered": "wireguard (0)",
-                "type": [Function],
-              },
+              "rendered": null,
               "type": [Function],
             },
           ],
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <Styled(List) />,
-            "virtual": undefined,
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": Array [],
-              "virtual": undefined,
-            },
-            "ref": null,
-            "rendered": Array [],
-            "type": [Function],
-          },
           "type": [Function],
         },
       ],
