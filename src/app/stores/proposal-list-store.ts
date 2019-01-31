@@ -28,6 +28,9 @@ class ProposalListStore {
 
   private readonly proposalQuery: ProposalQuery
 
+  @observable
+  private sorting: ProposalsSorting = ProposalsSorting.ByCountryName
+
   constructor (private readonly allProposals: ProposalItem[]) {
     this.proposalQuery = new ProposalQuery(this.allProposals)
   }
@@ -60,8 +63,16 @@ class ProposalListStore {
     return this._serviceTypeFilter
   }
 
+  @action
+  public sortBy (sorting: ProposalsSorting) {
+    this.sorting = sorting
+  }
+
   private proposalsByTextAndServiceType (serviceType: ServiceType | null) {
-    return this.proposalsByText.filterByServiceType(serviceType).sortByFavoriteAndName()
+    const filtered = this.proposalsByText.filterByServiceType(serviceType)
+
+    const partiallySorted = this.sorting ? filtered.sortByQuality() : filtered.sortByCountryName()
+    return partiallySorted.sortByFavorite()
   }
 
   @computed
@@ -70,4 +81,9 @@ class ProposalListStore {
   }
 }
 
-export { ProposalListStore }
+enum ProposalsSorting {
+  ByCountryName,
+  ByQuality
+}
+
+export { ProposalListStore, ProposalsSorting }

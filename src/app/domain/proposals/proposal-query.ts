@@ -42,12 +42,16 @@ class ProposalQuery {
     return new ProposalQuery(proposals)
   }
 
-  public sortByFavoriteAndName (): ProposalQuery {
-    return this.sortByCountryName().sortByFavorite()
+  public sortByCountryName () {
+    return this.sort(compareProposalItemsByCountryName)
   }
 
-  public sortByFavoriteAndQuality (): ProposalQuery {
-    return this.sortByQuality().sortByFavorite()
+  public sortByQuality () {
+    return this.sort(compareProposalItemsByQuality)
+  }
+
+  public sortByFavorite () {
+    return this.sort(compareProposalItemsByFavorite)
   }
 
   private matchProposalNameOrId (proposal: ProposalItem, text: string) {
@@ -57,18 +61,6 @@ class ProposalQuery {
     const matchesId = proposal.providerID.toLowerCase().includes(text.toLowerCase())
 
     return matchesName || matchesId
-  }
-
-  private sortByCountryName () {
-    return this.sort(compareProposalItemsByCountryName)
-  }
-
-  private sortByQuality () {
-    return this.sort(compareProposalItemsByQuality)
-  }
-
-  private sortByFavorite () {
-    return this.sort(compareProposalItemsByFavorite)
   }
 
   private sort (compareFn: (a: ProposalItem, b: ProposalItem) => number): ProposalQuery {

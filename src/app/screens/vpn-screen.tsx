@@ -16,6 +16,7 @@
  *
  */
 
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react/native'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -92,7 +93,7 @@ class VpnScreen extends React.Component<HomeProps> {
             <View style={appStyles.proposalPicker}>
               <ProposalPicker
                 placeholder={translations.PROPOSAL_PICKER_LABEL}
-                proposals={this.vpnScreenStore.proposalItems}
+                proposals={toJS(this.vpnScreenStore.proposalItems)}
                 selectedProposal={this.vpnScreenStore.selectedProposal}
                 onSelect={(proposal: ProposalItem) => this.vpnScreenStore.selectedProposal = proposal}
                 onFavoriteToggle={() => this.toggleSelectedProposalFavorite()}

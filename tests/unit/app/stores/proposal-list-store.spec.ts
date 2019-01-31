@@ -18,7 +18,7 @@
 import { autorun } from 'mobx'
 import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import { ServiceType } from '../../../../src/app/models/service-type'
-import { ProposalListStore } from '../../../../src/app/stores/proposal-list-store'
+import { ProposalListStore, ProposalsSorting } from '../../../../src/app/stores/proposal-list-store'
 import { proposalListItemData } from '../../fixtures/proposal-list-item-data'
 
 describe('ProposalListStore', () => {
@@ -59,6 +59,49 @@ describe('ProposalListStore', () => {
 
       store.filterByServiceType(ServiceType.Wireguard)
       expect(proposals).toHaveLength(1)
+    })
+
+    describe('when sorting by quality', () => {
+      beforeEach(() => {
+        function buildProposal (quality: number | null, isFavorite: boolean) {
+          return {
+            id: '1',
+            providerID: '',
+            serviceType: ServiceType.Wireguard,
+            countryCode: null,
+            countryName: null,
+            isFavorite,
+            quality
+          }
+        }
+        allProposals = [
+          buildProposal(0.1, false),
+          buildProposal(0.9, false),
+          buildProposal(null, false),
+          buildProposal(0.4, true)
+        ]
+        store = new ProposalListStore(allProposals)
+      })
+
+      it('returns sorted proposals by quality and favorite flag', () => {
+        store.sortBy(ProposalsSorting.ByQuality)
+
+        const proposals = store.currentProposals
+        expect(proposals.map(proposal => proposal.quality)).toEqual([0.4, 0.9, 0.1, null])
+      })
+
+      it('notifies observers about changed order', () => {
+        let receivedProposals: ProposalItem[] = []
+        const dispose = autorun(() =>
+          receivedProposals = store.currentProposals
+        )
+
+        store.sortBy(ProposalsSorting.ByQuality)
+
+        expect(receivedProposals.map(proposal => proposal.quality)).toEqual([0.4, 0.9, 0.1, null])
+
+        dispose()
+      })
     })
   })
 

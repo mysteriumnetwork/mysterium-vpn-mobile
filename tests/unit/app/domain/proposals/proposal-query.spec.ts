@@ -68,8 +68,49 @@ describe('ProposalQuery', () => {
     })
   })
 
-  describe('.sortByFavoriteAndName', () => {
-    function buildProposal (countryName: string | null, isFavorite: boolean) {
+  describe('.sortByCountryName', () => {
+    function buildProposal (countryName: string | null) {
+      return {
+        id: '1',
+        providerID: '',
+        serviceType: ServiceType.Wireguard,
+        countryCode: null,
+        countryName,
+        isFavorite: false,
+        quality: null
+      }
+    }
+
+    beforeEach(() => {
+      proposals = [
+        buildProposal('United Kingdom'),
+        buildProposal(null),
+        buildProposal('Lithuania'),
+        buildProposal('Albania')
+      ]
+
+      proposalQuery = new ProposalQuery(proposals)
+    })
+
+    it('returns proposals sorted by country name', () => {
+      const sortedProposals = proposalQuery.sortByCountryName().proposals
+
+      expect(sortedProposals.map(proposal => proposal.countryName)).toEqual([
+        'Albania',
+        'Lithuania',
+        'United Kingdom',
+        null
+      ])
+    })
+
+    it('does not modify original list', () => {
+      proposalQuery.sortByCountryName()
+      expect(proposals[0].countryName).toEqual('United Kingdom')
+    })
+  })
+
+  describe('.sortByFavorite', () => {
+    function buildProposal (countryName: string, isFavorite: boolean) {
       return {
         id: '1',
         providerID: '',
@@ -83,64 +124,62 @@ describe('ProposalQuery', () => {
 
     beforeEach(() => {
       proposals = [
-        buildProposal('United Kingdom', false),
-        buildProposal(null, false),
-        buildProposal('Lithuania', true),
-        buildProposal('Albania', false)
+        buildProposal('First', false),
+        buildProposal('Second', false),
+        buildProposal('Favorite', true),
+        buildProposal('Third', false)
       ]
 
       proposalQuery = new ProposalQuery(proposals)
     })
 
-    it('returns proposals sorted by favorite and name', () => {
-      const sortedProposals = proposalQuery.sortByFavoriteAndName().proposals
+    it('returns proposals sorted by favorite', () => {
+      const sortedProposals = proposalQuery.sortByFavorite().proposals
 
       expect(sortedProposals.map(proposal => proposal.countryName)).toEqual([
-        'Lithuania',
-        'Albania',
-        'United Kingdom',
-        null
+        'Favorite', 'First', 'Second', 'Third'
       ])
     })
 
     it('does not modify original list', () => {
-      proposalQuery.sortByFavoriteAndName()
-      expect(proposals[0].countryName).toEqual('United Kingdom')
+      proposalQuery.sortByFavorite()
+      expect(proposals[0].isFavorite).toBe(false)
+      expect(proposals[2].isFavorite).toBe(true)
     })
   })
 
-  describe('.sortByFavoriteAndQuality', () => {
-    function buildProposal (quality: number | null, isFavorite: boolean) {
+  describe('.sortByQuality', () => {
+    function buildProposal (quality: number | null) {
       return {
         id: '1',
         providerID: '',
         serviceType: ServiceType.Wireguard,
         countryCode: null,
         countryName: null,
-        isFavorite,
+        isFavorite: false,
         quality
       }
     }
 
     beforeEach(() => {
       proposals = [
-        buildProposal(0.1, false),
-        buildProposal(0.9, false),
-        buildProposal(null, false),
-        buildProposal(0.4, true)
+        buildProposal(0.1),
+        buildProposal(0.9),
+        buildProposal(null),
+        buildProposal(0.4)
       ]
 
       proposalQuery = new ProposalQuery(proposals)
     })
 
-    it('returns proposals sorted by favorite and quality', () => {
-      const sortedProposals = proposalQuery.sortByFavoriteAndQuality().proposals
+    it('returns proposals sorted by quality', () => {
+      const sortedProposals = proposalQuery.sortByQuality().proposals
 
-      expect(sortedProposals.map(proposal => proposal.quality)).toEqual([0.4, 0.9, 0.1, null])
+      expect(sortedProposals.map(proposal => proposal.quality)).toEqual([0.9, 0.4, 0.1, null])
     })
 
     it('does not modify original list', () => {
-      proposalQuery.sortByFavoriteAndQuality()
+      proposalQuery.sortByQuality()
       expect(proposals[0].quality).toEqual(0.1)
     })
   })
@@ -150,7 +189,8 @@ describe('ProposalQuery', () => {
       const result = proposalQuery
         .filterByText('Lithuania')
         .filterByServiceType(ServiceType.Wireguard)
-        .sortByFavoriteAndName()
+        .sortByFavorite()
+        .sortByCountryName()
         .proposals
 
       expect(result).toHaveLength(1)
