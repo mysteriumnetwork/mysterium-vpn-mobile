@@ -18,8 +18,9 @@
 import { observer } from 'mobx-react/native'
 import { Body, Button as NativeButton, Container, Header, Icon, Input, NativeBase, Right, Text } from 'native-base'
 import React, { ReactElement, ReactNode } from 'react'
-import { Button, FlatList, Picker, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, Picker, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
+import { STYLES } from '../../../styles'
 import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
 import { ProposalsListStore } from '../../stores/proposals-list-store'
@@ -100,13 +101,16 @@ class ProposalList extends React.Component<ListProps> {
     const label = (serviceType || this.SERVICE_TYPE_ALL_LABEL) + ` (${count})`
     const active = serviceType === this.store.serviceTypeFilter
 
+    const buttonStyle = active ? [styles.buttonStyle, styles.buttonStyleActive] : [styles.buttonStyle]
+    const buttonTextStyle = active ? [styles.buttonTextStyle, styles.buttonTextStyleActive] : [styles.buttonTextStyle]
     return (
-      <Button
+      <TouchableOpacity
         key={label}
-        color={active ? colors.primary : colors.secondary}
         onPress={() => this.onFilterOptionPressed(serviceType)}
-        title={label}
-      />
+        style={buttonStyle}
+      >
+        <Text style={buttonTextStyle}>{label.toUpperCase()}</Text>
+      </TouchableOpacity>
     )
   }
 
@@ -209,12 +213,16 @@ const styles: any = StyleSheet.create({
     flex: 1
   },
   sortingPicker: {
-    flex: 1
+    flex: 1,
+    height: '100%'
   },
   toolbar: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    borderBottomColor: colors.primary,
+    borderBottomWidth: 1,
+    height: 35
   },
   serviceFilterButtonActive: {
     color: 'red'
@@ -255,6 +263,25 @@ const styles: any = StyleSheet.create({
   favoritesIcon: {
     color: colors.secondary,
     fontSize: 26
+  },
+  buttonStyle: {
+    borderColor: STYLES.COLOR_MAIN,
+    padding: 3,
+    borderWidth: 1,
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+    height: '100%',
+    justifyContent: 'center'
+  },
+  buttonStyleActive: {
+    backgroundColor: STYLES.COLOR_MAIN
+  },
+  buttonTextStyle: {
+    color: STYLES.COLOR_MAIN,
+    fontSize: 13
+  },
+  buttonTextStyleActive: {
+    color: STYLES.COLOR_BACKGROUND
   }
 })
 
