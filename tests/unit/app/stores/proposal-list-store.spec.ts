@@ -18,16 +18,16 @@
 import { autorun } from 'mobx'
 import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import { ServiceType } from '../../../../src/app/models/service-type'
-import { ProposalsListStore } from '../../../../src/app/stores/proposals-list-store'
+import { ProposalListStore } from '../../../../src/app/stores/proposal-list-store'
 import { proposalListItemData } from '../../fixtures/proposal-list-item-data'
 
-describe('ProposalsListStore', () => {
+describe('ProposalListStore', () => {
   let allProposals: ProposalItem[]
-  let store: ProposalsListStore
+  let store: ProposalListStore
 
   beforeEach(() => {
     allProposals = proposalListItemData
-    store = new ProposalsListStore(allProposals)
+    store = new ProposalListStore(allProposals)
   })
 
   describe('.currentProposals', () => {

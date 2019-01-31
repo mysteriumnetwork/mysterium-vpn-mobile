@@ -20,7 +20,7 @@ import ProposalQuery from '../domain/proposals/proposal-query'
 import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
 
-class ProposalsListStore {
+class ProposalListStore {
   @observable
   private _textFilter: string = ''
   @observable
@@ -70,4 +70,4 @@ class ProposalsListStore {
   }
 }
 
-export { ProposalsListStore }
+export { ProposalListStore }

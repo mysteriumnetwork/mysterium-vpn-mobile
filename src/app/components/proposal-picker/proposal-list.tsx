@@ -23,7 +23,7 @@ import colors from '../../../app/styles/colors'
 import { STYLES } from '../../../styles'
 import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
-import { ProposalsListStore } from '../../stores/proposals-list-store'
+import { ProposalListStore } from '../../stores/proposal-list-store'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { QualityIndicator } from './quality-indicator'
@@ -38,7 +38,7 @@ type ListProps = {
 
 @observer
 class ProposalList extends React.Component<ListProps> {
-  private store: ProposalsListStore = new ProposalsListStore(this.props.proposals)
+  private store: ProposalListStore = new ProposalListStore(this.props.proposals)
 
   private readonly SERVICE_TYPE_ALL_LABEL = 'all'
   private readonly SORTING_VALUE = 'country'
