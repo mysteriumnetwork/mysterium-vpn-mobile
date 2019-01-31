@@ -69,7 +69,7 @@ describe('ProposalQuery', () => {
   })
 
   describe('.sortByFavoriteAndName', () => {
-    function buildProposal (countryName: string, isFavorite: boolean) {
+    function buildProposal (countryName: string | null, isFavorite: boolean) {
       return {
         id: '1',
         providerID: '',
@@ -84,6 +84,7 @@ describe('ProposalQuery', () => {
     beforeEach(() => {
       proposals = [
         buildProposal('United Kingdom', false),
+        buildProposal(null, false),
         buildProposal('Lithuania', true),
         buildProposal('Albania', false)
       ]
@@ -97,13 +98,50 @@ describe('ProposalQuery', () => {
       expect(sortedProposals.map(proposal => proposal.countryName)).toEqual([
         'Lithuania',
         'Albania',
-        'United Kingdom'
+        'United Kingdom',
+        null
       ])
     })
 
     it('does not modify original list', () => {
       proposalQuery.sortByFavoriteAndName()
       expect(proposals[0].countryName).toEqual('United Kingdom')
+    })
+  })
+
+  describe('.sortByFavoriteAndQuality', () => {
+    function buildProposal (quality: number | null, isFavorite: boolean) {
+      return {
+        id: '1',
+        providerID: '',
+        serviceType: ServiceType.Wireguard,
+        countryCode: null,
+        countryName: null,
+        isFavorite,
+        quality
+      }
+    }
+
+    beforeEach(() => {
+      proposals = [
+        buildProposal(0.1, false),
+        buildProposal(0.9, false),
+        buildProposal(null, false),
+        buildProposal(0.4, true)
+      ]
+
+      proposalQuery = new ProposalQuery(proposals)
+    })
+
+    it('returns proposals sorted by favorite and quality', () => {
+      const sortedProposals = proposalQuery.sortByFavoriteAndQuality().proposals
+
+      expect(sortedProposals.map(proposal => proposal.quality)).toEqual([0.4, 0.9, 0.1, null])
+    })
+
+    it('does not modify original list', () => {
+      proposalQuery.sortByFavoriteAndQuality()
+      expect(proposals[0].quality).toEqual(0.1)
     })
   })
 

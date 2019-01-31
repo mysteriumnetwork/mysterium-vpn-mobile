@@ -43,8 +43,11 @@ class ProposalQuery {
   }
 
   public sortByFavoriteAndName (): ProposalQuery {
-    const sorted = [...this.proposals].sort(compareProposalItemsByFavoriteAndName)
-    return new ProposalQuery(sorted)
+    return this.sort(compareProposalItemsByFavoriteAndName)
+  }
+
+  public sortByFavoriteAndQuality (): ProposalQuery {
+    return this.sort(compareProposalItemsByFavoriteAndQuality)
   }
 
   private matchProposalNameOrId (proposal: ProposalItem, text: string) {
@@ -55,33 +58,86 @@ class ProposalQuery {
 
     return matchesName || matchesId
   }
+
+  private sort (compareFn: (a: ProposalItem, b: ProposalItem) => number): ProposalQuery {
+    const copy = [...this.proposals]
+    copy.sort(compareFn)
+    return new ProposalQuery(copy)
+  }
 }
 
-function compareProposalItemsByFavoriteAndName (one: ProposalItem, other: ProposalItem): number {
-  if (one.isFavorite && !other.isFavorite) {
+/**
+ * Comparison functions return:
+ * -1, meaning `a` comes before `b`
+ * 0, meaning leave a and b unchanged with respect to each other
+ * 1, meaning `a` comes after `b`
+ */
+
+function compareProposalItemsByFavoriteAndQuality (a: ProposalItem, b: ProposalItem): number {
+  const isFavoriteComparison = compareIsFavorite(a.isFavorite, b.isFavorite)
+  if (isFavoriteComparison !== 0) {
+    return isFavoriteComparison
+  }
+
+  return compareQuality(a.quality, b.quality)
+}
+
+function compareProposalItemsByFavoriteAndName (a: ProposalItem, b: ProposalItem): number {
+  const isFavoriteComparison = compareIsFavorite(a.isFavorite, b.isFavorite)
+  if (isFavoriteComparison !== 0) {
+    return isFavoriteComparison
+  }
+
+  return compareNames(a.countryName, b.countryName)
+}
+
+function compareIsFavorite (a: boolean, b: boolean): number {
+  if (a && !b) {
     return -1
-  } else if (!one.isFavorite && other.isFavorite) {
+  }
+
+  if (!a && b) {
     return 1
   }
 
-  return compareNames(one.countryName, other.countryName)
+  return 0
 }
 
-function compareNames (one: string | null, other: string | null): number {
-  if (one === null && other === null) {
+function compareNames (a: string | null, b: string | null): number {
+  if (a === null && b === null) {
     return 0
   }
-  if (one === null) {
+  if (a === null) {
     return 1
   }
-  if (other === null) {
+  if (b === null) {
     return -1
   }
 
-  if (one > other) {
+  if (a > b) {
     return 1
-  } else if (one < other) {
+  } else if (a < b) {
     return -1
+  }
+  return 0
+}
+
+function compareQuality (a: number | null, b: number | null): number {
+  if (a === null && b === null) {
+    return 0
+  }
+  if (a === null) {
+    return 1
+  }
+  if (b === null) {
+    return -1
+  }
+
+  if (a > b) {
+    return -1
+  }
+  if (a < b) {
+    return 1
   }
   return 0
 }
