@@ -11,6 +11,7 @@ const translations = {
   UNKNOWN: 'Unknown',
   UNSELECTED_PROPOSAL: 'Please select a proposal',
   PROPOSAL_SEARCH: 'Search proposals',
+  EMPTY_PROPOSAL_LIST: 'No proposals found',
   FEEDBACK_SUBMIT: 'Thanks! Your feedback will be submitted the next time you start the app.',
   DISCONNECTED_NOTIFICATION: {
     TITLE: 'Connection lost',

@@ -128,6 +128,7 @@ ShallowWrapper {
             />
           </Component>
           <FlatList
+            ListEmptyComponent={[Function]}
             data={Array []}
             disableVirtualization={false}
             horizontal={false}
@@ -420,6 +421,7 @@ ShallowWrapper {
               />
             </Component>,
             <FlatList
+              ListEmptyComponent={[Function]}
               data={Array []}
               disableVirtualization={false}
               horizontal={false}
@@ -563,6 +565,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "ListEmptyComponent": [Function],
               "data": Array [],
               "disableVirtualization": false,
               "horizontal": false,
@@ -698,6 +701,7 @@ ShallowWrapper {
               />
             </Component>
             <FlatList
+              ListEmptyComponent={[Function]}
               data={Array []}
               disableVirtualization={false}
               horizontal={false}
@@ -990,6 +994,7 @@ ShallowWrapper {
                 />
               </Component>,
               <FlatList
+                ListEmptyComponent={[Function]}
                 data={Array []}
                 disableVirtualization={false}
                 horizontal={false}
@@ -1133,6 +1138,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
+                "ListEmptyComponent": [Function],
                 "data": Array [],
                 "disableVirtualization": false,
                 "horizontal": false,

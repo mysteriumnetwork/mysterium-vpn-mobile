@@ -81,6 +81,7 @@ class ProposalList extends React.Component<ListProps> {
             keyExtractor={(item) => item.id}
             data={filteredProposals}
             renderItem={({ item }) => this.renderProposal(item)}
+            ListEmptyComponent={() => this.renderEmptyListComponent()}
           />
         </View>
       </Container>
@@ -140,6 +141,10 @@ class ProposalList extends React.Component<ListProps> {
           />
       </TouchableOpacity>
     )
+  }
+
+  private renderEmptyListComponent (): ReactElement<any> {
+    return (<Text>{translations.EMPTY_PROPOSAL_LIST}</Text>)
   }
 
   private listItemStyle (proposal: ProposalItem) {
