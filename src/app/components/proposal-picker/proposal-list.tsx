@@ -49,7 +49,7 @@ class ProposalList extends React.Component<ListProps> {
   }
 
   public render (): ReactNode {
-    const filteredProposals = this.store.filteredProposals
+    const proposals = this.store.currentProposals
 
     return (
       <Container>
@@ -80,7 +80,7 @@ class ProposalList extends React.Component<ListProps> {
           </View>
           <FlatList
             keyExtractor={(item) => item.id}
-            data={filteredProposals}
+            data={proposals}
             renderItem={({ item }) => this.renderProposal(item)}
             ListEmptyComponent={() => this.renderEmptyListComponent()}
           />

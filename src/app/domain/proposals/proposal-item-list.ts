@@ -2,7 +2,6 @@ import Proposal from '../../models/proposal'
 import { ProposalItem } from '../../models/proposal-item'
 import { EventNotifier } from '../observables/event-notifier'
 import { QualityCalculator } from '../quality-calculator'
-import ProposalQuery from './proposal-query'
 
 interface ProposalsStore {
   proposals: Proposal[]
@@ -14,7 +13,7 @@ interface FavoritesStorage {
   onChange (listener: Callback): void
 }
 
-class ProposalList {
+class ProposalItemList {
   protected proposalsStore: ProposalsStore
   protected favorites: FavoritesStorage
   private readonly qualityCalculator: QualityCalculator = new QualityCalculator()
@@ -28,10 +27,8 @@ class ProposalList {
   }
 
   public get proposals (): ProposalItem[] {
-    const proposals = this.proposalsStore.proposals
+    return this.proposalsStore.proposals
       .map((proposal: Proposal) => this.proposalToProposalItem(proposal))
-
-    return this.sortProposalsByName(proposals)
   }
 
   public onChange (callback: Callback) {
@@ -55,12 +52,8 @@ class ProposalList {
       quality: this.qualityCalculator.calculate(proposal.metrics)
     }
   }
-
-  private sortProposalsByName (proposals: ProposalItem[]): ProposalItem[] {
-    return new ProposalQuery(proposals).sortByFavoriteAndName().proposals
-  }
 }
 
 type Callback = () => void
 
-export default ProposalList
+export default ProposalItemList

@@ -43,7 +43,7 @@ import Connection from './domain/connection'
 import { FavoritesStorage } from './domain/favorites-storage'
 import { IdentityManager } from './domain/identity-manager'
 import Favorites from './domain/proposals/favorites'
-import ProposalList from './domain/proposals/proposal-list'
+import ProposalItemList from './domain/proposals/proposal-item-list'
 import Terms from './domain/terms'
 import MessageDisplayDelegate from './messages/message-display-delegate'
 import ConnectionStore from './stores/connection-store'
@@ -81,11 +81,11 @@ class Container {
   public readonly bugReporter: BugReporter
   public readonly feedbackReporter: FeedbackReporter
 
-  public readonly proposalList = new ProposalList(this.proposalsStore, this.favoritesStorage)
+  public readonly proposalItemList = new ProposalItemList(this.proposalsStore, this.favoritesStorage)
   public readonly favorites = new Favorites(this.favoritesStorage)
   public readonly appLoader =
     new AppLoader(this.tequilAPIDriver, this.identityManager, this.connection, this.proposalsStore, this.bugReporter)
-  public readonly vpnScreenStore = new VpnScreenStore(this.favoritesStorage, this.proposalList, this.connection)
+  public readonly vpnScreenStore = new VpnScreenStore(this.favoritesStorage, this.proposalItemList, this.connection)
 
   constructor () {
     const reporter = this.buildBugReporter()

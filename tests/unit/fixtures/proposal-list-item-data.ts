@@ -19,18 +19,20 @@ import Proposal from '../../../src/app/models/proposal'
 import { ProposalItem } from '../../../src/app/models/proposal-item'
 import { proposalData } from './proposal-data'
 
-const convertProposalToIProposal = (proposal: Proposal): ProposalItem => {
+const convertProposalToIProposal = (proposal: Proposal, favoriteIds: string[] = []): ProposalItem => {
   return {
     id: proposal.id,
     providerID: proposal.providerID,
     serviceType: proposal.serviceType,
     countryCode: proposal.countryCode,
     countryName: proposal.countryName,
-    isFavorite: true,
+    isFavorite: favoriteIds.indexOf(proposal.id) !== -1,
     quality: null
   }
 }
 
-const proposalListItemData: ProposalItem[] = proposalData.map(convertProposalToIProposal)
+const favoriteProposalIds = ['0x2-openvpn', '0x6-openvpn']
+const proposalListItemData: ProposalItem[] =
+  proposalData.map(proposal => convertProposalToIProposal(proposal, favoriteProposalIds))
 
 export { proposalListItemData }

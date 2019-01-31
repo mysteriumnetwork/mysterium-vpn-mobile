@@ -28,12 +28,12 @@ class ProposalsListStore {
 
   private readonly proposalQuery: ProposalQuery
 
-  constructor (private readonly proposals: ProposalItem[]) {
-    this.proposalQuery = new ProposalQuery(this.proposals)
+  constructor (private readonly allProposals: ProposalItem[]) {
+    this.proposalQuery = new ProposalQuery(this.allProposals)
   }
 
   @computed
-  public get filteredProposals (): ProposalItem[] {
+  public get currentProposals (): ProposalItem[] {
     return this.proposalsByTextAndServiceType(this._serviceTypeFilter).proposals
   }
 
@@ -61,7 +61,7 @@ class ProposalsListStore {
   }
 
   private proposalsByTextAndServiceType (serviceType: ServiceType | null) {
-    return this.proposalsByText.filterByServiceType(serviceType)
+    return this.proposalsByText.filterByServiceType(serviceType).sortByFavoriteAndName()
   }
 
   @computed

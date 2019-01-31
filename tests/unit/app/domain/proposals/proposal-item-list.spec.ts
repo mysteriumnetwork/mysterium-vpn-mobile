@@ -1,15 +1,16 @@
 import { ProposalsAdapter } from '../../../../../src/app/adapters/proposals/proposals-adapter'
 import { FavoritesStorage } from '../../../../../src/app/domain/favorites-storage'
-import ProposalList from '../../../../../src/app/domain/proposals/proposal-list'
+import ProposalItemList from '../../../../../src/app/domain/proposals/proposal-item-list'
+import { ProposalItem } from '../../../../../src/app/models/proposal-item'
 import ProposalsStore from '../../../../../src/app/stores/proposals-store'
 import { proposalData } from '../../../fixtures/proposal-data'
 import { MockProposalsAdapter } from '../../../mocks/mock-proposals-adapter'
 import MockStorage from '../../../mocks/mock-storage'
 
-describe('ProposalList', () => {
+describe('ProposalItemList', () => {
   let favoritesStorage: FavoritesStorage
   let proposalsStore: ProposalsStore
-  let list: ProposalList
+  let list: ProposalItemList
 
   beforeEach(async () => {
     favoritesStorage = new FavoritesStorage(new MockStorage())
@@ -20,7 +21,7 @@ describe('ProposalList', () => {
     proposalsStore = new ProposalsStore(proposalsAdapter)
     proposalsStore.startUpdating()
 
-    list = new ProposalList(proposalsStore, favoritesStorage)
+    list = new ProposalItemList(proposalsStore, favoritesStorage)
   })
 
   afterEach(() => {
@@ -28,28 +29,27 @@ describe('ProposalList', () => {
   })
 
   describe('.proposals', () => {
-    it('returns sorted proposals by country name and favorite flag', () => {
-      const expected = [
-        'Italy',
-        'United States',
-        'Albania',
-        'Italy',
-        'Lithuania',
-        'Lithuania',
-        'United Kingdom',
-        'Zimbabwe',
-        null
-      ]
+    it('returns proposal items', () => {
+      const items: ProposalItem[] = list.proposals
+      expect(items).toHaveLength(proposalData.length)
+      list.proposals.forEach((item, index) => {
+        expect(item.id).toEqual(proposalData[index].id)
+      })
+    })
 
-      const countryNames = list.proposals.map((i) => i.countryName)
-      expect(countryNames).toEqual(expected)
+    it('marks favorite proposals', () => {
+      const items: ProposalItem[] = list.proposals
+      expect(items.filter(proposal => proposal.isFavorite).map(proposal => proposal.id)).toEqual([
+        '0x2-openvpn',
+        '0x6-openvpn'
+      ])
     })
 
     it('returns proposals quality', () => {
       const items = list.proposals
-      expect(items[0].quality).toEqual(0.5)
-      expect(items[1].quality).toEqual(0.25)
-      expect(items[2].quality).toBeNull()
+      expect(items[0].quality).toBeNull()
+      expect(items[1].quality).toBeNull()
+      expect(items[2].quality).toEqual(0.25)
     })
   })
 

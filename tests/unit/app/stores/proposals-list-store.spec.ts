@@ -30,16 +30,28 @@ describe('ProposalsListStore', () => {
     store = new ProposalsListStore(allProposals)
   })
 
-  describe('.filteredProposals', () => {
-    it('returns all proposals initially', () => {
-      const filtered = store.filteredProposals
-      expect(filtered).toEqual(allProposals)
+  describe('.currentProposals', () => {
+    it('returns sorted proposals by country name and favorite flag', () => {
+      const expected = [
+        'Italy',
+        'United States',
+        'Albania',
+        'Italy',
+        'Lithuania',
+        'Lithuania',
+        'United Kingdom',
+        'Zimbabwe',
+        null
+      ]
+
+      const countryNames = store.currentProposals.map((i) => i.countryName)
+      expect(countryNames).toEqual(expected)
     })
 
     it('returns filtered proposals after filtering', () => {
       let proposals = null
       autorun(() => {
-        proposals = store.filteredProposals
+        proposals = store.currentProposals
       })
 
       store.filterByText('Lithuania')
