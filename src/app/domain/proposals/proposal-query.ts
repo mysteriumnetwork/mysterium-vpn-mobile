@@ -43,11 +43,11 @@ class ProposalQuery {
   }
 
   public sortByFavoriteAndName (): ProposalQuery {
-    return this.sort(compareProposalItemsByFavoriteAndName)
+    return this.sortByCountryName().sortByFavorite()
   }
 
   public sortByFavoriteAndQuality (): ProposalQuery {
-    return this.sort(compareProposalItemsByFavoriteAndQuality)
+    return this.sortByQuality().sortByFavorite()
   }
 
   private matchProposalNameOrId (proposal: ProposalItem, text: string) {
@@ -57,6 +57,18 @@ class ProposalQuery {
     const matchesId = proposal.providerID.toLowerCase().includes(text.toLowerCase())
 
     return matchesName || matchesId
+  }
+
+  private sortByCountryName () {
+    return this.sort(compareProposalItemsByCountryName)
+  }
+
+  private sortByQuality () {
+    return this.sort(compareProposalItemsByQuality)
+  }
+
+  private sortByFavorite () {
+    return this.sort(compareProposalItemsByFavorite)
   }
 
   private sort (compareFn: (a: ProposalItem, b: ProposalItem) => number): ProposalQuery {
@@ -73,72 +85,60 @@ class ProposalQuery {
  * 1, meaning `a` comes after `b`
  */
 
-function compareProposalItemsByFavoriteAndQuality (a: ProposalItem, b: ProposalItem): number {
-  const isFavoriteComparison = compareIsFavorite(a.isFavorite, b.isFavorite)
-  if (isFavoriteComparison !== 0) {
-    return isFavoriteComparison
-  }
+function compareProposalItemsByCountryName (a: ProposalItem, b: ProposalItem): number {
+  const aName = a.countryName
+  const bName = b.countryName
 
-  return compareQuality(a.quality, b.quality)
-}
-
-function compareProposalItemsByFavoriteAndName (a: ProposalItem, b: ProposalItem): number {
-  const isFavoriteComparison = compareIsFavorite(a.isFavorite, b.isFavorite)
-  if (isFavoriteComparison !== 0) {
-    return isFavoriteComparison
-  }
-
-  return compareNames(a.countryName, b.countryName)
-}
-
-function compareIsFavorite (a: boolean, b: boolean): number {
-  if (a && !b) {
-    return -1
-  }
-
-  if (!a && b) {
-    return 1
-  }
-
-  return 0
-}
-
-function compareNames (a: string | null, b: string | null): number {
-  if (a === null && b === null) {
+  if (aName === null && bName === null) {
     return 0
   }
-  if (a === null) {
+  if (aName === null) {
     return 1
   }
-  if (b === null) {
+  if (bName === null) {
     return -1
   }
 
-  if (a > b) {
+  if (aName > bName) {
     return 1
-  } else if (a < b) {
+  } else if (aName < bName) {
     return -1
   }
   return 0
 }
 
-function compareQuality (a: number | null, b: number | null): number {
-  if (a === null && b === null) {
+function compareProposalItemsByQuality (a: ProposalItem, b: ProposalItem): number {
+  const aQuality = a.quality
+  const bQuality = b.quality
+
+  if (aQuality === null && bQuality === null) {
     return 0
   }
-  if (a === null) {
+  if (aQuality === null) {
     return 1
   }
-  if (b === null) {
+  if (bQuality === null) {
     return -1
   }
 
-  if (a > b) {
+  if (aQuality > bQuality) {
     return -1
   }
-  if (a < b) {
+  if (aQuality < bQuality) {
     return 1
   }
+  return 0
+}
+
+function compareProposalItemsByFavorite (a: ProposalItem, b: ProposalItem): number {
+  if (a.isFavorite && !b.isFavorite) {
+    return -1
+  }
+
+  if (!a.isFavorite && b.isFavorite) {
+    return 1
+  }
+
   return 0
 }
 
