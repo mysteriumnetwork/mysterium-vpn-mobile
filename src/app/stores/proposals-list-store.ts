@@ -16,7 +16,7 @@
  */
 
 import { action, computed, observable } from 'mobx'
-import ProposalFilter from '../domain/proposals/proposal-filter'
+import ProposalQuery from '../domain/proposals/proposal-query'
 import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
 
@@ -26,10 +26,10 @@ class ProposalsListStore {
   @observable
   private _serviceTypeFilter: ServiceType | null = null
 
-  private readonly proposalFilter: ProposalFilter
+  private readonly proposalQuery: ProposalQuery
 
   constructor (private readonly proposals: ProposalItem[]) {
-    this.proposalFilter = new ProposalFilter(this.proposals)
+    this.proposalQuery = new ProposalQuery(this.proposals)
   }
 
   @computed
@@ -66,7 +66,7 @@ class ProposalsListStore {
 
   @computed
   private get proposalsByText () {
-    return this.proposalFilter.filterByText(this._textFilter)
+    return this.proposalQuery.filterByText(this._textFilter)
   }
 }
 
