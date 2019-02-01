@@ -54,10 +54,10 @@ describe('ProposalListStore', () => {
         proposals = store.currentProposals
       })
 
-      store.filterByText('Lithuania')
+      store.textFilter = 'Lithuania'
       expect(proposals).toHaveLength(2)
 
-      store.filterByServiceType(ServiceType.Wireguard)
+      store.serviceTypeFilter = ServiceType.Wireguard
       expect(proposals).toHaveLength(1)
     })
 
@@ -84,7 +84,7 @@ describe('ProposalListStore', () => {
       })
 
       it('returns sorted proposals by quality and favorite flag', () => {
-        store.sortBy(ProposalsSorting.ByQuality)
+        store.sorting = ProposalsSorting.ByQuality
 
         const proposals = store.currentProposals
         expect(proposals.map(proposal => proposal.quality)).toEqual([0.4, 0.9, 0.1, null])
@@ -96,7 +96,7 @@ describe('ProposalListStore', () => {
           receivedProposals = store.currentProposals
         )
 
-        store.sortBy(ProposalsSorting.ByQuality)
+        store.sorting = ProposalsSorting.ByQuality
 
         expect(receivedProposals.map(proposal => proposal.quality)).toEqual([0.4, 0.9, 0.1, null])
 
@@ -111,25 +111,17 @@ describe('ProposalListStore', () => {
     })
   })
 
-  describe('.serviceTypeFilter', () => {
-    it('returns set filter', () => {
-      expect(store.serviceTypeFilter).toBeNull()
-      store.filterByServiceType(ServiceType.Wireguard)
-      expect(store.serviceTypeFilter).toEqual(ServiceType.Wireguard)
-    })
-  })
-
   describe('.proposalsCountByServiceType', () => {
     it('returns number of all proposals filtered by text', () => {
-      store.filterByText('Lithuania')
-      store.filterByServiceType(ServiceType.Wireguard)
+      store.textFilter = 'Lithuania'
+      store.serviceTypeFilter = ServiceType.Wireguard
 
       expect(store.proposalsCountByServiceType()).toEqual(2)
     })
 
     it('returns number of proposals filtered by text and service type', () => {
-      store.filterByText('Lithuania')
-      store.filterByServiceType(ServiceType.Wireguard)
+      store.textFilter = 'Lithuania'
+      store.serviceTypeFilter = ServiceType.Wireguard
 
       expect(store.proposalsCountByServiceType(ServiceType.Openvpn)).toEqual(1)
     })

@@ -23,7 +23,7 @@ import colors from '../../../app/styles/colors'
 import { STYLES } from '../../../styles'
 import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
-import { ProposalListStore } from '../../stores/proposal-list-store'
+import { ProposalListStore, ProposalsSorting } from '../../stores/proposal-list-store'
 import translations from '../../translations'
 import CountryFlag from './country-flag'
 import { QualityIndicator } from './quality-indicator'
@@ -41,8 +41,11 @@ class ProposalList extends React.Component<ListProps> {
   private store: ProposalListStore = new ProposalListStore(this.props.proposals)
 
   private readonly SERVICE_TYPE_ALL_LABEL = 'all'
-  private readonly SORTING_VALUE = 'country'
-  private readonly SORTING_LABEL = 'Country'
+
+  private readonly SORTING_OPTIONS: Array<{sorting: ProposalsSorting, label: string}> = [
+    { sorting: ProposalsSorting.ByCountryName, label: 'By Country' },
+    { sorting: ProposalsSorting.ByQuality, label: 'By Quality' }
+  ]
 
   constructor (props: ListProps) {
     super(props)
@@ -73,8 +76,14 @@ class ProposalList extends React.Component<ListProps> {
         </Header>
         <View style={styles.content}>
           <View style={styles.toolbar}>
-            <Picker selectedValue={this.SORTING_VALUE} style={styles.sortingPicker}>
-              <Picker.Item label={this.SORTING_LABEL} value={this.SORTING_VALUE}/>
+            <Picker
+              selectedValue={this.store.sorting}
+              style={styles.sortingPicker}
+              onValueChange={value => this.store.sorting = value}
+            >
+              {this.SORTING_OPTIONS.map(option => {
+                return (<Picker.Item value={option.sorting} label={option.label} key={option.sorting}/>)
+              })}
             </Picker>
             {this.renderServiceFilterOptions()}
           </View>
@@ -181,11 +190,11 @@ class ProposalList extends React.Component<ListProps> {
   }
 
   private onFilterOptionPressed (serviceType: ServiceType | null) {
-    this.store.filterByServiceType(serviceType)
+    this.store.serviceTypeFilter = serviceType
   }
 
   private onSearchValueChange (text: string) {
-    this.store.filterByText(text)
+    this.store.textFilter = text
   }
 }
 

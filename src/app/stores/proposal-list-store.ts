@@ -15,21 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { action, computed, observable } from 'mobx'
+import { computed, observable } from 'mobx'
 import ProposalQuery from '../domain/proposals/proposal-query'
 import { ProposalItem } from '../models/proposal-item'
 import { ServiceType } from '../models/service-type'
 
 class ProposalListStore {
   @observable
-  private _textFilter: string = ''
+  public textFilter: string = ''
   @observable
-  private _serviceTypeFilter: ServiceType | null = null
+  public serviceTypeFilter: ServiceType | null = null
+  @observable
+  public sorting: ProposalsSorting = ProposalsSorting.ByCountryName
 
   private readonly proposalQuery: ProposalQuery
-
-  @observable
-  private sorting: ProposalsSorting = ProposalsSorting.ByCountryName
 
   constructor (private readonly allProposals: ProposalItem[]) {
     this.proposalQuery = new ProposalQuery(this.allProposals)
@@ -37,7 +36,7 @@ class ProposalListStore {
 
   @computed
   public get currentProposals (): ProposalItem[] {
-    return this.proposalsByTextAndServiceType(this._serviceTypeFilter).proposals
+    return this.proposalsByTextAndServiceType(this.serviceTypeFilter).proposals
   }
 
   public proposalsCountByServiceType (serviceType: ServiceType | null = null): number {
@@ -46,26 +45,6 @@ class ProposalListStore {
 
   public get serviceFilterOptions (): Array<ServiceType | null> {
     return [null, ServiceType.Openvpn, ServiceType.Wireguard]
-  }
-
-  @action
-  public filterByText (text: string) {
-    this._textFilter = text
-  }
-
-  @action
-  public filterByServiceType (serviceType: ServiceType | null) {
-    this._serviceTypeFilter = serviceType
-  }
-
-  @computed
-  public get serviceTypeFilter (): ServiceType | null {
-    return this._serviceTypeFilter
-  }
-
-  @action
-  public sortBy (sorting: ProposalsSorting) {
-    this.sorting = sorting
   }
 
   private proposalsByTextAndServiceType (serviceType: ServiceType | null) {
@@ -77,7 +56,7 @@ class ProposalListStore {
 
   @computed
   private get proposalsByText () {
-    return this.proposalQuery.filterByText(this._textFilter)
+    return this.proposalQuery.filterByText(this.textFilter)
   }
 }
 

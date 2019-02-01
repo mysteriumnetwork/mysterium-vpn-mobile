@@ -102,7 +102,8 @@ ShallowWrapper {
           >
             <Picker
               mode="dialog"
-              selectedValue="country"
+              onValueChange={[Function]}
+              selectedValue={0}
               style={
                 Object {
                   "flex": 1,
@@ -111,8 +112,12 @@ ShallowWrapper {
               }
             >
               <PickerItem
-                label="Country"
-                value="country"
+                label="By Country"
+                value={0}
+              />
+              <PickerItem
+                label="By Quality"
+                value={1}
               />
             </Picker>
             <TouchableOpacity
@@ -480,7 +485,8 @@ ShallowWrapper {
             >
               <Picker
                 mode="dialog"
-                selectedValue="country"
+                onValueChange={[Function]}
+                selectedValue={0}
                 style={
                   Object {
                     "flex": 1,
@@ -489,8 +495,12 @@ ShallowWrapper {
                 }
               >
                 <PickerItem
-                  label="Country"
-                  value="country"
+                  label="By Country"
+                  value={0}
+                />
+                <PickerItem
+                  label="By Quality"
+                  value={1}
                 />
               </Picker>
               <TouchableOpacity
@@ -620,7 +630,8 @@ ShallowWrapper {
               "children": Array [
                 <Picker
                   mode="dialog"
-                  selectedValue="country"
+                  onValueChange={[Function]}
+                  selectedValue={0}
                   style={
                     Object {
                       "flex": 1,
@@ -629,8 +640,12 @@ ShallowWrapper {
                   }
                 >
                   <PickerItem
-                    label="Country"
-                    value="country"
+                    label="By Country"
+                    value={0}
+                  />
+                  <PickerItem
+                    label="By Quality"
+                    value={1}
                   />
                 </Picker>,
                 Array [
@@ -748,30 +763,51 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <PickerItem
-                    label="Country"
-                    value="country"
-                  />,
+                  "children": Array [
+                    <PickerItem
+                      label="By Country"
+                      value={0}
+                    />,
+                    <PickerItem
+                      label="By Quality"
+                      value={1}
+                    />,
+                  ],
                   "mode": "dialog",
-                  "selectedValue": "country",
+                  "onValueChange": [Function],
+                  "selectedValue": 0,
                   "style": Object {
                     "flex": 1,
                     "height": "100%",
                   },
                 },
                 "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "label": "Country",
-                    "value": "country",
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "class",
+                    "props": Object {
+                      "label": "By Country",
+                      "value": 0,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "class",
+                    "props": Object {
+                      "label": "By Quality",
+                      "value": 1,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                ],
                 "type": [Function],
               },
               Object {
@@ -1057,7 +1093,8 @@ ShallowWrapper {
             >
               <Picker
                 mode="dialog"
-                selectedValue="country"
+                onValueChange={[Function]}
+                selectedValue={0}
                 style={
                   Object {
                     "flex": 1,
@@ -1066,8 +1103,12 @@ ShallowWrapper {
                 }
               >
                 <PickerItem
-                  label="Country"
-                  value="country"
+                  label="By Country"
+                  value={0}
+                />
+                <PickerItem
+                  label="By Quality"
+                  value={1}
                 />
               </Picker>
               <TouchableOpacity
@@ -1435,7 +1476,8 @@ ShallowWrapper {
               >
                 <Picker
                   mode="dialog"
-                  selectedValue="country"
+                  onValueChange={[Function]}
+                  selectedValue={0}
                   style={
                     Object {
                       "flex": 1,
@@ -1444,8 +1486,12 @@ ShallowWrapper {
                   }
                 >
                   <PickerItem
-                    label="Country"
-                    value="country"
+                    label="By Country"
+                    value={0}
+                  />
+                  <PickerItem
+                    label="By Quality"
+                    value={1}
                   />
                 </Picker>
                 <TouchableOpacity
@@ -1575,7 +1621,8 @@ ShallowWrapper {
                 "children": Array [
                   <Picker
                     mode="dialog"
-                    selectedValue="country"
+                    onValueChange={[Function]}
+                    selectedValue={0}
                     style={
                       Object {
                         "flex": 1,
@@ -1584,8 +1631,12 @@ ShallowWrapper {
                     }
                   >
                     <PickerItem
-                      label="Country"
-                      value="country"
+                      label="By Country"
+                      value={0}
+                    />
+                    <PickerItem
+                      label="By Quality"
+                      value={1}
                     />
                   </Picker>,
                   Array [
@@ -1703,30 +1754,51 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": <PickerItem
-                      label="Country"
-                      value="country"
-                    />,
+                    "children": Array [
+                      <PickerItem
+                        label="By Country"
+                        value={0}
+                      />,
+                      <PickerItem
+                        label="By Quality"
+                        value={1}
+                      />,
+                    ],
                     "mode": "dialog",
-                    "selectedValue": "country",
+                    "onValueChange": [Function],
+                    "selectedValue": 0,
                     "style": Object {
                       "flex": 1,
                       "height": "100%",
                     },
                   },
                   "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "label": "Country",
-                      "value": "country",
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "class",
+                      "props": Object {
+                        "label": "By Country",
+                        "value": 0,
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
                     },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "class",
+                      "props": Object {
+                        "label": "By Quality",
+                        "value": 1,
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                  ],
                   "type": [Function],
                 },
                 Object {
