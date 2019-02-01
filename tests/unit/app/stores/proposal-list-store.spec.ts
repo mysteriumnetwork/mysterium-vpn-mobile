@@ -31,34 +31,43 @@ describe('ProposalListStore', () => {
   })
 
   describe('.currentProposals', () => {
-    it('returns sorted proposals by country name and favorite flag', () => {
-      const expected = [
-        'Italy',
-        'United States',
-        'Albania',
-        'Italy',
-        'Lithuania',
-        'Lithuania',
-        'United Kingdom',
-        'Zimbabwe',
-        null
-      ]
+    describe('when using default sorting by country name', () => {
+      beforeEach(() => {
+        function buildProposal (countryName: string | null, quality: number | null, isFavorite: boolean) {
+          return {
+            id: '1',
+            providerID: '',
+            serviceType: ServiceType.Wireguard,
+            countryCode: null,
+            countryName,
+            isFavorite,
+            quality
+          }
+        }
 
-      const countryNames = store.currentProposals.map((i) => i.countryName)
-      expect(countryNames).toEqual(expected)
-    })
-
-    it('returns filtered proposals after filtering', () => {
-      let proposals = null
-      autorun(() => {
-        proposals = store.currentProposals
+        allProposals = [
+          buildProposal('Albania', null, false),
+          buildProposal('Italy', 0.1, false),
+          buildProposal('Italy', 0.2, false),
+          buildProposal('Lithuania', null, true)
+        ]
+        store = new ProposalListStore(allProposals)
       })
 
-      store.textFilter = 'Lithuania'
-      expect(proposals).toHaveLength(2)
+      it('returns sorted proposals by country name, favorites first', () => {
+        const countryNames = store.currentProposals.map((i) => i.countryName)
+        expect(countryNames).toEqual(['Lithuania', 'Albania', 'Italy', 'Italy'])
+      })
 
-      store.serviceTypeFilter = ServiceType.Wireguard
-      expect(proposals).toHaveLength(1)
+      it('returns higher-quality proposals first for same country', () => {
+        const italyProposals = store.currentProposals.slice(2, 4)
+        expect(italyProposals).toHaveLength(2)
+        italyProposals.forEach(proposal => {
+          expect(proposal.countryName).toEqual('Italy')
+        })
+        expect(italyProposals[0].quality).toEqual(0.2)
+        expect(italyProposals[1].quality).toEqual(0.1)
+      })
     })
 
     describe('when sorting by quality', () => {
@@ -103,6 +112,20 @@ describe('ProposalListStore', () => {
         dispose()
       })
     })
+
+    it('returns filtered proposals after filtering', () => {
+      let proposals = null
+      autorun(() => {
+        proposals = store.currentProposals
+      })
+
+      store.textFilter = 'Lithuania'
+      expect(proposals).toHaveLength(2)
+
+      store.serviceTypeFilter = ServiceType.Wireguard
+      expect(proposals).toHaveLength(1)
+    })
+
   })
 
   describe('.serviceFilterOptions', () => {

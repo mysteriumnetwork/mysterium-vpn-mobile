@@ -50,7 +50,7 @@ class ProposalListStore {
   private proposalsByTextAndServiceType (serviceType: ServiceType | null) {
     const filtered = this.proposalsByText.filterByServiceType(serviceType)
 
-    const partiallySorted = this.sorting ? filtered.sortByQuality() : filtered.sortByCountryName()
+    const partiallySorted = this.sorting ? filtered.sortByQuality() : filtered.sortByQuality().sortByCountryName()
     return partiallySorted.sortByFavorite()
   }
 
