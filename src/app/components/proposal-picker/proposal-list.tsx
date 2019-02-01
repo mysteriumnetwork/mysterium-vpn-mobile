@@ -43,8 +43,8 @@ class ProposalList extends React.Component<ListProps> {
   private readonly SERVICE_TYPE_ALL_LABEL = 'all'
 
   private readonly SORTING_OPTIONS: Array<{sorting: ProposalsSorting, label: string}> = [
-    { sorting: ProposalsSorting.ByCountryName, label: 'By Country' },
-    { sorting: ProposalsSorting.ByQuality, label: 'By Quality' }
+    { sorting: ProposalsSorting.ByCountryName, label: 'Sort: country' },
+    { sorting: ProposalsSorting.ByQuality, label: 'Sort: quality' }
   ]
 
   constructor (props: ListProps) {
@@ -77,6 +77,7 @@ class ProposalList extends React.Component<ListProps> {
         <View style={styles.content}>
           <View style={styles.toolbar}>
             <Picker
+              mode={'dropdown'}
               selectedValue={this.store.sorting}
               style={styles.sortingPicker}
               onValueChange={value => this.store.sorting = value}
@@ -287,7 +288,7 @@ const styles: any = StyleSheet.create({
   },
   buttonTextStyle: {
     color: STYLES.COLOR_MAIN,
-    fontSize: 13
+    fontSize: 12
   },
   buttonTextStyleActive: {
     color: STYLES.COLOR_BACKGROUND
