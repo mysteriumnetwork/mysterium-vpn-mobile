@@ -81,41 +81,158 @@ ShallowWrapper {
             </Styled(Button)>
           </Styled(Right)>
         </Styled(Header)>,
-        <Styled(Segment)>
-          <Styled(Button)
-            active={true}
-            first={true}
-            last={false}
-            onPress={[Function]}
+        <Component
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <Component
+            style={
+              Object {
+                "alignItems": "center",
+                "borderBottomColor": "#622461",
+                "borderBottomWidth": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "height": 35,
+              }
+            }
           >
-            <Styled(Text)>
-              all (0)
-            </Styled(Text)>
-          </Styled(Button)>
-          <Styled(Button)
-            active={false}
-            first={false}
-            last={false}
-            onPress={[Function]}
-          >
-            <Styled(Text)>
-              openvpn (0)
-            </Styled(Text)>
-          </Styled(Button)>
-          <Styled(Button)
-            active={false}
-            first={false}
-            last={true}
-            onPress={[Function]}
-          >
-            <Styled(Text)>
-              wireguard (0)
-            </Styled(Text)>
-          </Styled(Button)>
-        </Styled(Segment)>,
-        <Styled(Content)>
-          <Styled(List) />
-        </Styled(Content)>,
+            <Picker
+              mode="dropdown"
+              onValueChange={[Function]}
+              selectedValue={0}
+              style={
+                Object {
+                  "flex": 1,
+                  "height": "100%",
+                }
+              }
+            >
+              <PickerItem
+                label="Sort: country"
+                value={0}
+              />
+              <PickerItem
+                label="Sort: quality"
+                value={1}
+              />
+            </Picker>
+            <TouchableOpacity
+              activeOpacity={0.2}
+              onPress={[Function]}
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0,
+                    "borderColor": "#622461",
+                    "borderRightWidth": 0,
+                    "borderWidth": 1,
+                    "height": "100%",
+                    "justifyContent": "center",
+                    "padding": 3,
+                  },
+                  Object {
+                    "backgroundColor": "#622461",
+                  },
+                ]
+              }
+            >
+              <Styled(Text)
+                style={
+                  Array [
+                    Object {
+                      "color": "#622461",
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "color": "#fff",
+                    },
+                  ]
+                }
+              >
+                ALL (0)
+              </Styled(Text)>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.2}
+              onPress={[Function]}
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0,
+                    "borderColor": "#622461",
+                    "borderRightWidth": 0,
+                    "borderWidth": 1,
+                    "height": "100%",
+                    "justifyContent": "center",
+                    "padding": 3,
+                  },
+                ]
+              }
+            >
+              <Styled(Text)
+                style={
+                  Array [
+                    Object {
+                      "color": "#622461",
+                      "fontSize": 12,
+                    },
+                  ]
+                }
+              >
+                OPENVPN (0)
+              </Styled(Text)>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.2}
+              onPress={[Function]}
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0,
+                    "borderColor": "#622461",
+                    "borderRightWidth": 0,
+                    "borderWidth": 1,
+                    "height": "100%",
+                    "justifyContent": "center",
+                    "padding": 3,
+                  },
+                ]
+              }
+            >
+              <Styled(Text)
+                style={
+                  Array [
+                    Object {
+                      "color": "#622461",
+                      "fontSize": 12,
+                    },
+                  ]
+                }
+              >
+                WIREGUARD (0)
+              </Styled(Text)>
+            </TouchableOpacity>
+          </Component>
+          <FlatList
+            ListEmptyComponent={[Function]}
+            data={Array []}
+            disableVirtualization={false}
+            horizontal={false}
+            initialNumToRender={10}
+            keyExtractor={[Function]}
+            maxToRenderPerBatch={10}
+            numColumns={1}
+            onEndReachedThreshold={2}
+            renderItem={[Function]}
+            scrollEventThrottle={50}
+            updateCellsBatchingPeriod={50}
+            windowSize={21}
+          />
+        </Component>,
       ],
       "virtual": undefined,
     },
@@ -354,152 +471,537 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            <Styled(Button)
-              active={true}
-              first={true}
-              last={false}
-              onPress={[Function]}
+            <Component
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderBottomColor": "#622461",
+                  "borderBottomWidth": 1,
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "height": 35,
+                }
+              }
             >
-              <Styled(Text)>
-                all (0)
-              </Styled(Text)>
-            </Styled(Button)>,
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={false}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                openvpn (0)
-              </Styled(Text)>
-            </Styled(Button)>,
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={true}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                wireguard (0)
-              </Styled(Text)>
-            </Styled(Button)>,
+              <Picker
+                mode="dropdown"
+                onValueChange={[Function]}
+                selectedValue={0}
+                style={
+                  Object {
+                    "flex": 1,
+                    "height": "100%",
+                  }
+                }
+              >
+                <PickerItem
+                  label="Sort: country"
+                  value={0}
+                />
+                <PickerItem
+                  label="Sort: quality"
+                  value={1}
+                />
+              </Picker>
+              <TouchableOpacity
+                activeOpacity={0.2}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                    Object {
+                      "backgroundColor": "#622461",
+                    },
+                  ]
+                }
+              >
+                <Styled(Text)
+                  style={
+                    Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "color": "#fff",
+                      },
+                    ]
+                  }
+                >
+                  ALL (0)
+                </Styled(Text)>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.2}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                  ]
+                }
+              >
+                <Styled(Text)
+                  style={
+                    Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  OPENVPN (0)
+                </Styled(Text)>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.2}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                  ]
+                }
+              >
+                <Styled(Text)
+                  style={
+                    Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  WIREGUARD (0)
+                </Styled(Text)>
+              </TouchableOpacity>
+            </Component>,
+            <FlatList
+              ListEmptyComponent={[Function]}
+              data={Array []}
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={1}
+              onEndReachedThreshold={2}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />,
           ],
-          "virtual": undefined,
+          "style": Object {
+            "flex": 1,
+          },
         },
         "ref": null,
         "rendered": Array [
           Object {
             "instance": null,
-            "key": "all (0)",
+            "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "active": true,
-              "children": <Styled(Text)>
-                all (0)
-              </Styled(Text)>,
-              "first": true,
-              "last": false,
-              "onPress": [Function],
-              "virtual": undefined,
+              "children": Array [
+                <Picker
+                  mode="dropdown"
+                  onValueChange={[Function]}
+                  selectedValue={0}
+                  style={
+                    Object {
+                      "flex": 1,
+                      "height": "100%",
+                    }
+                  }
+                >
+                  <PickerItem
+                    label="Sort: country"
+                    value={0}
+                  />
+                  <PickerItem
+                    label="Sort: quality"
+                    value={1}
+                  />
+                </Picker>,
+                Array [
+                  <TouchableOpacity
+                    activeOpacity={0.2}
+                    onPress={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "borderBottomWidth": 0,
+                          "borderColor": "#622461",
+                          "borderRightWidth": 0,
+                          "borderWidth": 1,
+                          "height": "100%",
+                          "justifyContent": "center",
+                          "padding": 3,
+                        },
+                        Object {
+                          "backgroundColor": "#622461",
+                        },
+                      ]
+                    }
+                  >
+                    <Styled(Text)
+                      style={
+                        Array [
+                          Object {
+                            "color": "#622461",
+                            "fontSize": 12,
+                          },
+                          Object {
+                            "color": "#fff",
+                          },
+                        ]
+                      }
+                    >
+                      ALL (0)
+                    </Styled(Text)>
+                  </TouchableOpacity>,
+                  <TouchableOpacity
+                    activeOpacity={0.2}
+                    onPress={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "borderBottomWidth": 0,
+                          "borderColor": "#622461",
+                          "borderRightWidth": 0,
+                          "borderWidth": 1,
+                          "height": "100%",
+                          "justifyContent": "center",
+                          "padding": 3,
+                        },
+                      ]
+                    }
+                  >
+                    <Styled(Text)
+                      style={
+                        Array [
+                          Object {
+                            "color": "#622461",
+                            "fontSize": 12,
+                          },
+                        ]
+                      }
+                    >
+                      OPENVPN (0)
+                    </Styled(Text)>
+                  </TouchableOpacity>,
+                  <TouchableOpacity
+                    activeOpacity={0.2}
+                    onPress={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "borderBottomWidth": 0,
+                          "borderColor": "#622461",
+                          "borderRightWidth": 0,
+                          "borderWidth": 1,
+                          "height": "100%",
+                          "justifyContent": "center",
+                          "padding": 3,
+                        },
+                      ]
+                    }
+                  >
+                    <Styled(Text)
+                      style={
+                        Array [
+                          Object {
+                            "color": "#622461",
+                            "fontSize": 12,
+                          },
+                        ]
+                      }
+                    >
+                      WIREGUARD (0)
+                    </Styled(Text)>
+                  </TouchableOpacity>,
+                ],
+              ],
+              "style": Object {
+                "alignItems": "center",
+                "borderBottomColor": "#622461",
+                "borderBottomWidth": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "height": 35,
+              },
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "all (0)",
-                "virtual": undefined,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": Array [
+                    <PickerItem
+                      label="Sort: country"
+                      value={0}
+                    />,
+                    <PickerItem
+                      label="Sort: quality"
+                      value={1}
+                    />,
+                  ],
+                  "mode": "dropdown",
+                  "onValueChange": [Function],
+                  "selectedValue": 0,
+                  "style": Object {
+                    "flex": 1,
+                    "height": "100%",
+                  },
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "class",
+                    "props": Object {
+                      "label": "Sort: country",
+                      "value": 0,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "class",
+                    "props": Object {
+                      "label": "Sort: quality",
+                      "value": 1,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
               },
-              "ref": null,
-              "rendered": "all (0)",
-              "type": [Function],
-            },
+              Object {
+                "instance": null,
+                "key": "all (0)",
+                "nodeType": "class",
+                "props": Object {
+                  "activeOpacity": 0.2,
+                  "children": <Styled(Text)
+                    style={
+                      Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "color": "#fff",
+                        },
+                      ]
+                    }
+                  >
+                    ALL (0)
+                  </Styled(Text)>,
+                  "onPress": [Function],
+                  "style": Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                    Object {
+                      "backgroundColor": "#622461",
+                    },
+                  ],
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "ALL (0)",
+                    "style": Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "color": "#fff",
+                      },
+                    ],
+                    "virtual": undefined,
+                  },
+                  "ref": null,
+                  "rendered": "ALL (0)",
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "openvpn (0)",
+                "nodeType": "class",
+                "props": Object {
+                  "activeOpacity": 0.2,
+                  "children": <Styled(Text)
+                    style={
+                      Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    OPENVPN (0)
+                  </Styled(Text)>,
+                  "onPress": [Function],
+                  "style": Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                  ],
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "OPENVPN (0)",
+                    "style": Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                    ],
+                    "virtual": undefined,
+                  },
+                  "ref": null,
+                  "rendered": "OPENVPN (0)",
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": "wireguard (0)",
+                "nodeType": "class",
+                "props": Object {
+                  "activeOpacity": 0.2,
+                  "children": <Styled(Text)
+                    style={
+                      Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    WIREGUARD (0)
+                  </Styled(Text)>,
+                  "onPress": [Function],
+                  "style": Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                  ],
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "WIREGUARD (0)",
+                    "style": Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                    ],
+                    "virtual": undefined,
+                  },
+                  "ref": null,
+                  "rendered": "WIREGUARD (0)",
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+            ],
             "type": [Function],
           },
           Object {
             "instance": null,
-            "key": "openvpn (0)",
+            "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "active": false,
-              "children": <Styled(Text)>
-                openvpn (0)
-              </Styled(Text)>,
-              "first": false,
-              "last": false,
-              "onPress": [Function],
-              "virtual": undefined,
+              "ListEmptyComponent": [Function],
+              "data": Array [],
+              "disableVirtualization": false,
+              "horizontal": false,
+              "initialNumToRender": 10,
+              "keyExtractor": [Function],
+              "maxToRenderPerBatch": 10,
+              "numColumns": 1,
+              "onEndReachedThreshold": 2,
+              "renderItem": [Function],
+              "scrollEventThrottle": 50,
+              "updateCellsBatchingPeriod": 50,
+              "windowSize": 21,
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "openvpn (0)",
-                "virtual": undefined,
-              },
-              "ref": null,
-              "rendered": "openvpn (0)",
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": "wireguard (0)",
-            "nodeType": "class",
-            "props": Object {
-              "active": false,
-              "children": <Styled(Text)>
-                wireguard (0)
-              </Styled(Text)>,
-              "first": false,
-              "last": true,
-              "onPress": [Function],
-              "virtual": undefined,
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "wireguard (0)",
-                "virtual": undefined,
-              },
-              "ref": null,
-              "rendered": "wireguard (0)",
-              "type": [Function],
-            },
+            "rendered": null,
             "type": [Function],
           },
         ],
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": <Styled(List) />,
-          "virtual": undefined,
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [],
-            "virtual": undefined,
-          },
-          "ref": null,
-          "rendered": Array [],
-          "type": [Function],
-        },
         "type": [Function],
       },
     ],
@@ -570,41 +1072,158 @@ ShallowWrapper {
               </Styled(Button)>
             </Styled(Right)>
           </Styled(Header)>,
-          <Styled(Segment)>
-            <Styled(Button)
-              active={true}
-              first={true}
-              last={false}
-              onPress={[Function]}
+          <Component
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+          >
+            <Component
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderBottomColor": "#622461",
+                  "borderBottomWidth": 1,
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "height": 35,
+                }
+              }
             >
-              <Styled(Text)>
-                all (0)
-              </Styled(Text)>
-            </Styled(Button)>
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={false}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                openvpn (0)
-              </Styled(Text)>
-            </Styled(Button)>
-            <Styled(Button)
-              active={false}
-              first={false}
-              last={true}
-              onPress={[Function]}
-            >
-              <Styled(Text)>
-                wireguard (0)
-              </Styled(Text)>
-            </Styled(Button)>
-          </Styled(Segment)>,
-          <Styled(Content)>
-            <Styled(List) />
-          </Styled(Content)>,
+              <Picker
+                mode="dropdown"
+                onValueChange={[Function]}
+                selectedValue={0}
+                style={
+                  Object {
+                    "flex": 1,
+                    "height": "100%",
+                  }
+                }
+              >
+                <PickerItem
+                  label="Sort: country"
+                  value={0}
+                />
+                <PickerItem
+                  label="Sort: quality"
+                  value={1}
+                />
+              </Picker>
+              <TouchableOpacity
+                activeOpacity={0.2}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                    Object {
+                      "backgroundColor": "#622461",
+                    },
+                  ]
+                }
+              >
+                <Styled(Text)
+                  style={
+                    Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "color": "#fff",
+                      },
+                    ]
+                  }
+                >
+                  ALL (0)
+                </Styled(Text)>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.2}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                  ]
+                }
+              >
+                <Styled(Text)
+                  style={
+                    Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  OPENVPN (0)
+                </Styled(Text)>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.2}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#622461",
+                      "borderRightWidth": 0,
+                      "borderWidth": 1,
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "padding": 3,
+                    },
+                  ]
+                }
+              >
+                <Styled(Text)
+                  style={
+                    Array [
+                      Object {
+                        "color": "#622461",
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  WIREGUARD (0)
+                </Styled(Text)>
+              </TouchableOpacity>
+            </Component>
+            <FlatList
+              ListEmptyComponent={[Function]}
+              data={Array []}
+              disableVirtualization={false}
+              horizontal={false}
+              initialNumToRender={10}
+              keyExtractor={[Function]}
+              maxToRenderPerBatch={10}
+              numColumns={1}
+              onEndReachedThreshold={2}
+              renderItem={[Function]}
+              scrollEventThrottle={50}
+              updateCellsBatchingPeriod={50}
+              windowSize={21}
+            />
+          </Component>,
         ],
         "virtual": undefined,
       },
@@ -843,152 +1462,537 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <Styled(Button)
-                active={true}
-                first={true}
-                last={false}
-                onPress={[Function]}
+              <Component
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "borderBottomColor": "#622461",
+                    "borderBottomWidth": 1,
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "height": 35,
+                  }
+                }
               >
-                <Styled(Text)>
-                  all (0)
-                </Styled(Text)>
-              </Styled(Button)>,
-              <Styled(Button)
-                active={false}
-                first={false}
-                last={false}
-                onPress={[Function]}
-              >
-                <Styled(Text)>
-                  openvpn (0)
-                </Styled(Text)>
-              </Styled(Button)>,
-              <Styled(Button)
-                active={false}
-                first={false}
-                last={true}
-                onPress={[Function]}
-              >
-                <Styled(Text)>
-                  wireguard (0)
-                </Styled(Text)>
-              </Styled(Button)>,
+                <Picker
+                  mode="dropdown"
+                  onValueChange={[Function]}
+                  selectedValue={0}
+                  style={
+                    Object {
+                      "flex": 1,
+                      "height": "100%",
+                    }
+                  }
+                >
+                  <PickerItem
+                    label="Sort: country"
+                    value={0}
+                  />
+                  <PickerItem
+                    label="Sort: quality"
+                    value={1}
+                  />
+                </Picker>
+                <TouchableOpacity
+                  activeOpacity={0.2}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "borderBottomWidth": 0,
+                        "borderColor": "#622461",
+                        "borderRightWidth": 0,
+                        "borderWidth": 1,
+                        "height": "100%",
+                        "justifyContent": "center",
+                        "padding": 3,
+                      },
+                      Object {
+                        "backgroundColor": "#622461",
+                      },
+                    ]
+                  }
+                >
+                  <Styled(Text)
+                    style={
+                      Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "color": "#fff",
+                        },
+                      ]
+                    }
+                  >
+                    ALL (0)
+                  </Styled(Text)>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.2}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "borderBottomWidth": 0,
+                        "borderColor": "#622461",
+                        "borderRightWidth": 0,
+                        "borderWidth": 1,
+                        "height": "100%",
+                        "justifyContent": "center",
+                        "padding": 3,
+                      },
+                    ]
+                  }
+                >
+                  <Styled(Text)
+                    style={
+                      Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    OPENVPN (0)
+                  </Styled(Text)>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.2}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "borderBottomWidth": 0,
+                        "borderColor": "#622461",
+                        "borderRightWidth": 0,
+                        "borderWidth": 1,
+                        "height": "100%",
+                        "justifyContent": "center",
+                        "padding": 3,
+                      },
+                    ]
+                  }
+                >
+                  <Styled(Text)
+                    style={
+                      Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    WIREGUARD (0)
+                  </Styled(Text)>
+                </TouchableOpacity>
+              </Component>,
+              <FlatList
+                ListEmptyComponent={[Function]}
+                data={Array []}
+                disableVirtualization={false}
+                horizontal={false}
+                initialNumToRender={10}
+                keyExtractor={[Function]}
+                maxToRenderPerBatch={10}
+                numColumns={1}
+                onEndReachedThreshold={2}
+                renderItem={[Function]}
+                scrollEventThrottle={50}
+                updateCellsBatchingPeriod={50}
+                windowSize={21}
+              />,
             ],
-            "virtual": undefined,
+            "style": Object {
+              "flex": 1,
+            },
           },
           "ref": null,
           "rendered": Array [
             Object {
               "instance": null,
-              "key": "all (0)",
+              "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "active": true,
-                "children": <Styled(Text)>
-                  all (0)
-                </Styled(Text)>,
-                "first": true,
-                "last": false,
-                "onPress": [Function],
-                "virtual": undefined,
+                "children": Array [
+                  <Picker
+                    mode="dropdown"
+                    onValueChange={[Function]}
+                    selectedValue={0}
+                    style={
+                      Object {
+                        "flex": 1,
+                        "height": "100%",
+                      }
+                    }
+                  >
+                    <PickerItem
+                      label="Sort: country"
+                      value={0}
+                    />
+                    <PickerItem
+                      label="Sort: quality"
+                      value={1}
+                    />
+                  </Picker>,
+                  Array [
+                    <TouchableOpacity
+                      activeOpacity={0.2}
+                      onPress={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "borderBottomWidth": 0,
+                            "borderColor": "#622461",
+                            "borderRightWidth": 0,
+                            "borderWidth": 1,
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "padding": 3,
+                          },
+                          Object {
+                            "backgroundColor": "#622461",
+                          },
+                        ]
+                      }
+                    >
+                      <Styled(Text)
+                        style={
+                          Array [
+                            Object {
+                              "color": "#622461",
+                              "fontSize": 12,
+                            },
+                            Object {
+                              "color": "#fff",
+                            },
+                          ]
+                        }
+                      >
+                        ALL (0)
+                      </Styled(Text)>
+                    </TouchableOpacity>,
+                    <TouchableOpacity
+                      activeOpacity={0.2}
+                      onPress={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "borderBottomWidth": 0,
+                            "borderColor": "#622461",
+                            "borderRightWidth": 0,
+                            "borderWidth": 1,
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "padding": 3,
+                          },
+                        ]
+                      }
+                    >
+                      <Styled(Text)
+                        style={
+                          Array [
+                            Object {
+                              "color": "#622461",
+                              "fontSize": 12,
+                            },
+                          ]
+                        }
+                      >
+                        OPENVPN (0)
+                      </Styled(Text)>
+                    </TouchableOpacity>,
+                    <TouchableOpacity
+                      activeOpacity={0.2}
+                      onPress={[Function]}
+                      style={
+                        Array [
+                          Object {
+                            "borderBottomWidth": 0,
+                            "borderColor": "#622461",
+                            "borderRightWidth": 0,
+                            "borderWidth": 1,
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "padding": 3,
+                          },
+                        ]
+                      }
+                    >
+                      <Styled(Text)
+                        style={
+                          Array [
+                            Object {
+                              "color": "#622461",
+                              "fontSize": 12,
+                            },
+                          ]
+                        }
+                      >
+                        WIREGUARD (0)
+                      </Styled(Text)>
+                    </TouchableOpacity>,
+                  ],
+                ],
+                "style": Object {
+                  "alignItems": "center",
+                  "borderBottomColor": "#622461",
+                  "borderBottomWidth": 1,
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "height": 35,
+                },
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "all (0)",
-                  "virtual": undefined,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      <PickerItem
+                        label="Sort: country"
+                        value={0}
+                      />,
+                      <PickerItem
+                        label="Sort: quality"
+                        value={1}
+                      />,
+                    ],
+                    "mode": "dropdown",
+                    "onValueChange": [Function],
+                    "selectedValue": 0,
+                    "style": Object {
+                      "flex": 1,
+                      "height": "100%",
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "class",
+                      "props": Object {
+                        "label": "Sort: country",
+                        "value": 0,
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "class",
+                      "props": Object {
+                        "label": "Sort: quality",
+                        "value": 1,
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": "all (0)",
-                "type": [Function],
-              },
+                Object {
+                  "instance": null,
+                  "key": "all (0)",
+                  "nodeType": "class",
+                  "props": Object {
+                    "activeOpacity": 0.2,
+                    "children": <Styled(Text)
+                      style={
+                        Array [
+                          Object {
+                            "color": "#622461",
+                            "fontSize": 12,
+                          },
+                          Object {
+                            "color": "#fff",
+                          },
+                        ]
+                      }
+                    >
+                      ALL (0)
+                    </Styled(Text)>,
+                    "onPress": [Function],
+                    "style": Array [
+                      Object {
+                        "borderBottomWidth": 0,
+                        "borderColor": "#622461",
+                        "borderRightWidth": 0,
+                        "borderWidth": 1,
+                        "height": "100%",
+                        "justifyContent": "center",
+                        "padding": 3,
+                      },
+                      Object {
+                        "backgroundColor": "#622461",
+                      },
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "ALL (0)",
+                      "style": Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "color": "#fff",
+                        },
+                      ],
+                      "virtual": undefined,
+                    },
+                    "ref": null,
+                    "rendered": "ALL (0)",
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": "openvpn (0)",
+                  "nodeType": "class",
+                  "props": Object {
+                    "activeOpacity": 0.2,
+                    "children": <Styled(Text)
+                      style={
+                        Array [
+                          Object {
+                            "color": "#622461",
+                            "fontSize": 12,
+                          },
+                        ]
+                      }
+                    >
+                      OPENVPN (0)
+                    </Styled(Text)>,
+                    "onPress": [Function],
+                    "style": Array [
+                      Object {
+                        "borderBottomWidth": 0,
+                        "borderColor": "#622461",
+                        "borderRightWidth": 0,
+                        "borderWidth": 1,
+                        "height": "100%",
+                        "justifyContent": "center",
+                        "padding": 3,
+                      },
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "OPENVPN (0)",
+                      "style": Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                      ],
+                      "virtual": undefined,
+                    },
+                    "ref": null,
+                    "rendered": "OPENVPN (0)",
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": "wireguard (0)",
+                  "nodeType": "class",
+                  "props": Object {
+                    "activeOpacity": 0.2,
+                    "children": <Styled(Text)
+                      style={
+                        Array [
+                          Object {
+                            "color": "#622461",
+                            "fontSize": 12,
+                          },
+                        ]
+                      }
+                    >
+                      WIREGUARD (0)
+                    </Styled(Text)>,
+                    "onPress": [Function],
+                    "style": Array [
+                      Object {
+                        "borderBottomWidth": 0,
+                        "borderColor": "#622461",
+                        "borderRightWidth": 0,
+                        "borderWidth": 1,
+                        "height": "100%",
+                        "justifyContent": "center",
+                        "padding": 3,
+                      },
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "WIREGUARD (0)",
+                      "style": Array [
+                        Object {
+                          "color": "#622461",
+                          "fontSize": 12,
+                        },
+                      ],
+                      "virtual": undefined,
+                    },
+                    "ref": null,
+                    "rendered": "WIREGUARD (0)",
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
               "type": [Function],
             },
             Object {
               "instance": null,
-              "key": "openvpn (0)",
+              "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "active": false,
-                "children": <Styled(Text)>
-                  openvpn (0)
-                </Styled(Text)>,
-                "first": false,
-                "last": false,
-                "onPress": [Function],
-                "virtual": undefined,
+                "ListEmptyComponent": [Function],
+                "data": Array [],
+                "disableVirtualization": false,
+                "horizontal": false,
+                "initialNumToRender": 10,
+                "keyExtractor": [Function],
+                "maxToRenderPerBatch": 10,
+                "numColumns": 1,
+                "onEndReachedThreshold": 2,
+                "renderItem": [Function],
+                "scrollEventThrottle": 50,
+                "updateCellsBatchingPeriod": 50,
+                "windowSize": 21,
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "openvpn (0)",
-                  "virtual": undefined,
-                },
-                "ref": null,
-                "rendered": "openvpn (0)",
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": "wireguard (0)",
-              "nodeType": "class",
-              "props": Object {
-                "active": false,
-                "children": <Styled(Text)>
-                  wireguard (0)
-                </Styled(Text)>,
-                "first": false,
-                "last": true,
-                "onPress": [Function],
-                "virtual": undefined,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "wireguard (0)",
-                  "virtual": undefined,
-                },
-                "ref": null,
-                "rendered": "wireguard (0)",
-                "type": [Function],
-              },
+              "rendered": null,
               "type": [Function],
             },
           ],
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <Styled(List) />,
-            "virtual": undefined,
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": Array [],
-              "virtual": undefined,
-            },
-            "ref": null,
-            "rendered": Array [],
-            "type": [Function],
-          },
           "type": [Function],
         },
       ],

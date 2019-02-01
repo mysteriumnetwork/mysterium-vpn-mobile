@@ -18,7 +18,7 @@
 import { action, computed, observable } from 'mobx'
 import Connection from '../domain/connection'
 import { FavoritesStorage } from '../domain/favorites-storage'
-import ProposalList from '../domain/proposals/proposal-list'
+import ProposalItemList from '../domain/proposals/proposal-item-list'
 import ConnectionStatus from '../models/connection-status'
 import { ProposalItem } from '../models/proposal-item'
 
@@ -33,11 +33,11 @@ export default class VpnScreenStore {
   private _connectionStatus: ConnectionStatus
 
   constructor (private readonly favoritesStorage: FavoritesStorage,
-               proposalList: ProposalList,
+               proposalItemList: ProposalItemList,
                connection: Connection) {
     this.favoritesStorage.onChange(() => this.calculateIsFavoriteSelected())
-    proposalList.onChange(() => {
-      this._proposalItems = proposalList.proposals
+    proposalItemList.onChange(() => {
+      this._proposalItems = proposalItemList.proposals
     })
     this._connectionStatus = connection.data.status
     connection.onStatusChange(status => {

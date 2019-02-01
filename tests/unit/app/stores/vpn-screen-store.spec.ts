@@ -18,7 +18,7 @@
 import { autorun, IReactionDisposer } from 'mobx'
 import Connection from '../../../../src/app/domain/connection'
 import { FavoritesStorage } from '../../../../src/app/domain/favorites-storage'
-import ProposalList from '../../../../src/app/domain/proposals/proposal-list'
+import ProposalItemList from '../../../../src/app/domain/proposals/proposal-item-list'
 import ConnectionStatus from '../../../../src/app/models/connection-status'
 import Proposal from '../../../../src/app/models/proposal'
 import { ProposalItem } from '../../../../src/app/models/proposal-item'
@@ -47,13 +47,13 @@ describe('VpnScreenStore', () => {
     favoritesStorage = new FavoritesStorage(new MockStorage())
     mockProposalsAdapter = new MockProposalsAdapter(initialMockProposals)
     proposalsStore = new ProposalsStore(mockProposalsAdapter)
-    const proposalList = new ProposalList(proposalsStore, favoritesStorage)
+    const proposalItemList = new ProposalItemList(proposalsStore, favoritesStorage)
 
     connectionAdapter = new MockConnectionAdapter()
     const statisticsAdapter = new MockStatisticsAdapter(new MockConnectionEventAdapter())
     connection = new Connection(connectionAdapter, statisticsAdapter)
 
-    store = new VpnScreenStore(favoritesStorage, proposalList, connection)
+    store = new VpnScreenStore(favoritesStorage, proposalItemList, connection)
   })
 
   describe('.isFavoriteSelected', () => {

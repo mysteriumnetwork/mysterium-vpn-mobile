@@ -17,20 +17,21 @@
 
 import { Icon } from 'native-base'
 import * as React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image, ImageStyle, StyleProp, StyleSheet } from 'react-native'
 import colors from '../../styles/colors'
 import countries from './countries'
 
 type FlagProps = {
   countryCode: string | null,
-  showPlaceholder: boolean
+  showPlaceholder: boolean,
+  style?: StyleProp<ImageStyle>
 }
 
-const CountryFlag: React.SFC<FlagProps> = ({ countryCode, showPlaceholder }) => {
+const CountryFlag: React.SFC<FlagProps> = ({ countryCode, showPlaceholder, style }) => {
   const uri = getCountryImageUri(countryCode)
   if (!uri) {
     if (showPlaceholder) {
-      return (<Icon style={styles.globeIcon} name={'ios-globe'}/>)
+      return (<Icon style={[styles.globeIcon, style]} name={'ios-globe'}/>)
     }
 
     return (null)
@@ -39,7 +40,7 @@ const CountryFlag: React.SFC<FlagProps> = ({ countryCode, showPlaceholder }) => 
   return (
     <Image
       source={{ uri }}
-      style={styles.countryFlagImage}
+      style={[styles.countryFlagImage, style]}
     />
   )
 }

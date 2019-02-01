@@ -16,16 +16,17 @@
  */
 
 import React from 'react'
-import { Image, ImageRequireSource, StyleSheet } from 'react-native'
+import { Image, ImageRequireSource, ImageStyle, StyleProp, StyleSheet } from 'react-native'
 
 type QualityIndicatorProps = {
-  quality: number | null
+  quality: number | null,
+  style?: StyleProp<ImageStyle>
 }
 
-const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality }) => {
+const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality, style }) => {
   const icon = getIconImage(quality)
   return (
-    <Image style={styles.image} source={icon} resizeMode="contain" />
+    <Image style={[styles.image, style]} source={icon} resizeMode="contain" />
   )
 }
 
