@@ -8,7 +8,7 @@
     "ios": "react-native run-ios",
     "test:unit": "jest",
     "lint": "tsc --noEmit --skipLibCheck && tslint -p . 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
-    "ci": "yarn lint && yarn test:unit"
+    "ci": "yarn lint && yarn test:unit && util_scripts/check-headers.sh"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.11",
