@@ -4,7 +4,7 @@
 
 DIRS='src tests android'
 IGNORE_PATH="android/app/build"
-COPYRIGHT="Copyright (C) \d\{4\} The \"mysteriumnetwork/mysterium-vpn-mobile\" Authors."
+COPYRIGHT="Copyright (C) [0-9]\{4\} The \"mysteriumnetwork/mysterium-vpn-mobile\" Authors."
 
 # Colorful output
 
