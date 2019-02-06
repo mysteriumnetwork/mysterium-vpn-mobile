@@ -22,7 +22,6 @@ index.android.bundle.meta
 
 # dependencies
 /node_modules
-android/app/libs/Mysterium.aar
 
 # misc
 .env.local
