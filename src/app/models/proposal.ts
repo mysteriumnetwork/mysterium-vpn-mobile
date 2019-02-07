@@ -16,7 +16,7 @@
  *
  */
 
-import { Metrics } from '../../libraries/mysterium-vpn-js/models/metrics'
+import { Metrics } from 'mysterium-vpn-js'
 import { ServiceType } from './service-type'
 
 class Proposal {

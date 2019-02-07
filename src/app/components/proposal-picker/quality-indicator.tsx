@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { QualityLevel } from 'mysterium-vpn-js'
 import React from 'react'
 import { Image, ImageRequireSource, ImageStyle, StyleProp, StyleSheet } from 'react-native'
-import { QualityLevel } from '../../../libraries/mysterium-vpn-js/models/quality-level'
 
 type QualityIndicatorProps = {
   level: QualityLevel,

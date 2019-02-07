@@ -16,11 +16,11 @@
  */
 
 import { observer } from 'mobx-react/native'
+import { QualityCalculator } from 'mysterium-vpn-js'
 import { Body, Button as NativeButton, Container, Header, Icon, Input, NativeBase, Right, Text } from 'native-base'
 import React, { ReactElement, ReactNode } from 'react'
 import { FlatList, Picker, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
-import { QualityCalculator } from '../../../libraries/mysterium-vpn-js/domain/quality-calculator'
 import { STYLES } from '../../../styles'
 import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
