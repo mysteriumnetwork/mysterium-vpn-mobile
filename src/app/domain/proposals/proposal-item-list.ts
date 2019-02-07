@@ -66,7 +66,7 @@ class ProposalItemList {
       countryCode: proposal.countryCode,
       countryName: proposal.countryName,
       isFavorite: this.favorites.has(proposal.id),
-      quality: this.qualityCalculator.calculate(proposal.metrics)
+      quality: this.qualityCalculator.calculateValue(proposal.metrics)
     }
   }
 }

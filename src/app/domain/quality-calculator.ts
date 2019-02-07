@@ -23,7 +23,7 @@ export class QualityCalculator {
    *
    * @return number between 0 and 1. If metrics are empty, null is returned.
    */
-  public calculate (metrics: Metrics): number | null {
+  public calculateValue (metrics: Metrics): number | null {
     const counts = metrics.connectCount
     const total = counts.success + counts.fail + counts.timeout
 

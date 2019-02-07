@@ -25,23 +25,23 @@ describe('QualityCalculator', () => {
     qualityCalculator = new QualityCalculator()
   })
 
-  describe('.calculate', () => {
+  describe('.calculateValue', () => {
     it('returns 1 for successful metrics', () => {
       const metrics: Metrics = { connectCount: { success: 1, fail: 0, timeout: 0 } }
-      expect(qualityCalculator.calculate(metrics)).toEqual(1)
+      expect(qualityCalculator.calculateValue(metrics)).toEqual(1)
     })
 
     it('returns 0 for failure metrics', () => {
       const metrics1: Metrics = { connectCount: { success: 0, fail: 1, timeout: 0 } }
-      expect(qualityCalculator.calculate(metrics1)).toEqual(0)
+      expect(qualityCalculator.calculateValue(metrics1)).toEqual(0)
 
       const metrics2: Metrics = { connectCount: { success: 0, fail: 0, timeout: 1 } }
-      expect(qualityCalculator.calculate(metrics2)).toEqual(0)
+      expect(qualityCalculator.calculateValue(metrics2)).toEqual(0)
     })
 
     it('returns null when all metrics are zero', () => {
       const metrics1: Metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
-      expect(qualityCalculator.calculate(metrics1)).toBeNull()
+      expect(qualityCalculator.calculateValue(metrics1)).toBeNull()
     })
   })
 })
