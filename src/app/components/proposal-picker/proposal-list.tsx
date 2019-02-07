@@ -21,6 +21,7 @@ import React, { ReactElement, ReactNode } from 'react'
 import { FlatList, Picker, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import colors from '../../../app/styles/colors'
 import { STYLES } from '../../../styles'
+import { QualityCalculator } from '../../domain/quality-calculator'
 import { ProposalItem } from '../../models/proposal-item'
 import { ServiceType } from '../../models/service-type'
 import { ProposalListStore, ProposalsSorting } from '../../stores/proposal-list-store'
@@ -125,6 +126,7 @@ class ProposalList extends React.Component<ListProps> {
   }
 
   private renderProposal (proposal: ProposalItem): ReactElement<NativeBase.ListItem> {
+    const qualityLevel = new QualityCalculator().calculateLevel(proposal.quality)
     return (
       <TouchableOpacity
         style={this.listItemStyle(proposal)}
@@ -146,7 +148,7 @@ class ProposalList extends React.Component<ListProps> {
               style={styles.proposalItemElement}
           />
           <QualityIndicator
-            quality={proposal.quality}
+            level={qualityLevel}
             style={styles.proposalItemElement}
           />
           <Icon

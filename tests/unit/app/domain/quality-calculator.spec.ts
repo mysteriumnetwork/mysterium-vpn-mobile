@@ -17,6 +17,7 @@
 
 import { QualityCalculator } from '../../../../src/app/domain/quality-calculator'
 import { Metrics } from '../../../../src/app/models/metrics'
+import { QualityLevel } from '../../../../src/app/models/quality-level'
 
 describe('QualityCalculator', () => {
   let qualityCalculator: QualityCalculator
@@ -42,6 +43,15 @@ describe('QualityCalculator', () => {
     it('returns null when all metrics are zero', () => {
       const metrics1: Metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
       expect(qualityCalculator.calculateValue(metrics1)).toBeNull()
+    })
+  })
+
+  describe('.calculateLevel', () => {
+    it('returns quality level according to value', () => {
+      expect(qualityCalculator.calculateLevel(0.1)).toEqual(QualityLevel.LOW)
+      expect(qualityCalculator.calculateLevel(0.3)).toEqual(QualityLevel.MEDIUM)
+      expect(qualityCalculator.calculateLevel(0.6)).toEqual(QualityLevel.HIGH)
+      expect(qualityCalculator.calculateLevel(null)).toEqual(QualityLevel.UNKNOWN)
     })
   })
 })

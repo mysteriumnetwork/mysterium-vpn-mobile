@@ -16,6 +16,7 @@
  */
 
 import { Metrics } from '../models/metrics'
+import { QualityLevel } from '../models/quality-level'
 
 export class QualityCalculator {
   /**
@@ -33,4 +34,20 @@ export class QualityCalculator {
 
     return counts.success / total
   }
+
+  public calculateLevel (quality: number | null) {
+    if (quality === null) {
+      return QualityLevel.UNKNOWN
+    }
+    if (quality >= HIGH_QUALITY) {
+      return QualityLevel.HIGH
+    }
+    if (quality >= MEDIUM_QUALITY) {
+      return QualityLevel.MEDIUM
+    }
+    return QualityLevel.LOW
+  }
 }
+
+const MEDIUM_QUALITY = 0.2
+const HIGH_QUALITY = 0.5
