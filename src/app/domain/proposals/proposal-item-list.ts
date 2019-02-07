@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { QualityCalculator } from '../../../libraries/mysterium-vpn-js/domain/quality-calculator'
 import Proposal from '../../models/proposal'
 import { ProposalItem } from '../../models/proposal-item'
 import { EventNotifier } from '../observables/event-notifier'
-import { QualityCalculator } from '../quality-calculator'
 
 interface ProposalsStore {
   proposals: Proposal[]

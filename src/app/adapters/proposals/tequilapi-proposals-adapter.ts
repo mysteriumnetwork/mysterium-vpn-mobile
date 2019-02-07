@@ -17,7 +17,7 @@
 
 import { MetricsDTO, ProposalDTO, ProposalQueryOptions, TequilapiClient } from 'mysterium-tequilapi'
 import { Countries } from '../../../libraries/countries'
-import { Metrics } from '../../models/metrics'
+import { Metrics } from '../../../libraries/mysterium-vpn-js/models/metrics'
 import Proposal from '../../models/proposal'
 import { stringToServiceType } from '../../models/service-type'
 import { ProposalsAdapter } from './proposals-adapter'

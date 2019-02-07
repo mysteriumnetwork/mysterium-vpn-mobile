@@ -18,7 +18,7 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 import { QualityIndicator } from '../../../../../src/app/components/proposal-picker/quality-indicator'
-import { QualityLevel } from '../../../../../src/app/models/quality-level'
+import { QualityLevel } from '../../../../../src/libraries/mysterium-vpn-js/models/quality-level'
 
 describe('QualityIndicator', () => {
   it('renders unknown icon for empty quality', () => {

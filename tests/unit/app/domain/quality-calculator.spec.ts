@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { QualityCalculator } from '../../../../src/app/domain/quality-calculator'
-import { Metrics } from '../../../../src/app/models/metrics'
-import { QualityLevel } from '../../../../src/app/models/quality-level'
+import { QualityCalculator } from '../../../../src/libraries/mysterium-vpn-js/domain/quality-calculator'
+import { Metrics } from '../../../../src/libraries/mysterium-vpn-js/models/metrics'
+import { QualityLevel } from '../../../../src/libraries/mysterium-vpn-js/models/quality-level'
 
 describe('QualityCalculator', () => {
   let qualityCalculator: QualityCalculator
