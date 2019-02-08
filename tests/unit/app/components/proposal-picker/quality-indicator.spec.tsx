@@ -16,27 +16,28 @@
  */
 
 import { shallow } from 'enzyme'
+import { QualityLevel } from 'mysterium-vpn-js'
 import React from 'react'
 import { QualityIndicator } from '../../../../../src/app/components/proposal-picker/quality-indicator'
 
 describe('QualityIndicator', () => {
   it('renders unknown icon for empty quality', () => {
-    const wrapper = shallow(<QualityIndicator quality={null}/>)
+    const wrapper = shallow(<QualityIndicator level={QualityLevel.UNKNOWN}/>)
     expect(wrapper.prop('source').testUri).toContain('unknown.png')
   })
 
   it('renders low icon for low quality', () => {
-    const wrapper = shallow(<QualityIndicator quality={0.1}/>)
+    const wrapper = shallow(<QualityIndicator level={QualityLevel.LOW}/>)
     expect(wrapper.prop('source').testUri).toContain('low.png')
   })
 
   it('renders medium icon for medium quality', () => {
-    const wrapper = shallow(<QualityIndicator quality={0.3}/>)
+    const wrapper = shallow(<QualityIndicator level={QualityLevel.MEDIUM}/>)
     expect(wrapper.prop('source').testUri).toContain('medium.png')
   })
 
   it('renders high icon for high quality', () => {
-    const wrapper = shallow(<QualityIndicator quality={0.6}/>)
+    const wrapper = shallow(<QualityIndicator level={QualityLevel.HIGH}/>)
     expect(wrapper.prop('source').testUri).toContain('high.png')
   })
 })

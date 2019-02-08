@@ -15,36 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { QualityLevel } from 'mysterium-vpn-js'
 import React from 'react'
 import { Image, ImageRequireSource, ImageStyle, StyleProp, StyleSheet } from 'react-native'
 
 type QualityIndicatorProps = {
-  quality: number | null,
+  level: QualityLevel,
   style?: StyleProp<ImageStyle>
 }
 
-const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ quality, style }) => {
-  const icon = getIconImage(quality)
+const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ level, style }) => {
+  const icon = getIconImage(level)
   return (
     <Image style={[styles.image, style]} source={icon} resizeMode="contain" />
   )
 }
 
-function getIconImage (quality: number | null): ImageRequireSource {
-  if (quality === null) {
-    return require('../../../assets/quality/unknown.png')
-  }
-  if (quality >= HIGH_QUALITY) {
+function getIconImage (level: number | null): ImageRequireSource {
+  if (level === QualityLevel.HIGH) {
     return require('../../../assets/quality/high.png')
   }
-  if (quality >= MEDIUM_QUALITY) {
+  if (level === QualityLevel.MEDIUM) {
     return require('../../../assets/quality/medium.png')
   }
-  return require('../../../assets/quality/low.png')
+  if (level === QualityLevel.LOW) {
+    return require('../../../assets/quality/low.png')
+  }
+  if (level !== QualityLevel.UNKNOWN) {
+    throw Error(`Unknown quality level ${level}`)
+  }
+  return require('../../../assets/quality/unknown.png')
 }
-
-const MEDIUM_QUALITY = 0.2
-const HIGH_QUALITY = 0.5
 
 const ICON_SIZE = 30
 const styles = StyleSheet.create({

@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { QualityCalculator } from 'mysterium-vpn-js'
 import Proposal from '../../models/proposal'
 import { ProposalItem } from '../../models/proposal-item'
 import { EventNotifier } from '../observables/event-notifier'
-import { QualityCalculator } from '../quality-calculator'
 
 interface ProposalsStore {
   proposals: Proposal[]
@@ -66,7 +66,7 @@ class ProposalItemList {
       countryCode: proposal.countryCode,
       countryName: proposal.countryName,
       isFavorite: this.favorites.has(proposal.id),
-      quality: this.qualityCalculator.calculate(proposal.metrics)
+      quality: this.qualityCalculator.calculateValue(proposal.metrics)
     }
   }
 }
