@@ -28,6 +28,7 @@ npm install -g react-native-cli
 #### Setup to run on actual device
 * `brew cask install android-platform-tools` or [Install ADB](https://www.xda-developers.com/install-adb-windows-macos-linux)
 * Connect Android phone, check if `adb` can see it:
+
 ```bash
 adb devices
 ```
