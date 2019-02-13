@@ -1,7 +1,8 @@
 {
   "name": "MysteriumVPN",
   "version": "0.6.0",
-  "private": true,
+  "license": "GPL-3.0",
+  "author": "Mysterium Network <team@netsys.technology>",
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "android": "react-native run-android",
