@@ -57,8 +57,8 @@ describe('Connection', () => {
     })
 
     it('fetches location', async () => {
-      expect(connection.data.location.ip).toBeNull()
-      expect(connection.data.location.countryCode).toBeNull()
+      expect(connection.data.location.ip).toBeUndefined()
+      expect(connection.data.location.countryCode).toBeUndefined()
 
       connection.startUpdating()
       await nextTick()

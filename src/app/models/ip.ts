@@ -15,6 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type Ip = string | null
+type Ip = string | undefined
 
 export default Ip

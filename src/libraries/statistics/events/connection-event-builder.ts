@@ -122,8 +122,8 @@ type ConnectionDetails = {
 }
 
 type CountryDetails = {
-  originalCountry: string,
-  providerCountry: string | null
+  originalCountry?: string,
+  providerCountry?: string
 }
 
 type EventContext = {
@@ -131,7 +131,7 @@ type EventContext = {
   endedAt: Time
   timeDelta: number
   connectDetails: ConnectionDetails
-  originalCountry: string
+  originalCountry?: string
   providerCountry?: string
   error?: string
 }

@@ -110,7 +110,7 @@ class Connection {
   }
 
   public resetLocation () {
-    this.updateLocation({ ip: null, countryCode: null })
+    this.updateLocation({ ip: undefined, countryCode: undefined })
   }
 
   public setStatusToConnecting () {
@@ -192,7 +192,7 @@ const initialStatistics: ConnectionStatistics = {
   bytesSent: 0,
   bytesReceived: 0
 }
-const initialLocation: Location = { ip: null, countryCode: null }
+const initialLocation: Location = { ip: undefined, countryCode: undefined }
 const initialStatus = ConnectionStatusEnum.NOT_CONNECTED
 
 const initialConnectionData = new ConnectionData(initialStatus, initialLocation, initialStatistics)

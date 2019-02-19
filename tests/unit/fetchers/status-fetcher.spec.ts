@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
 import ConnectionStatus from '../../../src/app/models/connection-status'
 import { ConnectionStatusEnum } from '../../../src/libraries/tequil-api/enums'
 import { CONFIG } from './../../../src/config'

@@ -15,7 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi/lib/dto/connection-status-dto'
 import ConnectionStatistics from '../../models/connection-statistics'
 import { Location } from '../../models/location'
 import { ServiceType } from '../../models/service-type'
@@ -61,7 +62,7 @@ class TequilapiConnectionAdapter implements ConnectionAdapter {
     return { ip: dto.currentIP, countryCode: dto.currentCountry }
   }
 
-  public async fetchOriginalLocation (): Promise<string> {
+  public async fetchOriginalLocation (): Promise<string | undefined> {
     const location = await this.tequilapiClient.location()
 
     return location.originalCountry

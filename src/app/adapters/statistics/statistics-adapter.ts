@@ -35,8 +35,8 @@ type ConnectionDetails = {
 }
 
 type CountryDetails = {
-  originalCountry: string,
-  providerCountry: string | null
+  originalCountry?: string,
+  providerCountry?: string
 }
 
 export { StatisticsAdapter, ConnectionEventAdapter }

@@ -15,7 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeHealthcheckDTO, TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
+import { NodeHealthcheckDTO } from 'mysterium-tequilapi/lib/dto/node-healthcheck'
 import Connection from '../../app/domain/connection'
 import { IdentityManager } from '../../app/domain/identity-manager'
 
