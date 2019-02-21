@@ -15,7 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { MetricsDTO, ProposalDTO, ProposalQueryOptions, TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
+import { MetricsDTO } from 'mysterium-tequilapi/lib/dto/metrics-dto'
+import { ProposalDTO } from 'mysterium-tequilapi/lib/dto/proposal'
+import { ProposalQueryOptions } from 'mysterium-tequilapi/lib/dto/query/proposals-query-options'
 import { Metrics } from 'mysterium-vpn-js'
 import { Countries } from '../../../libraries/countries'
 import Proposal from '../../models/proposal'

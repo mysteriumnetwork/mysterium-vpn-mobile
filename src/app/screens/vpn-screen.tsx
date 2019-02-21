@@ -121,7 +121,7 @@ class VpnScreen extends React.Component<HomeProps> {
 
   private get currentCountryCode (): string | null {
     const countryCode = this.connectionStore.data.location.countryCode
-    if (countryCode === null) {
+    if (countryCode === undefined) {
       return null
     }
     return countryCode.toLowerCase()

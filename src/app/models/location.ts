@@ -19,7 +19,7 @@ import Ip from './ip'
 
 type Location = {
   ip: Ip,
-  countryCode: string | null
+  countryCode: string | undefined
 }
 
 export { Location }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatus } from 'mysterium-tequilapi'
+import { ConnectionStatus } from 'mysterium-tequilapi/lib/dto/connection-status'
 import ConnectionAdapter from '../adapters/connection/connection-adapter'
 import NotificationAdapter from '../adapters/notification/notification-adapter'
 import translations from '../translations'

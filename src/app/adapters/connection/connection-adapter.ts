@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi/lib/dto/connection-status-dto'
 import ConnectionStatistics from '../../models/connection-statistics'
 import { Location } from '../../models/location'
 import { ServiceType } from '../../models/service-type'
@@ -26,7 +26,7 @@ interface ConnectionAdapter {
   disconnect (): Promise<void>
   fetchStatus (): Promise<ConnectionStatusDTO>
   fetchStatistics (): Promise<ConnectionStatistics>
-  fetchOriginalLocation (): Promise<string>
+  fetchOriginalLocation (): Promise<string | undefined>
   fetchLocation (): Promise<Location>
 }
 

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ConnectionStatus } from 'mysterium-tequilapi/lib/dto/connection-status'
 import { ConnectionChecker } from '../../../../src/app/domain/connection-checker'
 import { MockConnectionAdapter } from '../../mocks/mock-connection-adapter'
 import MockNotificationAdapter from '../../mocks/mock-notification-adapter'
@@ -32,12 +33,12 @@ describe('ConnectionChecker', () => {
 
   describe('.run', () => {
     it('shows notification when status changes from connected', async () => {
-      connectionAdapter.mockStatus = 'Connected'
+      connectionAdapter.mockStatus = ConnectionStatus.CONNECTED
       await checker.run({})
 
       expect(notificationAdapter.shownTitle).toBeUndefined()
 
-      connectionAdapter.mockStatus = 'NotConnected'
+      connectionAdapter.mockStatus = ConnectionStatus.NOT_CONNECTED
       await checker.run({})
 
       expect(notificationAdapter.shownTitle).toEqual('Connection lost')
@@ -45,7 +46,7 @@ describe('ConnectionChecker', () => {
     })
 
     it('does not show notification when connected status does not change', async () => {
-      connectionAdapter.mockStatus = 'Connected'
+      connectionAdapter.mockStatus = ConnectionStatus.CONNECTED
       await checker.run({})
 
       await checker.run({})
@@ -54,20 +55,20 @@ describe('ConnectionChecker', () => {
     })
 
     it('does not show notification when status changes from other states', async () => {
-      connectionAdapter.mockStatus = 'NotConnected'
+      connectionAdapter.mockStatus = ConnectionStatus.NOT_CONNECTED
       await checker.run({})
 
-      connectionAdapter.mockStatus = 'Connected'
+      connectionAdapter.mockStatus = ConnectionStatus.CONNECTED
       await checker.run({})
 
       expect(notificationAdapter.shownTitle).toBeUndefined()
     })
 
     it('does not show notification when status changes to disconnected when ignoring last status', async () => {
-      connectionAdapter.mockStatus = 'Connected'
+      connectionAdapter.mockStatus = ConnectionStatus.CONNECTED
       await checker.run({})
 
-      connectionAdapter.mockStatus = 'NotConnected'
+      connectionAdapter.mockStatus = ConnectionStatus.NOT_CONNECTED
       await checker.run({ ignoreLastStatus: true })
 
       expect(notificationAdapter.shownTitle).toBeUndefined()

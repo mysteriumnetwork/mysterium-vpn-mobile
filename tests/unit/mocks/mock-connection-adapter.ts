@@ -15,15 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
+// TODO: uncouple from mysterium-tequilapi by introducing model for ConnectionStatusDTO
+import { ConnectionStatus } from 'mysterium-tequilapi/lib/dto/connection-status'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi/lib/dto/connection-status-dto'
 import ConnectionAdapter, { ConnectionCanceled } from '../../../src/app/adapters/connection/connection-adapter'
 import ConnectionStatistics from '../../../src/app/models/connection-statistics'
-import ConnectionStatus from '../../../src/app/models/connection-status'
 import { Location } from '../../../src/app/models/location'
 import { ServiceType } from '../../../src/app/models/service-type'
 
 export class MockConnectionAdapter implements ConnectionAdapter {
-  public mockStatus: ConnectionStatus = 'Connected'
+  public mockStatus = ConnectionStatus.CONNECTED
   public throwConnectError: boolean = false
   public throwConnectCancelledError: boolean = false
 

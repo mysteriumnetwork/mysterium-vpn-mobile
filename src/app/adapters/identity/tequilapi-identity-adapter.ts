@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TequilapiClient } from 'mysterium-tequilapi'
+import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
 import { Identity } from '../../models/identity'
 import { IdentityAdapter } from './identity-adapter'
 

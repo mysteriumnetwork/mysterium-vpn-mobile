@@ -52,7 +52,8 @@ import ScreenStore from './stores/screen-store'
 import VpnScreenStore from './stores/vpn-screen-store'
 
 class Container {
-  public readonly api = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUTS.DEFAULT).build()
+  public readonly api = this.buildTaquilapiClient()
+
   public readonly favoritesStorage = this.buildFavoriteStorage()
   public readonly messageDisplayDelegate = new MessageDisplayDelegate()
 
@@ -91,6 +92,11 @@ class Container {
     const reporter = this.buildBugReporter()
     this.bugReporter = reporter
     this.feedbackReporter = reporter
+  }
+
+  private buildTaquilapiClient () {
+    const clientFactory = new TequilapiClientFactory(CONFIG.TEQUILAPI_ADDRESS, CONFIG.TEQUILAPI_TIMEOUTS.DEFAULT)
+    return clientFactory.build(clientFactory.buildAdapter())
   }
 
   private buildBugReporter () {

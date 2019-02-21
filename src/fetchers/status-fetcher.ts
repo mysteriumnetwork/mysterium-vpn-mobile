@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConnectionStatusDTO } from 'mysterium-tequilapi'
+import { ConnectionStatusDTO } from 'mysterium-tequilapi/lib/dto/connection-status-dto'
 import { FetcherBase } from './fetcher-base'
 
 export class StatusFetcher extends FetcherBase<ConnectionStatusDTO> {

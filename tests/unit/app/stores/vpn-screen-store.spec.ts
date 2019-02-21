@@ -16,10 +16,10 @@
  */
 
 import { autorun, IReactionDisposer } from 'mobx'
+import { ConnectionStatus } from 'mysterium-tequilapi/lib/dto/connection-status'
 import Connection from '../../../../src/app/domain/connection'
 import { FavoritesStorage } from '../../../../src/app/domain/favorites-storage'
 import ProposalItemList from '../../../../src/app/domain/proposals/proposal-item-list'
-import ConnectionStatus from '../../../../src/app/models/connection-status'
 import Proposal from '../../../../src/app/models/proposal'
 import { ProposalItem } from '../../../../src/app/models/proposal-item'
 import { ServiceType } from '../../../../src/app/models/service-type'
@@ -161,18 +161,18 @@ describe('VpnScreenStore', () => {
     }
 
     it('returns false when not connected', () => {
-      changeConnectionStatus('NotConnected')
+      changeConnectionStatus(ConnectionStatus.NOT_CONNECTED)
       expect(store.proposalPickerDisabled).toBe(false)
     })
 
     it('returns true for when connection is in progress', () => {
-      changeConnectionStatus('Connected')
+      changeConnectionStatus(ConnectionStatus.CONNECTED)
       expect(store.proposalPickerDisabled).toBe(true)
 
-      changeConnectionStatus('Connecting')
+      changeConnectionStatus(ConnectionStatus.CONNECTING)
       expect(store.proposalPickerDisabled).toBe(true)
 
-      changeConnectionStatus('Disconnecting')
+      changeConnectionStatus(ConnectionStatus.DISCONNECTING)
       expect(store.proposalPickerDisabled).toBe(true)
     })
 
@@ -181,10 +181,10 @@ describe('VpnScreenStore', () => {
       const disposer = autorun(() => {
         disabled = store.proposalPickerDisabled
       })
-      changeConnectionStatus('NotConnected')
+      changeConnectionStatus(ConnectionStatus.NOT_CONNECTED)
       expect(disabled).toBe(false)
 
-      changeConnectionStatus('Connecting')
+      changeConnectionStatus(ConnectionStatus.CONNECTING)
       expect(disabled).toBe(true)
       disposer()
     })
