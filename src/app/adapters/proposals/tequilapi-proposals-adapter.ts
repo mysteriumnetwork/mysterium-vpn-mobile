@@ -61,7 +61,7 @@ function proposalDtoToModel (dto: ProposalDTO): Proposal | null {
 }
 
 function getCountryCode (p: ProposalDTO): string | null {
-  if (p.serviceDefinition && p.serviceDefinition.locationOriginate) {
+  if (p.serviceDefinition && p.serviceDefinition.locationOriginate && p.serviceDefinition.locationOriginate.country) {
     return p.serviceDefinition.locationOriginate.country.toLocaleLowerCase()
   }
   return null
