@@ -5527,10 +5527,10 @@ mv@^2.1.1, mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-mysterium-tequilapi@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/mysterium-tequilapi/-/mysterium-tequilapi-0.5.0.tgz#d4884385cdfd20429c684236cca5f0e9396392c4"
-  integrity sha512-uZ9Jh/EBu2CP9Qoi+WR6oGNmGUeW8S6meMpgUg+Amci+q2VIGlLp/oz9bbAjUmy/c7w2ufgD7GR7i4K7i4mHgQ==
+mysterium-tequilapi@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/mysterium-tequilapi/-/mysterium-tequilapi-0.7.1.tgz#9bb8684e75fa583b204992da556509eed7e97f3b"
+  integrity sha512-QMUHaH1WQi487/YgRRI5pv1jbD1gDAn3qkAKYedYmSg40WETFC0dCaUKsH2jdd2qURS4mAS7RZZqLoCpc2wuYQ==
   dependencies:
     "@babel/runtime" "^7.1.5"
     axios "^0.18.0"
