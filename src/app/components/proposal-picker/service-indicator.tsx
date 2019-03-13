@@ -16,18 +16,26 @@
  */
 
 import React from 'react'
-import { Image, ImageRequireSource, StyleSheet, ViewStyle } from 'react-native'
+import { Image, ImageRequireSource, StyleSheet, Text, ViewStyle } from 'react-native'
 import { ServiceType } from '../../models/service-type'
+import colors from '../../styles/colors'
 
 type ServiceIndicatorProps = {
   serviceType: ServiceType,
-  style?: ViewStyle
+  style?: ViewStyle,
+  selected?: boolean
 }
 
-const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, style }) => {
+const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, selected, style }) => {
+  if (serviceType === ServiceType.Wireguard) {
+    return (
+      <Text style={selected ? [styles.text, styles.textSelected] : styles.text}>WG</Text>
+    )
+  }
+
   const icon = getIconImage(serviceType)
   return (
-    <Image style={[styles.image, style]} source={icon} resizeMode="contain" />
+    <Image style={[styles.image, style]} source={icon} resizeMode="contain"/>
   )
 }
 
@@ -35,9 +43,7 @@ function getIconImage (serviceType: ServiceType): ImageRequireSource {
   if (serviceType === ServiceType.Openvpn) {
     return require('../../../assets/services/openvpn.png')
   }
-  if (serviceType === ServiceType.Wireguard) {
-    return require('../../../assets/services/wireguard.png')
-  }
+
   throw new Error('Unknown service type')
 }
 
@@ -47,6 +53,15 @@ const styles = StyleSheet.create({
   image: {
     width: ICON_SIZE,
     height: ICON_SIZE
+  },
+  text: {
+    fontWeight: 'bold',
+    color: colors.primary,
+    fontSize: 15,
+    marginHorizontal: 5
+  },
+  textSelected: {
+    color: '#ffffff'
   }
 })
 

@@ -83,11 +83,11 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
                     <CountryFlag countryCode={this.countryCode || ''} showPlaceholder={true}/>
                   </Col>
 
-                  <Col size={15} style={styles.serviceIndicatorBox}>
+                  <Col size={20} style={styles.serviceIndicatorBox}>
                     {this.renderServiceIndicator()}
                   </Col>
 
-                  <Col size={90} style={styles.countryNameBox}>
+                  <Col size={85} style={styles.countryNameBox}>
                     {this.renderProposalLabel()}
                   </Col>
 
