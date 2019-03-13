@@ -22,13 +22,14 @@ import colors from '../../styles/colors'
 
 type ServiceIndicatorProps = {
   serviceType: ServiceType,
-  style?: ViewStyle
+  style?: ViewStyle,
+  selected?: boolean
 }
 
-const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, style }) => {
+const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, selected, style }) => {
   if (serviceType === ServiceType.Wireguard) {
     return (
-      <Text style={styles.text}>WG</Text>
+      <Text style={selected ? [styles.text, styles.textSelected] : styles.text}>WG</Text>
     )
   }
 
@@ -58,6 +59,9 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 15,
     marginHorizontal: 5
+  },
+  textSelected: {
+    color: '#ffffff'
   }
 })
 

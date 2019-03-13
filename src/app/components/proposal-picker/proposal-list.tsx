@@ -155,6 +155,7 @@ class ProposalList extends React.Component<ListProps> {
           <ServiceIndicator
               serviceType={proposal.serviceType}
               style={styles.proposalItemElement}
+              selected={this.isProposalSelected(proposal)}
           />
           <QualityIndicator
             level={qualityLevel}
