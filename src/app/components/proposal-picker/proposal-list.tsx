@@ -107,11 +107,20 @@ class ProposalList extends React.Component<ListProps> {
     return options
   }
 
+  private getServiceLabel (serviceType: ServiceType | null, count: number) {
+    let label = (serviceType || this.SERVICE_TYPE_ALL_LABEL)
+
+    if (serviceType === ServiceType.Wireguard) {
+      label = label + '®'
+    }
+
+    return label + ` (${count})`
+  }
+
   private renderServiceFilterOption (serviceType: ServiceType | null): ReactNode {
     const count = this.store.proposalsCountByServiceType(serviceType)
-    const label = (serviceType || this.SERVICE_TYPE_ALL_LABEL) + ` (${count})`
     const active = serviceType === this.store.serviceTypeFilter
-
+    const label = this.getServiceLabel(serviceType, count)
     const buttonStyle = active ? [styles.buttonStyle, styles.buttonStyleActive] : [styles.buttonStyle]
     const buttonTextStyle = active ? [styles.buttonTextStyle, styles.buttonTextStyleActive] : [styles.buttonTextStyle]
     return (
@@ -282,6 +291,7 @@ const styles: any = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
+    borderTopWidth: 0,
     height: '100%',
     justifyContent: 'center'
   },
@@ -290,7 +300,8 @@ const styles: any = StyleSheet.create({
   },
   buttonTextStyle: {
     color: STYLES.COLOR_MAIN,
-    fontSize: 12
+    fontSize: 12,
+    paddingHorizontal: 5
   },
   buttonTextStyleActive: {
     color: STYLES.COLOR_BACKGROUND
