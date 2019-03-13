@@ -129,6 +129,7 @@ ShallowWrapper {
                     "borderBottomWidth": 0,
                     "borderColor": "#622461",
                     "borderRightWidth": 0,
+                    "borderTopWidth": 0,
                     "borderWidth": 1,
                     "height": "100%",
                     "justifyContent": "center",
@@ -146,6 +147,7 @@ ShallowWrapper {
                     Object {
                       "color": "#622461",
                       "fontSize": 12,
+                      "paddingHorizontal": 5,
                     },
                     Object {
                       "color": "#fff",
@@ -165,6 +167,7 @@ ShallowWrapper {
                     "borderBottomWidth": 0,
                     "borderColor": "#622461",
                     "borderRightWidth": 0,
+                    "borderTopWidth": 0,
                     "borderWidth": 1,
                     "height": "100%",
                     "justifyContent": "center",
@@ -179,6 +182,7 @@ ShallowWrapper {
                     Object {
                       "color": "#622461",
                       "fontSize": 12,
+                      "paddingHorizontal": 5,
                     },
                   ]
                 }
@@ -195,6 +199,7 @@ ShallowWrapper {
                     "borderBottomWidth": 0,
                     "borderColor": "#622461",
                     "borderRightWidth": 0,
+                    "borderTopWidth": 0,
                     "borderWidth": 1,
                     "height": "100%",
                     "justifyContent": "center",
@@ -209,11 +214,12 @@ ShallowWrapper {
                     Object {
                       "color": "#622461",
                       "fontSize": 12,
+                      "paddingHorizontal": 5,
                     },
                   ]
                 }
               >
-                WIREGUARD (0)
+                WIREGUARD® (0)
               </Styled(Text)>
             </TouchableOpacity>
           </Component>
@@ -512,6 +518,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -529,6 +536,7 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                       Object {
                         "color": "#fff",
@@ -548,6 +556,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -562,6 +571,7 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                     ]
                   }
@@ -578,6 +588,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -592,11 +603,12 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                     ]
                   }
                 >
-                  WIREGUARD (0)
+                  WIREGUARD® (0)
                 </Styled(Text)>
               </TouchableOpacity>
             </Component>,
@@ -658,6 +670,7 @@ ShallowWrapper {
                           "borderBottomWidth": 0,
                           "borderColor": "#622461",
                           "borderRightWidth": 0,
+                          "borderTopWidth": 0,
                           "borderWidth": 1,
                           "height": "100%",
                           "justifyContent": "center",
@@ -675,6 +688,7 @@ ShallowWrapper {
                           Object {
                             "color": "#622461",
                             "fontSize": 12,
+                            "paddingHorizontal": 5,
                           },
                           Object {
                             "color": "#fff",
@@ -694,6 +708,7 @@ ShallowWrapper {
                           "borderBottomWidth": 0,
                           "borderColor": "#622461",
                           "borderRightWidth": 0,
+                          "borderTopWidth": 0,
                           "borderWidth": 1,
                           "height": "100%",
                           "justifyContent": "center",
@@ -708,6 +723,7 @@ ShallowWrapper {
                           Object {
                             "color": "#622461",
                             "fontSize": 12,
+                            "paddingHorizontal": 5,
                           },
                         ]
                       }
@@ -724,6 +740,7 @@ ShallowWrapper {
                           "borderBottomWidth": 0,
                           "borderColor": "#622461",
                           "borderRightWidth": 0,
+                          "borderTopWidth": 0,
                           "borderWidth": 1,
                           "height": "100%",
                           "justifyContent": "center",
@@ -738,11 +755,12 @@ ShallowWrapper {
                           Object {
                             "color": "#622461",
                             "fontSize": 12,
+                            "paddingHorizontal": 5,
                           },
                         ]
                       }
                     >
-                      WIREGUARD (0)
+                      WIREGUARD® (0)
                     </Styled(Text)>
                   </TouchableOpacity>,
                 ],
@@ -822,6 +840,7 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                         Object {
                           "color": "#fff",
@@ -837,6 +856,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -858,6 +878,7 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                       Object {
                         "color": "#fff",
@@ -883,6 +904,7 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                       ]
                     }
@@ -895,6 +917,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -913,6 +936,7 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                     ],
                     "virtual": undefined,
@@ -925,7 +949,7 @@ ShallowWrapper {
               },
               Object {
                 "instance": null,
-                "key": "wireguard (0)",
+                "key": "wireguard® (0)",
                 "nodeType": "class",
                 "props": Object {
                   "activeOpacity": 0.2,
@@ -935,11 +959,12 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                       ]
                     }
                   >
-                    WIREGUARD (0)
+                    WIREGUARD® (0)
                   </Styled(Text)>,
                   "onPress": [Function],
                   "style": Array [
@@ -947,6 +972,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -960,17 +986,18 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "WIREGUARD (0)",
+                    "children": "WIREGUARD® (0)",
                     "style": Array [
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                     ],
                     "virtual": undefined,
                   },
                   "ref": null,
-                  "rendered": "WIREGUARD (0)",
+                  "rendered": "WIREGUARD® (0)",
                   "type": [Function],
                 },
                 "type": [Function],
@@ -1120,6 +1147,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -1137,6 +1165,7 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                       Object {
                         "color": "#fff",
@@ -1156,6 +1185,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -1170,6 +1200,7 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                     ]
                   }
@@ -1186,6 +1217,7 @@ ShallowWrapper {
                       "borderBottomWidth": 0,
                       "borderColor": "#622461",
                       "borderRightWidth": 0,
+                      "borderTopWidth": 0,
                       "borderWidth": 1,
                       "height": "100%",
                       "justifyContent": "center",
@@ -1200,11 +1232,12 @@ ShallowWrapper {
                       Object {
                         "color": "#622461",
                         "fontSize": 12,
+                        "paddingHorizontal": 5,
                       },
                     ]
                   }
                 >
-                  WIREGUARD (0)
+                  WIREGUARD® (0)
                 </Styled(Text)>
               </TouchableOpacity>
             </Component>
@@ -1503,6 +1536,7 @@ ShallowWrapper {
                         "borderBottomWidth": 0,
                         "borderColor": "#622461",
                         "borderRightWidth": 0,
+                        "borderTopWidth": 0,
                         "borderWidth": 1,
                         "height": "100%",
                         "justifyContent": "center",
@@ -1520,6 +1554,7 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                         Object {
                           "color": "#fff",
@@ -1539,6 +1574,7 @@ ShallowWrapper {
                         "borderBottomWidth": 0,
                         "borderColor": "#622461",
                         "borderRightWidth": 0,
+                        "borderTopWidth": 0,
                         "borderWidth": 1,
                         "height": "100%",
                         "justifyContent": "center",
@@ -1553,6 +1589,7 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                       ]
                     }
@@ -1569,6 +1606,7 @@ ShallowWrapper {
                         "borderBottomWidth": 0,
                         "borderColor": "#622461",
                         "borderRightWidth": 0,
+                        "borderTopWidth": 0,
                         "borderWidth": 1,
                         "height": "100%",
                         "justifyContent": "center",
@@ -1583,11 +1621,12 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                       ]
                     }
                   >
-                    WIREGUARD (0)
+                    WIREGUARD® (0)
                   </Styled(Text)>
                 </TouchableOpacity>
               </Component>,
@@ -1649,6 +1688,7 @@ ShallowWrapper {
                             "borderBottomWidth": 0,
                             "borderColor": "#622461",
                             "borderRightWidth": 0,
+                            "borderTopWidth": 0,
                             "borderWidth": 1,
                             "height": "100%",
                             "justifyContent": "center",
@@ -1666,6 +1706,7 @@ ShallowWrapper {
                             Object {
                               "color": "#622461",
                               "fontSize": 12,
+                              "paddingHorizontal": 5,
                             },
                             Object {
                               "color": "#fff",
@@ -1685,6 +1726,7 @@ ShallowWrapper {
                             "borderBottomWidth": 0,
                             "borderColor": "#622461",
                             "borderRightWidth": 0,
+                            "borderTopWidth": 0,
                             "borderWidth": 1,
                             "height": "100%",
                             "justifyContent": "center",
@@ -1699,6 +1741,7 @@ ShallowWrapper {
                             Object {
                               "color": "#622461",
                               "fontSize": 12,
+                              "paddingHorizontal": 5,
                             },
                           ]
                         }
@@ -1715,6 +1758,7 @@ ShallowWrapper {
                             "borderBottomWidth": 0,
                             "borderColor": "#622461",
                             "borderRightWidth": 0,
+                            "borderTopWidth": 0,
                             "borderWidth": 1,
                             "height": "100%",
                             "justifyContent": "center",
@@ -1729,11 +1773,12 @@ ShallowWrapper {
                             Object {
                               "color": "#622461",
                               "fontSize": 12,
+                              "paddingHorizontal": 5,
                             },
                           ]
                         }
                       >
-                        WIREGUARD (0)
+                        WIREGUARD® (0)
                       </Styled(Text)>
                     </TouchableOpacity>,
                   ],
@@ -1813,6 +1858,7 @@ ShallowWrapper {
                           Object {
                             "color": "#622461",
                             "fontSize": 12,
+                            "paddingHorizontal": 5,
                           },
                           Object {
                             "color": "#fff",
@@ -1828,6 +1874,7 @@ ShallowWrapper {
                         "borderBottomWidth": 0,
                         "borderColor": "#622461",
                         "borderRightWidth": 0,
+                        "borderTopWidth": 0,
                         "borderWidth": 1,
                         "height": "100%",
                         "justifyContent": "center",
@@ -1849,6 +1896,7 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                         Object {
                           "color": "#fff",
@@ -1874,6 +1922,7 @@ ShallowWrapper {
                           Object {
                             "color": "#622461",
                             "fontSize": 12,
+                            "paddingHorizontal": 5,
                           },
                         ]
                       }
@@ -1886,6 +1935,7 @@ ShallowWrapper {
                         "borderBottomWidth": 0,
                         "borderColor": "#622461",
                         "borderRightWidth": 0,
+                        "borderTopWidth": 0,
                         "borderWidth": 1,
                         "height": "100%",
                         "justifyContent": "center",
@@ -1904,6 +1954,7 @@ ShallowWrapper {
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                       ],
                       "virtual": undefined,
@@ -1916,7 +1967,7 @@ ShallowWrapper {
                 },
                 Object {
                   "instance": null,
-                  "key": "wireguard (0)",
+                  "key": "wireguard® (0)",
                   "nodeType": "class",
                   "props": Object {
                     "activeOpacity": 0.2,
@@ -1926,11 +1977,12 @@ ShallowWrapper {
                           Object {
                             "color": "#622461",
                             "fontSize": 12,
+                            "paddingHorizontal": 5,
                           },
                         ]
                       }
                     >
-                      WIREGUARD (0)
+                      WIREGUARD® (0)
                     </Styled(Text)>,
                     "onPress": [Function],
                     "style": Array [
@@ -1938,6 +1990,7 @@ ShallowWrapper {
                         "borderBottomWidth": 0,
                         "borderColor": "#622461",
                         "borderRightWidth": 0,
+                        "borderTopWidth": 0,
                         "borderWidth": 1,
                         "height": "100%",
                         "justifyContent": "center",
@@ -1951,17 +2004,18 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": "WIREGUARD (0)",
+                      "children": "WIREGUARD® (0)",
                       "style": Array [
                         Object {
                           "color": "#622461",
                           "fontSize": 12,
+                          "paddingHorizontal": 5,
                         },
                       ],
                       "virtual": undefined,
                     },
                     "ref": null,
-                    "rendered": "WIREGUARD (0)",
+                    "rendered": "WIREGUARD® (0)",
                     "type": [Function],
                   },
                   "type": [Function],
