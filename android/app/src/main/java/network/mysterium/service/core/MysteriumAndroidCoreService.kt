@@ -32,6 +32,7 @@ class MysteriumAndroidCoreService : VpnService() {
     val openvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
     val wireguardBridge = WireguardAndroidTunnelSetup(this)
     val options = Mysterium.defaultNetworkOptions()
+    options.experimentNATPunching = true
 
     mobileNode = Mysterium.newNode(filesPath, options)
     mobileNode?.overrideOpenvpnConnection(openvpnBridge)
