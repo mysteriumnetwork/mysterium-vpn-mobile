@@ -22,7 +22,8 @@ npm install -g react-native-cli
 
 ### Android
 * Setup crash reporting:
-    * Download firebase crashlytics config - `google-services.json` from https://console.firebase.google.com
+    * Ensure You have permission to the project here https://console.firebase.google.com
+    * Download project's firebase crashlytics config - `google-services.json` from https://console.firebase.google.com/u/1/project/mysterium-vpn/overview
     * Place it in `android/app/`
 
 #### Setup to run on actual device
@@ -58,7 +59,7 @@ yarn android
 #### Android Releases
 
 - Get `google-services.json`:
-    - Go to https://console.firebase.google.com
+    - Go to https://console.firebasxe.google.com
     - Open android project
     - Download `google-services.json`
     - Put it to `android/app/google-services.json`
@@ -72,19 +73,22 @@ yarn android
 
 - Setup values in environment:
 ```bash
-export FASTLANE_ANDROID_SIGNING_FILE_PATH=... # full path
-export FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS=...
-export FASTLANE_ANDROID_SIGNING_KEY_ALIAS=...
-export FASTLANE_ANDROID_SIGNING_KEY_PASS=...
+cp fastlane/.env.local.dist fastlane/.env.local
+vim fastlane/.env.local
 ```
 
 - Setup Fastlane, more info in *fastlane/README.md*
 
 ##### Building release APK
 
+- Install Fastlane (if you done have it ymy-key-aliaset)
+    ```bash
+    brew cask install fastlane
+    ```
+    
 - Make release build:
     ```bash
-    fastlane android build
+    source fastlane/.env.local && fastlane android build
     ```
     
 APK will be available under `android/app/build/outputs/apk/release/app-release.apk`
@@ -95,16 +99,9 @@ You can install this APK by:
 
 ##### Internal release
 
-- Download android secret json from Play Console
-
-- Specify downloaded file location
-    ```bash
-    export FASTLANE_ANDROID_SECRET_JSON_PATH=... # full path
-    ```
-
 - Build and publish internal release:
 ```bash
-fastlane android beta
+source fastlane/.env.local && fastlane android beta
 ```
 
 ### iOS
