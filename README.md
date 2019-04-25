@@ -59,7 +59,7 @@ yarn android
 #### Android Releases
 
 - Get `google-services.json`:
-    - Go to https://console.firebasxe.google.com
+    - Go to https://console.firebase.google.com
     - Open android project
     - Download `google-services.json`
     - Put it to `android/app/google-services.json`
@@ -81,7 +81,7 @@ vim fastlane/.env.local
 
 ##### Building release APK
 
-- Install Fastlane (if you done have it ymy-key-aliaset)
+- Install Fastlane (if don't have it yet)
     ```bash
     brew cask install fastlane
     ```
