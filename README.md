@@ -45,12 +45,6 @@ Install Android SDK, export `ANDROID_HOME` to SDK location, i.e.:
 export ANDROID_HOME=/Users/<username>/Library/Android/sdk/
 ```
 
-Download mobile node dependency:
-
-```bash
-./util_scripts/download-node
-```
-
 Run app on default device (connected or emulator)
 ```bash
 yarn android
@@ -78,6 +72,20 @@ vim fastlane/.env.local
 ```
 
 - Setup Fastlane, more info in *fastlane/README.md*
+
+##### Local development
+
+- Build Mysterium Node from source code:
+    ```bash
+    util_scripts/build-node.sh
+    ```
+
+- Uncomment local dependency in `android/app/build.gradle`:
+    ```bash
+    //implementation 'network.mysterium:mobile-node:0.7.1'
+    implementation files('libs/Mysterium.aar')
+    ```
+
 
 ##### Building release APK
 
