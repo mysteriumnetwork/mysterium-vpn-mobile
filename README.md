@@ -86,6 +86,7 @@ vim fastlane/.env.local
     implementation files('libs/Mysterium.aar')
     ```
 
+
 ##### Building release APK
 
 - Install Fastlane (if don't have it yet)
