@@ -1,6 +1,6 @@
 {
   "name": "MysteriumVPN",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "license": "GPL-3.0",
   "author": "Mysterium Network <team@netsys.technology>",
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",

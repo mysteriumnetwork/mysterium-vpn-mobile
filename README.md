@@ -82,7 +82,7 @@ vim fastlane/.env.local
 
 - Uncomment local dependency in `android/app/build.gradle`:
     ```bash
-    //implementation 'network.mysterium:mobile-node:0.7.1'
+    //implementation 'network.mysterium:mobile-node:0.8.1'
     implementation files('libs/Mysterium.aar')
     ```
 
