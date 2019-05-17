@@ -186,7 +186,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'network.mysterium:mobile-node:0.8.4'
-    //implementation files('libs/Mysterium.aar')
+    // implementation files('libs/Mysterium.aar')
 }
 
 // Run this once to be able to run the application with BUCK
