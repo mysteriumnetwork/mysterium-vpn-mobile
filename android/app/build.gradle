@@ -185,7 +185,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'network.mysterium:mobile-node:0.8.4'
+    implementation 'network.mysterium:mobile-node:0.9.0'
     // implementation files('libs/Mysterium.aar')
 }
 
