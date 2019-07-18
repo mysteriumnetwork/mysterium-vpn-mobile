@@ -83,11 +83,11 @@ apply from: "../../node_modules/react-native/react.gradle"
 /**
  * Get the version code from command line param
  *
- * @return int If the param -PversionCode is present then return int value or -1
+ * @return int If the param -PversionCode is present then return int value or 1
  */
 def getVersionCode = { ->
 
-    def code = project.hasProperty('versionCode') ? versionCode.toInteger() : -1
+    def code = project.hasProperty('versionCode') ? versionCode.toInteger() : 1
 
     println "VersionCode is set to $code"
 
