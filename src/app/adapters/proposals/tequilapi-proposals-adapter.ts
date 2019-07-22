@@ -83,14 +83,19 @@ function getCountryName (countryCode: string | null) {
 }
 
 function metricsDtoToModel (metrics?: MetricsDTO): Metrics {
-  const nullMetrics: Metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
-  if (metrics === undefined) {
-    return nullMetrics
+  const emptyMetrics: Metrics = { connectCount: { success: 0, fail: 0, timeout: 0 } }
+  if (metrics === undefined || metrics.connectCount === undefined) {
+    return emptyMetrics
   }
-  if (metrics.connectCount === undefined) {
-    return nullMetrics
+
+  // FIXME quality oracle sometimes returns negative values, patching those to 0
+  return {
+    connectCount: {
+      success: Math.max(0, metrics.connectCount.success),
+      fail: Math.max(0, metrics.connectCount.fail),
+      timeout: Math.max(0, metrics.connectCount.timeout)
+    }
   }
-  return { connectCount: metrics.connectCount }
 }
 
 export default TequilapiProposalsAdapter
