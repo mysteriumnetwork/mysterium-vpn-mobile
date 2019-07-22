@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import axios from 'axios'
 import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
 import { MetricsDTO } from 'mysterium-tequilapi/lib/dto/metrics-dto'
 import { ProposalDTO } from 'mysterium-tequilapi/lib/dto/proposal'
@@ -26,14 +27,21 @@ import { stringToServiceType } from '../../models/service-type'
 import { ProposalsAdapter } from './proposals-adapter'
 
 class TequilapiProposalsAdapter implements ProposalsAdapter {
-  private readonly SERVICE_TYPE = 'all'
 
+  // @ts-ignore
   constructor (private tequilapiClient: TequilapiClient) {}
 
   public async findProposals (): Promise<Proposal[]> {
-    const options: ProposalQueryOptions = { fetchConnectCounts: true, serviceType: this.SERVICE_TYPE }
-    const proposalDtos: ProposalDTO[] = await this.tequilapiClient.findProposals(options)
-
+    const options: ProposalQueryOptions = {
+      fetchConnectCounts: true
+    }
+    const proposalDtos = await axios.get('http://127.0.0.1:4050/proposals', { params: options })
+        .then(res => res.data.proposals)
+        .then(proposals => proposals.filter((p: any) => {
+          const applicableServiceType = p.serviceType === 'openvpn' || p.serviceType === 'wireguard'
+          const withoutWhitelistPolicy = !p.accessPolicies
+          return applicableServiceType && withoutWhitelistPolicy
+        }))
     return proposalDtosToModels(proposalDtos)
   }
 }
