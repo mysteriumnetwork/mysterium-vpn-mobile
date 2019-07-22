@@ -22,6 +22,10 @@ import Connection from './domain/connection'
 import { IdentityManager } from './domain/identity-manager'
 import ProposalsStore from './stores/proposals-store'
 
+function sleep (ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 /**
  * Prepares app: refreshes connection state, ip and unlocks identity.
  * Starts periodic state refreshing.
@@ -35,6 +39,7 @@ class AppLoader {
 
   public async load () {
     await this.waitForClient()
+    await sleep(2500)
     this.proposals.startUpdating()
     this.connection.startUpdating()
     try {
