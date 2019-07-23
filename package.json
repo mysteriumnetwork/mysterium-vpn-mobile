@@ -1,6 +1,6 @@
 {
   "name": "MysteriumVPN",
-  "version": "0.8.5",
+  "version": "0.10.0",
   "license": "GPL-3.0",
   "author": "Mysterium Network <team@netsys.technology>",
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -39,7 +39,7 @@
   "dependencies": {
     "@types/react-native-htmlview": "^0.12.2",
     "@types/react-native-push-notification": "^3.0.3",
-    "axios": "^0.18.0",
+    "axios": "0.19.0",
     "computed-async-mobx": "^4.1.0",
     "mobx": "^4.3.1",
     "mobx-react": "^5.1.0",
