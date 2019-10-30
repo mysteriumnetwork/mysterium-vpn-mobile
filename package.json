@@ -9,7 +9,8 @@
     "ios": "react-native run-ios",
     "test:unit": "jest",
     "lint": "tsc --noEmit --skipLibCheck && tslint -p . 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
-    "ci": "yarn lint && yarn test:unit && util_scripts/check-headers.sh"
+    "ci": "yarn lint && yarn test:unit && util_scripts/check-headers.sh",
+    "bundle-android-js": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.11",

@@ -1,0 +1,40 @@
+image: mysteriumnetwork/mobile-ci:0.1.0
+
+stages:
+  - install
+  - test
+  - deploy
+
+install-packages:
+  stage: install
+  script:
+    - yarn install
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    when: on_success
+    paths:
+      - node_modules/
+
+lint-and-test:
+  stage: test
+  dependencies:
+    - install-packages
+  script:
+    - yarn ci
+
+push-beta:
+  stage: deploy
+  dependencies:
+    - install-packages
+  when: manual
+  only:
+    - master
+    - /^release-*/
+  script:
+    - echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
+    - echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
+    - echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
+    - bundle update --bundler
+    - fastlane android beta
