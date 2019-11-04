@@ -6,7 +6,9 @@
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "android": "react-native run-android",
+    "log-android": "react-native log-android",
     "ios": "react-native run-ios",
+    "start": "react-native start",
     "test:unit": "jest",
     "lint": "tsc --noEmit --skipLibCheck && tslint -p . 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
     "ci": "yarn lint && yarn test:unit && util_scripts/check-headers.sh",
