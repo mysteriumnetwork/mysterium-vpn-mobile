@@ -27,7 +27,7 @@ interface ConnectionAdapter {
   fetchStatus (): Promise<ConnectionStatusDTO>
   fetchStatistics (): Promise<ConnectionStatistics>
   fetchOriginalLocation (): Promise<string | undefined>
-  fetchLocation (): Promise<Location>
+  fetchConnectionLocation (): Promise<Location>
 }
 
 class ConnectionCanceled extends Error {

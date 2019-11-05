@@ -62,7 +62,7 @@ export class MockConnectionAdapter implements ConnectionAdapter {
     }
   }
 
-  public async fetchLocation (): Promise<Location> {
+  public async fetchConnectionLocation (): Promise<Location> {
     return { ip: '100.101.102.103', countryCode: 'lt' }
   }
 
