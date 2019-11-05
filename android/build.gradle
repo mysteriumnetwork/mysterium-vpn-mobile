@@ -29,6 +29,9 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
+        maven {
+            url 'https://dl.bintray.com/mysteriumnetwork/maven'
+        }
         maven { url 'https://maven.fabric.io/public' }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm

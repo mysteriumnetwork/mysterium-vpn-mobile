@@ -129,7 +129,7 @@ class Connection {
   }
 
   private buildLocationFetcher (): LocationFetcher {
-    const fetchLocation = this.connectionAdapter.fetchLocation.bind(this.connectionAdapter)
+    const fetchLocation = this.connectionAdapter.fetchConnectionLocation.bind(this.connectionAdapter)
     return new LocationFetcher(fetchLocation, this, location => {
       this.updateLocation(location)
     })
