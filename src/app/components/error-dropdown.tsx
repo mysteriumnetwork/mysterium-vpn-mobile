@@ -17,14 +17,14 @@
 
 import React, { ReactNode } from 'react'
 // @ts-ignore
-import DropdownAlert from 'react-native-dropdownalert'
+import DropdownAlert, { DropdownAlertType } from 'react-native-dropdownalert'
 import MessageDisplay from '../messages/message-display'
 
 /**
  * Allowing show error messages as a dropdowns.
  */
 class ErrorDropdown extends React.Component implements MessageDisplay {
-  private dropdown: DropdownAlert
+  private dropdown?: DropdownAlert
 
   public render (): ReactNode {
     return <DropdownAlert ref={(ref: DropdownAlert) => this.dropdown = ref}/>
@@ -38,7 +38,7 @@ class ErrorDropdown extends React.Component implements MessageDisplay {
     this.alert('info', 'Info', message)
   }
 
-  private alert (type: string, title: string, message: string) {
+  private alert (type: DropdownAlertType, title: string, message: string) {
     if (this.dropdown === undefined) {
       throw new Error('DropdownAlert not set yet')
     }

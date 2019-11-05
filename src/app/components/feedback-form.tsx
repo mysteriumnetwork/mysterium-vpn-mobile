@@ -64,6 +64,8 @@ class FeedbackForm extends React.PureComponent
             style={[styles.messageBox, styles.input]}
             placeholder={'You may enter your feedback here...'}
             rowSpan={5}
+            bordered={false}
+            underline={false}
             onChangeText={this.setMessage}
           />
           </Row>

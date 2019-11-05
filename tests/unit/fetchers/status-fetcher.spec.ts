@@ -37,7 +37,7 @@ describe('StatusFetcher', () => {
   })
 
   beforeEach(() => {
-    api = new TequilapiClientMock()
+    api = new TequilapiClientMock() as any
     status = null
     fetcher = new StatusFetcher(api.connectionStatus, dto => {
       status = dto.status

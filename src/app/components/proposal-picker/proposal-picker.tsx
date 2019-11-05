@@ -51,7 +51,7 @@ class ProposalPicker extends React.Component<PickerProps, PickerState> {
   }
 
   public render (): ReactNode {
-    const pickerButtonStyles = [styles.pickerButton]
+    const pickerButtonStyles: any[] = [styles.pickerButton]
     if (this.props.disabled) {
       pickerButtonStyles.push(styles.pickerButtonDisabled)
     }

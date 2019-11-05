@@ -64,7 +64,7 @@ class ProposalList extends React.Component<ListProps> {
               <Input
                 placeholderTextColor={platformStyles.search.inputColor}
                 placeholder={translations.PROPOSAL_SEARCH}
-                onChange={(event) => this.onSearchValueChange(event.nativeEvent.text)}
+                onChange={(event: any) => this.onSearchValueChange(event.nativeEvent.text)}
                 style={styles.searchInput}
               />
             </View>

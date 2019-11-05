@@ -27,7 +27,7 @@ type StatsProps = {
   style?: StyleProp<ViewStyle>
 }
 
-const Stats: React.SFC<StatsProps> = ({
+const Stats: React.FunctionComponent<StatsProps> = ({
   style,
   duration,
   bytesReceived,
@@ -59,7 +59,7 @@ type StatsBlockProps = {
   textUnits: string
 }
 
-const StatsBlock: React.SFC<StatsBlockProps> = ({
+const StatsBlock: React.FunctionComponent<StatsBlockProps> = ({
   textName, textAmount, textUnits
 }) => {
   return (

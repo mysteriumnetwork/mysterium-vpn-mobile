@@ -16,24 +16,21 @@
  */
 
 import AppLoader from '../../../src/app/app-loader'
-import Connection from '../../../src/app/domain/connection'
 import { IdentityManager } from '../../../src/app/domain/identity-manager'
-import ProposalsStore from '../../../src/app/stores/proposals-store'
 import ConsoleReporter from '../../../src/bug-reporter/console-reporter'
-import TequilApiDriver from '../../../src/libraries/tequil-api/tequil-api-driver'
 import { MockIdentityAdapter } from '../mocks/mock-identity-adapter'
 
 const emptyPromise = new Promise((resolve) => resolve({}))
-const TequilApiDriverMock = jest.fn<TequilApiDriver>(() => ({
+const TequilApiDriverMock = jest.fn(() => ({
   healthcheck: jest.fn().mockReturnValue(emptyPromise),
   startFetchers: jest.fn().mockReturnValue(emptyPromise),
   unlock: jest.fn().mockReturnValue(emptyPromise)
 }))
 
-const ConnectionMock = jest.fn<Connection>(() => ({
+const ConnectionMock = jest.fn(() => ({
   startUpdating: jest.fn().mockReturnValue(null)
 }))
-const ProposalsStoreMock = jest.fn<ProposalsStore>(() => ({
+const ProposalsStoreMock = jest.fn(() => ({
   startUpdating: jest.fn().mockReturnValue(null)
 }))
 
@@ -46,7 +43,13 @@ describe('AppLoader', () => {
       const identityManager = new IdentityManager(identityAdapter, 'passphrase')
       const connection = new ConnectionMock()
       const proposalsStore = new ProposalsStoreMock()
-      const loader = new AppLoader(tequilApiDriver, identityManager, connection, proposalsStore, new ConsoleReporter())
+      const loader = new AppLoader(
+        tequilApiDriver as any,
+        identityManager,
+        connection as any,
+        proposalsStore as any,
+        new ConsoleReporter()
+      )
 
       await loader.load()
 

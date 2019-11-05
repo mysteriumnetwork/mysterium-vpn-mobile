@@ -26,7 +26,7 @@ type ServiceIndicatorProps = {
   selected?: boolean
 }
 
-const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, selected, style }) => {
+const ServiceIndicator: React.FunctionComponent<ServiceIndicatorProps> = ({ serviceType, selected, style }) => {
   if (serviceType === ServiceType.Wireguard) {
     return (
       <Text style={selected ? [styles.text, styles.textSelected] : styles.text}>WG</Text>
@@ -35,7 +35,7 @@ const ServiceIndicator: React.SFC<ServiceIndicatorProps> = ({ serviceType, selec
 
   const icon = getIconImage(serviceType)
   return (
-    <Image style={[styles.image, style]} source={icon} resizeMode="contain"/>
+    <Image style={[styles.image, style] as any} source={icon} resizeMode="contain"/>
   )
 }
 
