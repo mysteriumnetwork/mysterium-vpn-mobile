@@ -8,7 +8,7 @@
     "android": "react-native run-android",
     "log-android": "react-native log-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "start": "react-native start --reset-cache",
     "test:unit": "jest",
     "lint": "tsc --noEmit --skipLibCheck && tslint -p . 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
     "ci": "yarn lint && yarn test:unit && util_scripts/check-headers.sh",
