@@ -160,9 +160,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode getVersionCode()
         versionName getVersionName()
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
     }
     splits {
         abi {
