@@ -20,7 +20,7 @@ import React from 'react'
 import { Image } from 'react-native'
 import styles from '../app-styles'
 
-const LogoBackground: React.SFC = () => {
+const LogoBackground: React.FunctionComponent = () => {
   return (
     <Image
       style={styles.imageBackground}

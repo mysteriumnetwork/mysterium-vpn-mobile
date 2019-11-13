@@ -16,7 +16,7 @@
  */
 
 import React, { Component } from 'react'
-import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { CONFIG } from '../../config'
 import { ConnectionStatusEnum } from '../../libraries/tequil-api/enums'
 import { STYLES } from '../../styles'
@@ -30,8 +30,8 @@ type ButtonConnectProps = {
 
 export default class ButtonConnect extends Component<ButtonConnectProps> {
   public render () {
-    let buttonStylesDisabled: StyleProp<ViewStyle>
-    let textStylesDisabled: StyleProp<ViewStyle>
+    let buttonStylesDisabled: any
+    let textStylesDisabled: any
 
     if (!this.isButtonEnabled) {
       buttonStylesDisabled = styles.disabledRoot

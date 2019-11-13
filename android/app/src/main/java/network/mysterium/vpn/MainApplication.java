@@ -19,13 +19,14 @@ package network.mysterium.vpn;
 
 import android.app.Application;
 import android.util.Log;
+import android.content.Context;
+import com.facebook.react.PackageList;
 
 import com.facebook.react.ReactApplication;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import cat.ereza.logcatreporter.LogcatReporter;
@@ -35,7 +36,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import network.mysterium.logging.BugReporterPackage;
 
-import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -49,12 +50,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.asList(
-              new MainReactPackage(),
-              new ReactNativePushNotificationPackage(),
-              new BugReporterPackage(),
-              new VectorIconsPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+        packages.add(new BugReporterPackage());
+      return packages;
     }
 
     @Override
@@ -73,8 +72,34 @@ public class MainApplication extends Application implements ReactApplication {
     setupLogging();
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-
+    // initializeFlipper(this); // Remove this line if you don't want Flipper enabled
     Log.i(TAG, "Application started");
+  }
+
+  /**
+   * Loads Flipper in React Native templates.
+   *
+   * @param context
+   */
+  private static void initializeFlipper(Context context) {
+    if (BuildConfig.DEBUG) {
+      try {
+        /*
+         We use reflection here to pick up the class that initializes Flipper,
+        since Flipper library is not available in release mode
+        */
+        Class<?> aClass = Class.forName("com.facebook.flipper.ReactNativeFlipper");
+        aClass.getMethod("initializeFlipper", Context.class).invoke(null, context);
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      } catch (InvocationTargetException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private void setupLogging() {

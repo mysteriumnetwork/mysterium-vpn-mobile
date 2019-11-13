@@ -5,6 +5,8 @@
 build/
 .idea
 .gradle
+.project
+.settings
 local.properties
 *.iml
 ios/Index/
@@ -34,6 +36,7 @@ google-services.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+!debug.keystore
 
 # Xcode
 

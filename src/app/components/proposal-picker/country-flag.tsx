@@ -27,7 +27,7 @@ type FlagProps = {
   style?: StyleProp<ImageStyle>
 }
 
-const CountryFlag: React.SFC<FlagProps> = ({ countryCode, showPlaceholder, style }) => {
+const CountryFlag: React.FunctionComponent<FlagProps> = ({ countryCode, showPlaceholder, style }) => {
   const uri = getCountryImageUri(countryCode)
   if (!uri) {
     if (showPlaceholder) {

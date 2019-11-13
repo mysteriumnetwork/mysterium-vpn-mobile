@@ -24,7 +24,7 @@ type ModalProps = {
   onClose: () => void
 }
 
-const ProposalModal: React.SFC<ModalProps> = ({ isOpen, onClose, children }) => {
+const ProposalModal: React.FunctionComponent<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <Modal
       animationType="slide"

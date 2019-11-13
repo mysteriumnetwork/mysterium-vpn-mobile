@@ -24,7 +24,7 @@ type QualityIndicatorProps = {
   style?: StyleProp<ImageStyle>
 }
 
-const QualityIndicator: React.SFC<QualityIndicatorProps> = ({ level, style }) => {
+const QualityIndicator: React.FunctionComponent<QualityIndicatorProps> = ({ level, style }) => {
   const icon = getIconImage(level)
   return (
     <Image style={[styles.image, style]} source={icon} resizeMode="contain" />

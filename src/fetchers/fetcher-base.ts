@@ -16,14 +16,13 @@
  */
 
 import { observable, reaction } from 'mobx'
-import Timer = NodeJS.Timer
 import { Fetcher } from './fetcher'
 
 export abstract class FetcherBase<T> implements Fetcher {
   @observable
   public isRunning: boolean = false
 
-  private interval?: Timer
+  private interval?: NodeJS.Timer
 
   protected constructor (protected name: string, private update: (data: T) => void) {
   }

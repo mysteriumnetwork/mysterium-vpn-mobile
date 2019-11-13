@@ -23,7 +23,7 @@ type ButtonProps = {
   onPress: () => void
 }
 
-const TextButton: React.SFC<ButtonProps> = ({ onPress, children }) => {
+const TextButton: React.FunctionComponent<ButtonProps> = ({ onPress, children }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.touchable}>
       <Text style={styles.text}>{children}</Text>

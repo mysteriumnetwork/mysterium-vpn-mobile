@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TequilapiClient } from 'mysterium-tequilapi/lib/client'
-
-const TequilapiClientMock = jest.fn<TequilapiClient>(() => ({
+const TequilapiClientMock = jest.fn(() => ({
   connectionStatus: jest
     .fn()
     .mockReturnValue(new Promise((resolve) => resolve({
