@@ -15,22 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.logging
+package network.mysterium.ui
 
-import com.crashlytics.android.Crashlytics
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
-class FeedbackException(message: String) : Exception(message)
-
-class BugReporter {
-    fun logException(value: String) {
-        Crashlytics.logException(RuntimeException(value))
-    }
-
-    fun setUserIdentifier(userIdentifier: String) {
-        Crashlytics.setUserIdentifier(userIdentifier)
-    }
-
-    fun sendFeedback(type: String, message: String) {
-        Crashlytics.logException(FeedbackException("$type:$message"))
-    }
+fun hideKeyboard(fragmentView: View) {
+    val imm = fragmentView.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(fragmentView.windowToken, 0)
 }

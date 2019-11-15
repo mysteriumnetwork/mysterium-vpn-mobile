@@ -15,22 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.logging
+package network.mysterium.ui
 
-import com.crashlytics.android.Crashlytics
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 
-class FeedbackException(message: String) : Exception(message)
+fun Spinner.onItemSelected(cb: (position: Int) -> Unit) {
+    this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            cb(position)
+        }
 
-class BugReporter {
-    fun logException(value: String) {
-        Crashlytics.logException(RuntimeException(value))
-    }
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+        }
 
-    fun setUserIdentifier(userIdentifier: String) {
-        Crashlytics.setUserIdentifier(userIdentifier)
-    }
-
-    fun sendFeedback(type: String, message: String) {
-        Crashlytics.logException(FeedbackException("$type:$message"))
     }
 }

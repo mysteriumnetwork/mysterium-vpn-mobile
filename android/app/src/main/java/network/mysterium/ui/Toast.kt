@@ -15,21 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.logging
+package network.mysterium.ui
 
-import com.facebook.react.ReactPackage
-import com.facebook.react.bridge.NativeModule
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.uimanager.ViewManager
+import android.content.Context
+import android.widget.Toast
 
-class BugReporterPackage : ReactPackage {
-    override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
-        return mutableListOf(
-            BugReporter(reactContext)
-        )
-    }
-
-    override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<ViewManager<*, *>> {
-        return mutableListOf()
-    }
+fun showMessage(ctx: Context, message: String, duration: Int = Toast.LENGTH_SHORT) {
+    val t = Toast.makeText(ctx, message, duration)
+    t.show()
 }

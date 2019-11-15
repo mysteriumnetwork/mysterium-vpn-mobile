@@ -1,28 +1,7 @@
 image: mysteriumnetwork/mobile-ci:0.1.0
 
 stages:
-  - install
-  - test
   - deploy
-
-install-packages:
-  stage: install
-  script:
-    - yarn install
-  cache:
-    paths:
-      - node_modules/
-  artifacts:
-    when: on_success
-    paths:
-      - node_modules/
-
-lint-and-test:
-  stage: test
-  dependencies:
-    - install-packages
-  script:
-    - yarn ci
 
 push-beta:
   stage: deploy
