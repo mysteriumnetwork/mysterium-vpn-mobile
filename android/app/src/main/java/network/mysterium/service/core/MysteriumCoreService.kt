@@ -18,9 +18,14 @@
 package network.mysterium.service.core
 
 import android.os.IBinder
+import mysterium.MobileNode
 
 interface MysteriumCoreService : IBinder {
-  fun StartTequila()
+  fun startNode(): MobileNode
 
-  fun StopTequila()
+  fun stopNode()
+
+  fun showNotification(title: String, content: String = "")
+
+  fun hideNotifications()
 }

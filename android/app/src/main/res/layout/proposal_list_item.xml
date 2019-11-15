@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_height="wrap_content">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/proposal_item_country_flag"
+        android:src="@drawable/service_openvpn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="10dp"
+        app:riv_corner_radius="34dp" />
+
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:layout_toRightOf="@id/proposal_item_country_flag"
+        android:layout_toLeftOf="@id/proposal_item_service_type"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/proposal_item_country_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Australia"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/proposal_item_provider_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/ColorSecondary"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="0x01021001b8172e8b67f3e63af94b6ae1d5d39c61"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/proposal_item_service_type"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/proposal_item_quality_level"
+        android:src="@drawable/service_openvpn" />
+
+    <ImageView
+        android:id="@+id/proposal_item_quality_level"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/proposal_item_favorite"
+        android:src="@drawable/quality_unknown" />
+
+    <ImageView
+        android:id="@+id/proposal_item_favorite"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_star_border_black_24dp" />
+
+</RelativeLayout>
+

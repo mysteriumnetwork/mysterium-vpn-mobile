@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">MysteriumVPN</string>
+    <string name="connect_button_cancel">Cancel</string>
+    <string name="connect_button_connect">Connect</string>
+    <string name="connect_button_disconnect">Disconnect</string>
+    <string name="connect_button_disconnecting">Disconnecting</string>
+
+    <string name="conn_state_connected">Connected</string>
+    <string name="conn_state_connecting">Connecting</string>
+    <string name="conn_state_not_connected">Disconnected</string>
+    <string name="conn_state_disconnecting">Disconnecting</string>
+
+    <string name="vpn_stats_sent">SENT</string>
+    <string name="vpn_stats_bytes">B</string>
+    <string name="vpn_stats_received">RECEIVED</string>
+    <string name="vpn_stats_duration">DURATION</string>
+    <string name="vpn_select_proposal">Select proposal...</string>
+    <string name="vpn_ip_updating_label">IP: Updating</string>
+    <string name="proposals_search_hint">Search proposals</string>
+    <string name="vpn_connect">Connect</string>
+    <string name="terms_accept">Accept</string>
+    <string name="proposals_close">CLOSE</string>
+    <string name="feedback_submit_success">Thanks! Your feedback will be submitted the next time you start the app.</string>
 </resources>
