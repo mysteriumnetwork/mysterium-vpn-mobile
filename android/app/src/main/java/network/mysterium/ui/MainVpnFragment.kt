@@ -171,7 +171,7 @@ class MainVpnFragment : Fragment() {
 
         vpnProposalPickerFavoriteLayput.isEnabled = false
         proposalsViewModel.toggleFavoriteProposal(selectedProposal) {
-            updateSelectedProposalFavoriteIcon(!selectedProposal.isFavorite)
+            updateSelectedProposalFavoriteIcon(selectedProposal.isFavorite)
             vpnProposalPickerFavoriteLayput.isEnabled = true
         }
     }
