@@ -21,13 +21,13 @@
 
     <style name="VpnStatsLabel">
         <item name="android:textColor">@color/ColorSecondary</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="VpnStatsValue">
         <item name="android:textColor">@color/ColorMain</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:gravity">center</item>
     </style>
 

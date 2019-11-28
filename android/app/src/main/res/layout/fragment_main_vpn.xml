@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -75,22 +74,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vpn_center_bg_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/vpn_stats_layout"
         app:layout_constraintTop_toBottomOf="@id/vpn_top_status_layout">
 
         <ImageView
             android:id="@+id/vpn_bg_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/background_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/vpn_picker_and_button_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top">
+            android:layout_height="0dp"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vpn_proposal_picker_layout"
@@ -100,19 +102,17 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/proposal_picker_bg"
                 android:gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.68">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/vpn_select_proposal_layout"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="?android:attr/selectableItemBackground"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/vpn_proposal_picker_favorite_button"
                     app:layout_constraintStart_toStartOf="parent"
@@ -173,10 +173,10 @@
                     android:id="@+id/vpn_proposal_picker_favorite_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:src="@drawable/ic_star_border_black_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -190,15 +190,14 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="200dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="10dp"
                 android:background="@color/ColorSecondary"
                 android:enabled="false"
                 android:text="@string/connect_button_loading"
                 android:textColor="@color/ColorMain"
+                android:layout_marginTop="10dp"
                 app:backgroundTint="#ffffff"
                 app:cornerRadius="7dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vpn_proposal_picker_layout"
                 app:strokeColor="@color/ColorMain"
@@ -206,128 +205,128 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/vpn_stats_layout"
-            android:layout_width="match_parent"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vpn_stats_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/vpn_version_label">
+
+        <LinearLayout
+            android:id="@+id/vpn_layout_duration"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/vpn_version_label">
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/vpn_layout_received"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <LinearLayout
-                android:id="@+id/vpn_layout_duration"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/textView8"
+                style="@style/VpnStatsLabel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/vpn_layout_received"
-                app:layout_constraintStart_toStartOf="parent">
+                android:text="@string/vpn_stats_duration" />
 
-                <TextView
-                    android:id="@+id/textView8"
-                    style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vpn_stats_duration" />
-
-                <TextView
-                    android:id="@+id/vpn_stats_duration"
-                    style="@style/VpnStatsValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="00:00:00" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="H:M:S" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/vpn_layout_received"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/vpn_stats_duration"
+                style="@style/VpnStatsValue"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/textView10"
-                    style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/vpn_stats_received" />
-
-                <TextView
-                    android:id="@+id/vpn_stats_bytes_received"
-                    style="@style/VpnStatsValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/textView9"
-                    style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vpn_stats_bytes" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/vpn_layout_sent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/vpn_layout_received">
+                android:text="00:00:00" />
 
-                <TextView
-                    android:id="@+id/textView12"
-                    style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vpn_stats_sent" />
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/VpnStatsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="H:M:S" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/vpn_stats_bytes_sent"
-                    style="@style/VpnStatsValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vpn_stats_bytes" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/vpn_version_label"
+        <LinearLayout
+            android:id="@+id/vpn_layout_received"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/ColorSecondary"
-            android:textSize="10dp"
-            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
 
+            <TextView
+                android:id="@+id/textView10"
+                style="@style/VpnStatsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/vpn_stats_received" />
+
+            <TextView
+                android:id="@+id/vpn_stats_bytes_received"
+                style="@style/VpnStatsValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/textView9"
+                style="@style/VpnStatsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vpn_stats_bytes" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/vpn_layout_sent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/vpn_layout_received">
+
+            <TextView
+                android:id="@+id/textView12"
+                style="@style/VpnStatsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vpn_stats_sent" />
+
+            <TextView
+                android:id="@+id/vpn_stats_bytes_sent"
+                style="@style/VpnStatsValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/textView14"
+                style="@style/VpnStatsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vpn_stats_bytes" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/vpn_version_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/ColorSecondary"
+        android:textSize="10dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
