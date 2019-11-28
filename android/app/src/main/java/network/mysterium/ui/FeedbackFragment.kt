@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.button.MaterialButton
@@ -52,13 +53,17 @@ class FeedbackFragment : Fragment() {
             handleFeedbackSubmit(root)
         }
 
+        onBackPress {
+            navigateTo(root, Screen.MAIN)
+        }
+
         return root
     }
 
     private fun handleFeedbackSubmit(root: View) {
         feedbackSubmitButton.isEnabled = false
         feedbackViewModel.submit()
-        root.findNavController().navigate(R.id.action_go_to_vpn_screen)
+        navigateTo(root, Screen.MAIN)
         showMessage(root.context, getString(R.string.feedback_submit_success))
     }
 

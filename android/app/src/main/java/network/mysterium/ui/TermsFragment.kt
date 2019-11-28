@@ -57,6 +57,8 @@ class TermsFragment : Fragment() {
             }
         }
 
+        onBackPress { emulateHomePress() }
+
         return root
     }
 }

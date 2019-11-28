@@ -26,7 +26,6 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,11 +76,15 @@ class ProposalsFragment : Fragment() {
         initProposalsServiceTypeFilter(root)
         initProposalsSearchFilter()
 
+        onBackPress {
+            navigateTo(root, Screen.MAIN)
+        }
+
         return root
     }
 
     private fun navigateToMainVpnFragment(root: View) {
-        root.findNavController().navigate(R.id.action_go_to_vpn_screen)
+        navigateTo(root, Screen.MAIN)
     }
 
     private fun initProposalsSearchFilter() {

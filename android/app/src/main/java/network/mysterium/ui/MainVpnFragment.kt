@@ -18,10 +18,7 @@
 package network.mysterium.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.VpnService
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,13 +26,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
-import kotlinx.coroutines.*
-import network.mysterium.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import network.mysterium.MainApplication
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
@@ -86,7 +83,7 @@ class MainVpnFragment : Fragment() {
         vpnVersionLabel = root.findViewById(R.id.vpn_version_label)
 
         feedbackButton.setOnClickListener {
-            root.findNavController().navigate(R.id.action_go_to_feedback_screen)
+            navigateTo(root, Screen.FEEDBACK)
         }
 
         selectProposalLayout.setOnClickListener {
@@ -114,7 +111,14 @@ class MainVpnFragment : Fragment() {
 
         updateVersionLabel()
 
+        onBackPress { emulateHomePress() }
+
         return root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job?.cancel()
     }
 
     private fun updateLocation(it: LocationViewItem) {
@@ -176,7 +180,7 @@ class MainVpnFragment : Fragment() {
 
     private fun navigateToProposals(root: View) {
         if (sharedViewModel.canConnect()) {
-            root.findNavController().navigate(R.id.action_go_to_proposals_screen)
+            navigateTo(root, Screen.PROPOSALS)
         } else {
             showMessage(root.context, getString(R.string.disconnect_to_select_proposal))
         }
@@ -194,11 +198,6 @@ class MainVpnFragment : Fragment() {
             ConnectionState.DISCONNECTING -> false
             else -> true
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job?.cancel()
     }
 
     private fun handleConnectionPress(ctx: Context) {
