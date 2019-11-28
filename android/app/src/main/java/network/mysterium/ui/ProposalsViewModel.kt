@@ -114,17 +114,31 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     }
 
     fun filterByServiceType(type: ServiceTypeFilter) {
+        if (filter.serviceType == type) {
+            return
+        }
+
         filter.serviceType = type
         proposals.value = filterAndSortProposals(filter, allProposals)
     }
 
     fun filterBySearchText(value: String) {
-        filter.searchText = value.toLowerCase()
+        val searchText = value.toLowerCase()
+        if (filter.searchText == searchText) {
+            return
+        }
+
+        filter.searchText = searchText
         proposals.value = filterAndSortProposals(filter, allProposals)
     }
 
     fun sortBy(type: Int) {
-        filter.sortBy = ProposalSortType.parse(type)
+        val sortBy = ProposalSortType.parse(type)
+        if (filter.sortBy == sortBy) {
+            return
+        }
+
+        filter.sortBy = sortBy
         proposals.value = filterAndSortProposals(filter, allProposals)
     }
 
