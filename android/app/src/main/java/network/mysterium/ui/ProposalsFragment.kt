@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
-import com.tiper.MaterialSpinner
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
 import network.mysterium.vpn.R
@@ -46,7 +45,7 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsFiltersAllButton: TextView
     private lateinit var proposalsFiltersOpenvpnButton: TextView
     private lateinit var proposalsFiltersWireguardButton: TextView
-    private lateinit var proposalsFiltersSort: MaterialSpinner
+    private lateinit var proposalsFiltersSort: Spinner
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
     private lateinit var proposalsList: RecyclerView
     private lateinit var proposalsProgressBar: ProgressBar
@@ -127,13 +126,10 @@ class ProposalsFragment : Fragment() {
     }
 
     private fun initProposalsSortDropdown(root: View) {
-        ArrayAdapter.createFromResource(root.context, R.array.proposals_sort_types, android.R.layout.simple_spinner_item).let {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            proposalsFiltersSort.apply {
-                adapter = it
-                selection = proposalsViewModel.filter.sortBy.type
-            }
-            proposalsFiltersSort.onItemSelected { proposalsViewModel.sortBy(it) }
+        ArrayAdapter.createFromResource(root.context, R.array.proposals_sort_types, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            proposalsFiltersSort.adapter = adapter
+            proposalsFiltersSort.onItemSelected { item -> proposalsViewModel.sortBy(item) }
         }
     }
 

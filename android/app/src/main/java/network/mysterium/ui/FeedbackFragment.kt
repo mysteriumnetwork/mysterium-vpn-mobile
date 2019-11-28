@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
-import com.tiper.MaterialSpinner
 import network.mysterium.AppContainer
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
@@ -21,8 +17,8 @@ class FeedbackFragment : Fragment() {
     private lateinit var feedbackViewModel: FeedbackViewModel
 
     private lateinit var feedbackBackButton: ImageView
-    private lateinit var feedbackTypeSpinner: MaterialSpinner
-    private lateinit var feedbackMessage: TextInputEditText
+    private lateinit var feedbackTypeSpinner: Spinner
+    private lateinit var feedbackMessage: EditText
     private lateinit var feedbackSubmitButton: MaterialButton
     private lateinit var versionLabel: TextView
 
@@ -74,16 +70,14 @@ class FeedbackFragment : Fragment() {
     }
 
     private fun initFeedbackTypesDropdown(root: View, inflater: LayoutInflater) {
-        val spinner: MaterialSpinner = root.findViewById(R.id.feedback_type_spinner)
         ArrayAdapter.createFromResource(
                 inflater.context,
                 R.array.feedback_types,
                 android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-            spinner.selection = 0
-            spinner.onItemSelected { feedbackViewModel.setFeedbackType(it) }
+            feedbackTypeSpinner.adapter = adapter
+            feedbackTypeSpinner.onItemSelected { feedbackViewModel.setFeedbackType(it) }
         }
     }
 

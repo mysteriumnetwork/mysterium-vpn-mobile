@@ -23,4 +23,5 @@
     <string name="disconnect_to_select_proposal">Disconnect to select new a proposal.</string>
     <string name="connect_button_loading">Loading</string>
     <string name="vpn_status_loading">Loading</string>
+    <string name="feedback_message_label">Message</string>
 </resources>

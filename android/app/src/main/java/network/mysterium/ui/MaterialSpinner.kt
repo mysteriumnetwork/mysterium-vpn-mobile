@@ -18,14 +18,17 @@
 package network.mysterium.ui
 
 import android.view.View
-import com.tiper.MaterialSpinner
+import android.widget.AdapterView
+import android.widget.Spinner
 
-fun MaterialSpinner.onItemSelected(cb: (position: Int) -> Unit) {
-    this.onItemSelectedListener = object : MaterialSpinner.OnItemSelectedListener {
-        override fun onItemSelected(parent: MaterialSpinner, view: View?, position: Int, id: Long) {
+fun Spinner.onItemSelected(cb: (position: Int) -> Unit) {
+    this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             cb(position)
         }
-        override fun onNothingSelected(parent: MaterialSpinner) {
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
         }
+
     }
 }

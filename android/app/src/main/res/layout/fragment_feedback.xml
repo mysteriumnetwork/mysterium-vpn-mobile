@@ -42,30 +42,45 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.tiper.MaterialSpinner
+    <TextView
+        android:id="@+id/feedback_type_spinner_label"
         android:layout_marginTop="40dp"
+        android:text="Feedback type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feedback_header_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:layout_marginTop="10dp"
         android:id="@+id/feedback_type_spinner"
+        android:padding="5dp"
+        android:background="@drawable/spinner_input_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Feedback type:"
-        app:hintAnimationEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feedback_header_layout" />
+        app:layout_constraintTop_toBottomOf="@id/feedback_type_spinner_label" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/feedback_message_type"
+    <TextView
+        android:id="@+id/feedback_message_type_label"
+        android:layout_marginTop="40dp"
+        android:text="@string/feedback_message_label"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feedback_type_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/feedback_message"
+        android:padding="5dp"
+        android:background="@drawable/bordered_input_bg"
+        app:layout_constraintTop_toBottomOf="@id/feedback_message_type_label"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Message:">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/feedback_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="150dp"
+        android:gravity="top"
+        android:inputType="text|textMultiLine" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/feedback_submit_button"
@@ -75,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="Send feedback"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feedback_message_type" />
+        app:layout_constraintTop_toBottomOf="@id/feedback_message" />
 
     <TextView
         android:id="@+id/vpn_version_label"
