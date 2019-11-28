@@ -90,7 +90,7 @@ class MainVpnFragment : Fragment() {
         }
 
         selectProposalLayout.setOnClickListener {
-            root.findNavController().navigate(R.id.action_go_to_proposals_screen)
+            handleSelectProposalPress(root)
         }
 
         vpnProposalPickerFavoriteButton.setOnClickListener {
@@ -156,15 +156,30 @@ class MainVpnFragment : Fragment() {
         connStatusLabel.text = connStateText
     }
 
+    private fun handleSelectProposalPress(root: View) {
+        navigateToProposals(root)
+    }
+
     private fun handleFavoriteProposalPress(root: View) {
         val selectedProposal = sharedViewModel.selectedProposal.value
         if (selectedProposal == null) {
-            root.findNavController().navigate(R.id.action_go_to_proposals_screen)
+            navigateToProposals(root)
             return
         }
 
-        proposalsViewModel.toggleFavoriteProposal(selectedProposal)
-        updateSelectedProposalFavoriteIcon(!selectedProposal.isFavorite)
+        vpnProposalPickerFavoriteButton.isEnabled = false
+        proposalsViewModel.toggleFavoriteProposal(selectedProposal) {
+            updateSelectedProposalFavoriteIcon(!selectedProposal.isFavorite)
+            vpnProposalPickerFavoriteButton.isEnabled = true
+        }
+    }
+
+    private fun navigateToProposals(root: View) {
+        if (sharedViewModel.canConnect()) {
+            root.findNavController().navigate(R.id.action_go_to_proposals_screen)
+        } else {
+            showMessage(root.context, getString(R.string.disconnect_to_select_proposal))
+        }
     }
 
     private fun updateConnButtonState(it: ConnectionState) {

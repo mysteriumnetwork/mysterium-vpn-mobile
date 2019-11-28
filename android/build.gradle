@@ -4,7 +4,7 @@ buildscript {
     ext.kotlin_version = '1.3.50'
     ext {
         buildToolsVersion = "28.0.3"
-        minSdkVersion = 16
+        minSdkVersion = 19
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "27.1.1"

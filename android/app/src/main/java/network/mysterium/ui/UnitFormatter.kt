@@ -20,16 +20,16 @@ package network.mysterium.ui
 import kotlin.math.roundToInt
 
 object UnitFormatter {
-    val kb = 1024
-    val mb = 1024 * kb
-    val gb = 1024 * mb
+    val KB = 1024
+    val MB = 1024 * KB
+    val GB = 1024 * MB
 
     fun bytesDisplay(bytes: Double): String {
         return when {
-            bytes < kb -> "$bytes B"
-            bytes < mb -> "%.2f KB".format(bytes / kb)
-            bytes < gb -> "%.2f MB".format(bytes / mb)
-            else -> "%.2f GB".format(bytes / gb)
+            bytes < KB -> "$bytes B"
+            bytes < MB -> "%.2f KB".format(bytes / KB)
+            bytes < GB -> "%.2f MB".format(bytes / MB)
+            else -> "%.2f GB".format(bytes / GB)
         }
     }
 

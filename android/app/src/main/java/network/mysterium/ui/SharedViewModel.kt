@@ -188,8 +188,10 @@ class SharedViewModel(
             )
             statistics.value = s
 
-            val countryName = selectedProposal.value?.countryName
-            mysteriumCoreService.await().showNotification("Connected to $countryName", "Received ${s.bytesReceived} | Send ${s.bytesSent}")
+            if (selectedProposal.value != null) {
+                val countryName = selectedProposal.value?.countryName
+                mysteriumCoreService.await().showNotification("Connected to $countryName", "Received ${s.bytesReceived} | Send ${s.bytesSent}")
+            }
         }
     }
 
@@ -203,12 +205,16 @@ class SharedViewModel(
     }
 
     private suspend fun loadLocation() {
-        try {
-            location.value = LocationViewItem(ip = "Updating", countryFlagImage = null)
-            val loc = nodeRepository.getLocation()
-            location.value = LocationViewItem(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
-        } catch (e: Throwable) {
-            Log.e(TAG, "Failed to load location", e)
+        // Try to load location with few attempts. It can fail to load when connected to VPN.
+        location.value = LocationViewItem(ip = "Updating", countryFlagImage = null)
+        for (i in 1..3) {
+            try {
+                val loc = nodeRepository.getLocation()
+                location.value = LocationViewItem(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
+                break
+            } catch (e: Throwable) {
+                Log.e(TAG, "Failed to load location. Attempt $i.", e)
+            }
         }
     }
 

@@ -17,8 +17,10 @@
     <string name="vpn_select_proposal">Select proposal...</string>
     <string name="vpn_ip_updating_label">IP: Updating</string>
     <string name="proposals_search_hint">Search proposals</string>
-    <string name="vpn_connect">Connect</string>
     <string name="terms_accept">Accept</string>
     <string name="proposals_close">CLOSE</string>
     <string name="feedback_submit_success">Thanks! Your feedback will be submitted the next time you start the app.</string>
+    <string name="disconnect_to_select_proposal">Disconnect to select new a proposal.</string>
+    <string name="connect_button_loading">Loading</string>
+    <string name="vpn_status_loading">Loading</string>
 </resources>

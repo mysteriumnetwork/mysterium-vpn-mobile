@@ -139,7 +139,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         sharedViewModel.selectProposal(item)
     }
 
-    fun toggleFavoriteProposal(selectedProposal: ProposalViewItem) {
+    fun toggleFavoriteProposal(selectedProposal: ProposalViewItem, done: () -> Unit) {
         viewModelScope.launch {
             val favoriteProposal = FavoriteProposal(selectedProposal.id)
             if (selectedProposal.isFavorite) {
@@ -153,6 +153,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             }
 
             proposals.value = filterAndSortProposals(filter, allProposals)
+            done()
         }
     }
 
