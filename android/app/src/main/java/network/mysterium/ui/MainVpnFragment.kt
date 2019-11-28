@@ -17,7 +17,6 @@
 
 package network.mysterium.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -34,7 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import network.mysterium.MainApplication
-import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
@@ -50,12 +49,12 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnSelectedProposalCountryLabel: TextView
     private lateinit var vpnSelectedProposalProviderLabel: TextView
     private lateinit var vpnSelectedProposalCountryIcon: ImageView
-    private lateinit var vpnProposalPickerFavoriteButton: ImageView
+    private lateinit var vpnProposalPickerFavoriteLayput: RelativeLayout
+    private lateinit var vpnProposalPickerFavoriteImage: ImageView
     private lateinit var connectionButton: TextView
     private lateinit var vpnStatsDurationLabel: TextView
     private lateinit var vpnStatsBytesSentLabel: TextView
     private lateinit var vpnStatsBytesReceivedLabel: TextView
-    private lateinit var vpnVersionLabel: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -75,12 +74,13 @@ class MainVpnFragment : Fragment() {
         vpnSelectedProposalCountryLabel = root.findViewById(R.id.vpn_selected_proposal_country_label)
         vpnSelectedProposalProviderLabel = root.findViewById(R.id.vpn_selected_proposal_provider_label)
         vpnSelectedProposalCountryIcon = root.findViewById(R.id.vpn_selected_proposal_country_icon)
-        vpnProposalPickerFavoriteButton = root.findViewById(R.id.vpn_proposal_picker_favorite_button)
+        vpnProposalPickerFavoriteLayput = root.findViewById(R.id.vpn_proposal_picker_favorite_layout)
+        vpnProposalPickerFavoriteImage = root.findViewById(R.id.vpn_proposal_picker_favorite_image)
         connectionButton = root.findViewById(R.id.vpn_connection_button)
         vpnStatsDurationLabel = root.findViewById(R.id.vpn_stats_duration)
         vpnStatsBytesReceivedLabel = root.findViewById(R.id.vpn_stats_bytes_received)
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
-        vpnVersionLabel = root.findViewById(R.id.vpn_version_label)
+        // vpnVersionLabel = root.findViewById(R.id.vpn_version_label)
 
         feedbackButton.setOnClickListener {
             navigateTo(root, Screen.FEEDBACK)
@@ -90,7 +90,7 @@ class MainVpnFragment : Fragment() {
             handleSelectProposalPress(root)
         }
 
-        vpnProposalPickerFavoriteButton.setOnClickListener {
+        vpnProposalPickerFavoriteLayput.setOnClickListener {
             handleFavoriteProposalPress(root)
         }
 
@@ -108,8 +108,6 @@ class MainVpnFragment : Fragment() {
         sharedViewModel.statistics.observe(this, Observer { updateStatsLabels(it) })
 
         sharedViewModel.location.observe(this, Observer { updateLocation(it) })
-
-        updateVersionLabel()
 
         onBackPress { emulateHomePress() }
 
@@ -140,7 +138,7 @@ class MainVpnFragment : Fragment() {
         } else {
             R.drawable.ic_star_border_black_24dp
         }
-        vpnProposalPickerFavoriteButton.setImageResource(favoriteIcon)
+        vpnProposalPickerFavoriteImage.setImageResource(favoriteIcon)
     }
 
     private fun updateStatsLabels(it: StatisticsViewItem) {
@@ -171,10 +169,10 @@ class MainVpnFragment : Fragment() {
             return
         }
 
-        vpnProposalPickerFavoriteButton.isEnabled = false
+        vpnProposalPickerFavoriteLayput.isEnabled = false
         proposalsViewModel.toggleFavoriteProposal(selectedProposal) {
             updateSelectedProposalFavoriteIcon(!selectedProposal.isFavorite)
-            vpnProposalPickerFavoriteButton.isEnabled = true
+            vpnProposalPickerFavoriteLayput.isEnabled = true
         }
     }
 
@@ -237,11 +235,6 @@ class MainVpnFragment : Fragment() {
                 Log.e(TAG, "Failed to disconnect", e)
             }
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun updateVersionLabel() {
-        vpnVersionLabel.text = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
     }
 
     companion object {

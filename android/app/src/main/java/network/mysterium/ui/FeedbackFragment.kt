@@ -1,18 +1,20 @@
 package network.mysterium.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import androidx.activity.OnBackPressedCallback
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.tiper.MaterialSpinner
 import network.mysterium.AppContainer
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 
 class FeedbackFragment : Fragment() {
@@ -22,6 +24,7 @@ class FeedbackFragment : Fragment() {
     private lateinit var feedbackTypeSpinner: MaterialSpinner
     private lateinit var feedbackMessage: TextInputEditText
     private lateinit var feedbackSubmitButton: MaterialButton
+    private lateinit var versionLabel: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,6 +37,9 @@ class FeedbackFragment : Fragment() {
         feedbackTypeSpinner = root.findViewById(R.id.feedback_type_spinner)
         feedbackMessage = root.findViewById(R.id.feedback_message)
         feedbackSubmitButton = root.findViewById(R.id.feedback_submit_button)
+        versionLabel = root.findViewById(R.id.vpn_version_label)
+
+        updateVersionLabel()
 
         // Handle back press.
         feedbackBackButton.setOnClickListener {
@@ -79,5 +85,10 @@ class FeedbackFragment : Fragment() {
             spinner.selection = 0
             spinner.onItemSelected { feedbackViewModel.setFeedbackType(it) }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateVersionLabel() {
+        versionLabel.text = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
     }
 }
