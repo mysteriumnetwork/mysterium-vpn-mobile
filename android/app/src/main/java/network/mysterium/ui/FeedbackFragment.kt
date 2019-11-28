@@ -44,7 +44,7 @@ class FeedbackFragment : Fragment() {
         }
 
         // Add feedback types data.
-        initFeedbackTypesDropdown(root, inflater)
+        initFeedbackTypesDropdown(root)
 
         // Handle text change.
         feedbackMessage.onChange { feedbackViewModel.setMessage(it) }
@@ -69,9 +69,9 @@ class FeedbackFragment : Fragment() {
         showMessage(root.context, getString(R.string.feedback_submit_success))
     }
 
-    private fun initFeedbackTypesDropdown(root: View, inflater: LayoutInflater) {
+    private fun initFeedbackTypesDropdown(root: View) {
         ArrayAdapter.createFromResource(
-                inflater.context,
+                root.context,
                 R.array.feedback_types,
                 android.R.layout.simple_spinner_item
         ).also { adapter ->

@@ -28,42 +28,11 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.MainActivity
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
-
-// DeferredNode is a wrapper class which holds MobileNode instance promise.
-// This allows to load UI without waiting for node to start.
-class DeferredNode {
-    private var deferredNode = CompletableDeferred<MobileNode>()
-
-    suspend fun await(): MobileNode {
-        return deferredNode.await()
-    }
-
-    fun start(service: MysteriumCoreService) {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                if (!deferredNode.isCompleted) {
-                    val node = service.startNode()
-                    deferredNode.complete(node)
-                }
-            } catch (tr: Throwable) {
-                Log.e(TAG, "Starting service failed", tr)
-            }
-        }
-    }
-
-    companion object {
-        const val TAG = "DeferredNode"
-    }
-}
 
 class MysteriumAndroidCoreService : VpnService() {
     private var mobileNode: MobileNode? = null
@@ -118,11 +87,6 @@ class MysteriumAndroidCoreService : VpnService() {
         pendingAppIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         createNotificationChannel()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopMobileNode()
     }
 
     private fun createNotificationChannel() {
@@ -186,6 +150,6 @@ class MysteriumAndroidCoreService : VpnService() {
     }
 
     companion object {
-        private const val TAG = "Mysterium vpn service"
+        private const val TAG = "MysteriumVPNService"
     }
 }
