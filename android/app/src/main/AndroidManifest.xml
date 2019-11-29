@@ -43,12 +43,6 @@
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
-        <meta-data
-            android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-            android:value="MysteriumVPN notifications" />
-        <meta-data
-            android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-            android:value="Notifications of MysteriumVPN" />
     </application>
 
 </manifest>

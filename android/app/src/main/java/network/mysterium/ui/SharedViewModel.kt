@@ -96,10 +96,17 @@ class SharedViewModel(
         return state == null || state == ConnectionState.NOT_CONNECTED || state == ConnectionState.UNKNOWN
     }
 
+    fun canDisconnect(): Boolean {
+        val state = connectionState.value
+        return state != null && state == ConnectionState.CONNECTED
+    }
+
     suspend fun connect(providerID: String, serviceType: String) {
         try {
             connectionState.value = ConnectionState.CONNECTING
-
+            // Before doing actual connection add some delay to prevent
+            // from trying to establish connection if user instantly clicks CANCEL.
+            delay(1000)
             val req = ConnectRequest()
             req.providerID = providerID
             req.serviceType = serviceType
@@ -167,11 +174,11 @@ class SharedViewModel(
     }
 
     private fun handleConnectionStatusChange(it: String) {
-        val newStatus = ConnectionState.parse(it)
-        val currentStatus = connectionState.value
+        val newState = ConnectionState.parse(it)
+        val currentState = connectionState.value
         viewModelScope.launch {
-            connectionState.value = newStatus
-            if (currentStatus == ConnectionState.CONNECTED && newStatus != currentStatus) {
+            connectionState.value = newState
+            if (currentState == ConnectionState.CONNECTED && newState != currentState) {
                 mysteriumCoreService.await().showNotification("Connection lost", "VPN connection was closed.")
                 resetStatistics()
                 loadLocation()

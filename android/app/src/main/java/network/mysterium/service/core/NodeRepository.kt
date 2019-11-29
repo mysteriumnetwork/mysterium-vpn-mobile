@@ -1,5 +1,6 @@
 package network.mysterium.service.core
 
+import android.util.Log
 import com.beust.klaxon.Json
 import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
@@ -87,10 +88,12 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
+        Log.i("NodeRepository", "connect")
         deferredNode.await().connect(req)
     }
 
     suspend fun disconnect() = withContext(Dispatchers.IO) {
+        Log.i("NodeRepository", "disconnect")
         deferredNode.await().disconnect()
     }
 

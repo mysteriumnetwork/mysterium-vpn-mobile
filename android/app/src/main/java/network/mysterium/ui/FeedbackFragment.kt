@@ -13,6 +13,7 @@ import network.mysterium.AppContainer
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 
+// TODO: Add keyboard avoiding view.
 class FeedbackFragment : Fragment() {
     private lateinit var feedbackViewModel: FeedbackViewModel
 

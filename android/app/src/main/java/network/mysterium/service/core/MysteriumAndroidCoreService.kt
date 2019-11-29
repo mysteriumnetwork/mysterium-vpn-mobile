@@ -89,6 +89,12 @@ class MysteriumAndroidCoreService : VpnService() {
         createNotificationChannel()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopMobileNode()
+        // TODO: Check if node is destroyed correctly.
+    }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT < 26) {
             return

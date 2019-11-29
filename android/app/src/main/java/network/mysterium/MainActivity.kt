@@ -51,7 +51,11 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.i(TAG, "Service connected")
             deferredMysteriumCoreService.complete(service as MysteriumCoreService)
-            deferredNode.start(service)
+            deferredNode.start(service) {err ->
+                if (err != null) {
+                    showNodeStarError()
+                }
+            }
         }
     }
 
@@ -110,6 +114,10 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, "User allowed VPN service")
             }
         }
+    }
+
+    private fun showNodeStarError() {
+        Toast.makeText(this, "Failed to initialize. Please relaunch app.", Toast.LENGTH_LONG).show()
     }
 
     private fun bindMysteriumService() {

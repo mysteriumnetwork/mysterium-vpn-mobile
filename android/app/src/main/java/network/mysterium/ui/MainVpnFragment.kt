@@ -204,7 +204,12 @@ class MainVpnFragment : Fragment() {
             return
         }
 
-        disconnect(ctx)
+        if (sharedViewModel.canDisconnect()) {
+            disconnect(ctx)
+            return
+        }
+
+        cancel()
     }
 
     private fun connect(ctx: Context) {
@@ -213,12 +218,14 @@ class MainVpnFragment : Fragment() {
             showMessage(ctx, "Select proposal!")
             return
         }
-
+        job?.cancel()
         connectionButton.isEnabled = false
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
                 sharedViewModel.connect(proposal.providerID, proposal.serviceType.type)
-            } catch (e: Throwable) {
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                // Do nothing.
+            } catch (e: Exception) {
                 showMessage(ctx, "Failed to connect. Please try again.")
                 Log.e(TAG, "Failed to connect", e)
             }
@@ -227,12 +234,25 @@ class MainVpnFragment : Fragment() {
 
     private fun disconnect(ctx: Context) {
         connectionButton.isEnabled = false
+        job?.cancel()
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
                 sharedViewModel.disconnect()
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 showMessage(ctx, "Failed to disconnect. Please try again.")
                 Log.e(TAG, "Failed to disconnect", e)
+            }
+        }
+    }
+
+    private fun cancel() {
+        connectionButton.isEnabled = false
+        job?.cancel()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            try {
+                sharedViewModel.disconnect()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to cancel", e)
             }
         }
     }
