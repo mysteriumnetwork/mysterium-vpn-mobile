@@ -27,6 +27,8 @@ import network.mysterium.service.core.NodeRepository
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.service.core.Status
+import java.lang.Exception
+import java.security.InvalidKeyException
 
 enum class ServiceType(val type: String) {
     UNKNOWN("unknown"),
@@ -89,6 +91,7 @@ class ProposalsFilter(
 
 class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private val nodeRepository: NodeRepository, private val appDatabase: AppDatabase) : ViewModel() {
     var filter = ProposalsFilter()
+    var initialProposalsLoaded = MutableLiveData<Boolean>()
 
     private var favoriteProposals: MutableMap<String, FavoriteProposal> = mutableMapOf()
     private var allProposals: List<ProposalViewItem> = listOf()
@@ -174,7 +177,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     private suspend fun insertFavoriteProposal(proposal: FavoriteProposal) {
         try {
             appDatabase.favoriteProposalDao().insert(proposal)
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to insert favorite proposal", e)
         }
     }
@@ -182,7 +185,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     private suspend fun deleteFavoriteProposal(proposal: FavoriteProposal) {
         try {
             appDatabase.favoriteProposalDao().delete(proposal)
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to delete favorite proposal", e)
         }
     }
@@ -197,9 +200,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                     wireguard = allProposals.count { it.serviceType == ServiceType.WIREGUARD }
             )
             proposals.value = filterAndSortProposals(filter, allProposals)
-        } catch (e: Throwable) {
+            initialProposalsLoaded.value = true
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to load initial proposals", e)
             proposals.value = listOf()
+            initialProposalsLoaded.value = false
         }
     }
 

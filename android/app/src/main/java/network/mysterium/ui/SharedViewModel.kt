@@ -114,7 +114,7 @@ class SharedViewModel(
             isConnected = true
             connectionState.value = ConnectionState.CONNECTED
             loadLocation()
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             isConnected = false
             connectionState.value = ConnectionState.NOT_CONNECTED
             throw e
@@ -129,7 +129,7 @@ class SharedViewModel(
             connectionState.value = ConnectionState.NOT_CONNECTED
             resetStatistics()
             loadLocation()
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             connectionState.value = ConnectionState.NOT_CONNECTED
             throw e
         } finally {
@@ -143,7 +143,7 @@ class SharedViewModel(
             val state = ConnectionState.parse(status.state)
             connectionState.value = state
             status
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to load current status", e)
             null
         }
@@ -158,7 +158,7 @@ class SharedViewModel(
             val proposal = nodeRepository.getProposal(it.providerID, it.serviceType) ?: return
             val proposalViewItem = ProposalViewItem.parse(proposal, favoriteProposals)
             selectProposal(proposalViewItem)
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to load active proposal", e)
         }
     }
@@ -219,7 +219,7 @@ class SharedViewModel(
                 val loc = nodeRepository.getLocation()
                 location.value = LocationViewItem(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
                 break
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 Log.e(TAG, "Failed to load location. Attempt $i.", e)
             }
         }

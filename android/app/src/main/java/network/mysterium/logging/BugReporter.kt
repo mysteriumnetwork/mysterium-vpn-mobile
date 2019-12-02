@@ -31,6 +31,7 @@ class BugReporter {
     }
 
     fun sendFeedback(type: String, message: String) {
+        // TODO: use node
         Crashlytics.logException(FeedbackException("$type:$message"))
     }
 }

@@ -114,7 +114,6 @@
                     android:layout_height="0dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:focusable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/vpn_proposal_picker_favorite_layout"
                     app:layout_constraintStart_toStartOf="parent"
@@ -179,7 +178,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center"
                     android:clickable="true"
-                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent">
                     <ImageView

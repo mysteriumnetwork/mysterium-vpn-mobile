@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/feedback_type_spinner_label"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Feedback type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feedback_header_layout"
@@ -64,7 +64,7 @@
 
     <TextView
         android:id="@+id/feedback_message_type_label"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/feedback_message_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feedback_type_spinner"
@@ -78,7 +78,7 @@
         android:background="@drawable/bordered_input_bg"
         app:layout_constraintTop_toBottomOf="@id/feedback_message_type_label"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:gravity="top"
         android:inputType="text|textMultiLine" />
 
@@ -86,7 +86,7 @@
         android:id="@+id/feedback_submit_button"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:text="Send feedback"
         app:layout_constraintStart_toStartOf="parent"

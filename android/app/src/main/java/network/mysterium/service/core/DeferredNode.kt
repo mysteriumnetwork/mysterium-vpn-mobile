@@ -16,13 +16,13 @@ class DeferredNode {
         return deferredNode.await()
     }
 
-    fun start(service: MysteriumCoreService, done: (err: Throwable?) -> Unit) {
+    fun start(service: MysteriumCoreService, done: (err: Exception?) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val node = service.startNode()
                 deferredNode.complete(node)
                 done(null)
-            } catch (err: Throwable) {
+            } catch (err: Exception) {
                 Log.e(TAG, "Failed to start node", err)
                 done(err)
             }

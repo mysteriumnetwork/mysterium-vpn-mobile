@@ -19,6 +19,7 @@ package network.mysterium.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
 import network.mysterium.vpn.R
@@ -146,6 +150,7 @@ class ProposalsFragment : Fragment() {
             }
         }
 
+        // Subscribe to proposals changes.
         proposalsViewModel.getProposals().observe(this, Observer { newItems ->
             items.clear()
             items.addAll(newItems)
@@ -156,10 +161,22 @@ class ProposalsFragment : Fragment() {
             proposalsProgressBar.visibility = View.GONE
         })
 
+        // Subscribe to proposals counters.
         proposalsViewModel.getProposalsCounts().observe(this, Observer { counts ->
             proposalsFiltersAllButton.text = "All (${counts.all})"
             proposalsFiltersOpenvpnButton.text = "Openvpn (${counts.openvpn})"
             proposalsFiltersWireguardButton.text = "Wireguard (${counts.wireguard})"
+        })
+
+        proposalsViewModel.initialProposalsLoaded.observe(this, Observer {loaded ->
+            if (loaded) {
+                return@Observer
+            }
+
+            // If initial proposals failed to load during app init try to load them explicitly.
+            proposalsList.visibility = View.GONE
+            proposalsProgressBar.visibility = View.VISIBLE
+            proposalsViewModel.refreshProposals {}
         })
     }
 
