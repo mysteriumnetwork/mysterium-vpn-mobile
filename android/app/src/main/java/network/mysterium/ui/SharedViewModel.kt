@@ -163,6 +163,7 @@ class SharedViewModel(
         }
     }
 
+    // initListeners subscribes to go node library exposed callbacks for statistics and state.
     private suspend fun initListeners() {
         nodeRepository.registerConnectionStatusChangeCallback {
             handleConnectionStatusChange(it)
@@ -176,6 +177,10 @@ class SharedViewModel(
     private fun handleConnectionStatusChange(it: String) {
         val newState = ConnectionState.parse(it)
         val currentState = connectionState.value
+
+        // Update all UI related state in new coroutine on UI thread.
+        // This is needed since status change can be executed on separate
+        // inside go node library.
         viewModelScope.launch {
             connectionState.value = newState
             if (currentState == ConnectionState.CONNECTED && newState != currentState) {
@@ -187,6 +192,9 @@ class SharedViewModel(
     }
 
     private fun handleStatisticsChange(it: Statistics) {
+        // Update all UI related state in new coroutine on UI thread.
+        // This is needed since status change can be executed on separate
+        // inside go node library.
         viewModelScope.launch {
             val s = StatisticsViewItem(
                     duration = UnitFormatter.timeDisplay(it.duration.toDouble()),
@@ -195,6 +203,9 @@ class SharedViewModel(
             )
             statistics.value = s
 
+            // Show global notification with connected country and statistics.
+            // At this point we need to check if proposal is not null since
+            // statistics event can fire sooner than proposal is loaded.
             if (selectedProposal.value != null) {
                 val countryName = selectedProposal.value?.countryName
                 mysteriumCoreService.await().showNotification("Connected to $countryName", "Received ${s.bytesReceived} | Send ${s.bytesSent}")

@@ -80,7 +80,6 @@ class MainVpnFragment : Fragment() {
         vpnStatsDurationLabel = root.findViewById(R.id.vpn_stats_duration)
         vpnStatsBytesReceivedLabel = root.findViewById(R.id.vpn_stats_bytes_received)
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
-        // vpnVersionLabel = root.findViewById(R.id.vpn_version_label)
 
         feedbackButton.setOnClickListener {
             navigateTo(root, Screen.FEEDBACK)
@@ -129,16 +128,7 @@ class MainVpnFragment : Fragment() {
         vpnSelectedProposalCountryIcon.setImageBitmap(it.countryFlagImage)
         vpnSelectedProposalProviderLabel.text = it.providerID
         vpnSelectedProposalProviderLabel.visibility = View.VISIBLE
-        updateSelectedProposalFavoriteIcon(it.isFavorite)
-    }
-
-    private fun updateSelectedProposalFavoriteIcon(isFavorite: Boolean) {
-        val favoriteIcon = if (isFavorite) {
-            R.drawable.ic_star_black_24dp
-        } else {
-            R.drawable.ic_star_border_black_24dp
-        }
-        vpnProposalPickerFavoriteImage.setImageResource(favoriteIcon)
+        vpnProposalPickerFavoriteImage.setImageResource(it.isFavoriteResID)
     }
 
     private fun updateStatsLabels(it: StatisticsViewItem) {
@@ -170,8 +160,11 @@ class MainVpnFragment : Fragment() {
         }
 
         vpnProposalPickerFavoriteLayput.isEnabled = false
-        proposalsViewModel.toggleFavoriteProposal(selectedProposal) {
-            updateSelectedProposalFavoriteIcon(selectedProposal.isFavorite)
+        proposalsViewModel.toggleFavoriteProposal(selectedProposal.id) { updatedProposal ->
+            if (updatedProposal != null) {
+                vpnProposalPickerFavoriteImage.setImageResource(updatedProposal.isFavoriteResID)
+            }
+
             vpnProposalPickerFavoriteLayput.isEnabled = true
         }
     }

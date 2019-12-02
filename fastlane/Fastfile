@@ -35,14 +35,36 @@ platform :android do
       })
   end
 
+  def bundle_release
+    gradle(
+      task: "clean bundle",
+      build_type: "Release",
+      project_dir: "android",
+      print_command: false, # to prevent outputting passwords
+      properties: {
+        'versionCode' => number_of_commits,
+        'versionName' => last_git_tag,
+        'applyGoogleServices' => true,
+        "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
+        "android.injected.signing.store.password" => ENV["FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS"],
+        "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["FASTLANE_ANDROID_SIGNING_KEY_PASS"],
+      })
+  end
+
   desc "Build release build locally"
   lane :build do
     build_release
   end
 
+  desc "Bundle release build locally"
+  lane :bundle do
+    bundle_release
+  end
+
   desc "Push a new beta build to Play Store"
   lane :beta do
-    build_release
+    bundle_release
     upload_to_play_store(
       track: "internal",
       json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]

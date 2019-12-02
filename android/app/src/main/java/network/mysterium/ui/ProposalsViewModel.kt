@@ -26,9 +26,6 @@ import kotlinx.coroutines.launch
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
-import network.mysterium.service.core.Status
-import java.lang.Exception
-import java.security.InvalidKeyException
 
 enum class ServiceType(val type: String) {
     UNKNOWN("unknown"),
@@ -156,27 +153,31 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         sharedViewModel.selectProposal(item)
     }
 
-    fun toggleFavoriteProposal(selectedProposal: ProposalViewItem, done: () -> Unit) {
+    fun toggleFavoriteProposal(proposalID: String, done: (updatedProposal: ProposalViewItem?) -> Unit) {
         viewModelScope.launch {
-            val favoriteProposal = FavoriteProposal(selectedProposal.id)
-            if (selectedProposal.isFavorite) {
-                deleteFavoriteProposal(favoriteProposal)
-                favoriteProposals.remove(favoriteProposal.id)
-                allProposals.find { it.id == favoriteProposal.id }?.toggleFavorite()
-            } else {
-                insertFavoriteProposal(favoriteProposal)
-                favoriteProposals[favoriteProposal.id] = favoriteProposal
-                allProposals.find { it.id == favoriteProposal.id }?.toggleFavorite()
+            val proposal = allProposals.find { it.id == proposalID }
+            if (proposal == null) {
+                done(null)
+                return@launch
             }
 
+            val favoriteProposal = FavoriteProposal(proposalID)
+            if (proposal.isFavorite) {
+                deleteFavoriteProposal(favoriteProposal)
+            } else {
+                insertFavoriteProposal(favoriteProposal)
+            }
+
+            proposal.toggleFavorite()
             proposals.value = filterAndSortProposals(filter, allProposals)
-            done()
+            done(proposal)
         }
     }
 
     private suspend fun insertFavoriteProposal(proposal: FavoriteProposal) {
         try {
             appDatabase.favoriteProposalDao().insert(proposal)
+            favoriteProposals[proposal.id] = proposal
         } catch (e: Exception) {
             Log.e(TAG, "Failed to insert favorite proposal", e)
         }
@@ -185,6 +186,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     private suspend fun deleteFavoriteProposal(proposal: FavoriteProposal) {
         try {
             appDatabase.favoriteProposalDao().delete(proposal)
+            favoriteProposals.remove(proposal.id)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to delete favorite proposal", e)
         }

@@ -30,6 +30,11 @@ Push a new beta build to TestFlight
 fastlane android build
 ```
 Build release build locally
+### android bundle
+```
+fastlane android bundle
+```
+Bundle release build locally
 ### android beta
 ```
 fastlane android beta
