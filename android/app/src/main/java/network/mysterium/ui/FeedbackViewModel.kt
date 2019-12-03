@@ -55,8 +55,7 @@ class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel()
 
     suspend fun submit() {
         val req = SendFeedbackRequest()
-        req.type = "Platform: Android, Feedback Type: $feebackType"
-        req.message = "Message: $message"
+        req.description = "Platform: Android, Feedback Type: $feebackType, Message: $message"
         nodeRepository.sendFeedback(req)
     }
 }
