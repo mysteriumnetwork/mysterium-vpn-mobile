@@ -51,6 +51,8 @@ class MysteriumAndroidCoreService : VpnService() {
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
 
         val logOptions = Mysterium.defaultLogOptions()
+        logOptions.filepath = filesPath
+        logOptions.logHTTP = false
         val options = Mysterium.defaultNetworkOptions()
 
         mobileNode = Mysterium.newNode(filesPath, logOptions, options)

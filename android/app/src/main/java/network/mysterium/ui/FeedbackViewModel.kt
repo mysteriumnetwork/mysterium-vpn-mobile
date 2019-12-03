@@ -18,7 +18,8 @@
 package network.mysterium.ui
 
 import androidx.lifecycle.ViewModel
-import network.mysterium.logging.BugReporter
+import mysterium.SendFeedbackRequest
+import network.mysterium.service.core.NodeRepository
 
 enum class FeedbackType(val type: Int) {
     BUG(0),
@@ -40,7 +41,7 @@ enum class FeedbackType(val type: Int) {
     }
 }
 
-class FeedbackViewModel(private val bugReporter: BugReporter): ViewModel() {
+class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel() {
     private var feebackType = FeedbackType.BUG
     private var message = ""
 
@@ -52,7 +53,10 @@ class FeedbackViewModel(private val bugReporter: BugReporter): ViewModel() {
         message = msg
     }
 
-    fun submit() {
-        bugReporter.sendFeedback(feebackType.toString(), message)
+    suspend fun submit() {
+        val req = SendFeedbackRequest()
+        req.type = "Platform: Android, Feedback Type: $feebackType"
+        req.message = "Message: $message"
+        nodeRepository.sendFeedback(req)
     }
 }

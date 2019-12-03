@@ -120,7 +120,12 @@ class MainVpnFragment : Fragment() {
 
     private fun updateLocation(it: LocationViewItem) {
         conStatusIP.text = "IP: ${it.ip}"
-        vpnStatusCountry.setImageBitmap(it.countryFlagImage)
+        if (it.countryFlagImage == null) {
+            vpnStatusCountry.visibility = View.GONE
+        } else {
+            vpnStatusCountry.visibility = View.VISIBLE
+            vpnStatusCountry.setImageBitmap(it.countryFlagImage)
+        }
     }
 
     private fun updateSelectedProposal(it: ProposalViewItem) {

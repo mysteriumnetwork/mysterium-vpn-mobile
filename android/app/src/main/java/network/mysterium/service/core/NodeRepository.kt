@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import mysterium.ConnectRequest
 import mysterium.GetProposalRequest
 import mysterium.GetProposalsRequest
+import mysterium.SendFeedbackRequest
 
 class ProposalItem(
         @Json(name = "providerId")
@@ -88,12 +89,10 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
-        Log.i("NodeRepository", "connect")
         deferredNode.await().connect(req)
     }
 
     suspend fun disconnect() = withContext(Dispatchers.IO) {
-        Log.i("NodeRepository", "disconnect")
         deferredNode.await().disconnect()
     }
 
@@ -116,6 +115,10 @@ class NodeRepository(private val deferredNode: DeferredNode) {
                 providerID = status.providerID,
                 serviceType = status.serviceType
         )
+    }
+
+    suspend fun sendFeedback(req: SendFeedbackRequest) = withContext(Dispatchers.IO) {
+        deferredNode.await().sendFeedback(req)
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {

@@ -19,19 +19,8 @@ package network.mysterium.logging
 
 import com.crashlytics.android.Crashlytics
 
-class FeedbackException(message: String) : Exception(message)
-
 class BugReporter {
-    fun logException(value: String) {
-        Crashlytics.logException(RuntimeException(value))
-    }
-
     fun setUserIdentifier(userIdentifier: String) {
         Crashlytics.setUserIdentifier(userIdentifier)
-    }
-
-    fun sendFeedback(type: String, message: String) {
-        // TODO: use node
-        Crashlytics.logException(FeedbackException("$type:$message"))
     }
 }
