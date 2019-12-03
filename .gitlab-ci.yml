@@ -5,8 +5,6 @@ stages:
 
 push-beta:
   stage: deploy
-  dependencies:
-    - install-packages
   when: manual
   only:
     - master
