@@ -58,9 +58,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-//    dexOptions {
-//        javaMaxHeapSize "2G"
-//    }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 
     defaultConfig {
         applicationId "network.mysterium.vpn"
@@ -151,6 +151,8 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.2'
     implementation 'androidx.room:room-ktx:2.2.2'
     kapt 'androidx.room:room-compiler:2.2.2'
+
+    testImplementation 'junit:junit:4.12'
 }
 
 // Run this once to be able to run the application with BUCK

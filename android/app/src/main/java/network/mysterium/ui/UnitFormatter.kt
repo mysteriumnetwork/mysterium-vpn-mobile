@@ -17,6 +17,7 @@
 
 package network.mysterium.ui
 
+import kotlin.math.floor
 import kotlin.math.roundToInt
 
 object UnitFormatter {
@@ -38,19 +39,19 @@ object UnitFormatter {
             return "00:00:00"
         }
 
-        val h = (seconds / 3600).roundToInt()
+        val h = floor(seconds / 3600).roundToInt()
         val hh = when {
             h > 9 -> h.toString()
             else -> "0$h"
         }
 
-        val m = ((seconds % 3600) / 60).roundToInt()
+        val m = floor((seconds % 3600) / 60).roundToInt()
         val mm = when {
             m > 9 -> m.toString()
             else -> "0$m"
         }
 
-        val s = (seconds % 60).roundToInt()
+        val s = floor(seconds % 60).roundToInt()
         val ss = when {
             s > 9 -> s.toString()
             else -> "0$s"
