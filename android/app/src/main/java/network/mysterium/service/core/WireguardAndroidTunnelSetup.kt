@@ -22,7 +22,6 @@ import android.os.Build
 import android.util.Log
 import mysterium.WireguardTunnelSetup
 
-
 class WireguardAndroidTunnelSetup(val vpnService: VpnService) : WireguardTunnelSetup {
     var tunBuilder: VpnService.Builder? = null
 
@@ -42,7 +41,7 @@ class WireguardAndroidTunnelSetup(val vpnService: VpnService) : WireguardTunnelS
     }
 
     override fun addTunnelAddress(ip: String, prefixLength: Long) {
-        tunBuilder?.addAddress(ip , prefixLength.toInt())
+        tunBuilder?.addAddress(ip, prefixLength.toInt())
     }
 
     override fun protect(socket: Long) {

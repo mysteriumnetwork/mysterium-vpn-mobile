@@ -15,25 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.vpn.connection
+package network.mysterium.ui
 
-import android.content.Intent
-import android.util.Log
-import com.facebook.react.HeadlessJsTaskService
-import com.facebook.react.bridge.Arguments
-import com.facebook.react.jstasks.HeadlessJsTaskConfig
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 
-class ConnectionCheckerService : HeadlessJsTaskService() {
-    override fun getTaskConfig(intent: Intent?): HeadlessJsTaskConfig? {
-        if (intent == null) {
-            return null
-        }
-        val extras = intent.extras ?: return null
-        return HeadlessJsTaskConfig(NAME, Arguments.fromBundle(extras), TIMEOUT, true)
-    }
-
-    companion object {
-        private const val NAME = "ConnectionChecker"
-        private const val TIMEOUT: Long = 60000
-    }
+fun EditText.onChange(cb: (String) -> Unit) {
+    this.addTextChangedListener(object: TextWatcher {
+        override fun afterTextChanged(s: Editable?) { cb(s.toString()) }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    })
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph">
+
+    <fragment
+        android:id="@+id/feedback_fragment"
+        android:name="network.mysterium.ui.FeedbackFragment"
+        android:label="fragment_feedback"
+        tools:layout="@layout/fragment_feedback" />
+    <fragment
+        android:id="@+id/main_vpn_fragment"
+        android:name="network.mysterium.ui.MainVpnFragment"
+        android:label="fragment_main_vpn"
+        tools:layout="@layout/fragment_main_vpn" />
+    <fragment
+        android:id="@+id/terms_fragment"
+        android:name="network.mysterium.ui.TermsFragment"
+        android:label="fragment_terms"
+        tools:layout="@layout/fragment_terms" />
+
+    <fragment
+        android:id="@+id/proposals_fragment"
+        android:name="network.mysterium.ui.ProposalsFragment"
+        android:label="fragment_proposals"
+        tools:layout="@layout/fragment_proposals" />
+
+    <action android:id="@+id/action_go_to_vpn_screen"
+        app:destination="@id/main_vpn_fragment"/>
+
+    <action android:id="@+id/action_go_to_terms_screen"
+        app:destination="@id/terms_fragment"/>
+
+    <action android:id="@+id/action_go_to_feedback_screen"
+        app:destination="@id/feedback_fragment"/>
+
+    <action android:id="@+id/action_go_to_proposals_screen"
+        app:destination="@id/proposals_fragment"/>
+</navigation>

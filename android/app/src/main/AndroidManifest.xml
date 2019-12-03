@@ -1,47 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="network.mysterium.vpn">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-      android:name="network.mysterium.vpn.MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:allowBackup="false"
-      android:networkSecurityConfig="@xml/network_security_config"
-      android:theme="@style/AppTheme">
-      <activity
-        android:name="network.mysterium.vpn.MainActivity"
+        android:name="network.mysterium.MainApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-        android:screenOrientation="portrait"
-        android:windowSoftInputMode="adjustResize">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-      </activity>
-       <meta-data
-         android:name="io.fabric.ApiKey"
-         android:value="c614c88920a993fbd6030ed842b48214b0ebc689"
-       />
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-      <service android:name="network.mysterium.service.core.MysteriumAndroidCoreService"
-        android:permission="android.permission.BIND_VPN_SERVICE">
-          <intent-filter>
-              <action android:name="android.net.VpnService" />
-          </intent-filter>
-      </service>
-      <service android:name=".connection.ConnectionCheckerService" />
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
-      <meta-data
-        android:name="google_analytics_adid_collection_enabled"
-        android:value="false" />
-      <meta-data
-        android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-        android:value="MysteriumVPN notifications" />
-      <meta-data
-        android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-        android:value="Notifications of MysteriumVPN" />
+        <activity
+            android:name="network.mysterium.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleTop"
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c614c88920a993fbd6030ed842b48214b0ebc689" />
+        <service
+            android:name="network.mysterium.service.core.MysteriumAndroidCoreService"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
     </application>
+
 </manifest>
