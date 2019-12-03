@@ -231,6 +231,7 @@ class SharedViewModel(
                 location.value = LocationViewItem(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
                 break
             } catch (e: Exception) {
+                delay(1000)
                 Log.e(TAG, "Failed to load location. Attempt $i.", e)
             }
         }

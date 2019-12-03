@@ -121,9 +121,8 @@ class MainVpnFragment : Fragment() {
     private fun updateLocation(it: LocationViewItem) {
         conStatusIP.text = "IP: ${it.ip}"
         if (it.countryFlagImage == null) {
-            vpnStatusCountry.visibility = View.GONE
+            vpnStatusCountry.setImageResource(R.drawable.ic_public_black_24dp)
         } else {
-            vpnStatusCountry.visibility = View.VISIBLE
             vpnStatusCountry.setImageBitmap(it.countryFlagImage)
         }
     }
