@@ -58,6 +58,7 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesReceivedLabel: TextView
     private lateinit var vpnStatsBytesReceivedUnits: TextView
     private lateinit var vpnStatsBytesSentUnits: TextView
+    private lateinit var vpnAccountBalanceLabel: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -85,6 +86,7 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
         vpnStatsBytesReceivedUnits = root.findViewById(R.id.vpn_stats_bytes_received_units)
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
+        vpnAccountBalanceLabel = root.findViewById(R.id.vpn_account_balance_label)
 
         feedbackButton.setOnClickListener {
             val drawer = appContainer.drawerLayout

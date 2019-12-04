@@ -153,8 +153,9 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         navView.setNavigationItemSelectedListener {
             drawerLayout.closeDrawer(GravityCompat.START)
-            if (it.itemId == R.id.menu_item_feedback) {
-                navigateTo(navController, Screen.FEEDBACK)
+            when {
+                it.itemId == R.id.menu_item_account -> navigateTo(navController, Screen.ACCOUNT)
+                it.itemId == R.id.menu_item_feedback -> navigateTo(navController, Screen.FEEDBACK)
             }
             true
         }

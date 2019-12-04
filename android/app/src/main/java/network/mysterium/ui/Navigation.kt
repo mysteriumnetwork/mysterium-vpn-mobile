@@ -11,7 +11,8 @@ import network.mysterium.vpn.R
 enum class Screen {
     MAIN,
     FEEDBACK,
-    PROPOSALS
+    PROPOSALS,
+    ACCOUNT,
 }
 
 fun navigateTo(navController: NavController, destination: Screen) {
@@ -19,6 +20,7 @@ fun navigateTo(navController: NavController, destination: Screen) {
         Screen.MAIN -> R.id.action_go_to_vpn_screen
         Screen.FEEDBACK -> R.id.action_go_to_feedback_screen
         Screen.PROPOSALS -> R.id.action_go_to_proposals_screen
+        Screen.ACCOUNT -> R.id.action_go_to_account_screen
     }
     navController.navigate(to)
 }

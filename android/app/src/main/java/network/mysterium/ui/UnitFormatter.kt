@@ -20,7 +20,6 @@ package network.mysterium.ui
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
-
 class FormattedBytesViewItem(val value: String, val units: String)
 
 object UnitFormatter {
