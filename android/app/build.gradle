@@ -119,9 +119,8 @@ android {
 }
 
 dependencies {
-    def nav_version = "2.1.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
         transitive = true

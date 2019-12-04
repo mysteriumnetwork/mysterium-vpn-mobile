@@ -27,6 +27,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineScope
@@ -86,7 +87,8 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
 
         feedbackButton.setOnClickListener {
-            navigateTo(root, Screen.FEEDBACK)
+            val drawer = appContainer.drawerLayout
+            drawer.openDrawer(GravityCompat.START)
         }
 
         selectProposalLayout.setOnClickListener {

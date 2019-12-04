@@ -28,7 +28,11 @@ import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +40,8 @@ import kotlinx.coroutines.launch
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
+import network.mysterium.ui.Screen
+import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
 
 class MainActivity : AppCompatActivity() {
@@ -51,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.i(TAG, "Service connected")
             deferredMysteriumCoreService.complete(service as MysteriumCoreService)
-            deferredNode.start(service) {err ->
+            deferredNode.start(service) { err ->
                 if (err != null) {
                     showNodeStarError()
                 }
@@ -64,9 +70,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Setup app drawer.
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        setupDrawerMenu(drawerLayout)
+
         // Initialize app DI container.
         appContainer = (application as MainApplication).appContainer
-        appContainer.init(applicationContext, deferredNode, deferredMysteriumCoreService)
+        appContainer.init(applicationContext, deferredNode, deferredMysteriumCoreService, drawerLayout)
 
         // Bind VPN service.
         ensureVpnServicePermission()
@@ -135,6 +145,19 @@ class MainActivity : AppCompatActivity() {
     private fun ensureVpnServicePermission() {
         val intent: Intent = VpnService.prepare(this) ?: return
         startActivityForResult(intent, VPN_SERVICE_REQUEST)
+    }
+
+    private fun setupDrawerMenu(drawerLayout: DrawerLayout) {
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.setupWithNavController(navController)
+        navView.setNavigationItemSelectedListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            if (it.itemId == R.id.menu_item_feedback) {
+                navigateTo(navController, Screen.FEEDBACK)
+            }
+            true
+        }
     }
 
     private fun navigate(destination: Int) {

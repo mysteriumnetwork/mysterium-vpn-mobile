@@ -18,6 +18,7 @@
 package network.mysterium
 
 import android.content.Context
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
 import kotlinx.coroutines.CompletableDeferred
@@ -38,13 +39,15 @@ class AppContainer {
     lateinit var termsViewModel: TermsViewModel
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+    lateinit var drawerLayout: DrawerLayout
 
-    fun init(ctx: Context, deferredNode: DeferredNode, mysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
+    fun init(ctx: Context, deferredNode: DeferredNode, mysteriumCoreService: CompletableDeferred<MysteriumCoreService>, appDrawerLayout: DrawerLayout) {
         appDatabase = Room.databaseBuilder(
                 ctx,
                 AppDatabase::class.java, "mysteriumvpn"
         ).build()
 
+        drawerLayout = appDrawerLayout
         deferredMysteriumCoreService = mysteriumCoreService
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
