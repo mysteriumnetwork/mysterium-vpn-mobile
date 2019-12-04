@@ -23,18 +23,22 @@ class UnitFormatterTest {
     fun testBytesFormatting() {
         var longVal: Long = 101
         var res = UnitFormatter.bytesDisplay(longVal.toDouble())
-        assertEquals("101.0 B", res)
+        assertEquals("101.0 B", "${res.value} ${res.units}")
 
         longVal = 1028
         res = UnitFormatter.bytesDisplay(longVal.toDouble())
-        assertEquals("1.00 KB", res)
+        assertEquals("1.00 KB", "${res.value} ${res.units}")
 
         longVal = 81068
         res = UnitFormatter.bytesDisplay(longVal.toDouble())
-        assertEquals("79.17 KB", res)
+        assertEquals("79.17 KB", "${res.value} ${res.units}")
 
         longVal = 9381068
         res = UnitFormatter.bytesDisplay(longVal.toDouble())
-        assertEquals("8.95 MB", res)
+        assertEquals("8.95 MB", "${res.value} ${res.units}")
+
+        longVal = 1309381068
+        res = UnitFormatter.bytesDisplay(longVal.toDouble())
+        assertEquals("1.22 GB", "${res.value} ${res.units}")
     }
 }

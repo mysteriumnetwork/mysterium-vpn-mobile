@@ -55,6 +55,8 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsDurationLabel: TextView
     private lateinit var vpnStatsBytesSentLabel: TextView
     private lateinit var vpnStatsBytesReceivedLabel: TextView
+    private lateinit var vpnStatsBytesReceivedUnits: TextView
+    private lateinit var vpnStatsBytesSentUnits: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -80,6 +82,8 @@ class MainVpnFragment : Fragment() {
         vpnStatsDurationLabel = root.findViewById(R.id.vpn_stats_duration)
         vpnStatsBytesReceivedLabel = root.findViewById(R.id.vpn_stats_bytes_received)
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
+        vpnStatsBytesReceivedUnits = root.findViewById(R.id.vpn_stats_bytes_received_units)
+        vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
 
         feedbackButton.setOnClickListener {
             navigateTo(root, Screen.FEEDBACK)
@@ -137,8 +141,10 @@ class MainVpnFragment : Fragment() {
 
     private fun updateStatsLabels(it: StatisticsViewItem) {
         vpnStatsDurationLabel.text = it.duration
-        vpnStatsBytesReceivedLabel.text = it.bytesReceived
-        vpnStatsBytesSentLabel.text = it.bytesSent
+        vpnStatsBytesReceivedLabel.text = it.bytesReceived.value
+        vpnStatsBytesReceivedUnits.text = it.bytesReceived.units
+        vpnStatsBytesSentLabel.text = it.bytesSent.value
+        vpnStatsBytesSentUnits.text = it.bytesSent.units
     }
 
     private fun updateConnStateLabel(it: ConnectionState) {
@@ -212,7 +218,7 @@ class MainVpnFragment : Fragment() {
     private fun connect(ctx: Context) {
         val proposal: ProposalViewItem? = sharedViewModel.selectedProposal.value
         if (proposal == null) {
-            showMessage(ctx, "Select proposal!")
+            showMessage(ctx, getString(R.string.vpn_select_proposal_warning))
             return
         }
         job?.cancel()
@@ -223,7 +229,7 @@ class MainVpnFragment : Fragment() {
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // Do nothing.
             } catch (e: Exception) {
-                showMessage(ctx, "Failed to connect. Please try again.")
+                showMessage(ctx, getString(R.string.vpn_failed_to_connect))
                 Log.e(TAG, "Failed to connect", e)
             }
         }
@@ -236,7 +242,7 @@ class MainVpnFragment : Fragment() {
             try {
                 sharedViewModel.disconnect()
             } catch (e: Exception) {
-                showMessage(ctx, "Failed to disconnect. Please try again.")
+                showMessage(ctx, getString(R.string.vpn_failed_to_disconnect))
                 Log.e(TAG, "Failed to disconnect", e)
             }
         }

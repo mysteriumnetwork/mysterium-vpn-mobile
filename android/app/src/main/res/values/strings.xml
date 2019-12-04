@@ -24,4 +24,8 @@
     <string name="connect_button_loading">Loading</string>
     <string name="vpn_status_loading">Loading</string>
     <string name="feedback_message_label">Message</string>
+    <string name="feedback_message_required">Message is required.</string>
+    <string name="vpn_select_proposal_warning">Please select proposal to connect.</string>
+    <string name="vpn_failed_to_connect">Failed to connect. Please try again.</string>
+    <string name="vpn_failed_to_disconnect">Failed to disconnect. Please try again.</string>
 </resources>
