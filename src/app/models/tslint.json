@@ -1,5 +1,0 @@
-{
-  "rules": {
-    "import-blacklist": [true, "mysterium-tequilapi"]
-  }
-}
