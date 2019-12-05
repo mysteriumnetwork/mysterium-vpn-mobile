@@ -29,9 +29,9 @@ import network.mysterium.vpn.R
 
 class AccountFragment : Fragment() {
     private lateinit var toolbar: Toolbar
-    private lateinit var account_main_layout: ConstraintLayout
-    private lateinit var account_identity_registration_layout: ConstraintLayout
-    private lateinit var account_register_identity_button: Button
+    private lateinit var accountMainLayout: ConstraintLayout
+    private lateinit var accountIdentityRegistrationLayout: ConstraintLayout
+    private lateinit var accountRegisterIdentityButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -39,18 +39,18 @@ class AccountFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_account, container, false)
 
         toolbar = root.findViewById(R.id.account_toolbar)
-        account_main_layout = root.findViewById(R.id.account_main_layout)
-        account_identity_registration_layout = root.findViewById(R.id.account_identity_registration_layout)
-        account_register_identity_button = root.findViewById(R.id.account_register_identity_button)
+        accountMainLayout = root.findViewById(R.id.account_main_layout)
+        accountIdentityRegistrationLayout = root.findViewById(R.id.account_identity_registration_layout)
+        accountRegisterIdentityButton = root.findViewById(R.id.account_register_identity_button)
 
         toolbar.setNavigationOnClickListener {
             hideKeyboard(root)
             navigateTo(root, Screen.MAIN)
         }
 
-        account_register_identity_button.setOnClickListener {
-            account_identity_registration_layout.visibility = View.GONE
-            account_main_layout.visibility = View.VISIBLE
+        accountRegisterIdentityButton.setOnClickListener {
+            accountIdentityRegistrationLayout.visibility = View.GONE
+            accountMainLayout.visibility = View.VISIBLE
         }
 
         onBackPress {

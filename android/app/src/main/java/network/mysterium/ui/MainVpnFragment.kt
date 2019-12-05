@@ -24,6 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +60,7 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesReceivedUnits: TextView
     private lateinit var vpnStatsBytesSentUnits: TextView
     private lateinit var vpnAccountBalanceLabel: TextView
-    private lateinit var vpn_account_balance_layout: ConstraintLayout
+    private lateinit var vpnAccountBalanceLayout: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -88,14 +89,14 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesReceivedUnits = root.findViewById(R.id.vpn_stats_bytes_received_units)
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
         vpnAccountBalanceLabel = root.findViewById(R.id.vpn_account_balance_label)
-        vpn_account_balance_layout = root.findViewById(R.id.vpn_account_balance_layout)
+        vpnAccountBalanceLayout = root.findViewById(R.id.vpn_account_balance_layout)
 
         feedbackButton.setOnClickListener {
             val drawer = appContainer.drawerLayout
             drawer.openDrawer(GravityCompat.START)
         }
 
-        vpn_account_balance_layout.setOnClickListener {
+        vpnAccountBalanceLayout.setOnClickListener {
             navigateTo(root, Screen.ACCOUNT)
         }
 
