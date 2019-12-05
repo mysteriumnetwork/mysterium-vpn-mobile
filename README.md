@@ -93,6 +93,8 @@ You can install this APK by:
 
 ##### Internal release
 
+- Increase bundle_release versionCode + 1 in fastlane/Fastlane file.
+
 - Build and publish internal release:
 ```bash
 source fastlane/.env.local && fastlane android beta

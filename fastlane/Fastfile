@@ -25,7 +25,7 @@ platform :android do
       project_dir: "android",
       print_command: false, # to prevent outputting passwords
       properties: {
-        'versionCode' => 10000 + number_of_commits,
+        'versionCode' => 1,
         'versionName' => last_git_tag,
         'applyGoogleServices' => true,
         "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
@@ -42,7 +42,7 @@ platform :android do
       project_dir: "android",
       print_command: false, # to prevent outputting passwords
       properties: {
-        'versionCode' => 10000 + number_of_commits,
+        'versionCode' => 10694,
         'versionName' => last_git_tag,
         'applyGoogleServices' => true,
         "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
