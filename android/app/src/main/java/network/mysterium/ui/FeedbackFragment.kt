@@ -66,6 +66,11 @@ class FeedbackFragment : Fragment() {
     }
 
     private fun handleFeedbackSubmit(root: View) {
+        if (!feedbackViewModel.isMessageSet()) {
+            showMessage(root.context, getString(R.string.feedback_message_required))
+            return
+        }
+
         feedbackSubmitButton.isEnabled = false
         navigateTo(root, Screen.MAIN)
         showMessage(root.context, getString(R.string.feedback_submit_success))

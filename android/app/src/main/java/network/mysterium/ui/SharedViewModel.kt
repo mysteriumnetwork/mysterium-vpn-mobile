@@ -52,8 +52,8 @@ class LocationViewItem(
 
 class StatisticsViewItem(
         val duration: String,
-        val bytesReceived: String,
-        val bytesSent: String
+        val bytesReceived: FormattedBytesViewItem,
+        val bytesSent: FormattedBytesViewItem
 ) {
     companion object {
         fun from(it: Statistics): StatisticsViewItem {
@@ -196,19 +196,17 @@ class SharedViewModel(
         // This is needed since status change can be executed on separate
         // inside go node library.
         viewModelScope.launch {
-            val s = StatisticsViewItem(
-                    duration = UnitFormatter.timeDisplay(it.duration.toDouble()),
-                    bytesReceived = UnitFormatter.bytesDisplay(it.bytesReceived.toDouble()),
-                    bytesSent = UnitFormatter.bytesDisplay(it.bytesSent.toDouble())
-            )
-            statistics.value = s
+            val s = StatisticsViewItem.from(it)
+            statistics.value = StatisticsViewItem.from(it)
 
             // Show global notification with connected country and statistics.
             // At this point we need to check if proposal is not null since
             // statistics event can fire sooner than proposal is loaded.
             if (selectedProposal.value != null) {
                 val countryName = selectedProposal.value?.countryName
-                mysteriumCoreService.await().showNotification("Connected to $countryName", "Received ${s.bytesReceived} | Send ${s.bytesSent}")
+                val notificationTitle = "Connected to $countryName"
+                val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"
+                mysteriumCoreService.await().showNotification(notificationTitle, notificationContent)
             }
         }
     }

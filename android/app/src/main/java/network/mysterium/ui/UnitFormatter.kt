@@ -20,17 +20,20 @@ package network.mysterium.ui
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
+
+class FormattedBytesViewItem(val value: String, val units: String)
+
 object UnitFormatter {
     val KB = 1024
     val MB = 1024 * KB
     val GB = 1024 * MB
 
-    fun bytesDisplay(bytes: Double): String {
+    fun bytesDisplay(bytes: Double): FormattedBytesViewItem {
         return when {
-            bytes < KB -> "$bytes B"
-            bytes < MB -> "%.2f KB".format(bytes / KB)
-            bytes < GB -> "%.2f MB".format(bytes / MB)
-            else -> "%.2f GB".format(bytes / GB)
+            bytes < KB -> FormattedBytesViewItem("$bytes", "B")
+            bytes < MB -> FormattedBytesViewItem("%.2f".format(bytes / KB), "KB")
+            bytes < GB -> FormattedBytesViewItem("%.2f".format(bytes / MB), "MB")
+            else -> FormattedBytesViewItem("%.2f".format(bytes / GB), "GB")
         }
     }
 
