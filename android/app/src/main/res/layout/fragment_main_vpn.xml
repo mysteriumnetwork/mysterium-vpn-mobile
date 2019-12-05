@@ -24,9 +24,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/vpn_account_balance_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:gravity="center"

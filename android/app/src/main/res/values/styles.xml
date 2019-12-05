@@ -13,6 +13,7 @@
     <color name="ColorMain">#622461</color>
     <color name="ColorWhite">#ffffff</color>
     <color name="ColorSecondary">#999999</color>
+    <color name="ColorBackground">#f9f9f9</color>
 
     <style name="IconButton">
         <item name="android:background">#ffffff</item>

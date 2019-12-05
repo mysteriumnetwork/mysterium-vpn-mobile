@@ -18,34 +18,39 @@
 package network.mysterium.ui
 
 import android.os.Bundle
-import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.findNavController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import network.mysterium.MainApplication
+import androidx.constraintlayout.widget.ConstraintLayout
 import network.mysterium.vpn.R
 
 class AccountFragment : Fragment() {
-    private lateinit var feedbackToolbar: Toolbar
+    private lateinit var toolbar: Toolbar
+    private lateinit var account_main_layout: ConstraintLayout
+    private lateinit var account_identity_registration_layout: ConstraintLayout
+    private lateinit var account_register_identity_button: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val root = inflater.inflate(R.layout.fragment_account, container, false)
 
-        feedbackToolbar = root.findViewById(R.id.account_toolbar)
+        toolbar = root.findViewById(R.id.account_toolbar)
+        account_main_layout = root.findViewById(R.id.account_main_layout)
+        account_identity_registration_layout = root.findViewById(R.id.account_identity_registration_layout)
+        account_register_identity_button = root.findViewById(R.id.account_register_identity_button)
 
-        feedbackToolbar.setNavigationOnClickListener {
+        toolbar.setNavigationOnClickListener {
             hideKeyboard(root)
             navigateTo(root, Screen.MAIN)
+        }
+
+        account_register_identity_button.setOnClickListener {
+            account_identity_registration_layout.visibility = View.GONE
+            account_main_layout.visibility = View.VISIBLE
         }
 
         onBackPress {
