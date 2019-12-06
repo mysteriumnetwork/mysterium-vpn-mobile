@@ -27,6 +27,7 @@ import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
+import network.mysterium.ui.AccountViewModel
 import network.mysterium.ui.ProposalsViewModel
 import network.mysterium.ui.SharedViewModel
 import network.mysterium.ui.TermsViewModel
@@ -37,6 +38,7 @@ class AppContainer {
     lateinit var sharedViewModel: SharedViewModel
     lateinit var proposalsViewModel: ProposalsViewModel
     lateinit var termsViewModel: TermsViewModel
+    lateinit var accountViewModel: AccountViewModel
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
@@ -54,6 +56,7 @@ class AppContainer {
         sharedViewModel = SharedViewModel(nodeRepository, bugReporter, deferredMysteriumCoreService)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
+        accountViewModel = AccountViewModel(nodeRepository, bugReporter)
     }
 
     companion object {

@@ -150,9 +150,9 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    implementation 'network.mysterium:mobile-node:0.15.0'
+    // implementation 'network.mysterium:mobile-node:0.15.0'
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
-    // compile files('/Users/anjmao/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
+    compile files('/Users/anjmao/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
 }
 
 // Run this once to be able to run the application with BUCK

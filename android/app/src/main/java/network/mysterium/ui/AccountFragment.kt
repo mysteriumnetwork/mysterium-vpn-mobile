@@ -38,6 +38,8 @@ class AccountFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_account, container, false)
 
+        // TODO: load identity here and show hide register form.
+
         toolbar = root.findViewById(R.id.account_toolbar)
         accountMainLayout = root.findViewById(R.id.account_main_layout)
         accountIdentityRegistrationLayout = root.findViewById(R.id.account_identity_registration_layout)

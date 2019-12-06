@@ -80,7 +80,6 @@ class SharedViewModel(
     private var isConnected = false
 
     suspend fun load(favoriteProposals: Map<String, FavoriteProposal>) {
-        unlockIdentity()
         initListeners()
         loadLocation()
         val status = loadCurrentStatus()
@@ -107,10 +106,7 @@ class SharedViewModel(
             // Before doing actual connection add some delay to prevent
             // from trying to establish connection if user instantly clicks CANCEL.
             delay(1000)
-            val req = ConnectRequest()
-            req.providerID = providerID
-            req.serviceType = serviceType
-            nodeRepository.connect(req)
+            nodeRepository.connect(providerID, serviceType)
             isConnected = true
             connectionState.value = ConnectionState.CONNECTED
             loadLocation()
@@ -208,15 +204,6 @@ class SharedViewModel(
                 val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"
                 mysteriumCoreService.await().showNotification(notificationTitle, notificationContent)
             }
-        }
-    }
-
-    private suspend fun unlockIdentity() {
-        try {
-            val identity = nodeRepository.unlockIdentity()
-            bugReporter.setUserIdentifier(identity)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed not unlock identity", e)
         }
     }
 
