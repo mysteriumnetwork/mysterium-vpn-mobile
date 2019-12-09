@@ -159,10 +159,17 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun handleSelectProposalPress(root: View) {
+        if (!isAdded) {
+            return
+        }
         navigateToProposals(root)
     }
 
     private fun handleFavoriteProposalPress(root: View) {
+        if (!isAdded) {
+            return
+        }
+
         val selectedProposal = sharedViewModel.selectedProposal.value
         if (selectedProposal == null) {
             navigateToProposals(root)
@@ -202,6 +209,10 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun handleConnectionPress(ctx: Context) {
+        if (!isAdded) {
+            return
+        }
+
         if (sharedViewModel.canConnect()) {
             connect(ctx)
             return
