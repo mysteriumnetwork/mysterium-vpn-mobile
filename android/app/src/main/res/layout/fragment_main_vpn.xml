@@ -42,16 +42,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/ColorMain"
                 android:textSize="13dp"
-                android:text="10.6M" />
+                android:text="0 MYST" />
 
-            <TextView
-                android:id="@+id/vpn_feedback_button5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/ColorSecondary"
-                android:layout_marginLeft="5dp"
-                android:textSize="13dp"
-                android:text="MYST" />
 <!--            <ImageView-->
 <!--                android:id="@+id/vpn_feedback_button2"-->
 <!--                android:layout_width="18dp"-->

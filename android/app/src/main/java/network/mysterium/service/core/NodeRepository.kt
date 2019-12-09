@@ -113,6 +113,13 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         }
     }
 
+    // Register statistics callback.
+    suspend fun registerBalanceChangeCallback(cb: (balance: Balance) -> Unit) {
+        deferredNode.await().registerBalanceChangeCallback {
+            _, balance -> cb(Balance(value = balance))
+        }
+    }
+
     // Connect to VPN service.
     suspend fun connect(providerID: String, serviceType: String) = withContext(Dispatchers.IO) {
         val req = ConnectRequest()
@@ -163,8 +170,10 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     // Get current credit balance.
-    suspend fun getBalance() = withContext(Dispatchers.IO) {
-        val res = deferredNode.await().balance
+    suspend fun getBalance(identityAddress: String) = withContext(Dispatchers.IO) {
+        val req = GetBalanceRequest()
+        req.identityAddress = identityAddress
+        val res = deferredNode.await().getBalance(req)
         Balance(value = res.balance)
     }
 

@@ -23,42 +23,76 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import network.mysterium.AppContainer
 import network.mysterium.vpn.R
 
 class AccountFragment : Fragment() {
+    private lateinit var accountViewModel: AccountViewModel
     private lateinit var toolbar: Toolbar
     private lateinit var accountMainLayout: ConstraintLayout
+    private lateinit var accountBalanceText: TextView
+    private lateinit var accountIdentityText: TextView
     private lateinit var accountIdentityRegistrationLayout: ConstraintLayout
+    private lateinit var accountIdentityRegistrationFeeValue: TextView
     private lateinit var accountRegisterIdentityButton: Button
+    private lateinit var accountTopUpButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val root = inflater.inflate(R.layout.fragment_account, container, false)
+        accountViewModel = AppContainer.from(activity).accountViewModel
 
-        // TODO: load identity here and show hide register form.
-
+        // Initialize UI elements.
         toolbar = root.findViewById(R.id.account_toolbar)
         accountMainLayout = root.findViewById(R.id.account_main_layout)
+        accountBalanceText = root.findViewById(R.id.account_balance_text)
+        accountIdentityText = root.findViewById(R.id.account_identity_text)
         accountIdentityRegistrationLayout = root.findViewById(R.id.account_identity_registration_layout)
+        accountIdentityRegistrationFeeValue = root.findViewById(R.id.account_identity_registration_fee_value)
         accountRegisterIdentityButton = root.findViewById(R.id.account_register_identity_button)
+        accountTopUpButton = root.findViewById(R.id.account_topup_button)
 
+
+        // Handle back press.
         toolbar.setNavigationOnClickListener {
-            hideKeyboard(root)
             navigateTo(root, Screen.MAIN)
-        }
-
-        accountRegisterIdentityButton.setOnClickListener {
-            accountIdentityRegistrationLayout.visibility = View.GONE
-            accountMainLayout.visibility = View.VISIBLE
         }
 
         onBackPress {
             navigateTo(root, Screen.MAIN)
         }
 
+        accountViewModel.identity.observe(this, Observer {
+            accountIdentityText.text = it.address
+        })
+
+        accountViewModel.balance.observe(this, Observer {
+            accountBalanceText.text = it.value.displayValue
+        })
+
+        accountTopUpButton.setOnClickListener { handleTopUp(root) }
+
         return root
+    }
+
+    private fun handleTopUp(root: View) {
+        accountTopUpButton.isEnabled = false
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                accountViewModel.topUp()
+            } catch (e: Exception) {
+                showMessage(root.context, "Failed to top-up balance: $e")
+            } finally {
+                accountTopUpButton.isEnabled = true
+            }
+        }
     }
 }

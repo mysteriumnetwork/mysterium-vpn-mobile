@@ -35,12 +35,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import network.mysterium.AppContainer
 import network.mysterium.MainApplication
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var proposalsViewModel: ProposalsViewModel
+    private lateinit var accountViewModel: AccountViewModel
 
     private var job: Job? = null
     private lateinit var connStatusLabel: TextView
@@ -65,9 +67,10 @@ class MainVpnFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val appContainer = (activity!!.application as MainApplication).appContainer
+        val appContainer = AppContainer.from(activity)
         sharedViewModel = appContainer.sharedViewModel
         proposalsViewModel = appContainer.proposalsViewModel
+        accountViewModel = appContainer.accountViewModel
 
         val root = inflater.inflate(R.layout.fragment_main_vpn, container, false)
 
@@ -123,6 +126,8 @@ class MainVpnFragment : Fragment() {
 
         sharedViewModel.location.observe(this, Observer { updateLocation(it) })
 
+        accountViewModel.balance.observe(this, Observer { updateBalance(it) })
+
         onBackPress { emulateHomePress() }
 
         return root
@@ -131,6 +136,10 @@ class MainVpnFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         job?.cancel()
+    }
+
+    private fun updateBalance(it: BalanceViewItem) {
+        vpnAccountBalanceLabel.text = it.value.displayValue
     }
 
     private fun updateLocation(it: LocationViewItem) {

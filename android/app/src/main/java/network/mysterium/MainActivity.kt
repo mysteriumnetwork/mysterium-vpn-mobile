@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         // Load initial state without blocking main UI thread.
         CoroutineScope(Dispatchers.Main).launch {
-            // Load identity data.
+            // Load account data.
             appContainer.accountViewModel.load()
 
             // Load favorite proposals from local database.

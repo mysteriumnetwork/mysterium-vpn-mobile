@@ -27,6 +27,7 @@
         android:paddingRight="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
             android:id="@+id/account_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,11 +62,11 @@
                         android:layout_marginTop="10dp"
                         android:enabled="false"
                         android:gravity="top"
-                        android:text="10.6M MYST"
+                        android:text="0 MYST"
                         app:layout_constraintTop_toBottomOf="@id/account_balance_card_title" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/account_topup"
+                        android:id="@+id/account_topup_button"
                         style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -107,7 +108,7 @@
                         android:enabled="false"
                         android:gravity="top"
                         android:padding="5dp"
-                        android:text="0x1232328vfrefer3434r34bf3443343423"
+                        android:text="0x..."
                         app:layout_constraintTop_toBottomOf="@id/account_identity_card_title" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -126,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:text="Before using MysteriumVPN you need to create your TESTNET blockchain account."
                 android:textSize="16dp"
+                android:lineHeight="22dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -154,12 +156,33 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="NOTE: While we are in the Testnet Environment identity passphrase is not needed. This is temporary flow which will be improved. In the feature you will be able to set identity passphrase and linked other Blockchain accounts."
+                        android:text="While we are in the Testnet Environment identity passphrase is not needed. This is temporary flow which will be improved. In the feature you will be able to set identity passphrase and link other Blockchain accounts."
                         android:textColor="@color/ColorSecondary"
                         android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/account_identity_registration_card_title" />
+
+                    <TextView
+                        android:id="@+id/account_identity_registration_fee_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Registration fee"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/account_passphrase_text_note1"
+                        />
+
+                    <TextView
+                        android:id="@+id/account_identity_registration_fee_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="... MYST"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_registration_fee_label"
+                        />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/account_register_identity_button"
@@ -169,7 +192,7 @@
                         android:layout_marginTop="10dp"
                         android:text="REGISTER IDENTITY"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/account_passphrase_text_note1" />
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_registration_fee_value" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
