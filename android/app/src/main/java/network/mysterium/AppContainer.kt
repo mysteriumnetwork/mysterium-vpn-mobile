@@ -53,7 +53,7 @@ class AppContainer {
         deferredMysteriumCoreService = mysteriumCoreService
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
-        sharedViewModel = SharedViewModel(nodeRepository, bugReporter, deferredMysteriumCoreService)
+        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
         accountViewModel = AccountViewModel(nodeRepository, bugReporter)

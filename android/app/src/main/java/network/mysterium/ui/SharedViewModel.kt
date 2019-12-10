@@ -68,7 +68,6 @@ class StatisticsViewItem(
 
 class SharedViewModel(
         private val nodeRepository: NodeRepository,
-        private val bugReporter: BugReporter,
         private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>
 ) : ViewModel() {
 
@@ -100,13 +99,13 @@ class SharedViewModel(
         return state != null && state == ConnectionState.CONNECTED
     }
 
-    suspend fun connect(providerID: String, serviceType: String) {
+    suspend fun connect(identityAddress: String, providerID: String, serviceType: String) {
         try {
             connectionState.value = ConnectionState.CONNECTING
             // Before doing actual connection add some delay to prevent
             // from trying to establish connection if user instantly clicks CANCEL.
             delay(1000)
-            nodeRepository.connect(providerID, serviceType)
+            nodeRepository.connect(identityAddress, providerID, serviceType)
             isConnected = true
             connectionState.value = ConnectionState.CONNECTED
             loadLocation()

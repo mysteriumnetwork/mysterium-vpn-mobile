@@ -48,15 +48,13 @@ class Status(
 )
 
 class Identity(
-        val address: String
+        val address: String,
+        val channelAddress: String,
+        val registrationStatus: String
 )
 
 class IdentityRegistrationFees(
         val fee: Long
-)
-
-class IdentityRegistrationStatus(
-        val value: String
 )
 
 class Balance(val value: Long)
@@ -120,11 +118,19 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         }
     }
 
+    // Register identity registration status callback.
+    suspend fun registerIdentityRegistrationChangeCallback(cb: (status: String) -> Unit) {
+        deferredNode.await().registerIdentityRegistrationChangeCallback {
+            _, status -> cb(status)
+        }
+    }
+
     // Connect to VPN service.
-    suspend fun connect(providerID: String, serviceType: String) = withContext(Dispatchers.IO) {
+    suspend fun connect(identityAddress: String, providerID: String, serviceType: String) = withContext(Dispatchers.IO) {
         val req = ConnectRequest()
         req.providerID = providerID
         req.serviceType = serviceType
+        req.identityAddress = identityAddress
         deferredNode.await().connect(req)
     }
 
@@ -135,17 +141,9 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     // Unlock identity and return it's address. Internally mobile node will create default identity
     // if it is not created yet.
-    suspend fun unlockIdentity(): Identity = withContext(Dispatchers.IO) {
-        val res = deferredNode.await().unlockIdentity()
-        Identity(address = res.identityAddress)
-    }
-
-    // Get current identity registration status.
-    suspend fun getIdentityRegistrationStatus(identityAddress: String) = withContext(Dispatchers.IO) {
-        val req = GetIdentityRegistrationStatusRequest()
-        req.identityAddress = identityAddress
-        val res = deferredNode.await().getIdentityRegistrationStatus(req)
-        IdentityRegistrationStatus(value = res.status)
+    suspend fun getIdentity(): Identity = withContext(Dispatchers.IO) {
+        val res = deferredNode.await().identity
+        Identity(address = res.identityAddress, channelAddress = res.channelAddress, registrationStatus = res.registrationStatus)
     }
 
     // Get registration fees.

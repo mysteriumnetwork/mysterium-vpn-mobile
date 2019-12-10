@@ -27,12 +27,63 @@
         android:paddingRight="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/account_identity_registration_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/account_identity_registration_card_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Please wait"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/account_identity_registration_help_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Please wait while your account blockchain identity registration is in progress. It could take up to a few minutes."
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_registration_card_title" />
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/account_identity_registration_help_text">
+
+                    </ProgressBar>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="visible"
             android:id="@+id/account_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/account_identity_registration_layout">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/account_balance_card"
@@ -60,6 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:textSize="20dp"
                         android:enabled="false"
                         android:gravity="top"
                         android:text="0 MYST"
@@ -92,7 +144,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/account_identity_card_title"
+                        android:id="@+id/account_identity_text_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Identity Address"
@@ -105,94 +157,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:textIsSelectable="true"
                         android:enabled="false"
                         android:gravity="top"
                         android:padding="5dp"
                         android:text="0x..."
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_card_title" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/account_identity_registration_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/account_main_layout">
-            <TextView
-                android:id="@+id/account_identity_registration_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Before using MysteriumVPN you need to create your TESTNET blockchain account."
-                android:textSize="16dp"
-                android:lineHeight="22dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/account_identity_registration_text">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_text_label" />
 
                     <TextView
-                        android:id="@+id/account_identity_registration_card_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Blockchain Identity"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/account_passphrase_text_note1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="While we are in the Testnet Environment identity passphrase is not needed. This is temporary flow which will be improved. In the feature you will be able to set identity passphrase and link other Blockchain accounts."
-                        android:textColor="@color/ColorSecondary"
-                        android:textSize="14dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/account_identity_registration_card_title" />
-
-                    <TextView
-                        android:id="@+id/account_identity_registration_fee_label"
+                        android:id="@+id/account_identity_channel_address_text_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="Registration fee"
+                        android:text="Channel Address"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/account_passphrase_text_note1"
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_text" />
 
                     <TextView
-                        android:id="@+id/account_identity_registration_fee_value"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/account_identity_channel_address_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="... MYST"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_registration_fee_label"
-                        />
+                        android:textIsSelectable="true"
+                        android:enabled="false"
+                        android:gravity="top"
+                        android:padding="5dp"
+                        android:text="0x..."
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_channel_address_text_label" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/account_register_identity_button"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="REGISTER IDENTITY"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_registration_fee_value" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 

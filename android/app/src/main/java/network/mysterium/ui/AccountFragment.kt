@@ -40,8 +40,7 @@ class AccountFragment : Fragment() {
     private lateinit var accountBalanceText: TextView
     private lateinit var accountIdentityText: TextView
     private lateinit var accountIdentityRegistrationLayout: ConstraintLayout
-    private lateinit var accountIdentityRegistrationFeeValue: TextView
-    private lateinit var accountRegisterIdentityButton: Button
+    private lateinit var accountIdentityChannelAddressText: TextView
     private lateinit var accountTopUpButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,10 +55,8 @@ class AccountFragment : Fragment() {
         accountBalanceText = root.findViewById(R.id.account_balance_text)
         accountIdentityText = root.findViewById(R.id.account_identity_text)
         accountIdentityRegistrationLayout = root.findViewById(R.id.account_identity_registration_layout)
-        accountIdentityRegistrationFeeValue = root.findViewById(R.id.account_identity_registration_fee_value)
-        accountRegisterIdentityButton = root.findViewById(R.id.account_register_identity_button)
+        accountIdentityChannelAddressText = root.findViewById(R.id.account_identity_channel_address_text)
         accountTopUpButton = root.findViewById(R.id.account_topup_button)
-
 
         // Handle back press.
         toolbar.setNavigationOnClickListener {
@@ -71,7 +68,7 @@ class AccountFragment : Fragment() {
         }
 
         accountViewModel.identity.observe(this, Observer {
-            accountIdentityText.text = it.address
+            handleIdentityChange(it)
         })
 
         accountViewModel.balance.observe(this, Observer {
@@ -83,11 +80,25 @@ class AccountFragment : Fragment() {
         return root
     }
 
+    private fun handleIdentityChange(it: IdentityViewItem) {
+        accountIdentityText.text = it.address
+        accountIdentityChannelAddressText.text = it.channelAddress
+
+        if (it.registered) {
+            accountIdentityRegistrationLayout.visibility = View.GONE
+            accountMainLayout.visibility = View.VISIBLE
+        } else {
+            accountIdentityRegistrationLayout.visibility = View.VISIBLE
+            accountMainLayout.visibility = View.GONE
+        }
+    }
+
     private fun handleTopUp(root: View) {
         accountTopUpButton.isEnabled = false
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 accountViewModel.topUp()
+                showMessage(root.context, "Balance updated successfully.")
             } catch (e: Exception) {
                 showMessage(root.context, "Failed to top-up balance: $e")
             } finally {

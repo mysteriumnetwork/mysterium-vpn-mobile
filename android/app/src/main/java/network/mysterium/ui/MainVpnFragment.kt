@@ -112,7 +112,7 @@ class MainVpnFragment : Fragment() {
         }
 
         connectionButton.setOnClickListener {
-            handleConnectionPress(root.context)
+            handleConnectionPress(root)
         }
 
         sharedViewModel.selectedProposal.observe(this, Observer { updateSelectedProposal(it) })
@@ -221,14 +221,23 @@ class MainVpnFragment : Fragment() {
         }
     }
 
-    private fun handleConnectionPress(ctx: Context) {
+    private fun handleConnectionPress(root: View) {
+        if (!isAdded) {
+            return
+        }
+
+        if (!accountViewModel.isIdentityRegistered()) {
+            navigateTo(root, Screen.ACCOUNT)
+            return
+        }
+
         if (sharedViewModel.canConnect()) {
-            connect(ctx)
+            connect(root.context, accountViewModel.identity.value!!.address)
             return
         }
 
         if (sharedViewModel.canDisconnect()) {
-            disconnect(ctx)
+            disconnect(root.context)
             return
         }
 
