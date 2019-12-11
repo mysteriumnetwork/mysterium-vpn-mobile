@@ -36,7 +36,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
-import network.mysterium.MainApplication
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
@@ -138,11 +137,11 @@ class MainVpnFragment : Fragment() {
         job?.cancel()
     }
 
-    private fun updateBalance(it: BalanceViewItem) {
+    private fun updateBalance(it: BalanceModel) {
         vpnAccountBalanceLabel.text = it.value.displayValue
     }
 
-    private fun updateLocation(it: LocationViewItem) {
+    private fun updateLocation(it: LocationModel) {
         conStatusIP.text = "IP: ${it.ip}"
         if (it.countryFlagImage == null) {
             vpnStatusCountry.setImageResource(R.drawable.ic_public_black_24dp)
@@ -159,7 +158,7 @@ class MainVpnFragment : Fragment() {
         vpnProposalPickerFavoriteImage.setImageResource(it.isFavoriteResID)
     }
 
-    private fun updateStatsLabels(it: StatisticsViewItem) {
+    private fun updateStatsLabels(it: StatisticsModel) {
         vpnStatsDurationLabel.text = it.duration
         vpnStatsBytesReceivedLabel.text = it.bytesReceived.value
         vpnStatsBytesReceivedUnits.text = it.bytesReceived.units
@@ -244,7 +243,7 @@ class MainVpnFragment : Fragment() {
         cancel()
     }
 
-    private fun connect(ctx: Context) {
+    private fun connect(ctx: Context, identityAddress: String) {
         val proposal: ProposalViewItem? = sharedViewModel.selectedProposal.value
         if (proposal == null) {
             showMessage(ctx, getString(R.string.vpn_select_proposal_warning))
@@ -254,7 +253,8 @@ class MainVpnFragment : Fragment() {
         connectionButton.isEnabled = false
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
-                sharedViewModel.connect(proposal.providerID, proposal.serviceType.type)
+                Log.i(TAG, "Connecting identity $identityAddress to provider ${proposal.providerID} with service ${proposal.serviceType.type}")
+                sharedViewModel.connect(identityAddress, proposal.providerID, proposal.serviceType.type)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // Do nothing.
             } catch (e: Exception) {

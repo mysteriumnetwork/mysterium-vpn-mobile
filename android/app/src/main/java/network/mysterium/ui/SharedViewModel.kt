@@ -23,11 +23,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import mysterium.ConnectRequest
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.service.core.Statistics
-import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.Status
 
@@ -45,19 +43,19 @@ enum class ConnectionState(val type: String) {
     }
 }
 
-class LocationViewItem(
+class LocationModel(
         val ip: String,
         val countryFlagImage: Bitmap?
 )
 
-class StatisticsViewItem(
+class StatisticsModel(
         val duration: String,
         val bytesReceived: FormattedBytesViewItem,
         val bytesSent: FormattedBytesViewItem
 ) {
     companion object {
-        fun from(it: Statistics): StatisticsViewItem {
-            return StatisticsViewItem(
+        fun from(it: Statistics): StatisticsModel {
+            return StatisticsModel(
                     duration = UnitFormatter.timeDisplay(it.duration.toDouble()),
                     bytesReceived = UnitFormatter.bytesDisplay(it.bytesReceived.toDouble()),
                     bytesSent = UnitFormatter.bytesDisplay(it.bytesSent.toDouble())
@@ -73,8 +71,8 @@ class SharedViewModel(
 
     val selectedProposal = MutableLiveData<ProposalViewItem>()
     val connectionState = MutableLiveData<ConnectionState>()
-    val statistics = MutableLiveData<StatisticsViewItem>()
-    val location = MutableLiveData<LocationViewItem>()
+    val statistics = MutableLiveData<StatisticsModel>()
+    val location = MutableLiveData<LocationModel>()
 
     private var isConnected = false
 
@@ -191,8 +189,8 @@ class SharedViewModel(
         // This is needed since status change can be executed on separate
         // inside go node library.
         viewModelScope.launch {
-            val s = StatisticsViewItem.from(it)
-            statistics.value = StatisticsViewItem.from(it)
+            val s = StatisticsModel.from(it)
+            statistics.value = StatisticsModel.from(it)
 
             // Show global notification with connected country and statistics.
             // At this point we need to check if proposal is not null since
@@ -208,11 +206,11 @@ class SharedViewModel(
 
     private suspend fun loadLocation() {
         // Try to load location with few attempts. It can fail to load when connected to VPN.
-        location.value = LocationViewItem(ip = "Updating", countryFlagImage = null)
+        location.value = LocationModel(ip = "Updating", countryFlagImage = null)
         for (i in 1..3) {
             try {
                 val loc = nodeRepository.getLocation()
-                location.value = LocationViewItem(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
+                location.value = LocationModel(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
                 break
             } catch (e: Exception) {
                 delay(1000)
@@ -222,7 +220,7 @@ class SharedViewModel(
     }
 
     private fun resetStatistics() {
-        statistics.value = StatisticsViewItem.from(Statistics(0, 0, 0))
+        statistics.value = StatisticsModel.from(Statistics(0, 0, 0))
     }
 
     companion object {

@@ -80,7 +80,7 @@ class AccountFragment : Fragment() {
         return root
     }
 
-    private fun handleIdentityChange(it: IdentityViewItem) {
+    private fun handleIdentityChange(it: IdentityModel) {
         accountIdentityText.text = it.address
         accountIdentityChannelAddressText.text = it.channelAddress
 
@@ -91,6 +91,12 @@ class AccountFragment : Fragment() {
             accountIdentityRegistrationLayout.visibility = View.VISIBLE
             accountMainLayout.visibility = View.GONE
         }
+
+//        CoroutineScope(Dispatchers.Main).launch {
+//            delay(5000)
+//            accountIdentityRegistrationLayout.visibility = View.GONE
+//            accountMainLayout.visibility = View.VISIBLE
+//        }
     }
 
     private fun handleTopUp(root: View) {

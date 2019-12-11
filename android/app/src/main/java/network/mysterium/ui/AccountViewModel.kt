@@ -43,7 +43,7 @@ enum class IdentityRegistrationStatus(val status: String) {
     }
 }
 
-class IdentityViewItem(
+class IdentityModel(
         val address: String,
         val channelAddress: String,
         var status: IdentityRegistrationStatus
@@ -54,19 +54,20 @@ class IdentityViewItem(
         }
 }
 
-class BalanceViewItem(val value: MoneyViewItem)
+class BalanceModel(val value: TokenModel)
 
-class MoneyViewItem(val value: Long = 0) {
+class TokenModel(val value: Long = 0) {
     var displayValue = ""
 
     init {
-        displayValue = "${floor(value.toDouble() / 100_000_000).roundToInt()} MYST"
+        val formattedValue = "%.2f".format((value / 100_000_000.00))
+        displayValue = "$formattedValue MYST"
     }
 }
 
 class AccountViewModel(private val nodeRepository: NodeRepository, private val bugReporter: BugReporter) : ViewModel() {
-    val balance = MutableLiveData<BalanceViewItem>()
-    val identity = MutableLiveData<IdentityViewItem>()
+    val balance = MutableLiveData<BalanceModel>()
+    val identity = MutableLiveData<IdentityModel>()
 
     suspend fun load() {
         initListeners()
@@ -107,7 +108,7 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
 
     private fun handleBalanceChange(it: Balance) {
         viewModelScope.launch {
-            balance.value = BalanceViewItem(MoneyViewItem(it.value))
+            balance.value = BalanceModel(TokenModel(it.value))
         }
     }
 
@@ -115,7 +116,7 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         try {
             // Load node identity and it's registration status.
             val nodeIdentity = nodeRepository.getIdentity()
-            val identityResult = IdentityViewItem(
+            val identityResult = IdentityModel(
                     address = nodeIdentity.address,
                     channelAddress = nodeIdentity.channelAddress,
                     status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
@@ -146,3 +147,5 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         const val TAG = "AccountViewModel"
     }
 }
+// e3f61399 (HEAD -> payments-integration) Add payments endpointsbindings for mobile
+// 38d54384 Fix linux debian build packaging
