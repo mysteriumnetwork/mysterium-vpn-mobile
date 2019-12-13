@@ -8,9 +8,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vpn_top_status_layout"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="0dp">
 
         <ImageView
             android:id="@+id/vpn_feedback_button"
@@ -31,11 +31,11 @@
             android:clickable="true"
             android:focusable="false"
             android:background="?android:attr/selectableItemBackground"
-            android:layout_marginTop="10dp"
+
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="40dp">
             <TextView
                 android:id="@+id/vpn_account_balance_label"
                 android:layout_width="wrap_content"

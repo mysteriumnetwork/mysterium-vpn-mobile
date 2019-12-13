@@ -42,6 +42,7 @@ class MainVpnFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var proposalsViewModel: ProposalsViewModel
     private lateinit var accountViewModel: AccountViewModel
+    private lateinit var connectivityChecker: ConnectivityChecker
 
     private var job: Job? = null
     private lateinit var connStatusLabel: TextView
@@ -70,6 +71,7 @@ class MainVpnFragment : Fragment() {
         sharedViewModel = appContainer.sharedViewModel
         proposalsViewModel = appContainer.proposalsViewModel
         accountViewModel = appContainer.accountViewModel
+        connectivityChecker = appContainer.connectivityChecker
 
         val root = inflater.inflate(R.layout.fragment_main_vpn, container, false)
 
@@ -222,6 +224,11 @@ class MainVpnFragment : Fragment() {
 
     private fun handleConnectionPress(root: View) {
         if (!isAdded) {
+            return
+        }
+
+        if (!connectivityChecker.isConnected()) {
+            showMessage(root.context, "Check internet connection.")
             return
         }
 

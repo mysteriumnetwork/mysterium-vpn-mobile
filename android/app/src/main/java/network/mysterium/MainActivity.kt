@@ -22,14 +22,18 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.net.ConnectivityManager
 import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
@@ -40,6 +44,7 @@ import kotlinx.coroutines.launch
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
+import network.mysterium.ui.ConnState
 import network.mysterium.ui.Screen
 import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
@@ -48,6 +53,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appContainer: AppContainer
     private var deferredNode = DeferredNode()
     private var deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
+    private lateinit var vpnNotInternetLayout: LinearLayout
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -57,11 +63,6 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.i(TAG, "Service connected")
             deferredMysteriumCoreService.complete(service as MysteriumCoreService)
-            deferredNode.start(service) { err ->
-                if (err != null) {
-                    showNodeStarError()
-                }
-            }
         }
     }
 
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        vpnNotInternetLayout = findViewById(R.id.vpn_not_internet_layout)
 
         // Setup app drawer.
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -76,26 +78,18 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize app DI container.
         appContainer = (application as MainApplication).appContainer
-        appContainer.init(applicationContext, deferredNode, deferredMysteriumCoreService, drawerLayout)
+        appContainer.init(
+                applicationContext,
+                deferredNode,
+                deferredMysteriumCoreService,
+                drawerLayout)
 
         // Bind VPN service.
         ensureVpnServicePermission()
         bindMysteriumService()
 
-        // Load initial state without blocking main UI thread.
-        CoroutineScope(Dispatchers.Main).launch {
-            // Load account data.
-            appContainer.accountViewModel.load()
-
-            // Load favorite proposals from local database.
-            val favoriteProposals = appContainer.proposalsViewModel.loadFavoriteProposals()
-
-            // Load initial data like current location, statistics, active proposal (if any).
-            appContainer.sharedViewModel.load(favoriteProposals)
-
-            // Load initial proposals.
-            appContainer.proposalsViewModel.load()
-        }
+        appContainer.connectivityChecker.start(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        appContainer.connectivityChecker.connState.observe(this, Observer { handleConnChange(it) })
 
         // Navigate to main vpn screen and check if terms are accepted in separate coroutine
         // so it does not block main thread.
@@ -106,6 +100,16 @@ class MainActivity : AppCompatActivity() {
                 navigate(R.id.terms_fragment)
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        appContainer.connectivityChecker.stop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appContainer.connectivityChecker.start(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
     }
 
     override fun onDestroy() {
@@ -127,6 +131,51 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, "User allowed VPN service")
             }
         }
+    }
+
+    // Start node and load initial data when connected to internet.
+    private fun handleConnChange(it: ConnState) {
+        Log.i(TAG, "Internet connection changed: $it")
+
+        vpnNotInternetLayout.visibility = if (it == ConnState.CONNECTED) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        // Skip if node is already started.
+        if (deferredNode.isStarted()) {
+            return
+        }
+
+        // Skip if no internet connection.
+        if (it == ConnState.NO_INTERNET) {
+            return
+        }
+
+        // Start node in separate thread and load initial data.
+        CoroutineScope(Dispatchers.Main).launch {
+            deferredNode.start(deferredMysteriumCoreService.await()) { err ->
+                if (err != null) {
+                    showNodeStarError()
+                }
+            }
+            loadInitialData()
+        }
+    }
+
+    private suspend fun loadInitialData() {
+        // Load account data.
+        appContainer.accountViewModel.load()
+
+        // Load favorite proposals from local database.
+        val favoriteProposals = appContainer.proposalsViewModel.loadFavoriteProposals()
+
+        // Load initial data like current location, statistics, active proposal (if any).
+        appContainer.sharedViewModel.load(favoriteProposals)
+
+        // Load initial proposals.
+        appContainer.proposalsViewModel.load()
     }
 
     private fun showNodeStarError() {

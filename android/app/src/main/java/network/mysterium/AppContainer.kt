@@ -18,6 +18,7 @@
 package network.mysterium
 
 import android.content.Context
+import android.net.ConnectivityManager
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
@@ -27,10 +28,7 @@ import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
-import network.mysterium.ui.AccountViewModel
-import network.mysterium.ui.ProposalsViewModel
-import network.mysterium.ui.SharedViewModel
-import network.mysterium.ui.TermsViewModel
+import network.mysterium.ui.*
 
 class AppContainer {
     lateinit var appDatabase: AppDatabase
@@ -42,8 +40,14 @@ class AppContainer {
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
+    lateinit var connectivityChecker: ConnectivityChecker
 
-    fun init(ctx: Context, deferredNode: DeferredNode, mysteriumCoreService: CompletableDeferred<MysteriumCoreService>, appDrawerLayout: DrawerLayout) {
+    fun init(
+            ctx: Context,
+            deferredNode: DeferredNode,
+            mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
+            appDrawerLayout: DrawerLayout
+    ) {
         appDatabase = Room.databaseBuilder(
                 ctx,
                 AppDatabase::class.java, "mysteriumvpn"
@@ -57,6 +61,7 @@ class AppContainer {
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
         accountViewModel = AccountViewModel(nodeRepository, bugReporter)
+        connectivityChecker = ConnectivityChecker()
     }
 
     companion object {
