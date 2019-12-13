@@ -159,17 +159,10 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun handleSelectProposalPress(root: View) {
-        if (!isAdded) {
-            return
-        }
         navigateToProposals(root)
     }
 
     private fun handleFavoriteProposalPress(root: View) {
-        if (!isAdded) {
-            return
-        }
-
         val selectedProposal = sharedViewModel.selectedProposal.value
         if (selectedProposal == null) {
             navigateToProposals(root)
@@ -209,10 +202,6 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun handleConnectionPress(ctx: Context) {
-        if (!isAdded) {
-            return
-        }
-
         if (sharedViewModel.canConnect()) {
             connect(ctx)
             return
@@ -240,7 +229,9 @@ class MainVpnFragment : Fragment() {
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // Do nothing.
             } catch (e: Exception) {
-                showMessage(ctx, getString(R.string.vpn_failed_to_connect))
+                if (isAdded) {
+                    showMessage(ctx, getString(R.string.vpn_failed_to_connect))
+                }
                 Log.e(TAG, "Failed to connect", e)
             }
         }
@@ -253,7 +244,9 @@ class MainVpnFragment : Fragment() {
             try {
                 sharedViewModel.disconnect()
             } catch (e: Exception) {
-                showMessage(ctx, getString(R.string.vpn_failed_to_disconnect))
+                if (isAdded) {
+                    showMessage(ctx, getString(R.string.vpn_failed_to_disconnect))
+                }
                 Log.e(TAG, "Failed to disconnect", e)
             }
         }
