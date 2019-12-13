@@ -60,7 +60,7 @@ class TokenModel(val value: Long = 0) {
     var displayValue = ""
 
     init {
-        val formattedValue = "%.2f".format((value / 100_000_000.00))
+        val formattedValue = "%.3f".format((value / 100_000_000.00))
         displayValue = "$formattedValue MYST"
     }
 }
@@ -147,5 +147,3 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         const val TAG = "AccountViewModel"
     }
 }
-// e3f61399 (HEAD -> payments-integration) Add payments endpointsbindings for mobile
-// 38d54384 Fix linux debian build packaging

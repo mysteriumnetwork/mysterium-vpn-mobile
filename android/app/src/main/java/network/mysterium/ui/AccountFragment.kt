@@ -27,16 +27,20 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
+import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
 import network.mysterium.vpn.R
+import android.content.Intent
+import android.net.Uri
+
 
 class AccountFragment : Fragment() {
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var toolbar: Toolbar
-    private lateinit var accountMainLayout: ConstraintLayout
+    private lateinit var accountBalanceCard: MaterialCardView
     private lateinit var accountBalanceText: TextView
     private lateinit var accountIdentityText: TextView
     private lateinit var accountIdentityRegistrationLayout: ConstraintLayout
@@ -51,7 +55,7 @@ class AccountFragment : Fragment() {
 
         // Initialize UI elements.
         toolbar = root.findViewById(R.id.account_toolbar)
-        accountMainLayout = root.findViewById(R.id.account_main_layout)
+        accountBalanceCard = root.findViewById(R.id.account_balance_card)
         accountBalanceText = root.findViewById(R.id.account_balance_text)
         accountIdentityText = root.findViewById(R.id.account_identity_text)
         accountIdentityRegistrationLayout = root.findViewById(R.id.account_identity_registration_layout)
@@ -77,7 +81,15 @@ class AccountFragment : Fragment() {
 
         accountTopUpButton.setOnClickListener { handleTopUp(root) }
 
+        accountIdentityChannelAddressText.setOnClickListener { openKovanChannelDetails() }
+
         return root
+    }
+
+    private fun openKovanChannelDetails() {
+        val channelAddress = accountViewModel.identity.value!!.channelAddress
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://kovan.etherscan.io/address/$channelAddress"))
+        startActivity(browserIntent)
     }
 
     private fun handleIdentityChange(it: IdentityModel) {
@@ -86,30 +98,19 @@ class AccountFragment : Fragment() {
 
         if (it.registered) {
             accountIdentityRegistrationLayout.visibility = View.GONE
-            accountMainLayout.visibility = View.VISIBLE
+            accountBalanceCard.visibility = View.VISIBLE
         } else {
             accountIdentityRegistrationLayout.visibility = View.VISIBLE
-            accountMainLayout.visibility = View.GONE
+            accountBalanceCard.visibility = View.GONE
         }
-
-//        CoroutineScope(Dispatchers.Main).launch {
-//            delay(5000)
-//            accountIdentityRegistrationLayout.visibility = View.GONE
-//            accountMainLayout.visibility = View.VISIBLE
-//        }
     }
 
     private fun handleTopUp(root: View) {
         accountTopUpButton.isEnabled = false
         CoroutineScope(Dispatchers.Main).launch {
-            try {
-                accountViewModel.topUp()
-                showMessage(root.context, "Balance updated successfully.")
-            } catch (e: Exception) {
-                showMessage(root.context, "Failed to top-up balance: $e")
-            } finally {
-                accountTopUpButton.isEnabled = true
-            }
+            accountViewModel.topUp()
+            showMessage(root.context, "Balance will be updated in a few moments.")
+            accountTopUpButton.isEnabled = true
         }
     }
 }

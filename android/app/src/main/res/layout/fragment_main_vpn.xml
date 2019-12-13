@@ -41,15 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/ColorMain"
-                android:textSize="13dp"
+                android:textSize="16dp"
                 android:text="0 MYST" />
-
-<!--            <ImageView-->
-<!--                android:id="@+id/vpn_feedback_button2"-->
-<!--                android:layout_width="18dp"-->
-<!--                android:layout_height="18dp"-->
-<!--                android:textColor="@color/ColorSecondary"-->
-<!--                android:src="@drawable/ic_account_balance_wallet_gray_24dp" />-->
         </LinearLayout>
 
         <TextView
