@@ -110,9 +110,6 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
 
     private fun handleBalanceChange(it: Balance) {
         viewModelScope.launch {
-            val b = nodeRepository.getBalance(identityAddress = identity.value!!.address)
-            Log.i(TAG, "Balance loaded with ${b.value} - ${it.value}")
-
             balance.value = BalanceModel(TokenModel(it.value))
         }
     }
