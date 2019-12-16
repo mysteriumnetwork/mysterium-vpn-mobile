@@ -17,15 +17,19 @@
 
 package network.mysterium.service.core
 
+import android.content.Context
 import android.os.IBinder
 import mysterium.MobileNode
+import network.mysterium.NotificationFactory
 
 interface MysteriumCoreService : IBinder {
-  fun startNode(): MobileNode
+    fun startNode(): MobileNode
 
-  fun stopNode()
+    fun stopNode()
 
-  fun showNotification(title: String, content: String = "")
+    fun getContext(): Context
 
-  fun hideNotifications()
+    fun startForegroundWithNotification(id: Int, notificationFactory: NotificationFactory)
+
+    fun stopForeground()
 }

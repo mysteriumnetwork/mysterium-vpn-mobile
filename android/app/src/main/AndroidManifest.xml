@@ -31,6 +31,13 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name="network.mysterium.AppBroadcastReceiver"  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c614c88920a993fbd6030ed842b48214b0ebc689" />

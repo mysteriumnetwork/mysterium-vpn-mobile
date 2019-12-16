@@ -18,13 +18,12 @@
 package network.mysterium.ui
 
 import android.graphics.Bitmap
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import network.mysterium.AppNotificationManager
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.service.core.Statistics
@@ -68,7 +67,9 @@ class StatisticsModel(
 
 class SharedViewModel(
         private val nodeRepository: NodeRepository,
-        private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+        private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
+        private val notificationManager: AppNotificationManager,
+        private val accountViewModel: AccountViewModel
 ) : ViewModel() {
 
     val selectedProposal = MutableLiveData<ProposalViewItem>()
@@ -106,6 +107,12 @@ class SharedViewModel(
             // from trying to establish connection if user instantly clicks CANCEL.
             delay(1000)
             nodeRepository.connect(identityAddress, providerID, serviceType)
+
+            // Force app to run in foreground while connected to VPN.
+            mysteriumCoreService.await().startForegroundWithNotification(
+                    notificationManager.defaultNotificationID,
+                    notificationManager.createConnectedToVPNNotification()
+            )
             isConnected = true
             connectionState.value = ConnectionState.CONNECTED
             loadLocation()
@@ -128,7 +135,7 @@ class SharedViewModel(
             connectionState.value = ConnectionState.NOT_CONNECTED
             throw e
         } finally {
-            mysteriumCoreService.await().hideNotifications()
+            mysteriumCoreService.await().stopForeground()
         }
     }
 
@@ -178,8 +185,9 @@ class SharedViewModel(
         // inside go node library.
         viewModelScope.launch {
             connectionState.value = newState
+
             if (currentState == ConnectionState.CONNECTED && newState != currentState) {
-                mysteriumCoreService.await().showNotification("Connection lost", "VPN connection was closed.")
+                notificationManager.showConnectionLostNotification()
                 resetStatistics()
                 loadLocation()
             }
@@ -194,14 +202,18 @@ class SharedViewModel(
             val s = StatisticsModel.from(it)
             statistics.value = StatisticsModel.from(it)
 
+            if (canDisconnect() && accountViewModel.isEmptyBalance()) {
+                notificationManager.showTopUpBalanceNotification()
+            }
+
             // Show global notification with connected country and statistics.
             // At this point we need to check if proposal is not null since
             // statistics event can fire sooner than proposal is loaded.
-            if (selectedProposal.value != null) {
+            if (selectedProposal.value != null && canDisconnect()) {
                 val countryName = selectedProposal.value?.countryName
                 val notificationTitle = "Connected to $countryName"
                 val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"
-                mysteriumCoreService.await().showNotification(notificationTitle, notificationContent)
+                notificationManager.showStatisticsNotification(notificationTitle, notificationContent)
             }
         }
     }

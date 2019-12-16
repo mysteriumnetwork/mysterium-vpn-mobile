@@ -18,6 +18,7 @@
 package network.mysterium
 
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -82,12 +83,19 @@ class MainActivity : AppCompatActivity() {
                 applicationContext,
                 deferredNode,
                 deferredMysteriumCoreService,
-                drawerLayout)
+                drawerLayout,
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        )
+
+        // Setup notifications.
+        appContainer.appNotificationManager.init(this)
 
         // Bind VPN service.
         ensureVpnServicePermission()
         bindMysteriumService()
 
+        // Start network connectivity checker and handle connection change event to
+        // start mobile node and initial data when network is available.
         appContainer.connectivityChecker.start(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
         appContainer.connectivityChecker.connState.observe(this, Observer { handleConnChange(it) })
 

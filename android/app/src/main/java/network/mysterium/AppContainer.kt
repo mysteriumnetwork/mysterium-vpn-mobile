@@ -17,8 +17,8 @@
 
 package network.mysterium
 
+import android.app.NotificationManager
 import android.content.Context
-import android.net.ConnectivityManager
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
@@ -41,12 +41,14 @@ class AppContainer {
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
     lateinit var connectivityChecker: ConnectivityChecker
+    lateinit var appNotificationManager: AppNotificationManager
 
     fun init(
             ctx: Context,
             deferredNode: DeferredNode,
             mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
-            appDrawerLayout: DrawerLayout
+            appDrawerLayout: DrawerLayout,
+            notificationManager: NotificationManager
     ) {
         appDatabase = Room.databaseBuilder(
                 ctx,
@@ -57,10 +59,11 @@ class AppContainer {
         deferredMysteriumCoreService = mysteriumCoreService
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
-        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService)
+        appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
+        accountViewModel = AccountViewModel(nodeRepository, bugReporter)
+        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, accountViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
-        accountViewModel = AccountViewModel(nodeRepository, bugReporter)
         connectivityChecker = ConnectivityChecker()
     }
 

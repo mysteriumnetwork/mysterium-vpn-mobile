@@ -25,8 +25,6 @@ import kotlinx.coroutines.launch
 import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.Balance
 import network.mysterium.service.core.NodeRepository
-import kotlin.math.floor
-import kotlin.math.roundToInt
 
 enum class IdentityRegistrationStatus(val status: String) {
     UNKNOWN("Unknown"),
@@ -61,7 +59,7 @@ class TokenModel(val value: Long = 0) {
 
     init {
         val formattedValue = "%.3f".format((value / 100_000_000.00))
-        displayValue = "$formattedValue MYST"
+        displayValue = "$formattedValue MYSTT"
     }
 }
 
@@ -81,6 +79,10 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         } catch (e: Exception) {
             Log.e(TAG, "Failed to top-up balance", e)
         }
+    }
+
+    fun isEmptyBalance(): Boolean {
+        return balance.value?.value?.value == 0L
     }
 
     fun isIdentityRegistered(): Boolean {
@@ -108,6 +110,9 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
 
     private fun handleBalanceChange(it: Balance) {
         viewModelScope.launch {
+            val b = nodeRepository.getBalance(identityAddress = identity.value!!.address)
+            Log.i(TAG, "Balance loaded with ${b.value} - ${it.value}")
+
             balance.value = BalanceModel(TokenModel(it.value))
         }
     }
