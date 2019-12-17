@@ -49,6 +49,7 @@
                         android:layout_height="wrap_content"
                         android:text="Please wait"
                         android:textStyle="bold"
+                        android:textSize="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:text="Balance"
                         android:textStyle="bold"
+                        android:textSize="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -132,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="TOP-UP"
+                        android:text="TOP UP"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/account_balance_hint" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -158,6 +160,7 @@
                         android:layout_height="wrap_content"
                         android:text="Identity Address"
                         android:textStyle="bold"
+                        android:textSize="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -175,7 +178,7 @@
 
                     <TextView
                         android:id="@+id/account_identity_hint"
-                        android:text="TODO: Add description what is identity address."
+                        android:text="Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there."
                         android:layout_marginTop="10dp"
                         android:textColor="@color/ColorSecondary"
                         app:layout_constraintTop_toBottomOf="@id/account_identity_text"
@@ -189,6 +192,7 @@
                         android:layout_marginTop="20dp"
                         android:text="Channel Address"
                         android:textStyle="bold"
+                        android:textSize="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/account_identity_hint" />
 
@@ -206,7 +210,7 @@
 
                     <TextView
                         android:id="@+id/account_identity_channel_address_hint"
-                        android:text="TODO: Add description what is channel address."
+                        android:text="Channel is your Top Up address."
                         android:layout_marginTop="10dp"
                         android:textColor="@color/ColorSecondary"
                         app:layout_constraintTop_toBottomOf="@id/account_identity_channel_address_text"
