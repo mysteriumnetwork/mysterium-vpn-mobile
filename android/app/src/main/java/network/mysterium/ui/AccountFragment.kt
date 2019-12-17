@@ -82,6 +82,7 @@ class AccountFragment : Fragment() {
         accountTopUpButton.setOnClickListener { handleTopUp(root) }
 
         accountIdentityChannelAddressText.setOnClickListener { openKovanChannelDetails() }
+        accountIdentityText.setOnClickListener { openKovanIdentityDetails() }
 
         return root
     }
@@ -89,6 +90,12 @@ class AccountFragment : Fragment() {
     private fun openKovanChannelDetails() {
         val channelAddress = accountViewModel.identity.value!!.channelAddress
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://kovan.etherscan.io/address/$channelAddress"))
+        startActivity(browserIntent)
+    }
+
+    private fun openKovanIdentityDetails() {
+        val identityAddress = accountViewModel.identity.value!!.address
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://kovan.etherscan.io/address/$identityAddress"))
         startActivity(browserIntent)
     }
 

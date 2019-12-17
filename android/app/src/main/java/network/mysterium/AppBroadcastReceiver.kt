@@ -11,24 +11,18 @@ import kotlinx.coroutines.launch
 
 class AppBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-
         if (intent.action == AppNotificationManager.ACTION_DISCONNECT) {
-            CoroutineScope(Dispatchers.Main).launch {
-                try {
-                    val appContainer = (context.applicationContext as MainApplication).appContainer
-                    appContainer.sharedViewModel.disconnect()
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to disconnect")
-                }
-            }
+            handleDisconnect(context)
         }
+    }
 
-        StringBuilder().apply {
-            append("Action: ${intent.action}\n")
-            append("URI: ${intent.toUri(Intent.URI_INTENT_SCHEME)}\n")
-            toString().also { log ->
-                Log.i(TAG, log)
-                Toast.makeText(context, log, Toast.LENGTH_LONG).show()
+    private fun handleDisconnect(context: Context) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val appContainer = (context.applicationContext as MainApplication).appContainer
+                appContainer.sharedViewModel.disconnect()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to disconnect")
             }
         }
     }

@@ -114,8 +114,17 @@
                         android:textSize="20dp"
                         android:enabled="false"
                         android:gravity="top"
-                        android:text="0 MYST"
+                        android:text="0 MYSTT"
                         app:layout_constraintTop_toBottomOf="@id/account_balance_card_title" />
+
+                    <TextView
+                        android:id="@+id/account_balance_hint"
+                        android:text="MYSTT is a test token which you get for free while we are in the Testnet environment."
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/ColorSecondary"
+                        app:layout_constraintTop_toBottomOf="@id/account_balance_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/account_topup_button"
@@ -125,7 +134,7 @@
                         android:layout_marginTop="10dp"
                         android:text="TOP-UP"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/account_balance_text" />
+                        app:layout_constraintTop_toBottomOf="@+id/account_balance_hint" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -157,11 +166,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:textIsSelectable="true"
-                        android:gravity="top"
-                        android:padding="5dp"
+                        android:ellipsize="end"
+                        android:clickable="true"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:maxLines="1"
                         android:text="0x..."
                         app:layout_constraintTop_toBottomOf="@id/account_identity_text_label" />
+
+                    <TextView
+                        android:id="@+id/account_identity_hint"
+                        android:text="TODO: Add description what is identity address."
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/ColorSecondary"
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/account_identity_channel_address_text_label"
@@ -171,19 +190,28 @@
                         android:text="Channel Address"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_text" />
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_hint" />
 
                     <TextView
                         android:id="@+id/account_identity_channel_address_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:textIsSelectable="true"
                         android:clickable="true"
-                        android:gravity="top"
-                        android:padding="5dp"
+                        android:background="?android:attr/selectableItemBackground"
                         android:text="0x..."
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         app:layout_constraintTop_toBottomOf="@id/account_identity_channel_address_text_label" />
+
+                    <TextView
+                        android:id="@+id/account_identity_channel_address_hint"
+                        android:text="TODO: Add description what is channel address."
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/ColorSecondary"
+                        app:layout_constraintTop_toBottomOf="@id/account_identity_channel_address_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

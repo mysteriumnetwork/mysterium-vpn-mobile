@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/ColorMain"
                 android:textSize="16dp"
-                android:text="0 MYST" />
+                android:text="" />
         </LinearLayout>
 
         <TextView
