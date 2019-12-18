@@ -52,14 +52,15 @@ class IdentityModel(
         }
 }
 
-class BalanceModel(val value: TokenModel)
+class BalanceModel(val balance: TokenModel)
 
-class TokenModel(val value: Long = 0) {
+class TokenModel(token: Long = 0) {
     var displayValue = ""
+    var value = 0.00
 
     init {
-        val formattedValue = "%.3f".format((value / 100_000_000.00))
-        displayValue = "$formattedValue MYSTT"
+        value = token / 100_000_000.00
+        displayValue = "%.3f MYSTT".format(value)
     }
 }
 
@@ -81,8 +82,11 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         }
     }
 
-    fun isEmptyBalance(): Boolean {
-        return balance.value?.value?.value == 0L
+    fun needToTopUp(): Boolean {
+        if (balance.value == null) {
+            return false
+        }
+        return balance.value!!.balance.value < 0.01
     }
 
     fun isIdentityRegistered(): Boolean {

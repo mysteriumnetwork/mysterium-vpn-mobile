@@ -140,7 +140,7 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun updateBalance(it: BalanceModel) {
-        vpnAccountBalanceLabel.text = it.value.displayValue
+        vpnAccountBalanceLabel.text = it.balance.displayValue
     }
 
     private fun updateLocation(it: LocationModel) {

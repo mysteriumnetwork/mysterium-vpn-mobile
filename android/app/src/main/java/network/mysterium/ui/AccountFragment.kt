@@ -36,7 +36,6 @@ import network.mysterium.vpn.R
 import android.content.Intent
 import android.net.Uri
 
-
 class AccountFragment : Fragment() {
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var toolbar: Toolbar
@@ -76,7 +75,7 @@ class AccountFragment : Fragment() {
         })
 
         accountViewModel.balance.observe(this, Observer {
-            accountBalanceText.text = it.value.displayValue
+            accountBalanceText.text = it.balance.displayValue
         })
 
         accountTopUpButton.setOnClickListener { handleTopUp(root) }

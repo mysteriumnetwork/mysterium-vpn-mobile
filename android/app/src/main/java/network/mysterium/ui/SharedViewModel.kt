@@ -202,7 +202,7 @@ class SharedViewModel(
             val s = StatisticsModel.from(it)
             statistics.value = StatisticsModel.from(it)
 
-            if (canDisconnect() && accountViewModel.isEmptyBalance()) {
+            if (canDisconnect() && accountViewModel.needToTopUp()) {
                 notificationManager.showTopUpBalanceNotification()
             }
 
