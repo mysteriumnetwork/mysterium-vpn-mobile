@@ -16,6 +16,10 @@ class DeferredNode {
         return deferredNode.await()
     }
 
+    fun isStarted(): Boolean {
+        return deferredNode.isCompleted
+    }
+
     fun start(service: MysteriumCoreService, done: (err: Exception?) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             try {

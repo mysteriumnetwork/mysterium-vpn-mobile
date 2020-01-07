@@ -46,12 +46,12 @@ class ProposalViewItem constructor(
     }
 
     companion object {
-        fun parse(it: ProposalItem, favoriteProposals: Map<String, FavoriteProposal>): ProposalViewItem {
+        fun parse(proposal: ProposalItem, favoriteProposals: Map<String, FavoriteProposal>): ProposalViewItem {
             val res = ProposalViewItem(
-                    id = it.providerID+it.serviceType,
-                    providerID = it.providerID,
-                    serviceType = ServiceType.parse(it.serviceType),
-                    countryCode = it.countryCode.toLowerCase())
+                    id = proposal.providerID+proposal.serviceType,
+                    providerID = proposal.providerID,
+                    serviceType = ServiceType.parse(proposal.serviceType),
+                    countryCode = proposal.countryCode.toLowerCase())
 
             if (Countries.bitmaps.contains(res.countryCode)) {
                 res.countryFlagImage = Countries.bitmaps[res.countryCode]
@@ -59,7 +59,7 @@ class ProposalViewItem constructor(
             }
 
             res.serviceTypeResID = mapServiceTypeResourceID(res.serviceType)
-            res.qualityLevel = QualityLevel.parse(it.qualityLevel)
+            res.qualityLevel = QualityLevel.parse(proposal.qualityLevel)
             res.qualityResID = mapQualityLevelResourceID(res.qualityLevel)
             res.isFavorite = favoriteProposals.containsKey(res.id)
             if (res.isFavorite) {

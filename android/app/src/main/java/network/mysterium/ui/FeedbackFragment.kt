@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -19,11 +20,11 @@ import network.mysterium.vpn.R
 class FeedbackFragment : Fragment() {
     private lateinit var feedbackViewModel: FeedbackViewModel
 
-    private lateinit var feedbackBackButton: ImageView
     private lateinit var feedbackTypeSpinner: Spinner
     private lateinit var feedbackMessage: EditText
     private lateinit var feedbackSubmitButton: MaterialButton
     private lateinit var versionLabel: TextView
+    private lateinit var feedbackToolbar: Toolbar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,16 +33,16 @@ class FeedbackFragment : Fragment() {
         val nodeRepository = AppContainer.from(activity).nodeRepository
         feedbackViewModel = FeedbackViewModel(nodeRepository)
 
-        feedbackBackButton = root.findViewById(R.id.feedback_back_button)
         feedbackTypeSpinner = root.findViewById(R.id.feedback_type_spinner)
         feedbackMessage = root.findViewById(R.id.feedback_message)
         feedbackSubmitButton = root.findViewById(R.id.feedback_submit_button)
         versionLabel = root.findViewById(R.id.vpn_version_label)
+        feedbackToolbar = root.findViewById(R.id.feedback_toolbar)
 
         updateVersionLabel()
 
         // Handle back press.
-        feedbackBackButton.setOnClickListener {
+        feedbackToolbar.setNavigationOnClickListener {
             hideKeyboard(root)
             navigateTo(root, Screen.MAIN)
         }

@@ -15,31 +15,32 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-## iOS
-### ios beta
-```
-fastlane ios beta
-```
-Push a new beta build to TestFlight
-
-----
-
 ## Android
+### android buildDebug
+```
+fastlane android buildDebug
+```
+Builds the debug code
+### android buildRelease
+```
+fastlane android buildRelease
+```
+Builds the release code
+### android test
+```
+fastlane android test
+```
+Runs all the tests
 ### android build
 ```
 fastlane android build
 ```
 Build release build locally
-### android bundle
+### android internal
 ```
-fastlane android bundle
+fastlane android internal
 ```
-Bundle release build locally
-### android beta
-```
-fastlane android beta
-```
-Push a new beta build to Play Store
+Push a new internal build to Play Store
 
 ----
 

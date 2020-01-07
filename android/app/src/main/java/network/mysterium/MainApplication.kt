@@ -52,3 +52,4 @@ class MainApplication : MultiDexApplication() {
         private const val TAG = "MainApplication"
     }
 }
+

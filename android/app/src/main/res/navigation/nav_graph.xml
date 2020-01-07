@@ -26,6 +26,12 @@
         android:label="fragment_proposals"
         tools:layout="@layout/fragment_proposals" />
 
+    <fragment
+        android:id="@+id/account_fragment"
+        android:name="network.mysterium.ui.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
+
     <action android:id="@+id/action_go_to_vpn_screen"
         app:destination="@id/main_vpn_fragment"/>
 
@@ -37,4 +43,7 @@
 
     <action android:id="@+id/action_go_to_proposals_screen"
         app:destination="@id/proposals_fragment"/>
+
+    <action android:id="@+id/action_go_to_account_screen"
+        app:destination="@id/account_fragment"/>
 </navigation>
