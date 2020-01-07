@@ -23,11 +23,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import mysterium.ConnectRequest
+import network.mysterium.AppNotificationManager
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.service.core.Statistics
-import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.Status
 
@@ -45,22 +44,22 @@ enum class ConnectionState(val type: String) {
     }
 }
 
-class LocationViewItem(
+class LocationModel(
         val ip: String,
         val countryFlagImage: Bitmap?
 )
 
-class StatisticsViewItem(
+class StatisticsModel(
         val duration: String,
         val bytesReceived: FormattedBytesViewItem,
         val bytesSent: FormattedBytesViewItem
 ) {
     companion object {
-        fun from(it: Statistics): StatisticsViewItem {
-            return StatisticsViewItem(
-                    duration = UnitFormatter.timeDisplay(it.duration.toDouble()),
-                    bytesReceived = UnitFormatter.bytesDisplay(it.bytesReceived.toDouble()),
-                    bytesSent = UnitFormatter.bytesDisplay(it.bytesSent.toDouble())
+        fun from(stats: Statistics): StatisticsModel {
+            return StatisticsModel(
+                    duration = UnitFormatter.timeDisplay(stats.duration),
+                    bytesReceived = UnitFormatter.bytesDisplay(stats.bytesReceived),
+                    bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent)
             )
         }
     }
@@ -68,19 +67,19 @@ class StatisticsViewItem(
 
 class SharedViewModel(
         private val nodeRepository: NodeRepository,
-        private val bugReporter: BugReporter,
-        private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+        private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
+        private val notificationManager: AppNotificationManager,
+        private val accountViewModel: AccountViewModel
 ) : ViewModel() {
 
     val selectedProposal = MutableLiveData<ProposalViewItem>()
     val connectionState = MutableLiveData<ConnectionState>()
-    val statistics = MutableLiveData<StatisticsViewItem>()
-    val location = MutableLiveData<LocationViewItem>()
+    val statistics = MutableLiveData<StatisticsModel>()
+    val location = MutableLiveData<LocationModel>()
 
     private var isConnected = false
 
     suspend fun load(favoriteProposals: Map<String, FavoriteProposal>) {
-        unlockIdentity()
         initListeners()
         loadLocation()
         val status = loadCurrentStatus()
@@ -101,16 +100,19 @@ class SharedViewModel(
         return state != null && state == ConnectionState.CONNECTED
     }
 
-    suspend fun connect(providerID: String, serviceType: String) {
+    suspend fun connect(identityAddress: String, providerID: String, serviceType: String) {
         try {
             connectionState.value = ConnectionState.CONNECTING
             // Before doing actual connection add some delay to prevent
             // from trying to establish connection if user instantly clicks CANCEL.
             delay(1000)
-            val req = ConnectRequest()
-            req.providerID = providerID
-            req.serviceType = serviceType
-            nodeRepository.connect(req)
+            nodeRepository.connect(identityAddress, providerID, serviceType)
+
+            // Force app to run in foreground while connected to VPN.
+            mysteriumCoreService.await().startForegroundWithNotification(
+                    notificationManager.defaultNotificationID,
+                    notificationManager.createConnectedToVPNNotification()
+            )
             isConnected = true
             connectionState.value = ConnectionState.CONNECTED
             loadLocation()
@@ -133,13 +135,13 @@ class SharedViewModel(
             connectionState.value = ConnectionState.NOT_CONNECTED
             throw e
         } finally {
-            mysteriumCoreService.await().hideNotifications()
+            mysteriumCoreService.await().stopForeground()
         }
     }
 
     private suspend fun loadCurrentStatus(): Status? {
         return try {
-            val status = nodeRepository.getStatus()
+            val status = nodeRepository.status()
             val state = ConnectionState.parse(status.state)
             connectionState.value = state
             status
@@ -149,13 +151,13 @@ class SharedViewModel(
         }
     }
 
-    private suspend fun loadActiveProposal(it: Status?, favoriteProposals: Map<String, FavoriteProposal>) {
-        if (it == null || it.providerID == "" || it.serviceType == "") {
+    private suspend fun loadActiveProposal(status: Status?, favoriteProposals: Map<String, FavoriteProposal>) {
+        if (status == null || status.providerID == "" || status.serviceType == "") {
             return
         }
 
         try {
-            val proposal = nodeRepository.getProposal(it.providerID, it.serviceType) ?: return
+            val proposal = nodeRepository.proposal(status.providerID, status.serviceType) ?: return
             val proposalViewItem = ProposalViewItem.parse(proposal, favoriteProposals)
             selectProposal(proposalViewItem)
         } catch (e: Exception) {
@@ -174,8 +176,8 @@ class SharedViewModel(
         }
     }
 
-    private fun handleConnectionStatusChange(it: String) {
-        val newState = ConnectionState.parse(it)
+    private fun handleConnectionStatusChange(status: String) {
+        val newState = ConnectionState.parse(status)
         val currentState = connectionState.value
 
         // Update all UI related state in new coroutine on UI thread.
@@ -183,50 +185,46 @@ class SharedViewModel(
         // inside go node library.
         viewModelScope.launch {
             connectionState.value = newState
+
             if (currentState == ConnectionState.CONNECTED && newState != currentState) {
-                mysteriumCoreService.await().showNotification("Connection lost", "VPN connection was closed.")
+                notificationManager.showConnectionLostNotification()
                 resetStatistics()
                 loadLocation()
             }
         }
     }
 
-    private fun handleStatisticsChange(it: Statistics) {
+    private fun handleStatisticsChange(stats: Statistics) {
         // Update all UI related state in new coroutine on UI thread.
         // This is needed since status change can be executed on separate
         // inside go node library.
         viewModelScope.launch {
-            val s = StatisticsViewItem.from(it)
-            statistics.value = StatisticsViewItem.from(it)
+            val s = StatisticsModel.from(stats)
+            statistics.value = StatisticsModel.from(stats)
+
+            if (canDisconnect() && accountViewModel.needToTopUp()) {
+                notificationManager.showTopUpBalanceNotification()
+            }
 
             // Show global notification with connected country and statistics.
             // At this point we need to check if proposal is not null since
             // statistics event can fire sooner than proposal is loaded.
-            if (selectedProposal.value != null) {
+            if (selectedProposal.value != null && canDisconnect()) {
                 val countryName = selectedProposal.value?.countryName
                 val notificationTitle = "Connected to $countryName"
                 val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"
-                mysteriumCoreService.await().showNotification(notificationTitle, notificationContent)
+                notificationManager.showStatisticsNotification(notificationTitle, notificationContent)
             }
-        }
-    }
-
-    private suspend fun unlockIdentity() {
-        try {
-            val identity = nodeRepository.unlockIdentity()
-            bugReporter.setUserIdentifier(identity)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed not unlock identity", e)
         }
     }
 
     private suspend fun loadLocation() {
         // Try to load location with few attempts. It can fail to load when connected to VPN.
-        location.value = LocationViewItem(ip = "Updating", countryFlagImage = null)
+        location.value = LocationModel(ip = "Updating", countryFlagImage = null)
         for (i in 1..3) {
             try {
-                val loc = nodeRepository.getLocation()
-                location.value = LocationViewItem(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
+                val loc = nodeRepository.location()
+                location.value = LocationModel(ip = loc.ip, countryFlagImage = Countries.bitmaps[loc.countryCode.toLowerCase()])
                 break
             } catch (e: Exception) {
                 delay(1000)
@@ -236,7 +234,7 @@ class SharedViewModel(
     }
 
     private fun resetStatistics() {
-        statistics.value = StatisticsViewItem.from(Statistics(0, 0, 0))
+        statistics.value = StatisticsModel.from(Statistics(0, 0, 0))
     }
 
     companion object {

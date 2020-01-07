@@ -24,21 +24,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import network.mysterium.MainApplication
+import network.mysterium.AppContainer
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var proposalsViewModel: ProposalsViewModel
+    private lateinit var accountViewModel: AccountViewModel
+    private lateinit var connectivityChecker: ConnectivityChecker
 
     private var job: Job? = null
     private lateinit var connStatusLabel: TextView
@@ -57,13 +61,17 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesReceivedLabel: TextView
     private lateinit var vpnStatsBytesReceivedUnits: TextView
     private lateinit var vpnStatsBytesSentUnits: TextView
+    private lateinit var vpnAccountBalanceLabel: TextView
+    private lateinit var vpnAccountBalanceLayout: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val appContainer = (activity!!.application as MainApplication).appContainer
+        val appContainer = AppContainer.from(activity)
         sharedViewModel = appContainer.sharedViewModel
         proposalsViewModel = appContainer.proposalsViewModel
+        accountViewModel = appContainer.accountViewModel
+        connectivityChecker = appContainer.connectivityChecker
 
         val root = inflater.inflate(R.layout.fragment_main_vpn, container, false)
 
@@ -84,9 +92,16 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
         vpnStatsBytesReceivedUnits = root.findViewById(R.id.vpn_stats_bytes_received_units)
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
+        vpnAccountBalanceLabel = root.findViewById(R.id.vpn_account_balance_label)
+        vpnAccountBalanceLayout = root.findViewById(R.id.vpn_account_balance_layout)
 
         feedbackButton.setOnClickListener {
-            navigateTo(root, Screen.FEEDBACK)
+            val drawer = appContainer.drawerLayout
+            drawer.openDrawer(GravityCompat.START)
+        }
+
+        vpnAccountBalanceLayout.setOnClickListener {
+            navigateTo(root, Screen.ACCOUNT)
         }
 
         selectProposalLayout.setOnClickListener {
@@ -98,7 +113,7 @@ class MainVpnFragment : Fragment() {
         }
 
         connectionButton.setOnClickListener {
-            handleConnectionPress(root.context)
+            handleConnectionPress(root)
         }
 
         sharedViewModel.selectedProposal.observe(this, Observer { updateSelectedProposal(it) })
@@ -112,6 +127,8 @@ class MainVpnFragment : Fragment() {
 
         sharedViewModel.location.observe(this, Observer { updateLocation(it) })
 
+        accountViewModel.balance.observe(this, Observer { updateBalance(it) })
+
         onBackPress { emulateHomePress() }
 
         return root
@@ -122,33 +139,37 @@ class MainVpnFragment : Fragment() {
         job?.cancel()
     }
 
-    private fun updateLocation(it: LocationViewItem) {
-        conStatusIP.text = "IP: ${it.ip}"
-        if (it.countryFlagImage == null) {
+    private fun updateBalance(balance: BalanceModel) {
+        vpnAccountBalanceLabel.text = balance.balance.displayValue
+    }
+
+    private fun updateLocation(location: LocationModel) {
+        conStatusIP.text = "IP: ${location.ip}"
+        if (location.countryFlagImage == null) {
             vpnStatusCountry.setImageResource(R.drawable.ic_public_black_24dp)
         } else {
-            vpnStatusCountry.setImageBitmap(it.countryFlagImage)
+            vpnStatusCountry.setImageBitmap(location.countryFlagImage)
         }
     }
 
-    private fun updateSelectedProposal(it: ProposalViewItem) {
-        vpnSelectedProposalCountryLabel.text = it.countryName
-        vpnSelectedProposalCountryIcon.setImageBitmap(it.countryFlagImage)
-        vpnSelectedProposalProviderLabel.text = it.providerID
+    private fun updateSelectedProposal(proposal: ProposalViewItem) {
+        vpnSelectedProposalCountryLabel.text = proposal.countryName
+        vpnSelectedProposalCountryIcon.setImageBitmap(proposal.countryFlagImage)
+        vpnSelectedProposalProviderLabel.text = proposal.providerID
         vpnSelectedProposalProviderLabel.visibility = View.VISIBLE
-        vpnProposalPickerFavoriteImage.setImageResource(it.isFavoriteResID)
+        vpnProposalPickerFavoriteImage.setImageResource(proposal.isFavoriteResID)
     }
 
-    private fun updateStatsLabels(it: StatisticsViewItem) {
-        vpnStatsDurationLabel.text = it.duration
-        vpnStatsBytesReceivedLabel.text = it.bytesReceived.value
-        vpnStatsBytesReceivedUnits.text = it.bytesReceived.units
-        vpnStatsBytesSentLabel.text = it.bytesSent.value
-        vpnStatsBytesSentUnits.text = it.bytesSent.units
+    private fun updateStatsLabels(stats: StatisticsModel) {
+        vpnStatsDurationLabel.text = stats.duration
+        vpnStatsBytesReceivedLabel.text = stats.bytesReceived.value
+        vpnStatsBytesReceivedUnits.text = stats.bytesReceived.units
+        vpnStatsBytesSentLabel.text = stats.bytesSent.value
+        vpnStatsBytesSentUnits.text = stats.bytesSent.units
     }
 
-    private fun updateConnStateLabel(it: ConnectionState) {
-        val connStateText = when (it) {
+    private fun updateConnStateLabel(state: ConnectionState) {
+        val connStateText = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.conn_state_not_connected)
             ConnectionState.CONNECTED -> getString(R.string.conn_state_connected)
             ConnectionState.CONNECTING -> getString(R.string.conn_state_connecting)
@@ -187,35 +208,49 @@ class MainVpnFragment : Fragment() {
         }
     }
 
-    private fun updateConnButtonState(it: ConnectionState) {
-        connectionButton.text = when (it) {
+    private fun updateConnButtonState(state: ConnectionState) {
+        connectionButton.text = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.connect_button_connect)
             ConnectionState.CONNECTED -> getString(R.string.connect_button_disconnect)
             ConnectionState.CONNECTING -> getString(R.string.connect_button_cancel)
             ConnectionState.DISCONNECTING -> getString(R.string.connect_button_disconnecting)
         }
 
-        connectionButton.isEnabled = when (it) {
+        connectionButton.isEnabled = when (state) {
             ConnectionState.DISCONNECTING -> false
             else -> true
         }
     }
 
-    private fun handleConnectionPress(ctx: Context) {
+    private fun handleConnectionPress(root: View) {
+        if (!isAdded) {
+            return
+        }
+
+        if (!connectivityChecker.isConnected()) {
+            showMessage(root.context, "Check internet connection.")
+            return
+        }
+
+        if (!accountViewModel.isIdentityRegistered()) {
+            navigateTo(root, Screen.ACCOUNT)
+            return
+        }
+
         if (sharedViewModel.canConnect()) {
-            connect(ctx)
+            connect(root.context, accountViewModel.identity.value!!.address)
             return
         }
 
         if (sharedViewModel.canDisconnect()) {
-            disconnect(ctx)
+            disconnect(root.context)
             return
         }
 
         cancel()
     }
 
-    private fun connect(ctx: Context) {
+    private fun connect(ctx: Context, identityAddress: String) {
         val proposal: ProposalViewItem? = sharedViewModel.selectedProposal.value
         if (proposal == null) {
             showMessage(ctx, getString(R.string.vpn_select_proposal_warning))
@@ -225,7 +260,8 @@ class MainVpnFragment : Fragment() {
         connectionButton.isEnabled = false
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
-                sharedViewModel.connect(proposal.providerID, proposal.serviceType.type)
+                Log.i(TAG, "Connecting identity $identityAddress to provider ${proposal.providerID} with service ${proposal.serviceType.type}")
+                sharedViewModel.connect(identityAddress, proposal.providerID, proposal.serviceType.type)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // Do nothing.
             } catch (e: Exception) {

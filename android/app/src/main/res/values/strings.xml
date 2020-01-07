@@ -28,4 +28,8 @@
     <string name="vpn_select_proposal_warning">Please select proposal to connect.</string>
     <string name="vpn_failed_to_connect">Failed to connect. Please try again.</string>
     <string name="vpn_failed_to_disconnect">Failed to disconnect. Please try again.</string>
+    <string name="feedback_type_label">Feedback type</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

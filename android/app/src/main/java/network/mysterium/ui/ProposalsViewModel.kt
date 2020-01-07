@@ -194,7 +194,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private suspend fun loadInitialProposals(refresh: Boolean = false) {
         try {
-            val nodeProposals = nodeRepository.getProposals(refresh)
+            val nodeProposals = nodeRepository.proposals(refresh)
             allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }
 
             proposalsCounts.value = ProposalsCounts(

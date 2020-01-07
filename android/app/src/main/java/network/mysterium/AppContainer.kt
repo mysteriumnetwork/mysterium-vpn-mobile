@@ -17,7 +17,9 @@
 
 package network.mysterium
 
+import android.app.NotificationManager
 import android.content.Context
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
 import kotlinx.coroutines.CompletableDeferred
@@ -26,9 +28,7 @@ import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
-import network.mysterium.ui.ProposalsViewModel
-import network.mysterium.ui.SharedViewModel
-import network.mysterium.ui.TermsViewModel
+import network.mysterium.ui.*
 
 class AppContainer {
     lateinit var appDatabase: AppDatabase
@@ -36,21 +36,35 @@ class AppContainer {
     lateinit var sharedViewModel: SharedViewModel
     lateinit var proposalsViewModel: ProposalsViewModel
     lateinit var termsViewModel: TermsViewModel
+    lateinit var accountViewModel: AccountViewModel
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+    lateinit var drawerLayout: DrawerLayout
+    lateinit var connectivityChecker: ConnectivityChecker
+    lateinit var appNotificationManager: AppNotificationManager
 
-    fun init(ctx: Context, deferredNode: DeferredNode, mysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
+    fun init(
+            ctx: Context,
+            deferredNode: DeferredNode,
+            mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
+            appDrawerLayout: DrawerLayout,
+            notificationManager: NotificationManager
+    ) {
         appDatabase = Room.databaseBuilder(
                 ctx,
                 AppDatabase::class.java, "mysteriumvpn"
         ).build()
 
+        drawerLayout = appDrawerLayout
         deferredMysteriumCoreService = mysteriumCoreService
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
-        sharedViewModel = SharedViewModel(nodeRepository, bugReporter, deferredMysteriumCoreService)
+        appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
+        accountViewModel = AccountViewModel(nodeRepository, bugReporter)
+        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, accountViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
+        connectivityChecker = ConnectivityChecker()
     }
 
     companion object {
