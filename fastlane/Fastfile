@@ -1,25 +1,23 @@
-default_platform(:ios)
-
-platform :ios do
-  def bump_versions
-    increment_version_number(version_number: last_git_tag)
-    increment_build_number(build_number: number_of_commits)
-  end
-  
-  desc "Push a new beta build to TestFlight"
-  lane :beta do
-    bump_versions
-    build_app(scheme: "MysteriumVPN", project: "ios/MysteriumVPN.xcodeproj")
-    upload_to_testflight
-  end
-end
+default_platform(:android)
 
 platform :android do
-  def bundle_offline_js
-    sh("cd .. && yarn bundle-android-js")
+  desc "Builds the debug code"
+  lane :buildDebug do
+    gradle(task: "assembleDebug", project_dir: "android")
   end
 
-  def build_release
+  desc "Builds the release code"
+  lane :buildRelease do
+    gradle(task: "assembleRelease", project_dir: "android")
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test", project_dir: "android")
+  end
+
+  desc "Build release build locally"
+  lane :build do
     gradle(
       task: "clean assembleRelease",
       project_dir: "android",
@@ -35,14 +33,15 @@ platform :android do
       })
   end
 
-  def bundle_release
+  desc "Push a new internal build to Play Store"
+  lane :internal do
     gradle(
       task: "clean bundle",
       build_type: "Release",
       project_dir: "android",
       print_command: false, # to prevent outputting passwords
       properties: {
-        'versionCode' => 10699,
+        'versionCode' => 107031,
         'versionName' => last_git_tag,
         'applyGoogleServices' => true,
         "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
@@ -50,21 +49,6 @@ platform :android do
         "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["FASTLANE_ANDROID_SIGNING_KEY_PASS"],
       })
-  end
-
-  desc "Build release build locally"
-  lane :build do
-    build_release
-  end
-
-  desc "Bundle release build locally"
-  lane :bundle do
-    bundle_release
-  end
-
-  desc "Push a new beta build to Play Store"
-  lane :beta do
-    bundle_release
     upload_to_play_store(
       track: "internal",
       json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]

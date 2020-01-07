@@ -1,17 +1,72 @@
-image: mysteriumnetwork/mobile-ci:0.1.0
-
 stages:
-  - deploy
+  - environment
+  - build
+  - test
+  - internal
 
-push-beta:
-  stage: deploy
-  when: manual
-  only:
-    - master
-    - /^release-*/
+.updateContainerJob:
+  image: docker:stable
+  stage: environment
+  services:
+    - docker:dind
   script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+updateContainer:
+  extends: .updateContainerJob
+  only:
+    changes:
+      - Dockerfile
+
+ensureContainer:
+  extends: .updateContainerJob
+  allow_failure: true
+  before_script:
+    - "mkdir -p ~/.docker && echo '{\"experimental\": \"enabled\"}' > ~/.docker/config.json"
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    # Skip update container `script` if the container already exists
+    # via https://gitlab.com/gitlab-org/gitlab-ce/issues/26866#note_97609397 -> https://stackoverflow.com/a/52077071/796832
+    - docker manifest inspect $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG > /dev/null && exit || true
+
+.build_job:
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  stage: build
+  before_script:
+    - "export VERSION_CODE=$((100 + $CI_PIPELINE_IID)) && echo $VERSION_CODE"
+    - "export VERSION_SHA=`echo ${CI_COMMIT_SHA:0:8}` && echo $VERSION_SHA"
+    # Because we allow the MR creation to fail, just make sure we are back in the right repo state
+    - git checkout "$CI_COMMIT_SHA"
+  after_script:
+    - rm -f android-signing-keystore.jks || true
+  artifacts:
+    paths:
+    - app/build/outputs
+
+buildDebug:
+  extends: .build_job
+  script:
+    - bundle exec fastlane buildDebug
+
+testDebug:
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  stage: test
+  dependencies:
+    - buildDebug
+  script:
+    - bundle exec fastlane test
+
+publishInternal:
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  stage: internal
+  when: manual
+  before_script:
     - echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
     - echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
     - echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
-    - bundle update --bundler
-    - fastlane android beta
+  after_script:
+    - rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
+  script:
+    - bundle exec fastlane internal

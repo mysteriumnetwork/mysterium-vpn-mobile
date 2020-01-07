@@ -10,6 +10,8 @@ build/
 local.properties
 *.iml
 ios/Index/
+android/app/lint
+android/lint
 
 # test
 .jest/
