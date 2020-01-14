@@ -102,7 +102,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     }
 
     suspend fun load() {
-        loadInitialProposals()
+        loadInitialProposals(true)
     }
 
     fun getProposals(): LiveData<List<ProposalViewItem>> {
