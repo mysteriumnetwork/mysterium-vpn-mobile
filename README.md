@@ -97,7 +97,7 @@ You can install this APK by:
 
 - Build and publish internal release:
 ```bash
-source fastlane/.env.local && fastlane android beta
+source fastlane/.env.local && fastlane android internal
 ```
 
 ### iOS
