@@ -19,13 +19,23 @@ package network.mysterium.service.core
 
 import android.content.Context
 import android.os.IBinder
+import androidx.lifecycle.MutableLiveData
 import mysterium.MobileNode
 import network.mysterium.NotificationFactory
+import network.mysterium.ui.ProposalViewItem
 
 interface MysteriumCoreService : IBinder {
     fun startNode(): MobileNode
 
     fun stopNode()
+
+    fun startConnectivityChecker()
+
+    fun networkConnState(): MutableLiveData<NetworkConnState>
+
+    fun getActiveProposal(): ProposalViewItem?
+
+    fun setActiveProposal(proposal: ProposalViewItem?)
 
     fun getContext(): Context
 

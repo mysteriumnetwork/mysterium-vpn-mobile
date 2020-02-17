@@ -95,14 +95,9 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     private val proposals = MutableLiveData<List<ProposalViewItem>>()
     private val proposalsCounts = MutableLiveData<ProposalsCounts>()
 
-    suspend fun loadFavoriteProposals(): Map<String, FavoriteProposal> {
-        val favorites = appDatabase.favoriteProposalDao().getAll()
-        favoriteProposals = favorites.map { it.id to it }.toMap().toMutableMap()
-        return favoriteProposals
-    }
-
     suspend fun load() {
-        loadInitialProposals()
+        favoriteProposals = loadFavoriteProposals()
+        loadInitialProposals(false, favoriteProposals)
     }
 
     fun getProposals(): LiveData<List<ProposalViewItem>> {
@@ -144,7 +139,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     fun refreshProposals(done: () -> Unit) {
         viewModelScope.launch {
-            loadInitialProposals(refresh = true)
+            loadInitialProposals(refresh = true, favoriteProposals = favoriteProposals)
             done()
         }
     }
@@ -174,6 +169,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
     }
 
+    private suspend fun loadFavoriteProposals(): MutableMap<String, FavoriteProposal> {
+        val favorites = appDatabase.favoriteProposalDao().getAll()
+        return favorites.map { it.id to it }.toMap().toMutableMap()
+    }
+
     private suspend fun insertFavoriteProposal(proposal: FavoriteProposal) {
         try {
             appDatabase.favoriteProposalDao().insert(proposal)
@@ -192,7 +192,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
     }
 
-    private suspend fun loadInitialProposals(refresh: Boolean = false) {
+    private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
         try {
             val nodeProposals = nodeRepository.proposals(refresh)
             allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }

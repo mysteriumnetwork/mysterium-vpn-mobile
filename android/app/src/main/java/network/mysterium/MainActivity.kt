@@ -23,7 +23,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.net.ConnectivityManager
 import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
@@ -38,14 +37,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.ui.ConnState
+import network.mysterium.service.core.NetworkConnState
 import network.mysterium.ui.Screen
 import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
@@ -96,8 +92,13 @@ class MainActivity : AppCompatActivity() {
 
         // Start network connectivity checker and handle connection change event to
         // start mobile node and initial data when network is available.
-        appContainer.connectivityChecker.start(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-        appContainer.connectivityChecker.connState.observe(this, Observer { handleConnChange(it) })
+        CoroutineScope(Dispatchers.Main).launch {
+            val coreService = deferredMysteriumCoreService.await()
+            coreService.startConnectivityChecker()
+            coreService.networkConnState().observe(this@MainActivity, Observer {
+                CoroutineScope(Dispatchers.Main).launch { handleConnChange(it) }
+            })
+        }
 
         // Navigate to main vpn screen and check if terms are accepted in separate coroutine
         // so it does not block main thread.
@@ -108,16 +109,6 @@ class MainActivity : AppCompatActivity() {
                 navigate(R.id.terms_fragment)
             }
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        appContainer.connectivityChecker.stop()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        appContainer.connectivityChecker.start(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
     }
 
     override fun onDestroy() {
@@ -142,22 +133,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Start node and load initial data when connected to internet.
-    private fun handleConnChange(state: ConnState) {
-        Log.i(TAG, "Internet connection changed: $state")
+    private fun handleConnChange(networkConnState: NetworkConnState) {
+        Log.i(TAG, "Network connection changed: $networkConnState")
 
-        vpnNotInternetLayout.visibility = if (state == ConnState.CONNECTED) {
+        vpnNotInternetLayout.visibility = if (networkConnState.connected) {
             View.GONE
         } else {
             View.VISIBLE
         }
 
+        startNode(networkConnState)
+    }
+
+    private fun startNode(networkConnState: NetworkConnState) {
         // Skip if node is already started.
         if (deferredNode.isStarted()) {
             return
         }
 
         // Skip if no internet connection.
-        if (state == ConnState.NO_INTERNET) {
+        if (!networkConnState.connected) {
             return
         }
 
@@ -173,17 +168,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun loadInitialData() {
-        // Load account data.
-        appContainer.accountViewModel.load()
-
-        // Load favorite proposals from local database.
-        val favoriteProposals = appContainer.proposalsViewModel.loadFavoriteProposals()
-
         // Load initial data like current location, statistics, active proposal (if any).
-        appContainer.sharedViewModel.load(favoriteProposals)
+        Log.i(TAG, "Loading shared data")
+        val p1 = CoroutineScope(Dispatchers.Main).async { appContainer.sharedViewModel.load() }
 
         // Load initial proposals.
-        appContainer.proposalsViewModel.load()
+        Log.i(TAG, "Loading proposal data")
+        val p2 = CoroutineScope(Dispatchers.Main).async { appContainer.proposalsViewModel.load() }
+
+        // Load account data.
+        Log.i(TAG, "Loading account data")
+        val p3 = CoroutineScope(Dispatchers.Main).async { appContainer.accountViewModel.load() }
+
+        awaitAll(p1, p2, p3)
     }
 
     private fun showNodeStarError() {

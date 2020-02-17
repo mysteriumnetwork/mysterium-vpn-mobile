@@ -40,7 +40,6 @@ class AppContainer {
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
-    lateinit var connectivityChecker: ConnectivityChecker
     lateinit var appNotificationManager: AppNotificationManager
 
     fun init(
@@ -64,7 +63,6 @@ class AppContainer {
         sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, accountViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
-        connectivityChecker = ConnectivityChecker()
     }
 
     companion object {
