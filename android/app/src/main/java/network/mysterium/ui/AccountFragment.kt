@@ -97,7 +97,7 @@ class AccountFragment : Fragment() {
     private fun handleRegistrationRetry() {
         accountIdentityRegistrationRetryButton.isEnabled = false
         CoroutineScope(Dispatchers.Main).launch {
-            accountViewModel.loadIdentity()
+            accountViewModel.loadIdentity {}
             accountIdentityRegistrationRetryButton.isEnabled = true
         }
     }

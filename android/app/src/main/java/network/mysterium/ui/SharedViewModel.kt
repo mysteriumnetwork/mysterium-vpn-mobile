@@ -22,12 +22,13 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import network.mysterium.AppNotificationManager
-import network.mysterium.db.FavoriteProposal
+import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.service.core.Statistics
-import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.Status
 
 enum class ConnectionState(val type: String) {
@@ -79,11 +80,11 @@ class SharedViewModel(
 
     private var isConnected = false
 
-    suspend fun load(favoriteProposals: Map<String, FavoriteProposal>) {
+    suspend fun load() {
         initListeners()
+        loadActiveProposal()
         loadLocation()
-        val status = loadCurrentStatus()
-        loadActiveProposal(status, favoriteProposals)
+        loadCurrentStatus()
     }
 
     fun selectProposal(item: ProposalViewItem) {
@@ -95,7 +96,7 @@ class SharedViewModel(
         return state == null || state == ConnectionState.NOT_CONNECTED || state == ConnectionState.UNKNOWN
     }
 
-    fun canDisconnect(): Boolean {
+    fun isConnected(): Boolean {
         val state = connectionState.value
         return state != null && state == ConnectionState.CONNECTED
     }
@@ -109,7 +110,9 @@ class SharedViewModel(
             nodeRepository.connect(identityAddress, providerID, serviceType)
 
             // Force app to run in foreground while connected to VPN.
-            mysteriumCoreService.await().startForegroundWithNotification(
+            val coreService = mysteriumCoreService.await()
+            coreService.setActiveProposal(selectedProposal.value!!)
+            coreService.startForegroundWithNotification(
                     notificationManager.defaultNotificationID,
                     notificationManager.createConnectedToVPNNotification()
             )
@@ -129,6 +132,7 @@ class SharedViewModel(
             nodeRepository.disconnect()
             isConnected = false
             connectionState.value = ConnectionState.NOT_CONNECTED
+            mysteriumCoreService.await().setActiveProposal(null)
             resetStatistics()
             loadLocation()
         } catch (e: Exception) {
@@ -151,17 +155,11 @@ class SharedViewModel(
         }
     }
 
-    private suspend fun loadActiveProposal(status: Status?, favoriteProposals: Map<String, FavoriteProposal>) {
-        if (status == null || status.providerID == "" || status.serviceType == "") {
-            return
-        }
-
-        try {
-            val proposal = nodeRepository.proposal(status.providerID, status.serviceType) ?: return
-            val proposalViewItem = ProposalViewItem.parse(proposal, favoriteProposals)
-            selectProposal(proposalViewItem)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to load active proposal", e)
+    private suspend fun loadActiveProposal() {
+        val proposal = mysteriumCoreService.await().getActiveProposal()
+        if (proposal != null) {
+            selectProposal(proposal)
+            connectionState.value == ConnectionState.CONNECTED
         }
     }
 
@@ -202,14 +200,14 @@ class SharedViewModel(
             val s = StatisticsModel.from(stats)
             statistics.value = StatisticsModel.from(stats)
 
-            if (canDisconnect() && accountViewModel.needToTopUp()) {
+            if (isConnected() && accountViewModel.needToTopUp()) {
                 notificationManager.showTopUpBalanceNotification()
             }
 
             // Show global notification with connected country and statistics.
             // At this point we need to check if proposal is not null since
             // statistics event can fire sooner than proposal is loaded.
-            if (selectedProposal.value != null && canDisconnect()) {
+            if (selectedProposal.value != null && isConnected()) {
                 val countryName = selectedProposal.value?.countryName
                 val notificationTitle = "Connected to $countryName"
                 val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"

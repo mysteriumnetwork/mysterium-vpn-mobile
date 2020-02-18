@@ -21,6 +21,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.NodeRepository
@@ -74,7 +76,9 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
 
     suspend fun load() {
         initListeners()
-        loadIdentity()
+        loadIdentity {
+            CoroutineScope(Dispatchers.Main).launch { loadBalance() }
+        }
     }
 
     suspend fun topUp() {
@@ -98,7 +102,7 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         return currentIdentity.registered
     }
 
-    suspend fun loadIdentity() {
+    suspend fun loadIdentity(done: () -> Unit) {
         try {
             // Load node identity and it's registration status.
             val nodeIdentity = nodeRepository.getIdentity()
@@ -114,13 +118,24 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
             // Register identity if not registered or failed.
             if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
                 val registrationFees = nodeRepository.identityRegistrationFees()
-                val currentIdentity = identity.value ?: return
-                nodeRepository.registerIdentity(currentIdentity.address, registrationFees.fee)
+                if (identity.value != null) {
+                    nodeRepository.registerIdentity(identity.value!!.address, registrationFees.fee)
+                }
             }
         } catch (e: Exception) {
             identity.value = IdentityModel(address = "", channelAddress = "", status = IdentityRegistrationStatus.REGISTRATION_ERROR)
             Log.e(TAG, "Failed to load account identity", e)
+        } finally {
+            done()
         }
+    }
+
+    private suspend fun loadBalance() {
+        if (identity.value == null) {
+            return
+        }
+        val balance = nodeRepository.balance(identity.value!!.address)
+        handleBalanceChange(balance)
     }
 
     private suspend fun initListeners() {

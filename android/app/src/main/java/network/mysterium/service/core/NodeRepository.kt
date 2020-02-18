@@ -184,6 +184,14 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         )
     }
 
+    // Get current balance.
+    suspend fun balance(identityAddress: String) = withContext(Dispatchers.IO) {
+        val req = GetBalanceRequest()
+        req.identityAddress = identityAddress
+        val res = deferredNode.await().getBalance(req)
+        res.balance
+    }
+
     // Send user feedback.
     suspend fun sendFeedback(description: String) = withContext(Dispatchers.IO) {
         val req = SendFeedbackRequest()

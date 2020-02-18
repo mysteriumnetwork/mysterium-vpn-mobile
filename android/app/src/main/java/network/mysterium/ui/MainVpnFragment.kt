@@ -31,18 +31,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import network.mysterium.AppContainer
+import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var proposalsViewModel: ProposalsViewModel
     private lateinit var accountViewModel: AccountViewModel
-    private lateinit var connectivityChecker: ConnectivityChecker
 
     private var job: Job? = null
     private lateinit var connStatusLabel: TextView
@@ -63,6 +60,7 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesSentUnits: TextView
     private lateinit var vpnAccountBalanceLabel: TextView
     private lateinit var vpnAccountBalanceLayout: LinearLayout
+    private lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -71,7 +69,7 @@ class MainVpnFragment : Fragment() {
         sharedViewModel = appContainer.sharedViewModel
         proposalsViewModel = appContainer.proposalsViewModel
         accountViewModel = appContainer.accountViewModel
-        connectivityChecker = appContainer.connectivityChecker
+        deferredMysteriumCoreService = appContainer.deferredMysteriumCoreService
 
         val root = inflater.inflate(R.layout.fragment_main_vpn, container, false)
 
@@ -227,11 +225,6 @@ class MainVpnFragment : Fragment() {
             return
         }
 
-        if (!connectivityChecker.isConnected()) {
-            showMessage(root.context, "Check internet connection.")
-            return
-        }
-
         if (!accountViewModel.isIdentityRegistered()) {
             navigateTo(root, Screen.ACCOUNT)
             return
@@ -242,7 +235,7 @@ class MainVpnFragment : Fragment() {
             return
         }
 
-        if (sharedViewModel.canDisconnect()) {
+        if (sharedViewModel.isConnected()) {
             disconnect(root.context)
             return
         }
