@@ -183,8 +183,7 @@ class SharedViewModel(
         // inside go node library.
         viewModelScope.launch {
             connectionState.value = newState
-
-            if (currentState == ConnectionState.CONNECTED && newState != currentState) {
+            if (currentState == ConnectionState.CONNECTED && newState == ConnectionState.NOT_CONNECTED) {
                 notificationManager.showConnectionLostNotification()
                 resetStatistics()
                 loadLocation()
