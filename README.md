@@ -125,6 +125,16 @@ If you come across an error `command not found: gsed`, you can fix it on OSX by 
 brew install gnu-sed
 ```
 
+### Updating CI image
+Repository contains Dockerfile which includes OpenJDK and Fastlane to build, test and publish Android from Docker.
+
+```
+TAG=1.0.0
+docker build -t mysteriumnetwork/mobile-ci:$TAG .
+docker push mysteriumnetwork/mobile-ci:$TAG
+```
+
+
 ## Contributing
 
 ### Android
