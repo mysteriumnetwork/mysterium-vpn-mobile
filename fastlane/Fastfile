@@ -62,12 +62,13 @@ platform :android do
 
   desc "Commit and push bumped version"
   lane :pushAndroidVersionCode do
-    git_commit(path: "./android_version_code", message: "Bump Android version code")
+    git_commit(path: "./fastlane/android_version_code", message: "Bump Android version code")
 
     push_to_git_remote(
       remote: "origin",
       remote_branch: "master",
       no_verify: true,
+      tags: false,
       set_upstream: true
     )
   end
