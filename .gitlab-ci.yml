@@ -2,7 +2,7 @@ stages:
   - environment
   - build
   - test
-  - internal
+  - release
 
 .updateContainerJob:
   image: docker:stable
@@ -47,12 +47,16 @@ ensureContainer:
 
 buildDebug:
   extends: .build_job
+  except: [tags]
+  tags: [docker]
   script:
     - bundle exec fastlane buildDebug
 
 testDebug:
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   stage: test
+  except: [tags]
+  tags: [docker]
   dependencies:
     - buildDebug
   script:
@@ -60,8 +64,9 @@ testDebug:
 
 publishInternal:
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  stage: internal
-  when: manual
+  stage: release
+  only: [tags]
+  tags: [docker]
   before_script:
     - echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
     - echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
@@ -69,4 +74,6 @@ publishInternal:
   after_script:
     - rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
   script:
+    - bundle exec fastlane bumpAndroidVersionCode
     - bundle exec fastlane internal
+    - bundle exec fastlane pushAndroidVersionCode

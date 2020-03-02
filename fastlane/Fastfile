@@ -41,7 +41,7 @@ platform :android do
       project_dir: "android",
       print_command: false, # to prevent outputting passwords
       properties: {
-        'versionCode' => 107031,
+        'versionCode' => version_code,
         'versionName' => last_git_tag,
         'applyGoogleServices' => true,
         "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
@@ -54,4 +54,33 @@ platform :android do
       json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]
     )
   end
+
+  desc "Increase Android code version"
+  lane :bumpAndroidVersionCode do
+    increase_version_code
+  end
+
+  desc "Commit and push bumped version"
+  lane :pushAndroidVersionCode do
+    git_commit(path: "./android_version_code", message: "Bump Android version code")
+
+    push_to_git_remote(
+      remote: "origin",
+      remote_branch: "master",
+      no_verify: true,
+      set_upstream: true
+    )
+  end
+end
+
+def increase_version_code
+  versionCode = File.read("./android_version_code").to_i
+  versionCode = versionCode+1
+  f = File.new("./android_version_code", "w")
+  f.write(versionCode)
+  f.close
+end
+
+def version_code
+  return File.read("./android_version_code").to_i
 end
