@@ -15,7 +15,7 @@ commit_version_code() {
 }
 
 upload_files() {
-  git remote add github https://${GITHUB_API_TOKEN}@github.com/mysteriumnetwork/mysterium-vpn-mobile.git > /dev/null 2>&1
+  git remote add github https://${GITHUB_MOBILE_API_TOKEN}@github.com/mysteriumnetwork/mysterium-vpn-mobile.git > /dev/null 2>&1
   git push --set-upstream github HEAD:master 
 }
 
