@@ -4,58 +4,43 @@ stages:
   - test
   - release
 
-# buildDebug:
-#   image: mysteriumnetwork/mobile-ci:1.0.0
-#   stage: build
-#   except: [tags]
-#   tags: [docker]
-#   except:
-#     changes:
-#       - "./fastlane/android_version_code"
-#   script:
-#     - true || bundle exec fastlane buildDebug
+buildDebug:
+  image: mysteriumnetwork/mobile-ci:1.0.0
+  stage: build
+  except: [tags]
+  tags: [docker]
+  except:
+    changes:
+      - "./fastlane/android_version_code"
+  script:
+    - bundle exec fastlane buildDebug
 
-# testDebug:
-#   image: mysteriumnetwork/mobile-ci:1.0.0
-#   stage: test
-#   except: [tags]
-#   tags: [docker]
-#   except:
-#     changes:
-#       - "./fastlane/android_version_code"
-#   dependencies:
-#     - buildDebug
-#   script:
-#     - true || bundle exec fastlane test
+testDebug:
+  image: mysteriumnetwork/mobile-ci:1.0.0
+  stage: test
+  except: [tags]
+  tags: [docker]
+  except:
+    changes:
+      - "./fastlane/android_version_code"
+  dependencies:
+    - buildDebug
+  script:
+    - bundle exec fastlane test
 
-# publishInternal:
-#   image: mysteriumnetwork/mobile-ci:1.0.0
-#   stage: release
-#   only: [tags]
-#   tags: [docker]
-#   before_script:
-#     - echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
-#     - echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
-#     - echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
-#   after_script:
-#     - rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
-#   script:
-#     - bundle exec fastlane bumpAndroidVersionCode
-#     - bundle exec fastlane internal
-#     - ./push_version_code.sh
-
-publishInternalManaul:
+publishInternal:
   image: mysteriumnetwork/mobile-ci:1.0.0
   stage: release
-  when: manual
+  only: [tags]
   tags: [docker]
   before_script:
-    #- echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
-    #- echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
-    #- echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
+    - echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
+    - echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
+    - echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
   after_script:
-    #- rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
+    - rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
   script:
     - bundle exec fastlane bumpAndroidVersionCode
-    #- bundle exec fastlane internal
+    - bundle exec fastlane internal
     - ./push_version_code.sh
+
