@@ -11,7 +11,7 @@ setup_git() {
 commit_version_code() {
   git checkout -b bump-version
   git add ./fastlane/android_version_code 
-  git commit --message "Test Bump Android version code"
+  git commit --message "Bump Android version code"
 }
 
 upload_files() {
