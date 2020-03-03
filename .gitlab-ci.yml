@@ -9,6 +9,9 @@ buildDebug:
   stage: build
   except: [tags]
   tags: [docker]
+  except:
+    changes:
+      - "./fastlane/android_version_code"
   script:
     - bundle exec fastlane buildDebug
 
@@ -17,6 +20,9 @@ testDebug:
   stage: test
   except: [tags]
   tags: [docker]
+  except:
+    changes:
+      - "./fastlane/android_version_code"
   dependencies:
     - buildDebug
   script:
@@ -36,4 +42,5 @@ publishInternal:
   script:
     - bundle exec fastlane bumpAndroidVersionCode
     - bundle exec fastlane internal
-    - bundle exec fastlane pushAndroidVersionCode
+    - ./push_version_code.sh
+
