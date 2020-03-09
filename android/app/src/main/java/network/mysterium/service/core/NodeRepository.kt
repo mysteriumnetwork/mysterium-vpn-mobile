@@ -57,6 +57,10 @@ class IdentityRegistrationFees(
         val fee: Long
 )
 
+class ConnectUnknownException(message: String) : Exception(message)
+class ConnectInvalidProposalException(message: String) : Exception(message)
+class ConnectInsufficientBalanceException(message: String) : Exception(message)
+
 // Wrapper around Go mobile node library bindings. It should not change any result
 // returned from internal mobile node and instead all mappings should happen in
 // ViewModels.
@@ -129,7 +133,13 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         req.providerID = providerID
         req.serviceType = serviceType
         req.identityAddress = identityAddress
-        deferredNode.await().connect(req)
+        val res = deferredNode.await().connect(req) ?: return@withContext
+
+        when(res.errorCode) {
+            "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
+            "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
+            "Unknown" -> throw ConnectUnknownException(res.errorMessage)
+        }
     }
 
     // Disconnect from VPN service.
