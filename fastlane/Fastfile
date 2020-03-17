@@ -55,18 +55,6 @@ platform :android do
     )
   end
 
-  desc "Increase Android code version"
-  lane :bumpAndroidVersionCode do
-    increase_version_code
-  end
-end
-
-def increase_version_code
-  versionCode = File.read("./android_version_code").to_i
-  versionCode = versionCode+1
-  f = File.new("./android_version_code", "w")
-  f.write(versionCode)
-  f.close
 end
 
 def version_code
