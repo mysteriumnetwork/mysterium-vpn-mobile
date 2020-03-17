@@ -40,7 +40,5 @@ publishInternal:
   after_script:
     - rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
   script:
-    - bundle exec fastlane bumpAndroidVersionCode
     - bundle exec fastlane internal
-    - ./push_version_code.sh
 

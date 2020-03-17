@@ -99,7 +99,9 @@ Increase bundle_release versionCode + 1 in fastlane/Fastlane file and run:
 source fastlane/.env.local && fastlane android internal
 ```
 
-- To build and publish internal release manaully automatically create new tag in github repository.
+- To build and publish internal release automatically:
+1. Create PR with bumped fastlane/android_version_code (Google play store requires new version code for each release).
+2. Ater merge to master create new tag in github repository.
 
 ### iOS
 
