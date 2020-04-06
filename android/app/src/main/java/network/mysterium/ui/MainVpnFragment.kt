@@ -33,6 +33,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import network.mysterium.AppContainer
+import network.mysterium.service.core.ConnectInsufficientBalanceException
+import network.mysterium.service.core.ConnectInvalidProposalException
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.R
 
@@ -257,6 +259,16 @@ class MainVpnFragment : Fragment() {
                 sharedViewModel.connect(identityAddress, proposal.providerID, proposal.serviceType.type)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // Do nothing.
+            } catch (e: ConnectInvalidProposalException) {
+                if (isAdded) {
+                    showMessage(ctx, getString(R.string.connect_err_invalid_proposal))
+                }
+                Log.e(TAG, "Invalid proposal", e)
+            } catch (e: ConnectInsufficientBalanceException) {
+                if (isAdded) {
+                    showMessage(ctx, getString(R.string.connect_err_insufficient_balance))
+                }
+                Log.e(TAG, "Insufficient balance", e)
             } catch (e: Exception) {
                 if (isAdded) {
                     showMessage(ctx, getString(R.string.vpn_failed_to_connect))
