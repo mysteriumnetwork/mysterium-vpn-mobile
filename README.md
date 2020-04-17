@@ -102,6 +102,7 @@ source fastlane/.env.local && fastlane android internal
 - To build and publish internal release automatically:
 1. Create PR with bumped fastlane/android_version_code (Google play store requires new version code for each release).
 2. Ater merge to master create new tag in github repository.
+See [example](https://github.com/mysteriumnetwork/mysterium-vpn-mobile/commit/6111eb183e6aa9c5b2d12ed7bdc55eb598166c5a) commit.
 
 ### iOS
 
