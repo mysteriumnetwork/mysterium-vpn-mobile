@@ -163,7 +163,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
     androidTestImplementation 'androidx.test:rules:1.3.0-alpha03'
 
-    implementation 'network.mysterium:mobile-node:0.30.0-rc1'
+    implementation 'network.mysterium:mobile-node:0.31.0-rc0'
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     // implementation files('/Users/anjmao/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
 }
