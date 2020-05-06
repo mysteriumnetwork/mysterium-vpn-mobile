@@ -150,7 +150,7 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     // Unlock identity and return it's address. Internally mobile node will create default identity
     // if it is not created yet.
     suspend fun getIdentity(): Identity = withContext(Dispatchers.IO) {
-        val res = deferredNode.await().identity
+        val res = deferredNode.await().getIdentity(GetIdentityRequest())
         Identity(address = res.identityAddress, channelAddress = res.channelAddress, registrationStatus = res.registrationStatus)
     }
 
@@ -203,8 +203,9 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     // Send user feedback.
-    suspend fun sendFeedback(description: String) = withContext(Dispatchers.IO) {
+    suspend fun sendFeedback(email: String, description: String) = withContext(Dispatchers.IO) {
         val req = SendFeedbackRequest()
+         req.email = email
         req.description = description
         deferredNode.await().sendFeedback(req)
     }

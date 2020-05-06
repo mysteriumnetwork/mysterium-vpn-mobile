@@ -28,10 +28,13 @@
     <string name="vpn_select_proposal_warning">Please select proposal to connect.</string>
     <string name="vpn_failed_to_connect">Failed to connect. Please try again.</string>
     <string name="vpn_failed_to_disconnect">Failed to disconnect. Please try again.</string>
-    <string name="feedback_type_label">Feedback type</string>
+    <string name="feedback_email_label">Your contact email (optional)</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="connect_err_invalid_proposal">Proposal is not valid</string>
     <string name="connect_err_insufficient_balance">Insufficient balance</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_report_issue">Report issue</string>
+    <string name="feedback_page_title">Report issue</string>
+    <string name="feedback_logs_notice">By submitting this form, You agree to send to Mysterium Network some account information like IP, country and system information which will be used to improve the services and help investigate this issue.</string>
+    <string name="feedback_message_hint">Describe what when wrong</string>
 </resources>
