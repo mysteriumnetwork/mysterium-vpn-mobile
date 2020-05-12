@@ -41,8 +41,7 @@ enum class ServiceType(val type: String) {
 
 enum class ServiceTypeFilter(val type: String) {
     ALL("all"),
-    OPENVPN("openvpn"),
-    WIREGUARD("wireguard")
+    FAVORITE("favorite"),
 }
 
 enum class ProposalSortType(val type: Int) {
@@ -73,11 +72,9 @@ enum class QualityLevel(val level: Int) {
 }
 
 class ProposalsCounts(
-        val openvpn: Int,
-        val wireguard: Int
+        val all: Int,
+        val favorite: Int
 ) {
-    val all: Int
-        get() = openvpn + wireguard
 }
 
 class ProposalsFilter(
@@ -164,7 +161,12 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             }
 
             proposal.toggleFavorite()
-            proposals.value = filterAndSortProposals(filter, allProposals)
+            val newProposals = filterAndSortProposals(filter, allProposals)
+            proposals.value = newProposals
+            proposalsCounts.value = ProposalsCounts(
+                    all = allProposals.count(),
+                    favorite = favoriteProposals.count()
+            )
             done(proposal)
         }
     }
@@ -198,8 +200,8 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }
 
             proposalsCounts.value = ProposalsCounts(
-                    openvpn = allProposals.count { it.serviceType == ServiceType.OPENVPN },
-                    wireguard = allProposals.count { it.serviceType == ServiceType.WIREGUARD }
+                    all = allProposals.count(),
+                    favorite = favoriteProposals.count()
             )
             proposals.value = filterAndSortProposals(filter, allProposals)
             initialProposalsLoaded.value = true
@@ -215,8 +217,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 // Filter by service type.
                 .filter {
                     when (filter.serviceType) {
-                        ServiceTypeFilter.OPENVPN -> it.serviceType == ServiceType.OPENVPN
-                        ServiceTypeFilter.WIREGUARD -> it.serviceType == ServiceType.WIREGUARD
+                        ServiceTypeFilter.FAVORITE -> it.isFavorite
                         else -> true
                     }
                 }

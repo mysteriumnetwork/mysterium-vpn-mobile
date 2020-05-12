@@ -74,8 +74,6 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     // does not support passing complex slices via it's bridge.
     suspend fun proposals(refresh: Boolean): List<ProposalItem> {
         val req = GetProposalsRequest()
-        req.showOpenvpnProposals = true
-        req.showWireguardProposals = true
         req.refresh = refresh
 
         val bytes = getProposals(req)

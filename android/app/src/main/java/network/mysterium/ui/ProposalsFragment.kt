@@ -19,7 +19,6 @@ package network.mysterium.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +31,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
 import network.mysterium.vpn.R
@@ -47,8 +43,7 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsCloseButton: TextView
     private lateinit var proposalsSearchInput: EditText
     private lateinit var proposalsFiltersAllButton: TextView
-    private lateinit var proposalsFiltersOpenvpnButton: TextView
-    private lateinit var proposalsFiltersWireguardButton: TextView
+    private lateinit var proposalsFiltersFavoriteButton: TextView
     private lateinit var proposalsFiltersSort: Spinner
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
     private lateinit var proposalsList: RecyclerView
@@ -65,8 +60,7 @@ class ProposalsFragment : Fragment() {
         proposalsCloseButton = root.findViewById(R.id.proposals_close_button)
         proposalsSearchInput = root.findViewById(R.id.proposals_search_input)
         proposalsFiltersAllButton = root.findViewById(R.id.proposals_filters_all_button)
-        proposalsFiltersOpenvpnButton = root.findViewById(R.id.proposals_filters_openvpn_button)
-        proposalsFiltersWireguardButton = root.findViewById(R.id.proposals_filters_wireguard_button)
+        proposalsFiltersFavoriteButton = root.findViewById(R.id.proposals_filters_favorite_button)
         proposalsFiltersSort = root.findViewById(R.id.proposals_filters_sort)
         proposalsSwipeRefresh = root.findViewById(R.id.proposals_list_swipe_refresh)
         proposalsList = root.findViewById(R.id.proposals_list)
@@ -102,30 +96,20 @@ class ProposalsFragment : Fragment() {
         // Set current active filter.
         val activeTabButton = when (proposalsViewModel.filter.serviceType) {
             ServiceTypeFilter.ALL -> proposalsFiltersAllButton
-            ServiceTypeFilter.OPENVPN -> proposalsFiltersOpenvpnButton
-            ServiceTypeFilter.WIREGUARD -> proposalsFiltersWireguardButton
+            ServiceTypeFilter.FAVORITE -> proposalsFiltersFavoriteButton
         }
         setFilterTabActiveStyle(root, activeTabButton)
 
         proposalsFiltersAllButton.setOnClickListener {
             proposalsViewModel.filterByServiceType(ServiceTypeFilter.ALL)
             setFilterTabActiveStyle(root, proposalsFiltersAllButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersOpenvpnButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersWireguardButton)
+            setFilterTabInactiveStyle(root, proposalsFiltersFavoriteButton)
         }
 
-        proposalsFiltersOpenvpnButton.setOnClickListener {
-            proposalsViewModel.filterByServiceType(ServiceTypeFilter.OPENVPN)
-            setFilterTabActiveStyle(root, proposalsFiltersOpenvpnButton)
+        proposalsFiltersFavoriteButton.setOnClickListener {
+            proposalsViewModel.filterByServiceType(ServiceTypeFilter.FAVORITE)
+            setFilterTabActiveStyle(root, proposalsFiltersFavoriteButton)
             setFilterTabInactiveStyle(root, proposalsFiltersAllButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersWireguardButton)
-        }
-
-        proposalsFiltersWireguardButton.setOnClickListener {
-            proposalsViewModel.filterByServiceType(ServiceTypeFilter.WIREGUARD)
-            setFilterTabActiveStyle(root, proposalsFiltersWireguardButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersAllButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersOpenvpnButton)
         }
     }
 
@@ -164,8 +148,7 @@ class ProposalsFragment : Fragment() {
         // Subscribe to proposals counters.
         proposalsViewModel.getProposalsCounts().observe(this, Observer { counts ->
             proposalsFiltersAllButton.text = "All (${counts.all})"
-            proposalsFiltersOpenvpnButton.text = "Openvpn (${counts.openvpn})"
-            proposalsFiltersWireguardButton.text = "Wireguard (${counts.wireguard})"
+            proposalsFiltersFavoriteButton.text = "Favorite (${counts.favorite})"
         })
 
         proposalsViewModel.initialProposalsLoaded.observe(this, Observer {loaded ->

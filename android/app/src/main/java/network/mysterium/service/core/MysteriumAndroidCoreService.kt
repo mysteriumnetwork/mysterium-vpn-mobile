@@ -31,7 +31,6 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import mysterium.MobileNode
 import mysterium.Mysterium
-import mysterium.ReconnectableSession
 import network.mysterium.NotificationFactory
 import network.mysterium.ui.ProposalViewItem
 import network.mysterium.ui.ServiceType
@@ -49,7 +48,6 @@ class NetworkConnState {
 
 class MysteriumAndroidCoreService : VpnService() {
     private var mobileNode: MobileNode? = null
-    private var openVPNSession: ReconnectableSession? = null
 
     private var activeProposal: ProposalViewItem? = null
 
@@ -76,13 +74,11 @@ class MysteriumAndroidCoreService : VpnService() {
             return mobileNode!!
         }
 
-        val openvpnBridge = Openvpn3AndroidTunnelSetupBridge(this)
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
 
         val options = Mysterium.defaultNodeOptions()
 
         mobileNode = Mysterium.newNode(filesPath, options)
-        openVPNSession = mobileNode?.overrideOpenvpnConnection(openvpnBridge)
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 
         Log.i(TAG, "Node started")
@@ -163,17 +159,6 @@ class MysteriumAndroidCoreService : VpnService() {
         return 0
     }
 
-    private fun reconnectOpenVPNConnection() {
-        // When app is connected to OpenVPN closed and later reopened we need to reconnect
-        // OpenVPN session since network could change while app was closed.
-        if (activeProposal != null && activeProposal!!.serviceType == ServiceType.OPENVPN) {
-            if (openVPNSession != null) {
-                Log.i(TAG, "Reconnecting OpenVPN session")
-                openVPNSession?.reconnect(3)
-            }
-        }
-    }
-
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
         override fun setActiveProposal(proposal: ProposalViewItem?) {
             activeProposal = proposal
@@ -189,9 +174,6 @@ class MysteriumAndroidCoreService : VpnService() {
 
         override fun startConnectivityChecker() {
             startConnectivityChecker(applicationContext) {
-                if (it.connected) {
-                    reconnectOpenVPNConnection()
-                }
             }
         }
 
