@@ -3,10 +3,10 @@
 
     <item android:id="@+id/menu_item_account"
         android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="Account"/>
+        android:title="@string/menu_account"/>
 
     <item android:id="@+id/menu_item_feedback"
         android:icon="@drawable/ic_bug_report_black_24dp"
-        android:title="Feedback"/>
+        android:title="@string/menu_report_issue"/>
 
 </menu>

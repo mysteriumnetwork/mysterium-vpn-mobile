@@ -20,7 +20,7 @@ import network.mysterium.vpn.R
 class FeedbackFragment : Fragment() {
     private lateinit var feedbackViewModel: FeedbackViewModel
 
-    private lateinit var feedbackTypeSpinner: Spinner
+    private lateinit var feedbackEmail: EditText
     private lateinit var feedbackMessage: EditText
     private lateinit var feedbackSubmitButton: MaterialButton
     private lateinit var versionLabel: TextView
@@ -33,7 +33,7 @@ class FeedbackFragment : Fragment() {
         val nodeRepository = AppContainer.from(activity).nodeRepository
         feedbackViewModel = FeedbackViewModel(nodeRepository)
 
-        feedbackTypeSpinner = root.findViewById(R.id.feedback_type_spinner)
+        feedbackEmail = root.findViewById(R.id.feedback_email)
         feedbackMessage = root.findViewById(R.id.feedback_message)
         feedbackSubmitButton = root.findViewById(R.id.feedback_submit_button)
         versionLabel = root.findViewById(R.id.vpn_version_label)
@@ -47,10 +47,8 @@ class FeedbackFragment : Fragment() {
             navigateTo(root, Screen.MAIN)
         }
 
-        // Add feedback types data.
-        initFeedbackTypesDropdown(root)
-
         // Handle text change.
+        feedbackEmail.onChange { feedbackViewModel.setEmail(it) }
         feedbackMessage.onChange { feedbackViewModel.setMessage(it) }
 
         // Handle submit.
@@ -83,18 +81,6 @@ class FeedbackFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to send user feedback", e)
             }
-        }
-    }
-
-    private fun initFeedbackTypesDropdown(root: View) {
-        ArrayAdapter.createFromResource(
-                root.context,
-                R.array.feedback_types,
-                android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            feedbackTypeSpinner.adapter = adapter
-            feedbackTypeSpinner.onItemSelected { feedbackViewModel.setFeedbackType(it) }
         }
     }
 

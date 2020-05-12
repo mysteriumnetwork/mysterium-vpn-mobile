@@ -20,33 +20,9 @@ package network.mysterium.ui
 import androidx.lifecycle.ViewModel
 import network.mysterium.service.core.NodeRepository
 
-enum class FeedbackType(val type: Int) {
-    BUG(0),
-    CONNECTIVITY_ISSUE(1),
-    POSITIVE_FEEDBACK(2);
-
-    override fun toString(): String {
-        return when(this) {
-            BUG -> "bug"
-            CONNECTIVITY_ISSUE -> "connectivity"
-            POSITIVE_FEEDBACK -> "positive"
-        }
-    }
-
-    companion object {
-        fun parse(type: Int): FeedbackType {
-            return values().find { it.type == type } ?: BUG
-        }
-    }
-}
-
 class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel() {
-    private var feedbackType = FeedbackType.BUG
+    private var email = ""
     private var message = ""
-
-    fun setFeedbackType(type: Int) {
-        feedbackType = FeedbackType.parse(type)
-    }
 
     fun setMessage(msg: String) {
         message = msg
@@ -57,7 +33,11 @@ class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel()
     }
 
     suspend fun submit() {
-        val description = "Platform: Android, Feedback Type: $feedbackType, Message: $message"
-        nodeRepository.sendFeedback(description)
+        val description = "Platform: Android, Message: $message"
+        nodeRepository.sendFeedback(email, description)
+    }
+
+    fun setEmail(email: String) {
+        this.email = email
     }
 }
