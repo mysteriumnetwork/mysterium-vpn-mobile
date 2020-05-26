@@ -35,148 +35,181 @@ class TermsViewModel(private val appDatabase: AppDatabase): ViewModel() {
     }
 
     val termsText = """
-        <h3>Terms & Conditions of MysteriumVPN for Users</h3>
+<h3>MYSTERIUM NETWORK OPEN ALPHA</h3> 
 
-The following Terms and Conditions (“T&C”) govern the use of the Mysterium open source software platform (“Mysterium Platform”) and MysteriumVPN Software (the “Software”). Prior to any use of the Mysterium Platform, the User confirms to understand and expressly agrees to all of the Terms.
+<h4>This document includes:</h4>
 
-MysteriumVPN is an Open Source software that enables you (the “Client”) to use the internet connection and resources of our contributors (the “Nodes”) for your private browsing using Mysterium Platform.
+ <li> &nbsp Terms of use for end users
+ <li> &nbsp Privacy policy & no-logs pledge
 
-The Mysterium Platform rests on open-source software. This is an experimental version of the Mysterium Platform, and there is a risk that the NetSys Inc. (“Network Operator”) or other third parties not directly affiliated with the Network Operator, might unintentionally introduce weaknesses or bugs into the core infrastructural elements of the Mysterium Platform or Software causing the system to lose cryptocurrency stored in one or more Client accounts or other accounts or lose sums of other valued tokens issued on the Mysterium Platform, or causing to suffer other losses, inconvenience, or damage to its users. The user expressly knows and agrees that the user is using the Mysterium Platform and MysteriumVPN software at the user’s sole risk.
+<a name="TERMS-OF-USE"></a>
+<h4>TERMS OF USE</h4> 
 
-These terms and conditions constitute an agreement between you and Network Operator and governs your access and use of MysteriumVPN software and private browsing services provided by Mysterium Platform (the “Services”).
+<h4>FOR END USERS</h4>
 
-The Network Operator or other creators of the Mysterium Platform are entitled to discontinue this project at any time without any further explanation or prior notification at this experimental stage.
+<h4>SHORT VERSION IN HUMAN LANGUAGE:</h4>
 
+ <li> &nbsp Mysterium Network is still in its development (alpha version) stage. We will do our best to develop it further, but we cannot guarantee this.
 
-PLEASE READ THESE T&C CAREFULLY IF YOU WISH TO USE THE SERVICES. IF YOU DO NOT AGREE TO BE BOUND BY THESE T&C, PLEASE DO NOT USE THE SERVICES.
+ <li> &nbsp You cannot use or encourage or assist others to use the network in any way which violates any laws or rights of any party, including intellectual property rights. 
 
-<h4>Your Use of the Services</h4>
+ <li> &nbsp Your use of the network is at your own risk. We provide it to you “as is” without any warranties. 
 
-The Services are provided to you free of charge. You may not use the Services if you are under the age of 18 or if you are not the owner of the device on which you install the Software or otherwise use the Services.
+ <li> &nbsp You are responsible for all the content that you receive, distribute or otherwise transmit through the network. 
 
-By using the services of Network Operator, you understand and agree that the Services are internet security and private browsing services, and this mechanism is not a service to be used for criminal and/or other illegal acts. By using the Services, you accept not to violate any law of any jurisdiction that you are originating from or residing at. It is your responsibility to know and comprehend any and all relevant laws related to any jurisdiction or venue that concerns you and your actions.
+ <li> &nbsp You can use the network with our Mysterium software (https://github.com/mysteriumnetwork/) or any other compatible software.
 
+ <li> &nbsp In no event will we be liable for any damages which you may incur. 
 
-<h4>Client’s Account</h4>
+ <li> &nbsp We recommend you to read the full version bellow to get acquainted with all of the terms and conditions.
 
-Before starting to use the Services, you must download Mysterium software and create an account entering your credentials and private/public keys. You hereby agree to provide true, accurate, current and complete information as may be prompted by any registration forms regarding your registration or use of Services.
+<h4>FULL VERSION:</h4>
 
-By creating an account and starting to use the Services you agree and accept unconditionally that:
+<h5>1. ACCEPTANCE OF TERMS</h5>
 
-you cannot provide your credentials and private/public keys to others;
-you will not share your credentials and private/public keys publicly.
+These terms and conditions (the “Terms”) is a binding legal agreement between you and Netsys Inc. (“Mysterium Networks” or “we”) that governs your participation in the early open alpha testing program (the “Program”) of the Mysterium network (the “Network”). 
+<p>
+Your enrolment and participation in the Program and access to and use of the Network is subject to these Terms. By participating in the Program or using the Network you are fully accepting the terms, conditions and disclaimers contained in this document and all policies and guidelines that are incorporated by reference. If you do not accept these terms and conditions you must immediately stop using the  Network. You shall not enroll into the Program or use the Network in contradiction with these Terms or any applicable law or regulation of the country or territory you originate from or reside in or any applicable jurisdiction (the “Applicable Law”). For the purposes of these Terms, the term “using the Network” means accessing, connecting to or utilizing the Network in any other way.
+<p>
+You may not sign up for and participate in the Program (a) if you have not reached the age of majority in your territory of residence (in most cases, 18 to 21) or if you do not have the ability to form binding contracts under the Applicable law or (b) if you are not the owner of the device on which you use the Network. 
 
-<h4>Prohibited Conduct</h4>
+<h5>2. CHANGED TERMS</h5>
 
-You may not use the Services in any manner that could damage, disable, overburden, or impair the servers and other resources of Network Operator and the Nodes, or interfere with any third party’s use of the Services. You may not attempt to gain unauthorized access to any aspect of the Services or to information for which you have not been granted access.
+We shall have the right at any time to change or modify the Terms or any part thereof, or to impose new conditions, including, but not limited to, adding fees and charges for use. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on our website, or by electronic or conventional mail, or by any other means by which you obtain notice thereof. Any use of the Network after such notice shall be deemed to constitute acceptance of such changes, modifications or additions. 
 
-By using the Services, you commit not to carry out any of these criminal and other illegal actions in or through the Services using our resources and/or resources of the Nodes:
+<h5>3. DESCRIPTION OF NETWORK</h5>
 
-extortion, blackmail, kidnapping, rape, murder, sale/purchase of stolen credit cards, sale/purchase of stolen sale/purchase, sale/purchase of illegal sale/purchase, performance of identity theft;
-use of stolen credit cards, credit card fraud, wire fraud,
-hacking, pharming, phishing, or spamming of any form, web scraping through our Service in any form or scale;
-exploitation of or contribution to children exploitation photographically, digitally or in any other way;
-port scanning, sending opt-in email, scanning for open relays or open proxies, sending unsolicited e-mail or any version or type of email sent in vast quantities even if the email is lastly sent off through another server;
-assaulting in any way or form any other network or computer while using the Service;
-any other activities that are against the law of the country you originate from or reside in, and/or any other activities that are not compatible with the principles of democracy, freedom of speech, freedom of expression, and human rights.
+The Network allows you to enhance your security and increase privacy while using the internet. We accomplish this by creating virtual tunnels through one or more connections to other users of the Network (the “Nodes”) and by using their equipment and resources to route you to your final destination.
+<p>
+The Network is not designed or intended to circumvent any access control or security measures and should not be used for such purposes.
 
-<h4>Suspension or Termination of the Account</h4>
+<h5>4. OPEN ALPHA AND FEEDBACK</h5>
 
-Network Operator does not have an obligation to monitor the activities on the Mysterium Platform, and he does not carry out such monitoring actively.
+The Network is still in its early development stage. The sole purpose of the Program is to obtain feedback on the performance of the Network and to identify its defects. You expressly acknowledge that the Network is a test product and may contain bugs, errors and other problems that could cause loss of data store in the platform, inconsistent performance and other failures including but not limited to systems crashes, interruptions and data loss. You are advised to use caution and not to rely in any way on the performance and functioning of the Network. The Network is made available to you free of charge and no warranty shall be provided for the Network.
+<p>
+We do not guarantee that the Network will be developed to reach any subsequent development stage (e.g. release version) or that any subsequent versions will have the same or similar functionality and characteristics to the ones that the Network have. 
+<p>
+To maintain and develop the Network we may collect limited and anonymized information and performance data.
 
-In the case Network Operator notices accidently or is notified of any suspicious activities using your Account that may result in violation of these T&C (see section “Prohibited Conduct” for more detail), in order to maintain the integrity of the Mysterium Platform Network Operator reserves the right (but not an obligation) to carry out any actions he considers necessary in the particular situation, including, but not limited to, the suspension and/or the termination of your Account immediately without any previous notification.
+<h5>5. EQUIPMENT</h5>
 
-Network Operator can terminate any Client account for the violation of these T&C immediately without notice or suspend the account until further clarification, investigation, or communication with the Client.
+You shall be responsible for obtaining and maintaining all hardware, software and other equipment needed for access to and use of the Network and all charges related thereto. Should you need any licenses, equipment or software to access and/or use the resources or services which are made conditional upon prior authorization, you shall be solely responsible for obtaining and maintaining such licenses, equipment and software.
+<p>
+As an option, you can use Mysterium software (https://github.com/mysteriumnetwork/) to use the Network.
 
-<h4>Limitation of Liability</h4>
+<h5>6. RESTRICTED CONDUCT</h5>
 
-NEITHER THE NETWORK OPERATOR, NOR THE NODES WILL BE LIABLE IN ANY WAY OR FORM FOR ACTIONS DONE BY THE CLIENTS AND/OR ANY ACTIONS DONE USING CLIENT’S ACCOUNT INCLUDING CRIMINAL LIABILITY AND CIVIL LIABILITY FOR ANY HARM. SOLELY THE CLIENT IS LIABLE FOR ALL HIS ACTIONS USING THE SERVICES, THE SOFTWARE AND THE RESOURCES OF NETWORK OPERATOR AND OF THE RESOURCES THE NODES.
+We do not encourage, support and contribute to illegal activities and we are resolved to keep the Network operating legally.  
+<p>
+You shall use the Network for any purpose that is unlawful or prohibited by these Terms or any Applicable Law. 
+<p>
+You shall not request, receive, post, upload, download, display, distribute, transmit or make available through the Network (“Communicate”) any information and material which violates or infringes in any way upon the rights of others, which is unlawful, threatening, abusive, defamatory, invasive of privacy or publicity rights, which encourages conduct that would constitute a criminal offense, give rise to civil liability or otherwise violate the Applicable Law. 
+<p>
+You may not use or encourage or assist others to use the Network in any manner that could damage, disable, overburden, or impair the servers and other resources of Network or of the Nodes, or interfere with any third party’s use of the Network. You may not attempt to gain unauthorized access to any aspect of the Network or to information for which you have not been granted access.
+<p>
+Without limiting the generality of the foregoing, you shall not use or to encourage, authorize or assist others to use the Network for:
+<pre>
+ - uploading, transmitting, streaming, accessing, receiving, or distributing any copyrighted, trademark, or patented content which you do not own or lack written consent or a license from the owner;
 
-NETWORK OPERATOR, ITS OWNERS, EMPLOYEES, AGENTS AND OTHERS THAT ARE INVOLVED WITH THE NETWORK OPERATOR ARE NOT IN ANY WAY OR FORM LIABLE FOR ANY HARM OF ANY SORT EXECUTED OR NOT EXECUTED, RESULTING FROM OR ARISING THROUGH OR FROM THE USE OF ANY ACCOUNT REGISTERED USING MYSTERIUM.
+ - accessing or using any resources or services (e.g. web pages, television or radio broadcastings, cable or satellite services, streaming media services, VOD services, etc.) which are made conditional upon prior authorization which you do not have;
 
-IN NO EVENT WILL WE OR ANY OTHER PARTY WHO HAS BEEN INVOLVED IN THE CREATION, PRODUCTION, DISTRIBUTION, PROMOTION, OR MARKETING OF SOFTWARE AND/OR THE SERVICES BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY SPECIAL, INDIRECT, INCIDENTAL, RELIANCE, EXEMPLARY, OR CONSEQUENTIAL DAMAGES, INCLUDING, WITHOUT LIMITATION, LOSS OF DATA OR PROFITS, OR FOR INABILITY TO USE THE SERVICE, EVEN IF WE OR SUCH OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. SUCH LIMITATION SHALL APPLY NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY AND TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT, SHALL OUR AGGREGATE LIABILITY TO YOU AND ANY OTHER PARTY, WHETHER DIRECT OR INDIRECT, EXCEED ONE HUNDRED DOLLARS (${'$'}100.00) FOR ANY AND ALL CLAIMS, DAMAGES, AND OTHER THEORY OF LIABILITY.
+ - circumventing any access control, technical protection or security measures; 
 
-<h4>No-logging and Traceability of Your Activities</h4>
+ - extortion, blackmail, kidnapping, rape, murder, sale/purchase of stolen credit cards, sale/purchase of stolen sale/purchase, sale/purchase of illegal sale/purchase, performance of identity theft;
 
-Network Operator guarantees a strict no-logs policy of the Services, meaning that your activities using the Services are not actively monitored, recorded, logged, stored or passed to any third party by the Network Operator.
+ - use of stolen credit cards, credit card fraud, wire fraud, 
 
-Network Operator does not store connection time stamps, used bandwidth, traffic logs nor IP addresses. Network Operator does not provide any information about their Clients and the fact of the use of Services by a particular Client to any third party.
+ - hacking, pharming, phishing, or spamming of any form through our service in any form or scale;
 
-In the case Client’s use of Services constitute a breach of these T&C or respective legal acts and this causes legal risks for the Nodes whose resources Client was using, Network Operator might be obliged to provide the information related to such particular use of Services by the officially binding order of law enforcement authorities or other governmental agencies. As Network Operator does not trace the activities of their Clients, Network Operator would not be technically able to provide the authorities with more detailed information about their particular Clients activities. However, as Network Operator has no intention to contribute to any illegal and/or unauthorized activities, and/or to involve the Nodes in any of such, the Network Operator can cooperate with the authorities on his own account.
+ - exploitation of or contribution to children exploitation photographically, digitally or in any other way;
 
-Using the Services you agree and accept that Network Operator is free to take the decisions to provide any help and assistance including legal advice that Network Operator might find necessary or suitable to the Nodes who might need it in relation with a possible or an ongoing official investigation related to the use of their resources by the Clients.
+ - assaulting in any way or form any other network or computer while using the Network;
 
-By using the Services you also agree and understand that your activities using the Services in some cases can be traceable by the Nodes and their internet service providers.
+ - connecting to the Network any devices, software and/or hardware which does or may do any of the above;
 
-In order to maintain the Services and to ensure the proper functioning of Mysterium, the Network Operator does collect limited and anonymized personal user information and site performance data (see section “Privacy Policy” for more details).
+ - any other activities that are against the Applicable Law, and/or any other activities that are not compatible with the principles of democracy, freedom of speech, freedom of expression, and human rights.
+</pre>
 
-<h4>Data Privacy</h4>
+<h5>7. YOUR ID AND SECURITY</h5>
 
-Network Operator is committed to your privacy and does not collect, log, organize, structure, store, use, disseminate or make otherwise available any personal data of the Clients, e.g. Client’s identity, IP address, browsing history, traffic destination, data content, DNS queries from the Clients connected to Mysterium Network, or any other personal information which could be considered personal data (i.e. any information relating to an identified or identifiable natural person).
-Network Operator will collect anonymous statistics to improve the performance of Mysterium Network. This information is fully anonymized and cannot be tied back to any individual users.
+An ID and a private key (jointly, the “ID Data”) will be automatically created for your when you use the Network for the first time. You are entirely responsible for maintaining the confidentiality of your ID Data. Furthermore, you are entirely responsible for any activities that occur under your ID Data. You agree to notify us immediately of any unauthorized use of your account or any other breach of security. We will not be liable for any loss that you may incur as a result of someone else using your ID Data, either with or without your knowledge. However, you could be held liable for losses incurred by us or another party due to someone else using your account. You may not use anyone else's ID Data at any time, without the permission of the account holder. 
 
-</h5>Limited License</h4>
+<h5>8. COPYRIGHT NOTICE</h5> 
 
-During your use of Services, we hereby grant you a personal, non-exclusive, non-transferable, non-assignable, non-sub-licensable, revocable and limited license to access and use the Services and to install a copy of the Software on your personal device.
+Our logos are our trademarks. All rights reserved. All other trademarks appearing on the Network are the property of their respective owners. 
 
-You fully understand and accept that the Software is licensed to you, not sold.
+<h5>9. DISCLAIMER OF WARRANTY; LIMITATION OF LIABILITY</h5>
 
-Permission is granted to anyone to use this Software for any purpose, including commercial applications, and to alter it freely (without the right of redistribution), subject to the following restrictions:
+YOU EXPRESSLY AGREE THAT USE OF THE NETWORK IS AT YOUR SOLE RISK. NEITHER WE, OUR AFFILIATES NOR ANY OF THEIR RESPECTIVE EMPLOYEES, AGENTS, THIRD PARTY CONTENT PROVIDERS OR LICENSORS WARRANT THAT THE NETWORK WILL BE UNINTERRUPTED OR ERROR FREE; NOR DO THEY MAKE ANY WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM USE OF THE NETWORK, OR AS TO THE ACCURACY, RELIABILITY OR CONTENT OF ANY INFORMATION, SERVICE, OR MERCHANDISE PROVIDED THROUGH THE NETWORK. 
+<p>
+THE NETWORK IS PROVIDED ON AN "AS IS" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF TITLE OR IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, OTHER THAN THOSE WARRANTIES WHICH ARE IMPLIED BY AND INCAPABLE OF EXCLUSION, RESTRICTION OR MODIFICATION UNDER THE LAWS APPLICABLE TO THIS AGREEMENT. 
+<p>
+THIS DISCLAIMER OF LIABILITY APPLIES TO ANY DAMAGES OR INJURY CAUSED BY ANY FAILURE OF PERFORMANCE, ERROR, OMISSION, INTERRUPTION, DELETION, DEFECT, DELAY IN OPERATION OR TRANSMISSION, COMPUTER VIRUS, COMMUNICATION LINE FAILURE, THEFT OR DESTRUCTION OR UNAUTHORIZED ACCESS TO, ALTERATION OF, OR USE OF RECORD, WHETHER FOR BREACH OF CONTRACT, TORTIOUS BEHAVIOR, NEGLIGENCE, OR UNDER ANY OTHER CAUSE OF ACTION. YOU SPECIFICALLY ACKNOWLEDGE THAT WE IS NOT LIABLE FOR THE DEFAMATORY, OFFENSIVE OR ILLEGAL CONDUCT OF OTHER USERS OR THIRD-PARTIES AND THAT THE RISK OF INJURY FROM THE FOREGOING RESTS ENTIRELY WITH YOU. 
+<p>
+IN NO EVENT WILL WE, OR ANY PERSON OR ENTITY INVOLVED IN CREATING, DEVELOPING OR MAINTAINING THE NETWORK, BE LIABLE FOR ANY DAMAGES, INCLUDING, WITHOUT LIMITATION, DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR PUNITIVE DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE THE NETWORK. 
+<p>
+IN ADDITION TO THE TERMS SET FORTH ABOVE NEITHER, WE, NOR OUR AFFILIATES OR CONTENT PARTNERS SHALL BE LIABLE REGARDLESS OF THE CAUSE OR DURATION, FOR ANY ERRORS, INACCURACIES, OMISSIONS, OR OTHER DEFECTS IN, OR UNTIMELINESS OR UNAUTHENTICITY OF, THE INFORMATION CONTAINED WITHIN THE NETWORK, OR FOR ANY DELAY OR INTERRUPTION IN THE TRANSMISSION THEREOF TO YOU, OR FOR ANY CLAIMS OR LOSSES ARISING THEREFROM OR OCCASIONED THEREBY. NONE OF THE FOREGOING PARTIES SHALL BE LIABLE FOR ANY THIRD-PARTY CLAIMS OR LOSSES OF ANY NATURE, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, PUNITIVE OR CONSEQUENTIAL DAMAGES. 
+<p>
+FORCE MAJEURE. NEITHER PARTY WILL BE RESPONSIBLE FOR ANY FAILURE OR DELAY IN PERFORMANCE DUE TO CIRCUMSTANCES BEYOND ITS REASONABLE CONTROL, INCLUDING, WITHOUT LIMITATION, ACTS OF GOD, WAR, RIOT, EMBARGOES, ACTS OF CIVIL OR MILITARY AUTHORITIES, FIRE, FLOODS, ACCIDENTS, SERVICE OUTAGES RESULTING FROM EQUIPMENT AND/OR SOFTWARE FAILURE AND/OR TELECOMMUNICATIONS FAILURES, POWER FAILURES, NETWORK FAILURES, FAILURES OF THIRD PARTY SERVICE PROVIDERS (INCLUDING PROVIDERS OF INTERNET SERVICES AND TELECOMMUNICATIONS). THE PARTY AFFECTED BY ANY SUCH EVENT SHALL NOTIFY THE OTHER PARTY WITHIN A MAXIMUM OF FIFTEEN (15) DAYS FROM ITS OCCURENCE. THE PERFORMANCE OF THS AGREEMENT SHALL THEN BE SUSPENDED FOR AS LONG AS ANY SUCH EVENT SHALL PREVENT THE AFFECTED PARTY FROM PERFORMING ITS OBLIGATIONS UNDER THIS AGREEMENT. 
 
-the origin of this Software must not be misrepresented; you must not claim that you wrote the original Software. If you use this Software in a product, an acknowledgment in the product documentation would be appreciated but is not mandatory;
-altered versions must be plainly marked as such, and must not be misrepresented as being the original Software or any other creation of Network Operator, or the product created under any commission of Mysterium Platform;
-this notice may not be removed or altered from any derivative works based on the Software.
+<h5>10. INDEMNIFICATION</h5>
 
-In any case, Network Operator does not bear any liability for any actions based on or related to the derivative works based on the Software. The users of such derivative works use them on their own account.
+You agree to defend, indemnify and hold harmless us, our affiliates and their respective directors, officers, employees and agents from and against all loss, claim, damage, expense or liability (including all reasonable attorneys’ fees and other expenses reasonably incurred in investigating, preparing or defending against litigation, commenced or threatened), incurred by the aggrieved party as a result of, or arising out of, or relating to (a) any misrepresentation or breach of any representation or warranty made by you, (b) any breach of these Terms by you, (c) your violation of the Applicable Law or any rights of another, including any intellectual property rights, or (c) any cause of action, suit or claim brought or made against us and arising out of or resulting from your use of the Network. 
 
-Except as expressly indicated in these T&C or within any of the Services you may not: (i) sell, lend, rent, assign, export, sublicense or otherwise transfer the Software or the Services; (ii) alter, delete or conceal any copyright, trademark or other notices in connection with the Services or the Software; (iii) interfere with or impair the use of others of the Services or with any network connected to the Services; (iv) use the Services or the Software by yourself or in conjunction with any other products to infringe upon any third party's rights, including without limitation third party's intellectual property rights, to invade third party’s privacy in any way, or to track, store, transmit or record personal information about any other user of the Services or the Software; (v) otherwise violate applicable laws including without limitation copyright and trademark laws and applicable communications regulations and statutes.
+<h5>11. TERMINATION</h5>
 
-Any such forbidden uses shall immediately and automatically terminate your license to use the Software and the Services, without derogating from any other remedies available to us at law or in equity.
+You may terminate the Terms at any time by ceasing your use of the Network and closing your account with us. 
+<p>
+We may terminate these Terms at any time for any reason whatsoever, including without limitation if you breach the Terms or the Applicable Law. 
+<p>
+Upon termination we may delete your data which is under our control. 
 
-</h5>Intellectual Property Rights</h4>
+<h5>12. MISCELLANEOUS</h5>
 
-The Software, including any versions, revisions, corrections, modifications, enhancements and/or upgrades thereto, accompanying materials, services and any copies you are permitted to make under these T&C are owned by us or our licensors and are protected under intellectual property laws, including copyright laws and treaties. You agree, accept and acknowledge that all right, title, and interest in and to the Software and associated intellectual property rights (including, without limitation, any patents (registered or pending), copyrights, trade secrets, designs or trademarks), evidenced by or embodied in or attached or connected or related to the Software are and shall remain owned solely by us or our licensors. These T&C do not convey to you any interest in or to the Software or any of the Services, but only a limited, revocable right of use in accordance with the terms of these T&C. Nothing in these T&C constitutes a waiver of our intellectual property rights under any law.
+You agree to comply with all applicable export laws and restrictions and regulations and agree that you will not export, or allow the export or re-export of the Network or any part of it in violation of the Applicable Law.
+<p>
+The Terms constitute the entire agreement of the parties with respect to the subject matter hereof, and supersede all previous written or oral agreements between the parties with respect to such subject matter. This Agreement shall be construed in accordance with the laws of the Republic of Panama without regard to its conflict of laws rules. 
+<p>
+You agree that any legal action arising out of or relating to these Terms shall be filed exclusively in the competent courts of the Republic of Panama.
+<p>
+No waiver by either party of any breach or default hereunder shall be deemed to be a waiver of any preceding or subsequent breach or default. The section headings used herein are for convenience only and shall not be given any legal importance. 
+<p>
+You agree that these Terms and our rights hereunder may be assigned, in whole or in part, by us or our affiliate to any third party, at our sole discretion, including an assignment in connection with a merger, acquisition, reorganization or sale of substantially all of our assets, or otherwise, in whole or in part. You may not delegate, sublicense or assign your rights under these Terms.
 
-Network Operator and Mysterium logos and trademarks owned by us or our licensors, and no right, license, or interest in any such trademarks is granted hereunder. We respect the intellectual property of others, and we ask you to do the same. It is important (and a condition of these T&C) that you comply with all copyright laws and other provisions in connection with any content agreement to which you may be a party through the Services.
+<h4>PRIVACY POLICY & NO-LOGS PLEDGE</h4>
+Effective date: May 22, 2020
+<p>
+Netsys Inc. ("us", "we", or "our") operates the Mysterium network (the “Network”). 
+<p>
+This privacy policy (the “Privacy Policy”) informs you of our policies regarding the collection, use and disclosure of data when you use the Network and the choices you have associated with that data. This Privacy Policy applies only if and to the extent we process the data in relation to the Network. 
+<p>
+This Privacy Policy supplements our <a href="#TERMS-OF-USE">Terms of Use</a> (“ToU”) and is an integral part of it. If any provisions of the Privacy Policy and the ToU cannot be read in any manner other than a one that produces an irreconcilable conflict between them, the provisions of this Privacy Policy shall prevail. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our ToU.
 
-<h4>Warranty Disclaimers</h4>
+<h5>A. NO-LOGS PLEDGE</h5>   
 
-THE SOFTWARE AND THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS,
-WITHOUT ANY WARRANTY OF ANY KIND (INCLUDING SUPPORT OR OTHER SERVICES BY US OR OUR LICENSORES). YOU AGREE THAT YOUR USE OF THE SERVICES AND SOFTWARE SHALL BE AT YOUR SOLE RISK AND RESPONSIBILITY. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, WE, OUR LICENSORS, OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON INFRINGEMENT. WE DO NOT WARRANT THAT THE SOFTWARE OR SERVICES: (A) WILL BE ERROR OR DEFECT FREE OR OTHERWISE FREE FROM ANY INTERRUPTIONS OR OTHER FAILURES; (B) WILL MEET YOUR REQUIREMENTS; OR (C) THAT ANY ERROR WILL BE IMMEDIATELY FIXED; WE MAKE NO WARRANTIES OR REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE CONTENT (INCLUDING ANY USER CONTENT) OR TO ANY THIRD PARTY SITES OR APPLICATIONS OR CONTENT OR ANY PORTION OR COMPONENT OF EITHER AND ASSUME NO LIABILITY OR RESPONSIBILITY AND DISCLAIM ALL WARRANTIES FOR ANY (I) PROBLEMS OR AVAILABILITY OF INTERNET CONNECTIONS (II) ERRORS, MISTAKES, OR INACCURACIES IN SOFTWARE OR SERVICES, (III) PROPERTY DAMAGE, OF ANY NATURE WHATSOEVER, RESULTING FROM YOUR ACCESS TO AND USE OF THE SERVICES OR TO ANY THIRD PARTY SITE, (IV) ANY UNAUTHORIZED ACCESS TO YOUR DEVICE OR USE OF OUR SECURE SERVERS OR ANY AND ALL PERSONAL INFORMATION OR FINANCIAL INFORMATION STORED THEREIN, (V) ANY INTERRUPTION OR CESSATION OF TRANSMISSION REGARDING THE SERVICES, (VI) ANY BUGS, VIRUSES, TROJAN HORSES, OR OTHER MALICIOUS CODE WHICH MAY BE TRANSMITTED TO OR THROUGH THE SERVICES BY ANY THIRD PARTY, (VII) ANY LOSS OR DAMAGE OF ANY KIND INCURRED AS A RESULT OF THE USE OF ANY CONTENT POSTED, EMAILED, TRANSMITTED OR OTHERWISE MADE AVAILABLE VIA THE SERVICES.
+We will not collect any information or store any logs about your browsing activity, queries, data destinations, IP addresses or timestamps. We are based in a jurisdiction (Panama) which laws do not require us to retain any of such data. The only information we collect in connection to your use of the Network is the information listed in this Privacy Policy below.
+<p>
+Additionally, as we provide the Network by creating virtual tunnels through one or more connections to other users of the Network (i.e. the Nodes, as defined in the ToU) and by using their equipment and resources to route you to your destination, it is not technically possible for us monitor your activities in the Network.
+<p>
+In addition to our no-logs pledge this creates an additional layer of privacy for you.
+<p>
+Having said this we feel that it is our obligation to inform you that the Network cannot guarantee 100% privacy. We enter into binding legal agreements with our users who run the nodes in the Network to prevent them from logging and storing the traffic which passes their nodes, but we cannot promise they will not.
+<p>
+If the applicable law requires us to disclose your data, we will be forced to do so; however, as we collect and store just minimal data which does not allow to identify you (see below), the impact of such disclosure on your privacy will be minimal.
 
-WE DO NOT WARRANT, ENDORSE, GUARANTEE, OR ASSUME RESPONSIBILITY FOR ANY PRODUCT OR SERVICES ADVERTISED OR OFFERED BY A THIRD PARTY THROUGH THE SERVICES OR ANY HYPERLINKED WEBSITE OR FEATURED IN ANY BANNER OR OTHER ADVERTISING, AND WE WILL NOT BE A PARTY TO ANY TRANSACTION OR OTHER ENGAGEMENT WITH SUCH ADVERTISING OR IN ANY WAY BE RESPONSIBLE FOR MONITORING ANY TRANSACTION BETWEEN YOU AND THIRD-PARTY PROVIDERS OF PRODUCTS OR SERVICES. YOU ASSUME ALL RISK AS TO THE QUALITY, FUNCTION, AND PERFORMANCE OF THE SERVICES, AND TO ALL TRANSACTIONS YOU UNDERTAKE ON THROUGH THE SERVICES.
+<h5>B. ANONYMOUS DATA</h5>
 
-<h4>Indemnification</h4>
+To use the Network you need to create a public / private key pair. Your public key will be passed to us to register you with the Network. Note, that this public key will not include any of your personal data and you cannot be identified by it. 
+<p>
+When you use the Network we may collect minimal information on how the Network is used and whether the connection was successful. However, this information is anonymous and cannot identify you and we use it to develop and maintain the Network.
 
-BY USING THE SERVICES YOU FULLY UNDERSTAND AND AGREE THAT IS AN EXPERIMENTAL VERSION OF THE MYSTERIUM PLATFORM, AND THERE IS A RISK THAT THE NETWORK OPERATOR OR OTHER THIRD PARTIES NOT DIRECTLY AFFILIATED WITH THE NETWORK OPERATOR, MAY INTRODUCE WEAKNESSES OR BUGS INTO THE CORE INFRASTRUCTURAL ELEMENTS OF THE MYSTERIUM PLATFORM CAUSING THE SYSTEM TO LOSE CRYPTOCURRENCY STORED IN ONE OR MORE CLIENT ACCOUNTS OR OTHER ACCOUNTS OR LOSE SUMS OF OTHER VALUED TOKENS ISSUED ON THE MYSTERIUM PLATFORM, OR CAUSING TO SUFFER OTHER LOSSES, INCONVENIENCE, OR DAMAGE TO ITS USERS.
+<h5>C. CHANGES TO THE PRIVACY POLICY</h5>
 
-You hereby agree to indemnify, defend and hold us, our subsidiaries, parent corporation and affiliates, partners, sponsors and all of their respective officers, directors, owners, employees, agents, attorneys, licensors, representatives, licensees, and suppliers (collectively, "Parties"), harmless from and against any and all liabilities, losses, expenses, damages, and costs (including reasonable attorneys' fees), incurred by any of the Parties in connection with any claim arising out of your use of the Software or Services, any use or alleged use of your account, username, or your password by any person, whether or not authorized by you, your violation or breach of these T&C or your violation of the rights of any other person or entity.
+We may update our Privacy Policy from time to time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on our website, or by electronic or conventional mail, or by any other means by which you obtain notice thereof. Any use of the Network after such notice shall be deemed to constitute acceptance of such changes, modifications or additions. 
 
-<h4>Term and Termination</h4>
+<h5>D. CONTACT US</h5>
 
-These T&C become effective upon the installation of the Software until terminated by either you or us (the "Term"). You may terminate your relationship with us at any time by completely uninstalling the Software. In the case you fail to comply with these T&C or any other agreement you have concluded with us, this will terminate your Software license and this agreement. Upon termination of this agreement the Software license granted to you shall automatically expire and you shall discontinue all further use of the Software and Services.
+ If you have any questions about this Privacy Policy, please contact us by email: support@netsys.technology
 
-We have the right to take any of the following actions in our sole discretion at any time without any prior notice to you: (i) restrict, deactivate, suspend, or terminate your access to the Services, including deleting your accounts and all related information and files contained in your account; (ii) refuse, move, or remove any material that is available on or through the Services; (iii) establish additional general practices and limits concerning use of the Services.
-
-We may take any of the above actions for any reason, as determined by us in our sole discretion, including, but not be limited to, (a) your breach or violation of these T&C, (b) requests by law enforcement authority or other governmental agency, (c) a request by you, (d) discontinuance or material modification to the Services (or any part thereof), and (e) unexpected technical or security issues or problems.
-
-You agree that we will not be liable to you or any third party for taking any of these actions.
-
-<h4>Miscellaneous</h4>
-
-The Software is intended for use only in compliance with applicable laws and you undertake to use it in accordance with all such applicable laws. Without derogating from the foregoing and from any other terms herein, you agree to comply with all applicable export laws and restrictions and regulations and agree that you will not export, or allow the export or re-export of the Software in violation of any such restrictions, laws or regulations.
-By logging in to Mysterium and using the Services, you agree to the T&C, including all other policies incorporated by reference.
-
-These T&C and the relationship between you and Network Operator shall be governed by and construed in accordance with law of Panama. You agree that any legal action arising out of or relating to these T&C, Software or your use of, or inability to use, the Services shall be filed exclusively in the competent courts of Panama.
-
-You agree that these T&C and our rights hereunder may be assigned, in whole or in part, by us or our affiliate to any third party, at our sole discretion, including an assignment in connection with a merger, acquisition, reorganization or sale of substantially all of our assets, or otherwise, in whole or in part. You may not delegate, sublicense or assign your rights under these T&C.
-
-That is the whole agreement. Network Operator may rewrite the T&C from time to time. The T&C become binding from the time it is updated on our website. It is your responsibility to check for the new provisions of T&C periodically.
-
-<h4>Contact us:</h4>
-
-For any questions you may contact us: <b>team@netsys.technology</b>
-
-Last update: <b>29-03-2018</b>
     """.trimIndent()
 }
