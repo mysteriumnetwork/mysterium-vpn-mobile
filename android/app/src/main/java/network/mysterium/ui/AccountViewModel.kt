@@ -47,10 +47,13 @@ class IdentityModel(
         val channelAddress: String,
         var status: IdentityRegistrationStatus
 ) {
+    // Identity is considered as registered if it's status RegisteredConsumer or InProgress since we support fast
+    // identity registration flow which means there is no need to wait for actual registration.
     val registered: Boolean
         get() {
-            return status == IdentityRegistrationStatus.REGISTERED_CONSUMER
+            return status == IdentityRegistrationStatus.REGISTERED_CONSUMER || status == IdentityRegistrationStatus.IN_PROGRESS
         }
+
 
     val registrationFailed: Boolean
         get() {
@@ -113,7 +116,7 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
             )
             identity.value = identityResult
             bugReporter.setUserIdentifier(nodeIdentity.address)
-            Log.i(TAG, "Loaded identity ${nodeIdentity.address}, channel addr: ${nodeIdentity.channelAddress}")
+            Log.i(TAG, "Loaded identity ${nodeIdentity.address}, channel addr: ${nodeIdentity.channelAddress}, status: ${nodeIdentity.registrationStatus}")
 
             // Register identity if not registered or failed.
             if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
