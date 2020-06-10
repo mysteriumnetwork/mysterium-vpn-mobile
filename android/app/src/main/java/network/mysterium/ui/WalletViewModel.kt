@@ -73,7 +73,7 @@ class TokenModel(token: Long = 0) {
     }
 }
 
-class AccountViewModel(private val nodeRepository: NodeRepository, private val bugReporter: BugReporter) : ViewModel() {
+class WalletViewModel(private val nodeRepository: NodeRepository, private val bugReporter: BugReporter) : ViewModel() {
     val balance = MutableLiveData<BalanceModel>()
     val identity = MutableLiveData<IdentityModel>()
 
@@ -166,6 +166,6 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
     }
 
     companion object {
-        const val TAG = "AccountViewModel"
+        const val TAG = "WalletViewModel"
     }
 }

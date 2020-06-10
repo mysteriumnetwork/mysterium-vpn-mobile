@@ -41,7 +41,7 @@ import network.mysterium.vpn.R
 class MainVpnFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var proposalsViewModel: ProposalsViewModel
-    private lateinit var accountViewModel: AccountViewModel
+    private lateinit var walletViewModel: WalletViewModel
 
     private var job: Job? = null
     private lateinit var connStatusLabel: TextView
@@ -70,7 +70,7 @@ class MainVpnFragment : Fragment() {
         val appContainer = AppContainer.from(activity)
         sharedViewModel = appContainer.sharedViewModel
         proposalsViewModel = appContainer.proposalsViewModel
-        accountViewModel = appContainer.accountViewModel
+        walletViewModel = appContainer.walletViewModel
         deferredMysteriumCoreService = appContainer.deferredMysteriumCoreService
 
         val root = inflater.inflate(R.layout.fragment_main_vpn, container, false)
@@ -127,7 +127,7 @@ class MainVpnFragment : Fragment() {
 
         sharedViewModel.location.observe(this, Observer { updateLocation(it) })
 
-        accountViewModel.balance.observe(this, Observer { updateBalance(it) })
+        walletViewModel.balance.observe(this, Observer { updateBalance(it) })
 
         onBackPress { emulateHomePress() }
 
@@ -227,13 +227,13 @@ class MainVpnFragment : Fragment() {
             return
         }
 
-        if (!accountViewModel.isIdentityRegistered()) {
+        if (!walletViewModel.isIdentityRegistered()) {
             navigateTo(root, Screen.ACCOUNT)
             return
         }
 
         if (sharedViewModel.canConnect()) {
-            connect(root.context, accountViewModel.identity.value!!.address)
+            connect(root.context, walletViewModel.identity.value!!.address)
             return
         }
 

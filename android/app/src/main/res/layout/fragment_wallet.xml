@@ -10,11 +10,11 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/account_toolbar"
+            android:id="@+id/wallet_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-            app:title="Account"
+            app:title="@string/wallet_title"
             app:titleTextColor="@color/ColorWhite" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,14 +28,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/account_identity_registration_layout"
+            android:id="@+id/wallet_identity_registration_layout"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/account_identity_registration_layout_card"
+                android:id="@+id/wallet_identity_registration_layout_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp">
@@ -49,7 +49,7 @@
                         android:id="@+id/account_identity_registration_card_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Please wait"
+                        android:text="@string/wallet_registration_please_wait"
                         android:textStyle="bold"
                         android:textSize="16dp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Please wait while your account blockchain identity registration is in progress. It could take up to a few minutes."
+                        android:text="@string/wallet_identity_registration_progress"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/account_identity_registration_card_title" />
 
@@ -79,7 +79,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/account_identity_registration_layout_retry_card"
+                android:id="@+id/wallet_identity_registration_layout_retry_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
@@ -94,7 +94,7 @@
                         android:id="@+id/account_identity_registration_retry_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Registration failed"
+                        android:text="@string/wallet_registration_failed"
                         android:textStyle="bold"
                         android:textSize="16dp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -105,17 +105,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Something went wrong while registering your identity. Please try again."
+                        android:text="@string/wallet_registration_try_again"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/account_identity_registration_retry_title" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/account_identity_registration_retry_button"
+                        android:id="@+id/wallet_identity_registration_retry_button"
                         style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="RETRY"
+                        android:text="@string/wallet_registration_retry"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/account_identity_registration_retry_help_text" />
 
@@ -131,10 +131,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/account_identity_registration_layout">
+            app:layout_constraintTop_toBottomOf="@id/wallet_identity_registration_layout">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/account_balance_card"
+                android:id="@+id/wallet_balance_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
@@ -156,7 +156,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/account_balance_text"
+                        android:id="@+id/wallet_balance_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -171,19 +171,79 @@
                         android:text="MYSTT is a test token which you get for free while we are in the Testnet environment."
                         android:layout_marginTop="10dp"
                         android:textColor="@color/ColorSecondary"
-                        app:layout_constraintTop_toBottomOf="@id/account_balance_text"
+                        app:layout_constraintTop_toBottomOf="@id/wallet_balance_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/wallet_topup_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/wallet_balance_card">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/wallet_topup_card_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wallet_topup_title"
+                        android:textStyle="bold"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/wallet_channel_address"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:textSize="20dp"-->
+<!--                        android:enabled="false"-->
+<!--                        android:gravity="top"-->
+<!--                        android:text="0 MYSTT"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/wallet_topup_card_title" />-->
+
+
+                    <TextView
+                        android:id="@+id/wallet_topup_hint"
+                        android:text="@string/wallet_topup_hint"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/ColorSecondary"
+                        app:layout_constraintTop_toBottomOf="@id/wallet_topup_card_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                    <TextView
+                        android:id="@+id/wallet_identity_channel_address_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:clickable="true"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:maxLines="1"
+                        android:text="0x..."
+                        app:layout_constraintTop_toBottomOf="@id/wallet_topup_hint" />
+
+
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/account_topup_button"
+                        android:id="@+id/wallet_topup_button"
                         style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="TOP UP"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/account_balance_hint" />
+                        app:layout_constraintTop_toBottomOf="@+id/wallet_identity_channel_address_text" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -194,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="5dp"
-                app:layout_constraintTop_toBottomOf="@id/account_balance_card">
+                app:layout_constraintTop_toBottomOf="@id/wallet_topup_card">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -212,7 +272,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/account_identity_text"
+                        android:id="@+id/wallet_identity_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -228,39 +288,7 @@
                         android:text="Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there."
                         android:layout_marginTop="10dp"
                         android:textColor="@color/ColorSecondary"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/account_identity_channel_address_text_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="Channel Address"
-                        android:textStyle="bold"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_hint" />
-
-                    <TextView
-                        android:id="@+id/account_identity_channel_address_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:text="0x..."
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_channel_address_text_label" />
-
-                    <TextView
-                        android:id="@+id/account_identity_channel_address_hint"
-                        android:text="Channel is your Top Up address."
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/ColorSecondary"
-                        app:layout_constraintTop_toBottomOf="@id/account_identity_channel_address_text"
+                        app:layout_constraintTop_toBottomOf="@id/wallet_identity_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 

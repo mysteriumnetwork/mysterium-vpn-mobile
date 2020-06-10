@@ -36,7 +36,7 @@ class AppContainer {
     lateinit var sharedViewModel: SharedViewModel
     lateinit var proposalsViewModel: ProposalsViewModel
     lateinit var termsViewModel: TermsViewModel
-    lateinit var accountViewModel: AccountViewModel
+    lateinit var walletViewModel: WalletViewModel
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
@@ -59,8 +59,8 @@ class AppContainer {
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
         appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
-        accountViewModel = AccountViewModel(nodeRepository, bugReporter)
-        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, accountViewModel)
+        walletViewModel = WalletViewModel(nodeRepository, bugReporter)
+        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
     }

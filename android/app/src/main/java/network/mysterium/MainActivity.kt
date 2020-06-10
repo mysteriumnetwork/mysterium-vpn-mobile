@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
 
         // Load account data.
         Log.i(TAG, "Loading account data")
-        val p3 = CoroutineScope(Dispatchers.Main).async { appContainer.accountViewModel.load() }
+        val p3 = CoroutineScope(Dispatchers.Main).async { appContainer.walletViewModel.load() }
 
         awaitAll(p1, p2, p3)
     }
