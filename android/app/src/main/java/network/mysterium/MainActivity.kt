@@ -19,10 +19,7 @@ package network.mysterium
 
 import android.app.Activity
 import android.app.NotificationManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
@@ -80,7 +77,8 @@ class MainActivity : AppCompatActivity() {
                 deferredNode,
                 deferredMysteriumCoreService,
                 drawerLayout,
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
+                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         )
 
         // Setup notifications.

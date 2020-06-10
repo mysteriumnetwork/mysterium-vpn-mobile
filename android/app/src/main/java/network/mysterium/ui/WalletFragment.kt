@@ -17,6 +17,7 @@
 
 package network.mysterium.ui
 
+import android.content.ClipData
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,12 +33,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
-import network.mysterium.vpn.R
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import android.widget.ImageView
+import network.mysterium.vpn.R
+import java.lang.Exception
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
+
 
 class WalletFragment : Fragment() {
     private lateinit var walletViewModel: WalletViewModel
+    private lateinit var clipboardManager: ClipboardManager
     private lateinit var toolbar: Toolbar
     private lateinit var walletBalanceCard: MaterialCardView
     private lateinit var walletBalanceText: TextView
@@ -47,13 +57,17 @@ class WalletFragment : Fragment() {
     private lateinit var walletIdentityRegistrationLayoutRetryCard: MaterialCardView
     private lateinit var walletIdentityChannelAddressText: TextView
     private lateinit var walletTopUpButton: Button
+    private lateinit var walletCopyTopupAddressButton: Button
     private lateinit var walletIdentityRegistrationRetryButton: Button
+    private lateinit var walletQRCodeView: ImageView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val root = inflater.inflate(R.layout.fragment_wallet, container, false)
-        walletViewModel = AppContainer.from(activity).walletViewModel
+        val appContainer = AppContainer.from(activity)
+        walletViewModel = appContainer.walletViewModel
+        clipboardManager = appContainer.clipboardManager
 
         // Initialize UI elements.
         toolbar = root.findViewById(R.id.wallet_toolbar)
@@ -64,8 +78,10 @@ class WalletFragment : Fragment() {
         walletIdentityRegistrationLayoutCard = root.findViewById(R.id.wallet_identity_registration_layout_card)
         walletIdentityRegistrationLayoutRetryCard = root.findViewById(R.id.wallet_identity_registration_layout_retry_card)
         walletIdentityChannelAddressText = root.findViewById(R.id.wallet_identity_channel_address_text)
-        walletTopUpButton = root.findViewById(R.id.wallet_topup_button)
+        walletTopUpButton = root.findViewById(R.id.wallet_topup_free_tokens)
+        walletCopyTopupAddressButton = root.findViewById(R.id.wallet_identity_channel_address_copy_btn)
         walletIdentityRegistrationRetryButton = root.findViewById(R.id.wallet_identity_registration_retry_button)
+        walletQRCodeView = root.findViewById(R.id.wallet_qr_code_view)
 
         // Handle back press.
         toolbar.setNavigationOnClickListener {
@@ -81,10 +97,11 @@ class WalletFragment : Fragment() {
         })
 
         walletViewModel.balance.observe(this, Observer {
-            walletBalanceText.text = it.balance.displayValue
+            handleBalanceChange(it)
         })
 
         walletTopUpButton.setOnClickListener { handleTopUp(root) }
+        walletCopyTopupAddressButton.setOnClickListener { handleTopupAddressCopy(root) }
 
         walletIdentityChannelAddressText.setOnClickListener { openKovanChannelDetails() }
         walletIdentityText.setOnClickListener { openKovanIdentityDetails() }
@@ -92,6 +109,18 @@ class WalletFragment : Fragment() {
         walletIdentityRegistrationRetryButton.setOnClickListener { handleRegistrationRetry() }
 
         return root
+    }
+
+    private fun handleBalanceChange(balanceModel: BalanceModel) {
+        walletBalanceText.text = balanceModel.balance.displayValue
+        walletTopUpButton.isVisible = balanceModel.balance.value <= 1
+    }
+
+    private fun handleTopupAddressCopy(root: View) {
+        val channelAddress = walletViewModel.identity.value!!.channelAddress
+        val clip = ClipData.newPlainText("channel address", channelAddress)
+        clipboardManager.primaryClip = clip
+        showMessage(root.context, getString(R.string.wallet_topup_address_copied))
     }
 
     private fun handleRegistrationRetry() {
@@ -121,6 +150,7 @@ class WalletFragment : Fragment() {
         if (identity.registered) {
             walletIdentityRegistrationLayout.visibility = View.GONE
             walletBalanceCard.visibility = View.VISIBLE
+            generateChannelQR(identity.channelAddress)
         } else {
             walletIdentityRegistrationLayout.visibility = View.VISIBLE
             walletIdentityRegistrationLayoutCard.visibility = View.VISIBLE
@@ -142,5 +172,18 @@ class WalletFragment : Fragment() {
             showMessage(root.context, "Balance will be updated in a few moments.")
             walletTopUpButton.isEnabled = true
         }
+    }
+
+    private fun generateChannelQR(channelAddress: String) {
+        try {
+            val qr = walletViewModel.generateChannelQRCode(channelAddress)
+            walletQRCodeView.setImageBitmap(qr)
+        } catch (e: Exception) {
+            Log.e(TAG, "could not generate QR code", e)
+        }
+    }
+
+    companion object {
+        const val TAG = "WalletFragment"
     }
 }

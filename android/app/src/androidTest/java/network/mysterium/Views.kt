@@ -52,7 +52,7 @@ object Views {
     val topUpButton: ViewInteraction
         get() {
             return onViewReady(
-                    Matchers.allOf(ViewMatchers.withId(R.id.wallet_topup_button),
+                    Matchers.allOf(ViewMatchers.withId(R.id.wallet_topup_free_tokens),
                             childAtPosition(
                                     childAtPosition(
                                             ViewMatchers.withId(R.id.wallet_balance_card),

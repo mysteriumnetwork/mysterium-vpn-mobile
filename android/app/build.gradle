@@ -153,6 +153,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     implementation 'androidx.room:room-runtime:2.2.2'
     implementation 'androidx.room:room-ktx:2.2.2'
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     kapt 'androidx.room:room-compiler:2.2.2'
 
     testImplementation 'junit:junit:4.12'

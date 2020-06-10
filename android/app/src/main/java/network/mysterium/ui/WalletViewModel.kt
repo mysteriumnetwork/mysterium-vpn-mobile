@@ -17,10 +17,13 @@
 
 package network.mysterium.ui
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -80,7 +83,9 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
     suspend fun load() {
         initListeners()
         loadIdentity {
-            CoroutineScope(Dispatchers.Main).launch { loadBalance() }
+            CoroutineScope(Dispatchers.Main).launch {
+                loadBalance()
+            }
         }
     }
 
@@ -131,6 +136,12 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
         } finally {
             done()
         }
+    }
+
+    fun generateChannelQRCode(channelAddress: String): Bitmap {
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap = barcodeEncoder.encodeBitmap(channelAddress, BarcodeFormat.QR_CODE, 500, 500)
+        return bitmap
     }
 
     private suspend fun loadBalance() {

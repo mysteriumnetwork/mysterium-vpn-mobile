@@ -45,4 +45,8 @@
     <string name="wallet_registration_retry">RETRY</string>
     <string name="wallet_topup_title">Topup</string>
     <string name="wallet_topup_hint">Topup your wallet by sending MYSTT to the address bellow.</string>
+    <string name="wallet_topup_free_tokens">GET FREE TOKENS</string>
+    <string name="wallet_identity_channel_address_copy">COPY TOPUP ADDRESS</string>
+    <string name="wallet_topup_address_copied">Copied</string>
+    <string name="wallet_topup_qr_hint">You can also scan QR code which contains your topup address.</string>
 </resources>

@@ -18,6 +18,7 @@
 package network.mysterium
 
 import android.app.NotificationManager
+import android.content.ClipboardManager
 import android.content.Context
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -41,13 +42,15 @@ class AppContainer {
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
     lateinit var appNotificationManager: AppNotificationManager
+    lateinit var clipboardManager: ClipboardManager
 
     fun init(
             ctx: Context,
             deferredNode: DeferredNode,
             mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
             appDrawerLayout: DrawerLayout,
-            notificationManager: NotificationManager
+            notificationManager: NotificationManager,
+            clipboardManager: ClipboardManager
     ) {
         appDatabase = Room.databaseBuilder(
                 ctx,
@@ -63,6 +66,7 @@ class AppContainer {
         sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
+        this.clipboardManager = clipboardManager
     }
 
     companion object {
