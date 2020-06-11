@@ -26,13 +26,15 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
+import kotlinx.android.synthetic.main.proposal_list_item.*
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
+import network.mysterium.ui.list.BaseItem
+import network.mysterium.ui.list.BaseListAdapter
+import network.mysterium.ui.list.BaseViewHolder
 import network.mysterium.vpn.R
 
 class ProposalsFragment : Fragment() {
@@ -40,13 +42,13 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsViewModel: ProposalsViewModel
     private lateinit var appContainer: AppContainer
 
+    private lateinit var proposalsListRecyclerView: RecyclerView
     private lateinit var proposalsCloseButton: TextView
     private lateinit var proposalsSearchInput: EditText
     private lateinit var proposalsFiltersAllButton: TextView
     private lateinit var proposalsFiltersFavoriteButton: TextView
     private lateinit var proposalsFiltersSort: Spinner
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
-    private lateinit var proposalsList: RecyclerView
     private lateinit var proposalsProgressBar: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,13 +59,13 @@ class ProposalsFragment : Fragment() {
         proposalsViewModel = appContainer.proposalsViewModel
 
         // Initialize UI elements.
+        proposalsListRecyclerView = root.findViewById(R.id.proposals_list)
         proposalsCloseButton = root.findViewById(R.id.proposals_close_button)
         proposalsSearchInput = root.findViewById(R.id.proposals_search_input)
         proposalsFiltersAllButton = root.findViewById(R.id.proposals_filters_all_button)
         proposalsFiltersFavoriteButton = root.findViewById(R.id.proposals_filters_favorite_button)
         proposalsFiltersSort = root.findViewById(R.id.proposals_filters_sort)
         proposalsSwipeRefresh = root.findViewById(R.id.proposals_list_swipe_refresh)
-        proposalsList = root.findViewById(R.id.proposals_list)
         proposalsProgressBar = root.findViewById(R.id.proposals_progress_bar)
 
         proposalsCloseButton.setOnClickListener { handleClose(root) }
@@ -122,11 +124,17 @@ class ProposalsFragment : Fragment() {
     }
 
     private fun initProposalsList(root: View) {
-        proposalsList.layoutManager = LinearLayoutManager(root.context)
-        val items = ArrayList<ProposalViewItem>()
-        val proposalsListAdapter = ProposalsListAdapter(items) { handleSelectedProposal(root, it) }
-        proposalsList.adapter = proposalsListAdapter
-        proposalsList.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
+
+        val listAdapter = BaseListAdapter{ selectedproposal ->
+            handleSelectedProposal(root, (selectedproposal as? ProposalViewItem?))
+        }
+        proposalsListRecyclerView.adapter = listAdapter
+
+        // proposalsListRecyclerView.layoutManager = LinearLayoutManager(root.context)
+        // val items = ArrayList<ProposalViewItem>()
+        // val proposalsListAdapter = ProposalsListAdapter(items) { handleSelectedProposal(root, it) }
+        // proposalsListRecyclerView.adapter = proposalsListAdapter
+        // proposalsListRecyclerView.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
 
         proposalsSwipeRefresh.setOnRefreshListener {
             proposalsViewModel.refreshProposals {
@@ -136,12 +144,14 @@ class ProposalsFragment : Fragment() {
 
         // Subscribe to proposals changes.
         proposalsViewModel.getProposals().observe(this, Observer { newItems ->
-            items.clear()
-            items.addAll(newItems)
-            proposalsListAdapter.notifyDataSetChanged()
+            // items.clear()
+            // items.addAll(newItems)
+            // proposalsListAdapter.notifyDataSetChanged()
+            listAdapter.submitList(createProposalItemsWithGroups(newItems))
+            listAdapter.notifyDataSetChanged()
 
             // Hide progress bar once proposals are loaded.
-            proposalsList.visibility = View.VISIBLE
+            proposalsListRecyclerView.visibility = View.VISIBLE
             proposalsProgressBar.visibility = View.GONE
         })
 
@@ -157,10 +167,31 @@ class ProposalsFragment : Fragment() {
             }
 
             // If initial proposals failed to load during app init try to load them explicitly.
-            proposalsList.visibility = View.GONE
+            proposalsListRecyclerView.visibility = View.GONE
             proposalsProgressBar.visibility = View.VISIBLE
             proposalsViewModel.refreshProposals {}
         })
+    }
+
+    private fun createProposalItemsWithGroups(proposals: List<ProposalViewItem>): MutableList<BaseItem> {
+
+        // Wrap data in list items
+        val items = proposals.map { ProposalItem(it) }.sortedBy { it.item.countryName }
+
+        val itemsWithHeaders = mutableListOf<BaseItem>()
+
+        // Loop through the fruit list and add headers where we need them
+        // var currentHeader: String? = null
+        items.forEach { fruit ->
+//            fruit.name.firstOrNull()?.toString()?.let {
+//                if (it != currentHeader) {
+//                    fruitsWithAlphabetHeaders.add(HeaderItem(it))
+//                    currentHeader = it
+//                }
+//            }
+            itemsWithHeaders.add(fruit)
+        }
+        return itemsWithHeaders
     }
 
     private fun handleClose(root: View) {
@@ -168,7 +199,11 @@ class ProposalsFragment : Fragment() {
         navigateToMainVpnFragment(root)
     }
 
-    private fun handleSelectedProposal(root: View, proposal: ProposalViewItem) {
+    private fun handleSelectedProposal(root: View, proposal: ProposalViewItem?) {
+        if (proposal == null) {
+            return
+        }
+
         hideKeyboard(root)
         proposalsViewModel.selectProposal(proposal)
         navigateToMainVpnFragment(root)
@@ -182,6 +217,21 @@ class ProposalsFragment : Fragment() {
     private fun setFilterTabInactiveStyle(root: View, btn: TextView) {
         btn.setBackgroundColor(Color.TRANSPARENT)
         btn.setTextColor(ContextCompat.getColor(root.context, R.color.ColorMain))
+    }
+}
+
+data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
+
+    override val layoutId = R.layout.proposal_list_item
+
+    override val uniqueId = item.id
+
+    override fun bind(holder: BaseViewHolder) {
+        super.bind(holder)
+        holder.proposal_item_country_flag.setImageBitmap(item.countryFlagImage)
+        holder.proposal_item_country_name.text = item.countryName
+        holder.proposal_item_provider_id.text = item.providerID
+        holder.proposal_item_quality_level.setImageResource(item.qualityResID)
     }
 }
 

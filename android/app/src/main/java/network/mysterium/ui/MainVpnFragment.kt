@@ -202,7 +202,7 @@ class MainVpnFragment : Fragment() {
 
     private fun navigateToProposals(root: View) {
         if (sharedViewModel.canConnect()) {
-            navigateTo(root, Screen.PROPOSALS)
+            navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
         } else {
             showMessage(root.context, getString(R.string.disconnect_to_select_proposal))
         }

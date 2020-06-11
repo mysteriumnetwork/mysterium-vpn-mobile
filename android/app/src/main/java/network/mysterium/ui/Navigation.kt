@@ -12,6 +12,7 @@ enum class Screen {
     MAIN,
     FEEDBACK,
     PROPOSALS,
+    PROPOSALS_COUNTRY_FILTER_LIST,
     ACCOUNT,
 }
 
@@ -20,6 +21,7 @@ fun navigateTo(navController: NavController, destination: Screen) {
         Screen.MAIN -> R.id.action_go_to_vpn_screen
         Screen.FEEDBACK -> R.id.action_go_to_feedback_screen
         Screen.PROPOSALS -> R.id.action_go_to_proposals_screen
+        Screen.PROPOSALS_COUNTRY_FILTER_LIST -> R.id.action_go_to_proposals_country_filter_list_screen
         Screen.ACCOUNT -> R.id.action_go_to_account_screen
     }
     navController.navigate(to)

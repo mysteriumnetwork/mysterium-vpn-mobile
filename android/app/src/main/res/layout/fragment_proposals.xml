@@ -129,7 +129,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -147,7 +147,7 @@
             app:layout_constraintTop_toBottomOf="@id/proposals_filters_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_height="0dp"
             android:scrollbars="vertical"
             tools:listitem="@layout/proposal_list_item">

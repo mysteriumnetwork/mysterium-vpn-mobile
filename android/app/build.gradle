@@ -62,6 +62,10 @@ android {
         unitTests.includeAndroidResources = true
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     defaultConfig {
         applicationId "network.mysterium.vpn"
         minSdkVersion rootProject.ext.minSdkVersion
