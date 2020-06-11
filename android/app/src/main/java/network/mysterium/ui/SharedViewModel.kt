@@ -70,7 +70,7 @@ class SharedViewModel(
         private val nodeRepository: NodeRepository,
         private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         private val notificationManager: AppNotificationManager,
-        private val accountViewModel: AccountViewModel
+        private val walletViewModel: WalletViewModel
 ) : ViewModel() {
 
     val selectedProposal = MutableLiveData<ProposalViewItem>()
@@ -199,7 +199,7 @@ class SharedViewModel(
             val s = StatisticsModel.from(stats)
             statistics.value = StatisticsModel.from(stats)
 
-            if (isConnected() && accountViewModel.needToTopUp()) {
+            if (isConnected() && walletViewModel.needToTopUp()) {
                 notificationManager.showTopUpBalanceNotification()
             }
 

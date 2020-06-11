@@ -17,10 +17,13 @@
 
 package network.mysterium.ui
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -73,14 +76,16 @@ class TokenModel(token: Long = 0) {
     }
 }
 
-class AccountViewModel(private val nodeRepository: NodeRepository, private val bugReporter: BugReporter) : ViewModel() {
+class WalletViewModel(private val nodeRepository: NodeRepository, private val bugReporter: BugReporter) : ViewModel() {
     val balance = MutableLiveData<BalanceModel>()
     val identity = MutableLiveData<IdentityModel>()
 
     suspend fun load() {
         initListeners()
         loadIdentity {
-            CoroutineScope(Dispatchers.Main).launch { loadBalance() }
+            CoroutineScope(Dispatchers.Main).launch {
+                loadBalance()
+            }
         }
     }
 
@@ -133,6 +138,12 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
         }
     }
 
+    fun generateChannelQRCode(channelAddress: String): Bitmap {
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap = barcodeEncoder.encodeBitmap(channelAddress, BarcodeFormat.QR_CODE, 500, 500)
+        return bitmap
+    }
+
     private suspend fun loadBalance() {
         if (identity.value == null) {
             return
@@ -166,6 +177,6 @@ class AccountViewModel(private val nodeRepository: NodeRepository, private val b
     }
 
     companion object {
-        const val TAG = "AccountViewModel"
+        const val TAG = "WalletViewModel"
     }
 }

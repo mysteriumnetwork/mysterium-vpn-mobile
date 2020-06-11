@@ -52,10 +52,10 @@ object Views {
     val topUpButton: ViewInteraction
         get() {
             return onViewReady(
-                    Matchers.allOf(ViewMatchers.withId(R.id.account_topup_button),
+                    Matchers.allOf(ViewMatchers.withId(R.id.wallet_topup_free_tokens),
                             childAtPosition(
                                     childAtPosition(
-                                            ViewMatchers.withId(R.id.account_balance_card),
+                                            ViewMatchers.withId(R.id.wallet_balance_card),
                                             0),
                                     3),
                             ViewMatchers.isDisplayed()), 20, 5000)
@@ -65,7 +65,7 @@ object Views {
         get() {
             return onViewReady(
                     Matchers.allOf(childAtPosition(
-                            Matchers.allOf(ViewMatchers.withId(R.id.account_toolbar),
+                            Matchers.allOf(ViewMatchers.withId(R.id.wallet_toolbar),
                                     childAtPosition(
                                             ViewMatchers.withClassName(Matchers.`is`("com.google.android.material.appbar.AppBarLayout")),
                                             0)),

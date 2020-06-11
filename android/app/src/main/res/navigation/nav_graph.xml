@@ -28,9 +28,9 @@
 
     <fragment
         android:id="@+id/account_fragment"
-        android:name="network.mysterium.ui.AccountFragment"
+        android:name="network.mysterium.ui.WalletFragment"
         android:label="fragment_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_wallet" />
 
     <action android:id="@+id/action_go_to_vpn_screen"
         app:destination="@id/main_vpn_fragment"/>

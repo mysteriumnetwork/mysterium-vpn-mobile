@@ -18,6 +18,7 @@
 package network.mysterium
 
 import android.app.NotificationManager
+import android.content.ClipboardManager
 import android.content.Context
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -36,18 +37,20 @@ class AppContainer {
     lateinit var sharedViewModel: SharedViewModel
     lateinit var proposalsViewModel: ProposalsViewModel
     lateinit var termsViewModel: TermsViewModel
-    lateinit var accountViewModel: AccountViewModel
+    lateinit var walletViewModel: WalletViewModel
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     lateinit var drawerLayout: DrawerLayout
     lateinit var appNotificationManager: AppNotificationManager
+    lateinit var clipboardManager: ClipboardManager
 
     fun init(
             ctx: Context,
             deferredNode: DeferredNode,
             mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
             appDrawerLayout: DrawerLayout,
-            notificationManager: NotificationManager
+            notificationManager: NotificationManager,
+            clipboardManager: ClipboardManager
     ) {
         appDatabase = Room.databaseBuilder(
                 ctx,
@@ -59,10 +62,11 @@ class AppContainer {
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
         appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
-        accountViewModel = AccountViewModel(nodeRepository, bugReporter)
-        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, accountViewModel)
+        walletViewModel = WalletViewModel(nodeRepository, bugReporter)
+        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
+        this.clipboardManager = clipboardManager
     }
 
     companion object {
