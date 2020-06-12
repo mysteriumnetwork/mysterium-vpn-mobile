@@ -89,7 +89,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private var favoriteProposals: MutableMap<String, FavoriteProposal> = mutableMapOf()
     private var allProposals: List<ProposalViewItem> = listOf()
-    private val proposals = MutableLiveData<List<ProposalViewItem>>()
+    private val proposals = MutableLiveData<List<ProposalGroupViewItem>>()
     private val proposalsCounts = MutableLiveData<ProposalsCounts>()
 
     suspend fun load() {
@@ -97,7 +97,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         loadInitialProposals(false, favoriteProposals)
     }
 
-    fun getProposals(): LiveData<List<ProposalViewItem>> {
+    fun getProposals(): LiveData<List<ProposalGroupViewItem>> {
         return proposals
     }
 
@@ -141,8 +141,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
     }
 
-    fun selectProposal(item: ProposalViewItem) {
-        sharedViewModel.selectProposal(item)
+    fun selectProposal(proposalID: String) {
+        val proposal = allProposals.find { it.id == proposalID }
+        if (proposal != null) {
+            sharedViewModel.selectProposal(proposal)
+        }
     }
 
     fun toggleFavoriteProposal(proposalID: String, done: (updatedProposal: ProposalViewItem?) -> Unit) {
@@ -212,8 +215,8 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
     }
 
-    private fun filterAndSortProposals(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalViewItem> {
-        return allProposals.asSequence()
+    private fun filterAndSortProposals(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalGroupViewItem> {
+        val filteredProposals = allProposals.asSequence()
                 // Filter by service type.
                 .filter {
                     when (filter.serviceType) {
@@ -228,14 +231,19 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                         else -> it.countryName.toLowerCase().contains(filter.searchText) or it.providerID.contains(filter.searchText)
                     }
                 }
-                // Sort by country or quality.
-                .sortedWith(
-                        if (filter.sortBy == ProposalSortType.QUALITY)
-                            compareByDescending { it.qualityLevel }
-                        else
-                            compareBy { it.countryName }
-                )
+                // Sort by country asc.
+                .sortedWith(compareBy { it.countryName })
                 .toList()
+
+        val favorite = filteredProposals.filter { it.isFavorite }
+        val groups = mutableListOf<ProposalGroupViewItem>()
+        if (favorite.count() > 0) {
+            val favoriteGroup = ProposalGroupViewItem("Favorite (${favorite.count()})", favorite)
+            groups.add(favoriteGroup)
+        }
+        val allGroup = ProposalGroupViewItem("All (${filteredProposals.count()})", filteredProposals)
+        groups.add(allGroup)
+        return groups
     }
 
     companion object {

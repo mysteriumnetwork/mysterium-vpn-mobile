@@ -26,6 +26,8 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
@@ -126,16 +128,14 @@ class ProposalsFragment : Fragment() {
     private fun initProposalsList(root: View) {
 
         val listAdapter = BaseListAdapter{ selectedproposal ->
-            handleSelectedProposal(root, (selectedproposal as? ProposalViewItem?))
+            val item = selectedproposal as ProposalItem?
+            if (item != null) {
+                handleSelectedProposal(root, item.uniqueId)
+            }
         }
         proposalsListRecyclerView.adapter = listAdapter
-
-        // proposalsListRecyclerView.layoutManager = LinearLayoutManager(root.context)
-        // val items = ArrayList<ProposalViewItem>()
-        // val proposalsListAdapter = ProposalsListAdapter(items) { handleSelectedProposal(root, it) }
-        // proposalsListRecyclerView.adapter = proposalsListAdapter
-        // proposalsListRecyclerView.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
-
+        proposalsListRecyclerView.layoutManager = LinearLayoutManager(context)
+        proposalsListRecyclerView.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
         proposalsSwipeRefresh.setOnRefreshListener {
             proposalsViewModel.refreshProposals {
                 proposalsSwipeRefresh.isRefreshing = false
@@ -144,9 +144,6 @@ class ProposalsFragment : Fragment() {
 
         // Subscribe to proposals changes.
         proposalsViewModel.getProposals().observe(this, Observer { newItems ->
-            // items.clear()
-            // items.addAll(newItems)
-            // proposalsListAdapter.notifyDataSetChanged()
             listAdapter.submitList(createProposalItemsWithGroups(newItems))
             listAdapter.notifyDataSetChanged()
 
@@ -173,23 +170,13 @@ class ProposalsFragment : Fragment() {
         })
     }
 
-    private fun createProposalItemsWithGroups(proposals: List<ProposalViewItem>): MutableList<BaseItem> {
-
-        // Wrap data in list items
-        val items = proposals.map { ProposalItem(it) }.sortedBy { it.item.countryName }
-
+    private fun createProposalItemsWithGroups(groups: List<ProposalGroupViewItem>): MutableList<BaseItem> {
         val itemsWithHeaders = mutableListOf<BaseItem>()
-
-        // Loop through the fruit list and add headers where we need them
-        // var currentHeader: String? = null
-        items.forEach { fruit ->
-//            fruit.name.firstOrNull()?.toString()?.let {
-//                if (it != currentHeader) {
-//                    fruitsWithAlphabetHeaders.add(HeaderItem(it))
-//                    currentHeader = it
-//                }
-//            }
-            itemsWithHeaders.add(fruit)
+        groups.forEach { group ->
+            itemsWithHeaders.add(ProposalHeaderItem(group.title))
+            group.children.forEach { proposal ->
+                itemsWithHeaders.add(ProposalItem(proposal))
+            }
         }
         return itemsWithHeaders
     }
@@ -199,13 +186,9 @@ class ProposalsFragment : Fragment() {
         navigateToMainVpnFragment(root)
     }
 
-    private fun handleSelectedProposal(root: View, proposal: ProposalViewItem?) {
-        if (proposal == null) {
-            return
-        }
-
+    private fun handleSelectedProposal(root: View, proposalID: String) {
         hideKeyboard(root)
-        proposalsViewModel.selectProposal(proposal)
+        proposalsViewModel.selectProposal(proposalID)
         navigateToMainVpnFragment(root)
     }
 
@@ -228,57 +211,29 @@ data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
 
     override fun bind(holder: BaseViewHolder) {
         super.bind(holder)
-        holder.proposal_item_country_flag.setImageBitmap(item.countryFlagImage)
-        holder.proposal_item_country_name.text = item.countryName
-        holder.proposal_item_provider_id.text = item.providerID
-        holder.proposal_item_quality_level.setImageResource(item.qualityResID)
+
+        val countryFlag: RoundedImageView = holder.containerView.findViewById(R.id.proposal_item_country_flag)
+        val countryName: TextView = holder.containerView.findViewById(R.id.proposal_item_country_name)
+        val providerID: TextView = holder.containerView.findViewById(R.id.proposal_item_provider_id)
+        val qualityLevel: ImageView = holder.containerView.findViewById(R.id.proposal_item_quality_level)
+
+        countryFlag.setImageBitmap(item.countryFlagImage)
+        countryName.text = item.countryName
+        providerID.text = item.providerID
+        qualityLevel.setImageResource(item.qualityResID)
     }
 }
 
-class ProposalsListAdapter(private var list: List<ProposalViewItem>, private var onItemClickListener: (ProposalViewItem) -> Unit)
-    : RecyclerView.Adapter<ProposalsListAdapter.ProposalViewHolder>() {
+data class ProposalHeaderItem(val title: String) : BaseItem() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProposalViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return ProposalViewHolder(inflater, parent)
-    }
+    override val layoutId = R.layout.proposal_list_header_item
 
-    override fun onBindViewHolder(holder: ProposalViewHolder, position: Int) {
-        val item: ProposalViewItem = list[position]
-        holder.bind(item)
-        holder.itemView.setOnClickListener {
-            onItemClickListener(item)
-        }
-    }
+    override val uniqueId = title
 
-    override fun getItemCount(): Int = list.size
-
-    inner class ProposalViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-            RecyclerView.ViewHolder(inflater.inflate(R.layout.proposal_list_item, parent, false)) {
-
-        private var countryFlag: RoundedImageView? = null
-        private var countryName: TextView? = null
-        private var providerID: TextView? = null
-        private var serviceType: ImageView? = null
-        private var qualityLevel: ImageView? = null
-        private var favorite: ImageView? = null
-
-        init {
-            countryFlag = itemView.findViewById(R.id.proposal_item_country_flag)
-            countryName = itemView.findViewById(R.id.proposal_item_country_name)
-            providerID = itemView.findViewById(R.id.proposal_item_provider_id)
-            serviceType = itemView.findViewById(R.id.proposal_item_service_type)
-            qualityLevel = itemView.findViewById(R.id.proposal_item_quality_level)
-            favorite = itemView.findViewById(R.id.proposal_item_favorite)
-        }
-
-        fun bind(item: ProposalViewItem) {
-            countryFlag?.setImageBitmap(item.countryFlagImage)
-            countryName?.text = item.countryName
-            providerID?.text = item.providerID
-            serviceType?.setImageResource(item.serviceTypeResID)
-            qualityLevel?.setImageResource(item.qualityResID)
-            favorite?.setImageResource(item.isFavoriteResID)
-        }
+    override fun bind(holder: BaseViewHolder) {
+        super.bind(holder)
+        val headerText: TextView = holder.containerView.findViewById(R.id.proposal_item_header_text)
+        headerText.text = title
     }
 }
+

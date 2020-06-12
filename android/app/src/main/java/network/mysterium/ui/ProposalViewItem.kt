@@ -22,6 +22,11 @@ import network.mysterium.service.core.ProposalItem
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.vpn.R
 
+class ProposalGroupViewItem constructor(
+        val title: String,
+        val children: List<ProposalViewItem>
+)
+
 class ProposalViewItem constructor(
         val id: String,
         val providerID: String,

@@ -1,10 +1,14 @@
 package network.mysterium.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.ui.list.BaseItem
 import network.mysterium.ui.list.BaseListAdapter
@@ -14,36 +18,40 @@ import network.mysterium.vpn.R
 class ProposalsCountryFilterList : Fragment() {
 
     private lateinit var fruitListAdapter: BaseListAdapter
+    private lateinit var feedbackToolbar: Toolbar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_proposals_country_filter_list, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(root, savedInstanceState)
 
-        // val root = inflater.inflate(R.layout.fragment_proposals, container, false)
+        feedbackToolbar = root.findViewById(R.id.proposals_country_filter_toolbar)
+        feedbackToolbar.setNavigationOnClickListener {
+            hideKeyboard(root)
+            navigateTo(root, Screen.PROPOSALS)
+        }
 
-        // Some example data to play with
+        initList(root)
+
+        onBackPress {
+            navigateTo(root, Screen.PROPOSALS)
+        }
+    }
+
+    private fun initList(root: View) {
         val fruits = mutableListOf("Apple", "Banana", "Cherry", "Boysenberry")
-
-        // Organise the fruit and add headers
         val fruitsWithAlphabetHeaders = createAlphabetizedFruit(fruits)
-
-        // OMG this adapter can be used for anything without even touching it!
         fruitListAdapter = BaseListAdapter { fruitClicked ->
-
-            // And removing items when we click them has a cool animation!
             fruits.remove((fruitClicked as? FruitItem?)?.name)
             fruitListAdapter.submitList(createAlphabetizedFruit(fruits))
         }
 
-        val proposals_country_filter_list: RecyclerView = view.findViewById(R.id.proposals_country_filter_list)
-        proposals_country_filter_list.adapter = fruitListAdapter
-
-        // Now we have the list organised we can display it in one line!
+        val proposalsCountryFilterList: RecyclerView = root.findViewById(R.id.proposals_country_filter_list)
+        proposalsCountryFilterList.adapter = fruitListAdapter
+        proposalsCountryFilterList.layoutManager = LinearLayoutManager(context)
         fruitListAdapter.submitList(fruitsWithAlphabetHeaders)
     }
 
@@ -76,8 +84,11 @@ data class HeaderItem(val letter: String) : BaseItem() {
     override val uniqueId = letter
 
     override fun bind(holder: BaseViewHolder) {
-        holder.containerView.findViewById<>()
-        holder.text_header.text = letter
+        Log.i("HEADERITEM", "${letter} bind")
+        super.bind(holder)
+        val text_header: TextView = holder.containerView.findViewById(R.id.text_header)
+        text_header.text = letter
+        // holder.text_header.text = letter
     }
 }
 
@@ -88,7 +99,9 @@ data class FruitItem(val name: String) : BaseItem() {
     override val uniqueId = name
 
     override fun bind(holder: BaseViewHolder) {
+        Log.i("FruitItem", "${name} bind")
         super.bind(holder)
-        holder.text_fruit_name.text = name
+        val text_header: TextView = holder.containerView.findViewById(R.id.text_fruit_name)
+        text_header.text = name
     }
 }

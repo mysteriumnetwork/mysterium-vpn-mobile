@@ -6,6 +6,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/proposals_country_filter_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            app:title="@string/proposals_country_title"
+            app:titleTextColor="@color/ColorWhite" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/proposals_country_filter_list"
         android:layout_width="match_parent"

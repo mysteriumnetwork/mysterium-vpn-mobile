@@ -49,4 +49,5 @@
     <string name="wallet_identity_channel_address_copy">COPY TOPUP ADDRESS</string>
     <string name="wallet_topup_address_copied">Copied</string>
     <string name="wallet_topup_qr_hint">You can also scan QR code which contains your topup address.</string>
+    <string name="proposals_country_title">Country filter</string>
 </resources>
