@@ -47,11 +47,9 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsListRecyclerView: RecyclerView
     private lateinit var proposalsCloseButton: TextView
     private lateinit var proposalsSearchInput: EditText
-    private lateinit var proposalsFiltersAllButton: TextView
-    private lateinit var proposalsFiltersFavoriteButton: TextView
-    private lateinit var proposalsFiltersSort: Spinner
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
     private lateinit var proposalsProgressBar: ProgressBar
+    private lateinit var proposalsFilterCountry: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -64,19 +62,21 @@ class ProposalsFragment : Fragment() {
         proposalsListRecyclerView = root.findViewById(R.id.proposals_list)
         proposalsCloseButton = root.findViewById(R.id.proposals_close_button)
         proposalsSearchInput = root.findViewById(R.id.proposals_search_input)
-        proposalsFiltersAllButton = root.findViewById(R.id.proposals_filters_all_button)
-        proposalsFiltersFavoriteButton = root.findViewById(R.id.proposals_filters_favorite_button)
-        proposalsFiltersSort = root.findViewById(R.id.proposals_filters_sort)
         proposalsSwipeRefresh = root.findViewById(R.id.proposals_list_swipe_refresh)
         proposalsProgressBar = root.findViewById(R.id.proposals_progress_bar)
+        proposalsFilterCountry = root.findViewById(R.id.proposals_filter_country)
 
-        proposalsCloseButton.setOnClickListener { handleClose(root) }
+        proposalsFilterCountry.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
+        }
+
 
         initProposalsList(root)
-        initProposalsSortDropdown(root)
-        initProposalsServiceTypeFilter(root)
+//        initProposalsSortDropdown(root)
+//        initProposalsServiceTypeFilter(root)
         initProposalsSearchFilter()
 
+        proposalsCloseButton.setOnClickListener { handleClose(root) }
         onBackPress {
             navigateTo(root, Screen.MAIN)
         }
@@ -96,34 +96,27 @@ class ProposalsFragment : Fragment() {
         proposalsSearchInput.onChange { proposalsViewModel.filterBySearchText(it) }
     }
 
-    private fun initProposalsServiceTypeFilter(root: View) {
-        // Set current active filter.
-        val activeTabButton = when (proposalsViewModel.filter.serviceType) {
-            ServiceTypeFilter.ALL -> proposalsFiltersAllButton
-            ServiceTypeFilter.FAVORITE -> proposalsFiltersFavoriteButton
-        }
-        setFilterTabActiveStyle(root, activeTabButton)
+//    private fun initProposalsServiceTypeFilter(root: View) {
+//        // Set current active filter.
+//        val activeTabButton = when (proposalsViewModel.filter.serviceType) {
+//            ServiceTypeFilter.ALL -> proposalsFiltersAllButton
+//            ServiceTypeFilter.FAVORITE -> proposalsFiltersFavoriteButton
+//        }
+//        setFilterTabActiveStyle(root, activeTabButton)
+//
+//        proposalsFiltersAllButton.setOnClickListener {
+//            proposalsViewModel.filterByServiceType(ServiceTypeFilter.ALL)
+//            setFilterTabActiveStyle(root, proposalsFiltersAllButton)
+//            setFilterTabInactiveStyle(root, proposalsFiltersFavoriteButton)
+//        }
+//
+//        proposalsFiltersFavoriteButton.setOnClickListener {
+//            proposalsViewModel.filterByServiceType(ServiceTypeFilter.FAVORITE)
+//            setFilterTabActiveStyle(root, proposalsFiltersFavoriteButton)
+//            setFilterTabInactiveStyle(root, proposalsFiltersAllButton)
+//        }
+//    }
 
-        proposalsFiltersAllButton.setOnClickListener {
-            proposalsViewModel.filterByServiceType(ServiceTypeFilter.ALL)
-            setFilterTabActiveStyle(root, proposalsFiltersAllButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersFavoriteButton)
-        }
-
-        proposalsFiltersFavoriteButton.setOnClickListener {
-            proposalsViewModel.filterByServiceType(ServiceTypeFilter.FAVORITE)
-            setFilterTabActiveStyle(root, proposalsFiltersFavoriteButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersAllButton)
-        }
-    }
-
-    private fun initProposalsSortDropdown(root: View) {
-        ArrayAdapter.createFromResource(root.context, R.array.proposals_sort_types, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            proposalsFiltersSort.adapter = adapter
-            proposalsFiltersSort.onItemSelected { item -> proposalsViewModel.sortBy(item) }
-        }
-    }
 
     private fun initProposalsList(root: View) {
 
@@ -152,11 +145,6 @@ class ProposalsFragment : Fragment() {
             proposalsProgressBar.visibility = View.GONE
         })
 
-        // Subscribe to proposals counters.
-        proposalsViewModel.getProposalsCounts().observe(this, Observer { counts ->
-            proposalsFiltersAllButton.text = "All (${counts.all})"
-            proposalsFiltersFavoriteButton.text = "Favorite (${counts.favorite})"
-        })
 
         proposalsViewModel.initialProposalsLoaded.observe(this, Observer {loaded ->
             if (loaded) {

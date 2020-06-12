@@ -44,4 +44,13 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="ProposalFilterTitle">
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="ProposalFilterValue">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">#999999</item>
+    </style>
+
 </resources>

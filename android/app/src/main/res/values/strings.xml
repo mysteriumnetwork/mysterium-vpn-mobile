@@ -16,7 +16,7 @@
     <string name="vpn_stats_duration">DURATION</string>
     <string name="vpn_select_proposal">Select proposal...</string>
     <string name="vpn_ip_updating_label">IP: Updating</string>
-    <string name="proposals_search_hint">Search proposals</string>
+    <string name="proposals_search_hint">Search proposal or country</string>
     <string name="terms_accept">Accept</string>
     <string name="proposals_close">CLOSE</string>
     <string name="feedback_submit_success">Thanks! Your feedback submitted successfully.</string>
