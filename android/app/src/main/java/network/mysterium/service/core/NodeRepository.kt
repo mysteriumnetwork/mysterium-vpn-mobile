@@ -17,8 +17,12 @@ class ProposalItem(
         val countryCode: String,
 
         @Json(name = "qualityLevel")
-        val qualityLevel: Int
-)
+        val qualityLevel: Int,
+
+        @Json(name = "nodeType")
+        val nodeType: String = ""
+) {
+}
 
 class ProposalsResponse(
         @Json(name = "proposals")

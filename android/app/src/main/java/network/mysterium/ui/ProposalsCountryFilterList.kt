@@ -1,15 +1,18 @@
 package network.mysterium.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.makeramen.roundedimageview.RoundedImageView
+import network.mysterium.MainApplication
 import network.mysterium.ui.list.BaseItem
 import network.mysterium.ui.list.BaseListAdapter
 import network.mysterium.ui.list.BaseViewHolder
@@ -17,8 +20,10 @@ import network.mysterium.vpn.R
 
 class ProposalsCountryFilterList : Fragment() {
 
-    private lateinit var fruitListAdapter: BaseListAdapter
+    private lateinit var listAdapter: BaseListAdapter
     private lateinit var feedbackToolbar: Toolbar
+    private lateinit var proposalsViewModel: ProposalsViewModel
+    private lateinit var proposalsCountryFilterResetBtn: MaterialButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -28,9 +33,19 @@ class ProposalsCountryFilterList : Fragment() {
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         super.onViewCreated(root, savedInstanceState)
 
+        val appContainer = (activity!!.application as MainApplication).appContainer
+        proposalsViewModel = appContainer.proposalsViewModel
+
         feedbackToolbar = root.findViewById(R.id.proposals_country_filter_toolbar)
+        proposalsCountryFilterResetBtn = root.findViewById(R.id.proposals_country_filter_reset_btn)
+
         feedbackToolbar.setNavigationOnClickListener {
             hideKeyboard(root)
+            navigateTo(root, Screen.PROPOSALS)
+        }
+
+        proposalsCountryFilterResetBtn.setOnClickListener {
+            proposalsViewModel.applyCountryFilter(ProposalFilterCountry("", "", null))
             navigateTo(root, Screen.PROPOSALS)
         }
 
@@ -42,66 +57,35 @@ class ProposalsCountryFilterList : Fragment() {
     }
 
     private fun initList(root: View) {
-        val fruits = mutableListOf("Apple", "Banana", "Cherry", "Boysenberry")
-        val fruitsWithAlphabetHeaders = createAlphabetizedFruit(fruits)
-        fruitListAdapter = BaseListAdapter { fruitClicked ->
-            fruits.remove((fruitClicked as? FruitItem?)?.name)
-            fruitListAdapter.submitList(createAlphabetizedFruit(fruits))
-        }
-
-        val proposalsCountryFilterList: RecyclerView = root.findViewById(R.id.proposals_country_filter_list)
-        proposalsCountryFilterList.adapter = fruitListAdapter
-        proposalsCountryFilterList.layoutManager = LinearLayoutManager(context)
-        fruitListAdapter.submitList(fruitsWithAlphabetHeaders)
-    }
-
-    private fun createAlphabetizedFruit(fruits: List<String>): MutableList<BaseItem> {
-
-        // Wrap data in list items
-        val fruitItems = fruits.map { FruitItem(it) }.sortedBy { it.name }
-
-        val fruitsWithAlphabetHeaders = mutableListOf<BaseItem>()
-
-        // Loop through the fruit list and add headers where we need them
-        var currentHeader: String? = null
-        fruitItems.forEach { fruit ->
-            fruit.name.firstOrNull()?.toString()?.let {
-                if (it != currentHeader) {
-                    fruitsWithAlphabetHeaders.add(HeaderItem(it))
-                    currentHeader = it
-                }
+        val listItems = proposalsViewModel.proposalsCountries().map { Item(it) }
+        listAdapter = BaseListAdapter { clicked ->
+            val item = clicked as Item?
+            if (item != null) {
+                proposalsViewModel.applyCountryFilter(item.country)
+                navigateTo(root, Screen.PROPOSALS)
             }
-            fruitsWithAlphabetHeaders.add(fruit)
         }
-        return fruitsWithAlphabetHeaders
+
+        val list: RecyclerView = root.findViewById(R.id.proposals_country_filter_list)
+        list.adapter = listAdapter
+        list.layoutManager = LinearLayoutManager(context)
+        list.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
+        listAdapter.submitList(listItems)
     }
 }
 
-data class HeaderItem(val letter: String) : BaseItem() {
+data class Item(val country: ProposalFilterCountry) : BaseItem() {
 
-    override val layoutId = R.layout.layout_header_item
+    override val layoutId = R.layout.proposal_filter_country_item
 
-    override val uniqueId = letter
-
-    override fun bind(holder: BaseViewHolder) {
-        Log.i("HEADERITEM", "${letter} bind")
-        super.bind(holder)
-        val text_header: TextView = holder.containerView.findViewById(R.id.text_header)
-        text_header.text = letter
-        // holder.text_header.text = letter
-    }
-}
-
-data class FruitItem(val name: String) : BaseItem() {
-
-    override val layoutId = R.layout.layout_fruit_item
-
-    override val uniqueId = name
+    override val uniqueId = country.code
 
     override fun bind(holder: BaseViewHolder) {
-        Log.i("FruitItem", "${name} bind")
         super.bind(holder)
-        val text_header: TextView = holder.containerView.findViewById(R.id.text_fruit_name)
-        text_header.text = name
+        val countryText: TextView = holder.containerView.findViewById(R.id.proposal_filter_country_text)
+        val countryImg: RoundedImageView = holder.containerView.findViewById(R.id.proposal_filter_country_img)
+
+        countryText.text = country.name
+        countryImg.setImageBitmap(country.flagImage)
     }
 }

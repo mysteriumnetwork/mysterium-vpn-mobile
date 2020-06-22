@@ -31,12 +31,13 @@ class ProposalViewItem constructor(
         val id: String,
         val providerID: String,
         val serviceType: ServiceType,
-        val countryCode: String
+        val countryCode: String,
+        val nodeType: NodeType
 ) {
     var countryFlagImage: Bitmap? = null
     var serviceTypeResID: Int = R.drawable.service_openvpn
     var qualityResID: Int = R.drawable.quality_unknown
-    var qualityLevel: QualityLevel = QualityLevel.UNKNOWN
+    var qualityLevel: QualityLevel = QualityLevel.ALL
     var countryName: String = ""
     var isFavorite: Boolean = false
     var isFavoriteResID: Int = R.drawable.ic_star_border_black_24dp
@@ -56,7 +57,9 @@ class ProposalViewItem constructor(
                     id = proposal.providerID+proposal.serviceType,
                     providerID = proposal.providerID,
                     serviceType = ServiceType.parse(proposal.serviceType),
-                    countryCode = proposal.countryCode.toLowerCase())
+                    countryCode = proposal.countryCode.toLowerCase(),
+                    nodeType = NodeType.parse(proposal.nodeType)
+            )
 
             if (Countries.bitmaps.contains(res.countryCode)) {
                 res.countryFlagImage = Countries.bitmaps[res.countryCode]
@@ -87,7 +90,7 @@ class ProposalViewItem constructor(
                 QualityLevel.HIGH -> R.drawable.quality_high
                 QualityLevel.MEDIUM -> R.drawable.quality_medium
                 QualityLevel.LOW -> R.drawable.quality_low
-                QualityLevel.UNKNOWN -> R.drawable.quality_unknown
+                QualityLevel.ALL -> R.drawable.quality_unknown
             }
         }
     }

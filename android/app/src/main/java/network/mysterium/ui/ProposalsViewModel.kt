@@ -17,6 +17,7 @@
 
 package network.mysterium.ui
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -59,14 +60,28 @@ enum class ProposalSortType(val type: Int) {
 }
 
 enum class QualityLevel(val level: Int) {
-    UNKNOWN(0),
+    ALL(0),
     LOW(1),
     MEDIUM(2),
     HIGH(3);
 
     companion object {
         fun parse(level: Int): QualityLevel {
-            return values().find { it.level == level } ?: UNKNOWN
+            return values().find { it.level == level } ?: ALL
+        }
+    }
+}
+
+enum class NodeType(val nodeType: String) {
+    ALL("all"),
+    BUSINESS("business"),
+    CELLULAR("cellular"),
+    HOSTING("hosting"),
+    RESIDENTIAL("residential");
+
+    companion object {
+        fun parse(nodeType: String): NodeType {
+            return values().find { it.nodeType == nodeType } ?: ALL
         }
     }
 }
@@ -78,10 +93,21 @@ class ProposalsCounts(
 }
 
 class ProposalsFilter(
-        var serviceType: ServiceTypeFilter = ServiceTypeFilter.ALL,
         var searchText: String = "",
-        var sortBy: ProposalSortType = ProposalSortType.COUNTRY
+        var country: ProposalFilterCountry = ProposalFilterCountry("", "", null),
+        var qualityLevel: QualityLevel = QualityLevel.ALL,
+        var qualityIncludeUnreachable: Boolean = false,
+        var nodeType: NodeType = NodeType.ALL,
+        var pricePerMinute: Double = 0.0,
+        var pricePerGiB: Double = 0.0
 )
+
+class ProposalFilterCountry(
+        val code: String,
+        val name: String,
+        val flagImage: Bitmap?
+) {
+}
 
 class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private val nodeRepository: NodeRepository, private val appDatabase: AppDatabase) : ViewModel() {
     var filter = ProposalsFilter()
@@ -101,19 +127,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         return proposals
     }
 
-    fun getProposalsCounts(): LiveData<ProposalsCounts> {
-        return proposalsCounts
-    }
-
-    fun filterByServiceType(type: ServiceTypeFilter) {
-        if (filter.serviceType == type) {
-            return
-        }
-
-        filter.serviceType = type
-        proposals.value = filterAndSortProposals(filter, allProposals)
-    }
-
     fun filterBySearchText(value: String) {
         val searchText = value.toLowerCase()
         if (filter.searchText == searchText) {
@@ -121,17 +134,12 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
 
         filter.searchText = searchText
-        proposals.value = filterAndSortProposals(filter, allProposals)
+        proposals.value = applyFilter(filter, allProposals)
     }
 
-    fun sortBy(type: Int) {
-        val sortBy = ProposalSortType.parse(type)
-        if (filter.sortBy == sortBy) {
-            return
-        }
-
-        filter.sortBy = sortBy
-        proposals.value = filterAndSortProposals(filter, allProposals)
+    fun applyCountryFilter(country: ProposalFilterCountry) {
+        filter.country = country
+        proposals.value = applyFilter(filter, allProposals)
     }
 
     fun refreshProposals(done: () -> Unit) {
@@ -164,13 +172,21 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             }
 
             proposal.toggleFavorite()
-            val newProposals = filterAndSortProposals(filter, allProposals)
+            val newProposals = applyFilter(filter, allProposals)
             proposals.value = newProposals
             proposalsCounts.value = ProposalsCounts(
                     all = allProposals.count(),
                     favorite = favoriteProposals.count()
             )
             done(proposal)
+        }
+    }
+
+    fun proposalsCountries(): List<ProposalFilterCountry> {
+        val list = allProposals.groupBy { it.countryCode }
+        return list.keys.sortedBy { it }.map {
+            val proposal = list.getValue(it)[0]
+            ProposalFilterCountry(it, proposal.countryName, proposal.countryFlagImage)
         }
     }
 
@@ -206,7 +222,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                     all = allProposals.count(),
                     favorite = favoriteProposals.count()
             )
-            proposals.value = filterAndSortProposals(filter, allProposals)
+            proposals.value = applyFilter(filter, allProposals)
             initialProposalsLoaded.value = true
         } catch (e: Exception) {
             Log.e(TAG, "Failed to load initial proposals", e)
@@ -215,13 +231,27 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
     }
 
-    private fun filterAndSortProposals(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalGroupViewItem> {
+    private fun applyFilter(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalGroupViewItem> {
         val filteredProposals = allProposals.asSequence()
-                // Filter by service type.
+                // Filter by node type.
                 .filter {
-                    when (filter.serviceType) {
-                        ServiceTypeFilter.FAVORITE -> it.isFavorite
-                        else -> true
+                    when (filter.nodeType) {
+                        NodeType.ALL -> true
+                        else -> it.nodeType == filter.nodeType
+                    }
+                }
+                // Filter by quality.
+                .filter {
+                    when (filter.qualityLevel) {
+                        QualityLevel.ALL -> true
+                        else -> it.qualityLevel == filter.qualityLevel
+                    }
+                }
+                // Filter by country code.
+                .filter {
+                    when (filter.country.code) {
+                        "" -> true
+                        else -> it.countryCode == filter.country.code
                     }
                 }
                 // Filter by search value.

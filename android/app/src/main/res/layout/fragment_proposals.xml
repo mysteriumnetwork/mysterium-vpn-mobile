@@ -92,6 +92,7 @@
             </TextView>
             <TextView
                 android:text="USA"
+                android:id="@+id/proposals_filter_country_value"
                 style="@style/ProposalFilterValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -117,6 +118,7 @@
             </TextView>
             <TextView
                 android:text="max 0.1/GB"
+                android:id="@+id/proposals_filter_price_value"
                 style="@style/ProposalFilterValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -142,6 +144,7 @@
             </TextView>
             <TextView
                 android:text="Medium"
+                android:id="@+id/proposals_filter_quality_value"
                 style="@style/ProposalFilterValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -167,6 +170,7 @@
             </TextView>
             <TextView
                 android:text="Residential"
+                android:id="@+id/proposals_filter_node_type_value"
                 style="@style/ProposalFilterValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

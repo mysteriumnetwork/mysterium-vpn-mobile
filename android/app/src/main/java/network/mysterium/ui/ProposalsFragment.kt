@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,7 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
-import kotlinx.android.synthetic.main.proposal_list_item.*
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
 import network.mysterium.ui.list.BaseItem
@@ -50,6 +50,11 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
     private lateinit var proposalsProgressBar: ProgressBar
     private lateinit var proposalsFilterCountry: LinearLayout
+    private lateinit var proposalsFilterLayout: ConstraintLayout
+    private lateinit var proposalsFilterCountryValue: TextView
+    private lateinit var proposalsFilterPriceValue: TextView
+    private lateinit var proposalsFilterQualityValue: TextView
+    private lateinit var proposalsFilterNodeTypeValue: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -65,10 +70,17 @@ class ProposalsFragment : Fragment() {
         proposalsSwipeRefresh = root.findViewById(R.id.proposals_list_swipe_refresh)
         proposalsProgressBar = root.findViewById(R.id.proposals_progress_bar)
         proposalsFilterCountry = root.findViewById(R.id.proposals_filter_country)
+        proposalsFilterLayout = root.findViewById(R.id.proposals_filters_layout)
+        proposalsFilterCountryValue = root.findViewById(R.id.proposals_filter_country_value)
+        proposalsFilterPriceValue = root.findViewById(R.id.proposals_filter_price_value)
+        proposalsFilterQualityValue = root.findViewById(R.id.proposals_filter_quality_value)
+        proposalsFilterNodeTypeValue = root.findViewById(R.id.proposals_filter_node_type_value)
 
         proposalsFilterCountry.setOnClickListener {
             navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
         }
+
+        proposalsFilterLayout.visibility = View.GONE
 
 
         initProposalsList(root)
@@ -143,6 +155,8 @@ class ProposalsFragment : Fragment() {
             // Hide progress bar once proposals are loaded.
             proposalsListRecyclerView.visibility = View.VISIBLE
             proposalsProgressBar.visibility = View.GONE
+            proposalsFilterLayout.visibility = View.VISIBLE
+            setSelectedFilterValues()
         })
 
 
@@ -167,6 +181,16 @@ class ProposalsFragment : Fragment() {
             }
         }
         return itemsWithHeaders
+    }
+
+    private fun setSelectedFilterValues() {
+        val filter = proposalsViewModel.filter
+
+        proposalsFilterCountryValue.text = if (filter.country.name != "") {
+            filter.country.name
+        } else {
+            getString(R.string.proposals_filter_country_value_all)
+        }
     }
 
     private fun handleClose(root: View) {
