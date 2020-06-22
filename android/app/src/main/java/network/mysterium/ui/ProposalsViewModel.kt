@@ -262,7 +262,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                     }
                 }
                 // Sort by country asc.
-                .sortedWith(compareBy { it.countryName })
+                .sortedWith(compareBy({ it.countryName }, { it.id }))
                 .toList()
 
         val favorite = filteredProposals.filter { it.isFavorite }

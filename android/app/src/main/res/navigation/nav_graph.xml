@@ -33,6 +33,25 @@
         tools:layout="@layout/fragment_proposals_country_filter_list" />
 
     <fragment
+        android:id="@+id/proposals_price_filter"
+        android:name="network.mysterium.ui.ProposalsPriceFilterFragment"
+        android:label="fragment_proposals_price_filter"
+        tools:layout="@layout/fragment_proposals_price_filter" />
+
+    <fragment
+        android:id="@+id/proposals_quality_filter"
+        android:name="network.mysterium.ui.ProposalsQualityFilterListFragment"
+        android:label="fragment_proposals_quality_filter"
+        tools:layout="@layout/fragment_proposals_quality_filter_list" />
+
+    <fragment
+        android:id="@+id/proposals_node_type_filter"
+        android:name="network.mysterium.ui.ProposalsNodeTypeFilterListFragment"
+        android:label="fragment_proposals_quality_filter"
+        tools:layout="@layout/fragment_proposals_node_type_filter_list" />
+
+
+    <fragment
         android:id="@+id/account_fragment"
         android:name="network.mysterium.ui.WalletFragment"
         android:label="fragment_account"
@@ -52,6 +71,15 @@
 
     <action android:id="@+id/action_go_to_proposals_country_filter_list_screen"
         app:destination="@id/proposals_country_filter_list"/>
+
+    <action android:id="@+id/action_go_to_proposals_price_filter_screen"
+        app:destination="@id/proposals_price_filter"/>
+
+    <action android:id="@+id/action_go_to_proposals_quality_filter_screen"
+        app:destination="@id/proposals_quality_filter"/>
+
+    <action android:id="@+id/action_go_to_proposals_node_type_filter_screen"
+        app:destination="@id/proposals_node_type_filter"/>
 
     <action android:id="@+id/action_go_to_account_screen"
         app:destination="@id/account_fragment"/>

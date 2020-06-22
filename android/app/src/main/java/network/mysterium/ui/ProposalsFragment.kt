@@ -50,6 +50,9 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
     private lateinit var proposalsProgressBar: ProgressBar
     private lateinit var proposalsFilterCountry: LinearLayout
+    private lateinit var proposalsFilterPrice: LinearLayout
+    private lateinit var proposalsFilterQuality: LinearLayout
+    private lateinit var proposalsFilterNodeType: LinearLayout
     private lateinit var proposalsFilterLayout: ConstraintLayout
     private lateinit var proposalsFilterCountryValue: TextView
     private lateinit var proposalsFilterPriceValue: TextView
@@ -69,19 +72,33 @@ class ProposalsFragment : Fragment() {
         proposalsSearchInput = root.findViewById(R.id.proposals_search_input)
         proposalsSwipeRefresh = root.findViewById(R.id.proposals_list_swipe_refresh)
         proposalsProgressBar = root.findViewById(R.id.proposals_progress_bar)
-        proposalsFilterCountry = root.findViewById(R.id.proposals_filter_country)
+        proposalsFilterCountry = root.findViewById(R.id.proposals_filter_country_layoyt)
         proposalsFilterLayout = root.findViewById(R.id.proposals_filters_layout)
+        proposalsFilterPrice = root.findViewById(R.id.proposals_filter_price_layout)
         proposalsFilterCountryValue = root.findViewById(R.id.proposals_filter_country_value)
         proposalsFilterPriceValue = root.findViewById(R.id.proposals_filter_price_value)
         proposalsFilterQualityValue = root.findViewById(R.id.proposals_filter_quality_value)
         proposalsFilterNodeTypeValue = root.findViewById(R.id.proposals_filter_node_type_value)
+        proposalsFilterQuality = root.findViewById(R.id.proposals_filter_quality_layout)
+        proposalsFilterNodeType = root.findViewById(R.id.proposals_filter_node_type_layout)
 
         proposalsFilterCountry.setOnClickListener {
             navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
         }
 
-        proposalsFilterLayout.visibility = View.GONE
+        proposalsFilterPrice.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
+        }
 
+        proposalsFilterQuality.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_QUALITY_FILTER)
+        }
+
+        proposalsFilterNodeType.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_NODE_TYPE_FILTER)
+        }
+
+        proposalsFilterLayout.visibility = View.GONE
 
         initProposalsList(root)
 //        initProposalsSortDropdown(root)

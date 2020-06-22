@@ -74,7 +74,7 @@
         android:layout_height="50dp">
 
         <LinearLayout
-            android:id="@+id/proposals_filter_country"
+            android:id="@+id/proposals_filter_country_layoyt"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintHorizontal_weight="1"
@@ -100,10 +100,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/proposals_filter_price"
+            android:id="@+id/proposals_filter_price_layout"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/proposals_filter_country"
-            app:layout_constraintRight_toLeftOf="@id/proposals_filter_quality"
+            app:layout_constraintLeft_toRightOf="@+id/proposals_filter_country_layoyt"
+            app:layout_constraintRight_toLeftOf="@id/proposals_filter_quality_layout"
             android:layout_marginLeft="20dp"
             android:orientation="vertical"
             android:background="?android:attr/selectableItemBackground"
@@ -126,10 +126,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/proposals_filter_quality"
+            android:id="@+id/proposals_filter_quality_layout"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/proposals_filter_price"
-            app:layout_constraintRight_toLeftOf="@id/proposals_filter_ip_type"
+            app:layout_constraintLeft_toRightOf="@+id/proposals_filter_price_layout"
+            app:layout_constraintRight_toLeftOf="@id/proposals_filter_node_type_layout"
             android:layout_marginLeft="20dp"
             android:orientation="vertical"
             android:background="?android:attr/selectableItemBackground"
@@ -152,9 +152,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/proposals_filter_ip_type"
+            android:id="@+id/proposals_filter_node_type_layout"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/proposals_filter_quality"
+            app:layout_constraintLeft_toRightOf="@+id/proposals_filter_quality_layout"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="20dp"
             android:orientation="vertical"

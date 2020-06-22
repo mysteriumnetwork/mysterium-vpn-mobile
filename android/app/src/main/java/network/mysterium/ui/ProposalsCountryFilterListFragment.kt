@@ -57,9 +57,9 @@ class ProposalsCountryFilterList : Fragment() {
     }
 
     private fun initList(root: View) {
-        val listItems = proposalsViewModel.proposalsCountries().map { Item(it) }
+        val listItems = proposalsViewModel.proposalsCountries().map { CountryItem(it) }
         listAdapter = BaseListAdapter { clicked ->
-            val item = clicked as Item?
+            val item = clicked as CountryItem?
             if (item != null) {
                 proposalsViewModel.applyCountryFilter(item.country)
                 navigateTo(root, Screen.PROPOSALS)
@@ -74,7 +74,7 @@ class ProposalsCountryFilterList : Fragment() {
     }
 }
 
-data class Item(val country: ProposalFilterCountry) : BaseItem() {
+data class CountryItem(val country: ProposalFilterCountry) : BaseItem() {
 
     override val layoutId = R.layout.proposal_filter_country_item
 
