@@ -141,6 +141,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         proposals.value = applyFilter(filter, allProposals)
     }
 
+    fun applyNodeTypeFilter(nodeType: NodeType) {
+        filter.nodeType = nodeType
+        proposals.value = applyFilter(filter, allProposals)
+    }
+
     fun applyQualityFilter(quality: ProposalFilterQuality) {
         filter.quality = quality
         proposals.value = applyFilter(filter, allProposals)
@@ -188,6 +193,17 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             val proposal = list.getValue(it)[0]
             ProposalFilterCountry(it, proposal.countryName, proposal.countryFlagImage)
         }
+    }
+
+    fun proposalsNodeTypes(): List<NodeType> {
+        val list = allProposals.groupBy { it.countryCode }
+        return listOf(
+                NodeType.ALL,
+                NodeType.RESIDENTIAL,
+                NodeType.HOSTING,
+                NodeType.CELLULAR,
+                NodeType.BUSINESS
+        )
     }
 
     fun proposalsQualities(): List<ProposalFilterQuality> {
@@ -254,13 +270,14 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                         else -> it.nodeType == filter.nodeType
                     }
                 }
-                // Filter by quality.
+                // Filter by quality level.
                 .filter {
                     when (filter.quality.level) {
                         QualityLevel.ANY -> true
                         else -> it.qualityLevel == filter.quality.level
                     }
                 }
+                // Filter by unreachable nodes.
                 .filter {
                     when (filter.quality.qualityIncludeUnreachable) {
                         true -> true

@@ -4,18 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.makeramen.roundedimageview.RoundedImageView
 import network.mysterium.MainApplication
-import network.mysterium.ui.list.BaseItem
 import network.mysterium.ui.list.BaseListAdapter
-import network.mysterium.ui.list.BaseViewHolder
 import network.mysterium.vpn.R
 
 class ProposalsPriceFilterFragment : Fragment() {
@@ -27,7 +20,7 @@ class ProposalsPriceFilterFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_proposals_country_filter_list, container, false)
+        return inflater.inflate(R.layout.fragment_proposals_country_filter, container, false)
     }
 
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {

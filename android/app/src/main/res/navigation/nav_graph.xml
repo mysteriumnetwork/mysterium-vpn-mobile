@@ -30,7 +30,7 @@
         android:id="@+id/proposals_country_filter_list"
         android:name="network.mysterium.ui.ProposalsCountryFilterList"
         android:label="fragment_proposals_country_filter_list"
-        tools:layout="@layout/fragment_proposals_country_filter_list" />
+        tools:layout="@layout/fragment_proposals_country_filter" />
 
     <fragment
         android:id="@+id/proposals_price_filter"
@@ -48,7 +48,7 @@
         android:id="@+id/proposals_node_type_filter"
         android:name="network.mysterium.ui.ProposalsNodeTypeFilterListFragment"
         android:label="fragment_proposals_quality_filter"
-        tools:layout="@layout/fragment_proposals_node_type_filter_list" />
+        tools:layout="@layout/fragment_proposals_node_type_filter" />
 
 
     <fragment

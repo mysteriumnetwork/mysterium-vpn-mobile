@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/proposals_country_filter_toolbar"
+            android:id="@+id/proposals_node_type_filter_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
@@ -34,6 +34,6 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:scrollbars="vertical"
-        tools:listitem="@layout/proposal_filter_country_item">
+        tools:listitem="@layout/proposal_filter_node_type_item">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

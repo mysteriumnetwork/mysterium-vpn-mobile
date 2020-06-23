@@ -195,6 +195,15 @@ class ProposalsFragment : Fragment() {
                 QualityLevel.LOW -> "Low"
             }
         }
+
+        // Node(IP) type filter value.
+        proposalsFilterNodeTypeValue.text = when(filter.nodeType) {
+            NodeType.ALL -> "All"
+            NodeType.BUSINESS -> "Business"
+            NodeType.CELLULAR -> "Cellular"
+            NodeType.HOSTING -> "Hosting"
+            NodeType.RESIDENTIAL -> "Residential"
+        }
     }
 
     private fun handleClose(root: View) {
