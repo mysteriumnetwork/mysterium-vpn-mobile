@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/proposals_country_filter_toolbar"
+            android:id="@+id/proposals_quality_filter_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
@@ -20,7 +20,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:text="RESET"
+        android:text="@string/proposals_filter_reset_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/proposals_quality_filter_reset_btn"
         android:layout_margin="10dp"
@@ -34,6 +34,6 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:scrollbars="vertical"
-        tools:listitem="@layout/proposal_filter_country_item">
+        tools:listitem="@layout/proposal_filter_quality_item">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

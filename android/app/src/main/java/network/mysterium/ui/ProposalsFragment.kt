@@ -101,8 +101,6 @@ class ProposalsFragment : Fragment() {
         proposalsFilterLayout.visibility = View.GONE
 
         initProposalsList(root)
-//        initProposalsSortDropdown(root)
-//        initProposalsServiceTypeFilter(root)
         initProposalsSearchFilter()
 
         proposalsCloseButton.setOnClickListener { handleClose(root) }
@@ -124,28 +122,6 @@ class ProposalsFragment : Fragment() {
 
         proposalsSearchInput.onChange { proposalsViewModel.filterBySearchText(it) }
     }
-
-//    private fun initProposalsServiceTypeFilter(root: View) {
-//        // Set current active filter.
-//        val activeTabButton = when (proposalsViewModel.filter.serviceType) {
-//            ServiceTypeFilter.ALL -> proposalsFiltersAllButton
-//            ServiceTypeFilter.FAVORITE -> proposalsFiltersFavoriteButton
-//        }
-//        setFilterTabActiveStyle(root, activeTabButton)
-//
-//        proposalsFiltersAllButton.setOnClickListener {
-//            proposalsViewModel.filterByServiceType(ServiceTypeFilter.ALL)
-//            setFilterTabActiveStyle(root, proposalsFiltersAllButton)
-//            setFilterTabInactiveStyle(root, proposalsFiltersFavoriteButton)
-//        }
-//
-//        proposalsFiltersFavoriteButton.setOnClickListener {
-//            proposalsViewModel.filterByServiceType(ServiceTypeFilter.FAVORITE)
-//            setFilterTabActiveStyle(root, proposalsFiltersFavoriteButton)
-//            setFilterTabInactiveStyle(root, proposalsFiltersAllButton)
-//        }
-//    }
-
 
     private fun initProposalsList(root: View) {
 
@@ -203,10 +179,23 @@ class ProposalsFragment : Fragment() {
     private fun setSelectedFilterValues() {
         val filter = proposalsViewModel.filter
 
+        // Country filter value.
         proposalsFilterCountryValue.text = if (filter.country.name != "") {
             filter.country.name
         } else {
             getString(R.string.proposals_filter_country_value_all)
+        }
+
+        // Quality filter value.
+        if (filter.qualityIncludeUnreachable) {
+            proposalsFilterQualityValue.text = getString(R.string.proposals_filter_quality_value_any)
+        } else {
+            proposalsFilterQualityValue.text = when(filter.qualityLevel) {
+                QualityLevel.ALL -> "ALL"
+                QualityLevel.HIGH -> "High"
+                QualityLevel.MEDIUM -> "Medium"
+                QualityLevel.LOW -> "Low"
+            }
         }
     }
 
@@ -219,16 +208,6 @@ class ProposalsFragment : Fragment() {
         hideKeyboard(root)
         proposalsViewModel.selectProposal(proposalID)
         navigateToMainVpnFragment(root)
-    }
-
-    private fun setFilterTabActiveStyle(root: View, btn: TextView) {
-        btn.setBackgroundColor(ContextCompat.getColor(root.context, R.color.ColorMain))
-        btn.setTextColor(ContextCompat.getColor(root.context, R.color.ColorWhite))
-    }
-
-    private fun setFilterTabInactiveStyle(root: View, btn: TextView) {
-        btn.setBackgroundColor(Color.TRANSPARENT)
-        btn.setTextColor(ContextCompat.getColor(root.context, R.color.ColorMain))
     }
 }
 

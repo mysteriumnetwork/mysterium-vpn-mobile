@@ -20,7 +20,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:text="Price"
+        android:text="@string/proposals_filter_reset_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/proposals_quality_filter_reset_btn"
         android:layout_margin="10dp"

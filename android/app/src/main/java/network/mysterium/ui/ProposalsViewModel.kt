@@ -95,7 +95,7 @@ class ProposalsCounts(
 class ProposalsFilter(
         var searchText: String = "",
         var country: ProposalFilterCountry = ProposalFilterCountry("", "", null),
-        var qualityLevel: QualityLevel = QualityLevel.ALL,
+        var qualityLevel: QualityLevel = QualityLevel.HIGH,
         var qualityIncludeUnreachable: Boolean = false,
         var nodeType: NodeType = NodeType.ALL,
         var pricePerMinute: Double = 0.0,
@@ -106,6 +106,12 @@ class ProposalFilterCountry(
         val code: String,
         val name: String,
         val flagImage: Bitmap?
+) {
+}
+
+class ProposalFilterQuality(
+        val name: String,
+        val value: QualityLevel
 ) {
 }
 
@@ -139,6 +145,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     fun applyCountryFilter(country: ProposalFilterCountry) {
         filter.country = country
+        proposals.value = applyFilter(filter, allProposals)
+    }
+
+    fun applyQualityFilter(quality: ProposalFilterQuality) {
+        filter.qualityLevel = quality.value
         proposals.value = applyFilter(filter, allProposals)
     }
 
@@ -188,6 +199,14 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             val proposal = list.getValue(it)[0]
             ProposalFilterCountry(it, proposal.countryName, proposal.countryFlagImage)
         }
+    }
+
+    fun proposalsQualities(): List<ProposalFilterQuality> {
+        return listOf(
+                ProposalFilterQuality("High", QualityLevel.HIGH),
+                ProposalFilterQuality("Medium", QualityLevel.MEDIUM),
+                ProposalFilterQuality("Low", QualityLevel.LOW)
+        )
     }
 
     private suspend fun loadFavoriteProposals(): MutableMap<String, FavoriteProposal> {

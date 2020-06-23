@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.makeramen.roundedimageview.RoundedImageView
 import network.mysterium.MainApplication
 import network.mysterium.ui.list.BaseItem
 import network.mysterium.ui.list.BaseListAdapter
@@ -21,13 +20,13 @@ import network.mysterium.vpn.R
 class ProposalsQualityFilterListFragment : Fragment() {
 
     private lateinit var listAdapter: BaseListAdapter
-    private lateinit var feedbackToolbar: Toolbar
+    private lateinit var toolbar: Toolbar
     private lateinit var proposalsViewModel: ProposalsViewModel
-    private lateinit var proposalsCountryFilterResetBtn: MaterialButton
+    private lateinit var resetBtn: MaterialButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_proposals_quality_filter_list, container, false)
+        return inflater.inflate(R.layout.fragment_proposals_quality_filter, container, false)
     }
 
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
@@ -36,16 +35,16 @@ class ProposalsQualityFilterListFragment : Fragment() {
         val appContainer = (activity!!.application as MainApplication).appContainer
         proposalsViewModel = appContainer.proposalsViewModel
 
-        feedbackToolbar = root.findViewById(R.id.proposals_country_filter_toolbar)
-        proposalsCountryFilterResetBtn = root.findViewById(R.id.proposals_quality_filter_reset_btn)
+        toolbar = root.findViewById(R.id.proposals_quality_filter_toolbar)
+        resetBtn = root.findViewById(R.id.proposals_quality_filter_reset_btn)
 
-        feedbackToolbar.setNavigationOnClickListener {
+        toolbar.setNavigationOnClickListener {
             hideKeyboard(root)
             navigateTo(root, Screen.PROPOSALS)
         }
 
-        proposalsCountryFilterResetBtn.setOnClickListener {
-            proposalsViewModel.applyCountryFilter(ProposalFilterCountry("", "", null))
+        resetBtn.setOnClickListener {
+            proposalsViewModel.applyQualityFilter(ProposalFilterQuality("", QualityLevel.ALL))
             navigateTo(root, Screen.PROPOSALS)
         }
 
@@ -57,16 +56,16 @@ class ProposalsQualityFilterListFragment : Fragment() {
     }
 
     private fun initList(root: View) {
-        val listItems = proposalsViewModel.proposalsCountries().map { QualityItem(it) }
+        val listItems = proposalsViewModel.proposalsQualities().map { QualityItem(it) }
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as QualityItem?
             if (item != null) {
-                proposalsViewModel.applyCountryFilter(item.country)
+                proposalsViewModel.applyQualityFilter(item.quality)
                 navigateTo(root, Screen.PROPOSALS)
             }
         }
 
-        val list: RecyclerView = root.findViewById(R.id.proposals_country_filter_list)
+        val list: RecyclerView = root.findViewById(R.id.proposals_quality_filter_list)
         list.adapter = listAdapter
         list.layoutManager = LinearLayoutManager(context)
         list.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
@@ -74,18 +73,15 @@ class ProposalsQualityFilterListFragment : Fragment() {
     }
 }
 
-data class QualityItem(val country: ProposalFilterCountry) : BaseItem() {
+data class QualityItem(val quality: ProposalFilterQuality) : BaseItem() {
 
-    override val layoutId = R.layout.proposal_filter_country_item
+    override val layoutId = R.layout.proposal_filter_quality_item
 
-    override val uniqueId = country.code
+    override val uniqueId = quality.name
 
     override fun bind(holder: BaseViewHolder) {
         super.bind(holder)
-        val countryText: TextView = holder.containerView.findViewById(R.id.proposal_filter_country_text)
-        val countryImg: RoundedImageView = holder.containerView.findViewById(R.id.proposal_filter_country_img)
-
-        countryText.text = country.name
-        countryImg.setImageBitmap(country.flagImage)
+        val text: TextView = holder.containerView.findViewById(R.id.proposal_quality_filter_item_text)
+        text.text = quality.name
     }
 }

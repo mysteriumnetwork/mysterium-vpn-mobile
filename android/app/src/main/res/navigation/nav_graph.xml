@@ -42,7 +42,7 @@
         android:id="@+id/proposals_quality_filter"
         android:name="network.mysterium.ui.ProposalsQualityFilterListFragment"
         android:label="fragment_proposals_quality_filter"
-        tools:layout="@layout/fragment_proposals_quality_filter_list" />
+        tools:layout="@layout/fragment_proposals_quality_filter" />
 
     <fragment
         android:id="@+id/proposals_node_type_filter"

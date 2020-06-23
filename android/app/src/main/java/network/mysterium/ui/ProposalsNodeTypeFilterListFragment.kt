@@ -61,7 +61,8 @@ class ProposalsNodeTypeFilterListFragment : Fragment() {
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as QualityItem?
             if (item != null) {
-                proposalsViewModel.applyCountryFilter(item.country)
+                // TODO: Apply filter
+                // proposalsViewModel.applyCountryFilter(item.country)
                 navigateTo(root, Screen.PROPOSALS)
             }
         }
