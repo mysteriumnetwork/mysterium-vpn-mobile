@@ -31,9 +31,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/proposals_quality_filter_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="visible"
         android:scrollbars="vertical"
         tools:listitem="@layout/proposal_filter_quality_item">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <CheckBox
+        android:text="@string/proposals_quality_filter_include_failed"
+        android:id="@+id/proposals_quality_filter_include_failed"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </CheckBox>
 </LinearLayout>

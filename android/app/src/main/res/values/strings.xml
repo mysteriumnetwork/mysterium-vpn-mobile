@@ -53,4 +53,5 @@
     <string name="proposals_filter_country_value_all">All</string>
     <string name="proposals_filter_reset_btn">RESET</string>
     <string name="proposals_filter_quality_value_any">Any</string>
+    <string name="proposals_quality_filter_include_failed">Include failed</string>
 </resources>

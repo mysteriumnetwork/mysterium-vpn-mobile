@@ -25,6 +25,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
@@ -106,8 +107,12 @@ class SharedViewModel(
             connectionState.value = ConnectionState.CONNECTING
             // Before doing actual connection add some delay to prevent
             // from trying to establish connection if user instantly clicks CANCEL.
-            delay(1000)
-            nodeRepository.connect(identityAddress, providerID, serviceType)
+            delay(100)
+            val req = ConnectRequest()
+            req.identityAddress = identityAddress
+            req.providerID = providerID
+            req.serviceType = serviceType
+            nodeRepository.connect(req)
 
             // Force app to run in foreground while connected to VPN.
             val coreService = mysteriumCoreService.await()

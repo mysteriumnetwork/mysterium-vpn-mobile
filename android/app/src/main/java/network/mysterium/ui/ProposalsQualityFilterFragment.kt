@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
     private lateinit var listAdapter: BaseListAdapter
     private lateinit var toolbar: Toolbar
     private lateinit var proposalsViewModel: ProposalsViewModel
+    private lateinit var proposalsQualityFilterIncludeFailed: CheckBox
     private lateinit var resetBtn: MaterialButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +39,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
 
         toolbar = root.findViewById(R.id.proposals_quality_filter_toolbar)
         resetBtn = root.findViewById(R.id.proposals_quality_filter_reset_btn)
+        proposalsQualityFilterIncludeFailed = root.findViewById(R.id.proposals_quality_filter_include_failed)
 
         toolbar.setNavigationOnClickListener {
             hideKeyboard(root)
@@ -44,7 +47,12 @@ class ProposalsQualityFilterListFragment : Fragment() {
         }
 
         resetBtn.setOnClickListener {
-            proposalsViewModel.applyQualityFilter(ProposalFilterQuality("", QualityLevel.ALL))
+            proposalsViewModel.applyQualityFilter(ProposalFilterQuality("", QualityLevel.ALL), false)
+            navigateTo(root, Screen.PROPOSALS)
+        }
+
+        proposalsQualityFilterIncludeFailed.setOnClickListener {
+            proposalsViewModel.applyQualityFilter(ProposalFilterQuality("", QualityLevel.ALL), !proposalsViewModel.filter.qualityIncludeUnreachable)
             navigateTo(root, Screen.PROPOSALS)
         }
 
@@ -60,7 +68,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as QualityItem?
             if (item != null) {
-                proposalsViewModel.applyQualityFilter(item.quality)
+                proposalsViewModel.applyQualityFilter(item.quality, false)
                 navigateTo(root, Screen.PROPOSALS)
             }
         }

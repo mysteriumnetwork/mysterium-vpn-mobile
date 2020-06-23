@@ -24,6 +24,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import mysterium.GetProposalsRequest
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
@@ -148,8 +149,9 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         proposals.value = applyFilter(filter, allProposals)
     }
 
-    fun applyQualityFilter(quality: ProposalFilterQuality) {
+    fun applyQualityFilter(quality: ProposalFilterQuality, includeUnreachable: Boolean) {
         filter.qualityLevel = quality.value
+        filter.qualityIncludeUnreachable = includeUnreachable
         proposals.value = applyFilter(filter, allProposals)
     }
 
@@ -234,7 +236,10 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
         try {
-            val nodeProposals = nodeRepository.proposals(refresh)
+            // TODO: Add other filter values.
+            val req = GetProposalsRequest()
+            req.refresh = refresh
+            val nodeProposals = nodeRepository.proposals(req)
             allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }
 
             proposalsCounts.value = ProposalsCounts(
