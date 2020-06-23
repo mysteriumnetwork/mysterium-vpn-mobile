@@ -18,6 +18,7 @@
 package network.mysterium.ui
 
 import android.graphics.Bitmap
+import android.util.Log
 import network.mysterium.service.core.ProposalItem
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.vpn.R
@@ -66,6 +67,8 @@ class ProposalViewItem constructor(
             if (Countries.bitmaps.contains(res.countryCode)) {
                 res.countryFlagImage = Countries.bitmaps[res.countryCode]
                 res.countryName = Countries.values[res.countryCode]?.name ?: ""
+            } else {
+                Log.e("ProposalViewItem", "Country with code ${res.countryCode} not found")
             }
 
             res.serviceTypeResID = mapServiceTypeResourceID(res.serviceType)

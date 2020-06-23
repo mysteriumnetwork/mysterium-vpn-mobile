@@ -251,7 +251,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             req.upperGBPriceBound = 11000000
 
             val nodeProposals = nodeRepository.proposals(req)
-            allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }
+            allProposals = nodeProposals
+                    // Some proposals doesn't contain country code, not sure why.
+                    .filter { it.countryCode != "" }
+                    .map { ProposalViewItem.parse(it, favoriteProposals) }
+
             proposals.value = applyFilter(filter, allProposals)
             initialProposalsLoaded.value = true
         } catch (e: Exception) {
