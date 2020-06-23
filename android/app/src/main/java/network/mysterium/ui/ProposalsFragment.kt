@@ -17,14 +17,12 @@
 
 package network.mysterium.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -187,11 +185,11 @@ class ProposalsFragment : Fragment() {
         }
 
         // Quality filter value.
-        if (filter.qualityIncludeUnreachable) {
+        if (filter.quality.qualityIncludeUnreachable) {
             proposalsFilterQualityValue.text = getString(R.string.proposals_filter_quality_value_any)
         } else {
-            proposalsFilterQualityValue.text = when(filter.qualityLevel) {
-                QualityLevel.ALL -> "ALL"
+            proposalsFilterQualityValue.text = when(filter.quality.level) {
+                QualityLevel.ANY -> "Any"
                 QualityLevel.HIGH -> "High"
                 QualityLevel.MEDIUM -> "Medium"
                 QualityLevel.LOW -> "Low"

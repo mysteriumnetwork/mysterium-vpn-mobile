@@ -47,12 +47,15 @@ class ProposalsQualityFilterListFragment : Fragment() {
         }
 
         resetBtn.setOnClickListener {
-            proposalsViewModel.applyQualityFilter(ProposalFilterQuality("", QualityLevel.ALL), false)
+            proposalsViewModel.applyQualityFilter(ProposalFilterQuality())
             navigateTo(root, Screen.PROPOSALS)
         }
 
+        proposalsQualityFilterIncludeFailed.isChecked = proposalsViewModel.filter.quality.qualityIncludeUnreachable
         proposalsQualityFilterIncludeFailed.setOnClickListener {
-            proposalsViewModel.applyQualityFilter(ProposalFilterQuality("", QualityLevel.ALL), !proposalsViewModel.filter.qualityIncludeUnreachable)
+            val qualityFilter = proposalsViewModel.filter.quality
+            qualityFilter.qualityIncludeUnreachable = !qualityFilter.qualityIncludeUnreachable
+            proposalsViewModel.applyQualityFilter(qualityFilter)
             navigateTo(root, Screen.PROPOSALS)
         }
 
@@ -68,7 +71,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as QualityItem?
             if (item != null) {
-                proposalsViewModel.applyQualityFilter(item.quality, false)
+                proposalsViewModel.applyQualityFilter(item.quality)
                 navigateTo(root, Screen.PROPOSALS)
             }
         }
@@ -85,11 +88,16 @@ data class QualityItem(val quality: ProposalFilterQuality) : BaseItem() {
 
     override val layoutId = R.layout.proposal_filter_quality_item
 
-    override val uniqueId = quality.name
+    override val uniqueId = quality.level
 
     override fun bind(holder: BaseViewHolder) {
         super.bind(holder)
         val text: TextView = holder.containerView.findViewById(R.id.proposal_quality_filter_item_text)
-        text.text = quality.name
+        text.text = when(quality.level) {
+            QualityLevel.ANY -> "Any"
+            QualityLevel.HIGH -> "High"
+            QualityLevel.MEDIUM -> "Medium"
+            QualityLevel.LOW -> "Low"
+        }
     }
 }

@@ -20,7 +20,10 @@ class ProposalItem(
         val qualityLevel: Int,
 
         @Json(name = "nodeType")
-        val nodeType: String = ""
+        val nodeType: String = "",
+
+        @Json(name = "monitoringFailed")
+        val monitoringFailed: Boolean
 ) {
 }
 
@@ -84,16 +87,6 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         }
 
         return proposalsResponse.proposals
-    }
-
-    // Get proposal from cache by given providerID and serviceType.
-    //
-    // Note that this method need to deserialize JSON byte array since Go Mobile
-    // does not support passing complex slices via it's bridge.
-    suspend fun proposal(req: GetProposalRequest): ProposalItem? {
-        val bytes = getProposal(req)
-        val proposalsResponse = parseProposal(bytes)
-        return proposalsResponse?.proposal
     }
 
     // Register connection status callback.
@@ -193,10 +186,6 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
-    }
-
-    private suspend fun getProposal(req: GetProposalRequest) = withContext(Dispatchers.IO) {
-        deferredNode.await().getProposal(req)
     }
 
     private suspend fun parseProposals(bytes: ByteArray) = withContext(Dispatchers.Default) {

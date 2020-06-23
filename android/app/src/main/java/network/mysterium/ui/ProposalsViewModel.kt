@@ -61,14 +61,14 @@ enum class ProposalSortType(val type: Int) {
 }
 
 enum class QualityLevel(val level: Int) {
-    ALL(0),
+    ANY(0),
     LOW(1),
     MEDIUM(2),
     HIGH(3);
 
     companion object {
         fun parse(level: Int): QualityLevel {
-            return values().find { it.level == level } ?: ALL
+            return values().find { it.level == level } ?: ANY
         }
     }
 }
@@ -87,32 +87,25 @@ enum class NodeType(val nodeType: String) {
     }
 }
 
-class ProposalsCounts(
-        val all: Int,
-        val favorite: Int
-) {
-}
-
 class ProposalsFilter(
         var searchText: String = "",
-        var country: ProposalFilterCountry = ProposalFilterCountry("", "", null),
-        var qualityLevel: QualityLevel = QualityLevel.HIGH,
-        var qualityIncludeUnreachable: Boolean = false,
+        var country: ProposalFilterCountry = ProposalFilterCountry(),
+        var quality: ProposalFilterQuality = ProposalFilterQuality(),
         var nodeType: NodeType = NodeType.ALL,
         var pricePerMinute: Double = 0.0,
         var pricePerGiB: Double = 0.0
 )
 
 class ProposalFilterCountry(
-        val code: String,
-        val name: String,
-        val flagImage: Bitmap?
+        val code: String = "",
+        val name: String = "",
+        val flagImage: Bitmap? = null
 ) {
 }
 
 class ProposalFilterQuality(
-        val name: String,
-        val value: QualityLevel
+        var level: QualityLevel = QualityLevel.HIGH,
+        var qualityIncludeUnreachable: Boolean = false
 ) {
 }
 
@@ -123,7 +116,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     private var favoriteProposals: MutableMap<String, FavoriteProposal> = mutableMapOf()
     private var allProposals: List<ProposalViewItem> = listOf()
     private val proposals = MutableLiveData<List<ProposalGroupViewItem>>()
-    private val proposalsCounts = MutableLiveData<ProposalsCounts>()
 
     suspend fun load() {
         favoriteProposals = loadFavoriteProposals()
@@ -149,9 +141,8 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         proposals.value = applyFilter(filter, allProposals)
     }
 
-    fun applyQualityFilter(quality: ProposalFilterQuality, includeUnreachable: Boolean) {
-        filter.qualityLevel = quality.value
-        filter.qualityIncludeUnreachable = includeUnreachable
+    fun applyQualityFilter(quality: ProposalFilterQuality) {
+        filter.quality = quality
         proposals.value = applyFilter(filter, allProposals)
     }
 
@@ -187,10 +178,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             proposal.toggleFavorite()
             val newProposals = applyFilter(filter, allProposals)
             proposals.value = newProposals
-            proposalsCounts.value = ProposalsCounts(
-                    all = allProposals.count(),
-                    favorite = favoriteProposals.count()
-            )
             done(proposal)
         }
     }
@@ -205,9 +192,10 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     fun proposalsQualities(): List<ProposalFilterQuality> {
         return listOf(
-                ProposalFilterQuality("High", QualityLevel.HIGH),
-                ProposalFilterQuality("Medium", QualityLevel.MEDIUM),
-                ProposalFilterQuality("Low", QualityLevel.LOW)
+                ProposalFilterQuality(QualityLevel.HIGH),
+                ProposalFilterQuality(QualityLevel.MEDIUM),
+                ProposalFilterQuality(QualityLevel.LOW),
+                ProposalFilterQuality(QualityLevel.ANY)
         )
     }
 
@@ -239,13 +227,15 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             // TODO: Add other filter values.
             val req = GetProposalsRequest()
             req.refresh = refresh
+            req.includeFailed = true
+            req.serviceType = "wireguard"
+            req.lowerTimePriceBound = 0
+            req.upperTimePriceBound = 50000
+            req.lowerGBPriceBound = 0
+            req.upperGBPriceBound = 11000000
+
             val nodeProposals = nodeRepository.proposals(req)
             allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }
-
-            proposalsCounts.value = ProposalsCounts(
-                    all = allProposals.count(),
-                    favorite = favoriteProposals.count()
-            )
             proposals.value = applyFilter(filter, allProposals)
             initialProposalsLoaded.value = true
         } catch (e: Exception) {
@@ -266,9 +256,15 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 }
                 // Filter by quality.
                 .filter {
-                    when (filter.qualityLevel) {
-                        QualityLevel.ALL -> true
-                        else -> it.qualityLevel == filter.qualityLevel
+                    when (filter.quality.level) {
+                        QualityLevel.ANY -> true
+                        else -> it.qualityLevel == filter.quality.level
+                    }
+                }
+                .filter {
+                    when (filter.quality.qualityIncludeUnreachable) {
+                        true -> true
+                        else -> !it.monitoringFailed
                     }
                 }
                 // Filter by country code.
