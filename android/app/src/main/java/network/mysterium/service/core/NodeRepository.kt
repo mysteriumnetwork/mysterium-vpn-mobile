@@ -23,9 +23,39 @@ class ProposalItem(
         val nodeType: String = "",
 
         @Json(name = "monitoringFailed")
-        val monitoringFailed: Boolean
+        val monitoringFailed: Boolean,
+
+        @Json(name = "payment")
+        val payment: ProposalPayment
 ) {
 }
+
+class ProposalPayment(
+        @Json(name = "type")
+        val type: String,
+
+        @Json(name = "price")
+        val price: ProposalPaymentPrice,
+
+        @Json(name = "rate")
+        val rate: ProposalPaymentRate
+)
+
+class ProposalPaymentPrice(
+        @Json(name = "amount")
+        val amount: Number,
+
+        @Json(name = "currency")
+        val currency: String
+)
+
+class ProposalPaymentRate(
+        @Json(name = "perSeconds")
+        val perSeconds: Number,
+
+        @Json(name = "perBytes")
+        val perBytes: Number
+)
 
 class ProposalsResponse(
         @Json(name = "proposals")

@@ -231,11 +231,22 @@ data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
         val countryName: TextView = holder.containerView.findViewById(R.id.proposal_item_country_name)
         val providerID: TextView = holder.containerView.findViewById(R.id.proposal_item_provider_id)
         val qualityLevel: ImageView = holder.containerView.findViewById(R.id.proposal_item_quality_level)
+        val nodeType: TextView = holder.containerView.findViewById(R.id.proposal_item_provider_node_type)
+        val price: TextView = holder.containerView.findViewById(R.id.proposal_item_price)
 
         countryFlag.setImageBitmap(item.countryFlagImage)
         countryName.text = item.countryName
         providerID.text = item.providerID
         qualityLevel.setImageResource(item.qualityResID)
+        nodeType.text = when(item.nodeType) {
+            NodeType.ALL -> "(All)"
+            NodeType.BUSINESS -> "(Business)"
+            NodeType.CELLULAR -> "(Cellular)"
+            NodeType.HOSTING -> "(Hosting)"
+            NodeType.RESIDENTIAL -> "(Residential)"
+        }
+        // TODO: Migrate displayMoney, pricePerGiB, pricePerMinute methods.
+        price.text = "${item.payment.rate.perSeconds}/${item.payment.rate.perBytes}"
     }
 }
 

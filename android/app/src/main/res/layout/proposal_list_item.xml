@@ -8,30 +8,46 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/proposal_item_country_flag"
         android:src="@drawable/service_openvpn"
+        android:layout_alignParentLeft="true"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="14dp"
         android:layout_marginRight="10dp"
         app:riv_corner_radius="34dp" />
 
     <LinearLayout
-        android:paddingLeft="10dp"
+        android:id="@+id/proposal_item_main_layout"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:layout_toRightOf="@id/proposal_item_country_flag"
-        android:layout_toLeftOf="@id/proposal_item_quality_level"
-        android:layout_width="fill_parent"
+        android:layout_toLeftOf="@id/proposal_item_price"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/proposal_item_country_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Australia"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/proposal_item_country_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Australia"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/proposal_item_provider_node_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/ColorSecondary"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Residential"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/proposal_item_provider_id"
@@ -43,6 +59,16 @@
             android:text="0x01021001b8172e8b67f3e63af94b6ae1d5d39c61"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/proposal_item_price"
+        android:layout_toLeftOf="@+id/proposal_item_quality_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:text="0.01/0.1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     <ImageView
         android:id="@+id/proposal_item_quality_level"

@@ -21,6 +21,8 @@ import android.graphics.Bitmap
 import android.util.Log
 import network.mysterium.service.core.ProposalItem
 import network.mysterium.db.FavoriteProposal
+import network.mysterium.service.core.ProposalPayment
+import network.mysterium.service.core.ProposalPaymentPrice
 import network.mysterium.vpn.R
 
 class ProposalGroupViewItem constructor(
@@ -34,7 +36,8 @@ class ProposalViewItem constructor(
         val serviceType: ServiceType,
         val countryCode: String,
         val nodeType: NodeType,
-        val monitoringFailed: Boolean
+        val monitoringFailed: Boolean,
+        val payment: ProposalPayment
 ) {
     var countryFlagImage: Bitmap? = null
     var serviceTypeResID: Int = R.drawable.service_openvpn
@@ -61,7 +64,8 @@ class ProposalViewItem constructor(
                     serviceType = ServiceType.parse(proposal.serviceType),
                     countryCode = proposal.countryCode.toLowerCase(),
                     nodeType = NodeType.parse(proposal.nodeType),
-                    monitoringFailed = proposal.monitoringFailed
+                    monitoringFailed = proposal.monitoringFailed,
+                    payment = proposal.payment
             )
 
             if (Countries.bitmaps.contains(res.countryCode)) {
