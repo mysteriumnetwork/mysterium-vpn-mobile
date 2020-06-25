@@ -11,7 +11,7 @@
         android:src="@drawable/service_openvpn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="14dp"
         android:layout_marginRight="10dp"
         app:riv_corner_radius="34dp" />
@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:paddingStart="16dp"
         android:paddingTop="12dp"
         android:paddingEnd="16dp"
         android:paddingBottom="12dp"
