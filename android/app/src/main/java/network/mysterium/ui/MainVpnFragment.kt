@@ -62,6 +62,7 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesSentUnits: TextView
     private lateinit var vpnAccountBalanceLabel: TextView
     private lateinit var vpnAccountBalanceLayout: LinearLayout
+    private lateinit var vpnStatsLayout: ConstraintLayout
     private lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -94,6 +95,9 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
         vpnAccountBalanceLabel = root.findViewById(R.id.vpn_account_balance_label)
         vpnAccountBalanceLayout = root.findViewById(R.id.vpn_account_balance_layout)
+        vpnStatsLayout = root.findViewById(R.id.vpn_stats_layout)
+
+        vpnStatsLayout.visibility = View.INVISIBLE
 
         feedbackButton.setOnClickListener {
             val drawer = appContainer.drawerLayout
@@ -121,6 +125,11 @@ class MainVpnFragment : Fragment() {
         sharedViewModel.connectionState.observe(this, Observer {
             updateConnStateLabel(it)
             updateConnButtonState(it)
+            vpnStatsLayout.visibility = if (it == ConnectionState.CONNECTED) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
         })
 
         sharedViewModel.statistics.observe(this, Observer { updateStatsLabels(it) })
