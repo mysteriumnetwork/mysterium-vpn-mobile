@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-            app:title="@string/proposals_country_title"
+            app:title="@string/proposals_quality_filter_title"
             app:titleTextColor="@color/ColorWhite" />
     </com.google.android.material.appbar.AppBarLayout>
 

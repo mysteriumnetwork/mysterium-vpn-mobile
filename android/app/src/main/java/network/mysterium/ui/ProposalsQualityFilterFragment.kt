@@ -47,7 +47,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
         }
 
         resetBtn.setOnClickListener {
-            proposalsViewModel.applyQualityFilter(ProposalFilterQuality())
+            proposalsViewModel.applyQualityFilter(ProposalFilterQuality(QualityLevel.ANY, false))
             navigateTo(root, Screen.PROPOSALS)
         }
 

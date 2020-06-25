@@ -54,4 +54,8 @@
     <string name="proposals_filter_reset_btn">RESET</string>
     <string name="proposals_filter_quality_value_any">Any</string>
     <string name="proposals_quality_filter_include_unreachable">Include unreachable</string>
+    <string name="proposals_price_filter_title">Price filter</string>
+    <string name="proposals_quality_filter_title">Quality filter</string>
+    <string name="proposals_node_type_filter_title">Node IP type filter</string>
+    <string name="proposals_price_filter_apply_btn">APPLY</string>
 </resources>

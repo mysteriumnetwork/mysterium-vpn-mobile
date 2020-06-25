@@ -11,20 +11,96 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/proposals_country_filter_toolbar"
+            android:id="@+id/proposals_price_filter_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-            app:title="@string/proposals_country_title"
+            app:title="@string/proposals_price_filter_title"
             app:titleTextColor="@color/ColorWhite" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.button.MaterialButton
         android:text="@string/proposals_filter_reset_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:id="@+id/proposals_quality_filter_reset_btn"
+        android:id="@+id/proposals_price_filter_reset_btn"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </com.google.android.material.button.MaterialButton>
+
+    <com.google.android.material.button.MaterialButton
+        android:text="@string/proposals_price_filter_apply_btn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/proposals_price_filter_apply_btn"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.material.button.MaterialButton>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Price/minute:">
+        </TextView>
+
+        <TextView
+            android:id="@+id/proposals_price_per_minute_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="0.0001 or less"
+            android:textStyle="bold"></TextView>
+    </LinearLayout>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/proposals_price_per_minute_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:value="8.09"
+        android:stepSize="1000"
+        android:valueFrom="0.0"
+        android:valueTo="11.0" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Price/GiB:">
+        </TextView>
+
+        <TextView
+            android:id="@+id/proposals_price_per_gib_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="0.0005 or less"
+            android:textStyle="bold"></TextView>
+    </LinearLayout>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/proposals_price_per_gib_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:value="8.09"
+        android:stepSize="1"
+        android:valueFrom="0.0"
+        android:valueTo="11.0" />
+
 </LinearLayout>

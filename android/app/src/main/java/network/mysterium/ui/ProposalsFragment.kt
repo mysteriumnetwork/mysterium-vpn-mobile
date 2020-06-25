@@ -86,7 +86,7 @@ class ProposalsFragment : Fragment() {
         }
 
         proposalsFilterPrice.setOnClickListener {
-            navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
+            navigateTo(root, Screen.PROPOSALS_PRICE_FILTER)
         }
 
         proposalsFilterQuality.setOnClickListener {

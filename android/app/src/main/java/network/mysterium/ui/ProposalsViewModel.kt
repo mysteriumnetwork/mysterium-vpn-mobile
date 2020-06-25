@@ -88,12 +88,12 @@ enum class NodeType(val nodeType: String) {
 }
 
 class ProposalsFilter(
-        var searchText: String = "",
-        var country: ProposalFilterCountry = ProposalFilterCountry(),
-        var quality: ProposalFilterQuality = ProposalFilterQuality(),
-        var nodeType: NodeType = NodeType.ALL,
-        var pricePerMinute: Double = 0.0,
-        var pricePerGiB: Double = 0.0
+        var searchText: String,
+        var country: ProposalFilterCountry,
+        var quality: ProposalFilterQuality,
+        var nodeType: NodeType,
+        var pricePerMinute: Double,
+        var pricePerGiB: Double
 )
 
 class ProposalFilterCountry(
@@ -104,18 +104,48 @@ class ProposalFilterCountry(
 }
 
 class ProposalFilterQuality(
-        var level: QualityLevel = QualityLevel.HIGH,
-        var qualityIncludeUnreachable: Boolean = false
+        var level: QualityLevel,
+        var qualityIncludeUnreachable: Boolean
 ) {
 }
 
+class PriceSettings(
+        var defaultPricePerMinute: Double,
+        var defaultPricePerGiB: Double,
+        val perMinuteMax: Double,
+        val perGibMax: Double,
+        val tolerance: Double
+)
+
 class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private val nodeRepository: NodeRepository, private val appDatabase: AppDatabase) : ViewModel() {
-    var filter = ProposalsFilter()
+    val filter: ProposalsFilter
+    val priceSettings: PriceSettings
     var initialProposalsLoaded = MutableLiveData<Boolean>()
 
     private var favoriteProposals: MutableMap<String, FavoriteProposal> = mutableMapOf()
     private var allProposals: List<ProposalViewItem> = listOf()
     private val proposals = MutableLiveData<List<ProposalGroupViewItem>>()
+
+    init {
+        priceSettings = PriceSettings(
+                defaultPricePerMinute = 50_000.0,
+                defaultPricePerGiB = 15_000_000.0,
+                perMinuteMax =  100_000.0,
+                perGibMax = 50_000_000.0,
+                tolerance = 500.0
+        )
+        filter = ProposalsFilter(
+                searchText = "",
+                country = ProposalFilterCountry(),
+                quality = ProposalFilterQuality(
+                        level = QualityLevel.HIGH,
+                        qualityIncludeUnreachable = false
+                ),
+                nodeType = NodeType.ALL,
+                pricePerMinute = priceSettings.defaultPricePerMinute,
+                pricePerGiB = priceSettings.defaultPricePerGiB
+        )
+    }
 
     suspend fun load() {
         favoriteProposals = loadFavoriteProposals()
@@ -148,6 +178,16 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     fun applyQualityFilter(quality: ProposalFilterQuality) {
         filter.quality = quality
+        proposals.value = applyFilter(filter, allProposals)
+    }
+
+    fun applyPricePerMinFilter(price: Double) {
+        filter.pricePerMinute = price
+        proposals.value = applyFilter(filter, allProposals)
+    }
+
+    fun applyPricePerGiBFilter(price: Double) {
+        filter.pricePerGiB = price
         proposals.value = applyFilter(filter, allProposals)
     }
 
@@ -196,7 +236,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     }
 
     fun proposalsNodeTypes(): List<NodeType> {
-        val list = allProposals.groupBy { it.countryCode }
         return listOf(
                 NodeType.ALL,
                 NodeType.RESIDENTIAL,
@@ -208,9 +247,9 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     fun proposalsQualities(): List<ProposalFilterQuality> {
         return listOf(
-                ProposalFilterQuality(QualityLevel.HIGH),
-                ProposalFilterQuality(QualityLevel.MEDIUM),
-                ProposalFilterQuality(QualityLevel.ANY)
+                ProposalFilterQuality(QualityLevel.HIGH, false),
+                ProposalFilterQuality(QualityLevel.MEDIUM, false),
+                ProposalFilterQuality(QualityLevel.ANY, false)
         )
     }
 
@@ -293,6 +332,24 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                         else -> it.countryCode == filter.country.code
                     }
                 }
+                // Filter by price per minute.
+                .filter {
+                    fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
+                        val price = PriceUtils.pricePerMinute(v.payment)
+                        val maxPrice = filter.pricePerMinute + priceSettings.tolerance
+                        return price.amount <= maxPrice
+                    }
+                    filterPricePerMinute(filter, it)
+                }
+                // Filter by price per GiB.
+                .filter {
+                    fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
+                        val price = PriceUtils.pricePerGiB(v.payment)
+                        val maxPrice = filter.pricePerGiB + priceSettings.tolerance
+                        return price.amount <= maxPrice
+                    }
+                    filterPricePerMinute(filter, it)
+                }
                 // Filter by search value.
                 .filter {
                     when (filter.searchText) {
@@ -315,7 +372,9 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         return groups
     }
 
+
     companion object {
         const val TAG: String = "ProposalsViewModel"
     }
 }
+
