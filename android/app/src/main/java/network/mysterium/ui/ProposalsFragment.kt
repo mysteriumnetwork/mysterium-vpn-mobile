@@ -140,7 +140,7 @@ class ProposalsFragment : Fragment() {
         }
 
         // Subscribe to proposals changes.
-        proposalsViewModel.getProposals().observe(this, Observer { newItems ->
+        proposalsViewModel.getFilteredProposals().observe(this, Observer { newItems ->
             listAdapter.submitList(createProposalItemsWithGroups(newItems))
             listAdapter.notifyDataSetChanged()
 
@@ -164,8 +164,9 @@ class ProposalsFragment : Fragment() {
         })
     }
 
-    private fun createProposalItemsWithGroups(groups: List<ProposalGroupViewItem>): MutableList<BaseItem> {
+    private fun createProposalItemsWithGroups(proposals: List<ProposalViewItem>): MutableList<BaseItem> {
         val itemsWithHeaders = mutableListOf<BaseItem>()
+        val groups = proposalsViewModel.groupedProposals(proposals)
         groups.forEach { group ->
             itemsWithHeaders.add(ProposalHeaderItem(group.title))
             group.children.forEach { proposal ->

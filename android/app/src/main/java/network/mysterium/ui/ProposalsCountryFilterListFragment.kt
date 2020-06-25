@@ -84,8 +84,10 @@ data class CountryItem(val country: ProposalFilterCountry) : BaseItem() {
         super.bind(holder)
         val countryText: TextView = holder.containerView.findViewById(R.id.proposal_filter_country_text)
         val countryImg: RoundedImageView = holder.containerView.findViewById(R.id.proposal_filter_country_img)
+        val proposalsCount: TextView = holder.containerView.findViewById(R.id.proposal_filter_country_proposals_count_text)
 
         countryText.text = country.name
         countryImg.setImageBitmap(country.flagImage)
+        proposalsCount.text = "(${country.proposalsCount})"
     }
 }

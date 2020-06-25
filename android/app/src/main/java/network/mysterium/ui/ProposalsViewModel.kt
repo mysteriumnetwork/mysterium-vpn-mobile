@@ -99,13 +99,15 @@ class ProposalsFilter(
 class ProposalFilterCountry(
         val code: String = "",
         val name: String = "",
-        val flagImage: Bitmap? = null
+        val flagImage: Bitmap? = null,
+        val proposalsCount: Int = 0
 ) {
 }
 
 class ProposalFilterQuality(
         var level: QualityLevel,
-        var qualityIncludeUnreachable: Boolean
+        var qualityIncludeUnreachable: Boolean,
+        val proposalsCount: Int = 0
 ) {
 }
 
@@ -124,7 +126,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private var favoriteProposals: MutableMap<String, FavoriteProposal> = mutableMapOf()
     private var allProposals: List<ProposalViewItem> = listOf()
-    private val proposals = MutableLiveData<List<ProposalGroupViewItem>>()
+    private val filteredProposals = MutableLiveData<List<ProposalViewItem>>()
 
     init {
         priceSettings = PriceSettings(
@@ -152,8 +154,8 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         loadInitialProposals(false, favoriteProposals)
     }
 
-    fun getProposals(): LiveData<List<ProposalGroupViewItem>> {
-        return proposals
+    fun getFilteredProposals(): LiveData<List<ProposalViewItem>> {
+        return filteredProposals
     }
 
     fun filterBySearchText(value: String) {
@@ -163,32 +165,32 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
 
         filter.searchText = searchText
-        proposals.value = applyFilter(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun applyCountryFilter(country: ProposalFilterCountry) {
         filter.country = country
-        proposals.value = applyFilter(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun applyNodeTypeFilter(nodeType: NodeType) {
         filter.nodeType = nodeType
-        proposals.value = applyFilter(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun applyQualityFilter(quality: ProposalFilterQuality) {
         filter.quality = quality
-        proposals.value = applyFilter(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun applyPricePerMinFilter(price: Double) {
         filter.pricePerMinute = price
-        proposals.value = applyFilter(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun applyPricePerGiBFilter(price: Double) {
         filter.pricePerGiB = price
-        proposals.value = applyFilter(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun refreshProposals(done: () -> Unit) {
@@ -222,16 +224,16 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
             proposal.toggleFavorite()
             val newProposals = applyFilter(filter, allProposals)
-            proposals.value = newProposals
+            filteredProposals.value = newProposals
             done(proposal)
         }
     }
 
     fun proposalsCountries(): List<ProposalFilterCountry> {
-        val list = allProposals.groupBy { it.countryCode }
+        val list = filteredProposals.value!!.groupBy { it.countryCode }
         return list.keys.sortedBy { it }.map {
-            val proposal = list.getValue(it)[0]
-            ProposalFilterCountry(it, proposal.countryName, proposal.countryFlagImage)
+            val proposals = list.getValue(it)
+            ProposalFilterCountry(it, proposals[0].countryName, proposals[0].countryFlagImage, proposals.size)
         }
     }
 
@@ -251,6 +253,18 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 ProposalFilterQuality(QualityLevel.MEDIUM, false),
                 ProposalFilterQuality(QualityLevel.ANY, false)
         )
+    }
+
+    fun groupedProposals(proposals: List<ProposalViewItem>): List<ProposalGroupViewItem> {
+        val favorite = proposals.filter { it.isFavorite }
+        val groups = mutableListOf<ProposalGroupViewItem>()
+        if (favorite.count() > 0) {
+            val favoriteGroup = ProposalGroupViewItem("Favorite (${favorite.count()})", favorite)
+            groups.add(favoriteGroup)
+        }
+        val allGroup = ProposalGroupViewItem("All (${proposals.count()})", proposals)
+        groups.add(allGroup)
+        return groups
     }
 
     private suspend fun loadFavoriteProposals(): MutableMap<String, FavoriteProposal> {
@@ -293,17 +307,17 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                     .filter { it.countryCode != "" }
                     .map { ProposalViewItem.parse(it, favoriteProposals) }
 
-            proposals.value = applyFilter(filter, allProposals)
+            filteredProposals.value = applyFilter(filter, allProposals)
             initialProposalsLoaded.value = true
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to load initial proposals", e)
-            proposals.value = listOf()
+            Log.e(TAG, "Failed to load initial filteredProposals", e)
+            filteredProposals.value = listOf()
             initialProposalsLoaded.value = false
         }
     }
 
-    private fun applyFilter(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalGroupViewItem> {
-        val filteredProposals = allProposals.asSequence()
+    private fun applyFilter(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalViewItem> {
+        return allProposals.asSequence()
                 // Filter by node type.
                 .filter {
                     when (filter.nodeType) {
@@ -361,15 +375,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 .sortedWith(compareBy({ it.countryName }, { it.id }))
                 .toList()
 
-        val favorite = filteredProposals.filter { it.isFavorite }
-        val groups = mutableListOf<ProposalGroupViewItem>()
-        if (favorite.count() > 0) {
-            val favoriteGroup = ProposalGroupViewItem("Favorite (${favorite.count()})", favorite)
-            groups.add(favoriteGroup)
-        }
-        val allGroup = ProposalGroupViewItem("All (${filteredProposals.count()})", filteredProposals)
-        groups.add(allGroup)
-        return groups
     }
 
 
