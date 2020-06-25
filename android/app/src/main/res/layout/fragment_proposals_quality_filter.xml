@@ -38,8 +38,8 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <CheckBox
-        android:text="@string/proposals_quality_filter_include_failed"
-        android:id="@+id/proposals_quality_filter_include_failed"
+        android:text="@string/proposals_quality_filter_include_unreachable"
+        android:id="@+id/proposals_quality_filter_include_unreachable"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_width="match_parent"

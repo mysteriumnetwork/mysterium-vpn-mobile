@@ -18,6 +18,7 @@
 package network.mysterium.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -245,8 +246,11 @@ data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
             NodeType.HOSTING -> "(Hosting)"
             NodeType.RESIDENTIAL -> "(Residential)"
         }
+        Log.i("ProposalItem", "perSeconds ${item.payment.rate.perSeconds}, perBytes ${item.payment.rate.perBytes}, price ${item.payment.price.amount}")
         // TODO: Migrate displayMoney, pricePerGiB, pricePerMinute methods.
-        price.text = "${item.payment.rate.perSeconds}/${item.payment.rate.perBytes}"
+        val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerMinute(item.payment))
+        val pricePerGiB = PriceUtils.displayMoney(PriceUtils.pricePerGiB(item.payment))
+        price.text = "$pricePerMinute min /$pricePerGiB GiB"
     }
 }
 

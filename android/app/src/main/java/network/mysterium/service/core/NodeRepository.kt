@@ -26,24 +26,24 @@ class ProposalItem(
         val monitoringFailed: Boolean,
 
         @Json(name = "payment")
-        val payment: ProposalPayment
+        val payment: ProposalPaymentMethod
 ) {
 }
 
-class ProposalPayment(
+class ProposalPaymentMethod(
         @Json(name = "type")
         val type: String,
 
         @Json(name = "price")
-        val price: ProposalPaymentPrice,
+        val price: ProposalPaymentMoney,
 
         @Json(name = "rate")
         val rate: ProposalPaymentRate
 )
 
-class ProposalPaymentPrice(
+class ProposalPaymentMoney(
         @Json(name = "amount")
-        val amount: Number,
+        val amount: Double,
 
         @Json(name = "currency")
         val currency: String
@@ -51,10 +51,10 @@ class ProposalPaymentPrice(
 
 class ProposalPaymentRate(
         @Json(name = "perSeconds")
-        val perSeconds: Number,
+        val perSeconds: Long,
 
         @Json(name = "perBytes")
-        val perBytes: Number
+        val perBytes: Long
 )
 
 class ProposalsResponse(

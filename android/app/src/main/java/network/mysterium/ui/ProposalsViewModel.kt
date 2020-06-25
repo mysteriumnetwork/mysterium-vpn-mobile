@@ -210,7 +210,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         return listOf(
                 ProposalFilterQuality(QualityLevel.HIGH),
                 ProposalFilterQuality(QualityLevel.MEDIUM),
-                ProposalFilterQuality(QualityLevel.LOW),
                 ProposalFilterQuality(QualityLevel.ANY)
         )
     }
@@ -240,7 +239,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
         try {
-            // TODO: Add other filter values.
             val req = GetProposalsRequest()
             req.refresh = refresh
             req.includeFailed = true
@@ -278,7 +276,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 .filter {
                     when (filter.quality.level) {
                         QualityLevel.ANY -> true
-                        else -> it.qualityLevel == filter.quality.level
+                        else -> filter.quality.level <= it.qualityLevel
                     }
                 }
                 // Filter by unreachable nodes.

@@ -39,7 +39,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
 
         toolbar = root.findViewById(R.id.proposals_quality_filter_toolbar)
         resetBtn = root.findViewById(R.id.proposals_quality_filter_reset_btn)
-        proposalsQualityFilterIncludeFailed = root.findViewById(R.id.proposals_quality_filter_include_failed)
+        proposalsQualityFilterIncludeFailed = root.findViewById(R.id.proposals_quality_filter_include_unreachable)
 
         toolbar.setNavigationOnClickListener {
             hideKeyboard(root)
@@ -96,7 +96,7 @@ data class QualityItem(val quality: ProposalFilterQuality) : BaseItem() {
         text.text = when(quality.level) {
             QualityLevel.ANY -> "Any"
             QualityLevel.HIGH -> "High"
-            QualityLevel.MEDIUM -> "Medium"
+            QualityLevel.MEDIUM -> "Medium+"
             QualityLevel.LOW -> "Low"
         }
     }
