@@ -70,7 +70,8 @@ class ProposalResponse(
 class Statistics(
         val duration: Long,
         val bytesReceived: Long,
-        val bytesSent: Long
+        val bytesSent: Long,
+        val tokensSpent: Long
 )
 
 class Location(
@@ -126,8 +127,8 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     // Register statistics callback.
     suspend fun registerStatisticsChangeCallback(cb: (stats: Statistics) -> Unit) {
-        deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent ->
-            cb(Statistics(duration, bytesReceived, bytesSent))
+        deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
+            cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
         }
     }
 

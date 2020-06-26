@@ -33,6 +33,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
+import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.ui.list.BaseItem
 import network.mysterium.ui.list.BaseListAdapter
 import network.mysterium.ui.list.BaseViewHolder
@@ -198,6 +199,11 @@ class ProposalsFragment : Fragment() {
             }
         }
 
+        // Price filter value.
+        val pricePerMinute = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerMinute, currency = "MYSTT"))
+        val pricePerGiB = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerGiB, currency = "MYSTT"))
+        proposalsFilterPriceValue.text = "${pricePerMinute}min/${pricePerGiB}GiB"
+
         // Node(IP) type filter value.
         proposalsFilterNodeTypeValue.text = when(filter.nodeType) {
             NodeType.ALL -> "All"
@@ -247,11 +253,9 @@ data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
             NodeType.HOSTING -> "(Hosting)"
             NodeType.RESIDENTIAL -> "(Residential)"
         }
-        Log.i("ProposalItem", "perSeconds ${item.payment.rate.perSeconds}, perBytes ${item.payment.rate.perBytes}, price ${item.payment.price.amount}")
-        // TODO: Migrate displayMoney, pricePerGiB, pricePerMinute methods.
         val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerMinute(item.payment))
         val pricePerGiB = PriceUtils.displayMoney(PriceUtils.pricePerGiB(item.payment))
-        price.text = "$pricePerMinute min /$pricePerGiB GiB"
+        price.text = "${pricePerMinute}min/${pricePerGiB}GiB"
     }
 }
 

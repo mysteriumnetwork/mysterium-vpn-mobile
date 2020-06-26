@@ -36,6 +36,7 @@ import network.mysterium.AppContainer
 import network.mysterium.service.core.ConnectInsufficientBalanceException
 import network.mysterium.service.core.ConnectInvalidProposalException
 import network.mysterium.service.core.MysteriumCoreService
+import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
@@ -60,6 +61,7 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesReceivedLabel: TextView
     private lateinit var vpnStatsBytesReceivedUnits: TextView
     private lateinit var vpnStatsBytesSentUnits: TextView
+    private lateinit var vpnStatsPaid: TextView
     private lateinit var vpnAccountBalanceLabel: TextView
     private lateinit var vpnAccountBalanceLayout: LinearLayout
     private lateinit var vpnStatsLayout: ConstraintLayout
@@ -93,11 +95,13 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
         vpnStatsBytesReceivedUnits = root.findViewById(R.id.vpn_stats_bytes_received_units)
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
+        vpnStatsPaid = root.findViewById(R.id.vpn_stats_paid)
         vpnAccountBalanceLabel = root.findViewById(R.id.vpn_account_balance_label)
         vpnAccountBalanceLayout = root.findViewById(R.id.vpn_account_balance_layout)
         vpnStatsLayout = root.findViewById(R.id.vpn_stats_layout)
 
-        vpnStatsLayout.visibility = View.INVISIBLE
+        // TODO: Hide
+        // vpnStatsLayout.visibility = View.INVISIBLE
 
         feedbackButton.setOnClickListener {
             val drawer = appContainer.drawerLayout
@@ -175,6 +179,12 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesReceivedUnits.text = stats.bytesReceived.units
         vpnStatsBytesSentLabel.text = stats.bytesSent.value
         vpnStatsBytesSentUnits.text = stats.bytesSent.units
+
+        val tokensSpent = PriceUtils.displayMoney(
+                ProposalPaymentMoney(amount = stats.tokensSpent, currency = "MYSTT"),
+                DisplayMoneyOptions(fractionDigits = 3, showCurrency = false)
+        )
+        vpnStatsPaid.text = tokensSpent
     }
 
     private fun updateConnStateLabel(state: ConnectionState) {

@@ -27,10 +27,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.NodeRepository
-import network.mysterium.service.core.Statistics
-import network.mysterium.service.core.Status
+import network.mysterium.service.core.*
 
 enum class ConnectionState(val type: String) {
     UNKNOWN("Unknown"),
@@ -54,14 +51,16 @@ class LocationModel(
 class StatisticsModel(
         val duration: String,
         val bytesReceived: FormattedBytesViewItem,
-        val bytesSent: FormattedBytesViewItem
+        val bytesSent: FormattedBytesViewItem,
+        val tokensSpent: Double
 ) {
     companion object {
         fun from(stats: Statistics): StatisticsModel {
             return StatisticsModel(
                     duration = UnitFormatter.timeDisplay(stats.duration),
                     bytesReceived = UnitFormatter.bytesDisplay(stats.bytesReceived),
-                    bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent)
+                    bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent),
+                    tokensSpent = stats.tokensSpent.toDouble()
             )
         }
     }
@@ -214,7 +213,11 @@ class SharedViewModel(
             if (selectedProposal.value != null && isConnected()) {
                 val countryName = selectedProposal.value?.countryName
                 val notificationTitle = "Connected to $countryName"
-                val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"
+                val tokensSpent = PriceUtils.displayMoney(
+                        ProposalPaymentMoney(amount = s.tokensSpent, currency = "MYSTT"),
+                        DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
+                )
+                val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units} | Paid $tokensSpent"
                 notificationManager.showStatisticsNotification(notificationTitle, notificationContent)
             }
         }
@@ -236,7 +239,7 @@ class SharedViewModel(
     }
 
     private fun resetStatistics() {
-        statistics.value = StatisticsModel.from(Statistics(0, 0, 0))
+        statistics.value = StatisticsModel.from(Statistics(0, 0, 0, 0))
     }
 
     companion object {
