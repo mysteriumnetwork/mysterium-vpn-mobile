@@ -1,5 +1,6 @@
 package network.mysterium.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +57,10 @@ class ProposalsNodeTypeFilterListFragment : Fragment() {
     }
 
     private fun initList(root: View) {
-        val listItems = proposalsViewModel.proposalsNodeTypes().map { NodeTypeItem(it) }
+        val listItems = proposalsViewModel.proposalsNodeTypes().map {
+            val selected = proposalsViewModel.filter.nodeType == it
+            NodeTypeItem(root.context, it, selected)
+        }
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as NodeTypeItem?
             if (item != null) {
@@ -73,7 +77,7 @@ class ProposalsNodeTypeFilterListFragment : Fragment() {
     }
 }
 
-data class NodeTypeItem(val nodeType: NodeType) : BaseItem() {
+data class NodeTypeItem(val ctx: Context, val nodeType: NodeType, val selected: Boolean) : BaseItem() {
 
     override val layoutId = R.layout.proposal_filter_node_type_item
 
@@ -83,11 +87,14 @@ data class NodeTypeItem(val nodeType: NodeType) : BaseItem() {
         super.bind(holder)
         val text: TextView = holder.containerView.findViewById(R.id.proposal_node_type_filter_item_text)
         text.text = when(nodeType) {
-            NodeType.ALL -> "All"
-            NodeType.BUSINESS -> "Business"
-            NodeType.CELLULAR -> "Cellular"
-            NodeType.HOSTING -> "Hosting"
-            NodeType.RESIDENTIAL -> "Residential"
+            NodeType.ALL -> ctx.getString(R.string.node_type_all)
+            NodeType.BUSINESS -> ctx.getString(R.string.node_type_business)
+            NodeType.CELLULAR -> ctx.getString(R.string.node_type_cellular)
+            NodeType.HOSTING -> ctx.getString(R.string.node_type_hosting)
+            NodeType.RESIDENTIAL -> ctx.getString(R.string.node_type_residential)
+        }
+        if (selected) {
+            text.setTextColor(ctx.getColor(R.color.ColorMain))
         }
     }
 }

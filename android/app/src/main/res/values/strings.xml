@@ -60,4 +60,13 @@
     <string name="proposals_price_filter_apply_btn">APPLY</string>
     <string name="feedback_app_version">App version: </string>
     <string name="feedback_node_version">Node version: </string>
+    <string name="node_type_all">All</string>
+    <string name="node_type_business">Business</string>
+    <string name="node_type_cellular">Cellular</string>
+    <string name="node_type_hosting">Hosting</string>
+    <string name="node_type_residential">Residential</string>
+    <string name="quality_level_any">Any</string>
+    <string name="quality_level_high">High</string>
+    <string name="quality_level_medium">Medium+</string>
+    <string name="quality_level_low">Low</string>
 </resources>

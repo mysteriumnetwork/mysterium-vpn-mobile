@@ -1,5 +1,6 @@
 package network.mysterium.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +58,10 @@ class ProposalsCountryFilterList : Fragment() {
     }
 
     private fun initList(root: View) {
-        val listItems = proposalsViewModel.proposalsCountries().map { CountryItem(it) }
+        val listItems = proposalsViewModel.proposalsCountries().map {
+            val selected = proposalsViewModel.filter.country.code == it.code
+            CountryItem(root.context, it, selected)
+        }
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as CountryItem?
             if (item != null) {
@@ -74,7 +78,7 @@ class ProposalsCountryFilterList : Fragment() {
     }
 }
 
-data class CountryItem(val country: ProposalFilterCountry) : BaseItem() {
+data class CountryItem(val ctx: Context, val country: ProposalFilterCountry, val selected: Boolean) : BaseItem() {
 
     override val layoutId = R.layout.proposal_filter_country_item
 
@@ -89,5 +93,8 @@ data class CountryItem(val country: ProposalFilterCountry) : BaseItem() {
         countryText.text = country.name
         countryImg.setImageBitmap(country.flagImage)
         proposalsCount.text = "(${country.proposalsCount})"
+        if (selected) {
+            countryText.setTextColor(ctx.getColor(R.color.ColorMain))
+        }
     }
 }

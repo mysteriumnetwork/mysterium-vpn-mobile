@@ -1,5 +1,6 @@
 package network.mysterium.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +68,10 @@ class ProposalsQualityFilterListFragment : Fragment() {
     }
 
     private fun initList(root: View) {
-        val listItems = proposalsViewModel.proposalsQualities().map { QualityItem(it) }
+        val listItems = proposalsViewModel.proposalsQualities().map {
+            val selected = proposalsViewModel.filter.quality.level == it.level
+            QualityItem(root.context, it, selected)
+        }
         listAdapter = BaseListAdapter { clicked ->
             val item = clicked as QualityItem?
             if (item != null) {
@@ -84,7 +88,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
     }
 }
 
-data class QualityItem(val quality: ProposalFilterQuality) : BaseItem() {
+data class QualityItem(val ctx: Context, val quality: ProposalFilterQuality, val selected: Boolean) : BaseItem() {
 
     override val layoutId = R.layout.proposal_filter_quality_item
 
@@ -94,10 +98,13 @@ data class QualityItem(val quality: ProposalFilterQuality) : BaseItem() {
         super.bind(holder)
         val text: TextView = holder.containerView.findViewById(R.id.proposal_quality_filter_item_text)
         text.text = when(quality.level) {
-            QualityLevel.ANY -> "Any"
-            QualityLevel.HIGH -> "High"
-            QualityLevel.MEDIUM -> "Medium+"
-            QualityLevel.LOW -> "Low"
+            QualityLevel.ANY -> ctx.getString(R.string.quality_level_any)
+            QualityLevel.HIGH -> ctx.getString(R.string.quality_level_high)
+            QualityLevel.MEDIUM -> ctx.getString(R.string.quality_level_medium)
+            QualityLevel.LOW -> ctx.getString(R.string.quality_level_low)
+        }
+        if (selected) {
+            text.setTextColor(ctx.getColor(R.color.ColorMain))
         }
     }
 }

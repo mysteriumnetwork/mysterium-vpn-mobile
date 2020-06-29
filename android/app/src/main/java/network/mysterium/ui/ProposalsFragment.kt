@@ -17,8 +17,8 @@
 
 package network.mysterium.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -141,7 +141,7 @@ class ProposalsFragment : Fragment() {
 
         // Subscribe to proposals changes.
         proposalsViewModel.getFilteredProposals().observe(this, Observer { newItems ->
-            listAdapter.submitList(createProposalItemsWithGroups(newItems))
+            listAdapter.submitList(createProposalItemsWithGroups(root, newItems))
             listAdapter.notifyDataSetChanged()
 
             // Hide progress bar once proposals are loaded.
@@ -164,13 +164,13 @@ class ProposalsFragment : Fragment() {
         })
     }
 
-    private fun createProposalItemsWithGroups(proposals: List<ProposalViewItem>): MutableList<BaseItem> {
+    private fun createProposalItemsWithGroups(root: View, proposals: List<ProposalViewItem>): MutableList<BaseItem> {
         val itemsWithHeaders = mutableListOf<BaseItem>()
         val groups = proposalsViewModel.groupedProposals(proposals)
         groups.forEach { group ->
             itemsWithHeaders.add(ProposalHeaderItem(group.title))
             group.children.forEach { proposal ->
-                itemsWithHeaders.add(ProposalItem(proposal))
+                itemsWithHeaders.add(ProposalItem(root.context, proposal))
             }
         }
         return itemsWithHeaders
@@ -191,10 +191,10 @@ class ProposalsFragment : Fragment() {
             proposalsFilterQualityValue.text = getString(R.string.proposals_filter_quality_value_any)
         } else {
             proposalsFilterQualityValue.text = when(filter.quality.level) {
-                QualityLevel.ANY -> "Any"
-                QualityLevel.HIGH -> "High"
-                QualityLevel.MEDIUM -> "Medium"
-                QualityLevel.LOW -> "Low"
+                QualityLevel.ANY -> getString(R.string.quality_level_any)
+                QualityLevel.HIGH -> getString(R.string.quality_level_high)
+                QualityLevel.MEDIUM -> getString(R.string.quality_level_medium)
+                QualityLevel.LOW -> getString(R.string.quality_level_low)
             }
         }
 
@@ -205,11 +205,11 @@ class ProposalsFragment : Fragment() {
 
         // Node(IP) type filter value.
         proposalsFilterNodeTypeValue.text = when(filter.nodeType) {
-            NodeType.ALL -> "All"
-            NodeType.BUSINESS -> "Business"
-            NodeType.CELLULAR -> "Cellular"
-            NodeType.HOSTING -> "Hosting"
-            NodeType.RESIDENTIAL -> "Residential"
+            NodeType.ALL -> getString(R.string.node_type_all)
+            NodeType.BUSINESS -> getString(R.string.node_type_business)
+            NodeType.CELLULAR -> getString(R.string.node_type_cellular)
+            NodeType.HOSTING -> getString(R.string.node_type_hosting)
+            NodeType.RESIDENTIAL -> getString(R.string.node_type_residential)
         }
     }
 
@@ -225,7 +225,7 @@ class ProposalsFragment : Fragment() {
     }
 }
 
-data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
+data class ProposalItem(val ctx: Context, val item: ProposalViewItem) : BaseItem() {
 
     override val layoutId = R.layout.proposal_list_item
 
@@ -246,11 +246,11 @@ data class ProposalItem(val item: ProposalViewItem) : BaseItem() {
         providerID.text = item.providerID
         qualityLevel.setImageResource(item.qualityResID)
         nodeType.text = when(item.nodeType) {
-            NodeType.ALL -> "(All)"
-            NodeType.BUSINESS -> "(Business)"
-            NodeType.CELLULAR -> "(Cellular)"
-            NodeType.HOSTING -> "(Hosting)"
-            NodeType.RESIDENTIAL -> "(Residential)"
+            NodeType.ALL -> "(${ctx.getString(R.string.node_type_all)})"
+            NodeType.BUSINESS -> "(${ctx.getString(R.string.node_type_business)})"
+            NodeType.CELLULAR -> "(${ctx.getString(R.string.node_type_cellular)})"
+            NodeType.HOSTING -> "(${ctx.getString(R.string.node_type_hosting)})"
+            NodeType.RESIDENTIAL -> "(${ctx.getString(R.string.node_type_residential)})"
         }
         val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerMinute(item.payment))
         val pricePerGiB = PriceUtils.displayMoney(PriceUtils.pricePerGiB(item.payment))
