@@ -12,7 +12,7 @@
 
     <string name="vpn_stats_paid">PAID</string>
     <string name="vpn_stats_bytes">B</string>
-    <string name="vpn_stats_send_received">SENT/RECEIVED</string>
+    <string name="vpn_stats_send_received">SENT / RECEIVED</string>
     <string name="vpn_stats_duration">DURATION</string>
     <string name="vpn_select_proposal">Select proposal...</string>
     <string name="vpn_ip_updating_label">IP: Updating</string>

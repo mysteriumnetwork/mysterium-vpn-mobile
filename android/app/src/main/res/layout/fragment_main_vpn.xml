@@ -289,19 +289,19 @@
                 android:text="@string/vpn_stats_send_received" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/vpn_stats_bytes_received"
                     style="@style/VpnStatsValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:text="0" />
 
                 <TextView
-                    android:text="/"
+                    android:text=" / "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </TextView>
@@ -309,24 +309,25 @@
                 <TextView
                     android:id="@+id/vpn_stats_bytes_sent"
                     style="@style/VpnStatsValue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/vpn_stats_bytes_received_units"
                     style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/vpn_stats_bytes" />
 
                 <TextView
-                    android:text="/"
+                    android:text=" / "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </TextView>
@@ -334,7 +335,7 @@
                 <TextView
                     android:id="@+id/vpn_stats_bytes_sent_units"
                     style="@style/VpnStatsLabel"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/vpn_stats_bytes" />
             </LinearLayout>
