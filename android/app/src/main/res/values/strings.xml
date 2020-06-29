@@ -58,4 +58,6 @@
     <string name="proposals_quality_filter_title">Quality filter</string>
     <string name="proposals_node_type_filter_title">Node IP type filter</string>
     <string name="proposals_price_filter_apply_btn">APPLY</string>
+    <string name="feedback_app_version">App version: </string>
+    <string name="feedback_node_version">Node version: </string>
 </resources>

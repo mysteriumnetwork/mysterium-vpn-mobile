@@ -95,6 +95,10 @@ class IdentityRegistrationFees(
         val fee: Long
 )
 
+class HealthData(
+        val version: String
+)
+
 class ConnectUnknownException(message: String) : Exception(message)
 class ConnectInvalidProposalException(message: String) : Exception(message)
 class ConnectInsufficientBalanceException(message: String) : Exception(message)
@@ -208,6 +212,13 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     suspend fun balance(req: GetBalanceRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().getBalance(req)
         res.balance
+    }
+
+    suspend fun healthCheck() = withContext(Dispatchers.IO) {
+        val hz = deferredNode.await().healthCheck()
+        HealthData(
+                version = hz.version
+        )
     }
 
     // Send user feedback.

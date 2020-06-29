@@ -44,4 +44,9 @@ class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel()
     fun setEmail(email: String) {
         this.email = email
     }
+
+    suspend fun nodeVersion(): String {
+        val hz = nodeRepository.healthCheck()
+        return hz.version
+    }
 }

@@ -22,6 +22,7 @@ class ProposalsPriceFilterFragment : Fragment() {
     private lateinit var proposalsPricePerGibSlider: Slider
     private lateinit var proposalsPricePerMinuteValue: TextView
     private lateinit var proposalsPricePerGibValue: TextView
+    private val filterSteps: Int = 10
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -48,7 +49,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         proposalsPricePerMinuteSlider.valueTo = priceSettings.perMinuteMax.toFloat()
         proposalsPricePerMinuteSlider.value = proposalsViewModel.filter.pricePerMinute.toFloat()
         proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerMinute)
-        proposalsPricePerMinuteSlider.stepSize = (priceSettings.perMinuteMax / 4).toFloat()
+        proposalsPricePerMinuteSlider.stepSize = (priceSettings.perMinuteMax / filterSteps).toFloat()
         proposalsPricePerMinuteSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
         proposalsPricePerMinuteSlider.addOnChangeListener { slider, value, fromUser ->
             proposalsViewModel.applyPricePerMinFilter(value.toDouble())
@@ -59,7 +60,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         proposalsPricePerGibSlider.valueTo = priceSettings.perGibMax.toFloat()
         proposalsPricePerGibSlider.value = proposalsViewModel.filter.pricePerGiB.toFloat()
         proposalsPricePerGibValue.text = formatPriceValue(proposalsViewModel.filter.pricePerGiB)
-        proposalsPricePerGibSlider.stepSize = (priceSettings.perGibMax / 4).toFloat()
+        proposalsPricePerGibSlider.stepSize = (priceSettings.perGibMax / filterSteps).toFloat()
         proposalsPricePerGibSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
         proposalsPricePerGibSlider.addOnChangeListener { slider, value, fromUser ->
             proposalsViewModel.applyPricePerGiBFilter(value.toDouble())

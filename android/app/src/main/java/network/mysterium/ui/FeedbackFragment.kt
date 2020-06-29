@@ -23,7 +23,8 @@ class FeedbackFragment : Fragment() {
     private lateinit var feedbackEmail: EditText
     private lateinit var feedbackMessage: EditText
     private lateinit var feedbackSubmitButton: MaterialButton
-    private lateinit var versionLabel: TextView
+    private lateinit var appVersionLabel: TextView
+    private lateinit var nodeVersionLabel: TextView
     private lateinit var feedbackToolbar: Toolbar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +37,8 @@ class FeedbackFragment : Fragment() {
         feedbackEmail = root.findViewById(R.id.feedback_email)
         feedbackMessage = root.findViewById(R.id.feedback_message)
         feedbackSubmitButton = root.findViewById(R.id.feedback_submit_button)
-        versionLabel = root.findViewById(R.id.vpn_version_label)
+        appVersionLabel = root.findViewById(R.id.vpn_app_version_label)
+        nodeVersionLabel = root.findViewById(R.id.vpn_node_version_label)
         feedbackToolbar = root.findViewById(R.id.feedback_toolbar)
 
         updateVersionLabel()
@@ -86,7 +88,12 @@ class FeedbackFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun updateVersionLabel() {
-        versionLabel.text = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
+        appVersionLabel.text = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val nodeVersion = feedbackViewModel.nodeVersion()
+            nodeVersionLabel.text = nodeVersion
+        }
     }
 
     companion object {
