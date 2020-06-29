@@ -129,10 +129,10 @@ class MainVpnFragment : Fragment() {
         sharedViewModel.connectionState.observe(this, Observer {
             updateConnStateLabel(it)
             updateConnButtonState(it)
-            vpnStatsLayout.visibility = if (it == ConnectionState.CONNECTED) {
-                View.VISIBLE
-            } else {
+            vpnStatsLayout.visibility = if (it == ConnectionState.NOT_CONNECTED) {
                 View.INVISIBLE
+            } else {
+                View.VISIBLE
             }
         })
 
