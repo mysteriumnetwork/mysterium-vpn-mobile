@@ -43,6 +43,7 @@ class AppContainer {
     lateinit var drawerLayout: DrawerLayout
     lateinit var appNotificationManager: AppNotificationManager
     lateinit var clipboardManager: ClipboardManager
+    lateinit var versionViewModel: VersionViewModel
 
     fun init(
             ctx: Context,
@@ -66,6 +67,7 @@ class AppContainer {
         sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
+        versionViewModel = VersionViewModel(nodeRepository)
         this.clipboardManager = clipboardManager
     }
 

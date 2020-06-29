@@ -50,12 +50,17 @@
         android:label="fragment_proposals_quality_filter"
         tools:layout="@layout/fragment_proposals_node_type_filter" />
 
-
     <fragment
         android:id="@+id/account_fragment"
         android:name="network.mysterium.ui.WalletFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_wallet" />
+
+    <fragment
+        android:id="@+id/force_update_fragment"
+        android:name="network.mysterium.ui.ForceUpdateFragment"
+        android:label="force_update"
+        tools:layout="@layout/fragment_force_update" />
 
     <action android:id="@+id/action_go_to_vpn_screen"
         app:destination="@id/main_vpn_fragment"/>
@@ -83,4 +88,7 @@
 
     <action android:id="@+id/action_go_to_account_screen"
         app:destination="@id/account_fragment"/>
+
+    <action android:id="@+id/action_go_to_force_update_screen"
+        app:destination="@id/force_update_fragment"/>
 </navigation>

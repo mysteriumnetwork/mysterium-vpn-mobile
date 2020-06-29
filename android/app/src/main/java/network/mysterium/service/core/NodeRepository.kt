@@ -233,8 +233,4 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     private suspend fun parseProposals(bytes: ByteArray) = withContext(Dispatchers.Default) {
         Klaxon().parse<ProposalsResponse>(bytes.inputStream())
     }
-
-    private suspend fun parseProposal(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<ProposalResponse>(bytes.inputStream())
-    }
 }

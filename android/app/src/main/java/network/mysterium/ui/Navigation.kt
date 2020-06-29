@@ -17,6 +17,7 @@ enum class Screen {
     PROPOSALS_QUALITY_FILTER,
     PROPOSALS_NODE_TYPE_FILTER,
     ACCOUNT,
+    FORCE_UPDATE
 }
 
 fun navigateTo(navController: NavController, destination: Screen) {
@@ -29,6 +30,7 @@ fun navigateTo(navController: NavController, destination: Screen) {
         Screen.PROPOSALS_QUALITY_FILTER -> R.id.action_go_to_proposals_quality_filter_screen
         Screen.PROPOSALS_NODE_TYPE_FILTER -> R.id.action_go_to_proposals_node_type_filter_screen
         Screen.ACCOUNT -> R.id.action_go_to_account_screen
+        Screen.FORCE_UPDATE -> R.id.action_go_to_feedback_screen
     }
     navController.navigate(to)
 }

@@ -98,10 +98,16 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        // Navigate to main vpn screen and check if terms are accepted in separate coroutine
-        // so it does not block main thread.
+        // Navigate to main vpn screen and check if terms are accepted or app
+        // update is needed in separate coroutine so it does not block main thread.
         navigate(R.id.main_vpn_fragment)
         CoroutineScope(Dispatchers.Main).launch {
+            val updateRequired = appContainer.versionViewModel.updateRequired()
+            if (updateRequired) {
+                navigate(R.id.force_update_fragment)
+                return@launch
+            }
+
             val termsAccepted = appContainer.termsViewModel.checkTermsAccepted()
             if (!termsAccepted) {
                 navigate(R.id.terms_fragment)
