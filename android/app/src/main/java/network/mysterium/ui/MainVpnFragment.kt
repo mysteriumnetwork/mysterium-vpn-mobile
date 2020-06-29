@@ -129,11 +129,7 @@ class MainVpnFragment : Fragment() {
         sharedViewModel.connectionState.observe(this, Observer {
             updateConnStateLabel(it)
             updateConnButtonState(it)
-            vpnStatsLayout.visibility = if (it == ConnectionState.NOT_CONNECTED) {
-                View.INVISIBLE
-            } else {
-                View.VISIBLE
-            }
+            updateStatsLayoutVisibility()
         })
 
         sharedViewModel.statistics.observe(this, Observer { updateStatsLabels(it) })
@@ -145,6 +141,14 @@ class MainVpnFragment : Fragment() {
         onBackPress { emulateHomePress() }
 
         return root
+    }
+
+    private fun updateStatsLayoutVisibility() {
+        vpnStatsLayout.visibility = if (sharedViewModel.isConnected()) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     override fun onDestroy() {
@@ -235,10 +239,7 @@ class MainVpnFragment : Fragment() {
             ConnectionState.DISCONNECTING -> getString(R.string.connect_button_disconnecting)
         }
 
-        connectionButton.isEnabled = when (state) {
-            ConnectionState.DISCONNECTING -> false
-            else -> true
-        }
+        connectionButton.isEnabled = state != ConnectionState.DISCONNECTING
     }
 
     private fun handleConnectionPress(root: View) {
@@ -276,7 +277,7 @@ class MainVpnFragment : Fragment() {
             try {
                 Log.i(TAG, "Connecting identity $identityAddress to provider ${proposal.providerID} with service ${proposal.serviceType.type}")
                 sharedViewModel.connect(identityAddress, proposal.providerID, proposal.serviceType.type)
-            } catch (e: kotlinx.coroutines.CancellationException) {
+            } catch (e: CancellationException) {
                 // Do nothing.
             } catch (e: ConnectInvalidProposalException) {
                 if (isAdded) {
@@ -303,6 +304,8 @@ class MainVpnFragment : Fragment() {
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
                 sharedViewModel.disconnect()
+            } catch (e: CancellationException) {
+                // Do nothing.
             } catch (e: Exception) {
                 if (isAdded) {
                     showMessage(ctx, getString(R.string.vpn_failed_to_disconnect))
@@ -318,6 +321,8 @@ class MainVpnFragment : Fragment() {
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
                 sharedViewModel.disconnect()
+            } catch (e: CancellationException) {
+                // Do nothing.
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to cancel", e)
             }

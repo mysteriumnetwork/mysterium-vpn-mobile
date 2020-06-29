@@ -41,16 +41,6 @@ Build release build locally
 fastlane android internal
 ```
 Push a new internal build to Play Store
-### android bumpAndroidVersionCode
-```
-fastlane android bumpAndroidVersionCode
-```
-Increase Android code version
-### android pushAndroidVersionCode
-```
-fastlane android pushAndroidVersionCode
-```
-Commit and push bumped version
 
 ----
 

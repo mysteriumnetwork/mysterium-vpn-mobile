@@ -100,7 +100,7 @@ class SharedViewModel(
 
     fun isConnected(): Boolean {
         val state = connectionState.value
-        return state != null && state == ConnectionState.CONNECTED
+        return state != null && (state == ConnectionState.CONNECTED || state == ConnectionState.IP_NOT_CHANGED)
     }
 
     suspend fun connect(identityAddress: String, providerID: String, serviceType: String) {
