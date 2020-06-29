@@ -34,10 +34,12 @@ enum class ConnectionState(val type: String) {
     CONNECTED("Connected"),
     CONNECTING("Connecting"),
     NOT_CONNECTED("NotConnected"),
-    DISCONNECTING("Disconnecting");
+    DISCONNECTING("Disconnecting"),
+    IP_NOT_CHANGED("IPNotChanged");
 
     companion object {
         fun parse(type: String): ConnectionState {
+            Log.i("ConnectionState","ConnectionState.parse type $type")
             return values().find { it.type == type } ?: UNKNOWN
         }
     }

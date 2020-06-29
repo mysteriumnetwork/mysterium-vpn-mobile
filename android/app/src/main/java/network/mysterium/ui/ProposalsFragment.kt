@@ -126,9 +126,8 @@ class ProposalsFragment : Fragment() {
     private fun initProposalsList(root: View) {
 
         val listAdapter = BaseListAdapter{ selectedproposal ->
-            val item = selectedproposal as ProposalItem?
-            if (item != null) {
-                handleSelectedProposal(root, item.uniqueId)
+            if (selectedproposal is ProposalItem) {
+                handleSelectedProposal(root, selectedproposal.uniqueId)
             }
         }
         proposalsListRecyclerView.adapter = listAdapter

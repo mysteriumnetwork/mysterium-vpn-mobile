@@ -238,7 +238,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         return all.keys.sortedBy { it }.map {
             val proposals = all.getValue(it)
             ProposalFilterCountry(it, proposals[0].countryName, proposals[0].countryFlagImage, proposals.size)
-        }
+        }.sortedByDescending { it.proposalsCount }
     }
 
     fun proposalsNodeTypes(): List<NodeType> {
