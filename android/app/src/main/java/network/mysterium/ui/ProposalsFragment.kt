@@ -17,13 +17,13 @@
 
 package network.mysterium.ui
 
-import android.graphics.Color
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -33,6 +33,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
+import network.mysterium.service.core.ProposalPaymentMoney
+import network.mysterium.ui.list.BaseItem
+import network.mysterium.ui.list.BaseListAdapter
+import network.mysterium.ui.list.BaseViewHolder
 import network.mysterium.vpn.R
 
 class ProposalsFragment : Fragment() {
@@ -40,14 +44,20 @@ class ProposalsFragment : Fragment() {
     private lateinit var proposalsViewModel: ProposalsViewModel
     private lateinit var appContainer: AppContainer
 
+    private lateinit var proposalsListRecyclerView: RecyclerView
     private lateinit var proposalsCloseButton: TextView
     private lateinit var proposalsSearchInput: EditText
-    private lateinit var proposalsFiltersAllButton: TextView
-    private lateinit var proposalsFiltersFavoriteButton: TextView
-    private lateinit var proposalsFiltersSort: Spinner
     private lateinit var proposalsSwipeRefresh: SwipeRefreshLayout
-    private lateinit var proposalsList: RecyclerView
     private lateinit var proposalsProgressBar: ProgressBar
+    private lateinit var proposalsFilterCountry: LinearLayout
+    private lateinit var proposalsFilterPrice: LinearLayout
+    private lateinit var proposalsFilterQuality: LinearLayout
+    private lateinit var proposalsFilterNodeType: LinearLayout
+    private lateinit var proposalsFilterLayout: ConstraintLayout
+    private lateinit var proposalsFilterCountryValue: TextView
+    private lateinit var proposalsFilterPriceValue: TextView
+    private lateinit var proposalsFilterQualityValue: TextView
+    private lateinit var proposalsFilterNodeTypeValue: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -57,22 +67,43 @@ class ProposalsFragment : Fragment() {
         proposalsViewModel = appContainer.proposalsViewModel
 
         // Initialize UI elements.
+        proposalsListRecyclerView = root.findViewById(R.id.proposals_list)
         proposalsCloseButton = root.findViewById(R.id.proposals_close_button)
         proposalsSearchInput = root.findViewById(R.id.proposals_search_input)
-        proposalsFiltersAllButton = root.findViewById(R.id.proposals_filters_all_button)
-        proposalsFiltersFavoriteButton = root.findViewById(R.id.proposals_filters_favorite_button)
-        proposalsFiltersSort = root.findViewById(R.id.proposals_filters_sort)
         proposalsSwipeRefresh = root.findViewById(R.id.proposals_list_swipe_refresh)
-        proposalsList = root.findViewById(R.id.proposals_list)
         proposalsProgressBar = root.findViewById(R.id.proposals_progress_bar)
+        proposalsFilterCountry = root.findViewById(R.id.proposals_filter_country_layoyt)
+        proposalsFilterLayout = root.findViewById(R.id.proposals_filters_layout)
+        proposalsFilterPrice = root.findViewById(R.id.proposals_filter_price_layout)
+        proposalsFilterCountryValue = root.findViewById(R.id.proposals_filter_country_value)
+        proposalsFilterPriceValue = root.findViewById(R.id.proposals_filter_price_value)
+        proposalsFilterQualityValue = root.findViewById(R.id.proposals_filter_quality_value)
+        proposalsFilterNodeTypeValue = root.findViewById(R.id.proposals_filter_node_type_value)
+        proposalsFilterQuality = root.findViewById(R.id.proposals_filter_quality_layout)
+        proposalsFilterNodeType = root.findViewById(R.id.proposals_filter_node_type_layout)
 
-        proposalsCloseButton.setOnClickListener { handleClose(root) }
+        proposalsFilterCountry.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_COUNTRY_FILTER_LIST)
+        }
+
+        proposalsFilterPrice.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_PRICE_FILTER)
+        }
+
+        proposalsFilterQuality.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_QUALITY_FILTER)
+        }
+
+        proposalsFilterNodeType.setOnClickListener {
+            navigateTo(root, Screen.PROPOSALS_NODE_TYPE_FILTER)
+        }
+
+        proposalsFilterLayout.visibility = View.GONE
 
         initProposalsList(root)
-        initProposalsSortDropdown(root)
-        initProposalsServiceTypeFilter(root)
         initProposalsSearchFilter()
 
+        proposalsCloseButton.setOnClickListener { handleClose(root) }
         onBackPress {
             navigateTo(root, Screen.MAIN)
         }
@@ -92,42 +123,16 @@ class ProposalsFragment : Fragment() {
         proposalsSearchInput.onChange { proposalsViewModel.filterBySearchText(it) }
     }
 
-    private fun initProposalsServiceTypeFilter(root: View) {
-        // Set current active filter.
-        val activeTabButton = when (proposalsViewModel.filter.serviceType) {
-            ServiceTypeFilter.ALL -> proposalsFiltersAllButton
-            ServiceTypeFilter.FAVORITE -> proposalsFiltersFavoriteButton
-        }
-        setFilterTabActiveStyle(root, activeTabButton)
-
-        proposalsFiltersAllButton.setOnClickListener {
-            proposalsViewModel.filterByServiceType(ServiceTypeFilter.ALL)
-            setFilterTabActiveStyle(root, proposalsFiltersAllButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersFavoriteButton)
-        }
-
-        proposalsFiltersFavoriteButton.setOnClickListener {
-            proposalsViewModel.filterByServiceType(ServiceTypeFilter.FAVORITE)
-            setFilterTabActiveStyle(root, proposalsFiltersFavoriteButton)
-            setFilterTabInactiveStyle(root, proposalsFiltersAllButton)
-        }
-    }
-
-    private fun initProposalsSortDropdown(root: View) {
-        ArrayAdapter.createFromResource(root.context, R.array.proposals_sort_types, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            proposalsFiltersSort.adapter = adapter
-            proposalsFiltersSort.onItemSelected { item -> proposalsViewModel.sortBy(item) }
-        }
-    }
-
     private fun initProposalsList(root: View) {
-        proposalsList.layoutManager = LinearLayoutManager(root.context)
-        val items = ArrayList<ProposalViewItem>()
-        val proposalsListAdapter = ProposalsListAdapter(items) { handleSelectedProposal(root, it) }
-        proposalsList.adapter = proposalsListAdapter
-        proposalsList.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
 
+        val listAdapter = BaseListAdapter{ selectedproposal ->
+            if (selectedproposal is ProposalItem) {
+                handleSelectedProposal(root, selectedproposal.uniqueId)
+            }
+        }
+        proposalsListRecyclerView.adapter = listAdapter
+        proposalsListRecyclerView.layoutManager = LinearLayoutManager(context)
+        proposalsListRecyclerView.addItemDecoration(DividerItemDecoration(root.context, DividerItemDecoration.VERTICAL))
         proposalsSwipeRefresh.setOnRefreshListener {
             proposalsViewModel.refreshProposals {
                 proposalsSwipeRefresh.isRefreshing = false
@@ -135,21 +140,17 @@ class ProposalsFragment : Fragment() {
         }
 
         // Subscribe to proposals changes.
-        proposalsViewModel.getProposals().observe(this, Observer { newItems ->
-            items.clear()
-            items.addAll(newItems)
-            proposalsListAdapter.notifyDataSetChanged()
+        proposalsViewModel.getFilteredProposals().observe(this, Observer { newItems ->
+            listAdapter.submitList(createProposalItemsWithGroups(root, newItems))
+            listAdapter.notifyDataSetChanged()
 
             // Hide progress bar once proposals are loaded.
-            proposalsList.visibility = View.VISIBLE
+            proposalsListRecyclerView.visibility = View.VISIBLE
             proposalsProgressBar.visibility = View.GONE
+            proposalsFilterLayout.visibility = View.VISIBLE
+            setSelectedFilterValues()
         })
 
-        // Subscribe to proposals counters.
-        proposalsViewModel.getProposalsCounts().observe(this, Observer { counts ->
-            proposalsFiltersAllButton.text = "All (${counts.all})"
-            proposalsFiltersFavoriteButton.text = "Favorite (${counts.favorite})"
-        })
 
         proposalsViewModel.initialProposalsLoaded.observe(this, Observer {loaded ->
             if (loaded) {
@@ -157,10 +158,59 @@ class ProposalsFragment : Fragment() {
             }
 
             // If initial proposals failed to load during app init try to load them explicitly.
-            proposalsList.visibility = View.GONE
+            proposalsListRecyclerView.visibility = View.GONE
             proposalsProgressBar.visibility = View.VISIBLE
             proposalsViewModel.refreshProposals {}
         })
+    }
+
+    private fun createProposalItemsWithGroups(root: View, proposals: List<ProposalViewItem>): MutableList<BaseItem> {
+        val itemsWithHeaders = mutableListOf<BaseItem>()
+        val groups = proposalsViewModel.groupedProposals(proposals)
+        groups.forEach { group ->
+            itemsWithHeaders.add(ProposalHeaderItem(group.title))
+            group.children.forEach { proposal ->
+                itemsWithHeaders.add(ProposalItem(root.context, proposal))
+            }
+        }
+        return itemsWithHeaders
+    }
+
+    private fun setSelectedFilterValues() {
+        val filter = proposalsViewModel.filter
+
+        // Country filter value.
+        proposalsFilterCountryValue.text = if (filter.country.name != "") {
+            filter.country.name
+        } else {
+            getString(R.string.proposals_filter_country_value_all)
+        }
+
+        // Quality filter value.
+        if (filter.quality.qualityIncludeUnreachable) {
+            proposalsFilterQualityValue.text = getString(R.string.proposals_filter_quality_value_any)
+        } else {
+            proposalsFilterQualityValue.text = when(filter.quality.level) {
+                QualityLevel.ANY -> getString(R.string.quality_level_any)
+                QualityLevel.HIGH -> getString(R.string.quality_level_high)
+                QualityLevel.MEDIUM -> getString(R.string.quality_level_medium)
+                QualityLevel.LOW -> getString(R.string.quality_level_low)
+            }
+        }
+
+        // Price filter value.
+        val pricePerMinute = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerMinute, currency = "MYSTT"))
+        val pricePerGiB = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerGiB, currency = "MYSTT"))
+        proposalsFilterPriceValue.text = "${pricePerMinute}min/${pricePerGiB}GiB"
+
+        // Node(IP) type filter value.
+        proposalsFilterNodeTypeValue.text = when(filter.nodeType) {
+            NodeType.ALL -> getString(R.string.node_type_all)
+            NodeType.BUSINESS -> getString(R.string.node_type_business)
+            NodeType.CELLULAR -> getString(R.string.node_type_cellular)
+            NodeType.HOSTING -> getString(R.string.node_type_hosting)
+            NodeType.RESIDENTIAL -> getString(R.string.node_type_residential)
+        }
     }
 
     private fun handleClose(root: View) {
@@ -168,67 +218,56 @@ class ProposalsFragment : Fragment() {
         navigateToMainVpnFragment(root)
     }
 
-    private fun handleSelectedProposal(root: View, proposal: ProposalViewItem) {
+    private fun handleSelectedProposal(root: View, proposalID: String) {
         hideKeyboard(root)
-        proposalsViewModel.selectProposal(proposal)
+        proposalsViewModel.selectProposal(proposalID)
         navigateToMainVpnFragment(root)
     }
+}
 
-    private fun setFilterTabActiveStyle(root: View, btn: TextView) {
-        btn.setBackgroundColor(ContextCompat.getColor(root.context, R.color.ColorMain))
-        btn.setTextColor(ContextCompat.getColor(root.context, R.color.ColorWhite))
-    }
+data class ProposalItem(val ctx: Context, val item: ProposalViewItem) : BaseItem() {
 
-    private fun setFilterTabInactiveStyle(root: View, btn: TextView) {
-        btn.setBackgroundColor(Color.TRANSPARENT)
-        btn.setTextColor(ContextCompat.getColor(root.context, R.color.ColorMain))
+    override val layoutId = R.layout.proposal_list_item
+
+    override val uniqueId = item.id
+
+    override fun bind(holder: BaseViewHolder) {
+        super.bind(holder)
+
+        val countryFlag: RoundedImageView = holder.containerView.findViewById(R.id.proposal_item_country_flag)
+        val countryName: TextView = holder.containerView.findViewById(R.id.proposal_item_country_name)
+        val providerID: TextView = holder.containerView.findViewById(R.id.proposal_item_provider_id)
+        val qualityLevel: ImageView = holder.containerView.findViewById(R.id.proposal_item_quality_level)
+        val nodeType: TextView = holder.containerView.findViewById(R.id.proposal_item_provider_node_type)
+        val price: TextView = holder.containerView.findViewById(R.id.proposal_item_price)
+
+        countryFlag.setImageBitmap(item.countryFlagImage)
+        countryName.text = item.countryName
+        providerID.text = item.providerID
+        qualityLevel.setImageResource(item.qualityResID)
+        nodeType.text = when(item.nodeType) {
+            NodeType.ALL -> "(${ctx.getString(R.string.node_type_all)})"
+            NodeType.BUSINESS -> "(${ctx.getString(R.string.node_type_business)})"
+            NodeType.CELLULAR -> "(${ctx.getString(R.string.node_type_cellular)})"
+            NodeType.HOSTING -> "(${ctx.getString(R.string.node_type_hosting)})"
+            NodeType.RESIDENTIAL -> "(${ctx.getString(R.string.node_type_residential)})"
+        }
+        val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerMinute(item.payment))
+        val pricePerGiB = PriceUtils.displayMoney(PriceUtils.pricePerGiB(item.payment))
+        price.text = "${pricePerMinute}min/${pricePerGiB}GiB"
     }
 }
 
-class ProposalsListAdapter(private var list: List<ProposalViewItem>, private var onItemClickListener: (ProposalViewItem) -> Unit)
-    : RecyclerView.Adapter<ProposalsListAdapter.ProposalViewHolder>() {
+data class ProposalHeaderItem(val title: String) : BaseItem() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProposalViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return ProposalViewHolder(inflater, parent)
-    }
+    override val layoutId = R.layout.proposal_list_header_item
 
-    override fun onBindViewHolder(holder: ProposalViewHolder, position: Int) {
-        val item: ProposalViewItem = list[position]
-        holder.bind(item)
-        holder.itemView.setOnClickListener {
-            onItemClickListener(item)
-        }
-    }
+    override val uniqueId = title
 
-    override fun getItemCount(): Int = list.size
-
-    inner class ProposalViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-            RecyclerView.ViewHolder(inflater.inflate(R.layout.proposal_list_item, parent, false)) {
-
-        private var countryFlag: RoundedImageView? = null
-        private var countryName: TextView? = null
-        private var providerID: TextView? = null
-        private var serviceType: ImageView? = null
-        private var qualityLevel: ImageView? = null
-        private var favorite: ImageView? = null
-
-        init {
-            countryFlag = itemView.findViewById(R.id.proposal_item_country_flag)
-            countryName = itemView.findViewById(R.id.proposal_item_country_name)
-            providerID = itemView.findViewById(R.id.proposal_item_provider_id)
-            serviceType = itemView.findViewById(R.id.proposal_item_service_type)
-            qualityLevel = itemView.findViewById(R.id.proposal_item_quality_level)
-            favorite = itemView.findViewById(R.id.proposal_item_favorite)
-        }
-
-        fun bind(item: ProposalViewItem) {
-            countryFlag?.setImageBitmap(item.countryFlagImage)
-            countryName?.text = item.countryName
-            providerID?.text = item.providerID
-            serviceType?.setImageResource(item.serviceTypeResID)
-            qualityLevel?.setImageResource(item.qualityResID)
-            favorite?.setImageResource(item.isFavoriteResID)
-        }
+    override fun bind(holder: BaseViewHolder) {
+        super.bind(holder)
+        val headerText: TextView = holder.containerView.findViewById(R.id.proposal_item_header_text)
+        headerText.text = title
     }
 }
+

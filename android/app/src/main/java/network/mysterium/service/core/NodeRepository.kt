@@ -17,7 +17,44 @@ class ProposalItem(
         val countryCode: String,
 
         @Json(name = "qualityLevel")
-        val qualityLevel: Int
+        val qualityLevel: Int,
+
+        @Json(name = "nodeType")
+        val nodeType: String = "",
+
+        @Json(name = "monitoringFailed")
+        val monitoringFailed: Boolean,
+
+        @Json(name = "payment")
+        val payment: ProposalPaymentMethod
+) {
+}
+
+class ProposalPaymentMethod(
+        @Json(name = "type")
+        val type: String,
+
+        @Json(name = "price")
+        val price: ProposalPaymentMoney,
+
+        @Json(name = "rate")
+        val rate: ProposalPaymentRate
+)
+
+class ProposalPaymentMoney(
+        @Json(name = "amount")
+        val amount: Double,
+
+        @Json(name = "currency")
+        val currency: String
+)
+
+class ProposalPaymentRate(
+        @Json(name = "perSeconds")
+        val perSeconds: Long,
+
+        @Json(name = "perBytes")
+        val perBytes: Long
 )
 
 class ProposalsResponse(
@@ -33,7 +70,8 @@ class ProposalResponse(
 class Statistics(
         val duration: Long,
         val bytesReceived: Long,
-        val bytesSent: Long
+        val bytesSent: Long,
+        val tokensSpent: Long
 )
 
 class Location(
@@ -57,6 +95,10 @@ class IdentityRegistrationFees(
         val fee: Long
 )
 
+class HealthData(
+        val version: String
+)
+
 class ConnectUnknownException(message: String) : Exception(message)
 class ConnectInvalidProposalException(message: String) : Exception(message)
 class ConnectInsufficientBalanceException(message: String) : Exception(message)
@@ -72,10 +114,7 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     //
     // Note that this method need to deserialize JSON byte array since Go Mobile
     // does not support passing complex slices via it's bridge.
-    suspend fun proposals(refresh: Boolean): List<ProposalItem> {
-        val req = GetProposalsRequest()
-        req.refresh = refresh
-
+    suspend fun proposals(req: GetProposalsRequest): List<ProposalItem> {
         val bytes = getProposals(req)
         val proposalsResponse = parseProposals(bytes)
         if (proposalsResponse?.proposals == null) {
@@ -85,20 +124,6 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         return proposalsResponse.proposals
     }
 
-    // Get proposal from cache by given providerID and serviceType.
-    //
-    // Note that this method need to deserialize JSON byte array since Go Mobile
-    // does not support passing complex slices via it's bridge.
-    suspend fun proposal(providerID: String, serviceType: String): ProposalItem? {
-        val req = GetProposalRequest()
-        req.providerID = providerID
-        req.serviceType = serviceType
-
-        val bytes = proposal(req)
-        val proposalsResponse = parseProposal(bytes)
-        return proposalsResponse?.proposal
-    }
-
     // Register connection status callback.
     suspend fun registerConnectionStatusChangeCallback(cb: (status: String) -> Unit) {
         deferredNode.await().registerConnectionStatusChangeCallback { status -> cb(status) }
@@ -106,8 +131,8 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     // Register statistics callback.
     suspend fun registerStatisticsChangeCallback(cb: (stats: Statistics) -> Unit) {
-        deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent ->
-            cb(Statistics(duration, bytesReceived, bytesSent))
+        deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
+            cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
         }
     }
 
@@ -126,11 +151,7 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     // Connect to VPN service.
-    suspend fun connect(identityAddress: String, providerID: String, serviceType: String) = withContext(Dispatchers.IO) {
-        val req = ConnectRequest()
-        req.providerID = providerID
-        req.serviceType = serviceType
-        req.identityAddress = identityAddress
+    suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
 
         when(res.errorCode) {
@@ -159,17 +180,12 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     // Register identity with given fee.
-    suspend fun registerIdentity(identityAddress: String, fee: Long) = withContext(Dispatchers.IO) {
-        val req = RegisterIdentityRequest()
-        req.identityAddress = identityAddress
-        req.fee = fee
+    suspend fun registerIdentity(req: RegisterIdentityRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().registerIdentity(req)
     }
 
     // Top-up balance with myst tokens.
-    suspend fun topUpBalance(identityAddress: String) = withContext(Dispatchers.IO) {
-        val req = TopUpRequest()
-        req.identityAddress = identityAddress
+    suspend fun topUpBalance(req: TopUpRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().topUp(req)
     }
 
@@ -193,27 +209,25 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     // Get current balance.
-    suspend fun balance(identityAddress: String) = withContext(Dispatchers.IO) {
-        val req = GetBalanceRequest()
-        req.identityAddress = identityAddress
+    suspend fun balance(req: GetBalanceRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().getBalance(req)
         res.balance
     }
 
+    suspend fun healthCheck() = withContext(Dispatchers.IO) {
+        val hz = deferredNode.await().healthCheck()
+        HealthData(
+                version = hz.version
+        )
+    }
+
     // Send user feedback.
-    suspend fun sendFeedback(email: String, description: String) = withContext(Dispatchers.IO) {
-        val req = SendFeedbackRequest()
-         req.email = email
-        req.description = description
+    suspend fun sendFeedback(req: SendFeedbackRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().sendFeedback(req)
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
-    }
-
-    private suspend fun proposal(req: GetProposalRequest) = withContext(Dispatchers.IO) {
-        deferredNode.await().getProposal(req)
     }
 
     private suspend fun parseProposals(bytes: ByteArray) = withContext(Dispatchers.Default) {

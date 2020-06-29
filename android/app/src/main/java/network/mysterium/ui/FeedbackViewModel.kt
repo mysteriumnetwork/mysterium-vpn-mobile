@@ -18,6 +18,7 @@
 package network.mysterium.ui
 
 import androidx.lifecycle.ViewModel
+import mysterium.SendFeedbackRequest
 import network.mysterium.service.core.NodeRepository
 
 class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel() {
@@ -34,10 +35,18 @@ class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel()
 
     suspend fun submit() {
         val description = "Platform: Android, Message: $message"
-        nodeRepository.sendFeedback(email, description)
+        val req = SendFeedbackRequest()
+        req.email = email
+        req.description = description
+        nodeRepository.sendFeedback(req)
     }
 
     fun setEmail(email: String) {
         this.email = email
+    }
+
+    suspend fun nodeVersion(): String {
+        val hz = nodeRepository.healthCheck()
+        return hz.version
     }
 }

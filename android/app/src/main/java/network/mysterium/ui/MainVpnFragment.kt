@@ -36,6 +36,7 @@ import network.mysterium.AppContainer
 import network.mysterium.service.core.ConnectInsufficientBalanceException
 import network.mysterium.service.core.ConnectInvalidProposalException
 import network.mysterium.service.core.MysteriumCoreService
+import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.vpn.R
 
 class MainVpnFragment : Fragment() {
@@ -60,8 +61,10 @@ class MainVpnFragment : Fragment() {
     private lateinit var vpnStatsBytesReceivedLabel: TextView
     private lateinit var vpnStatsBytesReceivedUnits: TextView
     private lateinit var vpnStatsBytesSentUnits: TextView
+    private lateinit var vpnStatsPaid: TextView
     private lateinit var vpnAccountBalanceLabel: TextView
     private lateinit var vpnAccountBalanceLayout: LinearLayout
+    private lateinit var vpnStatsLayout: ConstraintLayout
     private lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -92,8 +95,13 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentLabel = root.findViewById(R.id.vpn_stats_bytes_sent)
         vpnStatsBytesReceivedUnits = root.findViewById(R.id.vpn_stats_bytes_received_units)
         vpnStatsBytesSentUnits = root.findViewById(R.id.vpn_stats_bytes_sent_units)
+        vpnStatsPaid = root.findViewById(R.id.vpn_stats_paid)
         vpnAccountBalanceLabel = root.findViewById(R.id.vpn_account_balance_label)
         vpnAccountBalanceLayout = root.findViewById(R.id.vpn_account_balance_layout)
+        vpnStatsLayout = root.findViewById(R.id.vpn_stats_layout)
+
+        // TODO: Hide
+        // vpnStatsLayout.visibility = View.INVISIBLE
 
         feedbackButton.setOnClickListener {
             val drawer = appContainer.drawerLayout
@@ -121,6 +129,7 @@ class MainVpnFragment : Fragment() {
         sharedViewModel.connectionState.observe(this, Observer {
             updateConnStateLabel(it)
             updateConnButtonState(it)
+            updateStatsLayoutVisibility()
         })
 
         sharedViewModel.statistics.observe(this, Observer { updateStatsLabels(it) })
@@ -132,6 +141,14 @@ class MainVpnFragment : Fragment() {
         onBackPress { emulateHomePress() }
 
         return root
+    }
+
+    private fun updateStatsLayoutVisibility() {
+        vpnStatsLayout.visibility = if (sharedViewModel.isConnected()) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     override fun onDestroy() {
@@ -166,12 +183,18 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesReceivedUnits.text = stats.bytesReceived.units
         vpnStatsBytesSentLabel.text = stats.bytesSent.value
         vpnStatsBytesSentUnits.text = stats.bytesSent.units
+
+        val tokensSpent = PriceUtils.displayMoney(
+                ProposalPaymentMoney(amount = stats.tokensSpent, currency = "MYSTT"),
+                DisplayMoneyOptions(fractionDigits = 3, showCurrency = false)
+        )
+        vpnStatsPaid.text = tokensSpent
     }
 
     private fun updateConnStateLabel(state: ConnectionState) {
         val connStateText = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.conn_state_not_connected)
-            ConnectionState.CONNECTED -> getString(R.string.conn_state_connected)
+            ConnectionState.CONNECTED, ConnectionState.IP_NOT_CHANGED -> getString(R.string.conn_state_connected)
             ConnectionState.CONNECTING -> getString(R.string.conn_state_connecting)
             ConnectionState.DISCONNECTING -> getString(R.string.conn_state_disconnecting)
         }
@@ -211,15 +234,12 @@ class MainVpnFragment : Fragment() {
     private fun updateConnButtonState(state: ConnectionState) {
         connectionButton.text = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.connect_button_connect)
-            ConnectionState.CONNECTED -> getString(R.string.connect_button_disconnect)
+            ConnectionState.CONNECTED, ConnectionState.IP_NOT_CHANGED -> getString(R.string.connect_button_disconnect)
             ConnectionState.CONNECTING -> getString(R.string.connect_button_cancel)
             ConnectionState.DISCONNECTING -> getString(R.string.connect_button_disconnecting)
         }
 
-        connectionButton.isEnabled = when (state) {
-            ConnectionState.DISCONNECTING -> false
-            else -> true
-        }
+        connectionButton.isEnabled = state != ConnectionState.DISCONNECTING
     }
 
     private fun handleConnectionPress(root: View) {
@@ -257,7 +277,7 @@ class MainVpnFragment : Fragment() {
             try {
                 Log.i(TAG, "Connecting identity $identityAddress to provider ${proposal.providerID} with service ${proposal.serviceType.type}")
                 sharedViewModel.connect(identityAddress, proposal.providerID, proposal.serviceType.type)
-            } catch (e: kotlinx.coroutines.CancellationException) {
+            } catch (e: CancellationException) {
                 // Do nothing.
             } catch (e: ConnectInvalidProposalException) {
                 if (isAdded) {
@@ -284,6 +304,8 @@ class MainVpnFragment : Fragment() {
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
                 sharedViewModel.disconnect()
+            } catch (e: CancellationException) {
+                // Do nothing.
             } catch (e: Exception) {
                 if (isAdded) {
                     showMessage(ctx, getString(R.string.vpn_failed_to_disconnect))
@@ -299,6 +321,8 @@ class MainVpnFragment : Fragment() {
         job = CoroutineScope(Dispatchers.Main).launch {
             try {
                 sharedViewModel.disconnect()
+            } catch (e: CancellationException) {
+                // Do nothing.
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to cancel", e)
             }

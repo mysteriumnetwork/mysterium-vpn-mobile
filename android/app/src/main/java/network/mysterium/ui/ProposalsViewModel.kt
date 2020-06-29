@@ -17,12 +17,14 @@
 
 package network.mysterium.ui
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import mysterium.GetProposalsRequest
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
@@ -59,59 +61,102 @@ enum class ProposalSortType(val type: Int) {
 }
 
 enum class QualityLevel(val level: Int) {
-    UNKNOWN(0),
+    ANY(0),
     LOW(1),
     MEDIUM(2),
     HIGH(3);
 
     companion object {
         fun parse(level: Int): QualityLevel {
-            return values().find { it.level == level } ?: UNKNOWN
+            return values().find { it.level == level } ?: ANY
         }
     }
 }
 
-class ProposalsCounts(
-        val all: Int,
-        val favorite: Int
+enum class NodeType(val nodeType: String) {
+    ALL("all"),
+    BUSINESS("business"),
+    CELLULAR("cellular"),
+    HOSTING("hosting"),
+    RESIDENTIAL("residential");
+
+    companion object {
+        fun parse(nodeType: String): NodeType {
+            return values().find { it.nodeType == nodeType } ?: ALL
+        }
+    }
+}
+
+data class ProposalsFilter(
+        var searchText: String,
+        var country: ProposalFilterCountry,
+        var quality: ProposalFilterQuality,
+        var nodeType: NodeType,
+        var pricePerMinute: Double,
+        var pricePerGiB: Double
 ) {
 }
 
-class ProposalsFilter(
-        var serviceType: ServiceTypeFilter = ServiceTypeFilter.ALL,
-        var searchText: String = "",
-        var sortBy: ProposalSortType = ProposalSortType.COUNTRY
+data class ProposalFilterCountry(
+        val code: String = "",
+        val name: String = "",
+        val flagImage: Bitmap? = null,
+        val proposalsCount: Int = 0
+) {
+}
+
+data class ProposalFilterQuality(
+        var level: QualityLevel,
+        var qualityIncludeUnreachable: Boolean,
+        val proposalsCount: Int = 0
+) {
+}
+
+class PriceSettings(
+        var defaultPricePerMinute: Double,
+        var defaultPricePerGiB: Double,
+        val perMinuteMax: Double,
+        val perGibMax: Double,
+        val tolerance: Double
 )
 
 class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private val nodeRepository: NodeRepository, private val appDatabase: AppDatabase) : ViewModel() {
-    var filter = ProposalsFilter()
+    val filter: ProposalsFilter
+    val priceSettings: PriceSettings
     var initialProposalsLoaded = MutableLiveData<Boolean>()
 
     private var favoriteProposals: MutableMap<String, FavoriteProposal> = mutableMapOf()
     private var allProposals: List<ProposalViewItem> = listOf()
-    private val proposals = MutableLiveData<List<ProposalViewItem>>()
-    private val proposalsCounts = MutableLiveData<ProposalsCounts>()
+    private val filteredProposals = MutableLiveData<List<ProposalViewItem>>()
+
+    init {
+        priceSettings = PriceSettings(
+                defaultPricePerMinute = 50_000.0,
+                defaultPricePerGiB = 15_000_000.0,
+                perMinuteMax =  100_000.0,
+                perGibMax = 50_000_000.0,
+                tolerance = 500.0
+        )
+        filter = ProposalsFilter(
+                searchText = "",
+                country = ProposalFilterCountry(),
+                quality = ProposalFilterQuality(
+                        level = QualityLevel.HIGH,
+                        qualityIncludeUnreachable = false
+                ),
+                nodeType = NodeType.ALL,
+                pricePerMinute = priceSettings.defaultPricePerMinute,
+                pricePerGiB = priceSettings.defaultPricePerGiB
+        )
+    }
 
     suspend fun load() {
         favoriteProposals = loadFavoriteProposals()
         loadInitialProposals(false, favoriteProposals)
     }
 
-    fun getProposals(): LiveData<List<ProposalViewItem>> {
-        return proposals
-    }
-
-    fun getProposalsCounts(): LiveData<ProposalsCounts> {
-        return proposalsCounts
-    }
-
-    fun filterByServiceType(type: ServiceTypeFilter) {
-        if (filter.serviceType == type) {
-            return
-        }
-
-        filter.serviceType = type
-        proposals.value = filterAndSortProposals(filter, allProposals)
+    fun getFilteredProposals(): LiveData<List<ProposalViewItem>> {
+        return filteredProposals
     }
 
     fun filterBySearchText(value: String) {
@@ -121,17 +166,32 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
 
         filter.searchText = searchText
-        proposals.value = filterAndSortProposals(filter, allProposals)
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
-    fun sortBy(type: Int) {
-        val sortBy = ProposalSortType.parse(type)
-        if (filter.sortBy == sortBy) {
-            return
-        }
+    fun applyCountryFilter(country: ProposalFilterCountry) {
+        filter.country = country
+        filteredProposals.value = applyFilter(filter, allProposals)
+    }
 
-        filter.sortBy = sortBy
-        proposals.value = filterAndSortProposals(filter, allProposals)
+    fun applyNodeTypeFilter(nodeType: NodeType) {
+        filter.nodeType = nodeType
+        filteredProposals.value = applyFilter(filter, allProposals)
+    }
+
+    fun applyQualityFilter(quality: ProposalFilterQuality) {
+        filter.quality = quality
+        filteredProposals.value = applyFilter(filter, allProposals)
+    }
+
+    fun applyPricePerMinFilter(price: Double) {
+        filter.pricePerMinute = price
+        filteredProposals.value = applyFilter(filter, allProposals)
+    }
+
+    fun applyPricePerGiBFilter(price: Double) {
+        filter.pricePerGiB = price
+        filteredProposals.value = applyFilter(filter, allProposals)
     }
 
     fun refreshProposals(done: () -> Unit) {
@@ -141,8 +201,11 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         }
     }
 
-    fun selectProposal(item: ProposalViewItem) {
-        sharedViewModel.selectProposal(item)
+    fun selectProposal(proposalID: String) {
+        val proposal = allProposals.find { it.id == proposalID }
+        if (proposal != null) {
+            sharedViewModel.selectProposal(proposal)
+        }
     }
 
     fun toggleFavoriteProposal(proposalID: String, done: (updatedProposal: ProposalViewItem?) -> Unit) {
@@ -161,14 +224,51 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             }
 
             proposal.toggleFavorite()
-            val newProposals = filterAndSortProposals(filter, allProposals)
-            proposals.value = newProposals
-            proposalsCounts.value = ProposalsCounts(
-                    all = allProposals.count(),
-                    favorite = favoriteProposals.count()
-            )
+            val newProposals = applyFilter(filter, allProposals)
+            filteredProposals.value = newProposals
             done(proposal)
         }
+    }
+
+    fun proposalsCountries(): List<ProposalFilterCountry> {
+        val filterWithoutCountry = filter.copy()
+        filterWithoutCountry.country = ProposalFilterCountry()
+
+        val all = applyFilter(filterWithoutCountry, allProposals).groupBy { it.countryCode }
+        return all.keys.sortedBy { it }.map {
+            val proposals = all.getValue(it)
+            ProposalFilterCountry(it, proposals[0].countryName, proposals[0].countryFlagImage, proposals.size)
+        }.sortedByDescending { it.proposalsCount }
+    }
+
+    fun proposalsNodeTypes(): List<NodeType> {
+        return listOf(
+                NodeType.ALL,
+                NodeType.RESIDENTIAL,
+                NodeType.HOSTING,
+                NodeType.CELLULAR,
+                NodeType.BUSINESS
+        )
+    }
+
+    fun proposalsQualities(): List<ProposalFilterQuality> {
+        return listOf(
+                ProposalFilterQuality(QualityLevel.HIGH, false),
+                ProposalFilterQuality(QualityLevel.MEDIUM, false),
+                ProposalFilterQuality(QualityLevel.ANY, false)
+        )
+    }
+
+    fun groupedProposals(proposals: List<ProposalViewItem>): List<ProposalGroupViewItem> {
+        val favorite = proposals.filter { it.isFavorite }
+        val groups = mutableListOf<ProposalGroupViewItem>()
+        if (favorite.count() > 0) {
+            val favoriteGroup = ProposalGroupViewItem("Favorite (${favorite.count()})", favorite)
+            groups.add(favoriteGroup)
+        }
+        val allGroup = ProposalGroupViewItem("All (${proposals.count()})", proposals)
+        groups.add(allGroup)
+        return groups
     }
 
     private suspend fun loadFavoriteProposals(): MutableMap<String, FavoriteProposal> {
@@ -196,49 +296,93 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
         try {
-            val nodeProposals = nodeRepository.proposals(refresh)
-            allProposals = nodeProposals.map { ProposalViewItem.parse(it, favoriteProposals) }
+            val req = GetProposalsRequest()
+            req.refresh = refresh
+            req.includeFailed = true
+            req.serviceType = "wireguard"
+            req.lowerTimePriceBound = 0
+            req.upperTimePriceBound = 50000
+            req.lowerGBPriceBound = 0
+            req.upperGBPriceBound = 11000000
 
-            proposalsCounts.value = ProposalsCounts(
-                    all = allProposals.count(),
-                    favorite = favoriteProposals.count()
-            )
-            proposals.value = filterAndSortProposals(filter, allProposals)
+            val nodeProposals = nodeRepository.proposals(req)
+            allProposals = nodeProposals
+                    // Some proposals doesn't contain country code, not sure why.
+                    .filter { it.countryCode != "" }
+                    .map { ProposalViewItem.parse(it, favoriteProposals) }
+
+            filteredProposals.value = applyFilter(filter, allProposals)
             initialProposalsLoaded.value = true
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to load initial proposals", e)
-            proposals.value = listOf()
+            Log.e(TAG, "Failed to load initial filteredProposals", e)
+            filteredProposals.value = listOf()
             initialProposalsLoaded.value = false
         }
     }
 
-    private fun filterAndSortProposals(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalViewItem> {
+    private fun applyFilter(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalViewItem> {
         return allProposals.asSequence()
-                // Filter by service type.
+                // Filter by node type.
                 .filter {
-                    when (filter.serviceType) {
-                        ServiceTypeFilter.FAVORITE -> it.isFavorite
-                        else -> true
+                    when (filter.nodeType) {
+                        NodeType.ALL -> true
+                        else -> it.nodeType == filter.nodeType
                     }
+                }
+                // Filter by quality level.
+                .filter {
+                    when (filter.quality.level) {
+                        QualityLevel.ANY -> true
+                        else -> filter.quality.level <= it.qualityLevel
+                    }
+                }
+                // Filter by unreachable nodes.
+                .filter {
+                    when (filter.quality.qualityIncludeUnreachable) {
+                        true -> true
+                        else -> !it.monitoringFailed
+                    }
+                }
+                // Filter by country code.
+                .filter {
+                    when (filter.country.code) {
+                        "" -> true
+                        else -> it.countryCode == filter.country.code
+                    }
+                }
+                // Filter by price per minute.
+                .filter {
+                    fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
+                        val price = PriceUtils.pricePerMinute(v.payment)
+                        val maxPrice = filter.pricePerMinute + priceSettings.tolerance
+                        return price.amount <= maxPrice
+                    }
+                    filterPricePerMinute(filter, it)
+                }
+                // Filter by price per GiB.
+                .filter {
+                    fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
+                        val price = PriceUtils.pricePerGiB(v.payment)
+                        val maxPrice = filter.pricePerGiB + priceSettings.tolerance
+                        return price.amount <= maxPrice
+                    }
+                    filterPricePerMinute(filter, it)
                 }
                 // Filter by search value.
                 .filter {
                     when (filter.searchText) {
                         "" -> true
-                        else -> it.countryName.toLowerCase().contains(filter.searchText) or it.providerID.contains(filter.searchText)
+                        else -> it.countryName.toLowerCase().contains(filter.searchText) or it.countryCode.toLowerCase().contains(filter.searchText) or it.providerID.contains(filter.searchText)
                     }
                 }
-                // Sort by country or quality.
-                .sortedWith(
-                        if (filter.sortBy == ProposalSortType.QUALITY)
-                            compareByDescending { it.qualityLevel }
-                        else
-                            compareBy { it.countryName }
-                )
+                // Sort by country asc.
+                .sortedWith(compareBy({ it.countryName }, { it.id }))
                 .toList()
+
     }
 
     companion object {
         const val TAG: String = "ProposalsViewModel"
     }
 }
+

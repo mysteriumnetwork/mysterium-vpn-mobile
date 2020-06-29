@@ -27,6 +27,9 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mysterium.GetBalanceRequest
+import mysterium.RegisterIdentityRequest
+import mysterium.TopUpRequest
 import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.NodeRepository
 
@@ -92,7 +95,9 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
     suspend fun topUp() {
         try {
             val currentIdentity = identity.value ?: return
-            nodeRepository.topUpBalance(currentIdentity.address)
+            val req = TopUpRequest()
+            req.identityAddress = currentIdentity.address
+            nodeRepository.topUpBalance(req)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to top-up balance", e)
         }
@@ -127,7 +132,10 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
             if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
                 val registrationFees = nodeRepository.identityRegistrationFees()
                 if (identity.value != null) {
-                    nodeRepository.registerIdentity(identity.value!!.address, registrationFees.fee)
+                    val req = RegisterIdentityRequest()
+                    req.identityAddress = identity.value!!.address
+                    req.fee = registrationFees.fee
+                    nodeRepository.registerIdentity(req)
                 }
             }
         } catch (e: Exception) {
@@ -148,7 +156,9 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
         if (identity.value == null) {
             return
         }
-        val balance = nodeRepository.balance(identity.value!!.address)
+        val req = GetBalanceRequest()
+        req.identityAddress = identity.value!!.address
+        val balance = nodeRepository.balance(req)
         handleBalanceChange(balance)
     }
 

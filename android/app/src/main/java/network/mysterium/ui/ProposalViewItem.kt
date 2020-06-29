@@ -18,20 +18,30 @@
 package network.mysterium.ui
 
 import android.graphics.Bitmap
+import android.util.Log
 import network.mysterium.service.core.ProposalItem
 import network.mysterium.db.FavoriteProposal
+import network.mysterium.service.core.ProposalPaymentMethod
 import network.mysterium.vpn.R
+
+class ProposalGroupViewItem constructor(
+        val title: String,
+        val children: List<ProposalViewItem>
+)
 
 class ProposalViewItem constructor(
         val id: String,
         val providerID: String,
         val serviceType: ServiceType,
-        val countryCode: String
+        val countryCode: String,
+        val nodeType: NodeType,
+        val monitoringFailed: Boolean,
+        val payment: ProposalPaymentMethod
 ) {
     var countryFlagImage: Bitmap? = null
     var serviceTypeResID: Int = R.drawable.service_openvpn
     var qualityResID: Int = R.drawable.quality_unknown
-    var qualityLevel: QualityLevel = QualityLevel.UNKNOWN
+    var qualityLevel: QualityLevel = QualityLevel.ANY
     var countryName: String = ""
     var isFavorite: Boolean = false
     var isFavoriteResID: Int = R.drawable.ic_star_border_black_24dp
@@ -51,11 +61,17 @@ class ProposalViewItem constructor(
                     id = proposal.providerID+proposal.serviceType,
                     providerID = proposal.providerID,
                     serviceType = ServiceType.parse(proposal.serviceType),
-                    countryCode = proposal.countryCode.toLowerCase())
+                    countryCode = proposal.countryCode.toLowerCase(),
+                    nodeType = NodeType.parse(proposal.nodeType),
+                    monitoringFailed = proposal.monitoringFailed,
+                    payment = proposal.payment
+            )
 
             if (Countries.bitmaps.contains(res.countryCode)) {
                 res.countryFlagImage = Countries.bitmaps[res.countryCode]
                 res.countryName = Countries.values[res.countryCode]?.name ?: ""
+            } else {
+                Log.e("ProposalViewItem", "Country with code ${res.countryCode} not found")
             }
 
             res.serviceTypeResID = mapServiceTypeResourceID(res.serviceType)
@@ -82,7 +98,7 @@ class ProposalViewItem constructor(
                 QualityLevel.HIGH -> R.drawable.quality_high
                 QualityLevel.MEDIUM -> R.drawable.quality_medium
                 QualityLevel.LOW -> R.drawable.quality_low
-                QualityLevel.UNKNOWN -> R.drawable.quality_unknown
+                QualityLevel.ANY -> R.drawable.quality_unknown
             }
         }
     }

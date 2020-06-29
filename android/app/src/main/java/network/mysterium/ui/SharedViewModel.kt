@@ -25,21 +25,21 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.NodeRepository
-import network.mysterium.service.core.Statistics
-import network.mysterium.service.core.Status
+import network.mysterium.service.core.*
 
 enum class ConnectionState(val type: String) {
     UNKNOWN("Unknown"),
     CONNECTED("Connected"),
     CONNECTING("Connecting"),
     NOT_CONNECTED("NotConnected"),
-    DISCONNECTING("Disconnecting");
+    DISCONNECTING("Disconnecting"),
+    IP_NOT_CHANGED("IPNotChanged");
 
     companion object {
         fun parse(type: String): ConnectionState {
+            Log.i("ConnectionState","ConnectionState.parse type $type")
             return values().find { it.type == type } ?: UNKNOWN
         }
     }
@@ -53,14 +53,16 @@ class LocationModel(
 class StatisticsModel(
         val duration: String,
         val bytesReceived: FormattedBytesViewItem,
-        val bytesSent: FormattedBytesViewItem
+        val bytesSent: FormattedBytesViewItem,
+        val tokensSpent: Double
 ) {
     companion object {
         fun from(stats: Statistics): StatisticsModel {
             return StatisticsModel(
                     duration = UnitFormatter.timeDisplay(stats.duration),
                     bytesReceived = UnitFormatter.bytesDisplay(stats.bytesReceived),
-                    bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent)
+                    bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent),
+                    tokensSpent = stats.tokensSpent.toDouble()
             )
         }
     }
@@ -98,7 +100,7 @@ class SharedViewModel(
 
     fun isConnected(): Boolean {
         val state = connectionState.value
-        return state != null && state == ConnectionState.CONNECTED
+        return state != null && (state == ConnectionState.CONNECTED || state == ConnectionState.IP_NOT_CHANGED)
     }
 
     suspend fun connect(identityAddress: String, providerID: String, serviceType: String) {
@@ -106,8 +108,12 @@ class SharedViewModel(
             connectionState.value = ConnectionState.CONNECTING
             // Before doing actual connection add some delay to prevent
             // from trying to establish connection if user instantly clicks CANCEL.
-            delay(1000)
-            nodeRepository.connect(identityAddress, providerID, serviceType)
+            delay(100)
+            val req = ConnectRequest()
+            req.identityAddress = identityAddress
+            req.providerID = providerID
+            req.serviceType = serviceType
+            nodeRepository.connect(req)
 
             // Force app to run in foreground while connected to VPN.
             val coreService = mysteriumCoreService.await()
@@ -209,7 +215,11 @@ class SharedViewModel(
             if (selectedProposal.value != null && isConnected()) {
                 val countryName = selectedProposal.value?.countryName
                 val notificationTitle = "Connected to $countryName"
-                val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units}"
+                val tokensSpent = PriceUtils.displayMoney(
+                        ProposalPaymentMoney(amount = s.tokensSpent, currency = "MYSTT"),
+                        DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
+                )
+                val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units} | Paid $tokensSpent"
                 notificationManager.showStatisticsNotification(notificationTitle, notificationContent)
             }
         }
@@ -231,7 +241,7 @@ class SharedViewModel(
     }
 
     private fun resetStatistics() {
-        statistics.value = StatisticsModel.from(Statistics(0, 0, 0))
+        statistics.value = StatisticsModel.from(Statistics(0, 0, 0, 0))
     }
 
     companion object {
