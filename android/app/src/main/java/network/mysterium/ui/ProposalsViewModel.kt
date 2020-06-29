@@ -87,16 +87,17 @@ enum class NodeType(val nodeType: String) {
     }
 }
 
-class ProposalsFilter(
+data class ProposalsFilter(
         var searchText: String,
         var country: ProposalFilterCountry,
         var quality: ProposalFilterQuality,
         var nodeType: NodeType,
         var pricePerMinute: Double,
         var pricePerGiB: Double
-)
+) {
+}
 
-class ProposalFilterCountry(
+data class ProposalFilterCountry(
         val code: String = "",
         val name: String = "",
         val flagImage: Bitmap? = null,
@@ -104,7 +105,7 @@ class ProposalFilterCountry(
 ) {
 }
 
-class ProposalFilterQuality(
+data class ProposalFilterQuality(
         var level: QualityLevel,
         var qualityIncludeUnreachable: Boolean,
         val proposalsCount: Int = 0
@@ -230,9 +231,12 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     }
 
     fun proposalsCountries(): List<ProposalFilterCountry> {
-        val list = filteredProposals.value!!.groupBy { it.countryCode }
-        return list.keys.sortedBy { it }.map {
-            val proposals = list.getValue(it)
+        val filterWithoutCountry = filter.copy()
+        filterWithoutCountry.country = ProposalFilterCountry()
+
+        val all = applyFilter(filterWithoutCountry, allProposals).groupBy { it.countryCode }
+        return all.keys.sortedBy { it }.map {
+            val proposals = all.getValue(it)
             ProposalFilterCountry(it, proposals[0].countryName, proposals[0].countryFlagImage, proposals.size)
         }
     }
@@ -368,7 +372,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 .filter {
                     when (filter.searchText) {
                         "" -> true
-                        else -> it.countryName.toLowerCase().contains(filter.searchText) or it.providerID.contains(filter.searchText)
+                        else -> it.countryName.toLowerCase().contains(filter.searchText) or it.countryCode.toLowerCase().contains(filter.searchText) or it.providerID.contains(filter.searchText)
                     }
                 }
                 // Sort by country asc.
@@ -376,7 +380,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 .toList()
 
     }
-
 
     companion object {
         const val TAG: String = "ProposalsViewModel"
