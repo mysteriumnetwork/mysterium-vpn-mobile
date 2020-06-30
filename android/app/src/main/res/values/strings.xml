@@ -71,6 +71,9 @@
     <string name="quality_level_low">Low</string>
     <string name="force_update_btn_text">Update</string>
     <string name="force_update_description">This app version is not compatible with latest Mysterium Network protocol and must be updated.</string>
-    <string name="force_update_current_version">Current version:</string>
-    <string name="force_update_minimum_required_version">Minimum required version:</string>
+    <string name="force_update_current_version">Current version: </string>
+    <string name="force_update_minimum_required_version">Minimum required version: </string>
+    <string name="notification_title_connected">Connected to %1$s</string>
+    <string name="notification_content">Received %1$s | Send %2$s | Paid %3$s</string>
+    <string name="location_status_updating">Updating</string>
 </resources>
