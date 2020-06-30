@@ -11,15 +11,15 @@ import network.mysterium.vpn.BuildConfig
 import java.net.URL
 
 data class VersionResponse(
-        @Json(name = "version")
-        val version: String
+        @Json(name = "min_version")
+        val minVersion: String
 )
 
-class VersionViewModel(private val nodeRepository: NodeRepository): ViewModel() {
+class VersionViewModel(): ViewModel() {
     var remoteVersion: String = ""
 
     fun appVersion(): String {
-        return "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
+        return BuildConfig.VERSION_NAME
     }
 
     suspend fun updateRequired(): Boolean {
@@ -28,13 +28,9 @@ class VersionViewModel(private val nodeRepository: NodeRepository): ViewModel() 
                 return false
             }
 
-//            val versionJSON = withContext(Dispatchers.IO) {
-//                URL("http://localhost:8080").readText()
-//            }
-//
-
-            // TODO: Use real endpoint when ready.
-            val versionJSON = "{\"version\":\"0.31.0\"}"
+            val versionJSON = withContext(Dispatchers.IO) {
+                URL("https://testnet-api.mysterium.network/v1/mobile/android/versions").readText()
+            }
 
             val versionResponse = withContext(Dispatchers.Default) {
                 Klaxon().parse<VersionResponse>(versionJSON)
@@ -44,7 +40,7 @@ class VersionViewModel(private val nodeRepository: NodeRepository): ViewModel() 
                 return false
             }
 
-            remoteVersion = versionResponse.version
+            remoteVersion = versionResponse.minVersion
             val remoteVersionNumber = remoteVersion.replace(".", "").toDouble()
             val currentVersionNumber = appVersion().replace(".", "").toDouble()
             return remoteVersionNumber > currentVersionNumber
