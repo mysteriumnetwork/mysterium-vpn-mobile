@@ -25,6 +25,15 @@
         </TextView>
     </LinearLayout>
 
+    <TextView
+        android:text="@string/force_update_description"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
@@ -33,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current version: ">
+            android:text="@string/force_update_current_version">
         </TextView>
         <TextView
             android:id="@+id/force_update_current_version"
@@ -45,14 +54,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minimum required version: ">
+            android:text="@string/force_update_minimum_required_version">
         </TextView>
         <TextView
             android:id="@+id/force_update_required_version"
