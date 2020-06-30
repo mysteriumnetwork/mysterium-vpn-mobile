@@ -88,7 +88,7 @@ class FeedbackFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun updateVersionLabel() {
-        appVersionLabel.text = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
+        appVersionLabel.text = feedbackViewModel.appVersion()
 
         CoroutineScope(Dispatchers.Main).launch {
             val nodeVersion = feedbackViewModel.nodeVersion()

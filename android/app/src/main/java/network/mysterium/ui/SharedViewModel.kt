@@ -17,6 +17,7 @@
 
 package network.mysterium.ui
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.service.core.*
+import network.mysterium.vpn.R
 
 enum class ConnectionState(val type: String) {
     UNKNOWN("Unknown"),
@@ -39,7 +41,6 @@ enum class ConnectionState(val type: String) {
 
     companion object {
         fun parse(type: String): ConnectionState {
-            Log.i("ConnectionState","ConnectionState.parse type $type")
             return values().find { it.type == type } ?: UNKNOWN
         }
     }
@@ -69,6 +70,7 @@ class StatisticsModel(
 }
 
 class SharedViewModel(
+        private val appCtx: Context,
         private val nodeRepository: NodeRepository,
         private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         private val notificationManager: AppNotificationManager,
@@ -214,12 +216,12 @@ class SharedViewModel(
             // statistics event can fire sooner than proposal is loaded.
             if (selectedProposal.value != null && isConnected()) {
                 val countryName = selectedProposal.value?.countryName
-                val notificationTitle = "Connected to $countryName"
+                val notificationTitle = appCtx.getString(R.string.notification_title_connected, countryName)
                 val tokensSpent = PriceUtils.displayMoney(
                         ProposalPaymentMoney(amount = s.tokensSpent, currency = "MYSTT"),
                         DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
                 )
-                val notificationContent = "Received ${s.bytesReceived.value} ${s.bytesReceived.units} | Send ${s.bytesSent.value} ${s.bytesSent.units} | Paid $tokensSpent"
+                val notificationContent = appCtx.getString(R.string.notification_content, "${s.bytesReceived.value} ${s.bytesReceived.units}", "${s.bytesSent.value} ${s.bytesSent.units}", tokensSpent)
                 notificationManager.showStatisticsNotification(notificationTitle, notificationContent)
             }
         }
@@ -227,7 +229,7 @@ class SharedViewModel(
 
     private suspend fun loadLocation() {
         // Try to load location with few attempts. It can fail to load when connected to VPN.
-        location.value = LocationModel(ip = "Updating", countryFlagImage = null)
+        location.value = LocationModel(ip = appCtx.getString(R.string.location_status_updating), countryFlagImage = null)
         for (i in 1..3) {
             try {
                 val loc = nodeRepository.location()

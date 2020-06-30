@@ -32,6 +32,7 @@ import network.mysterium.service.core.NodeRepository
 import network.mysterium.ui.*
 
 class AppContainer {
+    lateinit var appCtx: Context
     lateinit var appDatabase: AppDatabase
     lateinit var nodeRepository: NodeRepository
     lateinit var sharedViewModel: SharedViewModel
@@ -43,6 +44,7 @@ class AppContainer {
     lateinit var drawerLayout: DrawerLayout
     lateinit var appNotificationManager: AppNotificationManager
     lateinit var clipboardManager: ClipboardManager
+    lateinit var versionViewModel: VersionViewModel
 
     fun init(
             ctx: Context,
@@ -52,6 +54,7 @@ class AppContainer {
             notificationManager: NotificationManager,
             clipboardManager: ClipboardManager
     ) {
+        appCtx = ctx
         appDatabase = Room.databaseBuilder(
                 ctx,
                 AppDatabase::class.java, "mysteriumvpn"
@@ -63,9 +66,10 @@ class AppContainer {
         nodeRepository = NodeRepository(deferredNode)
         appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
         walletViewModel = WalletViewModel(nodeRepository, bugReporter)
-        sharedViewModel = SharedViewModel(nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
+        sharedViewModel = SharedViewModel(appCtx, nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
+        versionViewModel = VersionViewModel()
         this.clipboardManager = clipboardManager
     }
 

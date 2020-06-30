@@ -20,6 +20,7 @@ package network.mysterium.ui
 import androidx.lifecycle.ViewModel
 import mysterium.SendFeedbackRequest
 import network.mysterium.service.core.NodeRepository
+import network.mysterium.vpn.BuildConfig
 
 class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel() {
     private var email = ""
@@ -48,5 +49,9 @@ class FeedbackViewModel(private val nodeRepository: NodeRepository): ViewModel()
     suspend fun nodeVersion(): String {
         val hz = nodeRepository.healthCheck()
         return hz.version
+    }
+
+    fun appVersion(): String {
+        return "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
     }
 }

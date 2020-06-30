@@ -22,7 +22,7 @@
         android:orientation="horizontal">
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/proposal_filter_country_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:paddingTop="12dp"
@@ -33,7 +33,7 @@
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/proposal_filter_country_proposals_count_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/ColorSecondary"
