@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         // start mobile node and initial data when network is available.
         CoroutineScope(Dispatchers.Main).launch {
             val coreService = deferredMysteriumCoreService.await()
-            coreService.startConnectivityChecker()
+            coreService.startConnectivityChecker(appContainer.nodeRepository)
             coreService.networkConnState().observe(this@MainActivity, Observer {
                 CoroutineScope(Dispatchers.Main).launch { handleConnChange(it) }
             })

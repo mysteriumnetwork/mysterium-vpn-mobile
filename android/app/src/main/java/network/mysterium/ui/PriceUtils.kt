@@ -1,5 +1,6 @@
 package network.mysterium.ui
 
+import android.util.Log
 import network.mysterium.service.core.ProposalPaymentMethod
 import network.mysterium.service.core.ProposalPaymentMoney
 import java.text.DecimalFormat
@@ -20,7 +21,7 @@ object PriceUtils {
         )
     }
 
-    val bytesInGiB = 1024 * 1024 * 1024
+    private const val bytesInGiB = 1024 * 1024 * 1024
 
     fun pricePerGiB(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
         if (pm == null || pm.rate.perSeconds == 0L) {
@@ -31,8 +32,10 @@ object PriceUtils {
             return ProposalPaymentMoney(amount = 0.0, currency = currency)
         }
 
+        var a = if (pm.rate.perBytes > 0L) (bytesInGiB / pm.rate.perBytes) * pm.price.amount else 0.0
+
         return ProposalPaymentMoney(
-                amount = (bytesInGiB / pm.rate.perBytes) * pm.price.amount,
+                amount = a,
                 currency = pm.price.currency
         )
     }

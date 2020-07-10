@@ -161,6 +161,17 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         }
     }
 
+    // Reconnect to VPN service.
+    suspend fun reconnect(req: ConnectRequest) = withContext(Dispatchers.IO) {
+        val res = deferredNode.await().reconnect(req) ?: return@withContext
+
+        when(res.errorCode) {
+            "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
+            "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
+            "Unknown" -> throw ConnectUnknownException(res.errorMessage)
+        }
+    }
+
     // Disconnect from VPN service.
     suspend fun disconnect() = withContext(Dispatchers.IO) {
         deferredNode.await().disconnect()

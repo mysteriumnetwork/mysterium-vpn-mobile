@@ -29,7 +29,7 @@ interface MysteriumCoreService : IBinder {
 
     fun stopNode()
 
-    fun startConnectivityChecker()
+    fun startConnectivityChecker(nodeRepository: NodeRepository)
 
     fun networkConnState(): MutableLiveData<NetworkConnState>
 

@@ -29,11 +29,11 @@ import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
+import mysterium.ConnectRequest
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.NotificationFactory
 import network.mysterium.ui.ProposalViewItem
-import network.mysterium.ui.ServiceType
 
 class NetworkConnState {
     var wifiConn = false
@@ -102,7 +102,7 @@ class MysteriumAndroidCoreService : VpnService() {
         }
     }
 
-    private fun startConnectivityChecker(ctx: Context, onChange: (netState: NetworkConnState) -> Unit) {
+    private fun startConnectivityChecker(ctx: Context, onChange: (netState: NetworkConnState) -> Unit, nodeRepository: NodeRepository) {
         val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val wifiManager = ctx.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
@@ -135,6 +135,16 @@ class MysteriumAndroidCoreService : VpnService() {
                         onChange(newValue)
                         CoroutineScope(Dispatchers.Main).launch {
                             netConnState.value = newValue
+                        }
+                        if (activeProposal != null) {
+                            val req = ConnectRequest()
+
+                            req.identityAddress = nodeRepository.getIdentity().address
+                            req.providerID = activeProposal!!.providerID
+                            req.serviceType = activeProposal!!.serviceType.type
+                            req.forceReconnect = true
+                            Log.i(TAG, "Reconnecting identity ${req.identityAddress} to provider ${req.providerID} with service ${req.serviceType}")
+                            nodeRepository.reconnect(req)
                         }
                     }
                 } catch (e: Exception) {
@@ -172,9 +182,9 @@ class MysteriumAndroidCoreService : VpnService() {
             return netConnState
         }
 
-        override fun startConnectivityChecker() {
-            startConnectivityChecker(applicationContext) {
-            }
+        override fun startConnectivityChecker(nodeRepository: NodeRepository) {
+            startConnectivityChecker(applicationContext, {
+            }, nodeRepository)
         }
 
         override fun startNode(): MobileNode {
