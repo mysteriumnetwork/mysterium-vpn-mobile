@@ -50,6 +50,7 @@
     <string name="wallet_topup_address_copied">Copied</string>
     <string name="wallet_topup_qr_hint">You can also scan QR code which contains your topup address.</string>
     <string name="force_update_title">Update is required</string>
+    <string name="proposals_country_title">Country filter</string>
     <string name="proposals_filter_country_value_all">All</string>
     <string name="proposals_filter_reset_btn">RESET</string>
     <string name="proposals_filter_quality_value_any">Any</string>
