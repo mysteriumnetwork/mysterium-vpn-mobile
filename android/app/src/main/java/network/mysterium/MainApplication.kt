@@ -22,6 +22,7 @@ import androidx.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import io.fabric.sdk.android.Fabric
+import io.intercom.android.sdk.Intercom
 import network.mysterium.ui.Countries
 import network.mysterium.vpn.BuildConfig
 
@@ -32,6 +33,7 @@ class MainApplication : MultiDexApplication() {
         setupLogging()
         super.onCreate()
         Countries.loadBitmaps()
+        setupIntercom()
         Log.i(TAG, "Application started")
     }
 
@@ -46,6 +48,10 @@ class MainApplication : MultiDexApplication() {
         Fabric.with(this, crashlyticsKit)
 
         Crashlytics.setInt("android_sdk_int", android.os.Build.VERSION.SDK_INT)
+    }
+
+    private fun setupIntercom() {
+        Intercom.initialize(this, "android_sdk-e480f3fce4f2572742b13c282c453171c1715516", "h7hlm9on")
     }
 
     companion object {

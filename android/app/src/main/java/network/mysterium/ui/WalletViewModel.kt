@@ -24,6 +24,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import io.intercom.android.sdk.Intercom
+import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -126,6 +128,13 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
             )
             identity.value = identityResult
             bugReporter.setUserIdentifier(nodeIdentity.address)
+            Intercom.client().apply {
+                registerUnidentifiedUser()
+                val attrs = UserAttributes.Builder()
+                        .withCustomAttribute("node_identity", nodeIdentity.address)
+                        .build()
+                updateUser(attrs)
+            }
             Log.i(TAG, "Loaded identity ${nodeIdentity.address}, channel addr: ${nodeIdentity.channelAddress}, status: ${nodeIdentity.registrationStatus}")
 
             // Register identity if not registered or failed.

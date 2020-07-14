@@ -33,7 +33,8 @@
     <string name="connect_err_invalid_proposal">Proposal is not valid</string>
     <string name="connect_err_insufficient_balance">Insufficient balance</string>
     <string name="menu_wallet">Wallet</string>
-    <string name="menu_report_issue">Report issue</string>
+    <string name="menu_report_issue">Report an issue</string>
+    <string name="menu_get_help">Get help</string>
     <string name="feedback_page_title">Report issue</string>
     <string name="feedback_logs_notice">By submitting this form, You agree to send to Mysterium Network some account information like IP, country and system information which will be used to improve the services and help investigate this issue.</string>
     <string name="feedback_message_hint">Describe what when wrong</string>
