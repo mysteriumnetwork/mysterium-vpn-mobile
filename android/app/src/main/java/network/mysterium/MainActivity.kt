@@ -34,6 +34,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.*
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
@@ -217,6 +218,7 @@ class MainActivity : AppCompatActivity() {
             when {
                 it.itemId == R.id.menu_item_account -> navigateTo(navController, Screen.ACCOUNT)
                 it.itemId == R.id.menu_item_feedback -> navigateTo(navController, Screen.FEEDBACK)
+                it.itemId == R.id.menu_item_chat -> Intercom.client().displayMessenger()
             }
             true
         }

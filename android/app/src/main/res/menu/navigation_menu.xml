@@ -9,4 +9,8 @@
         android:icon="@drawable/ic_bug_report_black_24dp"
         android:title="@string/menu_report_issue"/>
 
+    <item android:id="@+id/menu_item_chat"
+        android:icon="@drawable/ic_help_outline_24dp"
+        android:title="@string/menu_get_help"/>
+
 </menu>
