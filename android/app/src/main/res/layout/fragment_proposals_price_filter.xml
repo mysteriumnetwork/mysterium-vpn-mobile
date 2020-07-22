@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="Price/minute:">
+            android:text="@string/proposals_filter_price_per_minute">
         </TextView>
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="0.0001 or less"
+            android:text="≤ 0.0001"
             android:textStyle="bold"></TextView>
     </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="Price/GiB:">
+            android:text="@string/proposals_filter_price_per_gib">
         </TextView>
 
         <TextView
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="0.0005 or less"
+            android:text="≤ 0.0005"
             android:textStyle="bold"></TextView>
     </LinearLayout>
 

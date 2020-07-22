@@ -91,7 +91,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         val price = PriceUtils.displayMoney(ProposalPaymentMoney(amount = v, currency = "MYSTT"))
         return when (v) {
             0.0 -> "free"
-            else -> "$price or less"
+            else -> "≤ $price"
         }
     }
 }

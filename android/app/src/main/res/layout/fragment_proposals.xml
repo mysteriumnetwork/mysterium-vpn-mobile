@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Country"
+                android:text="@string/proposals_filter_country"
                 style="@style/ProposalFilterTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Price"
+                android:text="@string/proposals_filter_price"
                 style="@style/ProposalFilterTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Quality"
+                android:text="@string/proposals_filter_quality"
                 style="@style/ProposalFilterTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -163,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:text="IP type"
+                android:text="@string/proposals_filter_ip_type"
                 style="@style/ProposalFilterTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
