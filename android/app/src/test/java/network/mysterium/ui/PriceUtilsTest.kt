@@ -16,7 +16,8 @@ class PriceUtilsDisplayMoneyTest(private val value: ProposalPaymentMoney, privat
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
             return listOf(
-                    arrayOf(ProposalPaymentMoney(50000.0, "MYST"), "0.0005")
+                    arrayOf(ProposalPaymentMoney(50000.0, "MYST"), "0.0005"),
+                    arrayOf(ProposalPaymentMoney(7009.345794392523, "MYST"), "0.00007")
             )
         }
     }
