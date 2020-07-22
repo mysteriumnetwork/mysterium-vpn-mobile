@@ -73,15 +73,17 @@ class FeedbackFragment : Fragment() {
         }
 
         feedbackSubmitButton.isEnabled = false
-        navigateTo(root, Screen.MAIN)
-        showMessage(root.context, getString(R.string.feedback_submit_success))
 
         // Do not wait for feedback to send response as it may take some time.
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 feedbackViewModel.submit()
+                navigateTo(root, Screen.MAIN)
+                showMessage(root.context, getString(R.string.feedback_submit_success))
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to send user feedback", e)
+                showMessage(root.context, getString(R.string.feedback_submit_failed))
+                feedbackSubmitButton.isEnabled = true
             }
         }
     }
