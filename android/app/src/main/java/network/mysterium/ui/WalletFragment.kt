@@ -117,8 +117,8 @@ class WalletFragment : Fragment() {
     }
 
     private fun handleTopupAddressCopy(root: View) {
-        val channelAddress = walletViewModel.identity.value!!.channelAddress
-        val clip = ClipData.newPlainText("channel address", channelAddress)
+        val identity = walletViewModel.identity.value ?: return
+        val clip = ClipData.newPlainText("channel address", identity.channelAddress)
         clipboardManager.primaryClip = clip
         showMessage(root.context, getString(R.string.wallet_topup_address_copied))
     }
@@ -132,14 +132,14 @@ class WalletFragment : Fragment() {
     }
 
     private fun openKovanChannelDetails() {
-        val channelAddress = walletViewModel.identity.value!!.channelAddress
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://goerli.etherscan.io/address/$channelAddress"))
+        val identity = walletViewModel.identity.value ?: return
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://goerli.etherscan.io/address/${identity.channelAddress}"))
         startActivity(browserIntent)
     }
 
     private fun openKovanIdentityDetails() {
-        val identityAddress = walletViewModel.identity.value!!.address
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://goerli.etherscan.io/address/$identityAddress"))
+        val identity = walletViewModel.identity.value ?: return
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://goerli.etherscan.io/address/${identity.address}"))
         startActivity(browserIntent)
     }
 
