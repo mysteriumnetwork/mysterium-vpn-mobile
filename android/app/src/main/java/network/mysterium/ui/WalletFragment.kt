@@ -18,31 +18,28 @@
 package network.mysterium.ui
 
 import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
-import android.content.Intent
-import android.net.Uri
-import android.util.Log
-import android.widget.ImageView
 import network.mysterium.vpn.R
-import java.lang.Exception
-import android.content.ClipboardManager
-import android.content.Context
-import androidx.core.view.isVisible
-import com.google.android.material.snackbar.Snackbar
 
 
 class WalletFragment : Fragment() {
