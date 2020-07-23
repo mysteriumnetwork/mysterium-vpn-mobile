@@ -1,4 +1,4 @@
-package network.mysterium.service.core
+package network.mysterium.net
 
 data class NetworkState(
         val wifiConnected: Boolean = false,

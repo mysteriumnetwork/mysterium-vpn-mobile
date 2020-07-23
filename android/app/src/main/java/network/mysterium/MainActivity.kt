@@ -20,8 +20,7 @@ package network.mysterium
 import android.app.Activity
 import android.app.NotificationManager
 import android.content.*
-import android.net.*
-import android.net.wifi.WifiManager
+import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -37,10 +36,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.*
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.MysteriumAndroidCoreService
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.NetworkState
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retryWhen
+import mysterium.ConnectRequest
+import network.mysterium.net.NetworkState
+import network.mysterium.service.core.*
 import network.mysterium.ui.Screen
 import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -90,13 +93,17 @@ class MainActivity : AppCompatActivity() {
         ensureVpnServicePermission()
         bindMysteriumService()
 
+        appContainer.networkMonitor.startWatching()
+
         // Start network connectivity checker and handle connection change event to
         // start mobile node and initial data when network is available.
         CoroutineScope(Dispatchers.Main).launch {
-            val coreService = deferredMysteriumCoreService.await()
-            coreService.startConnectivityChecker(appContainer.nodeRepository)
-            coreService.networkConnState().observe(this@MainActivity, Observer {
+            val core = deferredMysteriumCoreService.await()
+            appContainer.networkMonitor.state.observe(this@MainActivity, Observer {
                 CoroutineScope(Dispatchers.Main).launch { handleConnChange(it) }
+            })
+            appContainer.networkMonitor.state.observe(this@MainActivity, Observer {
+                CoroutineScope(Dispatchers.Main).launch { reconnect(core) }
             })
         }
 
@@ -114,6 +121,28 @@ class MainActivity : AppCompatActivity() {
             if (!termsAccepted) {
                 navigate(R.id.terms_fragment)
             }
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private suspend fun reconnect(core: MysteriumCoreService) {
+        core.getActiveProposal()?.let {
+            val req = ConnectRequest().apply {
+                identityAddress = appContainer.nodeRepository.getIdentity().address
+                providerID = it.providerID
+                serviceType = it.serviceType.type
+                forceReconnect = true
+            }
+            flow<Nothing> {
+                Log.i(TAG, "Reconnecting identity ${req.identityAddress} to provider ${req.providerID} with service ${req.serviceType}")
+                appContainer.nodeRepository.reconnect(req)
+            }
+                    // Retry in case of a network failure to retrieve the proposal
+                    .retryWhen { cause, attempt -> cause is ConnectInvalidProposalException || attempt < 5 }
+                    .catch { e ->
+                        Log.e(TAG, "Failed to reconnect", e)
+                    }
+                    .collect {}
         }
     }
 
@@ -140,8 +169,6 @@ class MainActivity : AppCompatActivity() {
 
     // Start node and load initial data when connected to internet.
     private fun handleConnChange(networkState: NetworkState) {
-        Log.i(TAG, "Network connection changed: $networkState")
-
         vpnNotInternetLayout.visibility = if (networkState.connected) {
             View.GONE
         } else {
