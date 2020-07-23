@@ -20,7 +20,8 @@ package network.mysterium
 import android.app.Activity
 import android.app.NotificationManager
 import android.content.*
-import android.net.VpnService
+import android.net.*
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -39,7 +40,7 @@ import kotlinx.coroutines.*
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.NetworkConnState
+import network.mysterium.service.core.NetworkState
 import network.mysterium.ui.Screen
 import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
@@ -138,26 +139,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Start node and load initial data when connected to internet.
-    private fun handleConnChange(networkConnState: NetworkConnState) {
-        Log.i(TAG, "Network connection changed: $networkConnState")
+    private fun handleConnChange(networkState: NetworkState) {
+        Log.i(TAG, "Network connection changed: $networkState")
 
-        vpnNotInternetLayout.visibility = if (networkConnState.connected) {
+        vpnNotInternetLayout.visibility = if (networkState.connected) {
             View.GONE
         } else {
             View.VISIBLE
         }
 
-        startNode(networkConnState)
+        startNode(networkState)
     }
 
-    private fun startNode(networkConnState: NetworkConnState) {
+    private fun startNode(networkState: NetworkState) {
         // Skip if node is already started.
         if (deferredNode.isStarted()) {
             return
         }
 
         // Skip if no internet connection.
-        if (!networkConnState.connected) {
+        if (!networkState.connected) {
             return
         }
 

@@ -31,7 +31,7 @@ interface MysteriumCoreService : IBinder {
 
     fun startConnectivityChecker(nodeRepository: NodeRepository)
 
-    fun networkConnState(): MutableLiveData<NetworkConnState>
+    fun networkConnState(): MutableLiveData<NetworkState>
 
     fun getActiveProposal(): ProposalViewItem?
 
