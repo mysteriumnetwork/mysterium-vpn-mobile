@@ -153,7 +153,7 @@
                             android:id="@+id/account_balance_card_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Balance"
+                            android:text="@string/wallet_balance"
                             android:textStyle="bold"
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +172,7 @@
 
                         <TextView
                             android:id="@+id/account_balance_hint"
-                            android:text="MYSTT is a test token which you get for free while we are in the Testnet environment."
+                            android:text="@string/wallet_mystt_test_explanation"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/ColorSecondary"
                             app:layout_constraintTop_toBottomOf="@id/wallet_balance_text"
@@ -284,7 +284,7 @@
                             android:id="@+id/account_identity_text_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Identity Address"
+                            android:text="@string/wallet_identity_address"
                             android:textStyle="bold"
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -304,7 +304,7 @@
 
                         <TextView
                             android:id="@+id/account_identity_hint"
-                            android:text="Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there."
+                            android:text="@string/wallet_identity_address_explanation"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/ColorSecondary"
                             app:layout_constraintTop_toBottomOf="@id/wallet_identity_text"

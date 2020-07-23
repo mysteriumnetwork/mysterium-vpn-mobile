@@ -38,7 +38,7 @@
     <string name="menu_get_help">Get help</string>
     <string name="feedback_page_title">Report issue</string>
     <string name="feedback_logs_notice">By submitting this form, You agree to send to Mysterium Network some account information like IP, country and system information which will be used to improve the services and help investigate this issue.</string>
-    <string name="feedback_message_hint">Describe what when wrong</string>
+    <string name="feedback_message_hint">Describe what went wrong</string>
     <string name="wallet_title">Wallet</string>
     <string name="wallet_registration_please_wait">Please wait</string>
     <string name="wallet_identity_registration_progress">Please wait while your account blockchain identity registration is in progress. It could take up to a few minutes.</string>
@@ -66,7 +66,7 @@
     <string name="node_type_all">All</string>
     <string name="node_type_business">Business</string>
     <string name="node_type_cellular">Cellular</string>
-    <string name="node_type_hosting">Hosting</string>
+    <string name="node_type_hosting">Data center</string>
     <string name="node_type_residential">Residential</string>
     <string name="quality_level_any">Any</string>
     <string name="quality_level_high">High</string>
@@ -79,4 +79,16 @@
     <string name="notification_title_connected">Connected to %1$s</string>
     <string name="notification_content">Received %1$s | Send %2$s | Paid %3$s</string>
     <string name="location_status_updating">Updating</string>
+    <string name="proposals_filter_country">Country</string>
+    <string name="proposals_filter_price">Price</string>
+    <string name="proposals_filter_quality">Quality</string>
+    <string name="proposals_filter_ip_type">IP type</string>
+    <string name="proposals_filter_price_per_minute">Price/minute:</string>
+    <string name="proposals_filter_price_per_gib">Price/GiB:</string>
+    <string name="proposals_price_combined">%1$s/min %2$s/GiB</string>
+    <string name="feedback_send_feedback_button">Send feedback</string>
+    <string name="wallet_mystt_test_explanation">MYSTT is a test token which you get for free while we are in the Testnet environment.</string>
+    <string name="wallet_balance">Balance</string>
+    <string name="wallet_identity_address">Identity Address</string>
+    <string name="wallet_identity_address_explanation">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
 </resources>

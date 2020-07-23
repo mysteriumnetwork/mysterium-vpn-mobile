@@ -40,11 +40,8 @@ object PriceUtils {
         }
         if (m.currency == "MYST" || m.currency == "MYSTT") {
             val amount = m.amount / 100_000_000
-            var formatDigits = ""
-            for (i in 0..opts.fractionDigits) {
-                formatDigits += "#"
-            }
-            val amountStr = DecimalFormat("#.$formatDigits").format(amount)
+            val formatDigits = "#".repeat(opts.fractionDigits)
+            val amountStr = DecimalFormat("#.${formatDigits}").format(amount)
             return "${amountStr}${currency}"
         }
         return "${m.amount}${currency}"

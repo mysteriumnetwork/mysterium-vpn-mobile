@@ -56,6 +56,7 @@
             android:textColor="@color/ColorSecondary"
             android:ellipsize="end"
             android:maxLines="1"
+            android:maxLength="14"
             android:text="0x01021001b8172e8b67f3e63af94b6ae1d5d39c61"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>
