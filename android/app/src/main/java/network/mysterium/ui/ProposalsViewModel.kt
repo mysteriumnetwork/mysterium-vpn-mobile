@@ -300,10 +300,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
             req.refresh = refresh
             req.includeFailed = true
             req.serviceType = "wireguard"
-            req.lowerTimePriceBound = 0
-            req.upperTimePriceBound = 50000
-            req.lowerGBPriceBound = 0
-            req.upperGBPriceBound = 11000000
 
             val nodeProposals = nodeRepository.proposals(req)
             allProposals = nodeProposals
@@ -385,4 +381,3 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         const val TAG: String = "ProposalsViewModel"
     }
 }
-
