@@ -91,4 +91,6 @@
     <string name="wallet_balance">Balance</string>
     <string name="wallet_identity_address">Identity Address</string>
     <string name="wallet_identity_address_explanation">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="vpn_ip">IP: %1$s</string>
 </resources>

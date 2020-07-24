@@ -89,11 +89,11 @@ class WalletFragment : Fragment() {
             navigateTo(root, Screen.MAIN)
         }
 
-        walletViewModel.identity.observe(this, Observer {
+        walletViewModel.identity.observe(viewLifecycleOwner, Observer {
             handleIdentityChange(it)
         })
 
-        walletViewModel.balance.observe(this, Observer {
+        walletViewModel.balance.observe(viewLifecycleOwner, Observer {
             handleBalanceChange(it)
         })
 

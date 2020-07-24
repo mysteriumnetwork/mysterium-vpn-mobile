@@ -27,7 +27,7 @@ class ForceUpdateFragment : Fragment() {
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         super.onViewCreated(root, savedInstanceState)
 
-        val appContainer = (activity!!.application as MainApplication).appContainer
+        val appContainer = (requireActivity().application as MainApplication).appContainer
         val versionViewModel = appContainer.versionViewModel
 
         updateBtn = root.findViewById(R.id.force_update_btn)

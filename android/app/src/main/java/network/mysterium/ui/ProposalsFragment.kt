@@ -63,7 +63,7 @@ class ProposalsFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_proposals, container, false)
 
-        appContainer = (activity!!.application as MainApplication).appContainer
+        appContainer = (requireActivity().application as MainApplication).appContainer
         proposalsViewModel = appContainer.proposalsViewModel
 
         // Initialize UI elements.
@@ -140,7 +140,7 @@ class ProposalsFragment : Fragment() {
         }
 
         // Subscribe to proposals changes.
-        proposalsViewModel.getFilteredProposals().observe(this, Observer { newItems ->
+        proposalsViewModel.getFilteredProposals().observe(viewLifecycleOwner, Observer { newItems ->
             listAdapter.submitList(createProposalItemsWithGroups(root, newItems))
             listAdapter.notifyDataSetChanged()
 
@@ -152,7 +152,7 @@ class ProposalsFragment : Fragment() {
         })
 
 
-        proposalsViewModel.initialProposalsLoaded.observe(this, Observer {loaded ->
+        proposalsViewModel.initialProposalsLoaded.observe(viewLifecycleOwner, Observer {loaded ->
             if (loaded) {
                 return@Observer
             }
