@@ -51,7 +51,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerMinute)
         proposalsPricePerMinuteSlider.stepSize = (priceSettings.perMinuteMax / filterSteps).toFloat()
         proposalsPricePerMinuteSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
-        proposalsPricePerMinuteSlider.addOnChangeListener { slider, value, fromUser ->
+        proposalsPricePerMinuteSlider.addOnChangeListener { _, value, _ ->
             proposalsViewModel.applyPricePerMinFilter(value.toDouble())
             proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerMinute)
         }
@@ -62,7 +62,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         proposalsPricePerGibValue.text = formatPriceValue(proposalsViewModel.filter.pricePerGiB)
         proposalsPricePerGibSlider.stepSize = (priceSettings.perGibMax / filterSteps).toFloat()
         proposalsPricePerGibSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
-        proposalsPricePerGibSlider.addOnChangeListener { slider, value, fromUser ->
+        proposalsPricePerGibSlider.addOnChangeListener { _, value, _ ->
             proposalsViewModel.applyPricePerGiBFilter(value.toDouble())
             proposalsPricePerGibValue.text = formatPriceValue(proposalsViewModel.filter.pricePerGiB)
         }

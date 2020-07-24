@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +48,7 @@ class TermsFragment : Fragment() {
         termsTextWiew = root.findViewById(R.id.terms_text_wiew)
         termsAcceptButton = root.findViewById(R.id.terms_accept_button)
 
-        termsTextWiew.setText(Html.fromHtml(termsViewModel.termsText))
+        termsTextWiew.setText(Html.fromHtml(termsViewModel.termsText, HtmlCompat.FROM_HTML_MODE_LEGACY))
 
         termsAcceptButton.setOnClickListener {
             termsAcceptButton.isEnabled = false

@@ -124,19 +124,19 @@ class MainVpnFragment : Fragment() {
             handleConnectionPress(root)
         }
 
-        sharedViewModel.selectedProposal.observe(this, Observer { updateSelectedProposal(it) })
+        sharedViewModel.selectedProposal.observe(viewLifecycleOwner, Observer { updateSelectedProposal(it) })
 
-        sharedViewModel.connectionState.observe(this, Observer {
+        sharedViewModel.connectionState.observe(viewLifecycleOwner, Observer {
             updateConnStateLabel(it)
             updateConnButtonState(it)
             updateStatsLayoutVisibility()
         })
 
-        sharedViewModel.statistics.observe(this, Observer { updateStatsLabels(it) })
+        sharedViewModel.statistics.observe(viewLifecycleOwner, Observer { updateStatsLabels(it) })
 
-        sharedViewModel.location.observe(this, Observer { updateLocation(it) })
+        sharedViewModel.location.observe(viewLifecycleOwner, Observer { updateLocation(it) })
 
-        walletViewModel.balance.observe(this, Observer { updateBalance(it) })
+        walletViewModel.balance.observe(viewLifecycleOwner, Observer { updateBalance(it) })
 
         onBackPress { emulateHomePress() }
 
