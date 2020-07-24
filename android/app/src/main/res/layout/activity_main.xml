@@ -20,7 +20,7 @@
             android:visibility="gone"
             android:layout_height="40dp">
             <TextView
-                android:text="No internet connection"
+                android:text="@string/no_internet_connection"
                 android:textStyle="bold"
                 android:textSize="16dp"
                 android:textColor="@color/ColorWhite"
