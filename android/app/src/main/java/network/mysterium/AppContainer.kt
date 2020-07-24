@@ -20,12 +20,15 @@ package network.mysterium
 import android.app.NotificationManager
 import android.content.ClipboardManager
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.wifi.WifiManager
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.db.AppDatabase
 import network.mysterium.logging.BugReporter
+import network.mysterium.net.NetworkMonitor
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
@@ -45,6 +48,7 @@ class AppContainer {
     lateinit var appNotificationManager: AppNotificationManager
     lateinit var clipboardManager: ClipboardManager
     lateinit var versionViewModel: VersionViewModel
+    lateinit var networkMonitor: NetworkMonitor
 
     fun init(
             ctx: Context,
@@ -71,6 +75,11 @@ class AppContainer {
         termsViewModel = TermsViewModel(appDatabase)
         versionViewModel = VersionViewModel()
         this.clipboardManager = clipboardManager
+
+        networkMonitor = NetworkMonitor(
+                connectivity = ctx.getSystemService(ConnectivityManager::class.java),
+                wifi = ctx.getSystemService(WifiManager::class.java)
+        )
     }
 
     companion object {
