@@ -296,10 +296,16 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
         try {
-            val req = GetProposalsRequest()
-            req.refresh = refresh
-            req.includeFailed = true
-            req.serviceType = "wireguard"
+            val req = GetProposalsRequest().apply {
+                this.refresh = refresh
+                includeFailed = true
+                serviceType = "wireguard"
+                // Temporary fix with huge values until mobile-node is upgrade to >= 0.38 where these are removed
+                lowerTimePriceBound = 0
+                upperTimePriceBound = 1_000_000_000_000
+                lowerGBPriceBound = 0
+                upperGBPriceBound = 1_000_000_000_000
+            }
 
             val nodeProposals = nodeRepository.proposals(req)
             allProposals = nodeProposals
