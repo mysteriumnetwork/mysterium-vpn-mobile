@@ -27,9 +27,7 @@ class WireguardAndroidTunnelSetup(val vpnService: VpnService) : WireguardTunnelS
 
 
     override fun setBlocking(blocking: Boolean) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tunBuilder?.setBlocking(blocking)
-        }
+        tunBuilder?.setBlocking(blocking)
     }
 
     override fun newTunnel() {

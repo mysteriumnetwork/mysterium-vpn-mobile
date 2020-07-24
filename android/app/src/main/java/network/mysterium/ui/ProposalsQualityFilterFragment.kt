@@ -35,7 +35,7 @@ class ProposalsQualityFilterListFragment : Fragment() {
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         super.onViewCreated(root, savedInstanceState)
 
-        val appContainer = (activity!!.application as MainApplication).appContainer
+        val appContainer = (requireActivity().application as MainApplication).appContainer
         proposalsViewModel = appContainer.proposalsViewModel
 
         toolbar = root.findViewById(R.id.proposals_quality_filter_toolbar)

@@ -43,7 +43,7 @@ class TermsFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_terms, container, false)
 
-        termsViewModel = (activity!!.application as MainApplication).appContainer.termsViewModel
+        termsViewModel = (requireActivity().application as MainApplication).appContainer.termsViewModel
         termsTextWiew = root.findViewById(R.id.terms_text_wiew)
         termsAcceptButton = root.findViewById(R.id.terms_accept_button)
 

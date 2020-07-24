@@ -32,7 +32,7 @@ class ProposalsPriceFilterFragment : Fragment() {
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         super.onViewCreated(root, savedInstanceState)
 
-        val appContainer = (activity!!.application as MainApplication).appContainer
+        val appContainer = (requireActivity().application as MainApplication).appContainer
         proposalsViewModel = appContainer.proposalsViewModel
 
         feedbackToolbar = root.findViewById(R.id.proposals_price_filter_toolbar)
