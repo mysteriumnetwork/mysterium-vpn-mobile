@@ -1,15 +1,12 @@
 package network.mysterium.net
 
 import android.net.*
-import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
-import android.net.NetworkCapabilities.TRANSPORT_WIFI
+import android.net.NetworkCapabilities.*
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class NetworkMonitor(
         private val connectivity: ConnectivityManager,
@@ -32,25 +29,45 @@ class NetworkMonitor(
     }
 
     override fun onCapabilitiesChanged(network: Network?, networkCapabilities: NetworkCapabilities?) {
-        Log.d(TAG, "onCapabilitiesChanged $network $networkCapabilities")
-        val nc = networkCapabilities ?: return
-        val connected = connectivity.getNetworkInfo(network).isConnected
+        Log.d(TAG, "Network capabilities changed, refreshing state $networkCapabilities")
+        refreshNetworkState()
+    }
+
+    override fun onLost(network: Network?) {
+        Log.d(TAG, "Lost a network, refreshing state")
+        refreshNetworkState()
+    }
+
+    private fun refreshNetworkState() {
+        val connectedNetworks = connectivity.allNetworks.filter { connectivity.getNetworkInfo(it)?.isConnected == true }
+        val wifiNetwork = connectedNetworks.find {
+            val cap = connectivity.getNetworkCapabilities(it) ?: return@find false
+            return@find cap.hasTransport(TRANSPORT_WIFI)
+                    && cap.hasCapability(NET_CAPABILITY_INTERNET)
+                    && cap.hasCapability(NET_CAPABILITY_VALIDATED)
+        }
+        val cellularNetwork = connectedNetworks.find {
+            val cap = connectivity.getNetworkCapabilities(it) ?: return@find false
+            return@find cap.hasTransport(TRANSPORT_CELLULAR)
+                    && cap.hasCapability(NET_CAPABILITY_INTERNET)
+                    && cap.hasCapability(NET_CAPABILITY_VALIDATED)
+        }
         val newState = when {
-            nc.hasTransport(TRANSPORT_CELLULAR) -> {
-                NetworkState(cellularConnected = connected)
+            wifiNetwork != null -> {
+                NetworkState(wifiConnected = true, wifiNetworkId = getWifiNetworkId(this.wifi))
             }
-            nc.hasTransport(TRANSPORT_WIFI) -> {
-                NetworkState(wifiConnected = connected, wifiNetworkId = getWifiNetworkId(wifi))
+            cellularNetwork != null -> {
+                NetworkState(cellularConnected = true)
             }
-            else -> return
+            else -> {
+                NetworkState()
+            }
         }
 
-        // Update state if conn was changed. It could change when switching from Wifi to Mobile network
-        // or other different Wifi networks (in such case wifiConnId is used to check if wifi is changed).
         if (newState != state.value) {
             CoroutineScope(Dispatchers.Main).launch {
-                state.value = newState
-                Log.i(TAG, "Network state changed: ${state.value}")
+                Log.i(TAG, "Network state changed: ${state.value} -> $newState")
+                state.postValue(newState)
             }
         }
     }
