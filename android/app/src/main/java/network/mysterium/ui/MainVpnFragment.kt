@@ -161,7 +161,7 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun updateLocation(location: LocationModel) {
-        conStatusIP.text = getString(R.string.vpn_ip)
+        conStatusIP.text = getString(R.string.vpn_ip, location.ip)
         if (location.countryFlagImage == null) {
             vpnStatusCountry.setImageResource(R.drawable.ic_public_black_24dp)
         } else {
