@@ -36,10 +36,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.retryWhen
+import kotlinx.coroutines.flow.*
 import mysterium.ConnectRequest
 import network.mysterium.net.NetworkState
 import network.mysterium.service.core.*
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch { handleConnChange(it) }
             })
             appContainer.networkMonitor.state.observe(this@MainActivity, Observer {
-                CoroutineScope(Dispatchers.Main).launch { reconnect(core) }
+                CoroutineScope(Dispatchers.Main).launch { reconnect(core, it) }
             })
         }
 
@@ -125,25 +122,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     @ExperimentalCoroutinesApi
-    private suspend fun reconnect(core: MysteriumCoreService) {
-        core.getActiveProposal()?.let {
-            val req = ConnectRequest().apply {
-                identityAddress = appContainer.nodeRepository.getIdentity().address
-                providerID = it.providerID
-                serviceType = it.serviceType.type
-                forceReconnect = true
-            }
-            flow<Nothing> {
-                Log.i(TAG, "Reconnecting identity ${req.identityAddress} to provider ${req.providerID} with service ${req.serviceType}")
-                appContainer.nodeRepository.reconnect(req)
-            }
-                    // Retry in case of a network failure to retrieve the proposal
-                    .retryWhen { cause, attempt -> cause is ConnectInvalidProposalException || attempt < 5 }
-                    .catch { e ->
-                        Log.e(TAG, "Failed to reconnect", e)
-                    }
-                    .collect {}
+    private suspend fun reconnect(core: MysteriumCoreService, state: NetworkState) {
+        if (!state.connected) {
+            return
         }
+        val proposal = core.getActiveProposal() ?: return
+
+        val req = ConnectRequest().apply {
+            identityAddress = appContainer.nodeRepository.getIdentity().address
+            providerID = proposal.providerID
+            serviceType = proposal.serviceType.type
+            forceReconnect = true
+        }
+        flow<Nothing> {
+            Log.i(TAG, "Reconnecting identity ${req.identityAddress} to provider ${req.providerID} with service ${req.serviceType}")
+            appContainer.nodeRepository.reconnect(req)
+        }
+                .retry(3) { t -> t is ConnectInvalidProposalException }
+                .catch { e ->
+                    Log.e(TAG, "Failed to reconnect", e)
+                }
+                .collect {}
     }
 
     override fun onDestroy() {
