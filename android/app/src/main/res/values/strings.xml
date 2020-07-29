@@ -7,6 +7,7 @@
 
     <string name="conn_state_connected">Connected</string>
     <string name="conn_state_connecting">Connecting</string>
+    <string name="conn_state_reconnecting">Reconnecting</string>
     <string name="conn_state_not_connected">Disconnected</string>
     <string name="conn_state_disconnecting">Disconnecting</string>
 

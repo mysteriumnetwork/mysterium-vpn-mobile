@@ -78,7 +78,8 @@ class AppContainer {
 
         networkMonitor = NetworkMonitor(
                 connectivity = ctx.getSystemService(ConnectivityManager::class.java),
-                wifi = ctx.getSystemService(WifiManager::class.java)
+                wifiManager = ctx.getSystemService(WifiManager::class.java),
+                networkState = sharedViewModel.networkState
         )
     }
 

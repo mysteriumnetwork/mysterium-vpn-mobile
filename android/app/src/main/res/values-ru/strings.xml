@@ -92,4 +92,5 @@
     <string name="wallet_identity_address_explanation">Идентификатор - это ваш внутренний идентификатор пользователя Mysterium. Никогда не посылайте эфир или какие-либо ERC20 токены сюда.</string>
     <string name="no_internet_connection">Нет соединения с интернетом</string>
     <string name="vpn_ip">IP: %1$s</string>
+    <string name="conn_state_reconnecting">Переподключениe</string>
 </resources>

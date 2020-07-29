@@ -21,13 +21,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
+import network.mysterium.net.NetworkState
 import network.mysterium.service.core.*
 import network.mysterium.vpn.R
 
@@ -75,14 +75,20 @@ class SharedViewModel(
         private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         private val notificationManager: AppNotificationManager,
         private val walletViewModel: WalletViewModel
-) : ViewModel() {
+) : ViewModel(), Observer<NetworkState> {
 
     val selectedProposal = MutableLiveData<ProposalViewItem>()
     val connectionState = MutableLiveData<ConnectionState>()
+    var reconnecting = false
     val statistics = MutableLiveData<StatisticsModel>()
     val location = MutableLiveData<LocationModel>()
+    val networkState = MutableLiveData<NetworkState>(NetworkState(wifiConnected = true))
 
     private var isConnected = false
+
+    init {
+        networkState.observeForever(this)
+    }
 
     suspend fun load() {
         initListeners()
@@ -103,6 +109,29 @@ class SharedViewModel(
     fun isConnected(): Boolean {
         val state = connectionState.value
         return state != null && (state == ConnectionState.CONNECTED || state == ConnectionState.IP_NOT_CHANGED)
+    }
+
+    override fun onChanged(t: NetworkState) {
+        CoroutineScope(Dispatchers.Main).launch {
+            loadLocation()
+        }
+        if (!isConnected) {
+            Log.d(TAG, "No active connection, ignoring network state change")
+            return
+        }
+        if (t.connected) {
+            CoroutineScope(Dispatchers.Main).launch {
+                Log.i(TAG, "Network changed, reconnecting")
+                reconnect()
+            }
+        } else {
+            Log.i(TAG, "Network lost, disconnecting")
+            CoroutineScope(Dispatchers.Main).launch {
+                if (isConnected) {
+                    disconnect()
+                }
+            }
+        }
     }
 
     suspend fun connect(identityAddress: String, providerID: String, serviceType: String) {
@@ -132,6 +161,41 @@ class SharedViewModel(
             connectionState.value = ConnectionState.NOT_CONNECTED
             throw e
         }
+    }
+
+    private suspend fun reconnect() {
+        if (!isConnected) {
+            return
+        }
+
+        val proposal = selectedProposal.value ?: return
+        val req = ConnectRequest().apply {
+            identityAddress = nodeRepository.getIdentity().address
+            providerID = proposal.providerID
+            serviceType = proposal.serviceType.type
+            forceReconnect = true
+        }
+
+        this.reconnecting = true
+        val tries = 3
+        for (i in 1..tries) {
+            try {
+                Log.i(TAG, "Reconnecting identity ${req.identityAddress} to provider ${req.providerID} with service ${req.serviceType}")
+                nodeRepository.reconnect(req)
+                Log.i(TAG, "Reconnected successfully")
+                break
+            } catch (e: Exception) {
+                if (!(e is ConnectInvalidProposalException)) {
+                    Log.e(TAG, "Failed to reconnect", e)
+                    break
+                }
+                Log.e(TAG, "Failed to reconnect (${i}/${tries})", e)
+                if (i < tries) {
+                    delay(500)
+                }
+            }
+        }
+        this.reconnecting = false
     }
 
     suspend fun disconnect() {

@@ -192,6 +192,10 @@ class MainVpnFragment : Fragment() {
     }
 
     private fun updateConnStateLabel(state: ConnectionState) {
+        if (state != ConnectionState.CONNECTED && sharedViewModel.reconnecting) {
+            connStatusLabel.text = getString(R.string.conn_state_reconnecting)
+            return
+        }
         val connStateText = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.conn_state_not_connected)
             ConnectionState.CONNECTED, ConnectionState.IP_NOT_CHANGED -> getString(R.string.conn_state_connected)
