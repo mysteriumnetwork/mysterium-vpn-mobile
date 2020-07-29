@@ -79,6 +79,7 @@ class SharedViewModel(
 
     val selectedProposal = MutableLiveData<ProposalViewItem>()
     val connectionState = MutableLiveData<ConnectionState>()
+    var reconnecting = false
     val statistics = MutableLiveData<StatisticsModel>()
     val location = MutableLiveData<LocationModel>()
     val networkState = MutableLiveData<NetworkState>(NetworkState(wifiConnected = true))
@@ -171,6 +172,8 @@ class SharedViewModel(
             serviceType = proposal.serviceType.type
             forceReconnect = true
         }
+
+        this.reconnecting = true
         val tries = 3
         for (i in 1..tries) {
             try {
@@ -189,6 +192,7 @@ class SharedViewModel(
                 }
             }
         }
+        this.reconnecting = false
     }
 
     suspend fun disconnect() {
