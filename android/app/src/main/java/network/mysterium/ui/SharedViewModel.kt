@@ -81,7 +81,7 @@ class SharedViewModel(
     val connectionState = MutableLiveData<ConnectionState>()
     val statistics = MutableLiveData<StatisticsModel>()
     val location = MutableLiveData<LocationModel>()
-    val networkState = MutableLiveData<NetworkState>(NetworkState())
+    val networkState = MutableLiveData<NetworkState>(NetworkState(wifiConnected = true))
 
     private var isConnected = false
 

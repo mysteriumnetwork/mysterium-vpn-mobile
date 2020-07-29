@@ -30,6 +30,17 @@ class NetworkMonitor(
 
     fun start() {
         networkCallback = NetworkStatePublisher()
+        connectivity.activeNetwork?.let {
+            val capabilities = connectivity.getNetworkCapabilities(it)
+            val initialState = when {
+                capabilities.hasTransport(TRANSPORT_WIFI) -> NetworkState(wifiConnected = true, wifiNetworkId = getWifiNetworkId())
+                capabilities.hasTransport(TRANSPORT_CELLULAR) -> NetworkState(cellularConnected = true)
+                else -> NetworkState()
+            }
+            CoroutineScope(Dispatchers.Main).launch {
+                networkState.value = initialState
+            }
+        }
         connectivity.registerDefaultNetworkCallback(networkCallback)
     }
 
