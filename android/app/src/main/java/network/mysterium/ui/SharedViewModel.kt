@@ -112,6 +112,9 @@ class SharedViewModel(
     }
 
     override fun onChanged(t: NetworkState) {
+        CoroutineScope(Dispatchers.Main).launch {
+            loadLocation()
+        }
         if (!isConnected) {
             Log.d(TAG, "No active connection, ignoring network state change")
             return
