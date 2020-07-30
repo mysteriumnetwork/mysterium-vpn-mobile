@@ -150,8 +150,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startNode(networkState: NetworkState) {
-        // Skip if node is already started.
-        if (deferredNode.isStarted()) {
+        // Skip if node is already started or in a starting state.
+        if (deferredNode.startedOrStarting()) {
             return
         }
 
