@@ -191,6 +191,7 @@ class SharedViewModel(
                 }
             }
         }
+        loadLocation()
         this.reconnecting = false
     }
 
