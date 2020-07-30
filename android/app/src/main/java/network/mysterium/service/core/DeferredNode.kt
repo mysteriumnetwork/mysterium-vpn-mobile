@@ -18,7 +18,7 @@ class DeferredNode {
     }
 
     fun startedOrStarting(): Boolean {
-        return deferredNode.isCompleted || lock.availablePermits == 0
+        return deferredNode.isCompleted || lock.availablePermits < 1
     }
 
     private val lock = Semaphore(1)
