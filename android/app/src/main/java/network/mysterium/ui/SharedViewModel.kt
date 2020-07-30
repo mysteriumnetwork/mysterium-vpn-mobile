@@ -185,10 +185,6 @@ class SharedViewModel(
                 Log.i(TAG, "Reconnected successfully")
                 break
             } catch (e: Exception) {
-                if (!(e is ConnectInvalidProposalException)) {
-                    Log.e(TAG, "Failed to reconnect", e)
-                    break
-                }
                 Log.e(TAG, "Failed to reconnect (${i}/${tries})", e)
                 if (i < tries) {
                     delay(500)

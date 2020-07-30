@@ -76,7 +76,7 @@ class NetworkMonitor(
                     delayedNetworkJoin = null
                 }
                 delayedNetworkJoin = CoroutineScope(Dispatchers.Main).launch {
-                    delay(if (newState.wifiConnected) 0 else networkStateChangeDelay)
+                    delay(if (newState.wifiConnected) 500 else networkStateChangeDelay)
                     Log.i(TAG, "Network joined: ${transportType(network)} ${networkInfo.detailedState}")
                     networkState.value = newState
                     activeNetwork = network
