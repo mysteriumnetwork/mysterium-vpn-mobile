@@ -5,22 +5,24 @@ stages:
   - release
 
 buildDebug:
-  image: mysteriumnetwork/mobile-ci:1.0.0
+  image: mysteriumnetwork/mobile-ci:1.0.1
   stage: build
-  except: [tags]
   tags: [docker]
   except:
+    refs:
+      - tags
     changes:
       - "./fastlane/android_version_code"
   script:
     - bundle exec fastlane buildDebug
 
 testDebug:
-  image: mysteriumnetwork/mobile-ci:1.0.0
+  image: mysteriumnetwork/mobile-ci:1.0.1
   stage: test
-  except: [tags]
   tags: [docker]
   except:
+    refs:
+      - tags
     changes:
       - "./fastlane/android_version_code"
   dependencies:
@@ -29,7 +31,7 @@ testDebug:
     - bundle exec fastlane test
 
 publishInternal:
-  image: mysteriumnetwork/mobile-ci:1.0.0
+  image: mysteriumnetwork/mobile-ci:1.0.1
   stage: release
   only: [tags]
   tags: [docker]
