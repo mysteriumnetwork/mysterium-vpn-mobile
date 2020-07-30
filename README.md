@@ -1,8 +1,8 @@
-# MysteriumVPN mobile app
+# MysteriumVPN: a decentralized VPN
 
-Application for VPN using Mysterium Network.
+Mobile VPN app for Mysterium Network.
 
-<a href='https://play.google.com/store/apps/details?id=network.mysterium.vpn&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=network.mysterium.vpn&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='261' /></a>
 
 ## Running manually
 
@@ -144,8 +144,7 @@ docker push mysteriumnetwork/mobile-ci:$TAG
 
 #### Bump mobile-node version
 
-- To Update `implementation "mysterium.network:mobile-node:0.5-rc"` line in `./android/app/build.gradle`, published versions can be found [here](https://bintray.com/mysterium/Node/mobile-node).
-- Node usage can be found in `MainActivity.kt`.
+- Update "mysterium.network:mobile-node:0.5-rc" gradle dependency to a [published version of mobile-node](https://bintray.com/mysteriumnetwork/maven/network.mysterium%3Amobile-node)
 
 #### Native android logs
 
