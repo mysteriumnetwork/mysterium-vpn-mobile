@@ -169,6 +169,7 @@ dependencies {
     implementation 'com.beust:klaxon:5.0.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'io.intercom.android:intercom-sdk-base:7.1.0'
+    implementation 'me.pushy:sdk:1.0.56'
 
     kapt 'androidx.room:room-compiler:2.2.5'
 

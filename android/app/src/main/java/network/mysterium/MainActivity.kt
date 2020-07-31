@@ -28,6 +28,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -37,6 +38,7 @@ import com.google.android.material.navigation.NavigationView
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.*
 import network.mysterium.net.NetworkState
+import network.mysterium.notification.Notifications
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
@@ -44,11 +46,12 @@ import network.mysterium.ui.Screen
 import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
     private lateinit var appContainer: AppContainer
     private var deferredNode = DeferredNode()
     private var deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private lateinit var vpnNotInternetLayout: LinearLayout
+    private val notifications = Notifications(this)
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -99,6 +102,9 @@ class MainActivity : AppCompatActivity() {
             appContainer.networkMonitor.start()
         }
 
+        notifications.registerOrRequestPermissions()
+        notifications.listen()
+
         // Navigate to main vpn screen and check if terms are accepted or app
         // update is needed in separate coroutine so it does not block main thread.
         navigate(R.id.main_vpn_fragment)
@@ -114,6 +120,10 @@ class MainActivity : AppCompatActivity() {
                 navigate(R.id.terms_fragment)
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        notifications.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onDestroy() {
