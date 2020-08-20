@@ -51,10 +51,10 @@ class ProposalPaymentMoney(
 
 class ProposalPaymentRate(
         @Json(name = "perSeconds")
-        val perSeconds: Long,
+        val perSeconds: Double,
 
         @Json(name = "perBytes")
-        val perBytes: Long
+        val perBytes: Double
 )
 
 class ProposalsResponse(
@@ -71,7 +71,7 @@ class Statistics(
         val duration: Long,
         val bytesReceived: Long,
         val bytesSent: Long,
-        val tokensSpent: Long
+        val tokensSpent: Double
 )
 
 class Location(
@@ -92,7 +92,7 @@ class Identity(
 )
 
 class IdentityRegistrationFees(
-        val fee: Long
+        val fee: Double
 )
 
 class HealthData(
@@ -137,7 +137,7 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     // Register statistics callback.
-    suspend fun registerBalanceChangeCallback(cb: (balance: Long) -> Unit) {
+    suspend fun registerBalanceChangeCallback(cb: (balance: Double) -> Unit) {
         deferredNode.await().registerBalanceChangeCallback {
             _, balance -> cb(balance)
         }

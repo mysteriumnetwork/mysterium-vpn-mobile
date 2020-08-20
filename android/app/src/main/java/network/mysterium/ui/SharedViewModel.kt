@@ -304,7 +304,7 @@ class SharedViewModel(
     }
 
     private fun resetStatistics() {
-        statistics.value = StatisticsModel.from(Statistics(0, 0, 0, 0))
+        statistics.value = StatisticsModel.from(Statistics(0, 0, 0, 0.0))
     }
 
     companion object {

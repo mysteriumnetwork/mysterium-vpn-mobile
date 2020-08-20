@@ -37,10 +37,9 @@ import network.mysterium.service.core.NodeRepository
 
 enum class IdentityRegistrationStatus(val status: String) {
     UNKNOWN("Unknown"),
-    REGISTERED_CONSUMER("RegisteredConsumer"),
+    REGISTERED("Registered"),
     UNREGISTERED("Unregistered"),
     IN_PROGRESS("InProgress"),
-    PROMOTING("Promoting"),
     REGISTRATION_ERROR("RegistrationError");
 
     companion object {
@@ -59,7 +58,7 @@ class IdentityModel(
     // identity registration flow which means there is no need to wait for actual registration.
     val registered: Boolean
         get() {
-            return status == IdentityRegistrationStatus.REGISTERED_CONSUMER || status == IdentityRegistrationStatus.IN_PROGRESS
+            return status == IdentityRegistrationStatus.REGISTERED || status == IdentityRegistrationStatus.IN_PROGRESS
         }
 
 
@@ -71,12 +70,12 @@ class IdentityModel(
 
 class BalanceModel(val balance: TokenModel)
 
-class TokenModel(token: Long = 0) {
+class TokenModel(token: Double = 0.0) {
     var displayValue = ""
     var value = 0.00
 
     init {
-        value = token / 100_000_000.00
+        value = token
         displayValue = "%.3f MYSTT".format(value)
     }
 }
@@ -139,11 +138,9 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
 
             // Register identity if not registered or failed.
             if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
-                val registrationFees = nodeRepository.identityRegistrationFees()
                 if (identity.value != null) {
                     val req = RegisterIdentityRequest()
                     req.identityAddress = identity.value!!.address
-                    req.fee = registrationFees.fee
                     nodeRepository.registerIdentity(req)
                 }
             }
@@ -189,7 +186,7 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
         }
     }
 
-    private fun handleBalanceChange(changedBalance: Long) {
+    private fun handleBalanceChange(changedBalance: Double) {
         viewModelScope.launch {
             balance.value = BalanceModel(TokenModel(changedBalance))
         }
