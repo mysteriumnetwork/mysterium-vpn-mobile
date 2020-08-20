@@ -8,7 +8,7 @@ object PriceUtils {
     fun pricePerMinute(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
         val currency = pm?.price?.currency ?: ""
 
-        if (pm == null || pm.rate.perSeconds == 0L) {
+        if (pm == null || pm.rate.perSeconds == 0.0) {
             return ProposalPaymentMoney(amount = 0.0, currency = currency)
         }
 
@@ -23,7 +23,7 @@ object PriceUtils {
     fun pricePerGiB(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
         val currency = pm?.price?.currency ?: ""
 
-        if (pm == null || pm.rate.perBytes == 0L) {
+        if (pm == null || pm.rate.perBytes == 0.0) {
             return ProposalPaymentMoney(amount = 0.0, currency = currency)
         }
 
@@ -39,7 +39,7 @@ object PriceUtils {
             currency = m.currency
         }
         if (m.currency == "MYST" || m.currency == "MYSTT") {
-            val amount = m.amount / 100_000_000
+            val amount = m.amount
             val formatDigits = "#".repeat(opts.fractionDigits)
             val amountStr = DecimalFormat("#.${formatDigits}").format(amount)
             return "${amountStr}${currency}"

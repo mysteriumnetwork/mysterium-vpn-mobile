@@ -116,8 +116,7 @@ class PriceSettings(
         var defaultPricePerMinute: Double,
         var defaultPricePerGiB: Double,
         val perMinuteMax: Double,
-        val perGibMax: Double,
-        val tolerance: Double
+        val perGibMax: Double
 )
 
 class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private val nodeRepository: NodeRepository, private val appDatabase: AppDatabase) : ViewModel() {
@@ -131,11 +130,10 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
 
     init {
         priceSettings = PriceSettings(
-                defaultPricePerMinute = 50_000.0,
-                defaultPricePerGiB = 15_000_000.0,
-                perMinuteMax =  100_000.0,
-                perGibMax = 50_000_000.0,
-                tolerance = 500.0
+                defaultPricePerMinute = 0.0005,
+                defaultPricePerGiB = 0.15,
+                perMinuteMax =  0.001,
+                perGibMax = 0.5
         )
         filter = ProposalsFilter(
                 searchText = "",
@@ -300,11 +298,6 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 this.refresh = refresh
                 includeFailed = true
                 serviceType = "wireguard"
-                // Temporary fix with huge values until mobile-node is upgrade to >= 0.38 where these are removed
-                lowerTimePriceBound = 0
-                upperTimePriceBound = 1_000_000_000_000
-                lowerGBPriceBound = 0
-                upperGBPriceBound = 1_000_000_000_000
             }
 
             val nodeProposals = nodeRepository.proposals(req)
@@ -357,7 +350,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 .filter {
                     fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
                         val price = PriceUtils.pricePerMinute(v.payment)
-                        val maxPrice = filter.pricePerMinute + priceSettings.tolerance
+                        val maxPrice = filter.pricePerMinute
                         return price.amount <= maxPrice
                     }
                     filterPricePerMinute(filter, it)
@@ -366,7 +359,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 .filter {
                     fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
                         val price = PriceUtils.pricePerGiB(v.payment)
-                        val maxPrice = filter.pricePerGiB + priceSettings.tolerance
+                        val maxPrice = filter.pricePerGiB
                         return price.amount <= maxPrice
                     }
                     filterPricePerMinute(filter, it)
