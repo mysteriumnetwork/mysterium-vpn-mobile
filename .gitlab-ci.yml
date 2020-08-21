@@ -30,10 +30,12 @@ testDebug:
   script:
     - bundle exec fastlane test
 
-publishInternal:
+publishBetanet:
   image: mysteriumnetwork/mobile-ci:1.0.1
   stage: release
-  only: [tags]
+  only:
+    refs:
+      - v3
   tags: [docker]
   before_script:
     - echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
@@ -42,8 +44,7 @@ publishInternal:
   after_script:
     - rm -f $GOOGLE_SERVICES_PATH $FASTLANE_ANDROID_SIGNING_FILE_PATH $FASTLANE_ANDROID_SECRET_JSON_PATH
   script:
-    - bundle exec fastlane internal
     - bundle exec fastlane build
     - apt update; apt install -y jq
-    - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/mysterium-vpn-mobile/releases/tags/$CI_COMMIT_TAG | jq -r .id)
+    - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/mysterium-vpn-mobile/releases/tags/0.0.0-betanet | jq -r .id)
     - curl --data-binary @android/app/build/outputs/apk/release/app-release.apk -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/mysterium-vpn-mobile/releases/$RELEASE_ID/assets?name=myst.apk
