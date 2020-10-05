@@ -61,14 +61,14 @@ enum class ProposalSortType(val type: Int) {
 }
 
 enum class QualityLevel(val level: Int) {
-    ANY(0),
+    UNKNOWN(0),
     LOW(1),
     MEDIUM(2),
     HIGH(3);
 
     companion object {
         fun parse(level: Int): QualityLevel {
-            return values().find { it.level == level } ?: ANY
+            return values().find { it.level == level } ?: UNKNOWN
         }
     }
 }
@@ -255,7 +255,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         return listOf(
                 ProposalFilterQuality(QualityLevel.HIGH, false),
                 ProposalFilterQuality(QualityLevel.MEDIUM, false),
-                ProposalFilterQuality(QualityLevel.ANY, false)
+                ProposalFilterQuality(QualityLevel.UNKNOWN, false)
         )
     }
 
@@ -334,8 +334,9 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
                 // Filter by quality level.
                 .filter {
                     when (filter.quality.level) {
-                        QualityLevel.ANY -> true
-                        else -> filter.quality.level <= it.qualityLevel
+                        QualityLevel.UNKNOWN -> true
+                        // Include proposals with unknown quality by default.
+                        else -> filter.quality.level <= it.qualityLevel || it.qualityLevel == QualityLevel.UNKNOWN
                     }
                 }
                 // Filter by unreachable nodes.
