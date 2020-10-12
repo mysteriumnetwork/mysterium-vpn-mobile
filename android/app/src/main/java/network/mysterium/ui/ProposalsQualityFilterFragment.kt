@@ -98,7 +98,7 @@ data class QualityItem(val ctx: Context, val quality: ProposalFilterQuality, val
         super.bind(holder)
         val text: TextView = holder.containerView.findViewById(R.id.proposal_quality_filter_item_text)
         text.text = when(quality.level) {
-            QualityLevel.ANY -> ctx.getString(R.string.quality_level_any)
+            QualityLevel.UNKNOWN -> ctx.getString(R.string.quality_level_any)
             QualityLevel.HIGH -> ctx.getString(R.string.quality_level_high)
             QualityLevel.MEDIUM -> ctx.getString(R.string.quality_level_medium)
             QualityLevel.LOW -> ctx.getString(R.string.quality_level_low)

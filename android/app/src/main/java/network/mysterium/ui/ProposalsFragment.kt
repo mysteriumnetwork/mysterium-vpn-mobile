@@ -191,7 +191,7 @@ class ProposalsFragment : Fragment() {
             proposalsFilterQualityValue.text = getString(R.string.proposals_filter_quality_value_any)
         } else {
             proposalsFilterQualityValue.text = when(filter.quality.level) {
-                QualityLevel.ANY -> getString(R.string.quality_level_any)
+                QualityLevel.UNKNOWN -> getString(R.string.quality_level_any)
                 QualityLevel.HIGH -> getString(R.string.quality_level_high)
                 QualityLevel.MEDIUM -> getString(R.string.quality_level_medium)
                 QualityLevel.LOW -> getString(R.string.quality_level_low)
@@ -270,4 +270,3 @@ data class ProposalHeaderItem(val title: String) : BaseItem() {
         headerText.text = title
     }
 }
-
