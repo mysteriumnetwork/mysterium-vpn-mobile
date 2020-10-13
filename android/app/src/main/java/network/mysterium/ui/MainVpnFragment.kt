@@ -27,8 +27,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
@@ -104,8 +106,11 @@ class MainVpnFragment : Fragment() {
         // vpnStatsLayout.visibility = View.INVISIBLE
 
         feedbackButton.setOnClickListener {
-            val drawer = appContainer.drawerLayout
-            drawer.openDrawer(GravityCompat.START)
+            val activity = this.activity
+            if (activity is AppCompatActivity) {
+                val drawer = activity.findViewById<DrawerLayout>(R.id.drawer_layout)
+                drawer?.openDrawer(GravityCompat.START)
+            }
         }
 
         vpnAccountBalanceLayout.setOnClickListener {

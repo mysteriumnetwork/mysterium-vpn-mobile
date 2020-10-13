@@ -44,7 +44,6 @@ class AppContainer {
     lateinit var walletViewModel: WalletViewModel
     lateinit var bugReporter: BugReporter
     lateinit var deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
-    lateinit var drawerLayout: DrawerLayout
     lateinit var appNotificationManager: AppNotificationManager
     lateinit var clipboardManager: ClipboardManager
     lateinit var versionViewModel: VersionViewModel
@@ -54,7 +53,6 @@ class AppContainer {
             ctx: Context,
             deferredNode: DeferredNode,
             mysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
-            appDrawerLayout: DrawerLayout,
             notificationManager: NotificationManager,
             clipboardManager: ClipboardManager
     ) {
@@ -64,7 +62,6 @@ class AppContainer {
                 AppDatabase::class.java, "mysteriumvpn"
         ).build()
 
-        drawerLayout = appDrawerLayout
         deferredMysteriumCoreService = mysteriumCoreService
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)

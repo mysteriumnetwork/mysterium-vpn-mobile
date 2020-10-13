@@ -71,8 +71,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         vpnNotInternetLayout = findViewById(R.id.vpn_not_internet_layout)
 
         // Setup app drawer.
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        setupDrawerMenu(drawerLayout)
+        setupDrawerMenu()
 
         // Initialize app DI container.
         appContainer = (application as MainApplication).appContainer
@@ -80,7 +79,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 applicationContext,
                 deferredNode,
                 deferredMysteriumCoreService,
-                drawerLayout,
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         )
@@ -218,7 +216,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         startActivityForResult(intent, VPN_SERVICE_REQUEST)
     }
 
-    private fun setupDrawerMenu(drawerLayout: DrawerLayout) {
+    private fun setupDrawerMenu() {
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         val navView = findViewById<NavigationView>(R.id.nav_view)
         navView.setupWithNavController(navController)
