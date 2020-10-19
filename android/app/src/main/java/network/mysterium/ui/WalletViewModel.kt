@@ -22,16 +22,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mysterium.GetBalanceRequest
-import mysterium.RegisterIdentityRequest
-import mysterium.TopUpRequest
 import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.NodeRepository
 
@@ -49,7 +47,9 @@ enum class IdentityRegistrationStatus(val status: String) {
     }
 }
 
+@Entity(tableName = "identity")
 class IdentityModel(
+        @PrimaryKey
         val address: String,
         val channelAddress: String,
         var status: IdentityRegistrationStatus
@@ -60,7 +60,6 @@ class IdentityModel(
         get() {
             return status == IdentityRegistrationStatus.REGISTERED || status == IdentityRegistrationStatus.IN_PROGRESS
         }
-
 
     val registrationFailed: Boolean
         get() {
@@ -86,22 +85,8 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
 
     suspend fun load() {
         initListeners()
-        loadIdentity {
-            CoroutineScope(Dispatchers.Main).launch {
-                loadBalance()
-            }
-        }
-    }
-
-    suspend fun topUp() {
-        try {
-            val currentIdentity = identity.value ?: return
-            val req = TopUpRequest()
-            req.identityAddress = currentIdentity.address
-            nodeRepository.topUpBalance(req)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to top-up balance", e)
-        }
+        loadIdentity()
+        loadBalance()
     }
 
     fun needToTopUp(): Boolean {
@@ -116,7 +101,7 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
         return currentIdentity.registered
     }
 
-    suspend fun loadIdentity(done: () -> Unit) {
+    suspend fun loadIdentity() {
         try {
             // Load node identity and it's registration status.
             val nodeIdentity = nodeRepository.getIdentity()
@@ -136,19 +121,17 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
             }
             Log.i(TAG, "Loaded identity ${nodeIdentity.address}, channel addr: ${nodeIdentity.channelAddress}, status: ${nodeIdentity.registrationStatus}")
 
-            // Register identity if not registered or failed.
-            if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
-                if (identity.value != null) {
-                    val req = RegisterIdentityRequest()
-                    req.identityAddress = identity.value!!.address
-                    nodeRepository.registerIdentity(req)
-                }
-            }
+//            // Register identity if not registered or failed.
+//            if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
+//                if (identity.value != null) {
+//                    val req = RegisterIdentityRequest()
+//                    req.identityAddress = identity.value!!.address
+//                    nodeRepository.registerIdentity(req)
+//                }
+//            }
         } catch (e: Exception) {
             identity.value = IdentityModel(address = "", channelAddress = "", status = IdentityRegistrationStatus.REGISTRATION_ERROR)
             Log.e(TAG, "Failed to load account identity", e)
-        } finally {
-            done()
         }
     }
 

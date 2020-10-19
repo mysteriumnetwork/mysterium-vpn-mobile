@@ -2,29 +2,139 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splash_fragment">
 
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="network.mysterium.ui.SplashFragment"
+        android:label="splash_fragment"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splash_fragment_to_main_vpn_fragment"
+            app:destination="@id/main_vpn_fragment" />
+        <action
+            android:id="@+id/action_splash_fragment_to_terms_fragment"
+            app:destination="@id/terms_fragment" />
+        <action
+            android:id="@+id/action_splash_fragment_to_force_update_fragment"
+            app:destination="@id/force_update_fragment" />
+        <action
+            android:id="@+id/action_splash_fragment_to_registration_fragment"
+            app:destination="@id/registration_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registration_fragment"
+        android:name="network.mysterium.registration.RegistrationFragment"
+        android:label="registration_fragment"
+        tools:layout="@layout/fragment_registration_start" >
+        <action
+            android:id="@+id/action_registration_fragment_to_topup_registration_fragment"
+            app:destination="@id/registration_topup_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_registration_fragment_to_referral_code_registration_fragment"
+            app:destination="@id/registration_referral_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration_referral_fragment"
+        android:name="network.mysterium.registration.RegistrationReferralFragment"
+        android:label="referral_code_registration_fragment"
+        tools:layout="@layout/fragment_registration_referral_code" >
+        <action
+            android:id="@+id/action_registration_referral_fragment_to_registration_done_fragment"
+            app:destination="@id/registration_done_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration_topup_fragment"
+        android:name="network.mysterium.registration.RegistrationTopupFragment"
+        android:label="topup_registration_fragment"
+        tools:layout="@layout/fragment_registration_topup" >
+        <action
+            android:id="@+id/action_registration_topup_fragment_to_registration_topup_payment_fragment"
+            app:destination="@id/registration_topup_payment_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration_topup_payment_fragment"
+        android:name="network.mysterium.registration.RegistrationTopupPaymentFragment"
+        android:label="registration_topup_payment_fragment"
+        tools:layout="@layout/fragment_registration_topup_payment" >
+        <action
+            android:id="@+id/action_registration_topup_payment_fragment_to_registration_done_fragment"
+            app:destination="@id/registration_done_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration_done_fragment"
+        android:name="network.mysterium.registration.RegistrationDoneFragment"
+        android:label="registration_done_fragment"
+        tools:layout="@layout/fragment_registration_done" >
+        <action
+            android:id="@+id/action_registration_done_fragment_to_main_vpn_fragment"
+            app:destination="@id/main_vpn_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/main_vpn_fragment"
+        android:name="network.mysterium.ui.MainVpnFragment"
+        android:label="fragment_main_vpn"
+        tools:layout="@layout/fragment_main_vpn" >
+        <action
+            android:id="@+id/action_main_vpn_fragment_to_account_fragment"
+            app:destination="@id/account_fragment" />
+        <action
+            android:id="@+id/action_main_vpn_fragment_to_proposals_fragment"
+            app:destination="@id/proposals_fragment" />
+        <action
+            android:id="@+id/action_main_vpn_fragment_to_feedback_fragment"
+            app:destination="@id/feedback_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/terms_fragment"
+        android:name="network.mysterium.ui.TermsFragment"
+        android:label="fragment_terms"
+        tools:layout="@layout/fragment_terms" >
+        <action
+            android:id="@+id/action_terms_fragment_to_main_vpn_fragment"
+            app:destination="@id/main_vpn_fragment" />
+        <action
+            android:id="@+id/action_terms_fragment_to_registration_fragment"
+            app:destination="@id/registration_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/feedback_fragment"
         android:name="network.mysterium.ui.FeedbackFragment"
         android:label="fragment_feedback"
         tools:layout="@layout/fragment_feedback" />
     <fragment
-        android:id="@+id/main_vpn_fragment"
-        android:name="network.mysterium.ui.MainVpnFragment"
-        android:label="fragment_main_vpn"
-        tools:layout="@layout/fragment_main_vpn" />
-    <fragment
-        android:id="@+id/terms_fragment"
-        android:name="network.mysterium.ui.TermsFragment"
-        android:label="fragment_terms"
-        tools:layout="@layout/fragment_terms" />
-
-    <fragment
         android:id="@+id/proposals_fragment"
         android:name="network.mysterium.ui.ProposalsFragment"
         android:label="fragment_proposals"
-        tools:layout="@layout/fragment_proposals" />
+        tools:layout="@layout/fragment_proposals" >
+        <action
+            android:id="@+id/action_proposals_fragment_to_proposals_country_filter_list"
+            app:destination="@id/proposals_country_filter_list" />
+        <action
+            android:id="@+id/action_proposals_fragment_to_proposals_price_filter"
+            app:destination="@id/proposals_price_filter" />
+        <action
+            android:id="@+id/action_proposals_fragment_to_proposals_quality_filter"
+            app:destination="@id/proposals_quality_filter" />
+        <action
+            android:id="@+id/action_proposals_fragment_to_proposals_node_type_filter"
+            app:destination="@id/proposals_node_type_filter" />
+    </fragment>
 
     <fragment
         android:id="@+id/proposals_country_filter_list"

@@ -27,14 +27,19 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.MainApplication
+import network.mysterium.registration.RegistrationViewModel
+import network.mysterium.ui.TermsFragmentDirections.Companion.actionTermsFragmentToMainVpnFragment
+import network.mysterium.ui.TermsFragmentDirections.Companion.actionTermsFragmentToRegistrationFragment
 import network.mysterium.vpn.R
 
 class TermsFragment : Fragment() {
     private lateinit var termsViewModel: TermsViewModel
+    private lateinit var registrationViewModel: RegistrationViewModel
 
     private lateinit var termsTextWiew: TextView
     private lateinit var termsAcceptButton: Button
@@ -45,6 +50,7 @@ class TermsFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_terms, container, false)
 
         termsViewModel = (requireActivity().application as MainApplication).appContainer.termsViewModel
+        registrationViewModel = (requireActivity().application as MainApplication).appContainer.registrationViewModel
         termsTextWiew = root.findViewById(R.id.terms_text_wiew)
         termsAcceptButton = root.findViewById(R.id.terms_accept_button)
 
@@ -54,7 +60,11 @@ class TermsFragment : Fragment() {
             termsAcceptButton.isEnabled = false
             CoroutineScope(Dispatchers.Main).launch {
                 termsViewModel.acceptCurrentTerms()
-                root.findNavController().navigate(R.id.action_go_to_vpn_screen)
+                if (registrationViewModel.registered()) {
+                    findNavController().navigate(actionTermsFragmentToMainVpnFragment())
+                } else {
+                    findNavController().navigate(actionTermsFragmentToRegistrationFragment())
+                }
             }
         }
 

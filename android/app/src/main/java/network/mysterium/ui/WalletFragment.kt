@@ -119,7 +119,7 @@ class WalletFragment : Fragment() {
     private fun handleRegistrationRetry() {
         walletIdentityRegistrationRetryButton.isEnabled = false
         CoroutineScope(Dispatchers.Main).launch {
-            walletViewModel.loadIdentity {}
+            walletViewModel.loadIdentity()
             walletIdentityRegistrationRetryButton.isEnabled = true
         }
     }

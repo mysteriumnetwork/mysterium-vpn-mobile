@@ -39,6 +39,7 @@ import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.*
 import network.mysterium.net.NetworkState
 import network.mysterium.notification.Notifications
+import network.mysterium.registration.RegistrationProgress
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         vpnNotInternetLayout = findViewById(R.id.vpn_not_internet_layout)
+        navigate(R.id.splash_fragment)
 
         // Setup app drawer.
         setupDrawerMenu()
@@ -103,9 +105,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         notifications.registerOrRequestPermissions()
         notifications.listen()
 
-        // Navigate to main vpn screen and check if terms are accepted or app
-        // update is needed in separate coroutine so it does not block main thread.
-        navigate(R.id.main_vpn_fragment)
         CoroutineScope(Dispatchers.Main).launch {
             val updateRequired = appContainer.versionViewModel.updateRequired()
             if (updateRequired) {
@@ -113,11 +112,23 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 return@launch
             }
 
+            val registered = appContainer.registrationViewModel.registered()
+            if (!registered) {
+                navigate(R.id.registration_fragment)
+            } else {
+                navigate(R.id.main_vpn_fragment)
+            }
+
             val termsAccepted = appContainer.termsViewModel.checkTermsAccepted()
             if (!termsAccepted) {
                 navigate(R.id.terms_fragment)
             }
         }
+        appContainer.registrationViewModel.progress.observe(this@MainActivity, Observer { progress ->
+            if (progress == RegistrationProgress.DONE) {
+                navigate(R.id.registration_done_fragment)
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -174,8 +185,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 if (err != null) {
                     showNodeStarError()
                 }
+                CoroutineScope(Dispatchers.Main).launch {
+                    loadInitialData()
+                }
             }
-            loadInitialData()
         }
     }
 
@@ -192,7 +205,16 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         Log.i(TAG, "Loading account data")
         val p3 = CoroutineScope(Dispatchers.Main).async { appContainer.walletViewModel.load() }
 
-        awaitAll(p1, p2, p3)
+        val p4 = CoroutineScope(Dispatchers.Main).async {
+            appContainer.registrationViewModel.load()
+            appContainer.registrationViewModel.registrationDone.observe(this@MainActivity, Observer { registrationDone ->
+                if (registrationDone) {
+                    navigate(R.id.registration_done_fragment)
+                }
+            })
+        }
+
+        awaitAll(p1, p2, p3, p4)
     }
 
     private fun showNodeStarError() {

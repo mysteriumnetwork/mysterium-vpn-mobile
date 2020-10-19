@@ -8,7 +8,9 @@
         <item name="colorPrimaryDark">#501d4f</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#622461</item>
+        <item name="colorPrimaryDark">#501d4f</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
@@ -53,6 +55,20 @@
     <style name="ProposalFilterValue">
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">#999999</item>
+    </style>
+
+    <style name="BigPrimaryButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64sp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+    </style>
+
+    <style name="BlockchainAddressText">
+        <item name="android:fontFamily">sans-serif-condensed-medium</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
 </resources>

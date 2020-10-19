@@ -91,4 +91,18 @@
     <string name="wallet_identity_address_explanation">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="vpn_ip">IP: %1$s</string>
+    <string name="registration_description">MysteriumVPN requires account activation to prevent spam and network attacks.</string>
+    <string name="registration_have_a_referral_code">Have a referral code</string>
+    <string name="mystt_display">%1$s MYSTT</string>
+    <string name="registration_topup_payment_hint">Transfer %1$s MYSTT to your wallet (Görli Testnet blockchain) to proceed.</string>
+    <string name="registration_successful">Registration successful!</string>
+    <string name="have_a_referral_code">Have a referral code?</string>
+    <string name="get_started">Get started</string>
+    <string name="how_much_would_you_like_to_topup">How much would you like to topup?</string>
+    <string name="topup_amount">Topup amount</string>
+    <string name="registration_fee">Registration fee</string>
+    <string name="total_amount">Total amount</string>
+    <string name="waiting_for_payment">Waiting for payment</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_register">Register</string>
 </resources>
