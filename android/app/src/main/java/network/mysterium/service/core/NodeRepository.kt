@@ -195,11 +195,6 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         deferredNode.await().registerIdentity(req)
     }
 
-    // Top-up balance with myst tokens.
-    suspend fun topUpBalance(req: TopUpRequest) = withContext(Dispatchers.IO) {
-        deferredNode.await().topUp(req)
-    }
-
     // Get current location with country and IP.
     suspend fun location() = withContext(Dispatchers.IO) {
         val res = deferredNode.await().location

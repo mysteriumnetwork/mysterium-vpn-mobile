@@ -53,7 +53,6 @@ class WalletFragment : Fragment() {
     private lateinit var walletIdentityRegistrationLayoutCard: MaterialCardView
     private lateinit var walletIdentityRegistrationLayoutRetryCard: MaterialCardView
     private lateinit var walletIdentityChannelAddressText: TextView
-    private lateinit var walletTopUpButton: Button
     private lateinit var walletCopyTopupAddressButton: Button
     private lateinit var walletIdentityRegistrationRetryButton: Button
     private lateinit var walletQRCodeView: ImageView
@@ -75,7 +74,6 @@ class WalletFragment : Fragment() {
         walletIdentityRegistrationLayoutCard = root.findViewById(R.id.wallet_identity_registration_layout_card)
         walletIdentityRegistrationLayoutRetryCard = root.findViewById(R.id.wallet_identity_registration_layout_retry_card)
         walletIdentityChannelAddressText = root.findViewById(R.id.wallet_identity_channel_address_text)
-        walletTopUpButton = root.findViewById(R.id.wallet_topup_free_tokens)
         walletCopyTopupAddressButton = root.findViewById(R.id.wallet_identity_channel_address_copy_btn)
         walletIdentityRegistrationRetryButton = root.findViewById(R.id.wallet_identity_registration_retry_button)
         walletQRCodeView = root.findViewById(R.id.wallet_qr_code_view)
@@ -97,7 +95,6 @@ class WalletFragment : Fragment() {
             handleBalanceChange(it)
         })
 
-        walletTopUpButton.setOnClickListener { handleTopUp(root) }
         walletCopyTopupAddressButton.setOnClickListener { handleTopupAddressCopy(root) }
 
         walletIdentityChannelAddressText.setOnClickListener { openKovanChannelDetails() }
@@ -110,7 +107,6 @@ class WalletFragment : Fragment() {
 
     private fun handleBalanceChange(balanceModel: BalanceModel) {
         walletBalanceText.text = balanceModel.balance.displayValue
-        walletTopUpButton.isVisible = balanceModel.balance.value <= 1
     }
 
     private fun handleTopupAddressCopy(root: View) {
@@ -159,15 +155,6 @@ class WalletFragment : Fragment() {
                 walletIdentityRegistrationLayoutRetryCard.visibility = View.VISIBLE
                 walletIdentityRegistrationLayoutCard.visibility = View.GONE
             }
-        }
-    }
-
-    private fun handleTopUp(root: View) {
-        walletTopUpButton.isEnabled = false
-        CoroutineScope(Dispatchers.Main).launch {
-            walletViewModel.topUp()
-            showMessage(root.context, "Balance will be updated in a few moments.")
-            walletTopUpButton.isEnabled = true
         }
     }
 
