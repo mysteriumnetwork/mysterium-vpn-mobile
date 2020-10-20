@@ -1,164 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="network.mysterium.registration.RegistrationTopupFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/registration_topup_continue_button"
-        style="@style/BigPrimaryButton"
-        android:text="@string/button_continue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <ImageView
-        android:id="@+id/registration_topup_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Mysterium Network logo"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        android:src="@drawable/logo_mysterium_network"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/registration_topup_amount_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="@string/how_much_would_you_like_to_topup"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/registration_topup_guideline" />
-
-    <TextView
-        android:id="@+id/registration_topup_amount_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:height="30sp"
-        android:gravity="center_vertical|end"
-        android:text="@string/topup_amount"
-        app:layout_constraintEnd_toStartOf="@+id/registration_topup_amount_display"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_toggle" />
-
-    <TextView
-        android:id="@+id/registration_topup_amount_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:width="150dp"
-        android:height="30sp"
-        android:gravity="center_vertical|end"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_toggle" />
-
-    <TextView
-        android:id="@+id/registration_topup_registration_fee_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:height="30sp"
-        android:gravity="center_vertical|end"
-        android:text="@string/registration_fee"
-        app:layout_constraintEnd_toStartOf="@+id/registration_topup_registration_fee_display"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_label" />
-
-    <TextView
-        android:id="@+id/registration_topup_registration_fee_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:width="150dp"
-        android:height="30sp"
-        android:gravity="center_vertical|end"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_display" />
-
-    <TextView
-        android:id="@+id/registration_topup_total_amount_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:height="30sp"
-        android:gravity="center_vertical|end"
-        android:text="@string/total_amount"
-        app:layout_constraintEnd_toStartOf="@+id/registration_topup_total_amount_display"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_registration_fee_label" />
-
-    <TextView
-        android:id="@+id/registration_topup_total_amount_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:width="150dp"
-        android:height="30sp"
-        android:gravity="center_vertical|end"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_registration_fee_display" />
-
-    <View
-        android:id="@+id/registration_topup_total_break_line"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginTop="8dp"
-        android:background="#ededed"
-        app:layout_constraintLeft_toLeftOf="@id/registration_topup_registration_fee_label"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_topup_registration_fee_display" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/registration_topup_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
-
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/registration_topup_amount_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_text"
-        app:singleSelection="true">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="network.mysterium.registration.RegistrationTopupFragment">
 
         <Button
-            android:id="@+id/registration_topup_button_10"
-            style="?attr/materialButtonOutlinedStyle"
+            android:id="@+id/registration_topup_continue_button"
+            style="@style/BigPrimaryButton"
+            android:text="@string/button_continue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/registration_topup_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 MYSTT" />
+            android:contentDescription="Mysterium Network logo"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/logo_mysterium_network"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/registration_topup_button_20"
-            style="?attr/materialButtonOutlinedStyle"
+        <TextView
+            android:id="@+id/registration_topup_amount_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20 MYSTT" />
+            android:padding="20dp"
+            android:text="@string/how_much_would_you_like_to_topup"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/registration_topup_guideline" />
 
-        <Button
-            android:id="@+id/registration_topup_button_50"
-            style="?attr/materialButtonOutlinedStyle"
+        <TextView
+            android:id="@+id/registration_topup_amount_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50 MYSTT" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:height="30sp"
+            android:gravity="center_vertical|end"
+            android:text="@string/topup_amount"
+            app:layout_constraintEnd_toStartOf="@+id/registration_topup_amount_display"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_toggle" />
+
+        <TextView
+            android:id="@+id/registration_topup_amount_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:width="150dp"
+            android:height="30sp"
+            android:gravity="center_vertical|end"
+            android:text="@{@string/mystt_display(viewModel.topupAmount.setScale(0).toPlainString())}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_toggle" />
+
+        <TextView
+            android:id="@+id/registration_topup_registration_fee_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:height="30sp"
+            android:gravity="center_vertical|end"
+            android:text="@string/registration_fee"
+            app:layout_constraintEnd_toStartOf="@+id/registration_topup_registration_fee_display"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_label" />
+
+        <TextView
+            android:id="@+id/registration_topup_registration_fee_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:width="150dp"
+            android:height="30sp"
+            android:gravity="center_vertical|end"
+            android:text="@{@string/mystt_display(viewModel.registrationFee.setScale(0).toPlainString())}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_display" />
+
+        <TextView
+            android:id="@+id/registration_topup_total_amount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:height="30sp"
+            android:gravity="center_vertical|end"
+            android:text="@string/total_amount"
+            app:layout_constraintEnd_toStartOf="@+id/registration_topup_total_amount_display"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_registration_fee_label" />
+
+        <TextView
+            android:id="@+id/registration_topup_total_amount_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:width="150dp"
+            android:height="30sp"
+            android:gravity="center_vertical|end"
+            android:text="@{@string/mystt_display(viewModel.totalAmount.setScale(0).toPlainString())}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_registration_fee_display" />
+
+        <View
+            android:id="@+id/registration_topup_total_break_line"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="#ededed"
+            app:layout_constraintLeft_toLeftOf="@id/registration_topup_registration_fee_label"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registration_topup_registration_fee_display" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/registration_topup_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/registration_topup_amount_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_text"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/registration_topup_button_10"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/mystt_display(10)}" />
+
+            <Button
+                android:id="@+id/registration_topup_button_20"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/mystt_display(20)}" />
+
+            <Button
+                android:id="@+id/registration_topup_button_50"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/mystt_display(50)}" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="network.mysterium.registration.RegistrationViewModel" />
+    </data>
+</layout>
