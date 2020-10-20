@@ -105,4 +105,5 @@
     <string name="waiting_for_payment">Waiting for payment</string>
     <string name="button_continue">Continue</string>
     <string name="button_register">Register</string>
+    <string name="enter_referral_code">Enter referral code:</string>
 </resources>

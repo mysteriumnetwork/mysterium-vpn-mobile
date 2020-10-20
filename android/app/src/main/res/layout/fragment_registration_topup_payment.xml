@@ -1,109 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="network.mysterium.registration.RegistrationTopupFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/registration_topup_payment_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Mysterium Network logo"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        android:src="@drawable/logo_mysterium_network"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <import type="android.view.View" />
+        <import type="network.mysterium.registration.RegistrationProgress" />
+        <variable
+            name="viewModel"
+            type="network.mysterium.registration.RegistrationViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/registration_topup_payment_hint"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="@string/registration_topup_payment_hint"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_topup_payment_guideline" />
+        android:layout_height="match_parent"
+        tools:context="network.mysterium.registration.RegistrationTopupFragment">
 
-    <TextView
-        android:id="@+id/registration_topup_payment_channel_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        style="@style/BlockchainAddressText"
-        android:gravity="center"
-        android:text="0x..."
-        app:layout_constraintTop_toBottomOf="@id/registration_topup_payment_hint" />
+        <ImageView
+            android:id="@+id/registration_topup_payment_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Mysterium Network logo"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/logo_mysterium_network"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/registration_topup_payment_channel_address_copy"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/wallet_identity_channel_address_copy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_topup_payment_channel_address" />
+        <TextView
+            android:id="@+id/registration_topup_payment_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@{@string/registration_topup_payment_hint(viewModel.totalAmount)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registration_topup_payment_guideline" />
 
-    <ProgressBar
-        android:id="@+id/registration_topup_payment_waiting_progressbar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/ColorMain"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/registration_topup_payment_waiting_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/registration_topup_payment_channel_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            style="@style/BlockchainAddressText"
+            android:gravity="center"
+            android:text="@{viewModel.identity.channelAddress}"
+            app:layout_constraintTop_toBottomOf="@id/registration_topup_payment_hint" />
 
-    <TextView
-        android:id="@+id/registration_topup_payment_waiting_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/waiting_for_payment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/registration_topup_payment_channel_address_copy"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/wallet_identity_channel_address_copy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_topup_payment_channel_address" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/registration_topup_payment_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        <ProgressBar
+            android:id="@+id/registration_topup_payment_waiting_progressbar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/ColorMain"
+            android:layout_marginBottom="16dp"
+            android:visibility="@{viewModel.balanceSufficient != true ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/registration_topup_payment_waiting_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/registration_topup_payment_register_button"
-        style="@style/BigPrimaryButton"
-        android:text="@string/button_register"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:id="@+id/registration_topup_payment_waiting_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/waiting_for_payment"
+            android:visibility="@{viewModel.balanceSufficient != true ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/registration_topup_payment_register_button_progress"
-        style="?android:attr/progressBarStyle"
-        android:visibility="invisible"
-        android:elevation="1000dp"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/ColorWhite"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/registration_topup_payment_register_button"
-        app:layout_constraintEnd_toEndOf="@+id/registration_topup_payment_register_button"
-        app:layout_constraintTop_toTopOf="@+id/registration_topup_payment_register_button" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/registration_topup_payment_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <Button
+            android:id="@+id/registration_topup_payment_register_button"
+            style="@style/BigPrimaryButton"
+            android:text="@string/button_register"
+            android:enabled="@{viewModel.balanceSufficient &amp;&amp; viewModel.progress == RegistrationProgress.NOT_STARTED}"
+            android:visibility="@{viewModel.balanceSufficient ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/registration_topup_payment_register_button_progress"
+            style="?android:attr/progressBarStyle"
+            android:visibility="@{viewModel.progress == RegistrationProgress.IN_PROGRESS ? View.VISIBLE : View.INVISIBLE}"
+            android:elevation="1000dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/ColorWhite"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/registration_topup_payment_register_button"
+            app:layout_constraintEnd_toEndOf="@+id/registration_topup_payment_register_button"
+            app:layout_constraintTop_toTopOf="@+id/registration_topup_payment_register_button" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

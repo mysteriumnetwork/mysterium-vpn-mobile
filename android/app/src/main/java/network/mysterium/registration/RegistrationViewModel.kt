@@ -1,6 +1,9 @@
 package network.mysterium.registration
 
 import android.util.Log
+import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +25,9 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
     val totalAmount = MediatorLiveData<BigDecimal>()
     val identity = MutableLiveData<IdentityModel>()
     val balance = MutableLiveData<BigDecimal>(BigDecimal(0))
+    val balanceSufficient = MediatorLiveData<Boolean>()
     val progress = MutableLiveData<RegistrationProgress>(NOT_STARTED)
+    val token = MutableLiveData<String>("")
 
     init {
         val sumTotal = fun(): BigDecimal {
@@ -30,8 +35,19 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
             val r = registrationFee.value ?: BigDecimal(0)
             return t.plus(r)
         }
-        totalAmount.addSource(topupAmount) {
-            totalAmount.value = sumTotal()
+        totalAmount.apply {
+            addSource(registrationFee) { value = sumTotal() }
+            addSource(topupAmount) { value = sumTotal() }
+        }
+
+        val isSufficient = fun(): Boolean {
+            val balance = this.balance.value ?: return false
+            val total = this.totalAmount.value ?: return false
+            return balance >= total
+        }
+        balanceSufficient.apply {
+            addSource(balance) { value = isSufficient() }
+            addSource(totalAmount) { value = isSufficient() }
         }
     }
 
@@ -95,12 +111,6 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
         this.balance.value = BigDecimal.valueOf(balance)
     }
 
-    fun balanceSufficientForRegistration(): Boolean {
-        val balance = this.balance.value ?: return false
-        val total = this.totalAmount.value ?: return false
-        return balance >= total
-    }
-
     suspend fun registered(): Boolean {
         val id = db.identityDao().get()
         return id?.registered ?: false
@@ -117,6 +127,24 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
             progress.value = IN_PROGRESS
         } catch (e: Exception) {
             Log.i(TAG, "Failed to register identity ${identity.address}", e)
+            progress.value = NOT_STARTED
+            throw e
+        }
+    }
+
+    suspend fun registerWithReferralToken() {
+        val identity = this.identity.value ?: return
+        val token = this.token.value ?: return
+        Log.i(TAG, "Registering identity ${identity.address} with referral token $token")
+        try {
+            val req = RegisterIdentityRequest().apply {
+                this.identityAddress = identity.address
+                this.token = token
+            }
+            nodeRepository.registerIdentity(req)
+            progress.value = IN_PROGRESS
+        } catch (e: Exception) {
+            Log.i(TAG, "Failed to register identity ${identity.address} with token $token", e)
             progress.value = NOT_STARTED
             throw e
         }
