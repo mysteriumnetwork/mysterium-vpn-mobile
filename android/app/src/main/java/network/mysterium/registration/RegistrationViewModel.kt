@@ -118,6 +118,7 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
         } catch (e: Exception) {
             Log.i(TAG, "Failed to register identity ${identity.address}", e)
             progress.value = NOT_STARTED
+            throw e
         }
     }
 

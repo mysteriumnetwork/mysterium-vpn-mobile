@@ -61,7 +61,14 @@ class RegistrationTopupPaymentFragment : Fragment() {
         registerButton.setOnClickListener {
             registerButton.isEnabled = false
             CoroutineScope(Dispatchers.Main).launch {
-                viewModel.register()
+                root.findViewById<ProgressBar>(R.id.registration_topup_payment_register_button_progress).visibility = VISIBLE
+                try {
+                    viewModel.register()
+                } catch (e: Exception) {
+                    registerButton.isEnabled = true
+                    root.findViewById<ProgressBar>(R.id.registration_topup_payment_register_button_progress).visibility = INVISIBLE
+                    showMessage(root.context, "Registration failed")
+                }
             }
         }
 
