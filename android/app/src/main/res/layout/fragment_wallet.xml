@@ -170,15 +170,6 @@
                             android:text="0 MYSTT"
                             app:layout_constraintTop_toBottomOf="@id/account_balance_card_title" />
 
-                        <TextView
-                            android:id="@+id/account_balance_hint"
-                            android:text="@string/wallet_mystt_test_explanation"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/ColorSecondary"
-                            app:layout_constraintTop_toBottomOf="@id/wallet_balance_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.card.MaterialCardView>
