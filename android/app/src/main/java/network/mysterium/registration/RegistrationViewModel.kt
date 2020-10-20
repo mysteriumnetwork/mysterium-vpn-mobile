@@ -21,7 +21,6 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
     val registrationFee = MutableLiveData<BigDecimal>(BigDecimal(0))
     val totalAmount = MediatorLiveData<BigDecimal>()
     val identity = MutableLiveData<IdentityModel>()
-    val registrationDone = MutableLiveData<Boolean>(false)
     val balance = MutableLiveData<BigDecimal>(BigDecimal(0))
     val progress = MutableLiveData<RegistrationProgress>(NOT_STARTED)
 
@@ -51,7 +50,7 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
                     channelAddress = nodeIdentity.channelAddress,
                     status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
             )
-            this.identity.postValue(identity)
+            this.identity.value = identity
         } catch (e: Exception) {
             Log.e(TAG, "Failed to load account identity", e)
         }
@@ -64,7 +63,9 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
 
     private suspend fun initListeners() {
         nodeRepository.registerIdentityRegistrationChangeCallback { statusString ->
-            handleRegistrationStatusChange(IdentityRegistrationStatus.parse(statusString))
+            CoroutineScope(Dispatchers.Main).launch {
+                handleRegistrationStatusChange(IdentityRegistrationStatus.parse(statusString))
+            }
         }
         nodeRepository.registerBalanceChangeCallback { balance ->
             CoroutineScope(Dispatchers.Main).launch {
@@ -73,27 +74,25 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
         }
     }
 
-    private fun handleRegistrationStatusChange(status: IdentityRegistrationStatus) {
-        Log.i(TAG, "Identity registration status changed: ${this.identity.value} → $status")
-        val identity = this.identity.value?.apply {
-            this.status = status
-        } ?: return
-        this.identity.postValue(identity)
+    private suspend fun handleRegistrationStatusChange(status: IdentityRegistrationStatus) {
+        Log.i(TAG, "Identity registration status changed: ${this.identity.value?.status} → $status")
+        val identity = this.identity.value ?: return
+        identity.status = status
+        this.identity.value = identity
         if (identity.registered) {
-            progress.postValue(DONE)
-            CoroutineScope(Dispatchers.Main).launch {
-                db.identityDao().delete()
-                db.identityDao().insert(identity)
+            if (progress.value != DONE) {
+                progress.value = DONE
             }
+            db.identityDao().set(identity)
         }
     }
 
     private fun handleBalanceChange(balance: Double) {
+        Log.i(TAG, "Balance changed: ${this.balance.value} → $balance")
         if (this.balance.value?.compareTo(BigDecimal(balance)) == 0) {
             return
         }
-        Log.i(TAG, "Balance changed: ${this.balance.value} → $balance")
-        this.balance.postValue(BigDecimal.valueOf(balance))
+        this.balance.value = BigDecimal.valueOf(balance)
     }
 
     fun balanceSufficientForRegistration(): Boolean {
@@ -115,10 +114,10 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
                 identityAddress = identity.address
             }
             nodeRepository.registerIdentity(req)
-            progress.postValue(IN_PROGRESS)
+            progress.value = IN_PROGRESS
         } catch (e: Exception) {
             Log.i(TAG, "Failed to register identity ${identity.address}", e)
-            progress.postValue(NOT_STARTED)
+            progress.value = NOT_STARTED
         }
     }
 
