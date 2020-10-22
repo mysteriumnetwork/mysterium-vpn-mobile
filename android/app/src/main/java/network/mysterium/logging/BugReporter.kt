@@ -17,10 +17,17 @@
 
 package network.mysterium.logging
 
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class BugReporter {
-    fun setUserIdentifier(userIdentifier: String) {
-        Crashlytics.setUserIdentifier(userIdentifier)
+
+    companion object {
+        fun init() {
+            FirebaseCrashlytics.getInstance().setCustomKey("android_sdk_int", android.os.Build.VERSION.SDK_INT)
+        }
+    }
+
+    fun setUserIdentifier(userId: String) {
+        FirebaseCrashlytics.getInstance().setUserId(userId)
     }
 }

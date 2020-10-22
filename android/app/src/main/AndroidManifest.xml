@@ -45,9 +45,6 @@
             </intent-filter>
         </receiver>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="c614c88920a993fbd6030ed842b48214b0ebc689" />
         <service
             android:name="network.mysterium.service.core.MysteriumAndroidCoreService"
             android:permission="android.permission.BIND_VPN_SERVICE">

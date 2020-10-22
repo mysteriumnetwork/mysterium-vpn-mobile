@@ -19,35 +19,20 @@ package network.mysterium
 
 import android.util.Log
 import androidx.multidex.MultiDexApplication
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
-import io.fabric.sdk.android.Fabric
 import io.intercom.android.sdk.Intercom
+import network.mysterium.logging.BugReporter
 import network.mysterium.ui.Countries
-import network.mysterium.vpn.BuildConfig
 
 class MainApplication : MultiDexApplication() {
+
     val appContainer = AppContainer()
 
     override fun onCreate() {
-        setupLogging()
+        BugReporter.init()
         super.onCreate()
         Countries.loadBitmaps()
         setupIntercom()
         Log.i(TAG, "Application started")
-    }
-
-    private fun setupLogging() {
-        // https://docs.fabric.io/android/crashlytics/build-tools.html?highlight=crashlyticscore
-        // Set up Crashlytics, disabled for debug builds
-        val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build()
-
-        // Initialize Fabric with the debug-disabled crashlytics.
-        Fabric.with(this, crashlyticsKit)
-
-        Crashlytics.setInt("android_sdk_int", android.os.Build.VERSION.SDK_INT)
     }
 
     private fun setupIntercom() {
