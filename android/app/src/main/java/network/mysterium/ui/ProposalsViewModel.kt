@@ -131,7 +131,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     init {
         priceSettings = PriceSettings(
                 defaultPricePerMinute = 0.0005,
-                defaultPricePerGiB = 0.15,
+                defaultPricePerGiB = 0.3,
                 perMinuteMax =  0.001,
                 perGibMax = 0.5
         )
