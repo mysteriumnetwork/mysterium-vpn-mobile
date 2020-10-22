@@ -49,18 +49,6 @@ object Views {
                             ViewMatchers.isDisplayed()))
         }
 
-    val topUpButton: ViewInteraction
-        get() {
-            return onViewReady(
-                    Matchers.allOf(ViewMatchers.withId(R.id.wallet_topup_free_tokens),
-                            childAtPosition(
-                                    childAtPosition(
-                                            ViewMatchers.withId(R.id.wallet_balance_card),
-                                            0),
-                                    3),
-                            ViewMatchers.isDisplayed()), 20, 5000)
-        }
-
     val navBackButton: ViewInteraction
         get() {
             return onViewReady(

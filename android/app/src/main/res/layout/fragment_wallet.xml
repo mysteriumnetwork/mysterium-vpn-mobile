@@ -237,13 +237,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
+                        <ImageView
                             android:id="@+id/wallet_qr_code_view"
                             app:layout_constraintTop_toBottomOf="@id/wallet_topup_qr_hint"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-                        </androidx.appcompat.widget.AppCompatImageView>
+                        </ImageView>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
