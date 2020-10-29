@@ -93,4 +93,19 @@
     <string name="no_internet_connection">Нет соединения с интернетом</string>
     <string name="vpn_ip">IP: %1$s</string>
     <string name="conn_state_reconnecting">Переподключениe</string>
+    <string name="registration_description">Необходима активация аккаунта MysteriumVPN для предотвращения спама и сетевых атак.</string>
+    <string name="registration_have_a_referral_code">У меня есть реферальный код</string>
+    <string name="mystt_display">%1$s MYSTT</string>
+    <string name="registration_topup_payment_hint">Пришлите %1$s MYSTT на ваш кошелёк (в тестовом блокчейне Görli), чтобы продолжить.</string>
+    <string name="registration_successful">Регистрация прошла успешно!</string>
+    <string name="have_a_referral_code">У Вас есть реферальный код?</string>
+    <string name="get_started">Начать</string>
+    <string name="how_much_would_you_like_to_topup">На какую сумму Вы хотите пополнить счёт?</string>
+    <string name="topup_amount">Сумма пополнения счёта</string>
+    <string name="registration_fee">Регистрационный сбор</string>
+    <string name="total_amount">Общая сумма</string>
+    <string name="waiting_for_payment">Ожидание поступления оплаты</string>
+    <string name="button_continue">Продолжить</string>
+    <string name="button_register">Регистрация</string>
+    <string name="enter_referral_code">Введите реферальный код:</string>
 </resources>

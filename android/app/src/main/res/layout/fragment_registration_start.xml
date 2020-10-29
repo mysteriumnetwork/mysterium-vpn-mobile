@@ -10,19 +10,20 @@
         android:text="@string/get_started"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_description_text" />
+        app:layout_constraintBottom_toTopOf="@id/registration_use_referral_code_button" />
 
     <Button
         android:id="@+id/registration_use_referral_code_button"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64sp"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/have_a_referral_code"
         android:textColor="@color/intercom_black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_get_started_button" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -31,18 +32,17 @@
         android:scaleX="0.5"
         android:scaleY="0.5"
         android:src="@drawable/logo_mysterium_network"
-        app:layout_constraintBottom_toTopOf="@+id/registration_guideline_center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/registration_guideline_center"/>
 
     <TextView
         android:id="@+id/registration_description_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
+        android:padding="20dp"
+        android:gravity="center_horizontal"
         android:text="@string/registration_description"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintTop_toBottomOf="@id/registration_guideline_center" />
@@ -52,8 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="366dp"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintGuide_percent="0.4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,9 @@
             android:src="@drawable/logo_mysterium_network"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/registration_topup_payment_guideline"
+        />
 
         <TextView
             android:id="@+id/registration_topup_payment_hint"
@@ -117,7 +119,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/registration_topup_payment_register_button"
             app:layout_constraintEnd_toEndOf="@+id/registration_topup_payment_register_button"
             app:layout_constraintTop_toTopOf="@+id/registration_topup_payment_register_button" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

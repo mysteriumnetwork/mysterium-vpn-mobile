@@ -43,10 +43,10 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:src="@drawable/logo_mysterium_network"
-            app:layout_constraintBottom_toTopOf="@+id/registration_referral_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/registration_referral_guideline"/>
 
         <ProgressBar
             android:id="@+id/registration_referral_register_button_progress"
