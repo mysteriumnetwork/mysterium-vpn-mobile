@@ -59,8 +59,8 @@
     <string name="proposals_quality_filter_title">Фильтр качества</string>
     <string name="proposals_node_type_filter_title">Фильтр типа IP узла</string>
     <string name="proposals_price_filter_apply_btn">ПОДТВЕРДИТЬ</string>
-    <string name="feedback_app_version">Версия приложения: </string>
-    <string name="feedback_node_version">Версия ноды: </string>
+    <string name="feedback_app_version">Версия приложения: %1$s</string>
+    <string name="feedback_node_version">Версия ноды: %1$s</string>
     <string name="node_type_all">Все</string>
     <string name="node_type_business">Бизнес</string>
     <string name="node_type_cellular">Сотовая связь</string>
@@ -108,4 +108,5 @@
     <string name="button_continue">Продолжить</string>
     <string name="button_register">Регистрация</string>
     <string name="enter_referral_code">Введите реферальный код:</string>
+    <string name="mysterium_network_logo">Mysterium Network логотип</string>
 </resources>

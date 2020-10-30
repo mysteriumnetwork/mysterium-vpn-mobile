@@ -59,8 +59,8 @@
     <string name="proposals_quality_filter_title">Qualität Filter</string>
     <string name="proposals_node_type_filter_title">Node IP-Typ Filter</string>
     <string name="proposals_price_filter_apply_btn">Übernehmen</string>
-    <string name="feedback_app_version">App Version: </string>
-    <string name="feedback_node_version">Node Version: </string>
+    <string name="feedback_app_version">App Version: %1$s</string>
+    <string name="feedback_node_version">Node Version: %1$s</string>
     <string name="node_type_all">Alle</string>
     <string name="node_type_business">Business</string>
     <string name="node_type_cellular">Mobil</string>
@@ -106,4 +106,5 @@
     <string name="button_continue">Fortsetzen</string>
     <string name="button_register">Registrieren</string>
     <string name="enter_referral_code">Gebe deinen Referral-Code ein:</string>
+    <string name="mysterium_network_logo">Mysterium Network firmenemblem</string>
 </resources>

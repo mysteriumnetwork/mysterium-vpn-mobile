@@ -8,9 +8,9 @@
         android:id="@+id/registration_get_started_button"
         style="@style/BigPrimaryButton"
         android:text="@string/get_started"
+        app:layout_constraintBottom_toTopOf="@id/registration_use_referral_code_button"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/registration_use_referral_code_button" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/registration_use_referral_code_button"
@@ -21,28 +21,29 @@
         android:layout_marginBottom="32dp"
         android:text="@string/have_a_referral_code"
         android:textColor="@color/intercom_black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/mysterium_network_logo"
         android:scaleX="0.5"
         android:scaleY="0.5"
         android:src="@drawable/logo_mysterium_network"
+        app:layout_constraintBottom_toTopOf="@id/registration_guideline_center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/registration_guideline_center"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/registration_description_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
         android:gravity="center_horizontal"
+        android:padding="20dp"
         android:text="@string/registration_description"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintTop_toBottomOf="@id/registration_guideline_center" />

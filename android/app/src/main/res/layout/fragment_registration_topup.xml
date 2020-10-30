@@ -23,17 +23,17 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:src="@drawable/logo_mysterium_network"
+            app:layout_constraintBottom_toTopOf="@id/registration_topup_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/registration_topup_guideline"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/registration_topup_amount_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
             android:gravity="center_horizontal"
+            android:padding="20dp"
             android:text="@string/how_much_would_you_like_to_topup"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"

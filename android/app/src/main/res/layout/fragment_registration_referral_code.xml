@@ -31,6 +31,7 @@
             android:maxLength="20"
             android:padding="5dp"
             android:singleLine="true"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registration_referral_token_edit_hint" />
@@ -39,7 +40,7 @@
             android:id="@+id/registration_referral_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Mysterium Network logo"
+            android:contentDescription="@string/mysterium_network_logo"
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:src="@drawable/logo_mysterium_network"

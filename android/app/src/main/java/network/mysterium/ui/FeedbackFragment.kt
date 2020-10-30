@@ -88,13 +88,13 @@ class FeedbackFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun updateVersionLabel() {
-        appVersionLabel.text = feedbackViewModel.appVersion()
+        val appVersion = feedbackViewModel.appVersion()
+        appVersionLabel.text = getString(R.string.feedback_app_version, appVersion)
 
         CoroutineScope(Dispatchers.Main).launch {
             val nodeVersion = feedbackViewModel.nodeVersion()
-            nodeVersionLabel.text = nodeVersion
+            nodeVersionLabel.text = getString(R.string.feedback_node_version, nodeVersion)
         }
     }
 
