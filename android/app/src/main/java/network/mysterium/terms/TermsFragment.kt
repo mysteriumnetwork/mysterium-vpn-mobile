@@ -15,26 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.ui
+package network.mysterium.terms
 
 import android.os.Bundle
 import android.text.Html
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
-import androidx.navigation.findNavController
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.MainApplication
+import network.mysterium.navigation.emulateHomePress
+import network.mysterium.navigation.onBackPress
 import network.mysterium.registration.RegistrationViewModel
-import network.mysterium.ui.TermsFragmentDirections.Companion.actionTermsFragmentToMainVpnFragment
-import network.mysterium.ui.TermsFragmentDirections.Companion.actionTermsFragmentToRegistrationFragment
+import network.mysterium.terms.TermsFragmentDirections.Companion.actionTermsFragmentToMainVpnFragment
+import network.mysterium.terms.TermsFragmentDirections.Companion.actionTermsFragmentToRegistrationFragment
 import network.mysterium.vpn.R
 
 class TermsFragment : Fragment() {

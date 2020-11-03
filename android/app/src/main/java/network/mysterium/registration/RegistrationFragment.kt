@@ -6,12 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import network.mysterium.MainApplication
 import network.mysterium.registration.RegistrationFragmentDirections.Companion.actionRegistrationFragmentToReferralCodeRegistrationFragment
 import network.mysterium.registration.RegistrationFragmentDirections.Companion.actionRegistrationFragmentToTopupRegistrationFragment
@@ -38,9 +33,6 @@ class RegistrationFragment : Fragment() {
             nav.navigate(actionRegistrationFragmentToReferralCodeRegistrationFragment())
         }
 
-        viewModel.identity.observe(viewLifecycleOwner, Observer {
-            it.status
-        })
         return root
     }
 

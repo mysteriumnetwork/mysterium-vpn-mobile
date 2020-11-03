@@ -1,9 +1,6 @@
 package network.mysterium.registration
 
 import android.util.Log
-import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +11,8 @@ import mysterium.RegisterIdentityRequest
 import network.mysterium.db.AppDatabase
 import network.mysterium.registration.RegistrationProgress.*
 import network.mysterium.service.core.NodeRepository
-import network.mysterium.ui.IdentityModel
-import network.mysterium.ui.IdentityRegistrationStatus
+import network.mysterium.wallet.IdentityModel
+import network.mysterium.wallet.IdentityRegistrationStatus
 import java.math.BigDecimal
 
 class RegistrationViewModel(private val nodeRepository: NodeRepository, private val db: AppDatabase) : ViewModel() {

@@ -28,8 +28,10 @@ import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.net.NetworkState
+import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.*
 import network.mysterium.vpn.R
+import network.mysterium.wallet.WalletViewModel
 
 enum class ConnectionState(val type: String) {
     UNKNOWN("Unknown"),

@@ -1,4 +1,4 @@
-package network.mysterium.ui.list
+package network.mysterium.ui
 
 import android.view.LayoutInflater
 import android.view.View

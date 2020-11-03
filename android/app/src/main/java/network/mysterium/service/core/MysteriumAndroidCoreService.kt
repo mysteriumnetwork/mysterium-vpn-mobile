@@ -26,7 +26,7 @@ import android.util.Log
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.NotificationFactory
-import network.mysterium.ui.ProposalViewItem
+import network.mysterium.proposal.ProposalViewItem
 
 class MysteriumAndroidCoreService : VpnService() {
     private var mobileNode: MobileNode? = null

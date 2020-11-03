@@ -27,13 +27,17 @@ import androidx.room.Room
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.MIGRATION_1_2
+import network.mysterium.feedback.VersionViewModel
 import network.mysterium.logging.BugReporter
 import network.mysterium.net.NetworkMonitor
+import network.mysterium.proposal.ProposalsViewModel
 import network.mysterium.registration.RegistrationViewModel
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
+import network.mysterium.terms.TermsViewModel
 import network.mysterium.ui.*
+import network.mysterium.wallet.WalletViewModel
 
 class AppContainer {
     lateinit var appCtx: Context

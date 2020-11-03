@@ -15,13 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.ui
+package network.mysterium.proposal
 
 import android.graphics.Bitmap
 import android.util.Log
 import network.mysterium.service.core.ProposalItem
 import network.mysterium.db.FavoriteProposal
 import network.mysterium.service.core.ProposalPaymentMethod
+import network.mysterium.ui.Countries
 import network.mysterium.vpn.R
 
 class ProposalGroupViewItem constructor(

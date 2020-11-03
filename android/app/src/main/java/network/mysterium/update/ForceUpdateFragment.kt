@@ -1,4 +1,4 @@
-package network.mysterium.ui
+package network.mysterium.update
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import network.mysterium.MainApplication
+import network.mysterium.navigation.onBackPress
 import network.mysterium.vpn.R
 
 class ForceUpdateFragment : Fragment() {

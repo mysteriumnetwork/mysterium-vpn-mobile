@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.ui
+package network.mysterium.proposal
 
 import android.content.Context
 import android.os.Bundle
@@ -25,7 +25,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,10 +32,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.makeramen.roundedimageview.RoundedImageView
 import network.mysterium.AppContainer
 import network.mysterium.MainApplication
+import network.mysterium.navigation.Screen
+import network.mysterium.navigation.navigateTo
+import network.mysterium.navigation.onBackPress
 import network.mysterium.service.core.ProposalPaymentMoney
-import network.mysterium.ui.list.BaseItem
-import network.mysterium.ui.list.BaseListAdapter
-import network.mysterium.ui.list.BaseViewHolder
+import network.mysterium.ui.*
 import network.mysterium.vpn.R
 
 class ProposalsFragment : Fragment() {
@@ -140,7 +140,7 @@ class ProposalsFragment : Fragment() {
         }
 
         // Subscribe to proposals changes.
-        proposalsViewModel.getFilteredProposals().observe(viewLifecycleOwner, Observer { newItems ->
+        proposalsViewModel.getFilteredProposals().observe(viewLifecycleOwner) { newItems ->
             listAdapter.submitList(createProposalItemsWithGroups(root, newItems))
             listAdapter.notifyDataSetChanged()
 
@@ -149,19 +149,17 @@ class ProposalsFragment : Fragment() {
             proposalsProgressBar.visibility = View.GONE
             proposalsFilterLayout.visibility = View.VISIBLE
             setSelectedFilterValues()
-        })
+        }
 
 
-        proposalsViewModel.initialProposalsLoaded.observe(viewLifecycleOwner, Observer {loaded ->
-            if (loaded) {
-                return@Observer
+        proposalsViewModel.initialProposalsLoaded.observe(viewLifecycleOwner) { loaded ->
+            if (!loaded) {
+                // If initial proposals failed to load during app init try to load them explicitly.
+                proposalsListRecyclerView.visibility = View.GONE
+                proposalsProgressBar.visibility = View.VISIBLE
+                proposalsViewModel.refreshProposals {}
             }
-
-            // If initial proposals failed to load during app init try to load them explicitly.
-            proposalsListRecyclerView.visibility = View.GONE
-            proposalsProgressBar.visibility = View.VISIBLE
-            proposalsViewModel.refreshProposals {}
-        })
+        }
     }
 
     private fun createProposalItemsWithGroups(root: View, proposals: List<ProposalViewItem>): MutableList<BaseItem> {

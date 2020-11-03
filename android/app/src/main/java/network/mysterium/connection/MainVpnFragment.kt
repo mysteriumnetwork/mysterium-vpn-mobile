@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.ui
+package network.mysterium.connection
 
 import android.content.Context
 import android.os.Bundle
@@ -32,14 +32,22 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import network.mysterium.AppContainer
+import network.mysterium.navigation.Screen
+import network.mysterium.navigation.emulateHomePress
+import network.mysterium.navigation.navigateTo
+import network.mysterium.navigation.onBackPress
+import network.mysterium.proposal.ProposalViewItem
+import network.mysterium.proposal.ProposalsViewModel
 import network.mysterium.service.core.ConnectInsufficientBalanceException
 import network.mysterium.service.core.ConnectInvalidProposalException
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.ProposalPaymentMoney
+import network.mysterium.ui.*
 import network.mysterium.vpn.R
+import network.mysterium.wallet.BalanceModel
+import network.mysterium.wallet.WalletViewModel
 
 class MainVpnFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
@@ -129,19 +137,19 @@ class MainVpnFragment : Fragment() {
             handleConnectionPress(root)
         }
 
-        sharedViewModel.selectedProposal.observe(viewLifecycleOwner, Observer { updateSelectedProposal(it) })
+        sharedViewModel.selectedProposal.observe(viewLifecycleOwner) { updateSelectedProposal(it) }
 
-        sharedViewModel.connectionState.observe(viewLifecycleOwner, Observer {
+        sharedViewModel.connectionState.observe(viewLifecycleOwner) {
             updateConnStateLabel(it)
             updateConnButtonState(it)
             updateStatsLayoutVisibility()
-        })
+        }
 
-        sharedViewModel.statistics.observe(viewLifecycleOwner, Observer { updateStatsLabels(it) })
+        sharedViewModel.statistics.observe(viewLifecycleOwner) { updateStatsLabels(it) }
 
-        sharedViewModel.location.observe(viewLifecycleOwner, Observer { updateLocation(it) })
+        sharedViewModel.location.observe(viewLifecycleOwner) { updateLocation(it) }
 
-        walletViewModel.balance.observe(viewLifecycleOwner, Observer { updateBalance(it) })
+        walletViewModel.balance.observe(viewLifecycleOwner) { updateBalance(it) }
 
         onBackPress { emulateHomePress() }
 

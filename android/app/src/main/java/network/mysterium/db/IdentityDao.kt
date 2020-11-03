@@ -1,7 +1,7 @@
 package network.mysterium.db
 
 import androidx.room.*
-import network.mysterium.ui.IdentityModel
+import network.mysterium.wallet.IdentityModel
 
 @Dao
 interface IdentityDao {

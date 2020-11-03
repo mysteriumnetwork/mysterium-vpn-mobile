@@ -19,10 +19,9 @@ package network.mysterium.service.core
 
 import android.content.Context
 import android.os.IBinder
-import androidx.lifecycle.MutableLiveData
 import mysterium.MobileNode
 import network.mysterium.NotificationFactory
-import network.mysterium.ui.ProposalViewItem
+import network.mysterium.proposal.ProposalViewItem
 
 interface MysteriumCoreService : IBinder {
     fun startNode(): MobileNode

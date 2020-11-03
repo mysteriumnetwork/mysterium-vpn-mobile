@@ -1,4 +1,4 @@
-package network.mysterium.ui
+package network.mysterium.navigation
 
 import android.content.Intent
 import android.view.View

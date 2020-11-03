@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.ui
+package network.mysterium.wallet
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -31,14 +31,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
+import network.mysterium.navigation.Screen
+import network.mysterium.navigation.navigateTo
+import network.mysterium.navigation.onBackPress
+import network.mysterium.ui.showMessage
 import network.mysterium.vpn.R
 
 
@@ -87,13 +89,13 @@ class WalletFragment : Fragment() {
             navigateTo(root, Screen.MAIN)
         }
 
-        walletViewModel.identity.observe(viewLifecycleOwner, Observer {
+        walletViewModel.identity.observe(viewLifecycleOwner) {
             handleIdentityChange(it)
-        })
+        }
 
-        walletViewModel.balance.observe(viewLifecycleOwner, Observer {
+        walletViewModel.balance.observe(viewLifecycleOwner) {
             handleBalanceChange(it)
-        })
+        }
 
         walletCopyTopupAddressButton.setOnClickListener { handleTopupAddressCopy(root) }
 

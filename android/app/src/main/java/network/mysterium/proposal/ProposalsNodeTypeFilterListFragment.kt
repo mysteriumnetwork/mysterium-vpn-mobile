@@ -1,4 +1,4 @@
-package network.mysterium.ui
+package network.mysterium.proposal
 
 import android.content.Context
 import android.os.Bundle
@@ -13,9 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import network.mysterium.MainApplication
-import network.mysterium.ui.list.BaseItem
-import network.mysterium.ui.list.BaseListAdapter
-import network.mysterium.ui.list.BaseViewHolder
+import network.mysterium.navigation.Screen
+import network.mysterium.ui.hideKeyboard
+import network.mysterium.ui.BaseItem
+import network.mysterium.ui.BaseListAdapter
+import network.mysterium.ui.BaseViewHolder
+import network.mysterium.navigation.navigateTo
+import network.mysterium.navigation.onBackPress
 import network.mysterium.vpn.R
 
 class ProposalsNodeTypeFilterListFragment : Fragment() {

@@ -1,4 +1,4 @@
-package network.mysterium.ui
+package network.mysterium.feedback
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,6 @@ import com.beust.klaxon.Json
 import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import network.mysterium.service.core.NodeRepository
 import network.mysterium.vpn.BuildConfig
 import java.net.URL
 

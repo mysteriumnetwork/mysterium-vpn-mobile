@@ -31,20 +31,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.*
+import network.mysterium.navigation.Screen
+import network.mysterium.navigation.navigateTo
 import network.mysterium.net.NetworkState
 import network.mysterium.notification.Notifications
 import network.mysterium.registration.RegistrationProgress
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.ui.Screen
-import network.mysterium.ui.navigateTo
 import network.mysterium.vpn.R
 
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
@@ -96,9 +95,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         // start mobile node and initial data when network is available.
         CoroutineScope(Dispatchers.Main).launch {
             deferredMysteriumCoreService.await()
-            appContainer.sharedViewModel.networkState.observe(this@MainActivity, Observer {
+            appContainer.sharedViewModel.networkState.observe(this@MainActivity) {
                 CoroutineScope(Dispatchers.Main).launch { handleConnChange(it) }
-            })
+            }
             appContainer.networkMonitor.start()
         }
 
@@ -124,11 +123,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 navigate(R.id.terms_fragment)
             }
         }
-        appContainer.registrationViewModel.progress.observe(this@MainActivity, Observer { progress ->
+        appContainer.registrationViewModel.progress.observe(this@MainActivity) { progress ->
             if (progress == RegistrationProgress.DONE) {
                 navigate(R.id.registration_done_fragment)
             }
-        })
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

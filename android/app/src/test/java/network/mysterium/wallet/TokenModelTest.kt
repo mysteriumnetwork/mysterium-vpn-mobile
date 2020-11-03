@@ -1,4 +1,4 @@
-package network.mysterium.ui
+package network.mysterium.wallet
 
 import org.junit.Assert.*
 import org.junit.Test

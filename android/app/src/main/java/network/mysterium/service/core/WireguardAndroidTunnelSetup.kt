@@ -18,7 +18,6 @@
 package network.mysterium.service.core
 
 import android.net.VpnService
-import android.os.Build
 import android.util.Log
 import mysterium.WireguardTunnelSetup
 

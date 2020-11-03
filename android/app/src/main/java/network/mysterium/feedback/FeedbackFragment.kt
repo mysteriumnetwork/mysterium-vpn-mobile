@@ -1,6 +1,5 @@
-package network.mysterium.ui
+package network.mysterium.feedback
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.AppContainer
-import network.mysterium.vpn.BuildConfig
+import network.mysterium.navigation.Screen
+import network.mysterium.navigation.navigateTo
+import network.mysterium.navigation.onBackPress
+import network.mysterium.ui.*
 import network.mysterium.vpn.R
 
 class FeedbackFragment : Fragment() {

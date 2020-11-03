@@ -6,8 +6,8 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import network.mysterium.ui.IdentityModel
-import network.mysterium.ui.IdentityRegistrationStatus
+import network.mysterium.wallet.IdentityModel
+import network.mysterium.wallet.IdentityRegistrationStatus
 
 @Database(entities = [FavoriteProposal::class, Terms::class, IdentityModel::class], version = 2)
 @TypeConverters(Converters::class)

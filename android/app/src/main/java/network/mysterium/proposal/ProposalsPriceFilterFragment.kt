@@ -1,4 +1,4 @@
-package network.mysterium.ui
+package network.mysterium.proposal
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,11 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
 import network.mysterium.MainApplication
+import network.mysterium.navigation.Screen
+import network.mysterium.navigation.navigateTo
+import network.mysterium.navigation.onBackPress
 import network.mysterium.service.core.ProposalPaymentMoney
+import network.mysterium.ui.*
 import network.mysterium.vpn.R
 
 class ProposalsPriceFilterFragment : Fragment() {

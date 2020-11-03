@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package network.mysterium.ui
+package network.mysterium.proposal
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -28,6 +28,8 @@ import mysterium.GetProposalsRequest
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
+import network.mysterium.ui.PriceUtils
+import network.mysterium.ui.SharedViewModel
 
 enum class ServiceType(val type: String) {
     UNKNOWN("unknown"),
