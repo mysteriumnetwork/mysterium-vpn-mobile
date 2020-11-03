@@ -9,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
 import network.mysterium.db.AppDatabase
-import network.mysterium.registration.RegistrationProgress.*
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
@@ -18,13 +17,13 @@ import java.math.BigDecimal
 class RegistrationViewModel(private val nodeRepository: NodeRepository, private val db: AppDatabase) : ViewModel() {
 
     val topupAmount = MutableLiveData<BigDecimal>()
-    val registrationFee = MutableLiveData<BigDecimal>(BigDecimal(0))
+    val registrationFee = MutableLiveData(BigDecimal(0))
     val totalAmount = MediatorLiveData<BigDecimal>()
     val identity = MutableLiveData<IdentityModel>()
-    val balance = MutableLiveData<BigDecimal>(BigDecimal(0))
+    val balance = MutableLiveData(BigDecimal(0))
     val balanceSufficient = MediatorLiveData<Boolean>()
-    val progress = MutableLiveData<RegistrationProgress>(NOT_STARTED)
-    val token = MutableLiveData<String>("")
+    val progress = MutableLiveData(RegistrationProgress.NOT_STARTED)
+    val token = MutableLiveData("")
 
     init {
         val sumTotal = fun(): BigDecimal {
@@ -93,8 +92,8 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
         identity.status = status
         this.identity.value = identity
         if (identity.registered) {
-            if (progress.value != DONE) {
-                progress.value = DONE
+            if (progress.value != RegistrationProgress.DONE) {
+                progress.value = RegistrationProgress.DONE
             }
             db.identityDao().set(identity)
         }
@@ -121,10 +120,10 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
                 identityAddress = identity.address
             }
             nodeRepository.registerIdentity(req)
-            progress.value = IN_PROGRESS
+            progress.value = RegistrationProgress.IN_PROGRESS
         } catch (e: Exception) {
             Log.i(TAG, "Failed to register identity ${identity.address}", e)
-            progress.value = NOT_STARTED
+            progress.value = RegistrationProgress.NOT_STARTED
             throw e
         }
     }
@@ -139,10 +138,10 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
                 this.token = token
             }
             nodeRepository.registerIdentity(req)
-            progress.value = IN_PROGRESS
+            progress.value = RegistrationProgress.IN_PROGRESS
         } catch (e: Exception) {
             Log.i(TAG, "Failed to register identity ${identity.address} with token $token", e)
-            progress.value = NOT_STARTED
+            progress.value = RegistrationProgress.NOT_STARTED
             throw e
         }
     }

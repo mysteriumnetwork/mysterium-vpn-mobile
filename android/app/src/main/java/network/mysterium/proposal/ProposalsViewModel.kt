@@ -96,23 +96,20 @@ data class ProposalsFilter(
         var nodeType: NodeType,
         var pricePerMinute: Double,
         var pricePerGiB: Double
-) {
-}
+)
 
 data class ProposalFilterCountry(
         val code: String = "",
         val name: String = "",
         val flagImage: Bitmap? = null,
         val proposalsCount: Int = 0
-) {
-}
+)
 
 data class ProposalFilterQuality(
         var level: QualityLevel,
         var qualityIncludeUnreachable: Boolean,
         val proposalsCount: Int = 0
-) {
-}
+)
 
 class PriceSettings(
         var defaultPricePerMinute: Double,

@@ -137,8 +137,7 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
 
     fun generateChannelQRCode(channelAddress: String): Bitmap {
         val barcodeEncoder = BarcodeEncoder()
-        val bitmap = barcodeEncoder.encodeBitmap(channelAddress, BarcodeFormat.QR_CODE, 500, 500)
-        return bitmap
+        return barcodeEncoder.encodeBitmap(channelAddress, BarcodeFormat.QR_CODE, 500, 500)
     }
 
     private suspend fun loadBalance() {

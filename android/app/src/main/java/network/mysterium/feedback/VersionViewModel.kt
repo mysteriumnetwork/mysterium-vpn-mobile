@@ -14,7 +14,7 @@ data class VersionResponse(
         val minVersion: String
 )
 
-class VersionViewModel(): ViewModel() {
+class VersionViewModel : ViewModel() {
     var remoteVersion: String = ""
 
     fun appVersion(): String {

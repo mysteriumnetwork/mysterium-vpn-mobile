@@ -65,7 +65,7 @@ class StatisticsModel(
                     duration = UnitFormatter.timeDisplay(stats.duration),
                     bytesReceived = UnitFormatter.bytesDisplay(stats.bytesReceived),
                     bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent),
-                    tokensSpent = stats.tokensSpent.toDouble()
+                    tokensSpent = stats.tokensSpent
             )
         }
     }
@@ -84,7 +84,7 @@ class SharedViewModel(
     var reconnecting = false
     val statistics = MutableLiveData<StatisticsModel>()
     val location = MutableLiveData<LocationModel>()
-    val networkState = MutableLiveData<NetworkState>(NetworkState(wifiConnected = true))
+    val networkState = MutableLiveData(NetworkState(wifiConnected = true))
 
     private var isConnected = false
 
@@ -230,7 +230,6 @@ class SharedViewModel(
         val proposal = mysteriumCoreService.await().getActiveProposal()
         if (proposal != null) {
             selectProposal(proposal)
-            connectionState.value == ConnectionState.CONNECTED
         }
     }
 

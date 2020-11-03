@@ -27,8 +27,7 @@ class ProposalItem(
 
         @Json(name = "payment")
         val payment: ProposalPaymentMethod
-) {
-}
+)
 
 class ProposalPaymentMethod(
         @Json(name = "type")

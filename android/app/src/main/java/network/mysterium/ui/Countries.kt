@@ -21,7 +21,7 @@ import android.util.Base64
 import android.graphics.*
 import android.graphics.Bitmap
 
-class CountryFlag constructor(val name: String, val image: String) {}
+class CountryFlag constructor(val name: String, val image: String)
 
 class Countries {
     companion object {
