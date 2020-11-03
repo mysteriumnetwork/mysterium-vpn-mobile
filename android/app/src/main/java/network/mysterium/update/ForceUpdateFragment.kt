@@ -39,8 +39,8 @@ class ForceUpdateFragment : Fragment() {
             handleUpdatePress(root.context)
         }
 
-        currentVersion.text = versionViewModel.appVersion()
-        requiredVersion.text = versionViewModel.remoteVersion
+        currentVersion.text = getString(R.string.force_update_current_version, versionViewModel.appVersion())
+        requiredVersion.text = getString(R.string.force_update_minimum_required_version, versionViewModel.remoteVersion)
 
         onBackPress {
             // Do nothing.

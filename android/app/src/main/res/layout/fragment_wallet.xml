@@ -25,10 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/ColorBackground"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="20dp">
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 app:layout_constraintTop_toTopOf="parent"

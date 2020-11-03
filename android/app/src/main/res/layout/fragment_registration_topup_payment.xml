@@ -20,7 +20,7 @@
             android:id="@+id/registration_topup_payment_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Mysterium Network logo"
+            android:contentDescription="@string/mysterium_network_logo"
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:src="@drawable/logo_mysterium_network"

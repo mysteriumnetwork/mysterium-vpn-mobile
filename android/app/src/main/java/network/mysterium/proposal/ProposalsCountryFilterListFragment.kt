@@ -1,5 +1,6 @@
 package network.mysterium.proposal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -88,6 +89,7 @@ data class CountryItem(val ctx: Context, val country: ProposalFilterCountry, val
 
     override val uniqueId = country.code
 
+    @SuppressLint("SetTextI18n")
     override fun bind(holder: BaseViewHolder) {
         super.bind(holder)
         val countryText: TextView = holder.containerView.findViewById(R.id.proposal_filter_country_text)

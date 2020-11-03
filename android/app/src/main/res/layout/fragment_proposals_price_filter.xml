@@ -22,7 +22,7 @@
         android:text="@string/proposals_filter_reset_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/proposals_price_filter_reset_btn"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </com.google.android.material.button.MaterialButton>
@@ -31,7 +31,7 @@
         android:text="@string/proposals_price_filter_apply_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/proposals_price_filter_apply_btn"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </com.google.android.material.button.MaterialButton>
@@ -39,11 +39,11 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:text="@string/proposals_filter_price_per_minute">
         </TextView>
@@ -52,7 +52,7 @@
             android:id="@+id/proposals_price_per_minute_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="≤ 0.0001"
             android:textStyle="bold"/>
@@ -72,11 +72,11 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:text="@string/proposals_filter_price_per_gib">
         </TextView>
@@ -85,7 +85,7 @@
             android:id="@+id/proposals_price_per_gib_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="≤ 0.0005"
             android:textStyle="bold"/>

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MysteriumVPN</string>
     <string name="connect_button_cancel">Abbrechen</string>
     <string name="connect_button_connect">Verbinden</string>
     <string name="connect_button_disconnect">Verbindung trennen</string>
@@ -72,8 +71,8 @@
     <string name="quality_level_low">Schlecht</string>
     <string name="force_update_btn_text">Aktualisieren</string>
     <string name="force_update_description">Diese App ist nicht kompatibel mit dem aktuellen Mysterium Network Protokoll und muss aktualisiert werden.</string>
-    <string name="force_update_current_version">Aktuelle Version: </string>
-    <string name="force_update_minimum_required_version">Minimal benötigte Version: </string>
+    <string name="force_update_current_version">Aktuelle Version: <b>%1$s</b></string>
+    <string name="force_update_minimum_required_version">Minimal benötigte Version: <b>%1$s</b></string>
     <string name="notification_title_connected">Verbunden mit %1$s</string>
     <string name="notification_content">Erhalten %1$s | Gesendet %2$s | Bezahlt %3$s</string>
     <string name="location_status_updating">Aktualisierung</string>
