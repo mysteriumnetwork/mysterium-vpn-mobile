@@ -122,8 +122,8 @@
                 android:id="@+id/vpn_proposal_picker_layout"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/proposal_picker_bg"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -217,14 +217,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/vpn_connection_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/BigPrimaryButton"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vpn_proposal_picker_layout"
-                android:text="@string/connect_button_loading"
-                android:layout_margin="10dp"
-                android:layout_width="200dp"
-                android:layout_height="60dp">
+                android:text="@string/connect_button_loading">
             </com.google.android.material.button.MaterialButton>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
