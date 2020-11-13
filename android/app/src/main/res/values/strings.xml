@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MysteriumVPN</string>
+    <string name="app_name" translatable="false">MysteriumVPN Betanet</string>
     <string name="connect_button_cancel">Cancel</string>
     <string name="connect_button_connect">Connect</string>
     <string name="connect_button_disconnect">Disconnect</string>

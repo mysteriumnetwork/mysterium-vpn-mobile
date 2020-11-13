@@ -70,7 +70,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "network.mysterium.vpn"
+        applicationId "network.mysterium.vpn.betanet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode getVersionCode()
