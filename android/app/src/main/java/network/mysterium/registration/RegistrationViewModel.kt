@@ -13,6 +13,7 @@ import network.mysterium.service.core.NodeRepository
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class RegistrationViewModel(private val nodeRepository: NodeRepository, private val db: AppDatabase) : ViewModel() {
 
@@ -70,7 +71,7 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
 
     private suspend fun loadRegistrationFees() {
         val fees = nodeRepository.identityRegistrationFees()
-        registrationFee.value = BigDecimal.valueOf(fees.fee).setScale(0)
+        registrationFee.value = BigDecimal.valueOf(fees.fee).setScale(0, RoundingMode.HALF_UP)
     }
 
     private suspend fun initListeners() {
