@@ -30,6 +30,7 @@ import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.launch
 import mysterium.GetBalanceRequest
+import mysterium.RegisterIdentityRequest
 import network.mysterium.logging.BugReporter
 import network.mysterium.service.core.NodeRepository
 
@@ -121,14 +122,14 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
             }
             Log.i(TAG, "Loaded identity ${nodeIdentity.address}, channel addr: ${nodeIdentity.channelAddress}, status: ${nodeIdentity.registrationStatus}")
 
-//            // Register identity if not registered or failed.
-//            if (identityResult.status == IdentityRegistrationStatus.UNREGISTERED || identityResult.status == IdentityRegistrationStatus.REGISTRATION_ERROR) {
-//                if (identity.value != null) {
-//                    val req = RegisterIdentityRequest()
-//                    req.identityAddress = identity.value!!.address
-//                    nodeRepository.registerIdentity(req)
-//                }
-//            }
+            // Register identity if not registered or failed.
+            if (!identityResult.registered) {
+                if (identity.value != null) {
+                    val req = RegisterIdentityRequest()
+                    req.identityAddress = identity.value!!.address
+                    nodeRepository.registerIdentity(req)
+                }
+            }
         } catch (e: Exception) {
             identity.value = IdentityModel(address = "", channelAddress = "", status = IdentityRegistrationStatus.REGISTRATION_ERROR)
             Log.e(TAG, "Failed to load account identity", e)
