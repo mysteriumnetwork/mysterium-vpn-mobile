@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButtonToggleGroup
 import network.mysterium.MainApplication
-import network.mysterium.registration.RegistrationTopupFragmentDirections.Companion.actionRegistrationTopupFragmentToRegistrationTopupPaymentFragment
+import network.mysterium.registration.RegistrationTopupFragmentDirections.Companion.actionRegistrationTopupFragmentToRegistrationTopupSelectCurrencyFragment
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.FragmentRegistrationTopupBinding
 import java.math.BigDecimal
@@ -27,7 +27,7 @@ class RegistrationTopupFragment : Fragment() {
 
         setupRegistrationTopupAmountToggle(binding.registrationTopupAmountToggle, viewModel.topupAmount)
         binding.registrationTopupContinueButton.setOnClickListener {
-            findNavController().navigate(actionRegistrationTopupFragmentToRegistrationTopupPaymentFragment())
+            findNavController().navigate(actionRegistrationTopupFragmentToRegistrationTopupSelectCurrencyFragment())
         }
 
         return binding.root

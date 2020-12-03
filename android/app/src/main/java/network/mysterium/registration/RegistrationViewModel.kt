@@ -1,17 +1,23 @@
 package network.mysterium.registration
 
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import mysterium.CreateOrderRequest
+import mysterium.OrderResponse
 import mysterium.RegisterIdentityRequest
 import network.mysterium.db.AppDatabase
+import network.mysterium.payment.Currency
 import network.mysterium.service.core.NodeRepository
+import network.mysterium.service.core.Order
+import network.mysterium.ui.showMessage
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
+import java.lang.RuntimeException
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -25,6 +31,13 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
     val balanceSufficient = MediatorLiveData<Boolean>()
     val progress = MutableLiveData(RegistrationProgress.NOT_STARTED)
     val token = MutableLiveData("")
+    val currencies = MutableLiveData<List<Currency>>(emptyList())
+    val payCurrency = MutableLiveData<Currency>()
+    val lightning = MutableLiveData(false)
+
+    private val _currenciesLoading = MutableLiveData(false)
+    val currenciesLoading: LiveData<Boolean>
+        get(): LiveData<Boolean> = _currenciesLoading
 
     init {
         val sumTotal = fun(): BigDecimal {
@@ -51,6 +64,7 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
     suspend fun load() {
         loadIdentity()
         loadRegistrationFees()
+        loadCurrencies()
         initListeners()
     }
 
@@ -72,6 +86,15 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
     private suspend fun loadRegistrationFees() {
         val fees = nodeRepository.identityRegistrationFees()
         registrationFee.value = BigDecimal.valueOf(fees.fee).setScale(0, RoundingMode.HALF_UP)
+    }
+
+    private suspend fun loadCurrencies() {
+        try {
+            val currencies = nodeRepository.paymentCurrencies()
+            this.currencies.value = currencies
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load payment currencies", e)
+        }
     }
 
     private suspend fun initListeners() {
@@ -145,6 +168,33 @@ class RegistrationViewModel(private val nodeRepository: NodeRepository, private 
             progress.value = RegistrationProgress.NOT_STARTED
             throw e
         }
+    }
+
+    fun togglePaymentCurrency(currency: Currency) {
+        this.payCurrency.value = when (this.payCurrency.value) {
+            currency -> null
+            else -> currency
+        }
+        this.lightning.value = currency.supportsLightning()
+    }
+
+    suspend fun createPaymentOrder(): Order {
+        val payCurrency = this.payCurrency.value
+                ?: throw RuntimeException("Pay currency is not set")
+        val identity = this.identity.value ?: throw RuntimeException("Identity address is not set")
+        val amount = this.totalAmount.value ?: throw RuntimeException("Total amount is not set")
+        val lightning = this.lightning.value
+                ?: throw RuntimeException("Lightning network flag is not set")
+
+        val req = CreateOrderRequest().apply {
+            this.payCurrency = payCurrency.code
+            this.identityAddress = identity.address
+            this.mystAmount = amount.toDouble()
+            this.lightning = lightning
+        }
+
+        Log.i(TAG, "Creating a payment order: $req")
+        return nodeRepository.createPaymentOrder(req)
     }
 
     companion object {

@@ -108,4 +108,11 @@
     <string name="button_register">Register</string>
     <string name="enter_referral_code">Enter referral code:</string>
     <string name="mysterium_network_logo">Mysterium Network logo</string>
+    <string name="select_payment_currency">Select payment currency:</string>
+    <string name="lightning_network">Lightning Network</string>
+    <string name="wallet_topup_action">Topup</string>
+    <string name="wallet_topup_amount_hint">Amount to topup:</string>
+    <string name="wallet_topup_custom">Custom</string>
+    <string name="wallet_topup_currency_title">Select currency</string>
+    <string name="wallet_topup_amount_title">Topup amount</string>
 </resources>

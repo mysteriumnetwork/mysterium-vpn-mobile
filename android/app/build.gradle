@@ -160,7 +160,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.beust:klaxon:5.0.1'
+    implementation 'com.beust:klaxon:5.4'
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'io.intercom.android:intercom-sdk-base:7.1.0'
     implementation 'me.pushy:sdk:1.0.56'

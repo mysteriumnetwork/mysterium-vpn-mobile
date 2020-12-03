@@ -167,6 +167,16 @@
                             android:text="0 MYSTT"
                             app:layout_constraintTop_toBottomOf="@id/account_balance_card_title" />
 
+                        <Button
+                            android:id="@+id/wallet_topup_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wallet_topup_action"
+                            android:drawableLeft="@drawable/ic_add_white_24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.card.MaterialCardView>

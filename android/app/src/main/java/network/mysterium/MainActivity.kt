@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         Log.i(TAG, "Loading account data")
         val p3 = CoroutineScope(Dispatchers.Main).async { appContainer.walletViewModel.load() }
 
-        val p4 = CoroutineScope(Dispatchers.Main).async { appContainer.registrationViewModel.load() }
+        val p4 = CoroutineScope(Dispatchers.Main).async { appContainer.walletTopupViewModel.load() }
 
         awaitAll(p1, p2, p3, p4)
     }
