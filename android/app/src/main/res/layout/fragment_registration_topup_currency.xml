@@ -9,7 +9,7 @@
         tools:context="network.mysterium.registration.RegistrationTopupSelectCurrencyFragment">
 
         <com.google.android.material.progressindicator.ProgressIndicator
-            android:id="@+id/loading_indicator"
+            android:id="@+id/loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

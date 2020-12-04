@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
 import network.mysterium.payment.Currency
+import network.mysterium.payment.Order
 
 class ProposalItem(
         @Json(name = "providerId")
@@ -97,23 +98,6 @@ class IdentityRegistrationFees(
 
 class HealthData(
         val version: String
-)
-
-data class Order(
-        @Json("id")
-        val id: Long,
-        @Json("identity_address")
-        val identity: String,
-        @Json("status")
-        val status: String,
-        @Json("myst_amount")
-        val mystAmount: Double,
-        @Json("pay_amount")
-        val payAmount: Double? = null,
-        @Json("pay_currency")
-        val payCurrency: String? = null,
-        @Json("payment_address")
-        val paymentAddress: String
 )
 
 class ConnectUnknownException(message: String) : Exception(message)

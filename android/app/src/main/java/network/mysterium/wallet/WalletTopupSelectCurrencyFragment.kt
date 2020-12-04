@@ -59,6 +59,11 @@ class WalletTopupSelectCurrencyFragment : Fragment() {
                 }
             }
         }
+        viewModel.order.observe(viewLifecycleOwner) {
+            if (it.created) {
+                showMessage(requireContext(), "Order created")
+            }
+        }
 
         return binding.root
     }

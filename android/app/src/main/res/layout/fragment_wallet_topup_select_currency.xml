@@ -26,7 +26,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.progressindicator.ProgressIndicator
-            android:id="@+id/loading_indicator"
+            android:id="@+id/loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -78,11 +78,25 @@
         <Button
             android:id="@+id/continue_button"
             style="@style/BigPrimaryButton"
-            android:enabled="@{viewModel.currencyValid}"
+            android:enabled="@{viewModel.currencyValid &amp;&amp; !viewModel.orderCreating}"
             android:text="@string/button_continue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <com.google.android.material.progressindicator.ProgressIndicator
+            android:visibility="@{viewModel.orderCreating ? View.VISIBLE : View.INVISIBLE}"
+            android:id="@+id/continue_button_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/continue_button"
+            app:layout_constraintLeft_toLeftOf="@id/continue_button"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+            app:layout_constraintTop_toTopOf="@id/continue_button"
+            style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+            app:indicatorColor="@color/ColorWhite"
+            android:elevation="5dp"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,20 +1,17 @@
 package network.mysterium.registration
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import mysterium.CreateOrderRequest
-import mysterium.OrderResponse
 import mysterium.RegisterIdentityRequest
 import network.mysterium.db.AppDatabase
 import network.mysterium.payment.Currency
 import network.mysterium.service.core.NodeRepository
-import network.mysterium.service.core.Order
-import network.mysterium.ui.showMessage
+import network.mysterium.payment.Order
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import java.lang.RuntimeException

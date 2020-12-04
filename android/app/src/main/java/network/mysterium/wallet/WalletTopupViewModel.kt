@@ -2,14 +2,19 @@ package network.mysterium.wallet
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mysterium.CreateOrderRequest
 import network.mysterium.payment.Currency
 import network.mysterium.service.core.NodeRepository
-import network.mysterium.service.core.Order
+import network.mysterium.payment.Order
 import java.lang.RuntimeException
 import java.math.BigDecimal
+
 
 class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewModel() {
 
@@ -27,6 +32,21 @@ class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewMod
         it != null
     }
     val order = MutableLiveData<Order>()
+    val orderCreating = MutableLiveData(false)
+
+    private val orderObserver = Observer<Order> {
+        if (it.created) {
+            this.orderCreating.value = false
+        }
+    }
+
+    init {
+        order.observeForever(orderObserver)
+    }
+
+    override fun onCleared() {
+        order.removeObserver(orderObserver)
+    }
 
     fun togglePaymentCurrency(currency: Currency) {
         this.currency.value = when (this.currency.value) {
@@ -54,7 +74,9 @@ class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewMod
                     status = cb.status
             )
             Log.i(TAG, "Updated order: $newOrder")
-            this.order.value = newOrder
+            CoroutineScope(Dispatchers.Main).launch {
+                this@WalletTopupViewModel.order.value = newOrder
+            }
         }
     }
 
@@ -97,9 +119,15 @@ class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewMod
         }
 
         Log.i(TAG, "Creating a payment order: $req")
-        val order = nodeRepository.createPaymentOrder(req)
-        this.order.value = order
-        return order
+        try {
+            this.orderCreating.value = true
+            val order = nodeRepository.createPaymentOrder(req)
+            this.order.value = order
+            return order
+        } catch (e: Exception) {
+            this.orderCreating.value = false
+            throw e
+        }
     }
 
     companion object {
