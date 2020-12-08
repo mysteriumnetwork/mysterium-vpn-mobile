@@ -50,7 +50,7 @@
                     android:layout_height="72dp"
                     android:padding="16dp"
                     android:layout_weight="1"
-                    android:text="@string/lightning_network"
+                    android:text="@string/wallet_topup_select_lightning_network"
                     android:checked="@={viewModel.lightning}"
                     android:visibility="@{viewModel.payCurrency.supportsLightning() ? View.VISIBLE : View.INVISIBLE}"/>
             </LinearLayout>
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="20dp"
-            android:text="@string/select_payment_currency"
+            android:text="@string/wallet_topup_select_payment_currency"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -201,18 +201,18 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     }
 
     suspend fun createPaymentOrder(req: CreateOrderRequest) = withContext(Dispatchers.IO) {
-        val order = deferredNode.await().createOrder(req)
-        Klaxon().parse<Order>(order.inputStream())!!
+        val order = deferredNode.await().createOrder(req).decodeToString()
+        Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
     suspend fun getOrder(req: GetOrderRequest) = withContext(Dispatchers.IO) {
         val order = deferredNode.await().getOrder(req)
-        Klaxon().parse<Order>(order.inputStream())
+        Order.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
     }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listOrders(req)
-        Klaxon().parseArray<Order>(orders.inputStream())
+        Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
     }
 
     // Register identity with given fee.

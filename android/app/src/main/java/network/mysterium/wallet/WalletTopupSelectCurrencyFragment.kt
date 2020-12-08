@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +53,8 @@ class WalletTopupSelectCurrencyFragment : Fragment() {
         binding.continueButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 try {
-                    viewModel.createPaymentOrder()
+                    val order = viewModel.createPaymentOrder()
+                    Log.i(TAG, "Created payment order: $order")
                 } catch (e: Exception) {
                     Log.e(TAG, "Could not create a payment order", e)
                     showMessage(requireContext(), "Could not initiate the payment")
@@ -60,9 +62,11 @@ class WalletTopupSelectCurrencyFragment : Fragment() {
             }
         }
         viewModel.order.observe(viewLifecycleOwner) {
-            if (it.created) {
-                showMessage(requireContext(), "Order created")
+            if (it?.created != true) {
+                return@observe
             }
+            val toWaitingForPayment = WalletTopupSelectCurrencyFragmentDirections.actionWalletTopupSelectCurrencyFragmentToWalletTopupWaitingPaymentFragment()
+            findNavController().navigate(toWaitingForPayment)
         }
 
         return binding.root

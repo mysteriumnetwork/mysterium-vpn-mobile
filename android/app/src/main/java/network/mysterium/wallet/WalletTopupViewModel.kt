@@ -15,7 +15,6 @@ import network.mysterium.payment.Order
 import java.lang.RuntimeException
 import java.math.BigDecimal
 
-
 class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewModel() {
 
     val identity = MutableLiveData<IdentityModel>()
@@ -31,13 +30,14 @@ class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewMod
     val currencyValid = Transformations.map(currency) {
         it != null
     }
-    val order = MutableLiveData<Order>()
+    val order = MutableLiveData<Order?>()
     val orderCreating = MutableLiveData(false)
 
-    private val orderObserver = Observer<Order> {
-        if (it.created) {
-            this.orderCreating.value = false
+    private val orderObserver = Observer<Order?> {
+        if (it?.created != true) {
+            return@Observer
         }
+        this.orderCreating.value = false
     }
 
     init {
@@ -63,12 +63,9 @@ class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewMod
         currenciesLoading.value = false
 
         nodeRepository.registerOrderUpdatedCallback { cb ->
-            val o = this.order.value ?: return@registerOrderUpdatedCallback
-            if (o.id != cb.orderID) {
-                return@registerOrderUpdatedCallback
-            }
-
-            val newOrder = o.copy(
+            val order = this.order.value?.takeIf { it.id == cb.orderID }
+                    ?: return@registerOrderUpdatedCallback
+            val newOrder = order.copy(
                     payAmount = cb.payAmount,
                     payCurrency = cb.payCurrency,
                     status = cb.status
@@ -128,6 +125,10 @@ class WalletTopupViewModel(private val nodeRepository: NodeRepository) : ViewMod
             this.orderCreating.value = false
             throw e
         }
+    }
+
+    fun forgetOrder() {
+        this.order.value = null
     }
 
     companion object {

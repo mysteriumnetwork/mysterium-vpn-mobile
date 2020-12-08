@@ -225,5 +225,45 @@
         android:id="@+id/wallet_topup_select_currency_fragment"
         android:name="network.mysterium.wallet.WalletTopupSelectCurrencyFragment"
         android:label="fragment_wallet_topup_select_currency"
-        tools:layout="@layout/fragment_wallet_topup_select_currency" />
+        tools:layout="@layout/fragment_wallet_topup_select_currency" >
+        <action
+            android:id="@+id/action_wallet_topup_select_currency_fragment_to_walletTopupWaitingPaymentFragment"
+            app:destination="@id/walletTopupWaitingPaymentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/walletTopupWaitingPaymentFragment"
+        android:name="network.mysterium.wallet.WalletTopupWaitingPaymentFragment"
+        android:label="fragment_wallet_topup_waiting_payment"
+        tools:layout="@layout/fragment_wallet_topup_waiting_payment" >
+        <action
+            android:id="@+id/action_walletTopupWaitingPaymentFragment_to_walletTopupDoneFragment"
+            app:destination="@id/walletTopupDoneFragment" />
+        <action
+            android:id="@+id/action_walletTopupWaitingPaymentFragment_to_walletTopupErrorFragment"
+            app:destination="@id/walletTopupErrorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/walletTopupDoneFragment"
+        android:name="network.mysterium.wallet.WalletTopupDoneFragment"
+        android:label="fragment_wallet_topup_done"
+        tools:layout="@layout/fragment_wallet_topup_done" >
+        <action
+            android:id="@+id/action_walletTopupDoneFragment_to_account_fragment"
+            app:destination="@id/account_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/walletTopupErrorFragment"
+        android:name="network.mysterium.wallet.WalletTopupErrorFragment"
+        android:label="fragment_wallet_topup_error"
+        tools:layout="@layout/fragment_wallet_topup_error" >
+        <action
+            android:id="@+id/action_walletTopupErrorFragment_to_account_fragment"
+            app:destination="@id/account_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
 </navigation>

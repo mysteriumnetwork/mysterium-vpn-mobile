@@ -69,7 +69,7 @@
                     android:layout_weight="1"
                     android:checked="@={viewModel.lightning}"
                     android:padding="16dp"
-                    android:text="@string/lightning_network"
+                    android:text="@string/wallet_topup_select_lightning_network"
                     android:visibility="@{viewModel.currency.supportsLightning() ? View.VISIBLE : View.INVISIBLE}" />
             </LinearLayout>
 
