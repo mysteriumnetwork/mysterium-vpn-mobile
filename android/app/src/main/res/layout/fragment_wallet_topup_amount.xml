@@ -49,28 +49,18 @@
                 android:inputType="number"
                 android:text="@{viewModel.topupAmount.toString()}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/amount_10" />
-
-            <Button
-                android:id="@+id/amount_10"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-                android:text="10"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/amount_20" />
 
             <Button
                 android:id="@+id/amount_20"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
                 android:text="20"
-                app:layout_constraintStart_toEndOf="@id/amount_10"
-                app:layout_constraintTop_toTopOf="@+id/amount_10" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/amount_50"
@@ -80,7 +70,17 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
                 android:text="50"
                 app:layout_constraintStart_toEndOf="@id/amount_20"
-                app:layout_constraintTop_toTopOf="@+id/amount_10" />
+                app:layout_constraintTop_toTopOf="@+id/amount_20" />
+
+            <Button
+                android:id="@+id/amount_100"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:text="100"
+                app:layout_constraintStart_toEndOf="@id/amount_50"
+                app:layout_constraintTop_toTopOf="@+id/amount_20" />
 
             <TextView
                 android:id="@+id/textView2"

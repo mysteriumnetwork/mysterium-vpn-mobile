@@ -24,26 +24,22 @@ class WalletTopupAmountFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-        binding.amount10.setOnClickListener {
-            viewModel.topupAmount.value = BigDecimal(10)
-        }
         binding.amount20.setOnClickListener {
             viewModel.topupAmount.value = BigDecimal(20)
         }
         binding.amount50.setOnClickListener {
             viewModel.topupAmount.value = BigDecimal(50)
         }
+        binding.amount100.setOnClickListener {
+            viewModel.topupAmount.value = BigDecimal(100)
+        }
         binding.amountCustomEdit.onChange {
-            viewModel.topupAmount.value = try {
-                BigDecimal(it)
-            } catch (e: NumberFormatException) {
-                null
-            }
+            viewModel.topupAmount.value = it.runCatching { BigDecimal(it) }.getOrNull()
         }
 
         binding.continueButton.setOnClickListener {
-            val direction = WalletTopupAmountFragmentDirections.actionWalletTopupFragmentToWalletTopupSelectCurrencyFragment()
-            findNavController().navigate(direction)
+            val toCurrencySelection = WalletTopupAmountFragmentDirections.actionWalletTopupFragmentToWalletTopupSelectCurrencyFragment()
+            findNavController().navigate(toCurrencySelection)
         }
 
         return binding.root
