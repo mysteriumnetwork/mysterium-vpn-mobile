@@ -36,6 +36,9 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven {
+            url "https://maven.mysterium.network/releases"
+        }
     }
 }
 

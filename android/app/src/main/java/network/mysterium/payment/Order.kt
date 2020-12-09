@@ -19,7 +19,7 @@ data class Order constructor(
         @Json("payment_address")
         val paymentAddress: String,
         @Json("payment_url")
-        val paymentURL: String,
+        val paymentURL: String? = null,
 ) {
     val created: Boolean
         get() = status in listOf("new", "pending")
