@@ -61,11 +61,11 @@ class TermsFragment : Fragment() {
             termsAcceptButton.isEnabled = false
             CoroutineScope(Dispatchers.Main).launch {
                 termsViewModel.acceptCurrentTerms()
-                if (registrationViewModel.registered()) {
-                    findNavController().navigate(actionTermsFragmentToMainVpnFragment())
-                } else {
-                    findNavController().navigate(actionTermsFragmentToRegistrationFragment())
-                }
+//                if (registrationViewModel.registered()) {
+                findNavController().navigate(actionTermsFragmentToMainVpnFragment())
+//                } else {
+//                    findNavController().navigate(actionTermsFragmentToRegistrationFragment())
+//                }
             }
         }
 

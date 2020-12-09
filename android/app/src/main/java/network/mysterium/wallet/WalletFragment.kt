@@ -32,6 +32,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,6 +59,7 @@ class WalletFragment : Fragment() {
     private lateinit var walletCopyTopupAddressButton: Button
     private lateinit var walletIdentityRegistrationRetryButton: Button
     private lateinit var walletQRCodeView: ImageView
+    private lateinit var walletTopupButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -79,6 +81,7 @@ class WalletFragment : Fragment() {
         walletCopyTopupAddressButton = root.findViewById(R.id.wallet_identity_channel_address_copy_btn)
         walletIdentityRegistrationRetryButton = root.findViewById(R.id.wallet_identity_registration_retry_button)
         walletQRCodeView = root.findViewById(R.id.wallet_qr_code_view)
+        walletTopupButton = root.findViewById(R.id.wallet_topup_button)
 
         // Handle back press.
         toolbar.setNavigationOnClickListener {
@@ -103,7 +106,10 @@ class WalletFragment : Fragment() {
         walletIdentityText.setOnClickListener { openKovanIdentityDetails() }
 
         walletIdentityRegistrationRetryButton.setOnClickListener { handleRegistrationRetry() }
-
+        walletTopupButton.setOnClickListener {
+            val direction = WalletFragmentDirections.actionAccountFragmentToWalletTopupFragment()
+            findNavController().navigate(direction)
+        }
         return root
     }
 

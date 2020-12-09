@@ -160,7 +160,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.beust:klaxon:5.0.1'
+    implementation 'com.beust:klaxon:5.4'
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'io.intercom.android:intercom-sdk-base:7.1.0'
     implementation 'me.pushy:sdk:1.0.56'
@@ -175,7 +175,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.3.0-rc01'
 
-    implementation 'network.mysterium:mobile-node:0.39.0-1snapshot-20201113T1003-4a13caa2'
+    implementation 'network.mysterium:mobile-node:0.40.4-pre'
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     //implementation files('/Users/zolia/golang/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
 }

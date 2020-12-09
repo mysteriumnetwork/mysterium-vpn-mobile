@@ -5,6 +5,8 @@ import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
+import network.mysterium.payment.Currency
+import network.mysterium.payment.Order
 
 class ProposalItem(
         @Json(name = "providerId")
@@ -137,23 +139,27 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     // Register statistics callback.
     suspend fun registerBalanceChangeCallback(cb: (balance: Double) -> Unit) {
-        deferredNode.await().registerBalanceChangeCallback {
-            _, balance -> cb(balance)
+        deferredNode.await().registerBalanceChangeCallback { _, balance ->
+            cb(balance)
         }
     }
 
     // Register identity registration status callback.
     suspend fun registerIdentityRegistrationChangeCallback(cb: (status: String) -> Unit) {
-        deferredNode.await().registerIdentityRegistrationChangeCallback {
-            _, status -> cb(status)
+        deferredNode.await().registerIdentityRegistrationChangeCallback { _, status ->
+            cb(status)
         }
+    }
+
+    suspend fun registerOrderUpdatedCallback(cb: (payload: OrderUpdatedCallbackPayload) -> Unit) {
+        deferredNode.await().registerOrderUpdatedCallback(cb)
     }
 
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
 
-        when(res.errorCode) {
+        when (res.errorCode) {
             "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
             "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
             "Unknown" -> throw ConnectUnknownException(res.errorMessage)
@@ -164,7 +170,7 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     suspend fun reconnect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().reconnect(req) ?: return@withContext
 
-        when(res.errorCode) {
+        when (res.errorCode) {
             "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
             "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
             "Unknown" -> throw ConnectUnknownException(res.errorMessage)
@@ -187,6 +193,26 @@ class NodeRepository(private val deferredNode: DeferredNode) {
     suspend fun identityRegistrationFees() = withContext(Dispatchers.IO) {
         val res = deferredNode.await().identityRegistrationFees
         IdentityRegistrationFees(fee = res.fee)
+    }
+
+    suspend fun paymentCurrencies() = withContext(Dispatchers.IO) {
+        val res = deferredNode.await().currencies()
+        Klaxon().parseArray<String>(res.inputStream())?.map { Currency(it) }
+    }
+
+    suspend fun createPaymentOrder(req: CreateOrderRequest) = withContext(Dispatchers.IO) {
+        val order = deferredNode.await().createOrder(req).decodeToString()
+        Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+    }
+
+    suspend fun getOrder(req: GetOrderRequest) = withContext(Dispatchers.IO) {
+        val order = deferredNode.await().getOrder(req)
+        Order.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+    }
+
+    suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
+        val orders = deferredNode.await().listOrders(req)
+        Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
     }
 
     // Register identity with given fee.

@@ -23,14 +23,15 @@ class RegistrationFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_registration_start, container, false)
         viewModel = (requireActivity().application as MainApplication).appContainer.registrationViewModel
-        val nav = findNavController()
+
         getStartedButton = root.findViewById(R.id.registration_get_started_button)
         getStartedButton.setOnClickListener {
-            nav.navigate(actionRegistrationFragmentToTopupRegistrationFragment())
+
+            findNavController().navigate(actionRegistrationFragmentToTopupRegistrationFragment())
         }
         useReferralCodeButton = root.findViewById(R.id.registration_use_referral_code_button)
         useReferralCodeButton.setOnClickListener {
-            nav.navigate(actionRegistrationFragmentToReferralCodeRegistrationFragment())
+            findNavController().navigate(actionRegistrationFragmentToReferralCodeRegistrationFragment())
         }
 
         return root

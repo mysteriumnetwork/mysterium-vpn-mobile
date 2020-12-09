@@ -37,6 +37,7 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.terms.TermsViewModel
 import network.mysterium.ui.*
+import network.mysterium.wallet.WalletTopupViewModel
 import network.mysterium.wallet.WalletViewModel
 
 class AppContainer {
@@ -53,6 +54,7 @@ class AppContainer {
     lateinit var clipboardManager: ClipboardManager
     lateinit var versionViewModel: VersionViewModel
     lateinit var registrationViewModel: RegistrationViewModel
+    lateinit var walletTopupViewModel: WalletTopupViewModel
     lateinit var networkMonitor: NetworkMonitor
 
     fun init(
@@ -77,6 +79,7 @@ class AppContainer {
         termsViewModel = TermsViewModel(appDatabase)
         versionViewModel = VersionViewModel()
         registrationViewModel = RegistrationViewModel(nodeRepository, appDatabase)
+        walletTopupViewModel = WalletTopupViewModel(nodeRepository)
         this.clipboardManager = clipboardManager
 
         networkMonitor = NetworkMonitor(

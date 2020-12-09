@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         notifications.registerOrRequestPermissions()
         notifications.listen()
 
+        navigate(R.id.main_vpn_fragment)
         CoroutineScope(Dispatchers.Main).launch {
             val updateRequired = appContainer.versionViewModel.updateRequired()
             if (updateRequired) {
@@ -111,23 +112,23 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 return@launch
             }
 
-            val registered = appContainer.registrationViewModel.registered()
-            if (!registered) {
-                navigate(R.id.registration_fragment)
-            } else {
-                navigate(R.id.main_vpn_fragment)
-            }
+//            val registered = appContainer.registrationViewModel.registered()
+//            if (!registered) {
+//                navigate(R.id.registration_fragment)
+//            } else {
+//                navigate(R.id.main_vpn_fragment)
+//            }
 
             val termsAccepted = appContainer.termsViewModel.checkTermsAccepted()
             if (!termsAccepted) {
                 navigate(R.id.terms_fragment)
             }
         }
-        appContainer.registrationViewModel.progress.observe(this@MainActivity) { progress ->
-            if (progress == RegistrationProgress.DONE) {
-                navigate(R.id.registration_done_fragment)
-            }
-        }
+//        appContainer.registrationViewModel.progress.observe(this@MainActivity) { progress ->
+//            if (progress == RegistrationProgress.DONE) {
+//                navigate(R.id.registration_done_fragment)
+//            }
+//        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -204,7 +205,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         Log.i(TAG, "Loading account data")
         val p3 = CoroutineScope(Dispatchers.Main).async { appContainer.walletViewModel.load() }
 
-        val p4 = CoroutineScope(Dispatchers.Main).async { appContainer.registrationViewModel.load() }
+        val p4 = CoroutineScope(Dispatchers.Main).async { appContainer.walletTopupViewModel.load() }
 
         awaitAll(p1, p2, p3, p4)
     }
