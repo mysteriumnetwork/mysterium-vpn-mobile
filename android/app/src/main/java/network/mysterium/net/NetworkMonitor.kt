@@ -41,7 +41,9 @@ class NetworkMonitor(
                 networkState.value = initialState
             }
         }
-        connectivity.registerDefaultNetworkCallback(networkCallback)
+        networkCallback?.let {
+            connectivity.registerDefaultNetworkCallback(it)
+        }
     }
 
     fun stop() {

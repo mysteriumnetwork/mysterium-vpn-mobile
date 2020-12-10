@@ -56,7 +56,7 @@ class RegistrationTopupPaymentFragment : Fragment() {
     private fun handleTopupAddressCopy(root: View) {
         val identity = viewModel.identity.value ?: return
         val clip = ClipData.newPlainText("channel address", identity.channelAddress)
-        clipboardManager.primaryClip = clip
+        clipboardManager.setPrimaryClip(clip)
         showMessage(root.context, getString(R.string.wallet_topup_address_copied))
     }
 
