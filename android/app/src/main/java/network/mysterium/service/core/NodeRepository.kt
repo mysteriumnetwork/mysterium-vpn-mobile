@@ -1,5 +1,6 @@
 package network.mysterium.service.core
 
+import android.util.Log
 import com.beust.klaxon.Json
 import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
@@ -202,6 +203,7 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     suspend fun createPaymentOrder(req: CreateOrderRequest) = withContext(Dispatchers.IO) {
         val order = deferredNode.await().createOrder(req).decodeToString()
+        Log.d(TAG, "createPaymentOrder response: $order")
         Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
@@ -263,5 +265,9 @@ class NodeRepository(private val deferredNode: DeferredNode) {
 
     private suspend fun parseProposals(bytes: ByteArray) = withContext(Dispatchers.Default) {
         Klaxon().parse<ProposalsResponse>(bytes.inputStream())
+    }
+
+    companion object {
+        const val TAG = "NodeRepository"
     }
 }

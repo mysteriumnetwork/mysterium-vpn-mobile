@@ -107,7 +107,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
         debug {
@@ -175,7 +175,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.3.0-rc01'
 
-    implementation 'network.mysterium:mobile-node:0.40.4-pre'
+    implementation 'network.mysterium:mobile-node:0.39.3-1snapshot-20201210T0248-de781e9c'
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     //implementation files('/Users/zolia/golang/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
 }
