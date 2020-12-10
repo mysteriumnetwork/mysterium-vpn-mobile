@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="20dp"
-            android:text="@string/wallet_topup_select_payment_currency"
+            android:text="@string/wallet_topup_currency_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
