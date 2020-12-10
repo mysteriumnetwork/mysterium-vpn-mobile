@@ -1,10 +1,7 @@
 package network.mysterium
 
-import android.widget.BaseAdapter
 import android.widget.FrameLayout
 import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import network.mysterium.vpn.R
 import org.hamcrest.Matchers
@@ -47,18 +44,6 @@ object Views {
                                             0),
                                     0),
                             ViewMatchers.isDisplayed()))
-        }
-
-    val topUpButton: ViewInteraction
-        get() {
-            return onViewReady(
-                    Matchers.allOf(ViewMatchers.withId(R.id.wallet_topup_free_tokens),
-                            childAtPosition(
-                                    childAtPosition(
-                                            ViewMatchers.withId(R.id.wallet_balance_card),
-                                            0),
-                                    3),
-                            ViewMatchers.isDisplayed()), 20, 5000)
         }
 
     val navBackButton: ViewInteraction

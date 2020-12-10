@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MysteriumVPN</string>
     <string name="connect_button_cancel">Отменить</string>
     <string name="connect_button_connect">Подключиться</string>
     <string name="connect_button_disconnect">Отключиться</string>
@@ -59,8 +58,8 @@
     <string name="proposals_quality_filter_title">Фильтр качества</string>
     <string name="proposals_node_type_filter_title">Фильтр типа IP узла</string>
     <string name="proposals_price_filter_apply_btn">ПОДТВЕРДИТЬ</string>
-    <string name="feedback_app_version">Версия приложения: </string>
-    <string name="feedback_node_version">Версия ноды: </string>
+    <string name="feedback_app_version">Версия приложения: %1$s</string>
+    <string name="feedback_node_version">Версия ноды: %1$s</string>
     <string name="node_type_all">Все</string>
     <string name="node_type_business">Бизнес</string>
     <string name="node_type_cellular">Сотовая связь</string>
@@ -72,8 +71,8 @@
     <string name="quality_level_low">Низкое</string>
     <string name="force_update_btn_text">Обновления</string>
     <string name="force_update_description">Эта версия приложения не совместима с последним протоколом Mysterium Network и должна быть обновлена.</string>
-    <string name="force_update_current_version">Текущая версия: </string>
-    <string name="force_update_minimum_required_version">Минимально необходимая версия: </string>
+    <string name="force_update_current_version">Текущая версия: <b>%1$s</b></string>
+    <string name="force_update_minimum_required_version">Минимально необходимая версия: <b>%1$s</b></string>
     <string name="notification_title_connected">Подключено к %1$s</string>
     <string name="notification_content">Получено %1$s | Отправлено %2$s | Цена %3$s</string>
     <string name="location_status_updating">Обновление</string>
@@ -93,4 +92,20 @@
     <string name="no_internet_connection">Нет соединения с интернетом</string>
     <string name="vpn_ip">IP: %1$s</string>
     <string name="conn_state_reconnecting">Переподключениe</string>
+    <string name="registration_description">Необходима активация аккаунта MysteriumVPN для предотвращения спама и сетевых атак.</string>
+    <string name="registration_have_a_referral_code">У меня есть реферальный код</string>
+    <string name="mystt_display">%1$s MYSTT</string>
+    <string name="registration_topup_payment_hint">Пришлите %1$s MYSTT на ваш кошелёк (в тестовом блокчейне Görli), чтобы продолжить.</string>
+    <string name="registration_successful">Регистрация прошла успешно!</string>
+    <string name="have_a_referral_code">У Вас есть реферальный код?</string>
+    <string name="get_started">Начать</string>
+    <string name="how_much_would_you_like_to_topup">На какую сумму Вы хотите пополнить счёт?</string>
+    <string name="topup_amount">Сумма пополнения счёта</string>
+    <string name="registration_fee">Регистрационный сбор</string>
+    <string name="total_amount">Общая сумма</string>
+    <string name="waiting_for_payment">Ожидание поступления оплаты</string>
+    <string name="button_continue">Продолжить</string>
+    <string name="button_register">Регистрация</string>
+    <string name="enter_referral_code">Введите реферальный код:</string>
+    <string name="mysterium_network_logo">Mysterium Network логотип</string>
 </resources>

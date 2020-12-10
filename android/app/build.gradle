@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 import com.android.build.OutputFile
 
@@ -106,11 +107,15 @@ android {
     }
     buildTypes {
         release {
+            minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
         debug {
             signingConfig signingConfigs.debug
         }
+    }
+    buildFeatures {
+        dataBinding true
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -140,18 +145,14 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
     implementation 'androidx.room:room-runtime:2.2.5'
     implementation 'androidx.room:room-ktx:2.2.5'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.android.support:support-compat:28.0.0'
     implementation 'com.google.android.material:material:1.3.0-alpha01'
 
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
@@ -159,7 +160,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.beust:klaxon:5.0.1'
+    implementation 'com.beust:klaxon:5.4'
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'io.intercom.android:intercom-sdk-base:7.1.0'
     implementation 'me.pushy:sdk:1.0.56'
@@ -171,10 +172,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.3.0-rc01'
 
-    implementation 'network.mysterium:mobile-node:0.39.0'
+    implementation 'network.mysterium:mobile-node:0.39.3-1snapshot-20201210T0248-de781e9c'
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     //implementation files('/Users/zolia/golang/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
 }

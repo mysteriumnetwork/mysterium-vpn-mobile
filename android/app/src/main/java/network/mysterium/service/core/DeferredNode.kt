@@ -24,20 +24,22 @@ class DeferredNode {
     private val lock = Semaphore(1)
 
     fun start(service: MysteriumCoreService, done: (err: Exception?) -> Unit) {
-        CoroutineScope(Dispatchers.Main).launch {
+        if (!lock.tryAcquire()) {
+            Log.i(TAG, "Node is already started or starting, skipping")
+            return
+        }
+        val startJob = CoroutineScope(Dispatchers.Main).launch {
             try {
-                if (!lock.tryAcquire()) {
-                    return@launch
-                }
                 val node = service.startNode()
                 deferredNode.complete(node)
                 done(null)
             } catch (err: Exception) {
                 Log.e(TAG, "Failed to start node", err)
                 done(err)
-            } finally {
-                lock.release()
             }
+        }
+        startJob.invokeOnCompletion {
+            lock.release()
         }
     }
 

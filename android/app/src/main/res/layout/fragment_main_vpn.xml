@@ -16,8 +16,7 @@
             android:id="@+id/vpn_feedback_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_menu_32dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +26,7 @@
             android:id="@+id/vpn_account_balance_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="10dp"
+            android:layout_marginHorizontal="10dp"
             android:clickable="true"
             android:focusable="false"
             android:background="?android:attr/selectableItemBackground"
@@ -41,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/ColorMain"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:text="0 MYSTT" />
         </LinearLayout>
 
@@ -50,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vpn_status_loading"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textColor="@color/ColorMain"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vpn_ip_updating_label"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textColor="@color/ColorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/vpn_status_country"
@@ -84,7 +83,7 @@
                 android:id="@+id/vpn_status_country"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:src="@drawable/ic_public_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vpn_status_ip"
@@ -122,8 +121,8 @@
                 android:id="@+id/vpn_proposal_picker_layout"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/proposal_picker_bg"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +144,7 @@
                         android:id="@+id/vpn_selected_proposal_country_icon"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginHorizontal="10dp"
                         android:src="@drawable/ic_public_black_24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/vpn_proposal_country_provider_layout"
@@ -167,7 +166,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
+                            android:paddingHorizontal="10dp"
                             android:text="@string/vpn_select_proposal"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +182,6 @@
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:gravity="center"
-                            android:text="0x01021001b8172e8b67f3e63af94b6ae1d5d39c61"
                             android:maxLength="14"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small"
                             android:textColor="@color/ColorSecondary"
@@ -209,7 +207,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginHorizontal="10dp"
                         android:src="@drawable/ic_star_border_black_24dp" />
                 </RelativeLayout>
 
@@ -217,14 +215,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/vpn_connection_button"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/BigPrimaryButton"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vpn_proposal_picker_layout"
-                android:text="@string/connect_button_loading"
-                android:layout_margin="10dp"
-                android:layout_width="200dp"
-                android:layout_height="60dp">
+                android:text="@string/connect_button_loading">
             </com.google.android.material.button.MaterialButton>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -244,7 +240,7 @@
             android:id="@+id/vpn_layout_duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/vpn_layout_received"
@@ -348,7 +344,7 @@
             android:id="@+id/vpn_layout_paid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginHorizontal="20dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -374,7 +370,7 @@
                 style="@style/VpnStatsLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MYSTT" />
+                android:text="@string/mystt" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

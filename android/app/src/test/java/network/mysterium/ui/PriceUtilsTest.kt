@@ -16,8 +16,8 @@ class PriceUtilsDisplayMoneyTest(private val value: ProposalPaymentMoney, privat
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
             return listOf(
-                    arrayOf(ProposalPaymentMoney(50000.0, "MYST"), "0.0005"),
-                    arrayOf(ProposalPaymentMoney(7009.345794392523, "MYST"), "0.00007")
+                    arrayOf(ProposalPaymentMoney(0.0005, "MYST"), "0.0005"),
+                    arrayOf(ProposalPaymentMoney(0.00007, "MYST"), "0.00007")
             )
         }
     }
@@ -40,8 +40,8 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
                             ProposalPaymentMethod(
                                     type = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
-                                            perSeconds = 60,
-                                            perBytes = 7_669_584
+                                            perSeconds = 60.0,
+                                            perBytes = 7_669_584.0
                                     ),
                                     price = ProposalPaymentMoney(
                                             amount = 50_000.0,
@@ -55,8 +55,8 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
                             ProposalPaymentMethod(
                                     type = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
-                                            perSeconds = 60,
-                                            perBytes = 0
+                                            perSeconds = 60.0,
+                                            perBytes = 0.0
                                     ),
                                     price = ProposalPaymentMoney(
                                             amount = 50_000.0,
@@ -70,8 +70,8 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
                             ProposalPaymentMethod(
                                     type = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
-                                            perSeconds = 0,
-                                            perBytes = 0
+                                            perSeconds = 0.0,
+                                            perBytes = 0.0
                                     ),
                                     price = ProposalPaymentMoney(
                                             amount = 50_000.0,
@@ -104,38 +104,38 @@ class PriceUtilsPricePerGiB(private val value: ProposalPaymentMethod, private va
                             ProposalPaymentMethod(
                                     type = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
-                                            perSeconds = 60_000_000_000,
-                                            perBytes = 7_669_584
+                                            perSeconds = 60_000_000_000.0,
+                                            perBytes = 7_669_584.0
                                     ),
                                     price = ProposalPaymentMoney(
                                             amount = 50_000.0,
                                             currency = "MYSTT"
                                     )
                             ),
-                            7000000,
+                            7000000.417232539,
                             "MYSTT"
                     ),
                     arrayOf(
                             ProposalPaymentMethod(
                                     type = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
-                                            perSeconds = 0,
-                                            perBytes = 7_669_584
+                                            perSeconds = 0.0,
+                                            perBytes = 7_669_584.0
                                     ),
                                     price = ProposalPaymentMoney(
                                             amount = 50_000.0,
                                             currency = "MYSTT"
                                     )
                             ),
-                            7000000,
+                            7000000.417232539,
                             "MYSTT"
                     ),
                     arrayOf(
                             ProposalPaymentMethod(
                                     type = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
-                                            perSeconds = 0,
-                                            perBytes = 0
+                                            perSeconds = 0.0,
+                                            perBytes = 0.0
                                     ),
                                     price = ProposalPaymentMoney(
                                             amount = 50_000.0,

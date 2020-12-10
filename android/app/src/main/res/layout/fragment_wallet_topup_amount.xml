@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="network.mysterium.wallet.WalletTopupAmountFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+                app:title="@string/wallet_topup_amount_title"
+                app:titleTextColor="@color/ColorWhite" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/continue_button"
+                style="@style/BigPrimaryButton"
+                android:text="@string/button_continue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:enabled="@{viewModel.topupAmountValid}"
+                />
+
+
+            <EditText
+                android:id="@+id/amount_custom_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:autofillHints="10,20,50"
+                android:ems="6"
+                android:maxLength="6"
+                android:inputType="number"
+                android:text="@{viewModel.topupAmount.toString()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/amount_20" />
+
+            <Button
+                android:id="@+id/amount_20"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:text="20"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/amount_50"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:text="50"
+                app:layout_constraintStart_toEndOf="@id/amount_20"
+                app:layout_constraintTop_toTopOf="@+id/amount_20" />
+
+            <Button
+                android:id="@+id/amount_100"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:text="100"
+                app:layout_constraintStart_toEndOf="@id/amount_50"
+                app:layout_constraintTop_toTopOf="@+id/amount_20" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_size_small"
+                android:text="@string/mystt"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintBottom_toBottomOf="@+id/amount_custom_edit"
+                app:layout_constraintStart_toEndOf="@+id/amount_custom_edit"
+                app:layout_constraintTop_toTopOf="@+id/amount_custom_edit" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="network.mysterium.wallet.WalletTopupViewModel" />
+    </data>
+</layout>

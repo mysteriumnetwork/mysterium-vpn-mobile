@@ -28,8 +28,10 @@ import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.net.NetworkState
+import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.*
 import network.mysterium.vpn.R
+import network.mysterium.wallet.WalletViewModel
 
 enum class ConnectionState(val type: String) {
     UNKNOWN("Unknown"),
@@ -63,7 +65,7 @@ class StatisticsModel(
                     duration = UnitFormatter.timeDisplay(stats.duration),
                     bytesReceived = UnitFormatter.bytesDisplay(stats.bytesReceived),
                     bytesSent = UnitFormatter.bytesDisplay(stats.bytesSent),
-                    tokensSpent = stats.tokensSpent.toDouble()
+                    tokensSpent = stats.tokensSpent
             )
         }
     }
@@ -82,7 +84,7 @@ class SharedViewModel(
     var reconnecting = false
     val statistics = MutableLiveData<StatisticsModel>()
     val location = MutableLiveData<LocationModel>()
-    val networkState = MutableLiveData<NetworkState>(NetworkState(wifiConnected = true))
+    val networkState = MutableLiveData(NetworkState(wifiConnected = true))
 
     private var isConnected = false
 
@@ -228,7 +230,6 @@ class SharedViewModel(
         val proposal = mysteriumCoreService.await().getActiveProposal()
         if (proposal != null) {
             selectProposal(proposal)
-            connectionState.value == ConnectionState.CONNECTED
         }
     }
 
@@ -304,7 +305,7 @@ class SharedViewModel(
     }
 
     private fun resetStatistics() {
-        statistics.value = StatisticsModel.from(Statistics(0, 0, 0, 0))
+        statistics.value = StatisticsModel.from(Statistics(0, 0, 0, 0.0))
     }
 
     companion object {

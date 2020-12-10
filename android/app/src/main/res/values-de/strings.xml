@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MysteriumVPN</string>
     <string name="connect_button_cancel">Abbrechen</string>
     <string name="connect_button_connect">Verbinden</string>
     <string name="connect_button_disconnect">Verbindung trennen</string>
@@ -59,8 +58,8 @@
     <string name="proposals_quality_filter_title">Qualität Filter</string>
     <string name="proposals_node_type_filter_title">Node IP-Typ Filter</string>
     <string name="proposals_price_filter_apply_btn">Übernehmen</string>
-    <string name="feedback_app_version">App Version: </string>
-    <string name="feedback_node_version">Node Version: </string>
+    <string name="feedback_app_version">App Version: %1$s</string>
+    <string name="feedback_node_version">Node Version: %1$s</string>
     <string name="node_type_all">Alle</string>
     <string name="node_type_business">Business</string>
     <string name="node_type_cellular">Mobil</string>
@@ -72,8 +71,8 @@
     <string name="quality_level_low">Schlecht</string>
     <string name="force_update_btn_text">Aktualisieren</string>
     <string name="force_update_description">Diese App ist nicht kompatibel mit dem aktuellen Mysterium Network Protokoll und muss aktualisiert werden.</string>
-    <string name="force_update_current_version">Aktuelle Version: </string>
-    <string name="force_update_minimum_required_version">Minimal benötigte Version: </string>
+    <string name="force_update_current_version">Aktuelle Version: <b>%1$s</b></string>
+    <string name="force_update_minimum_required_version">Minimal benötigte Version: <b>%1$s</b></string>
     <string name="notification_title_connected">Verbunden mit %1$s</string>
     <string name="notification_content">Erhalten %1$s | Gesendet %2$s | Bezahlt %3$s</string>
     <string name="location_status_updating">Aktualisierung</string>
@@ -91,4 +90,20 @@
     <string name="wallet_identity_address_explanation">Die Identität ist deine Mysterium-interne Benutzer-ID. Sende niemals Ether oder andere Arten von ERC20-Token dorthin.</string>
     <string name="no_internet_connection">Keine Internetverbindung</string>
     <string name="vpn_ip">IP: %1$s</string>
+    <string name="registration_description">Um MysteriumVPN nutzen zu können muss dein Account aktiviert sein, um Spam und Netzwerkattacken zu verhindern.</string>
+    <string name="registration_have_a_referral_code">Ich habe einen Referral-Code</string>
+    <string name="mystt_display">%1$s MYSTT</string>
+    <string name="registration_topup_payment_hint">Transferiere %1$s MYSTT zu deinem Wallet (Görli Testnet blockchain) um fortzufahren.</string>
+    <string name="registration_successful">Registrierung erfolgreich!</string>
+    <string name="have_a_referral_code">Hast du einen Referral-Code?</string>
+    <string name="get_started">Los gehts!</string>
+    <string name="how_much_would_you_like_to_topup">Wie viel Guthaben möchtest du aufladen?</string>
+    <string name="topup_amount">Aufladebetrag</string>
+    <string name="registration_fee">Anmeldegebühr</string>
+    <string name="total_amount">Gesamtbetrag</string>
+    <string name="waiting_for_payment">Warten auf Zahlung</string>
+    <string name="button_continue">Fortsetzen</string>
+    <string name="button_register">Registrieren</string>
+    <string name="enter_referral_code">Gebe deinen Referral-Code ein:</string>
+    <string name="mysterium_network_logo">Mysterium Network firmenemblem</string>
 </resources>
