@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import network.mysterium.MainApplication
+import network.mysterium.ui.hideKeyboard
 import network.mysterium.ui.onChange
 import network.mysterium.vpn.databinding.FragmentWalletTopupAmountBinding
 import java.math.BigDecimal
@@ -38,6 +39,7 @@ class WalletTopupAmountFragment : Fragment() {
         }
 
         binding.continueButton.setOnClickListener {
+            hideKeyboard(binding.root)
             val toCurrencySelection = WalletTopupAmountFragmentDirections.actionWalletTopupFragmentToWalletTopupSelectCurrencyFragment()
             findNavController().navigate(toCurrencySelection)
         }
