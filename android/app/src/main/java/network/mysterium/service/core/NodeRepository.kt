@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import mysterium.*
 import network.mysterium.payment.Currency
 import network.mysterium.payment.Order
+import java.math.RoundingMode.*
 
 class ProposalItem(
         @Json(name = "providerId")
@@ -101,6 +102,30 @@ class HealthData(
         val version: String
 )
 
+class PriceSettings(config: ConsumerPaymentConfig) {
+    val perGibMax: Double
+    val defaultPerGib: Double
+    val perMinuteMax: Double
+    val defaultMinute: Double
+
+    init {
+        val perGibDecimal = config.pricePerGIBMax
+                .toBigDecimal()
+                .divide(DECIMAL_PART.toBigDecimal(), 2, HALF_UP)
+        perGibMax = perGibDecimal.toDouble()
+        defaultPerGib = perGibDecimal.divide(2.toBigDecimal(), 2).toDouble()
+        val perMinuteDecimal = config.pricePerMinuteMax
+                .toBigDecimal()
+                .divide(DECIMAL_PART.toBigDecimal(),4, HALF_UP)
+        perMinuteMax = perMinuteDecimal.toDouble()
+        defaultMinute = perMinuteDecimal.divide(2.toBigDecimal(), 5, HALF_UP).toDouble()
+    }
+
+    companion object {
+        const val DECIMAL_PART = 1_000_000_000_000_000_000
+    }
+}
+
 class ConnectUnknownException(message: String) : Exception(message)
 class ConnectInvalidProposalException(message: String) : Exception(message)
 class ConnectInsufficientBalanceException(message: String) : Exception(message)
@@ -143,6 +168,10 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         deferredNode.await().registerBalanceChangeCallback { _, balance ->
             cb(balance)
         }
+    }
+
+    suspend fun getPriceSettings() = withContext(Dispatchers.Default) {
+        PriceSettings(deferredNode.await().consumerPaymentConfig)
     }
 
     // Register identity registration status callback.

@@ -25,9 +25,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import mysterium.GetProposalsRequest
-import network.mysterium.service.core.NodeRepository
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
+import network.mysterium.service.core.NodeRepository
 import network.mysterium.ui.PriceUtils
 import network.mysterium.ui.SharedViewModel
 
@@ -114,11 +114,15 @@ data class ProposalFilterQuality(
 class PriceSettings(
         var defaultPricePerMinute: Double,
         var defaultPricePerGiB: Double,
-        val perMinuteMax: Double,
-        val perGibMax: Double
+        var perMinuteMax: Double,
+        var perGibMax: Double
 )
 
-class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private val nodeRepository: NodeRepository, private val appDatabase: AppDatabase) : ViewModel() {
+class ProposalsViewModel(
+        private val sharedViewModel: SharedViewModel,
+        private val nodeRepository: NodeRepository,
+        private val appDatabase: AppDatabase
+) : ViewModel() {
     val filter: ProposalsFilter
     val priceSettings: PriceSettings
     var initialProposalsLoaded = MutableLiveData<Boolean>()
@@ -131,7 +135,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         priceSettings = PriceSettings(
                 defaultPricePerMinute = 0.0005,
                 defaultPricePerGiB = 0.75,
-                perMinuteMax =  0.001,
+                perMinuteMax = 0.001,
                 perGibMax = 1.0
         )
         filter = ProposalsFilter(
@@ -150,6 +154,7 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
     suspend fun load() {
         favoriteProposals = loadFavoriteProposals()
         loadInitialProposals(false, favoriteProposals)
+        loadPriceSettings()
     }
 
     fun getFilteredProposals(): LiveData<List<ProposalViewItem>> {
@@ -289,6 +294,15 @@ class ProposalsViewModel(private val sharedViewModel: SharedViewModel, private v
         } catch (e: Exception) {
             Log.e(TAG, "Failed to delete favorite proposal", e)
         }
+    }
+
+    private suspend fun loadPriceSettings() {
+        val prices = nodeRepository.getPriceSettings()
+
+        filter.pricePerMinute = prices.defaultMinute
+        filter.pricePerGiB = prices.defaultPerGib
+        priceSettings.perMinuteMax = prices.perMinuteMax
+        priceSettings.perGibMax = prices.perGibMax
     }
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
