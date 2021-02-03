@@ -45,8 +45,11 @@ class TermsFragment : Fragment() {
     private lateinit var termsTextWiew: TextView
     private lateinit var termsAcceptButton: Button
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
 
         val root = inflater.inflate(R.layout.fragment_terms, container, false)
 

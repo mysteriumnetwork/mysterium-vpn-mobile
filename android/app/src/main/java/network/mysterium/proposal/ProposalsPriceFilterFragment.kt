@@ -14,7 +14,8 @@ import network.mysterium.navigation.Screen
 import network.mysterium.navigation.navigateTo
 import network.mysterium.navigation.onBackPress
 import network.mysterium.service.core.ProposalPaymentMoney
-import network.mysterium.ui.*
+import network.mysterium.ui.PriceUtils
+import network.mysterium.ui.hideKeyboard
 import network.mysterium.vpn.R
 
 class ProposalsPriceFilterFragment : Fragment() {
