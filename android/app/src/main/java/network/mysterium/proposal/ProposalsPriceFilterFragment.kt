@@ -23,11 +23,11 @@ class ProposalsPriceFilterFragment : Fragment() {
     private lateinit var proposalsViewModel: ProposalsViewModel
     private lateinit var resetBtn: MaterialButton
     private lateinit var applyBtn: MaterialButton
-    private lateinit var proposalsPricePerMinuteSlider: Slider
+    private lateinit var proposalsPricePerHourSlider: Slider
     private lateinit var proposalsPricePerGibSlider: Slider
     private lateinit var proposalsPricePerMinuteValue: TextView
     private lateinit var proposalsPricePerGibValue: TextView
-    private val filterSteps: Int = 10
+    private val sliderStepCount: Int = 10
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,7 +43,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         feedbackToolbar = root.findViewById(R.id.proposals_price_filter_toolbar)
         resetBtn = root.findViewById(R.id.proposals_price_filter_reset_btn)
         applyBtn = root.findViewById(R.id.proposals_price_filter_apply_btn)
-        proposalsPricePerMinuteSlider = root.findViewById(R.id.proposals_price_per_minute_slider)
+        proposalsPricePerHourSlider = root.findViewById(R.id.proposals_price_per_hour_slider)
         proposalsPricePerGibSlider = root.findViewById(R.id.proposals_price_per_gib_slider)
         proposalsPricePerMinuteValue = root.findViewById(R.id.proposals_price_per_minute_value)
         proposalsPricePerGibValue = root.findViewById(R.id.proposals_price_per_gib_value)
@@ -51,21 +51,21 @@ class ProposalsPriceFilterFragment : Fragment() {
         val priceSettings = proposalsViewModel.priceSettings
 
         // Price per minute filter.
-        proposalsPricePerMinuteSlider.valueTo = priceSettings.perMinuteMax.toFloat()
-        proposalsPricePerMinuteSlider.value = proposalsViewModel.filter.pricePerMinute.toFloat()
-        proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerMinute)
-        proposalsPricePerMinuteSlider.stepSize = (priceSettings.perMinuteMax / filterSteps).toFloat()
-        proposalsPricePerMinuteSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
-        proposalsPricePerMinuteSlider.addOnChangeListener { _, value, _ ->
-            proposalsViewModel.applyPricePerMinFilter(value.toDouble())
-            proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerMinute)
+        proposalsPricePerHourSlider.valueTo = priceSettings.perHourMax.toFloat()
+        proposalsPricePerHourSlider.value = proposalsViewModel.filter.pricePerHour.toFloat()
+        proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerHour)
+        proposalsPricePerHourSlider.stepSize = (priceSettings.perHourMax / sliderStepCount).toFloat()
+        proposalsPricePerHourSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
+        proposalsPricePerHourSlider.addOnChangeListener { _, value, _ ->
+            proposalsViewModel.applyPricePerHourFilter(value.toDouble())
+            proposalsPricePerMinuteValue.text = formatPriceValue(proposalsViewModel.filter.pricePerHour)
         }
 
         // Price per GiB filter.
         proposalsPricePerGibSlider.valueTo = priceSettings.perGibMax.toFloat()
         proposalsPricePerGibSlider.value = proposalsViewModel.filter.pricePerGiB.toFloat()
         proposalsPricePerGibValue.text = formatPriceValue(proposalsViewModel.filter.pricePerGiB)
-        proposalsPricePerGibSlider.stepSize = (priceSettings.perGibMax / filterSteps).toFloat()
+        proposalsPricePerGibSlider.stepSize = (priceSettings.perGibMax / sliderStepCount).toFloat()
         proposalsPricePerGibSlider.setLabelFormatter { formatPriceValue(it.toDouble()) }
         proposalsPricePerGibSlider.addOnChangeListener { _, value, _ ->
             proposalsViewModel.applyPricePerGiBFilter(value.toDouble())
@@ -78,7 +78,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         }
 
         resetBtn.setOnClickListener {
-            proposalsViewModel.applyPricePerMinFilter(proposalsViewModel.priceSettings.defaultPricePerMinute)
+            proposalsViewModel.applyPricePerHourFilter(proposalsViewModel.priceSettings.defaultPricePerMinute)
             proposalsViewModel.applyPricePerGiBFilter(proposalsViewModel.priceSettings.defaultPricePerGiB)
             navigateTo(root, Screen.PROPOSALS)
         }

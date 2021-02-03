@@ -80,9 +80,9 @@
     <string name="proposals_filter_price">Preis</string>
     <string name="proposals_filter_quality">Qualität</string>
     <string name="proposals_filter_ip_type">IP-Typ</string>
-    <string name="proposals_filter_price_per_minute">Preis/Minute:</string>
+    <string name="proposals_filter_price_per_hour">Preis/Stunde:</string>
     <string name="proposals_filter_price_per_gib">Preis/GiB:</string>
-    <string name="proposals_price_combined">%1$s/Min %2$s/GiB</string>
+    <string name="proposals_price_combined">%1$s/h %2$s/GiB</string>
     <string name="feedback_send_feedback_button">Feedback senden</string>
     <string name="wallet_mystt_test_explanation">MYSTT ist ein Test-Token, welchen du kostenlos erhalten kannst, solange das Testnet online ist.</string>
     <string name="wallet_balance">Guthaben</string>

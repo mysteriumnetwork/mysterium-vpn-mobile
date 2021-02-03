@@ -94,7 +94,7 @@ data class ProposalsFilter(
         var country: ProposalFilterCountry,
         var quality: ProposalFilterQuality,
         var nodeType: NodeType,
-        var pricePerMinute: Double,
+        var pricePerHour: Double,
         var pricePerGiB: Double
 )
 
@@ -114,7 +114,7 @@ data class ProposalFilterQuality(
 class PriceSettings(
         var defaultPricePerMinute: Double,
         var defaultPricePerGiB: Double,
-        var perMinuteMax: Double,
+        var perHourMax: Double,
         var perGibMax: Double
 )
 
@@ -135,7 +135,7 @@ class ProposalsViewModel(
         priceSettings = PriceSettings(
                 defaultPricePerMinute = 0.0005,
                 defaultPricePerGiB = 0.75,
-                perMinuteMax = 0.001,
+                perHourMax = 0.001,
                 perGibMax = 1.0
         )
         filter = ProposalsFilter(
@@ -146,15 +146,15 @@ class ProposalsViewModel(
                         qualityIncludeUnreachable = false
                 ),
                 nodeType = NodeType.ALL,
-                pricePerMinute = priceSettings.defaultPricePerMinute,
+                pricePerHour = priceSettings.defaultPricePerMinute,
                 pricePerGiB = priceSettings.defaultPricePerGiB
         )
     }
 
     suspend fun load() {
         favoriteProposals = loadFavoriteProposals()
-        loadInitialProposals(false, favoriteProposals)
         loadPriceSettings()
+        loadInitialProposals(false, favoriteProposals)
     }
 
     fun getFilteredProposals(): LiveData<List<ProposalViewItem>> {
@@ -186,8 +186,8 @@ class ProposalsViewModel(
         filteredProposals.value = applyFilter(filter, allProposals)
     }
 
-    fun applyPricePerMinFilter(price: Double) {
-        filter.pricePerMinute = price
+    fun applyPricePerHourFilter(price: Double) {
+        filter.pricePerHour = price
         filteredProposals.value = applyFilter(filter, allProposals)
     }
 
@@ -299,10 +299,10 @@ class ProposalsViewModel(
     private suspend fun loadPriceSettings() {
         val prices = nodeRepository.getPriceSettings()
 
-        filter.pricePerMinute = prices.defaultMinute
-        filter.pricePerGiB = prices.defaultPerGib
-        priceSettings.perMinuteMax = prices.perMinuteMax
-        priceSettings.perGibMax = prices.perGibMax
+        filter.pricePerHour = prices.defaultHour.toDouble()
+        filter.pricePerGiB = prices.defaultPerGib.toDouble()
+        priceSettings.perHourMax = prices.perHourMax.toDouble()
+        priceSettings.perGibMax = prices.perGibMax.toDouble()
     }
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
@@ -363,19 +363,19 @@ class ProposalsViewModel(
                 .filter {
                     fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
                         val price = PriceUtils.pricePerMinute(v.payment)
-                        val maxPrice = filter.pricePerMinute
+                        val maxPrice = (filter.pricePerHour / 60)
                         return price.amount <= maxPrice
                     }
                     filterPricePerMinute(filter, it)
                 }
                 // Filter by price per GiB.
                 .filter {
-                    fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
+                    fun filterPricePerGiB(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
                         val price = PriceUtils.pricePerGiB(v.payment)
                         val maxPrice = filter.pricePerGiB
                         return price.amount <= maxPrice
                     }
-                    filterPricePerMinute(filter, it)
+                    filterPricePerGiB(filter, it)
                 }
                 // Filter by search value.
                 .filter {

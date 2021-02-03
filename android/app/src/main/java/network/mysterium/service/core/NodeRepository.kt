@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import mysterium.*
 import network.mysterium.payment.Currency
 import network.mysterium.payment.Order
+import java.math.BigDecimal
 import java.math.RoundingMode.*
 
 class ProposalItem(
@@ -103,22 +104,27 @@ class HealthData(
 )
 
 class PriceSettings(config: ConsumerPaymentConfig) {
-    val perGibMax: Double
-    val defaultPerGib: Double
-    val perMinuteMax: Double
-    val defaultMinute: Double
+    val perGibMax: BigDecimal
+    val defaultPerGib: BigDecimal
+    val perMinuteMax: BigDecimal
+    val defaultMinute: BigDecimal
+    val perHourMax: BigDecimal
+    val defaultHour: BigDecimal
 
     init {
         val perGibDecimal = config.pricePerGIBMax
                 .toBigDecimal()
-                .divide(DECIMAL_PART.toBigDecimal(), 2, HALF_UP)
-        perGibMax = perGibDecimal.toDouble()
-        defaultPerGib = perGibDecimal.divide(2.toBigDecimal(), 2).toDouble()
+                .divide(DECIMAL_PART.toBigDecimal())
+        perGibMax = perGibDecimal
+        defaultPerGib = perGibDecimal.divide(2.toBigDecimal())
         val perMinuteDecimal = config.pricePerMinuteMax
                 .toBigDecimal()
-                .divide(DECIMAL_PART.toBigDecimal(),4, HALF_UP)
-        perMinuteMax = perMinuteDecimal.toDouble()
-        defaultMinute = perMinuteDecimal.divide(2.toBigDecimal(), 5, HALF_UP).toDouble()
+                .divide(DECIMAL_PART.toBigDecimal())
+        perMinuteMax = perMinuteDecimal
+        defaultMinute = perMinuteDecimal.divide(2.toBigDecimal())
+
+        perHourMax = perMinuteMax.multiply(60.toBigDecimal())
+        defaultHour = defaultMinute.multiply(60.toBigDecimal())
     }
 
     companion object {

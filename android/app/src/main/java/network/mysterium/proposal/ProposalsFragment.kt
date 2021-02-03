@@ -197,7 +197,7 @@ class ProposalsFragment : Fragment() {
         }
 
         // Price filter value.
-        val pricePerMinute = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerMinute, currency = "MYSTT"))
+        val pricePerMinute = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerHour, currency = "MYSTT"))
         val pricePerGiB = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerGiB, currency = "MYSTT"))
         proposalsFilterPriceValue.text = getString(R.string.proposals_price_combined, pricePerMinute, pricePerGiB)
 
@@ -250,7 +250,7 @@ data class ProposalItem(val ctx: Context, val item: ProposalViewItem) : BaseItem
             NodeType.HOSTING -> "(${ctx.getString(R.string.node_type_hosting)})"
             NodeType.RESIDENTIAL -> "(${ctx.getString(R.string.node_type_residential)})"
         }
-        val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerMinute(item.payment))
+        val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerHour(item.payment))
         val pricePerGiB = PriceUtils.displayMoney(PriceUtils.pricePerGiB(item.payment))
         price.text = ctx.resources.getString(R.string.proposals_price_combined, pricePerMinute, pricePerGiB)
     }

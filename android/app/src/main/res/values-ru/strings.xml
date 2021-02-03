@@ -81,7 +81,7 @@
     <string name="proposals_filter_country">Странa</string>
     <string name="proposals_filter_quality">Качество</string>
     <string name="proposals_filter_ip_type">Тип IP</string>
-    <string name="proposals_filter_price_per_minute">Цена/мин</string>
+    <string name="proposals_filter_price_per_hour">Цена/час</string>
     <string name="proposals_filter_price_per_gib">Цена/ГиБ</string>
     <string name="proposals_price_combined">%1$s/мин %2$s/ГиБ</string>
     <string name="wallet_balance">Баланс</string>
