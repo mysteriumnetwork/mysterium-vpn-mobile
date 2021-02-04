@@ -1,6 +1,7 @@
 package network.mysterium.wallet
 
 import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import network.mysterium.AppContainer
 import network.mysterium.MainApplication
 import network.mysterium.navigation.onBackPress
 import network.mysterium.ui.showMessage
@@ -21,8 +23,12 @@ import network.mysterium.vpn.databinding.FragmentWalletTopupWaitingPaymentBindin
 class WalletTopupWaitingPaymentFragment : Fragment() {
 
     private lateinit var viewModel: WalletTopupViewModel
+    private lateinit var clipboardManager: ClipboardManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val appContainer = AppContainer.from(activity)
+        clipboardManager = appContainer.clipboardManager
+
         val binding = FragmentWalletTopupWaitingPaymentBinding.inflate(inflater, container, false)
         viewModel = (requireActivity().application as MainApplication).appContainer.walletTopupViewModel
         binding.viewModel = viewModel
@@ -45,7 +51,8 @@ class WalletTopupWaitingPaymentFragment : Fragment() {
             generateQR(it, binding.paymentAddressQr)
         }
         binding.paymentAddressCopy.setOnClickListener {
-            ClipData.newPlainText("payment address", order?.paymentAddress)
+            val clip = ClipData.newPlainText("payment address", order?.paymentAddress)
+            clipboardManager.setPrimaryClip(clip)
             showMessage(binding.root.context, getString(R.string.wallet_topup_address_copied))
         }
 
