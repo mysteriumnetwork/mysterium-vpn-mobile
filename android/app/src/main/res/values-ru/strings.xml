@@ -12,7 +12,7 @@
     <string name="vpn_stats_paid">ЦЕНА</string>
     <string name="vpn_stats_bytes">Б</string>
     <string name="vpn_stats_send_received">ПОЛУЧЕНО / ОТПРАВЛЕНО</string>
-    <string name="vpn_stats_duration">ПРОДОЛЖИТЕЛЬНОСТЬ</string>
+    <string name="vpn_stats_duration">ВРЕМЯ</string>
     <string name="vpn_select_proposal">Выберите узел…</string>
     <string name="vpn_ip_updating_label">IP: Обновляеться</string>
     <string name="proposals_search_hint">Поиск узла или страны</string>
