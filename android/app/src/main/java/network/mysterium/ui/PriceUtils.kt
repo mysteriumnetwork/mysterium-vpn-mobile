@@ -18,6 +18,19 @@ object PriceUtils {
         )
     }
 
+    fun pricePerHour(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
+        val currency = pm?.price?.currency ?: ""
+
+        if (pm == null || pm.rate.perSeconds == 0.0) {
+            return ProposalPaymentMoney(amount = 0.0, currency = currency)
+        }
+
+        return ProposalPaymentMoney(
+                amount = (60.0 / pm.rate.perSeconds) * pm.price.amount * 60,
+                currency = currency
+        )
+    }
+
     private const val bytesInGiB = 1024 * 1024 * 1024
 
     fun pricePerGiB(pm: ProposalPaymentMethod?): ProposalPaymentMoney {

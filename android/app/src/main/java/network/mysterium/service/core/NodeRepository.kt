@@ -8,6 +8,8 @@ import kotlinx.coroutines.withContext
 import mysterium.*
 import network.mysterium.payment.Currency
 import network.mysterium.payment.Order
+import java.math.BigDecimal
+import java.math.RoundingMode.*
 
 class ProposalItem(
         @Json(name = "providerId")
@@ -101,6 +103,35 @@ class HealthData(
         val version: String
 )
 
+class PriceSettings(config: ConsumerPaymentConfig) {
+    val perGibMax: BigDecimal
+    val defaultPerGib: BigDecimal
+    val perMinuteMax: BigDecimal
+    val defaultMinute: BigDecimal
+    val perHourMax: BigDecimal
+    val defaultHour: BigDecimal
+
+    init {
+        val perGibDecimal = config.pricePerGIBMax
+                .toBigDecimal()
+                .divide(DECIMAL_PART.toBigDecimal())
+        perGibMax = perGibDecimal
+        defaultPerGib = perGibDecimal.divide(2.toBigDecimal())
+        val perMinuteDecimal = config.pricePerMinuteMax
+                .toBigDecimal()
+                .divide(DECIMAL_PART.toBigDecimal())
+        perMinuteMax = perMinuteDecimal
+        defaultMinute = perMinuteDecimal.divide(2.toBigDecimal())
+
+        perHourMax = perMinuteMax.multiply(60.toBigDecimal())
+        defaultHour = defaultMinute.multiply(60.toBigDecimal())
+    }
+
+    companion object {
+        const val DECIMAL_PART = 1_000_000_000_000_000_000
+    }
+}
+
 class ConnectUnknownException(message: String) : Exception(message)
 class ConnectInvalidProposalException(message: String) : Exception(message)
 class ConnectInsufficientBalanceException(message: String) : Exception(message)
@@ -143,6 +174,10 @@ class NodeRepository(private val deferredNode: DeferredNode) {
         deferredNode.await().registerBalanceChangeCallback { _, balance ->
             cb(balance)
         }
+    }
+
+    suspend fun getPriceSettings() = withContext(Dispatchers.Default) {
+        PriceSettings(deferredNode.await().consumerPaymentConfig)
     }
 
     // Register identity registration status callback.
