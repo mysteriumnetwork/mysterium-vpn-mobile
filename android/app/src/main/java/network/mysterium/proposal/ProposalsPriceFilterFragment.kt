@@ -78,7 +78,7 @@ class ProposalsPriceFilterFragment : Fragment() {
         }
 
         resetBtn.setOnClickListener {
-            proposalsViewModel.applyPricePerHourFilter(proposalsViewModel.priceSettings.defaultPricePerMinute)
+            proposalsViewModel.applyPricePerHourFilter(proposalsViewModel.priceSettings.defaultHour)
             proposalsViewModel.applyPricePerGiBFilter(proposalsViewModel.priceSettings.defaultPricePerGiB)
             navigateTo(root, Screen.PROPOSALS)
         }

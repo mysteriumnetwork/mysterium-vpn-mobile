@@ -112,7 +112,7 @@ data class ProposalFilterQuality(
 )
 
 class PriceSettings(
-        var defaultPricePerMinute: Double,
+        var defaultHour: Double,
         var defaultPricePerGiB: Double,
         var perHourMax: Double,
         var perGibMax: Double
@@ -133,7 +133,7 @@ class ProposalsViewModel(
 
     init {
         priceSettings = PriceSettings(
-                defaultPricePerMinute = 0.0005,
+                defaultHour = 0.0005,
                 defaultPricePerGiB = 0.75,
                 perHourMax = 0.001,
                 perGibMax = 1.0
@@ -146,7 +146,7 @@ class ProposalsViewModel(
                         qualityIncludeUnreachable = false
                 ),
                 nodeType = NodeType.ALL,
-                pricePerHour = priceSettings.defaultPricePerMinute,
+                pricePerHour = priceSettings.defaultHour,
                 pricePerGiB = priceSettings.defaultPricePerGiB
         )
     }
@@ -303,6 +303,8 @@ class ProposalsViewModel(
         filter.pricePerGiB = prices.defaultPerGib.toDouble()
         priceSettings.perHourMax = prices.perHourMax.toDouble()
         priceSettings.perGibMax = prices.perGibMax.toDouble()
+        priceSettings.defaultHour = prices.defaultHour.toDouble()
+        priceSettings.defaultPricePerGiB = prices.defaultPerGib.toDouble()
     }
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
