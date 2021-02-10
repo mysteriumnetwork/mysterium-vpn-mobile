@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/ColorMain"
                 android:textSize="16sp"
-                android:text="@{@string/myst_display(0)}" />
+                android:text="@string/myst_currency" />
         </LinearLayout>
 
         <TextView
