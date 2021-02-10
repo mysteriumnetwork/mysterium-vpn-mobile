@@ -23,7 +23,7 @@ class TokenModelTest(private val token: Double, private val display: String) {
 
     @Test
     fun testDisplayValueFormatting() {
-        val model = TokenModel(token = token)
+        val model = TokenModel(token = token, "MYSTT")
         assertEquals(display, model.displayValue)
     }
 }
