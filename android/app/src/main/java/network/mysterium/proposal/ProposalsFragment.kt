@@ -197,8 +197,8 @@ class ProposalsFragment : Fragment() {
         }
 
         // Price filter value.
-        val pricePerMinute = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerHour, currency = "MYSTT"))
-        val pricePerGiB = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerGiB, currency = "MYSTT"))
+        val pricePerMinute = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerHour, currency = getString(R.string.myst_currency)))
+        val pricePerGiB = PriceUtils.displayMoney(ProposalPaymentMoney(amount = filter.pricePerGiB, currency = getString(R.string.myst_currency)))
         proposalsFilterPriceValue.text = getString(R.string.proposals_price_combined, pricePerMinute, pricePerGiB)
 
         // Node(IP) type filter value.

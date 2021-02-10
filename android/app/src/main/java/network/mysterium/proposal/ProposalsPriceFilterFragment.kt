@@ -93,7 +93,7 @@ class ProposalsPriceFilterFragment : Fragment() {
     }
 
     private fun formatPriceValue(v: Double): String {
-        val price = PriceUtils.displayMoney(ProposalPaymentMoney(amount = v, currency = "MYSTT"))
+        val price = PriceUtils.displayMoney(ProposalPaymentMoney(amount = v, currency = getString(R.string.myst_currency)))
         return when (v) {
             0.0 -> "free"
             else -> "≤ $price"

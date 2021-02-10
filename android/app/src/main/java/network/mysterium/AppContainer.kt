@@ -37,6 +37,7 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.terms.TermsViewModel
 import network.mysterium.ui.*
+import network.mysterium.vpn.R
 import network.mysterium.wallet.WalletTopupViewModel
 import network.mysterium.wallet.WalletViewModel
 
@@ -73,7 +74,7 @@ class AppContainer {
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
         appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
-        walletViewModel = WalletViewModel(nodeRepository, bugReporter)
+        walletViewModel = WalletViewModel(nodeRepository, bugReporter, ctx.getString(R.string.myst_currency))
         sharedViewModel = SharedViewModel(appCtx, nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)
         termsViewModel = TermsViewModel(appDatabase)
