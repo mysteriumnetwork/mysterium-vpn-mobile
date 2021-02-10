@@ -84,7 +84,7 @@
     <string name="proposals_filter_price_per_gib">Preis/GiB:</string>
     <string name="proposals_price_combined">%1$s/h %2$s/GiB</string>
     <string name="feedback_send_feedback_button">Feedback senden</string>
-    <string name="wallet_mystt_test_explanation">${myst_currency} ist ein Test-Token, welchen du kostenlos erhalten kannst, solange das Testnet online ist.</string>
+    <string name="wallet_myst_test_explanation">${myst_currency} ist ein Test-Token, welchen du kostenlos erhalten kannst, solange das Testnet online ist.</string>
     <string name="wallet_balance">Guthaben</string>
     <string name="wallet_identity_address">Identität-Adresse</string>
     <string name="wallet_identity_address_explanation">Die Identität ist deine Mysterium-interne Benutzer-ID. Sende niemals Ether oder andere Arten von ERC20-Token dorthin.</string>
@@ -92,7 +92,7 @@
     <string name="vpn_ip">IP: %1$s</string>
     <string name="registration_description">Um MysteriumVPN nutzen zu können muss dein Account aktiviert sein, um Spam und Netzwerkattacken zu verhindern.</string>
     <string name="registration_have_a_referral_code">Ich habe einen Referral-Code</string>
-    <string name="mystt_display">%1$s ${myst_currency}</string>
+    <string name="myst_display">%1$s ${myst_currency}</string>
     <string name="registration_topup_payment_hint">Transferiere %1$s ${myst_currency} zu deinem Wallet (Görli Testnet blockchain) um fortzufahren.</string>
     <string name="registration_successful">Registrierung erfolgreich!</string>
     <string name="have_a_referral_code">Hast du einen Referral-Code?</string>
