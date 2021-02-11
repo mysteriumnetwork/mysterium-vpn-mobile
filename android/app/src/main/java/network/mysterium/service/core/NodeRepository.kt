@@ -139,8 +139,7 @@ class ConnectInsufficientBalanceException(message: String) : Exception(message)
 // Wrapper around Go mobile node library bindings. It should not change any result
 // returned from internal mobile node and instead all mappings should happen in
 // ViewModels.
-class NodeRepository(private val deferredNode: DeferredNode) {
-
+class NodeRepository(var deferredNode: DeferredNode) {
     // Get available proposals for mobile. Internally on Go side
     // proposals are fetched once and cached but it is possible to refresh cache by
     // passing refresh flag.

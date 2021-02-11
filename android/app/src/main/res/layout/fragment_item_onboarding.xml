@@ -107,7 +107,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/skipButton"
-        style="@style/Widget.TextButton"
+        style="@style/Widget.TransparentTextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_padding_size_large"

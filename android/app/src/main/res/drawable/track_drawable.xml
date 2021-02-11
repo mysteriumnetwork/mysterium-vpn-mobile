@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="8dp"
+        android:left="6dp"
+        android:right="6dp">
+        <shape>
+            <solid android:color="@color/manual_connect_track_background_white" />
+            <corners android:radius="20dp" />
+            <size
+                android:width="8dp"
+                android:height="8dp" />
+        </shape>
+    </item>
+</layer-list>

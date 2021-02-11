@@ -127,4 +127,12 @@
     <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
+    
+    <!--  ManualConnection  -->
+    <string name="manual_connect_country_select_title">Select node</string>
+    <string name="manual_connect_all_nodes">All nodes</string>
+    <string name="manual_connect_saved_nodes">Saved</string>
+    <string name="manual_connect_all_countries">All countries</string>
+    <string name="manual_connect_nodes_label">Nodes</string>
+    <string name="manual_connect_counties_label">Countries</string>
 </resources>
