@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/itemContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="24dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/countryImage"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/crypto_btc" />
+
+            <TextView
+                android:id="@+id/countryName"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2.3"
+                android:textColor="@color/onboarding_title_dark_blue"
+                tools:text="Australia" />
+
+            <TextView
+                android:id="@+id/countryNodesCount"
+                style="@style/TextAppearance.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.7"
+                android:textColor="@color/onboarding_title_dark_blue"
+                tools:text="2568" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+            android:src="@drawable/divider_country_group"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/lastItemMargin"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/itemContent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
