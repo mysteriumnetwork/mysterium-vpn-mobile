@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#D61F85</color>
+
+    <color name="onboarding_description_grey_blue">#705A597D</color>
+    <color name="onboarding_title_dark_blue">#3C3857</color>
+    <color name="onboarding_current_screen_white">#FFFFFF</color>
+    <color name="onboarding_faded_screen_white">#50FFFFFF</color>
+    <color name="onboarding_skip_white">#70FFFFFF</color>
+</resources>
