@@ -23,11 +23,11 @@ class BugReporter {
 
     companion object {
         fun init() {
-            FirebaseCrashlytics.getInstance().setCustomKey("android_sdk_int", android.os.Build.VERSION.SDK_INT)
+            //FirebaseCrashlytics.getInstance().setCustomKey("android_sdk_int", android.os.Build.VERSION.SDK_INT)
         }
     }
 
     fun setUserIdentifier(userId: String) {
-        FirebaseCrashlytics.getInstance().setUserId(userId)
+        //FirebaseCrashlytics.getInstance().setUserId(userId)
     }
 }

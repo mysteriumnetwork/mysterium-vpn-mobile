@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/circle_selected_item" android:state_selected="true" />
+
+    <item android:drawable="@drawable/circle_unselecte_item" />
+</selector>

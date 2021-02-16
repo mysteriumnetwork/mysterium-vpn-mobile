@@ -114,4 +114,17 @@
     <string name="wallet_topup_amount_title">Topup amount</string>
     <string name="wallet_topup_payment_successful">Payment successful!</string>
     <string name="wallet_topup_payment_failed">Payment failed… Please try again later!</string>
+
+    <!--  Onboarding  -->
+    <string name="onboarding_main_title_1">Decentralized global node network</string>
+    <string name="onboarding_description_title_1">Run by people, for people</string>
+    <string name="onboarding_description_content_1">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
+    <string name="onboarding_description_title_2">No lock-in subscriptions</string>
+    <string name="onboarding_description_content_2">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_main_title_3">Smart connect does the thinking for you</string>
+    <string name="onboarding_description_title_3">Set preferences and slide to connect</string>
+    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
 </resources>
