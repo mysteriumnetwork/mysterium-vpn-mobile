@@ -1,16 +1,19 @@
 package updated_mysterium_vpn.network.usecase
 
 import mysterium.GetProposalsRequest
-import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.vpn.R
-import updated_mysterium_vpn.model.manual_select.CountryNodesModel
+import updated_mysterium_vpn.database.dao.NodeDao
+import updated_mysterium_vpn.database.entity.NodeEntity
+import updated_mysterium_vpn.model.manual_connect.CountryNodesModel
+import updated_mysterium_vpn.model.manual_connect.ProposalModel
 
-class NodesUseCase(private val nodeRepository: NodeRepository) {
+class NodesUseCase(
+        private val nodeRepository: NodeRepository,
+        private val nodeDao: NodeDao
+) {
 
-    suspend fun getAllProposalByNodes() = allNodesToCountries(getAllNodes())
-
-    private suspend fun getAllNodes(): List<ProposalViewItem> {
+    suspend fun getAllInitialNodes(): List<NodeEntity> {
         val proposalsRequest = GetProposalsRequest().apply {
             this.refresh = refresh
             includeFailed = true
@@ -18,27 +21,37 @@ class NodesUseCase(private val nodeRepository: NodeRepository) {
         }
         return nodeRepository.proposals(proposalsRequest)
                 .filter { it.countryCode != "" }
-                .map { ProposalViewItem.parse(it) }
+                .map { NodeEntity.createNodeFromProposal(it) }
     }
 
-    private fun allNodesToCountries(allNodesList: List<ProposalViewItem>): List<CountryNodesModel> {
+    suspend fun saveAllInitialNodes(nodesList: List<NodeEntity>) {
+        nodeDao.apply {
+            deleteAll()
+            insertAll(nodesList)
+        }
+    }
+
+    suspend fun getAllSavedCountries() = mapNodesToCountriesGroups(nodeDao.getAllNodes())
+
+    private fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodesModel> {
+        val proposalList = allNodesList.map { ProposalModel.createProposalFromNode(it) }
         val countryNodesList = mutableListOf<CountryNodesModel>()
-        allNodesList.forEach { node ->
+        proposalList.forEach { node ->
             val currentCountry = countryNodesList.find { it.countryCode == node.countryCode }
             if (currentCountry == null) {
                 countryNodesList.add(
                         CountryNodesModel(
                                 countryCode = node.countryCode,
                                 countryName = node.countryName,
-                                nodesList = mutableListOf(node)
+                                proposalList = mutableListOf(node)
                         )
                 )
             } else {
-                currentCountry.nodesList.add(node)
+                currentCountry.proposalList.add(node)
             }
         }
-        countryNodesList.sortByDescending { it.nodesList.size }
-        countryNodesList.add(0, ALL_COUNTRY_NODE.copy(nodesList = allNodesList.toMutableList()))
+        countryNodesList.sortByDescending { it.proposalList.size }
+        countryNodesList.add(0, ALL_COUNTRY_NODE.copy(proposalList = proposalList.toMutableList()))
         return countryNodesList
     }
 
@@ -49,7 +62,7 @@ class NodesUseCase(private val nodeRepository: NodeRepository) {
                 countryCode = ALL_COUNTRY_CODE,
                 countryName = "",
                 countryFlagRes = R.drawable.icon_all_countries,
-                nodesList = emptyList<ProposalViewItem>().toMutableList()
+                proposalList = emptyList<ProposalModel>().toMutableList()
         )
     }
 }
