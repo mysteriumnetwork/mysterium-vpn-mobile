@@ -33,6 +33,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="updated_mysterium_vpn.ui.manual_connect.ManualConnectActivity" />
+
         <activity
             android:name="network.mysterium.MainActivity"
             android:alwaysRetainTaskState="true"

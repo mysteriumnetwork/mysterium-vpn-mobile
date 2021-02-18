@@ -1,5 +1,6 @@
 package updated_mysterium_vpn.ui.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_onboarding.*
 import network.mysterium.vpn.databinding.ActivityOnboardingBinding
+import updated_mysterium_vpn.ui.manual_connect.ManualConnectActivity
 import updated_mysterium_vpn.ui.onboarding.viewpager.*
 
 class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChildViewMeasured {
@@ -73,7 +75,7 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
     }
 
     private fun skipOnboarding() {
-        Log.i(TAG, "Skip")
+        startActivity(Intent(this, ManualConnectActivity::class.java))
         //TODO("Delete toast and implement skip functionality")
     }
 

@@ -23,7 +23,7 @@ class DeferredNode {
 
     private val lock = Semaphore(1)
 
-    fun start(service: MysteriumCoreService, done: (err: Exception?) -> Unit) {
+    fun start(service: MysteriumCoreService, done: ((err: Exception?) -> Unit)? = null) {
         if (!lock.tryAcquire()) {
             Log.i(TAG, "Node is already started or starting, skipping")
             return
@@ -32,10 +32,10 @@ class DeferredNode {
             try {
                 val node = service.startNode()
                 deferredNode.complete(node)
-                done(null)
+                done?.invoke(null)
             } catch (err: Exception) {
                 Log.e(TAG, "Failed to start node", err)
-                done(err)
+                done?.invoke(err)
             }
         }
         startJob.invokeOnCompletion {

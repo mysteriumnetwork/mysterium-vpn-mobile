@@ -57,7 +57,10 @@ class ProposalViewItem constructor(
     }
 
     companion object {
-        fun parse(proposal: ProposalItem, favoriteProposals: Map<String, FavoriteProposal>): ProposalViewItem {
+        fun parse(
+                proposal: ProposalItem,
+                favoriteProposals: (Map<String, FavoriteProposal>)? = null
+        ): ProposalViewItem {
             val res = ProposalViewItem(
                     id = proposal.providerID+proposal.serviceType,
                     providerID = proposal.providerID,
@@ -78,7 +81,7 @@ class ProposalViewItem constructor(
             res.serviceTypeResID = mapServiceTypeResourceID(res.serviceType)
             res.qualityLevel = QualityLevel.parse(proposal.qualityLevel)
             res.qualityResID = mapQualityLevelResourceID(res.qualityLevel)
-            res.isFavorite = favoriteProposals.containsKey(res.id)
+            res.isFavorite = favoriteProposals?.containsKey(res.id) ?: false
             if (res.isFavorite) {
                 res.isFavoriteResID = R.drawable.ic_star_black_24dp
             }
