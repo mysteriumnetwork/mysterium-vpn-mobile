@@ -3,8 +3,8 @@ package updated_mysterium_vpn.ui.manual_connect.county
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import updated_mysterium_vpn.common.extensions.liveDataResult
-import updated_mysterium_vpn.model.manual_select.CountryNodesModel
-import updated_mysterium_vpn.model.manual_select.SortType
+import updated_mysterium_vpn.model.manual_connect.CountryNodesModel
+import updated_mysterium_vpn.model.manual_connect.SortType
 import updated_mysterium_vpn.network.provider.usecase.UseCaseProvider
 
 class CountrySelectViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -14,7 +14,7 @@ class CountrySelectViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var sortType = SortType.NODE
 
     fun getInitialProposals(): LiveData<Result<List<CountryNodesModel>>> = liveDataResult {
-        cachedNodesList = nodesUseCase.getAllProposalByNodes()
+        cachedNodesList = nodesUseCase.getAllSavedCountries()
         cachedNodesList
     }
 
@@ -34,7 +34,7 @@ class CountrySelectViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             sortedList
         } else {
             val sortedList: MutableList<CountryNodesModel> = cachedNodesList.toMutableList()
-            sortedList.sortByDescending { it.nodesList.size }
+            sortedList.sortByDescending { it.proposalList.size }
             sortedList
         }
     }

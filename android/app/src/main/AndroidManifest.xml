@@ -24,16 +24,21 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="updated_mysterium_vpn.ui.onboarding.OnboardingActivity"
+            android:name="updated_mysterium_vpn.ui.splash.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="updated_mysterium_vpn.ui.manual_connect.ManualConnectActivity" />
+        <activity
+            android:name="updated_mysterium_vpn.ui.onboarding.OnboardingActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated_mysterium_vpn.ui.manual_connect.ManualConnectActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="network.mysterium.MainActivity"
