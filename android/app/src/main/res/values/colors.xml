@@ -16,4 +16,5 @@
     <color name="manual_connect_scrollbar_grey">#40E0E3EE</color>
     <color name="manual_connect_track_background_white">#10FFFFFF</color>
     <color name="manual_connect_icon_white">#20FFFFFF</color>
+    <color name="manual_connect_attention_text">#B5B3CA</color>
 </resources>
