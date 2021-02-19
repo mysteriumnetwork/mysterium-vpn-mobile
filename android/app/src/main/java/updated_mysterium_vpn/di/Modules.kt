@@ -9,7 +9,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import updated_mysterium_vpn.database.AppDatabase
 import updated_mysterium_vpn.network.provider.usecase.UseCaseProvider
-import updated_mysterium_vpn.ui.manual_connect.county.CountrySelectViewModel
+import updated_mysterium_vpn.ui.manual_connect.ManualConnectViewModel
+import updated_mysterium_vpn.ui.select_node.country.CountrySelectViewModel
 import updated_mysterium_vpn.ui.splash.SplashViewModel
 
 object Modules {
@@ -19,8 +20,10 @@ object Modules {
         single { DeferredNode() }
         single { NodeRepository(get()) }
         single { UseCaseProvider(get(), get()) }
+
         viewModel { CountrySelectViewModel(get()) }
         viewModel { SplashViewModel(get(), get()) }
+        viewModel { ManualConnectViewModel(get()) }
     }
 
     private fun provideDatabase(context: Context) = Room.databaseBuilder(

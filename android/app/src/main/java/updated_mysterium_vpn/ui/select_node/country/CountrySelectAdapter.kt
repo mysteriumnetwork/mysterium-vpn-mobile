@@ -1,4 +1,4 @@
-package updated_mysterium_vpn.ui.manual_connect.county
+package updated_mysterium_vpn.ui.select_node.country
 
 import android.view.LayoutInflater
 import android.view.View

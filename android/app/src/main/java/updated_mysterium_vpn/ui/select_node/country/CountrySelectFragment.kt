@@ -1,4 +1,4 @@
-package updated_mysterium_vpn.ui.manual_connect.county
+package updated_mysterium_vpn.ui.select_node.country
 
 import android.os.Bundle
 import android.util.Log
