@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_country_nodes.view.*
 import network.mysterium.vpn.R
 import updated_mysterium_vpn.common.adapters.ContentListAdapter
-import updated_mysterium_vpn.model.manual_select.CountryNodesModel
+import updated_mysterium_vpn.model.manual_connect.CountryNodesModel
 
 class CountrySelectAdapter : ContentListAdapter<CountryNodesModel, CountrySelectAdapter.CountrySelectHolder>() {
 
@@ -70,11 +70,11 @@ class CountrySelectAdapter : ContentListAdapter<CountryNodesModel, CountrySelect
             } else {
                 itemView.countryName.text = proposal.countryName
                 Glide.with(itemView.context)
-                        .load(proposal.nodesList.first().countryFlagImage)
+                        .load(proposal.proposalList.first().countryFlagImage)
                         .circleCrop()
                         .into(itemView.countryImage)
             }
-            itemView.countryNodesCount.text = proposal.nodesList.size.toString()
+            itemView.countryNodesCount.text = proposal.proposalList.size.toString()
         }
     }
 

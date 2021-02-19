@@ -59,7 +59,9 @@ class CountrySelectFragment : Fragment() {
                     viewLifecycleOwner,
                     { result ->
                         result.onSuccess {
-                            binding.sortByView.text = it.toString().capitalize(Locale.getDefault())
+                            binding.sortByView.text = it.toString()
+                                    .toLowerCase(Locale.getDefault())
+                                    .capitalize(Locale.getDefault())
                         }
                     }
             )

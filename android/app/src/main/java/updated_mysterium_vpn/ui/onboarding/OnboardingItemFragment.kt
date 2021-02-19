@@ -58,6 +58,11 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
             contentTitle.text = resources.getString(onboardingScreen.contentTitleRes)
             contentDescription.text = resources.getString(onboardingScreen.contentDescriptionRes)
             animationView.setAnimation(onboardingScreen.animationRes)
+            if (onboardingScreen.additionalTopTitleRes != null) {
+                additionalTitleTextView.text = resources.getString(onboardingScreen.additionalTopTitleRes)
+            } else {
+                additionalTitleTextView.visibility = View.INVISIBLE
+            }
         }
     }
 
