@@ -12,7 +12,7 @@
         app:contentInsetStart="0dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/toolbar_select_node" />
+        <include layout="@layout/toolbar_base_connect" />
 
     </androidx.appcompat.widget.Toolbar>
 

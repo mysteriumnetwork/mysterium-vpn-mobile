@@ -1,0 +1,16 @@
+package updated.mysterium.vpn.model.filter
+
+typealias FullNodeType = network.mysterium.proposal.NodeType
+
+enum class NodeType {
+    ALL, RESIDENTIAL, NON_RESIDENTIAL;
+
+    companion object {
+
+        fun parseFromFullNodeType(fullNodeType: FullNodeType) = when (fullNodeType) {
+            FullNodeType.RESIDENTIAL -> RESIDENTIAL
+            FullNodeType.CELLULAR -> RESIDENTIAL
+            else -> NON_RESIDENTIAL
+        }
+    }
+}

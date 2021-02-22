@@ -60,7 +60,7 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/onboarding_animation_1" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         style="@style/Widget.PrimaryCardView"
         android:layout_width="match_parent"
@@ -117,7 +117,7 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/skipButton"
