@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/nodesTitle"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar"
+        tools:text="Austria" />
+
+    <include
+        android:id="@+id/filters"
+        layout="@layout/filters_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        app:layout_constraintTop_toBottomOf="@+id/nodesTitle" />
+
+    <TextView
+        android:id="@+id/nodeTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:text="@string/manual_connect_node"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintStart_toStartOf="@+id/nodesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/filters" />
+
+    <TextView
+        android:id="@+id/priceTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_medium"
+        android:text="@string/manual_connect_price"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintEnd_toStartOf="@+id/qualityTextView"
+        app:layout_constraintTop_toBottomOf="@+id/filters" />
+
+    <TextView
+        android:id="@+id/qualityTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_xxlarge"
+        android:text="@string/manual_connect_quality"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintEnd_toEndOf="@id/nodesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/filters" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nodesRecyclerView"
+        style="@style/ScrollbarRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nodeTextView"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_node" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
