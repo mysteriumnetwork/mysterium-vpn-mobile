@@ -13,7 +13,6 @@ import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
-import updated_mysterium_vpn.ui.manual_connect.ManualConnectActivity
 import updated_mysterium_vpn.ui.onboarding.OnboardingActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -37,6 +36,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun navigateToOnboarding() {
         startActivity(Intent(this, OnboardingActivity::class.java))
+        finish()
     }
 
     private fun bindMysteriumService() {

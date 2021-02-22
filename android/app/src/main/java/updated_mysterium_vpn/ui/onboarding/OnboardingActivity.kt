@@ -2,7 +2,6 @@ package updated_mysterium_vpn.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -76,11 +75,6 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
 
     private fun skipOnboarding() {
         startActivity(Intent(this, ManualConnectActivity::class.java))
-        //TODO("Delete toast and implement skip functionality")
-    }
-
-    companion object {
-
-        private const val TAG = "OnboardingActivity"
+        finish()
     }
 }
