@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "dce6bb21a2437049678ea48ceab12f6b",
+    "identityHash": "e689bbc3382c98da282a11bb770c632f",
     "entities": [
       {
         "tableName": "NodeEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `provider_id` TEXT NOT NULL, `service_type` TEXT NOT NULL, `country_code` TEXT NOT NULL, `node_type` TEXT NOT NULL, `monitoring_failed` INTEGER NOT NULL, `payment_type` TEXT NOT NULL, `payment_amount` REAL NOT NULL, `currency` TEXT NOT NULL, `price_per_second` REAL NOT NULL, `price_per_byte` REAL NOT NULL, `quality_level` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `provider_id` TEXT NOT NULL, `service_type` TEXT NOT NULL, `country_code` TEXT NOT NULL, `node_type` TEXT NOT NULL, `monitoring_failed` INTEGER NOT NULL, `payment_type` TEXT NOT NULL, `payment_amount` REAL NOT NULL, `currency` TEXT NOT NULL, `price_per_second` REAL NOT NULL, `price_per_byte` REAL NOT NULL, `quality_level` INTEGER NOT NULL, `is_saved` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -79,6 +79,12 @@
             "columnName": "quality_level",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "isSaved",
+            "columnName": "is_saved",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -94,7 +100,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dce6bb21a2437049678ea48ceab12f6b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e689bbc3382c98da282a11bb770c632f')"
     ]
   }
 }

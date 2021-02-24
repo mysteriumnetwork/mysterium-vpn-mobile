@@ -1,24 +1,24 @@
-package updated.mysterium.vpn.ui.manual.connect.filter
+package updated.mysterium.vpn.ui.manual.connect.select.node.saved
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ItemNodeBinding
+import network.mysterium.vpn.databinding.ItemSavedNodeBinding
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
 
-class FilterAdapter : BaseNodeAdapter<ProposalModel, FilterAdapter.NodeListViewHolder>() {
+class SavedNodesAdapter : BaseNodeAdapter<ProposalModel, SavedNodesAdapter.SavedNodesViewHolder>() {
 
-    var isCountryNamedMode = false
+    var onDeleteClicked: ((ProposalModel) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = NodeListViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_node, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SavedNodesViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_saved_node, parent, false)
     )
 
-    inner class NodeListViewHolder(itemView: View) : BaseNodeViewHolder(itemView) {
+    inner class SavedNodesViewHolder(itemView: View) : BaseNodeViewHolder(itemView) {
 
-        val binding = ItemNodeBinding.bind(itemView)
+        val binding = ItemSavedNodeBinding.bind(itemView)
 
         override fun bindSingleItemInList(item: ProposalModel) {
             binding.itemContent.background = getSingleItemShape()
@@ -45,16 +45,14 @@ class FilterAdapter : BaseNodeAdapter<ProposalModel, FilterAdapter.NodeListViewH
         }
 
         override fun bind(item: ProposalModel) {
-            if (isCountryNamedMode) {
-                binding.nodeCountryTextView.visibility = View.VISIBLE
-                binding.nodeCountryTextView.text = item.countryName
-            } else {
-                binding.nodeCountryTextView.visibility = View.GONE
-            }
+            binding.nodeCountryTextView.text = item.countryName
             binding.nodeCodeTextView.text = item.providerID
             binding.nodeTypeImage.setImageDrawable(getNodeTypeDrawable(item.nodeType))
             binding.qualityImageView.setImageDrawable(getNodeQualityDrawable(item.qualityLevel))
             binding.priceImageView.setImageDrawable(getNodePriceDrawable(item.priceLevel))
+            binding.deleteImageView.setOnClickListener {
+                onDeleteClicked?.invoke(item)
+            }
         }
     }
 }

@@ -11,7 +11,8 @@ import updated.mysterium.vpn.database.AppDatabase
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
-import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeViewModel
+import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
+import updated.mysterium.vpn.ui.manual.connect.select.node.saved.SavedNodesViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 
 object Modules {
@@ -31,7 +32,7 @@ object Modules {
         }
 
         viewModel {
-            SelectNodeViewModel(get())
+            AllNodesViewModel(get())
         }
         viewModel {
             SplashViewModel(get(), get())
@@ -41,6 +42,9 @@ object Modules {
         }
         viewModel {
             FilterViewModel()
+        }
+        viewModel {
+            SavedNodesViewModel(get())
         }
     }
 
