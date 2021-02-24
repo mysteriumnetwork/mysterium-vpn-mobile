@@ -35,7 +35,7 @@ object Modules {
             AllNodesViewModel(get())
         }
         viewModel {
-            SplashViewModel(get(), get())
+            SplashViewModel(get())
         }
         viewModel {
             HomeViewModel(get())

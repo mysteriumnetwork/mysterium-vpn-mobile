@@ -1,6 +1,8 @@
 package updated.mysterium.vpn.ui.manual.connect.select.node.saved
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.FragmentSavedNodesBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 class SavedNodesFragment : Fragment() {
+
+    private companion object {
+        const val TAG = "SavedNodesFragment"
+    }
 
     private lateinit var binding: FragmentSavedNodesBinding
     private val viewModel: SavedNodesViewModel by inject()
@@ -30,8 +38,19 @@ class SavedNodesFragment : Fragment() {
     }
 
     private fun initSavedListRecycler() {
-        savedNodesAdapter.onDeleteClicked = {
-            viewModel.deleteNodeFromFavourite(it)
+        savedNodesAdapter.onProposalClicked = {
+            navigateToHome(it)
+        }
+        savedNodesAdapter.onDeleteClicked = { proposal ->
+            viewModel.deleteNodeFromFavourite(proposal).observe(viewLifecycleOwner, { result ->
+                result.onSuccess {
+                    getFavouritesList()
+                }
+                result.onFailure {
+                    Log.e(TAG, "Deleting failed")
+                    // TODO("Implement error handling")
+                }
+            })
         }
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -51,6 +70,13 @@ class SavedNodesFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun navigateToHome(proposalModel: ProposalModel) {
+        val intent = Intent(requireContext(), HomeActivity::class.java)
+        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposalModel)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
     }
 
     private fun deleteListTitles() {

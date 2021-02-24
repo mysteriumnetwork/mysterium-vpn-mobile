@@ -2,6 +2,7 @@ package updated.mysterium.vpn.network.provider.usecase
 
 import network.mysterium.service.core.NodeRepository
 import updated.mysterium.vpn.database.AppDatabase
+import updated.mysterium.vpn.network.usecase.ConnectionUseCase
 import updated.mysterium.vpn.network.usecase.LocationUseCase
 import updated.mysterium.vpn.network.usecase.NodesUseCase
 
@@ -13,4 +14,6 @@ class UseCaseProvider(
     fun nodes() = NodesUseCase(nodeRepository, database.nodeDao())
 
     fun location() = LocationUseCase(nodeRepository)
+
+    fun connection() = ConnectionUseCase(nodeRepository)
 }

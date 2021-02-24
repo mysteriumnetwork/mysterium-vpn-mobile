@@ -3,30 +3,29 @@ package network.mysterium
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class AppBroadcastReceiver : BroadcastReceiver() {
+@KoinApiExtension
+class AppBroadcastReceiver : BroadcastReceiver(), KoinComponent {
+
+    private val useCaseProvider: UseCaseProvider by inject()
+    private val connectionUseCase = useCaseProvider.connection()
+
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == AppNotificationManager.ACTION_DISCONNECT) {
-            handleDisconnect(context)
+            handleDisconnect()
         }
     }
 
-    private fun handleDisconnect(context: Context) {
+    private fun handleDisconnect() {
         CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val appContainer = (context.applicationContext as MainApplication).appContainer
-                appContainer.sharedViewModel.disconnect()
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to disconnect")
-            }
+            connectionUseCase.disconnect()
         }
-    }
-
-    companion object {
-        private const val TAG = "AppBroadcastReceiver"
     }
 }

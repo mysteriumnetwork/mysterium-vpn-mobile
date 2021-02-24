@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardSelectNodeLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="3">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectNodeManuallyButton"
+            style="@style/Widget.PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:text="@string/manual_connect_select_node" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.5"
+        android:src="@drawable/icon_attention"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        style="@style/TextAppearance.Caption"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        android:layout_weight="1.5"
+        android:text="@string/manual_connect_smart_unavailable"
+        android:textAlignment="center"
+        android:textColor="@color/manual_connect_attention_text_light_grey" />
+
+</LinearLayout>

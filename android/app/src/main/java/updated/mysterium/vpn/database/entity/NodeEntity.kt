@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import network.mysterium.service.core.ProposalItem
+import updated.mysterium.vpn.model.manual.connect.ProposalModel
 
 @Entity
 data class NodeEntity(
@@ -35,6 +36,22 @@ data class NodeEntity(
         pricePerSecond = proposalItem.payment.rate.perSeconds,
         pricePerByte = proposalItem.payment.rate.perBytes,
         qualityLevel = proposalItem.qualityLevel,
+        isSaved = isFavourite
+    )
+
+    constructor(proposalModel: ProposalModel, isFavourite: Boolean = false) : this(
+        id = proposalModel.providerID + proposalModel.serviceType,
+        providerID = proposalModel.providerID,
+        serviceType = proposalModel.serviceType.type,
+        countryCode = proposalModel.countryCode,
+        nodeType = proposalModel.nodeType.nodeType,
+        monitoringFailed = proposalModel.monitoringFailed,
+        paymentType = proposalModel.payment.type,
+        paymentAmount = proposalModel.payment.price.amount,
+        currency = proposalModel.payment.price.currency,
+        pricePerSecond = proposalModel.payment.rate.perSeconds,
+        pricePerByte = proposalModel.payment.rate.perBytes,
+        qualityLevel = proposalModel.qualityLevel.level,
         isSaved = isFavourite
     )
 }

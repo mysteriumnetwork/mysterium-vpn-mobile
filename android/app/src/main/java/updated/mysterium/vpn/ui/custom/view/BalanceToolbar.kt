@@ -19,6 +19,7 @@ class BalanceToolbar @JvmOverloads constructor(
     private var rightIconDrawable: Drawable? = null
     private var leftButtonListener: (() -> Unit)? = null
     private var rightButtonListener: (() -> Unit)? = null
+    private lateinit var binding: ToolbarBaseConnectBinding
 
     init {
         attrs?.let {
@@ -32,6 +33,20 @@ class BalanceToolbar @JvmOverloads constructor(
             .inflate(R.layout.toolbar_base_connect, this, false)
         inflateToolbarWithIcons(toolbarView)
         addView(toolbarView)
+    }
+
+    fun setLeftIcon(drawable: Drawable?) {
+        drawable?.let {
+            binding.leftButton.setImageDrawable(it)
+            binding.leftButton.visibility = View.VISIBLE
+        }
+    }
+
+    fun setRightIcon(drawable: Drawable?) {
+        drawable?.let {
+            binding.rightButton.setImageDrawable(it)
+            binding.rightButton.visibility = View.VISIBLE
+        }
     }
 
     fun onLeftButtonClicked(action: () -> Unit) {
@@ -56,7 +71,7 @@ class BalanceToolbar @JvmOverloads constructor(
     }
 
     private fun inflateToolbarWithIcons(toolbarView: View) {
-        val binding = ToolbarBaseConnectBinding.bind(toolbarView)
+        binding = ToolbarBaseConnectBinding.bind(toolbarView)
         leftIconDrawable?.let {
             binding.leftButton.setImageDrawable(it)
             binding.leftButton.visibility = View.VISIBLE

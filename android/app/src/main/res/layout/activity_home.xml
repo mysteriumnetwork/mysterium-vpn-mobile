@@ -10,14 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftIcon="@drawable/icon_menu"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_menu" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -31,16 +31,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
 
-    <ImageView
-        android:id="@+id/securityStatusImageView"
+    <FrameLayout
+        android:id="@+id/securityStatusView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/short_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+
+        <ImageView
+            android:id="@+id/securityStatusImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/short_divider"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/securityStatusTextView"
+            style="@style/TextAppearance.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/manual_connect_protected"
+            android:textColor="@android:color/white"
+            android:visibility="invisible" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/ipTextView"
@@ -51,7 +68,7 @@
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/securityStatusImageView"
+        app:layout_constraintTop_toBottomOf="@+id/securityStatusView"
         tools:text="185.358.45.304" />
 
     <TextView
@@ -69,20 +86,19 @@
 
     <ImageView
         android:id="@+id/appLogoView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
         android:layout_marginVertical="@dimen/margin_padding_size_medium"
-        android:layout_weight="1"
         android:src="@drawable/home_logo"
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectionTypeTextView"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/selectNodeCardView"
-        style="@style/Widget.PrimaryCardView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
@@ -92,50 +108,126 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/connectedNodeInfo"
+            android:visibility="invisible"
+            style="@style/Widget.SemiTransparentCardView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/centerGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.45" />
+
+                <TextView
+                    android:id="@+id/nodeType"
+                    style="@style/TextAppearance.Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Data center" />
+
+                <ImageView
+                    android:id="@+id/divider1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium"
+                    android:src="@drawable/vertical_divider"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintStart_toEndOf="@+id/nodeType"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/nodeProvider"
+                    style="@style/TextAppearance.Info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                    android:maxLines="1"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintEnd_toStartOf="@+id/divider2"
+                    app:layout_constraintStart_toEndOf="@+id/divider1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0x28358e2a89d02" />
+
+                <ImageView
+                    android:id="@+id/divider2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                    android:src="@drawable/vertical_divider"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintEnd_toStartOf="@+id/pricePerHour"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/pricePerHour"
+                    style="@style/TextAppearance.Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintEnd_toStartOf="@+id/divider3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0.0001/h" />
+
+                <ImageView
+                    android:id="@+id/divider3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                    android:src="@drawable/vertical_divider"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintEnd_toStartOf="@+id/pricePerGigabyte"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/pricePerGigabyte"
+                    style="@style/TextAppearance.Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_padding_size_large"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/centerGuideline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0.07/Gib" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/selectNodeCardView"
+            style="@style/Widget.PrimaryCardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="3">
+            android:layout_marginTop="@dimen/margin_padding_size_xxlarge">
 
-            <FrameLayout
+            <updated.mysterium.vpn.ui.custom.view.ConnectionState
+                android:id="@+id/connectionState"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_height="match_parent"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/selectNodeManuallyButton"
-                    style="@style/Widget.PrimaryButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                    android:text="@string/manual_connect_select_node" />
+        </com.google.android.material.card.MaterialCardView>
 
-            </FrameLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.5"
-                android:src="@drawable/icon_attention"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                style="@style/TextAppearance.Caption"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                android:layout_weight="1.5"
-                android:text="@string/manual_connect_smart_unavailable"
-                android:textAlignment="center"
-                android:textColor="@color/manual_connect_attention_text_light_grey" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/selectAnotherNodeButton"

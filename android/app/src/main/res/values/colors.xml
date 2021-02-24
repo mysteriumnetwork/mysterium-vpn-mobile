@@ -21,4 +21,10 @@
     <color name="manual_connect_filter_background_white">#0DFFFFFF</color>
     <color name="manual_connect_filter_borders_white">#20FFFFFF</color>
     <color name="manual_connect_country_dark_blue">#503C3857</color>
+    <color name="manual_connect_connecting_title_grey_blue">#5A597D</color>
+    <color name="manual_connect_country_name_dark_blue">#3C3857</color>
+    <color name="manual_connect_card_view_light_blue">#F4F4FC</color>
+    <color name="manual_connect_connected_button_dark_blue">#5A597D</color>
+    <color name="manual_connect_info_text_grey_blue">#8387A4</color>
+    <color name="manual_connect_time_format_grey_blue">#8386A4</color>
 </resources>
