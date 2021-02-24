@@ -25,7 +25,29 @@ data class ProposalModel(
     val countryFlagImage: Bitmap?,
     val qualityLevel: QualityLevel,
     val countryName: String
-): Parcelable {
+) : Parcelable {
+
+    constructor(nodeEntity: NodeEntity) : this(
+        id = nodeEntity.id,
+        providerID = nodeEntity.providerID,
+        serviceType = ServiceType.parse(nodeEntity.serviceType),
+        countryCode = nodeEntity.countryCode.toLowerCase(Locale.ROOT),
+        nodeType = NodeType.parse(nodeEntity.nodeType),
+        monitoringFailed = nodeEntity.monitoringFailed,
+        payment = ProposalPaymentMethod(
+            type = nodeEntity.paymentType,
+            price = ProposalPaymentMoney(nodeEntity.paymentAmount, nodeEntity.currency),
+            rate = ProposalPaymentRate(nodeEntity.pricePerSecond, nodeEntity.pricePerByte)
+        ),
+        countryFlagImage = Countries.bitmaps.getOrDefault(
+            nodeEntity.countryCode.toLowerCase(Locale.ROOT),
+            null
+        ),
+        qualityLevel = QualityLevel.parse(nodeEntity.qualityLevel),
+        countryName = Countries
+            .values[nodeEntity.countryCode.toLowerCase(Locale.ROOT)]
+            ?.name ?: "Unknown"
+    )
 
     var priceLevel = PriceLevel.MEDIUM
         private set
@@ -48,35 +70,6 @@ data class ProposalModel(
             else -> {
                 PriceLevel.HIGH
             }
-        }
-    }
-
-    companion object {
-
-        fun createProposalFromNode(nodeEntity: NodeEntity): ProposalModel {
-            val countryCode = nodeEntity.countryCode.toLowerCase(Locale.ROOT)
-            val payment = ProposalPaymentMethod(
-                type = nodeEntity.paymentType,
-                price = ProposalPaymentMoney(nodeEntity.paymentAmount, nodeEntity.currency),
-                rate = ProposalPaymentRate(nodeEntity.pricePerSecond, nodeEntity.pricePerByte)
-            )
-            val countryFlagImage = if (Countries.bitmaps.contains(countryCode)) {
-                Countries.bitmaps[countryCode]
-            } else {
-                null
-            }
-            return ProposalModel(
-                id = nodeEntity.id,
-                providerID = nodeEntity.providerID,
-                serviceType = ServiceType.parse(nodeEntity.serviceType),
-                countryCode = countryCode,
-                nodeType = NodeType.parse(nodeEntity.nodeType),
-                monitoringFailed = nodeEntity.monitoringFailed,
-                payment = payment,
-                countryFlagImage = countryFlagImage,
-                qualityLevel = QualityLevel.parse(nodeEntity.qualityLevel),
-                countryName = Countries.values[countryCode]?.name ?: "Unknown"
-            )
         }
     }
 }

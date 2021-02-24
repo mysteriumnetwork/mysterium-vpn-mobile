@@ -6,11 +6,8 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_country_nodes.view.*
-import kotlinx.android.synthetic.main.item_country_nodes.view.divider
-import kotlinx.android.synthetic.main.item_country_nodes.view.itemContent
-import kotlinx.android.synthetic.main.item_country_nodes.view.lastItemMargin
 import network.mysterium.vpn.R
+import network.mysterium.vpn.databinding.ItemCountryNodesBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
 
@@ -36,65 +33,67 @@ class SelectNodeAdapter : ContentListAdapter<CountryNodesModel, SelectNodeAdapte
 
     inner class CountrySelectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        val binding = ItemCountryNodesBinding.bind(itemView)
+
         fun bindSingleItemInList(proposal: CountryNodesModel) {
-            itemView.itemContent.background = ResourcesCompat.getDrawable(
+            binding.itemContent.background = ResourcesCompat.getDrawable(
                 itemView.context.resources,
                 R.drawable.shape_rounded_card_view,
                 null
             )
-            itemView.lastItemMargin.visibility = View.VISIBLE
-            itemView.divider.visibility = View.GONE
+            binding.lastItemMargin.visibility = View.VISIBLE
+            binding.divider.visibility = View.GONE
             bind(proposal)
         }
 
         fun bindFirstItem(proposal: CountryNodesModel) {
-            itemView.itemContent.background = ResourcesCompat.getDrawable(
+            binding.itemContent.background = ResourcesCompat.getDrawable(
                 itemView.context.resources,
                 R.drawable.shape_top_rounded,
                 null
             )
-            itemView.lastItemMargin.visibility = View.GONE
-            itemView.divider.visibility = View.VISIBLE
+            binding.lastItemMargin.visibility = View.GONE
+            binding.divider.visibility = View.VISIBLE
             bind(proposal)
         }
 
         fun bindLastItem(proposal: CountryNodesModel) {
-            itemView.itemContent.background = ResourcesCompat.getDrawable(
+            binding.itemContent.background = ResourcesCompat.getDrawable(
                 itemView.context.resources,
                 R.drawable.shape_bottom_rounded,
                 null
             )
-            itemView.lastItemMargin.visibility = View.VISIBLE
-            itemView.divider.visibility = View.GONE
+            binding.lastItemMargin.visibility = View.VISIBLE
+            binding.divider.visibility = View.GONE
             bind(proposal)
         }
 
         fun bindMiddleItem(proposal: CountryNodesModel) {
-            itemView.itemContent.background = ResourcesCompat.getDrawable(
+            binding.itemContent.background = ResourcesCompat.getDrawable(
                 itemView.context.resources,
                 R.drawable.shape_square,
                 null
             )
-            itemView.lastItemMargin.visibility = View.GONE
-            itemView.divider.visibility = View.VISIBLE
+            binding.lastItemMargin.visibility = View.GONE
+            binding.divider.visibility = View.VISIBLE
             bind(proposal)
         }
 
         private fun bind(proposal: CountryNodesModel) {
             if (proposal.countryCode == ALL_COUNTRY_CODE) {
-                itemView.countryName.text = itemView.context.getString(R.string.manual_connect_all_countries)
+                binding.countryName.text = itemView.context.getString(R.string.manual_connect_all_countries)
                 Glide.with(itemView.context)
                     .load(proposal.countryFlagRes)
                     .circleCrop()
-                    .into(itemView.countryImage)
+                    .into(binding.countryImage)
             } else {
-                itemView.countryName.text = proposal.countryName
+                binding.countryName.text = proposal.countryName
                 Glide.with(itemView.context)
                     .load(proposal.proposalList.first().countryFlagImage)
                     .circleCrop()
-                    .into(itemView.countryImage)
+                    .into(binding.countryImage)
             }
-            itemView.countryNodesCount.text = proposal.proposalList.size.toString()
+            binding.countryNodesCount.text = proposal.proposalList.size.toString()
             itemView.setOnClickListener { onCountryClickListener?.invoke(proposal) }
         }
     }

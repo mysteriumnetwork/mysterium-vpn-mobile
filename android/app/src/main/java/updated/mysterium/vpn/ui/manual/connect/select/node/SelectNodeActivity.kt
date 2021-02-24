@@ -30,7 +30,7 @@ class SelectNodeActivity : BaseConnectActivity() {
         getProposalList()
     }
 
-    override fun reUseToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
+    override fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
         changeRightIcon(R.drawable.icon_search)
         if (toolbarBinding.root.parent != null) {
             (toolbarBinding.root.parent as ViewGroup).removeView(toolbarBinding.root)

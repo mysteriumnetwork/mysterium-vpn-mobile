@@ -8,5 +8,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val locationUseCase = useCaseProvider.location()
 
-    fun getLocation() = liveDataResult { locationUseCase.getLocation() }
+    fun getLocation() = liveDataResult {
+        locationUseCase.getLocation()
+    }
 }
