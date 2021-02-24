@@ -88,6 +88,24 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <!--  RoundedSemiTransparentButton  -->
+    <style name="Widget.RoundedSemiTransparentButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:background">@drawable/shape_rounded_semi_transparent</item>
+        <item name="backgroundTint">@color/manual_connect_track_background_white</item>
+        <item name="android:textColor">@color/manual_connect_subtitle_white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.RoundedSemiTransparentButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <!--  TextButton -->
     <style name="Widget.TextButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.PrimaryButton</item>
@@ -140,6 +158,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TextAppearance.BodyBold" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="TextAppearance.BodyMedium" parent="TextAppearance.AppCompat.Headline">
         <item name="fontFamily">@font/roboto_medium</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
@@ -159,12 +183,26 @@
     </style>
 
     <!--  CardViewStyle  -->
-    <style name="Widget.PrimaryCardView" parent="Base.CardView">
+    <style name="Widget.PrimaryCardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">20dp</item>
         <item name="cardElevation">0dp</item>
         <item name="cardBackgroundColor">@android:color/white</item>
     </style>
-    
+
+    <style name="Widget.SemiTransparentCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/common_icon_background_white</item>
+    </style>
+
+    <style name="Widget.BordersCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/manual_connect_filter_borders_white</item>
+        <item name="cardBackgroundColor">@color/manual_connect_filter_background_white</item>
+    </style>
+
     <!--  TabLayoutStyle -->
     <style name="FloatTabLayout" parent="Widget.Design.TabLayout">
         <item name="android:background">@android:color/transparent</item>
@@ -172,10 +210,15 @@
         <item name="tabIndicator">@null</item>
     </style>
 
-    <style name="Widget.SemiTransparentCardView2" parent="Base.CardView">
-        <item name="cardCornerRadius">20dp</item>
-        <item name="cardElevation">0dp</item>
-        <item name="cardBackgroundColor">@color/common_icon_background_white</item>
+    <!--  RecyclerViewStyle  -->
+    <style name="ScrollbarRecyclerView">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarSize">0dp</item>
+        <item name="android:scrollbarStyle">outsideInset</item>
+        <item name="android:scrollbarThumbVertical">@drawable/thumb_drawable</item>
+        <item name="android:scrollbarTrackVertical">@drawable/track_drawable</item>
+        <item name="android:scrollbars">vertical</item>
     </style>
 
 </resources>

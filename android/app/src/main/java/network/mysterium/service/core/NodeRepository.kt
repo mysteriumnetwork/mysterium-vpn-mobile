@@ -1,8 +1,10 @@
 package network.mysterium.service.core
 
+import android.os.Parcelable
 import android.util.Log
 import com.beust.klaxon.Json
 import com.beust.klaxon.Klaxon
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
@@ -12,95 +14,98 @@ import java.math.BigDecimal
 import java.math.RoundingMode.*
 
 class ProposalItem(
-        @Json(name = "providerId")
-        val providerID: String,
+    @Json(name = "providerId")
+    val providerID: String,
 
-        @Json(name = "serviceType")
-        val serviceType: String,
+    @Json(name = "serviceType")
+    val serviceType: String,
 
-        @Json(name = "countryCode")
-        val countryCode: String,
+    @Json(name = "countryCode")
+    val countryCode: String,
 
-        @Json(name = "qualityLevel")
-        val qualityLevel: Int,
+    @Json(name = "qualityLevel")
+    val qualityLevel: Int,
 
-        @Json(name = "nodeType")
-        val nodeType: String = "",
+    @Json(name = "nodeType")
+    val nodeType: String = "",
 
-        @Json(name = "monitoringFailed")
-        val monitoringFailed: Boolean,
+    @Json(name = "monitoringFailed")
+    val monitoringFailed: Boolean,
 
-        @Json(name = "payment")
-        val payment: ProposalPaymentMethod
+    @Json(name = "payment")
+    val payment: ProposalPaymentMethod
 )
 
+@Parcelize
 class ProposalPaymentMethod(
-        @Json(name = "type")
-        val type: String,
+    @Json(name = "type")
+    val type: String,
 
-        @Json(name = "price")
-        val price: ProposalPaymentMoney,
+    @Json(name = "price")
+    val price: ProposalPaymentMoney,
 
-        @Json(name = "rate")
-        val rate: ProposalPaymentRate
-)
+    @Json(name = "rate")
+    val rate: ProposalPaymentRate
+) : Parcelable
 
+@Parcelize
 class ProposalPaymentMoney(
-        @Json(name = "amount")
-        val amount: Double,
+    @Json(name = "amount")
+    val amount: Double,
 
-        @Json(name = "currency")
-        val currency: String
-)
+    @Json(name = "currency")
+    val currency: String
+): Parcelable
 
+@Parcelize
 class ProposalPaymentRate(
-        @Json(name = "perSeconds")
-        val perSeconds: Double,
+    @Json(name = "perSeconds")
+    val perSeconds: Double,
 
-        @Json(name = "perBytes")
-        val perBytes: Double
-)
+    @Json(name = "perBytes")
+    val perBytes: Double
+): Parcelable
 
 class ProposalsResponse(
-        @Json(name = "proposals")
-        val proposals: List<ProposalItem>?
+    @Json(name = "proposals")
+    val proposals: List<ProposalItem>?
 )
 
 class ProposalResponse(
-        @Json(name = "proposal")
-        val proposal: ProposalItem?
+    @Json(name = "proposal")
+    val proposal: ProposalItem?
 )
 
 class Statistics(
-        val duration: Long,
-        val bytesReceived: Long,
-        val bytesSent: Long,
-        val tokensSpent: Double
+    val duration: Long,
+    val bytesReceived: Long,
+    val bytesSent: Long,
+    val tokensSpent: Double
 )
 
 class Location(
-        val ip: String,
-        val countryCode: String
+    val ip: String,
+    val countryCode: String
 )
 
 class Status(
-        val state: String,
-        val providerID: String,
-        val serviceType: String
+    val state: String,
+    val providerID: String,
+    val serviceType: String
 )
 
 class Identity(
-        val address: String,
-        val channelAddress: String,
-        val registrationStatus: String
+    val address: String,
+    val channelAddress: String,
+    val registrationStatus: String
 )
 
 class IdentityRegistrationFees(
-        val fee: Double
+    val fee: Double
 )
 
 class HealthData(
-        val version: String
+    val version: String
 )
 
 class PriceSettings(config: ConsumerPaymentConfig) {
@@ -113,13 +118,13 @@ class PriceSettings(config: ConsumerPaymentConfig) {
 
     init {
         val perGibDecimal = config.pricePerGIBMax
-                .toBigDecimal()
-                .divide(DECIMAL_PART.toBigDecimal())
+            .toBigDecimal()
+            .divide(DECIMAL_PART.toBigDecimal())
         perGibMax = perGibDecimal
         defaultPerGib = perGibDecimal.divide(2.toBigDecimal())
         val perMinuteDecimal = config.pricePerMinuteMax
-                .toBigDecimal()
-                .divide(DECIMAL_PART.toBigDecimal())
+            .toBigDecimal()
+            .divide(DECIMAL_PART.toBigDecimal())
         perMinuteMax = perMinuteDecimal
         defaultMinute = perMinuteDecimal.divide(2.toBigDecimal())
 
@@ -260,8 +265,8 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun location() = withContext(Dispatchers.IO) {
         val res = deferredNode.await().location
         Location(
-                ip = res.ip,
-                countryCode = res.country
+            ip = res.ip,
+            countryCode = res.country
         )
     }
 
@@ -269,9 +274,9 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun status() = withContext(Dispatchers.IO) {
         val res = deferredNode.await().status
         Status(
-                state = res.state,
-                providerID = res.providerID,
-                serviceType = res.serviceType
+            state = res.state,
+            providerID = res.providerID,
+            serviceType = res.serviceType
         )
     }
 
@@ -284,7 +289,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun healthCheck() = withContext(Dispatchers.IO) {
         val hz = deferredNode.await().healthCheck()
         HealthData(
-                version = hz.version
+            version = hz.version
         )
     }
 

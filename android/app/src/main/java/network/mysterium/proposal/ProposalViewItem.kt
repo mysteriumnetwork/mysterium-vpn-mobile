@@ -99,9 +99,9 @@ class ProposalViewItem constructor(
 
         private fun mapQualityLevelResourceID(qualityLevel: QualityLevel): Int {
             return when(qualityLevel) {
-                QualityLevel.HIGH -> R.drawable.quality_high
-                QualityLevel.MEDIUM -> R.drawable.quality_medium
-                QualityLevel.LOW -> R.drawable.quality_low
+                QualityLevel.HIGH -> R.drawable.filter_quality_high
+                QualityLevel.MEDIUM -> R.drawable.filter_quality_medium
+                QualityLevel.LOW -> R.drawable.filter_quality_low
                 QualityLevel.UNKNOWN -> R.drawable.quality_unknown
             }
         }

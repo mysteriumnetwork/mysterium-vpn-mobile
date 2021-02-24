@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centralVerticalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@drawable/icon_back"
+        app:rightIcon="@drawable/icon_search"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manual_connect_country_select_title"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/allNodesImageButton"
+        style="@style/Widget.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_padding_size_medium"
+        android:background="@drawable/shape_all_nodes"
+        android:backgroundTint="@color/primary"
+        android:text="@string/manual_connect_all_nodes"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toStartOf="@+id/centralVerticalGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/savedImageButton"
+        style="@style/Widget.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:background="@drawable/shape_saved_nodes"
+        android:text="@string/manual_connect_saved_nodes"
+        app:layout_constraintStart_toEndOf="@+id/centralVerticalGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/countriesTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:text="@string/manual_connect_counties_label"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savedImageButton" />
+
+    <TextView
+        android:id="@+id/sortByView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_large"
+        android:text="@string/manual_connect_nodes_label"
+        android:textColor="@color/manual_connect_value_white"
+        app:drawableStartCompat="@drawable/semi_transparent_arrow_drop_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savedImageButton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nodesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        android:clipToPadding="false"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="0dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@drawable/thumb_drawable"
+        android:scrollbarTrackVertical="@drawable/track_drawable"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sortByView"
+        tools:ignore="RtlSymmetry"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_country_nodes" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
