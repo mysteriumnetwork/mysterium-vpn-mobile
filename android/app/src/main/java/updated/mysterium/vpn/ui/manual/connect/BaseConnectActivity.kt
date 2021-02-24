@@ -10,7 +10,7 @@ abstract class BaseConnectActivity : AppCompatActivity() {
 
     private lateinit var toolbarBinding: ToolbarBaseConnectBinding
 
-    abstract fun reUseToolbar(toolbarBinding: ToolbarBaseConnectBinding)
+    abstract fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +21,7 @@ abstract class BaseConnectActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        reUseToolbar(toolbarBinding)
+        configureToolbar(toolbarBinding)
     }
 
     open fun leftToolbarButtonClicked() {

@@ -2,7 +2,7 @@ package updated.mysterium.vpn.ui.manual.connect.filter
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import updated.mysterium.vpn.common.extensions.liveDataResult
+import androidx.lifecycle.liveData
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
@@ -25,34 +25,38 @@ class FilterViewModel : ViewModel() {
         _proposalsList.value = getFilteredProposalList()
     }
 
-    fun onNodeTypeClicked() = liveDataResult {
+    fun onNodeTypeClicked() = liveData<NodeType> {
         nodeFilter.onTypeChanged()
         _proposalsList.value = getFilteredProposalList()
         nodeFilter.typeFilter
     }
 
-    fun onNodePriceClicked() = liveDataResult {
+    fun onNodePriceClicked() = liveData<NodePrice> {
         nodeFilter.onPriceChanged()
         _proposalsList.value = getFilteredProposalList()
         nodeFilter.priceFilter
     }
 
-    fun onNodeQualityClicked() = liveDataResult {
+    fun onNodeQualityClicked() = liveData<NodeQuality> {
         nodeFilter.onQualityChanged()
         _proposalsList.value = getFilteredProposalList()
         nodeFilter.qualityFilter
     }
 
     private fun getFilteredProposalList() = nodesModel.proposalList
-        .filter { filterByType(it) }
-        .filter { filterByPrice(it) }
-        .filter { filterByQuality(it) }
+        .filter {
+            filterByType(it)
+        }.filter {
+            filterByPrice(it)
+        }.filter {
+            filterByQuality(it)
+        }
 
     private fun filterByType(proposalModel: ProposalModel): Boolean {
         return if (nodeFilter.typeFilter == NodeType.ALL) {
             true
         } else {
-            NodeType.parseFromFullNodeType(proposalModel.nodeType) == nodeFilter.typeFilter
+            NodeType.from(proposalModel.nodeType) == nodeFilter.typeFilter
         }
     }
 
@@ -61,12 +65,12 @@ class FilterViewModel : ViewModel() {
         return if (nodeFilter.priceFilter == NodePrice.HIGH || currentNodePrice == PriceLevel.FREE) {
             true
         } else {
-            NodePrice.parseFromPriceLevel(currentNodePrice) == nodeFilter.priceFilter
+            NodePrice.from(currentNodePrice) == nodeFilter.priceFilter
         }
     }
 
     private fun filterByQuality(proposalModel: ProposalModel): Boolean {
-        val currentNodeQuality = NodeQuality.parseFromQualityLevel(proposalModel.qualityLevel)
+        val currentNodeQuality = NodeQuality.from(proposalModel.qualityLevel)
         return when (nodeFilter.qualityFilter) {
             NodeQuality.LOW -> true
             NodeQuality.MEDIUM -> {

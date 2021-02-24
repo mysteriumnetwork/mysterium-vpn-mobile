@@ -37,7 +37,7 @@ class FilterActivity : BaseConnectActivity() {
         getNodesList()
     }
 
-    override fun reUseToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
+    override fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
         changeRightIcon(R.drawable.icon_search)
         if (toolbarBinding.root.parent != null) {
             (toolbarBinding.root.parent as ViewGroup).removeView(toolbarBinding.root)
@@ -66,22 +66,19 @@ class FilterActivity : BaseConnectActivity() {
 
     private fun bindsActions() {
         binding.filters.typeCardView.setOnClickListener {
-            viewModel.onNodeTypeClicked().observe(
-                this,
-                { result -> result.onSuccess { changeNodeTypeView(it) } }
-            )
+            viewModel.onNodeTypeClicked().observe(this, {
+                changeNodeTypeView(it)
+            })
         }
         binding.filters.priceCardView.setOnClickListener {
-            viewModel.onNodePriceClicked().observe(
-                this,
-                { result -> result.onSuccess { changeNodePriceView(it) } }
-            )
+            viewModel.onNodePriceClicked().observe(this, {
+                changeNodePriceView(it)
+            })
         }
         binding.filters.qualityCardView.setOnClickListener {
-            viewModel.onNodeQualityClicked().observe(
-                this,
-                { result -> result.onSuccess { changeNodeQualityView(it) } }
-            )
+            viewModel.onNodeQualityClicked().observe(this, {
+                changeNodeQualityView(it)
+            })
         }
     }
 

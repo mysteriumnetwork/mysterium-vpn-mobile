@@ -9,23 +9,39 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.database.AppDatabase
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.manual.connect.filter.FilterViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeViewModel
-import updated.mysterium.vpn.ui.manual.connect.filter.FilterViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 
 object Modules {
 
     val main = module {
-        single { provideDatabase(androidContext()) }
-        single { DeferredNode() }
-        single { NodeRepository(get()) }
-        single { UseCaseProvider(get(), get()) }
+        single {
+            provideDatabase(androidContext())
+        }
+        single {
+            DeferredNode()
+        }
+        single {
+            NodeRepository(get())
+        }
+        single {
+            UseCaseProvider(get(), get())
+        }
 
-        viewModel { SelectNodeViewModel(get()) }
-        viewModel { SplashViewModel(get(), get()) }
-        viewModel { HomeViewModel(get()) }
-        viewModel { FilterViewModel() }
+        viewModel {
+            SelectNodeViewModel(get())
+        }
+        viewModel {
+            SplashViewModel(get(), get())
+        }
+        viewModel {
+            HomeViewModel(get())
+        }
+        viewModel {
+            FilterViewModel()
+        }
     }
 
     private fun provideDatabase(context: Context) = Room.databaseBuilder(

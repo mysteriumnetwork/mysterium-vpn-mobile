@@ -21,21 +21,18 @@ data class NodeEntity(
     @ColumnInfo(name = "quality_level") var qualityLevel: Int,
 ) {
 
-    companion object {
-
-        fun createNodeFromProposal(proposalItem: ProposalItem) = NodeEntity(
-            id = proposalItem.providerID + proposalItem.serviceType,
-            providerID = proposalItem.providerID,
-            serviceType = proposalItem.serviceType,
-            countryCode = proposalItem.countryCode,
-            nodeType = proposalItem.nodeType,
-            monitoringFailed = proposalItem.monitoringFailed,
-            paymentType = proposalItem.payment.type,
-            paymentAmount = proposalItem.payment.price.amount,
-            currency = proposalItem.payment.price.currency,
-            pricePerSecond = proposalItem.payment.rate.perSeconds,
-            pricePerByte = proposalItem.payment.rate.perBytes,
-            qualityLevel = proposalItem.qualityLevel
-        )
-    }
+    constructor(proposalItem: ProposalItem) : this(
+        id = proposalItem.providerID + proposalItem.serviceType,
+        providerID = proposalItem.providerID,
+        serviceType = proposalItem.serviceType,
+        countryCode = proposalItem.countryCode,
+        nodeType = proposalItem.nodeType,
+        monitoringFailed = proposalItem.monitoringFailed,
+        paymentType = proposalItem.payment.type,
+        paymentAmount = proposalItem.payment.price.amount,
+        currency = proposalItem.payment.price.currency,
+        pricePerSecond = proposalItem.payment.rate.perSeconds,
+        pricePerByte = proposalItem.payment.rate.perBytes,
+        qualityLevel = proposalItem.qualityLevel
+    )
 }

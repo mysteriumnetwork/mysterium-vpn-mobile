@@ -23,7 +23,7 @@ class HomeActivity : BaseConnectActivity() {
         bindsAction()
     }
 
-    override fun reUseToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
+    override fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
         changeLeftIcon(R.drawable.icon_menu)
         if (toolbarBinding.root.parent != null) {
             (toolbarBinding.root.parent as ViewGroup).removeView(toolbarBinding.root)

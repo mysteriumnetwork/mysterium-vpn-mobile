@@ -13,6 +13,11 @@ class NodesUseCase(
     private val nodeDao: NodeDao
 ) {
 
+    private companion object {
+        const val SERVICE_TYPE = "wireguard"
+        const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
+    }
+
     suspend fun getAllInitialNodes(): List<NodeEntity> {
         val proposalsRequest = GetProposalsRequest().apply {
             this.refresh = refresh
@@ -20,7 +25,7 @@ class NodesUseCase(
             serviceType = SERVICE_TYPE
         }
         return nodeRepository.proposals(proposalsRequest)
-            .map { NodeEntity.createNodeFromProposal(it) }
+            .map { NodeEntity(it) }
     }
 
     suspend fun saveAllInitialNodes(nodesList: List<NodeEntity>) {
@@ -43,7 +48,7 @@ class NodesUseCase(
         val firstPriceBorder = ((maxPricePerByte - minPricePerByte) / 3) + minPricePerByte
         val secondPriceBorder = (((maxPricePerByte - minPricePerByte) / 3) * 2) + minPricePerByte
         return allNodesList.map {
-            ProposalModel.createProposalFromNode(it).apply {
+            ProposalModel(it).apply {
                 calculatePriceLevel(
                     minPricePerByte,
                     firstPriceBorder,
@@ -84,10 +89,5 @@ class NodesUseCase(
                 }
             }
         return countryNodesList.toList()
-    }
-
-    companion object {
-        private const val SERVICE_TYPE = "wireguard"
-        private const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
     }
 }
