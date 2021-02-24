@@ -210,6 +210,17 @@
         <item name="tabIndicator">@null</item>
     </style>
 
+    <style name="CustomShapeTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="tabRippleColor">@null</item>
+        <item name="tabGravity">center</item>
+        <item name="tabIndicator">@null</item>
+        <item name="tabPaddingStart">0dp</item>
+        <item name="tabPaddingEnd">0dp</item>
+        <item name="tabPaddingTop">0dp</item>
+        <item name="tabPaddingBottom">0dp</item>
+    </style>
+
     <!--  RecyclerViewStyle  -->
     <style name="ScrollbarRecyclerView">
         <item name="android:clipToPadding">false</item>

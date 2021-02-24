@@ -10,15 +10,9 @@ class OnboardingViewPagerAdapter(
     fragmentActivity: FragmentActivity
 ) : FragmentStateAdapter(fragmentActivity) {
 
-    val items = ONBOARDING_SCREENS_LIST
+    private companion object {
 
-    override fun getItemCount() = ONBOARDING_SCREENS_LIST.size
-
-    override fun createFragment(position: Int) = OnboardingItemFragment.newInstance(items[position])
-
-    companion object {
-
-        private val ONBOARDING_SCREENS_LIST = listOf(
+        val ONBOARDING_SCREENS_LIST = listOf(
             OnboardingScreen(
                 position = 0,
                 topTitleRes = R.string.onboarding_main_title_1,
@@ -43,4 +37,10 @@ class OnboardingViewPagerAdapter(
             )
         )
     }
+
+    val items = ONBOARDING_SCREENS_LIST
+
+    override fun getItemCount() = ONBOARDING_SCREENS_LIST.size
+
+    override fun createFragment(position: Int) = OnboardingItemFragment.newInstance(items[position])
 }

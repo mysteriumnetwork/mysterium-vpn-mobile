@@ -42,7 +42,7 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
     }
 
     private fun initCustomViewPagerBehaviour() {
-        val onboardingAdapter = OnboardingViewPagerAdapter(this@OnboardingActivity)
+        val onboardingAdapter = OnboardingViewPagerAdapter(this)
         binding.descriptionsViewPager.apply {
             viewPager = this
             offscreenPageLimit = 1

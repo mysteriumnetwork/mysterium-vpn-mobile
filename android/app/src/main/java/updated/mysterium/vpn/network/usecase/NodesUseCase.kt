@@ -30,12 +30,18 @@ class NodesUseCase(
 
     suspend fun saveAllInitialNodes(nodesList: List<NodeEntity>) {
         nodeDao.apply {
-            deleteAll()
+            deleteAllUnsaved()
             insertAll(nodesList)
         }
     }
 
     suspend fun getAllSavedCountries() = mapNodesToCountriesGroups(nodeDao.getAllNodes())
+
+    suspend fun getFavourites() = createProposalList(nodeDao.getFavourites())
+
+    suspend fun deleteFromFavourite(proposalModel: ProposalModel) {
+        nodeDao.deleteFromFavourite(proposalModel.id)
+    }
 
     private fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodesModel> {
         val proposalList = createProposalList(allNodesList)

@@ -1,91 +1,119 @@
 package updated.mysterium.vpn.ui.manual.connect.select.node
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySelectBinding
-import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
-import updated.mysterium.vpn.ui.manual.connect.filter.FilterActivity
-import java.util.Locale
+import network.mysterium.vpn.databinding.ItemTabBinding
+import updated.mysterium.vpn.model.manual.connect.TabItemModel
 
 class SelectNodeActivity : AppCompatActivity() {
 
+    private companion object {
+
+        val TAB_ITEMS_CONTENT = listOf(
+            TabItemModel(
+                textResId = R.string.manual_connect_all_nodes,
+                selectedBackgroundResId = R.drawable.shape_all_nodes_selected,
+                unselectedBackgroundResId = R.drawable.shape_all_nodes_unselected
+            ),
+            TabItemModel(
+                textResId = R.string.manual_connect_saved_nodes,
+                selectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
+                unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected
+            )
+        )
+    }
+
     private lateinit var binding: ActivitySelectBinding
-    private val nodeViewModel: SelectNodeViewModel by inject()
-    private val countrySelectAdapter = SelectNodeAdapter()
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initProposalListRecycler()
         bindsAction()
-        getProposalList()
+        initViewPager()
+        iniTabLayout()
     }
 
-    private fun initProposalListRecycler() {
-        binding.nodesRecyclerView.apply {
-            countrySelectAdapter.onCountryClickListener = { navigateToNodeList(it) }
-            layoutManager = LinearLayoutManager(this@SelectNodeActivity)
-            adapter = countrySelectAdapter
+    @SuppressLint("InflateParams")
+    private fun iniTabLayout() {
+        for (index in 0..binding.chooseListTabLayout.tabCount) {
+            val tab = LayoutInflater.from(this).inflate(R.layout.item_tab, null)
+            val tabBinding = ItemTabBinding.bind(tab)
+            tabBinding.allNodesImageButton.text = resources.getString(TAB_ITEMS_CONTENT[index].textResId)
+            if (index == 0) {
+                tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                    this@SelectNodeActivity,
+                    (TAB_ITEMS_CONTENT[index].selectedBackgroundResId)
+                )
+            } else {
+                tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                    this@SelectNodeActivity,
+                    (TAB_ITEMS_CONTENT[index].unselectedBackgroundResId)
+                )
+            }
+            binding.chooseListTabLayout.getTabAt(index)?.customView = tab
         }
+        binding.chooseListTabLayout.addOnTabSelectedListener(
+
+            object : TabLayout.OnTabSelectedListener {
+
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.customView?.let {
+                        ItemTabBinding.bind(it)
+                            .allNodesImageButton
+                            .background = ContextCompat.getDrawable(
+                            this@SelectNodeActivity,
+                            (TAB_ITEMS_CONTENT[tab.position].selectedBackgroundResId)
+                        )
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    tab?.customView?.let {
+                        ItemTabBinding.bind(it)
+                            .allNodesImageButton
+                            .background = ContextCompat.getDrawable(
+                            this@SelectNodeActivity,
+                            (TAB_ITEMS_CONTENT[tab.position].unselectedBackgroundResId)
+                        )
+
+                    }
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    // empty
+                }
+            }
+        )
     }
 
     private fun bindsAction() {
-        binding.sortByView.setOnClickListener {
-            nodeViewModel.getSortedProposal().observe(
-                this,
-                { result ->
-                    result.onSuccess { proposalList ->
-                        countrySelectAdapter.replaceAll(proposalList)
-                    }
-
-                    result.onFailure { throwable ->
-                        Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                        // TODO("Replace for error dialog or something else")
-                    }
-                }
-            )
-            nodeViewModel.changeSortType().observe(
-                this,
-                { result ->
-                    result.onSuccess {
-                        binding.sortByView.text = it.toString()
-                            .toLowerCase(Locale.getDefault())
-                            .capitalize(Locale.getDefault())
-                    }
-                }
-            )
-        }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
         }
     }
 
-    private fun getProposalList() {
-        nodeViewModel.getInitialProposals().observe(
-            this,
-            {
-                it.onSuccess { proposalList ->
-                    countrySelectAdapter.replaceAll(proposalList)
-                }
-                it.onFailure { throwable ->
-                    Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                    // TODO("Replace for error dialog or something else")
-                }
-            })
+    private fun initViewPager() {
+        val nodesViewPagerAdapter = SelectNodePagerAdapter(this)
+        binding.nodesListViewPager.apply {
+            viewPager = this
+            adapter = nodesViewPagerAdapter
+        }
+        attachTabLayout()
     }
 
-    private fun navigateToNodeList(countryNodesModel: CountryNodesModel) {
-        FilterActivity.countryNodesModel = countryNodesModel
-        val intent = Intent(this, FilterActivity::class.java)
-        startActivity(intent)
-    }
-
-    companion object {
-        private const val TAG = "CountrySelectFragment"
+    private fun attachTabLayout() {
+        TabLayoutMediator(binding.chooseListTabLayout, viewPager) { tab, _ ->
+            viewPager.setCurrentItem(tab.position, true)
+        }.attach()
     }
 }
