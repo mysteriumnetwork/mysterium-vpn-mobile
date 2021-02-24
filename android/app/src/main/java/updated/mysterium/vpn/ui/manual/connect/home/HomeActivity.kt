@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.manual.connect.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityManualConnectBinding
@@ -11,6 +12,10 @@ import updated.mysterium.vpn.ui.manual.connect.BaseConnectActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 
 class HomeActivity : BaseConnectActivity() {
+
+    private companion object {
+        const val TAG = "HomeActivity"
+    }
 
     private lateinit var binding: ActivityManualConnectBinding
     private val viewModel: HomeViewModel by inject()
@@ -39,6 +44,11 @@ class HomeActivity : BaseConnectActivity() {
         viewModel.getLocation().observe(this, { result ->
             result.onSuccess {
                 binding.ipTextView.text = it.ip
+            }
+
+            result.onFailure {
+                Log.e(TAG, "Data loading failed")
+                // TODO("Implement error handling")
             }
         })
     }
