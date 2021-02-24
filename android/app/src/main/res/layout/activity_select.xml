@@ -12,12 +12,12 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <androidx.appcompat.widget.Toolbar
+    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentInsetEnd="0dp"
-        app:contentInsetStart="0dp"
+        app:leftIcon="@drawable/icon_back"
+        app:rightIcon="@drawable/icon_search"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView

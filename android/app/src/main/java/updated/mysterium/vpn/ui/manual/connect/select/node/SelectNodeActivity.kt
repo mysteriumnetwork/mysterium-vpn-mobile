@@ -3,39 +3,27 @@ package updated.mysterium.vpn.ui.manual.connect.select.node
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.FragmentCountrySelectBinding
-import network.mysterium.vpn.databinding.ToolbarBaseConnectBinding
+import network.mysterium.vpn.databinding.ActivitySelectBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
-import updated.mysterium.vpn.ui.manual.connect.BaseConnectActivity
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterActivity
-import java.util.*
+import java.util.Locale
 
+class SelectNodeActivity : AppCompatActivity() {
 
-class SelectNodeActivity : BaseConnectActivity() {
-
-    private lateinit var binding: FragmentCountrySelectBinding
+    private lateinit var binding: ActivitySelectBinding
     private val nodeViewModel: SelectNodeViewModel by inject()
     private val countrySelectAdapter = SelectNodeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentCountrySelectBinding.inflate(layoutInflater)
+        binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initProposalListRecycler()
         bindsAction()
         getProposalList()
-    }
-
-    override fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
-        changeRightIcon(R.drawable.icon_search)
-        if (toolbarBinding.root.parent != null) {
-            (toolbarBinding.root.parent as ViewGroup).removeView(toolbarBinding.root)
-        }
-        binding.manualConnectToolbar.addView(toolbarBinding.root)
     }
 
     private fun initProposalListRecycler() {
@@ -71,6 +59,9 @@ class SelectNodeActivity : BaseConnectActivity() {
                     }
                 }
             )
+        }
+        binding.manualConnectToolbar.onLeftButtonClicked {
+            finish()
         }
     }
 

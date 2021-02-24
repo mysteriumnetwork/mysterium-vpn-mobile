@@ -2,47 +2,37 @@ package updated.mysterium.vpn.ui.manual.connect.filter
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.FragmentNodeListBinding
-import network.mysterium.vpn.databinding.ToolbarBaseConnectBinding
+import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
-import updated.mysterium.vpn.ui.manual.connect.BaseConnectActivity
 
-class FilterActivity : BaseConnectActivity() {
+class FilterActivity : AppCompatActivity() {
 
     companion object {
 
         var countryNodesModel: CountryNodesModel? = null
     }
 
-    private lateinit var binding: FragmentNodeListBinding
+    private lateinit var binding: ActivityFilterBinding
     private val nodeListAdapter = FilterAdapter()
     private val viewModel: FilterViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentNodeListBinding.inflate(layoutInflater)
+        binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initProposalListRecycler()
         bindsActions()
         subscribeViewModel()
         getNodesList()
-    }
-
-    override fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
-        changeRightIcon(R.drawable.icon_search)
-        if (toolbarBinding.root.parent != null) {
-            (toolbarBinding.root.parent as ViewGroup).removeView(toolbarBinding.root)
-        }
-        binding.manualConnectToolbar.addView(toolbarBinding.root)
     }
 
     private fun getNodesList() {
@@ -79,6 +69,9 @@ class FilterActivity : BaseConnectActivity() {
             viewModel.onNodeQualityClicked().observe(this, {
                 changeNodeQualityView(it)
             })
+        }
+        binding.manualConnectToolbar.onLeftButtonClicked {
+            finish()
         }
     }
 

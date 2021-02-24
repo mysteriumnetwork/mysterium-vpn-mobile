@@ -3,41 +3,26 @@ package updated.mysterium.vpn.ui.manual.connect.home
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
-import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityManualConnectBinding
-import network.mysterium.vpn.databinding.ToolbarBaseConnectBinding
+import androidx.appcompat.app.AppCompatActivity
+import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.ui.manual.connect.BaseConnectActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 
-class HomeActivity : BaseConnectActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private companion object {
         const val TAG = "HomeActivity"
     }
 
-    private lateinit var binding: ActivityManualConnectBinding
+    private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityManualConnectBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadData()
         bindsAction()
-    }
-
-    override fun configureToolbar(toolbarBinding: ToolbarBaseConnectBinding) {
-        changeLeftIcon(R.drawable.icon_menu)
-        if (toolbarBinding.root.parent != null) {
-            (toolbarBinding.root.parent as ViewGroup).removeView(toolbarBinding.root)
-        }
-        binding.manualConnectToolbar.addView(toolbarBinding.root)
-    }
-
-    override fun leftToolbarButtonClicked() {
-        // TODO("Implement burger menu")
     }
 
     private fun loadData() {
