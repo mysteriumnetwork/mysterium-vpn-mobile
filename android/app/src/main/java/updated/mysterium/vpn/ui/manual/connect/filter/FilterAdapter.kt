@@ -11,6 +11,7 @@ import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
 class FilterAdapter : BaseNodeAdapter<ProposalModel, FilterAdapter.NodeListViewHolder>() {
 
     var isCountryNamedMode = false
+    var onNodeClickedListener: ((ProposalModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = NodeListViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_node, parent, false)
@@ -55,6 +56,9 @@ class FilterAdapter : BaseNodeAdapter<ProposalModel, FilterAdapter.NodeListViewH
             binding.nodeTypeImage.setImageDrawable(getNodeTypeDrawable(item.nodeType))
             binding.qualityImageView.setImageDrawable(getNodeQualityDrawable(item.qualityLevel))
             binding.priceImageView.setImageDrawable(getNodePriceDrawable(item.priceLevel))
+            binding.itemContent.setOnClickListener {
+                onNodeClickedListener?.invoke(item)
+            }
         }
     }
 }

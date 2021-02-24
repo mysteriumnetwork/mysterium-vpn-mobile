@@ -14,7 +14,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var sortType = SortType.NODE
 
     fun getInitialProposals(): LiveData<Result<List<CountryNodesModel>>> = liveDataResult {
-        cachedNodesList = nodesUseCase.getAllSavedCountries()
+        cachedNodesList = nodesUseCase.getAllCountries()
         cachedNodesList
     }
 

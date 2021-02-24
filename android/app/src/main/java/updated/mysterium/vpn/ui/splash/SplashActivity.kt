@@ -4,11 +4,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CompletableDeferred
+import network.mysterium.MainActivity
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.databinding.ActivitySplashBinding
@@ -16,6 +18,11 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 
 class SplashActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "SplashActivity"
+        private const val VPN_SERVICE_REQUEST = 1
+    }
 
     private lateinit var binding: ActivitySplashBinding
     private val viewModel: SplashViewModel by inject()
@@ -27,6 +34,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
         bindMysteriumService()
         subscribeViewModel()
+        ensureVpnServicePermission()
         viewModel.startLoading(deferredMysteriumCoreService)
     }
 
@@ -37,6 +45,11 @@ class SplashActivity : AppCompatActivity() {
     private fun navigateToOnboarding() {
         startActivity(Intent(this, OnboardingActivity::class.java))
         finish()
+    }
+
+    private fun ensureVpnServicePermission() {
+        val intent: Intent = VpnService.prepare(this) ?: return
+        startActivityForResult(intent, VPN_SERVICE_REQUEST)
     }
 
     private fun bindMysteriumService() {
@@ -57,9 +70,5 @@ class SplashActivity : AppCompatActivity() {
                 Context.BIND_AUTO_CREATE
             )
         }
-    }
-
-    companion object {
-        private const val TAG = "SplashActivity"
     }
 }

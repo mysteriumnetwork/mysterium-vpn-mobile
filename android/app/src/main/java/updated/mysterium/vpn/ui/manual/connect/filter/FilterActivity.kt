@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.manual.connect.filter
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,22 +9,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 class FilterActivity : AppCompatActivity() {
 
     companion object {
-
         var countryNodesModel: CountryNodesModel? = null
     }
 
     private lateinit var binding: ActivityFilterBinding
     private val nodeListAdapter = FilterAdapter()
     private val viewModel: FilterViewModel by inject()
+    private val nodeFilter = NodeFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,7 @@ class FilterActivity : AppCompatActivity() {
             } else {
                 binding.nodesTitle.text = it.countryName
             }
-            viewModel.applyInitialFilter(it)
+            viewModel.applyInitialFilter(it, nodeFilter)
         }
     }
 
@@ -56,19 +59,19 @@ class FilterActivity : AppCompatActivity() {
 
     private fun bindsActions() {
         binding.filters.typeCardView.setOnClickListener {
-            viewModel.onNodeTypeClicked().observe(this, {
-                changeNodeTypeView(it)
-            })
+            nodeFilter.onTypeChanged()
+            viewModel.filterList(nodeFilter)
+            changeNodeTypeView(nodeFilter.typeFilter)
         }
         binding.filters.priceCardView.setOnClickListener {
-            viewModel.onNodePriceClicked().observe(this, {
-                changeNodePriceView(it)
-            })
+            nodeFilter.onPriceChanged()
+            viewModel.filterList(nodeFilter)
+            changeNodePriceView(nodeFilter.priceFilter)
         }
         binding.filters.qualityCardView.setOnClickListener {
-            viewModel.onNodeQualityClicked().observe(this, {
-                changeNodeQualityView(it)
-            })
+            nodeFilter.onQualityChanged()
+            viewModel.filterList(nodeFilter)
+            changeNodeQualityView(nodeFilter.qualityFilter)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
@@ -80,10 +83,20 @@ class FilterActivity : AppCompatActivity() {
     }
 
     private fun initProposalListRecycler() {
+        nodeListAdapter.onNodeClickedListener = {
+            navigateToHome(it)
+        }
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@FilterActivity)
             adapter = nodeListAdapter
         }
+    }
+
+    private fun navigateToHome(proposalModel: ProposalModel) {
+        val intent = Intent(this, HomeActivity::class.java)
+        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposalModel)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
     }
 
     private fun changeNodeQualityView(nodeQuality: NodeQuality) {
