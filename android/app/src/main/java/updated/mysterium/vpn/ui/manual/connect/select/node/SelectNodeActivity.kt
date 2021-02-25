@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySelectBinding
 import network.mysterium.vpn.databinding.ItemTabBinding
+import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.TabItemModel
 
 class SelectNodeActivity : AppCompatActivity() {
@@ -64,7 +65,7 @@ class SelectNodeActivity : AppCompatActivity() {
         }
         binding.chooseListTabLayout.addOnTabSelectedListener(
 
-            object : TabLayout.OnTabSelectedListener {
+            object : StateTabSelectedListener() {
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.customView?.let {
@@ -87,10 +88,6 @@ class SelectNodeActivity : AppCompatActivity() {
                         )
 
                     }
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                    // empty
                 }
             }
         )
