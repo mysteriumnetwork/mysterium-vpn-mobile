@@ -19,7 +19,7 @@ data class NodeEntity(
     @ColumnInfo(name = "price_per_second") val pricePerSecond: Double,
     @ColumnInfo(name = "price_per_byte") val pricePerByte: Double,
     @ColumnInfo(name = "quality_level") var qualityLevel: Int,
-    @ColumnInfo(name = "is_saved") var isSaved: Int,
+    @ColumnInfo(name = "is_saved") var isSaved: Boolean,
 ) {
 
     constructor(proposalItem: ProposalItem, isFavourite: Boolean = false) : this(
@@ -35,6 +35,6 @@ data class NodeEntity(
         pricePerSecond = proposalItem.payment.rate.perSeconds,
         pricePerByte = proposalItem.payment.rate.perBytes,
         qualityLevel = proposalItem.qualityLevel,
-        isSaved = if (isFavourite) 1 else 0
+        isSaved = isFavourite
     )
 }
