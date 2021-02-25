@@ -45,7 +45,7 @@ class SelectNodeActivity : AppCompatActivity() {
 
     @SuppressLint("InflateParams")
     private fun iniTabLayout() {
-        for (index in 0..binding.chooseListTabLayout.tabCount) {
+        for (index in 0 until binding.chooseListTabLayout.tabCount) {
             val tab = LayoutInflater.from(this).inflate(R.layout.item_tab, null)
             val tabBinding = ItemTabBinding.bind(tab)
             tabBinding.allNodesImageButton.text = resources.getString(TAB_ITEMS_CONTENT[index].textResId)
