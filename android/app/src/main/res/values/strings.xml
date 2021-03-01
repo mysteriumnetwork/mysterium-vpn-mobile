@@ -120,7 +120,7 @@
     <string name="onboarding_description_title_1">Run by people, for people</string>
     <string name="onboarding_description_content_1">Top up your account now or do it later and use limited functionality and  free nodes</string>
     <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
-    <string name="onboarding_description_title_2">No lock-in subscriptions</string>
+    <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Top up your account now or do it later and use limited functionality and  free nodes</string>
     <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
     <string name="onboarding_description_title_3">BTC, ETH, LTC, BTH and more</string>
@@ -163,6 +163,7 @@
     <string name="manual_connect_price_per_hour">%.4f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/Gib</string>
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
+    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
 
     <!--  Filters  -->
     <string name="filter_type_all">All types</string>

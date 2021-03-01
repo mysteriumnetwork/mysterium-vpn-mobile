@@ -28,7 +28,7 @@ object Modules {
             NodeRepository(get())
         }
         single {
-            UseCaseProvider(get(), get())
+            UseCaseProvider(get(), get(), androidContext())
         }
 
         viewModel {

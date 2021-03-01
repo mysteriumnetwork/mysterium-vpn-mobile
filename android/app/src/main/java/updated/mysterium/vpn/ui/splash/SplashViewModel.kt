@@ -17,13 +17,14 @@ import kotlin.concurrent.timerTask
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val connectionUseCase = useCaseProvider.connection()
+    private val loginUseCase = useCaseProvider.login()
     private var isTimerFinished = false
     private var isDataLoaded = false
     private val deferredNode = DeferredNode()
 
-    private var _navigateToOnboarding = MutableLiveData<String>()
-    val navigateToOnboarding
-        get() = _navigateToOnboarding
+    private var _navigateForward = MutableLiveData<String>()
+    val navigateForward
+        get() = _navigateForward
 
     fun startLoading(deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
         startTimer()
@@ -31,6 +32,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             startDeferredNode(deferredMysteriumCoreService)
         }
     }
+
+    fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
 
     private suspend fun startDeferredNode(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
@@ -52,7 +55,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private fun startTimer() {
         Timer().schedule(timerTask {
             if (isDataLoaded) {
-                _navigateToOnboarding.postValue("")
+                _navigateForward.postValue("")
             } else {
                 isTimerFinished = true
             }
@@ -82,7 +85,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun loadRegistrationFees() {
         connectionUseCase.registrationFees()
         if (isTimerFinished) {
-            _navigateToOnboarding.postValue("")
+            _navigateForward.postValue("")
         } else {
             isDataLoaded = true
         }

@@ -10,11 +10,11 @@ import android.os.IBinder
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CompletableDeferred
-import network.mysterium.MainActivity
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -39,12 +39,17 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.navigateToOnboarding.observe(this, { navigateToOnboarding() })
+        viewModel.navigateForward.observe(this, { navigateForward() })
     }
 
-    private fun navigateToOnboarding() {
-        startActivity(Intent(this, OnboardingActivity::class.java))
-        finish()
+    private fun navigateForward() {
+        if (viewModel.isUserAlreadyLogin()) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        } else {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
+        }
     }
 
     private fun ensureVpnServicePermission() {
