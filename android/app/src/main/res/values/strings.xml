@@ -123,7 +123,7 @@
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Top up your account now or do it later and use limited functionality and  free nodes</string>
     <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BTH and more</string>
+    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
     <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
@@ -164,6 +164,8 @@
     <string name="manual_connect_price_per_gigabyte">%.4f/Gib</string>
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
+    <string name="manual_connect_search">Search</string>
+    <string name="manual_connect_node_id">Node id</string>
 
     <!--  Filters  -->
     <string name="filter_type_all">All types</string>

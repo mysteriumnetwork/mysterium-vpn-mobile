@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.manual.connect.select.node
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import network.mysterium.vpn.databinding.ActivitySelectBinding
 import network.mysterium.vpn.databinding.ItemTabBinding
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.TabItemModel
+import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
 
 class SelectNodeActivity : AppCompatActivity() {
 
@@ -41,11 +43,11 @@ class SelectNodeActivity : AppCompatActivity() {
         setContentView(binding.root)
         bindsAction()
         initViewPager()
-        iniTabLayout()
+        initTabLayout()
     }
 
     @SuppressLint("InflateParams")
-    private fun iniTabLayout() {
+    private fun initTabLayout() {
         for (index in 0 until binding.chooseListTabLayout.tabCount) {
             val tab = LayoutInflater.from(this).inflate(R.layout.item_tab, null)
             val tabBinding = ItemTabBinding.bind(tab)
@@ -97,6 +99,9 @@ class SelectNodeActivity : AppCompatActivity() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
         }
+        binding.manualConnectToolbar.onRightButtonClicked {
+            navigateToSearch()
+        }
     }
 
     private fun initViewPager() {
@@ -112,5 +117,9 @@ class SelectNodeActivity : AppCompatActivity() {
         TabLayoutMediator(binding.chooseListTabLayout, viewPager) { tab, _ ->
             viewPager.setCurrentItem(tab.position, true)
         }.attach()
+    }
+
+    private fun navigateToSearch() {
+        startActivity(Intent(this, SearchActivity::class.java))
     }
 }
