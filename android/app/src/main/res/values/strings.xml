@@ -133,8 +133,8 @@
     <string name="manual_connect_all_nodes">All nodes</string>
     <string name="manual_connect_saved_nodes">Saved</string>
     <string name="manual_connect_all_countries">All countries</string>
-    <string name="manual_connect_nodes_label">Nodes</string>
-    <string name="manual_connect_counties_label">Countries</string>
+    <string name="manual_connect_nodes_label">Node</string>
+    <string name="manual_connect_country_label">Country</string>
     <string name="manual_connect_disconnected">Disconnected</string>
     <string name="manual_connect_select_node">Select node manually</string>
     <string name="manual_connect_smart_unavailable">Smart Connect isn’t available in a test mode\nPlease select node manually</string>
