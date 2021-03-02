@@ -10,20 +10,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/rightVerticalGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <TextView
         android:id="@+id/topTitleTextView"
         style="@style/TextAppearance.HeadTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:minLines="2"
         android:layout_marginTop="@dimen/margin_padding_size_xxlarge"
         android:paddingHorizontal="@dimen/margin_padding_size_small"
         android:textAlignment="center"
@@ -45,7 +47,7 @@
         app:layout_constraintEnd_toStartOf="@+id/rightVerticalGuideline"
         app:layout_constraintStart_toEndOf="@+id/leftVerticalGuideline"
         app:layout_constraintTop_toBottomOf="@+id/topTitleTextView"
-        tools:text="@string/onboarding_description_title_3" />
+        tools:text="@string/manual_connect_currency_hint" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -81,8 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
                 android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                android:maxLines="1"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:textAlignment="center"
@@ -96,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
                 android:layout_marginTop="@dimen/margin_padding_size_small"
                 android:layout_weight="1"
                 android:textAlignment="center"
