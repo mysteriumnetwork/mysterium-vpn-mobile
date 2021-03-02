@@ -1,8 +1,8 @@
 package updated.mysterium.vpn.ui.manual.connect.filter
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
@@ -13,11 +13,11 @@ import updated.mysterium.vpn.model.manual.connect.ProposalModel
 
 class FilterViewModel : ViewModel() {
 
-    private var _proposalsList = MutableLiveData<List<ProposalModel>>()
-    val proposalsList
+    val proposalsList: LiveData<List<ProposalModel>>
         get() = _proposalsList
 
     lateinit var nodesModel: CountryNodesModel
+    private val _proposalsList = MutableLiveData<List<ProposalModel>>()
 
     fun applyInitialFilter(countryNodesModel: CountryNodesModel, nodeFilter: NodeFilter) {
         nodesModel = countryNodesModel

@@ -19,6 +19,7 @@ class AppNotificationManager(
     private val notificationManager: NotificationManager,
     private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>
 ) {
+
     companion object {
         const val ACTION_DISCONNECT = "DISCONNECT"
     }
