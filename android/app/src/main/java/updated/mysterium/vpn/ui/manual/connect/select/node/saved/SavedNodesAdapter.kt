@@ -11,6 +11,7 @@ import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
 class SavedNodesAdapter : BaseNodeAdapter<ProposalModel, SavedNodesAdapter.SavedNodesViewHolder>() {
 
     var onDeleteClicked: ((ProposalModel) -> Unit)? = null
+    var onProposalClicked: ((ProposalModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SavedNodesViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_saved_node, parent, false)
@@ -50,6 +51,9 @@ class SavedNodesAdapter : BaseNodeAdapter<ProposalModel, SavedNodesAdapter.Saved
             binding.nodeTypeImage.setImageDrawable(getNodeTypeDrawable(item.nodeType))
             binding.qualityImageView.setImageDrawable(getNodeQualityDrawable(item.qualityLevel))
             binding.priceImageView.setImageDrawable(getNodePriceDrawable(item.priceLevel))
+            binding.proposalLayout.setOnClickListener {
+                onProposalClicked?.invoke(item)
+            }
             binding.deleteImageView.setOnClickListener {
                 onDeleteClicked?.invoke(item)
             }

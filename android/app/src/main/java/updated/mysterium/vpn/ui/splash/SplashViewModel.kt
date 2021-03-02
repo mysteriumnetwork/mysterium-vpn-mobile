@@ -1,74 +1,98 @@
 package updated.mysterium.vpn.ui.splash
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.NodeRepository
-import updated.mysterium.vpn.database.entity.NodeEntity
+import network.mysterium.wallet.IdentityModel
+import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.timerTask
 
-class SplashViewModel(
-    useCaseProvider: UseCaseProvider,
-    private val nodeRepository: NodeRepository
-) : ViewModel() {
+class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private val nodesUseCase = useCaseProvider.nodes()
-    private var cachedNodesList: List<NodeEntity> = emptyList()
+    companion object {
+        private const val ONE_SECOND_DELAY = 1000L
+    }
+
+    val navigateForward: LiveData<String>
+        get() = _navigateForward
+
+    private val _navigateForward = MutableLiveData<String>()
+    private val connectionUseCase = useCaseProvider.connection()
+    private val loginUseCase = useCaseProvider.login()
     private var isTimerFinished = false
     private var isDataLoaded = false
-    private var _navigateToOnboarding = MutableLiveData<String>()
-    val navigateToOnboarding
-        get() = _navigateToOnboarding
-
     private val deferredNode = DeferredNode()
 
     fun startLoading(deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
         startTimer()
         viewModelScope.launch {
             startDeferredNode(deferredMysteriumCoreService)
-            loadData()
         }
     }
 
-    private fun startDeferredNode(deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
-        CoroutineScope(Dispatchers.Main).launch {
+    fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
+
+    private suspend fun startDeferredNode(
+        deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+    ) {
+        viewModelScope.launch {
             deferredMysteriumCoreService.await()
             if (!deferredNode.startedOrStarting()) {
                 deferredNode.start(deferredMysteriumCoreService.await())
             }
+            initRepository()
         }
-        nodeRepository.deferredNode = deferredNode
+    }
+
+    private suspend fun initRepository() {
+        connectionUseCase.initDeferredNode(deferredNode)
+        loadIdentity()
     }
 
     private fun startTimer() {
         Timer().schedule(timerTask {
             if (isDataLoaded) {
-                _navigateToOnboarding.postValue("")
+                _navigateForward.postValue("")
             } else {
                 isTimerFinished = true
             }
         }, ONE_SECOND_DELAY)
     }
 
-    private suspend fun loadData() {
-        cachedNodesList = nodesUseCase.getAllInitialNodes()
+    private suspend fun loadIdentity() {
+        val nodeIdentity = connectionUseCase.getIdentity()
+        val identity = IdentityModel(
+            address = nodeIdentity.address,
+            channelAddress = nodeIdentity.channelAddress,
+            status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
+        )
+        registerIdentity(identity)
+    }
+
+    private suspend fun registerIdentity(identity: IdentityModel) {
+        if (!identity.registered) {
+            val req = RegisterIdentityRequest().apply {
+                identityAddress = identity.address
+            }
+            connectionUseCase.registerIdentity(req)
+        }
+        loadRegistrationFees()
+    }
+
+    private suspend fun loadRegistrationFees() {
+        connectionUseCase.registrationFees()
         if (isTimerFinished) {
-            nodesUseCase.saveAllInitialNodes(cachedNodesList)
-            _navigateToOnboarding.postValue("")
+            _navigateForward.postValue("")
         } else {
             isDataLoaded = true
         }
-    }
-
-    companion object {
-        private const val ONE_SECOND_DELAY = 1000L
     }
 }

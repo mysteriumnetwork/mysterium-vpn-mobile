@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.GetProposalsRequest
+import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.database.dao.NodeDao
@@ -18,7 +19,23 @@ class NodesUseCase(
         const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
     }
 
-    suspend fun getAllInitialNodes(): List<NodeEntity> {
+    fun initDeferredNode(deferredNode: DeferredNode) {
+        nodeRepository.deferredNode = deferredNode
+    }
+
+    suspend fun getAllCountries() = mapNodesToCountriesGroups(getAllNodes())
+
+    suspend fun getFavourites() = createProposalList(nodeDao.getFavourites())
+
+    suspend fun addToFavourite(
+        proposalModel: ProposalModel
+    ) = nodeDao.addToFavourite(NodeEntity(proposalModel, true))
+
+    suspend fun deleteFromFavourite(proposalModel: ProposalModel) {
+        nodeDao.deleteFromFavourite(proposalModel.id)
+    }
+
+    private suspend fun getAllNodes(): List<NodeEntity> {
         val proposalsRequest = GetProposalsRequest().apply {
             this.refresh = refresh
             includeFailed = true
@@ -26,21 +43,6 @@ class NodesUseCase(
         }
         return nodeRepository.proposals(proposalsRequest)
             .map { NodeEntity(it) }
-    }
-
-    suspend fun saveAllInitialNodes(nodesList: List<NodeEntity>) {
-        nodeDao.apply {
-            deleteAllUnsaved()
-            insertAll(nodesList)
-        }
-    }
-
-    suspend fun getAllSavedCountries() = mapNodesToCountriesGroups(nodeDao.getAllNodes())
-
-    suspend fun getFavourites() = createProposalList(nodeDao.getFavourites())
-
-    suspend fun deleteFromFavourite(proposalModel: ProposalModel) {
-        nodeDao.deleteFromFavourite(proposalModel.id)
     }
 
     private fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodesModel> {

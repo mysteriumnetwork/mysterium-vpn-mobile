@@ -1,8 +1,8 @@
 package updated.mysterium.vpn.ui.manual.connect.filter
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
@@ -13,65 +13,50 @@ import updated.mysterium.vpn.model.manual.connect.ProposalModel
 
 class FilterViewModel : ViewModel() {
 
-    private var _proposalsList = MutableLiveData<List<ProposalModel>>()
-    val proposalsList
+    val proposalsList: LiveData<List<ProposalModel>>
         get() = _proposalsList
 
-    private val nodeFilter = NodeFilter()
     lateinit var nodesModel: CountryNodesModel
+    private val _proposalsList = MutableLiveData<List<ProposalModel>>()
 
-    fun applyInitialFilter(countryNodesModel: CountryNodesModel) {
+    fun applyInitialFilter(countryNodesModel: CountryNodesModel, nodeFilter: NodeFilter) {
         nodesModel = countryNodesModel
-        _proposalsList.value = getFilteredProposalList()
+        _proposalsList.value = getFilteredProposalList(nodeFilter)
     }
 
-    fun onNodeTypeClicked() = liveData<NodeType> {
-        nodeFilter.onTypeChanged()
-        _proposalsList.value = getFilteredProposalList()
-        nodeFilter.typeFilter
+    fun filterList(nodeFilter: NodeFilter) {
+        _proposalsList.value = getFilteredProposalList(nodeFilter)
     }
 
-    fun onNodePriceClicked() = liveData<NodePrice> {
-        nodeFilter.onPriceChanged()
-        _proposalsList.value = getFilteredProposalList()
-        nodeFilter.priceFilter
-    }
-
-    fun onNodeQualityClicked() = liveData<NodeQuality> {
-        nodeFilter.onQualityChanged()
-        _proposalsList.value = getFilteredProposalList()
-        nodeFilter.qualityFilter
-    }
-
-    private fun getFilteredProposalList() = nodesModel.proposalList
+    private fun getFilteredProposalList(nodeFilter: NodeFilter) = nodesModel.proposalList
         .filter {
-            filterByType(it)
+            filterByType(it, nodeFilter.typeFilter)
         }.filter {
-            filterByPrice(it)
+            filterByPrice(it, nodeFilter.priceFilter)
         }.filter {
-            filterByQuality(it)
+            filterByQuality(it, nodeFilter.qualityFilter)
         }
 
-    private fun filterByType(proposalModel: ProposalModel): Boolean {
-        return if (nodeFilter.typeFilter == NodeType.ALL) {
+    private fun filterByType(proposalModel: ProposalModel, nodeType: NodeType): Boolean {
+        return if (nodeType == NodeType.ALL) {
             true
         } else {
-            NodeType.from(proposalModel.nodeType) == nodeFilter.typeFilter
+            NodeType.from(proposalModel.nodeType) == nodeType
         }
     }
 
-    private fun filterByPrice(proposalModel: ProposalModel): Boolean {
+    private fun filterByPrice(proposalModel: ProposalModel, nodePrice: NodePrice): Boolean {
         val currentNodePrice = proposalModel.priceLevel
-        return if (nodeFilter.priceFilter == NodePrice.HIGH || currentNodePrice == PriceLevel.FREE) {
+        return if (nodePrice == NodePrice.HIGH || currentNodePrice == PriceLevel.FREE) {
             true
         } else {
-            NodePrice.from(currentNodePrice) == nodeFilter.priceFilter
+            NodePrice.from(currentNodePrice) == nodePrice
         }
     }
 
-    private fun filterByQuality(proposalModel: ProposalModel): Boolean {
+    private fun filterByQuality(proposalModel: ProposalModel, nodeQuality: NodeQuality): Boolean {
         val currentNodeQuality = NodeQuality.from(proposalModel.qualityLevel)
-        return when (nodeFilter.qualityFilter) {
+        return when (nodeQuality) {
             NodeQuality.LOW -> true
             NodeQuality.MEDIUM -> {
                 currentNodeQuality == NodeQuality.MEDIUM || currentNodeQuality == NodeQuality.HIGH

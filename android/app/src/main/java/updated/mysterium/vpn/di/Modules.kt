@@ -28,14 +28,14 @@ object Modules {
             NodeRepository(get())
         }
         single {
-            UseCaseProvider(get(), get())
+            UseCaseProvider(get(), get(), androidContext())
         }
 
         viewModel {
             AllNodesViewModel(get())
         }
         viewModel {
-            SplashViewModel(get(), get())
+            SplashViewModel(get())
         }
         viewModel {
             HomeViewModel(get())
