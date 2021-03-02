@@ -68,7 +68,6 @@
                 android:layout_marginBottom="@dimen/margin_padding_size_small"
                 android:layout_weight="2.3"
                 android:textColor="@color/manual_connect_country_dark_blue"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/priceImageView"
                 app:layout_constraintStart_toEndOf="@+id/nodeTypeImage"

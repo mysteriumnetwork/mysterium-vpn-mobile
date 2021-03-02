@@ -9,9 +9,9 @@
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:leftIcon="@drawable/icon_back"
-        app:rightIcon="@drawable/icon_search"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:rightIcon="@drawable/icon_search" />
 
     <TextView
         android:id="@+id/nodesTitle"

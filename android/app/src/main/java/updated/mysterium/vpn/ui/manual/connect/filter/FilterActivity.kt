@@ -16,6 +16,7 @@ import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
 
 class FilterActivity : AppCompatActivity() {
 
@@ -75,6 +76,9 @@ class FilterActivity : AppCompatActivity() {
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
+        }
+        binding.manualConnectToolbar.onRightButtonClicked {
+            navigateToSearch()
         }
     }
 
@@ -177,5 +181,9 @@ class FilterActivity : AppCompatActivity() {
             nonResidentialTypeUnselectedImageView.visibility = View.INVISIBLE
             typeFilterTextView.setText(R.string.filter_type_non_residential)
         }
+    }
+
+    private fun navigateToSearch() {
+        startActivity(Intent(this, SearchActivity::class.java))
     }
 }
