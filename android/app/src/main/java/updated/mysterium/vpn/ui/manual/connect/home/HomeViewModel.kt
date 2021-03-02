@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.manual.connect.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,17 +20,17 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private val _statisticsUpdate = MutableLiveData<Statistics>()
-    val statisticsUpdate
-        get() = _statisticsUpdate
-
-    private val _connectionState = MutableLiveData<String>()
-    val connectionState
+    val connectionState: LiveData<String>
         get() = _connectionState
+
+    val statisticsUpdate: LiveData<Statistics>
+        get() = _statisticsUpdate
 
     private lateinit var proposalModel: ProposalModel
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
+    private val _statisticsUpdate = MutableLiveData<Statistics>()
+    private val _connectionState = MutableLiveData<String>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
     private val connectionUseCase = useCaseProvider.connection()
