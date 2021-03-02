@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_padding_size_medium_large"
         android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:text="@string/manual_connect_counties_label"
+        android:text="@string/manual_connect_country_label"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
