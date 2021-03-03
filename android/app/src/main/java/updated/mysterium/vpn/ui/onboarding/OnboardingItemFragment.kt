@@ -15,6 +15,17 @@ import updated.mysterium.vpn.ui.onboarding.viewpager.ViewPagerActionListener
 
 class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
 
+    companion object {
+
+        fun newInstance(onboardingScreen: OnboardingScreen) = OnboardingItemFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(SCREEN_TAG, onboardingScreen)
+            }
+        }
+
+        private const val SCREEN_TAG = "ONBOARDING_SCREEN_TAG"
+    }
+
     private lateinit var binding: FragmentItemOnboardingBinding
 
     override fun onCreateView(
@@ -71,20 +82,7 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
         skipButton.measure(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         val cardViewHeight = cardView.measuredHeight
         val skipButtonHeight = skipButton.measuredHeight
-        val bottomMargin = requireContext().dpToPx(resources.getDimension(R.dimen.margin_padding_size_large))
-        val topMargin = requireContext().dpToPx(resources.getDimension(R.dimen.margin_padding_size_xsmall))
-        val totalMargin = cardViewHeight + skipButtonHeight + bottomMargin + topMargin
+        val totalMargin = cardViewHeight + skipButtonHeight
         (activity as? OnChildViewMeasured?)?.onMarginCalculated(totalMargin)
-    }
-
-    companion object {
-
-        fun newInstance(onboardingScreen: OnboardingScreen) = OnboardingItemFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable(SCREEN_TAG, onboardingScreen)
-            }
-        }
-
-        private const val SCREEN_TAG = "ONBOARDING_SCREEN_TAG"
     }
 }

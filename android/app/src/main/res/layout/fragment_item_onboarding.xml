@@ -24,9 +24,9 @@
         style="@style/TextAppearance.HeadTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_xxlarge"
         android:maxLines="2"
         android:minLines="2"
-        android:layout_marginTop="@dimen/margin_padding_size_xxlarge"
         android:paddingHorizontal="@dimen/margin_padding_size_small"
         android:textAlignment="center"
         android:textColor="@android:color/white"
@@ -71,11 +71,9 @@
         app:cardBackgroundColor="@color/onboarding_faded_screen_white"
         app:layout_constraintBottom_toTopOf="@id/skipButton">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="3">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/contentTitle"
@@ -84,26 +82,32 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
-                android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-                android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
                 android:layout_weight="2"
                 android:gravity="center"
+                android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="@color/onboarding_title_dark_blue"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/onboarding_description_title_3" />
 
             <TextView
                 android:id="@+id/contentDescription"
                 style="@style/TextAppearance.BodyMedium"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 android:textAlignment="center"
                 android:textColor="@color/onboarding_description_grey_blue"
+                app:layout_constraintBottom_toTopOf="@+id/nextButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contentTitle"
                 tools:text="@string/onboarding_description_content_1" />
 
             <com.google.android.material.button.MaterialButton
@@ -113,12 +117,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
-                android:layout_marginVertical="@dimen/margin_padding_size_medium"
+                android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 android:layout_weight="0"
                 android:text="@string/onboarding_next"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -127,7 +132,7 @@
         style="@style/Widget.TransparentTextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_padding_size_large"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
         android:background="@android:color/transparent"
         android:text="@string/onboarding_skip"
         android:textColor="@color/onboarding_skip_white"

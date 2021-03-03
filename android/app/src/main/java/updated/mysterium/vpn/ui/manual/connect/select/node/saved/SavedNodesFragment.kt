@@ -67,6 +67,7 @@ class SavedNodesFragment : Fragment() {
             result.onFailure {
                 if (it is NoSuchElementException) {
                     deleteListTitles()
+                    savedNodesAdapter.clear()
                 }
             }
         })

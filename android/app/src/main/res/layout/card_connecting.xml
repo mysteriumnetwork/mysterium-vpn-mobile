@@ -5,12 +5,14 @@
     android:id="@+id/cardConnectingLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_weight="3"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
         android:layout_marginBottom="@dimen/margin_padding_size_small">
 
         <com.google.android.material.button.MaterialButton
@@ -42,74 +44,84 @@
         android:textAlignment="center"
         android:textColor="@color/manual_connect_attention_text_light_grey" />
 
-    <androidx.cardview.widget.CardView
-        style="@style/Widget.SmallRoundedCardView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:layout_marginBottom="@dimen/margin_padding_size_small_medium">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:layout_gravity="center"
+            style="@style/Widget.SmallRoundedCardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_small"
-            android:layout_marginVertical="@dimen/margin_padding_size_small_medium">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/countryFlagImageView"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_medium"
-                android:src="@drawable/icon_delete"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
+                android:layout_marginHorizontal="@dimen/margin_padding_size_small"
+                android:layout_marginVertical="@dimen/margin_padding_size_small_medium">
 
-            <TextView
-                android:id="@+id/countryNameTextView"
-                style="@style/TextAppearance.BodyMedium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_small_medium"
-                android:layout_marginEnd="@dimen/margin_padding_size_small"
-                android:textColor="@color/manual_connect_country_name_dark_blue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/nodeTypeImageView"
-                app:layout_constraintStart_toEndOf="@+id/countryFlagImageView"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="United Kingdom" />
+                <ImageView
+                    android:id="@+id/countryFlagImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium"
+                    android:src="@drawable/icon_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:id="@+id/nodeTypeImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_delete"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/countryNameTextView"
+                    style="@style/TextAppearance.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_size_small_medium"
+                    android:layout_marginEnd="@dimen/margin_padding_size_small"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textColor="@color/manual_connect_country_name_dark_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/nodeTypeImageView"
+                    app:layout_constraintStart_toEndOf="@+id/countryFlagImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="United Kingdom" />
 
-            <TextView
-                android:id="@+id/nodeProviderCodeTextView"
-                style="@style/TextAppearance.Caption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_small"
-                android:layout_marginEnd="@dimen/margin_padding_size_medium"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/manual_connect_country_name_dark_blue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/nodeTypeImageView"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="0x28358e2a89d02" />
+                <ImageView
+                    android:id="@+id/nodeTypeImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/nodeProviderCodeTextView"
+                    style="@style/TextAppearance.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_size_small"
+                    android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/manual_connect_country_name_dark_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nodeTypeImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0x28358e2a89d02" />
 
-    </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
 
 </LinearLayout>
