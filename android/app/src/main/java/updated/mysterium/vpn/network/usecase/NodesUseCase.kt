@@ -23,6 +23,8 @@ class NodesUseCase(
         nodeRepository.deferredNode = deferredNode
     }
 
+    suspend fun getAllProposals() = createProposalList(getAllNodes())
+
     suspend fun getAllCountries() = mapNodesToCountriesGroups(getAllNodes())
 
     suspend fun getFavourites() = createProposalList(nodeDao.getFavourites())

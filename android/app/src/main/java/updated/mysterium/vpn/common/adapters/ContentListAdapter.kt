@@ -70,6 +70,11 @@ abstract class ContentListAdapter<T, V : RecyclerView.ViewHolder> : RecyclerView
 
     fun getAll() = items
 
+    fun clear() {
+        this.items.clear()
+        notifyDataSetChanged()
+    }
+
     private fun removeAt(index: Int) {
         items.removeAt(index)
         notifyItemRemoved(index)
