@@ -9,15 +9,10 @@ class LoginUseCase(private val context: Context) {
         const val ALREADY_LOGIN_KEY = "ALREADY_LOGIN"
     }
 
-    fun isAlreadyLogin(): Boolean {
-        val loginPreferences = context.getSharedPreferences(
-            LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE
-        )
-        return if (!loginPreferences.contains(ALREADY_LOGIN_KEY)) {
-            loginPreferences.edit().putBoolean(ALREADY_LOGIN_KEY, true).apply()
-            false
-        } else {
-            true
-        }
-    }
+    fun isAlreadyLogin() = context.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE)
+        .contains(ALREADY_LOGIN_KEY)
+
+    fun userLoggedIn() = context.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE)
+        .edit()
+        .putBoolean(ALREADY_LOGIN_KEY, true).apply()
 }
