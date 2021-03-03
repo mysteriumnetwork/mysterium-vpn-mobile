@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
         android:id="@+id/manualConnectToolbar"
@@ -102,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
         app:layout_constraintBottom_toTopOf="@+id/selectAnotherNodeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -234,7 +234,7 @@
         style="@style/Widget.RoundedSemiTransparentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
         android:text="@string/manual_connect_another_node"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"

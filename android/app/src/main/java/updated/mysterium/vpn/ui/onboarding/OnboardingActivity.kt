@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_onboarding.*
 import network.mysterium.vpn.databinding.ActivityOnboardingBinding
+import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.viewpager.*
 
@@ -15,6 +16,7 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
 
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var viewPager: ViewPager2
+    private val viewModel: OnboardingViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +76,7 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
     }
 
     private fun skipOnboarding() {
+        viewModel.userLoggedIn()
         startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
