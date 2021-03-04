@@ -12,8 +12,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySelectBinding
 import network.mysterium.vpn.databinding.ItemTabBinding
+import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.TabItemModel
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
 
 class SelectNodeActivity : AppCompatActivity() {
@@ -36,14 +38,23 @@ class SelectNodeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySelectBinding
     private lateinit var viewPager: ViewPager2
+    private val balanceViewModel: BalanceViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        subscribeViewModel()
         bindsAction()
         initViewPager()
         initTabLayout()
+        balanceViewModel.getCurrentBalance()
+    }
+
+    private fun subscribeViewModel() {
+        balanceViewModel.balanceLiveData.observe(this, {
+            binding.manualConnectToolbar.setBalance(it)
+        })
     }
 
     @SuppressLint("InflateParams")

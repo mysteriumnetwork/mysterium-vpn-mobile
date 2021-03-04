@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
 import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
+import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.menu.MenuItem
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class MenuActivity : AppCompatActivity() {
 
@@ -49,12 +52,14 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityMenuBinding
+    private val balanceViewModel: BalanceViewModel by inject()
     private val menuGridAdapter = MenuGridAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        subscribeViewModel()
         inflateLayout()
         bindsAction()
     }
@@ -63,6 +68,13 @@ class MenuActivity : AppCompatActivity() {
         inflateCustomToolbarView()
         inflateGridLayout()
         inflateAppVersion()
+        balanceViewModel.getCurrentBalance()
+    }
+
+    private fun subscribeViewModel() {
+        balanceViewModel.balanceLiveData.observe(this, {
+            binding.manualConnectToolbar.setBalance(it)
+        })
     }
 
     private fun inflateCustomToolbarView() {
@@ -108,7 +120,7 @@ class MenuActivity : AppCompatActivity() {
                     // TODO("Implement navigation to Profile")
                 }
                 2 -> menuItem.onItemClickListener = {
-                    // TODO("Implement navigation to Wallet")
+                    startActivity(Intent(this, WalletActivity::class.java))
                 }
                 3 -> menuItem.onItemClickListener = {
                     // TODO("Implement navigation to Monitoring")

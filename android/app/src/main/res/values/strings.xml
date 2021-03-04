@@ -134,7 +134,7 @@
     <string name="manual_connect_saved_nodes">Saved</string>
     <string name="manual_connect_all_countries">All countries</string>
     <string name="manual_connect_nodes_label">Nodes</string>
-    <string name="manual_connect_country_label">Country</string>
+    <string name="manual_connect_country_label">Countries</string>
     <string name="manual_connect_disconnected">Disconnected</string>
     <string name="manual_connect_select_node">Select node manually</string>
     <string name="manual_connect_smart_unavailable">Smart Connect isn’t available in a test mode\nPlease select node manually</string>
@@ -200,4 +200,14 @@
         <item>RU</item>
         <item>ZN</item>
     </string-array>
+
+    <!--  Wallet  -->
+    <string name="wallet_main_title">Wallet</string>
+    <string name="wallet_currency">MYSTT</string>
+    <string name="wallet_balance_currency">MYST</string>
+    <string name="wallet_start_balance">0,000</string>
+    <string name="wallet_usd_equivalent">USD equivalent ≈ $%d</string>
+    <string name="wallet_current_balance">"%.3f"</string>
+    <string name="wallet_top_up">Top up</string>
+    <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain, we’’re using it in the Testnet environment</string>
 </resources>

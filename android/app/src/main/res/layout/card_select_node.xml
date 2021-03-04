@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cardSelectNodeLayout"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardSelectNodeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="3">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
     <FrameLayout
+        android:id="@+id/selectNodeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="4dp"
+            android:src="@drawable/shadow_primary_button"
+            tools:ignore="ContentDescription" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/selectNodeManuallyButton"
@@ -19,16 +36,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
             android:text="@string/manual_connect_select_node" />
 
     </FrameLayout>
 
     <ImageView
+        android:id="@+id/attentionImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.5"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
         android:src="@drawable/icon_attention"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/centerGuideline"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -40,6 +63,9 @@
         android:layout_weight="1.5"
         android:text="@string/manual_connect_smart_unavailable"
         android:textAlignment="center"
-        android:textColor="@color/manual_connect_attention_text_light_grey" />
+        android:textColor="@color/manual_connect_attention_text_light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attentionImageView" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
