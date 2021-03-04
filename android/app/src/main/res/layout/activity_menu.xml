@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_back" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/menuTitleTextView"
+                style="@style/TextAppearance.HeadTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                android:text="@string/menu_title"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/menuRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:horizontalSpacing="@dimen/margin_padding_size_medium"
+                android:numColumns="2"
+                android:verticalSpacing="@dimen/margin_padding_size_medium"
+                app:layout_constraintBottom_toTopOf="@+id/settingsButton"
+                app:layout_constraintTop_toBottomOf="@+id/menuTitleTextView" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsButton"
+                style="@style/Widget.GradientButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:background="@drawable/shape_menu_button"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/menu_list_item_settings"
+                app:layout_constraintTop_toBottomOf="@+id/menuRecyclerView" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reportButton"
+                style="@style/Widget.GradientButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:background="@drawable/shape_menu_button"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/menu_list_item_report"
+                app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/helpButton"
+                style="@style/Widget.GradientButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:background="@drawable/shape_menu_button"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/menu_list_item_help"
+                app:layout_constraintTop_toBottomOf="@+id/reportButton" />
+
+            <TextView
+                android:id="@+id/termsTextView"
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+                android:text="@string/menu_terms"
+                android:textColor="@color/manual_connect_value_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/helpButton" />
+
+            <TextView
+                android:id="@+id/appVersionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+                android:text="@string/menu_app_version"
+                android:paddingBottom="@dimen/margin_padding_size_medium"
+                android:textColor="@color/manual_connect_value_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/termsTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

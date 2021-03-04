@@ -177,4 +177,27 @@
     <string name="filter_quality_high">Hight</string>
     <string name="filter_quality_medium">Medium +</string>
     <string name="filter_quality_low">Any</string>
+
+    <!--  Menu  -->
+    <string name="menu_title">Mysterium Network</string>
+    <string name="menu_item_home_title">Home</string>
+    <string name="menu_item_profile_title">Profile</string>
+    <string name="menu_item_wallet_title">Wallet</string>
+    <string name="menu_item_monitoring_title">Monitoring</string>
+    <string name="menu_item_black_list_title">Black list</string>
+    <string name="menu_item_referral_title">Referral program</string>
+    <string name="menu_item_wallet_subtitle">Top up your account</string>
+    <string name="menu_item_monitoring_subtitle">Traffic usage history</string>
+    <string name="menu_item_black_list_subtitle">15 nodes</string>
+    <string name="menu_list_item_settings">Settings</string>
+    <string name="menu_list_item_report">Report an issue</string>
+    <string name="menu_list_item_help">Get help</string>
+    <string name="menu_terms">Terms of Use</string>
+    <string name="menu_app_version">App version %s</string>
+    <string-array name="menu_languages">
+        <item>EN</item>
+        <item>AR</item>
+        <item>RU</item>
+        <item>ZN</item>
+    </string-array>
 </resources>
