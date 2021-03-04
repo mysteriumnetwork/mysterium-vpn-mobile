@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/margin_padding_size_medium"
+    android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
+    android:layout_marginStart="@dimen/margin_padding_size_medium"
+    android:layout_height="wrap_content"
+    android:id="@+id/menuItemView"
+    android:background="@drawable/shape_menu_item">
+
+    <ImageView
+        android:id="@+id/itemLogoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:background="@drawable/circle_menu_item"
+        android:padding="@dimen/margin_padding_size_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/menu_icon_home" />
+
+    <TextView
+        android:id="@+id/itemTitleTextView"
+        style="@style/TextAppearance.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemLogoImageView"
+        tools:text="Home" />
+
+    <TextView
+        android:id="@+id/itemSubTitleTextView"
+        style="@style/TextAppearance.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+        android:textColor="@color/menu_subtitle_light_pink"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemTitleTextView"
+        tools:text="Top up your account" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

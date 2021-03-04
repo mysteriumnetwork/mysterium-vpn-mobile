@@ -1,7 +1,10 @@
 package updated.mysterium.vpn.model.manual.connect
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+
 data class TabItemModel(
-    val textResId: Int,
-    val selectedBackgroundResId: Int,
-    val unselectedBackgroundResId: Int
+    @StringRes val textResId: Int,
+    @DrawableRes val selectedBackgroundResId: Int,
+    @DrawableRes val unselectedBackgroundResId: Int
 )
