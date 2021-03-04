@@ -3,5 +3,7 @@
     <declare-styleable name="BalanceToolbar">
         <attr name="leftIcon" format="integer" />
         <attr name="rightIcon" format="integer" />
+        <attr name="leftView" format="integer" />
+        <attr name="rightView" format="integer" />
     </declare-styleable>
 </resources>

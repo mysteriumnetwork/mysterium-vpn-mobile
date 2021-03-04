@@ -27,4 +27,6 @@
     <color name="manual_connect_connected_button_dark_blue">#5A597D</color>
     <color name="manual_connect_info_text_grey_blue">#8387A4</color>
     <color name="manual_connect_time_format_grey_blue">#8386A4</color>
+
+    <color name="menu_subtitle_light_pink">#ED5BAC</color>
 </resources>

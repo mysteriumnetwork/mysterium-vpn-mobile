@@ -25,6 +25,7 @@ import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
+import updated.mysterium.vpn.ui.menu.MenuActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -159,6 +160,9 @@ class HomeActivity : AppCompatActivity() {
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
         }
+        binding.manualConnectToolbar.onLeftButtonClicked {
+            navigateToMenu()
+        }
         binding.manualConnectToolbar.onRightButtonClicked {
             viewModel.addToFavourite(proposalModel).observe(this, { result ->
                 result.onSuccess {
@@ -246,5 +250,9 @@ class HomeActivity : AppCompatActivity() {
 
     private fun navigateToSelectNode() {
         startActivity(Intent(this, SelectNodeActivity::class.java))
+    }
+
+    private fun navigateToMenu() {
+        startActivity(Intent(this, MenuActivity::class.java))
     }
 }

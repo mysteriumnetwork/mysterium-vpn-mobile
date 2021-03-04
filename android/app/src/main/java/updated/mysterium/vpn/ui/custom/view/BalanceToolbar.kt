@@ -15,6 +15,8 @@ class BalanceToolbar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    private var leftView: View? = null
+    private var rightView: View? = null
     private var leftIconDrawable: Drawable? = null
     private var rightIconDrawable: Drawable? = null
     private var leftButtonListener: (() -> Unit)? = null
@@ -24,6 +26,7 @@ class BalanceToolbar @JvmOverloads constructor(
     init {
         attrs?.let {
             getIconsAttributes(it)
+            getViewsAttributes(it)
         }
     }
 
@@ -33,6 +36,10 @@ class BalanceToolbar @JvmOverloads constructor(
             .inflate(R.layout.toolbar_base_connect, this, false)
         inflateToolbarWithIcons(toolbarView)
         addView(toolbarView)
+    }
+
+    fun setLeftView(leftView: View) {
+        binding.rightViewFrame.addView(leftView)
     }
 
     fun setLeftIcon(drawable: Drawable?) {
@@ -68,6 +75,20 @@ class BalanceToolbar @JvmOverloads constructor(
             rightIconDrawable = iconsAttributes.getDrawable(R.styleable.BalanceToolbar_rightIcon)
         }
         iconsAttributes.recycle()
+    }
+
+    private fun getViewsAttributes(attrs: AttributeSet) {
+        val viewsAttributes = context.obtainStyledAttributes(
+            attrs, R.styleable.BalanceToolbar
+        )
+        if (viewsAttributes.hasValue(R.styleable.BalanceToolbar_leftView)) {
+            val leftViewLayoutRes = viewsAttributes.getInt(R.styleable.BalanceToolbar_leftView, -1)
+
+        }
+        if (viewsAttributes.hasValue(R.styleable.BalanceToolbar_rightIcon)) {
+            rightIconDrawable = viewsAttributes.getDrawable(R.styleable.BalanceToolbar_rightIcon)
+        }
+        viewsAttributes.recycle()
     }
 
     private fun inflateToolbarWithIcons(toolbarView: View) {
