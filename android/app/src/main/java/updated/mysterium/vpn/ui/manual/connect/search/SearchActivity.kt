@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
@@ -16,6 +17,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private val viewModel: SearchViewModel by inject()
+    private val balanceViewModel: BalanceViewModel by inject()
     private val nodeListAdapter = FilterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +27,7 @@ class SearchActivity : AppCompatActivity() {
         bindsAction()
         initProposalListRecycler()
         subscribeViewModel()
+        balanceViewModel.getCurrentBalance()
     }
 
     private fun bindsAction() {
@@ -34,6 +37,9 @@ class SearchActivity : AppCompatActivity() {
         binding.editText.addTextChangedListener {
             viewModel.search(it.toString())
         }
+        balanceViewModel.balanceLiveData.observe(this, {
+            binding.manualConnectToolbar.setBalance(it)
+        })
     }
 
     private fun subscribeViewModel() {

@@ -24,6 +24,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 
@@ -37,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by inject()
+    private val balanceViewModel: BalanceViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var proposalModel: ProposalModel
@@ -47,6 +49,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         loadIpAddress()
         bindsAction()
+        balanceViewModel.getCurrentBalance()
         subscribeViewModel()
     }
 
@@ -71,6 +74,9 @@ class HomeActivity : AppCompatActivity() {
                     inflateConnectedCardView()
                 }
             }
+        })
+        balanceViewModel.balanceLiveData.observe(this, {
+            binding.manualConnectToolbar.setBalance(it)
         })
     }
 

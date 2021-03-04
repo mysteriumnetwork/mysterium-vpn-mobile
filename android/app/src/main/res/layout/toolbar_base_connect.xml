@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_padding_size_small"
                 android:textColor="@color/manual_connect_title_grey"
-                tools:text="5890" />
+                android:text="@string/wallet_start_balance" />
 
             <TextView
                 android:id="@+id/currentValueTextView"
@@ -62,7 +62,7 @@
                 android:layout_marginStart="@dimen/margin_padding_size_medium"
                 android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
                 android:textColor="@color/manual_connect_value_white"
-                tools:text="MYST" />
+                android:text="@string/wallet_balance_currency" />
 
         </LinearLayout>
 

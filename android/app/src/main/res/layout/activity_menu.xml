@@ -4,13 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontalGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
     <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"

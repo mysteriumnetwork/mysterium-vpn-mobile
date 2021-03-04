@@ -3,6 +3,7 @@
     <dimen name="margin_padding_size_xxsmall">4dp</dimen>
     <dimen name="margin_padding_size_xsmall">6dp</dimen>
     <dimen name="margin_padding_size_small">8dp</dimen>
+    <dimen name="margin_padding_size_small_plus">10dp</dimen>
     <dimen name="margin_padding_size_small_medium">12dp</dimen>
     <dimen name="margin_padding_size_medium">16dp</dimen>
     <dimen name="margin_padding_size_medium_large">20dp</dimen>
