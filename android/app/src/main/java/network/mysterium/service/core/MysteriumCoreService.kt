@@ -24,6 +24,7 @@ import network.mysterium.NotificationFactory
 import network.mysterium.proposal.ProposalViewItem
 
 interface MysteriumCoreService : IBinder {
+
     fun startNode(): MobileNode
 
     fun stopNode()
@@ -31,6 +32,10 @@ interface MysteriumCoreService : IBinder {
     fun getActiveProposal(): ProposalViewItem?
 
     fun setActiveProposal(proposal: ProposalViewItem?)
+
+    fun getDeferredNode(): DeferredNode?
+
+    fun setDeferredNode(node: DeferredNode?)
 
     fun getContext(): Context
 
