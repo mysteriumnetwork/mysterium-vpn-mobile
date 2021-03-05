@@ -15,6 +15,7 @@ import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
 
@@ -27,6 +28,7 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFilterBinding
     private val nodeListAdapter = FilterAdapter()
     private val viewModel: FilterViewModel by inject()
+    private val balanceViewModel: BalanceViewModel by inject()
     private val nodeFilter = NodeFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,7 @@ class FilterActivity : AppCompatActivity() {
         bindsActions()
         subscribeViewModel()
         getNodesList()
+        balanceViewModel.getCurrentBalance()
     }
 
     private fun getNodesList() {
@@ -56,6 +59,9 @@ class FilterActivity : AppCompatActivity() {
             this,
             { proposals -> showNodeList(proposals) }
         )
+        balanceViewModel.balanceLiveData.observe(this, {
+            binding.manualConnectToolbar.setBalance(it)
+        })
     }
 
     private fun bindsActions() {

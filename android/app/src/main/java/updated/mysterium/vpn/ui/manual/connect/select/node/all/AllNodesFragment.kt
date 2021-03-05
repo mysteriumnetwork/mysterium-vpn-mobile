@@ -6,13 +6,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.FragmentAllNodesBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
+import updated.mysterium.vpn.model.manual.connect.SortType
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterActivity
-import java.util.Locale
 
 class AllNodesFragment : Fragment() {
 
@@ -23,6 +25,7 @@ class AllNodesFragment : Fragment() {
     private lateinit var binding: FragmentAllNodesBinding
     private val viewModel: AllNodesViewModel by inject()
     private val allNodesAdapter = AllNodesAdapter()
+    private var sortType = SortType.NODES
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +40,7 @@ class AllNodesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initProposalListRecycler()
         bindsAction()
-        getProposalList()
+        loadInitialProposalList()
     }
 
     private fun initProposalListRecycler() {
@@ -49,45 +52,53 @@ class AllNodesFragment : Fragment() {
     }
 
     private fun bindsAction() {
-        binding.sortByView.setOnClickListener {
-            viewModel.getSortedProposal().observe(
-                viewLifecycleOwner,
-                { result ->
-                    result.onSuccess { proposalList ->
-                        allNodesAdapter.replaceAll(proposalList)
-                    }
-
-                    result.onFailure { throwable ->
-                        Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                        // TODO("Replace for error dialog or something else")
-                    }
-                }
-            )
-            viewModel.changeSortType().observe(
-                viewLifecycleOwner,
-                { result ->
-                    result.onSuccess {
-                        binding.sortByView.text = it.toString()
-                            .toLowerCase(Locale.getDefault())
-                            .capitalize(Locale.getDefault())
-                    }
-                }
-            )
+        binding.nodesTextView.setOnClickListener {
+            if (sortType != SortType.NODES) {
+                sortType = SortType.NODES
+                binding.nodesTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.semi_transparent_arrow_drop_down, 0, 0, 0
+                )
+                binding.countriesTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, 0, 0
+                )
+                getSortedProposal()
+            }
+        }
+        binding.countriesTextView.setOnClickListener {
+            if (sortType != SortType.COUNTRIES) {
+                sortType = SortType.COUNTRIES
+                binding.countriesTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, R.drawable.semi_transparent_arrow_drop_down, 0
+                )
+                binding.nodesTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, 0, 0
+                )
+                getSortedProposal()
+            }
         }
     }
 
-    private fun getProposalList() {
-        viewModel.getInitialProposals().observe(
-            viewLifecycleOwner,
-            {
-                it.onSuccess { proposalList ->
-                    allNodesAdapter.replaceAll(proposalList)
-                }
-                it.onFailure { throwable ->
-                    Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                    // TODO("Replace for error dialog or something else")
-                }
-            })
+    private fun loadInitialProposalList() {
+        viewModel.getInitialProposals().observe(viewLifecycleOwner, { result ->
+            updateProposalList(result)
+        })
+    }
+
+    private fun getSortedProposal() {
+        viewModel.getSortedProposal(sortType).observe(viewLifecycleOwner, { result ->
+            updateProposalList(result)
+        })
+    }
+
+    private fun updateProposalList(result: Result<List<CountryNodesModel>>) {
+        result.onSuccess { proposalList ->
+            allNodesAdapter.replaceAll(proposalList)
+        }
+
+        result.onFailure { throwable ->
+            Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
+            // TODO("Replace for error dialog or something else")
+        }
     }
 
     private fun navigateToNodeList(countryNodesModel: CountryNodesModel) {

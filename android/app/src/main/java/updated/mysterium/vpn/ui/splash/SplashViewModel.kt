@@ -25,6 +25,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         get() = _navigateForward
 
     private val _navigateForward = MutableLiveData<String>()
+    private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
     private var isTimerFinished = false
@@ -53,6 +54,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun initRepository() {
+        balanceUseCase.initDeferredNode(deferredNode)
         connectionUseCase.initDeferredNode(deferredNode)
         loadIdentity()
     }

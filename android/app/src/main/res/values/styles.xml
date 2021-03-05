@@ -106,7 +106,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <!--  RoundedSemiTransparentButton  -->5A597D
+    <!--  RoundedUnfocusedButton  -->
     <style name="Widget.RoundedUnfocusedButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
         <item name="android:background">@drawable/shape_rounded_grey_blue</item>
@@ -200,6 +200,12 @@
     </style>
 
     <!--  TextStyles  -->
+    <style name="TextAppearance.HeadNumbers" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textSize">38sp</item>
+    </style>
+
     <style name="TextAppearance.HeadTitle" parent="TextAppearance.AppCompat.Headline">
         <item name="fontFamily">@font/roboto_black</item>
         <item name="android:fontFamily">@font/roboto_black</item>
@@ -209,6 +215,12 @@
     <style name="TextAppearance.Headline" parent="TextAppearance.AppCompat.Headline">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.HeadSubNumbers" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">18sp</item>
     </style>
 

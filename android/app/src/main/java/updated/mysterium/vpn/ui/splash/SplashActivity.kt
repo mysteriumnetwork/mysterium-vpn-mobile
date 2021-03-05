@@ -14,6 +14,7 @@ import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 
@@ -25,6 +26,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivitySplashBinding
+    private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
 
@@ -35,6 +37,7 @@ class SplashActivity : AppCompatActivity() {
         bindMysteriumService()
         subscribeViewModel()
         ensureVpnServicePermission()
+        balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
         viewModel.startLoading(deferredMysteriumCoreService)
     }
 

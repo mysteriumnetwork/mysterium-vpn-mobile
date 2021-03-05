@@ -23,10 +23,6 @@ class ConnectionUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun registrationFees() = nodeRepository.identityRegistrationFees()
 
-    suspend fun getBalance(
-        getBalanceRequest: GetBalanceRequest
-    ) = nodeRepository.balance(getBalanceRequest)
-
     suspend fun status() = nodeRepository.status()
 
     suspend fun registerStatisticsChangeCallback(

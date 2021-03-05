@@ -38,6 +38,12 @@ class BalanceToolbar @JvmOverloads constructor(
         addView(toolbarView)
     }
 
+    fun setBalance(balance: Double) {
+        binding.currentBalanceTextView.text = context.getString(
+            R.string.wallet_current_balance, balance
+        )
+    }
+
     fun setLeftView(leftView: View) {
         binding.rightViewFrame.addView(leftView)
     }
