@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import network.mysterium.proposal.NodeType
+import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.proposal.QualityLevel
 import network.mysterium.proposal.ServiceType
 import network.mysterium.service.core.ProposalPaymentMethod
@@ -11,7 +12,7 @@ import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.service.core.ProposalPaymentRate
 import network.mysterium.ui.Countries
 import updated.mysterium.vpn.database.entity.NodeEntity
-import java.util.*
+import java.util.Locale
 
 @Parcelize
 data class ProposalModel(
@@ -46,6 +47,21 @@ data class ProposalModel(
         qualityLevel = QualityLevel.parse(nodeEntity.qualityLevel),
         countryName = Countries
             .values[nodeEntity.countryCode.toLowerCase(Locale.ROOT)]
+            ?.name ?: "Unknown"
+    )
+
+    constructor(proposalViewItem: ProposalViewItem) : this(
+        id = proposalViewItem.id,
+        providerID = proposalViewItem.providerID,
+        serviceType = proposalViewItem.serviceType,
+        countryCode = proposalViewItem.countryCode.toLowerCase(Locale.ROOT),
+        nodeType = proposalViewItem.nodeType,
+        monitoringFailed = proposalViewItem.monitoringFailed,
+        payment = proposalViewItem.payment,
+        countryFlagImage = proposalViewItem.countryFlagImage,
+        qualityLevel = proposalViewItem.qualityLevel,
+        countryName = Countries
+            .values[proposalViewItem.countryCode.toLowerCase(Locale.ROOT)]
             ?.name ?: "Unknown"
     )
 

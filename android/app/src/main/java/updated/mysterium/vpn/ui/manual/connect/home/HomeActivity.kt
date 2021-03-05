@@ -23,6 +23,8 @@ import network.mysterium.ui.StatisticsModel
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.getTypeLabel
+import updated.mysterium.vpn.model.manual.connect.ConnectionStateModel
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
@@ -37,20 +39,19 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var appNotificationManager: AppNotificationManager
+    private lateinit var proposalModel: ProposalModel
     private val viewModel: HomeViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
-    private lateinit var appNotificationManager: AppNotificationManager
-    private lateinit var proposalModel: ProposalModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        loadIpAddress()
-        bindsAction()
-        balanceViewModel.getCurrentBalance()
+        configure()
         subscribeViewModel()
+        bindsAction()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -59,32 +60,76 @@ class HomeActivity : AppCompatActivity() {
         checkProposalArgument()
     }
 
+    private fun configure() {
+        loadIpAddress()
+        bindMysteriumService()
+        initViewModel()
+        checkCurrentStatus()
+        balanceViewModel.getCurrentBalance()
+    }
+
     private fun subscribeViewModel() {
         viewModel.statisticsUpdate.observe(this, {
-            val statistics = StatisticsModel.from(it)
-            updateNodeStatistics(statistics)
-            updateNotificationStatistics(statistics)
+            updateStatistics(StatisticsModel.from(it))
         })
         viewModel.connectionState.observe(this, {
-            when (it) {
-                "NotConnected" -> disconnect()
-                "Connecting" -> inflateConnectingCardView()
-                "Connected" -> {
-                    loadIpAddress()
-                    inflateConnectedCardView()
-                }
-            }
+            handleConnectionChange(it)
         })
         balanceViewModel.balanceLiveData.observe(this, {
             binding.manualConnectToolbar.setBalance(it)
         })
     }
 
-    private fun updateNodeStatistics(statistics: StatisticsModel) {
-        binding.connectionState.updateConnectedStatistics(statistics, CURRENCY)
+    private fun initViewModel() {
+        viewModel.init(deferredMysteriumCoreService, appNotificationManager)
     }
 
-    private fun updateNotificationStatistics(statistics: StatisticsModel) {
+    private fun handleConnectionChange(connectionModel: ConnectionStateModel) {
+        when (connectionModel) {
+            ConnectionStateModel.NOTCONNECTED -> disconnect()
+            ConnectionStateModel.CONNECTING -> inflateConnectingCardView()
+            ConnectionStateModel.CONNECTED -> {
+                loadIpAddress()
+                inflateConnectedCardView()
+            }
+            ConnectionStateModel.DISCONNECTING -> {
+                // TODO("Implement disconnecting state, not approved UI yet")
+            }
+        }
+    }
+
+    private fun checkCurrentStatus() {
+        viewModel.updateCurrentConnectionStatus().observe(this, { result ->
+            result.onSuccess {
+                if (it == ConnectionStateModel.CONNECTED) {
+                    getProposal()
+                }
+            }
+            result.onFailure { throwable ->
+                Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
+                // TODO("Implement error handling")
+            }
+        })
+    }
+
+    private fun getProposal() {
+        viewModel.getProposalModel(deferredMysteriumCoreService).observe(this, { result ->
+            result.onSuccess { proposal ->
+                proposal?.let {
+                    proposalModel = ProposalModel(proposal)
+                    inflateNodeInfo()
+                }
+            }
+
+            result.onFailure { throwable ->
+                Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
+                // TODO("Implement error handling")
+            }
+        })
+    }
+
+    private fun updateStatistics(statistics: StatisticsModel) {
+        binding.connectionState.updateConnectedStatistics(statistics, CURRENCY)
         val countryName = proposalModel.countryName
         val notificationTitle = getString(R.string.notification_title_connected, countryName)
         val tokensSpent = PriceUtils.displayMoney(
@@ -105,20 +150,9 @@ class HomeActivity : AppCompatActivity() {
 
     private fun checkProposalArgument() {
         intent.extras?.getParcelable<ProposalModel>(EXTRA_PROPOSAL_MODEL)?.let {
-            viewModel.disconnect()
             proposalModel = it
             bindMysteriumService()
-            viewModel.connectNode(it, deferredMysteriumCoreService, appNotificationManager).observe(
-                this, { result ->
-                result.onSuccess {
-                    loadIpAddress()
-                    inflateConnectedCardView()
-                }
-                result.onFailure { throwable ->
-                    Log.i(TAG, "Connection failed: ${throwable.localizedMessage}")
-                    // TODO("Implement error handling")
-                }
-            })
+            viewModel.connectNode(it)
             inflateNodeInfo()
             inflateConnectingCardView()
         }
@@ -210,7 +244,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun inflateNodeInfo() {
-        binding.nodeType.text = proposalModel.nodeType.nodeType
+        binding.nodeType.text = proposalModel.nodeType.getTypeLabel()
         binding.nodeProvider.text = proposalModel.providerID
         binding.pricePerHour.text = getString(
             R.string.manual_connect_price_per_hour,
