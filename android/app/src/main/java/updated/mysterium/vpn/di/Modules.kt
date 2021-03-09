@@ -16,6 +16,7 @@ import updated.mysterium.vpn.ui.manual.connect.search.SearchViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.saved.SavedNodesViewModel
 import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
+import updated.mysterium.vpn.ui.profile.ProfileViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 
 object Modules {
@@ -57,6 +58,9 @@ object Modules {
         }
         viewModel {
             OnboardingViewModel(get())
+        }
+        viewModel {
+            ProfileViewModel(get())
         }
     }
 
