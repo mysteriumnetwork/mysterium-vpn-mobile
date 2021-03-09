@@ -15,12 +15,13 @@ import network.mysterium.service.core.Statistics
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.model.manual.connect.ConnectionStateModel
 import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    val connectionState: LiveData<String>
+    val connectionState: LiveData<ConnectionStateModel>
         get() = _connectionState
 
     val statisticsUpdate: LiveData<Statistics>
@@ -30,39 +31,41 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
     private val _statisticsUpdate = MutableLiveData<Statistics>()
-    private val _connectionState = MutableLiveData<String>()
+    private val _connectionState = MutableLiveData<ConnectionStateModel>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
     private val connectionUseCase = useCaseProvider.connection()
     private val deferredNode = DeferredNode()
     private var identity: IdentityModel? = null
-    private var isConnected = false
 
-    fun connectNode(
-        proposal: ProposalModel,
+    fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager
-    ) = liveDataResult {
-        proposalModel = proposal
-        appNotificationManager = notificationManager
-        coreService = deferredMysteriumCoreService.await()
-        startDeferredNode()
-        if (isConnected) {
-            disconnectNode()
+    ) {
+        viewModelScope.launch {
+            appNotificationManager = notificationManager
+            coreService = deferredMysteriumCoreService.await()
+            startDeferredNode()
         }
-        connect()
+    }
+
+    fun connectNode(proposal: ProposalModel) {
+        viewModelScope.launch {
+            proposalModel = proposal
+            disconnectNode()
+            connect()
+        }
     }
 
     fun getLocation() = liveDataResult {
         locationUseCase.getLocation()
     }
 
-    fun showStatisticsNotification(
-        notificationTitle: String,
-        notificationContent: String
-    ) {
+    fun showStatisticsNotification(notificationTitle: String, notificationContent: String) {
         viewModelScope.launch {
-            appNotificationManager.showStatisticsNotification(notificationTitle, notificationContent)
+            appNotificationManager.showStatisticsNotification(
+                notificationTitle, notificationContent
+            )
         }
     }
 
@@ -71,11 +74,23 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun disconnect() {
-        if (isConnected) {
-            viewModelScope.launch {
-                disconnectNode()
-            }
+        viewModelScope.launch {
+            disconnectNode()
         }
+    }
+
+    fun updateCurrentConnectionStatus() = liveDataResult {
+        val status = connectionUseCase.status()
+        val connectionModel = ConnectionStateModel.valueOf(status.state.toUpperCase())
+        _connectionState.postValue(connectionModel)
+        connectionModel
+    }
+
+    fun getProposalModel(
+        deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+    ) = liveDataResult {
+        coreService = deferredMysteriumCoreService.await()
+        deferredMysteriumCoreService.await().getActiveProposal()
     }
 
     private suspend fun startDeferredNode() {
@@ -94,12 +109,13 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             _statisticsUpdate.postValue(it)
         }
         connectionUseCase.connectionStatusCallback {
-            if (it == "NotConnected") {
+            val connectionStateModel = ConnectionStateModel.valueOf(it.toUpperCase())
+            if (connectionStateModel == ConnectionStateModel.NOTCONNECTED) {
+                coreService.setDeferredNode(null)
                 coreService.setActiveProposal(null)
                 coreService.stopForeground()
-                isConnected = false
             }
-            _connectionState.postValue(it)
+            _connectionState.postValue(connectionStateModel)
         }
     }
 
@@ -121,31 +137,35 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.connect(req)
         updateService()
-        isConnected = true
     }
 
     private fun updateService() {
-        coreService.setActiveProposal(
-            ProposalViewItem(
-                id = proposalModel.id,
-                providerID = proposalModel.providerID,
-                serviceType = proposalModel.serviceType,
-                countryCode = proposalModel.countryCode,
-                nodeType = proposalModel.nodeType,
-                monitoringFailed = proposalModel.monitoringFailed,
-                payment = proposalModel.payment
+        coreService.apply {
+            setDeferredNode(deferredNode)
+            setActiveProposal(
+                ProposalViewItem(
+                    id = proposalModel.id,
+                    providerID = proposalModel.providerID,
+                    serviceType = proposalModel.serviceType,
+                    countryCode = proposalModel.countryCode,
+                    nodeType = proposalModel.nodeType,
+                    monitoringFailed = proposalModel.monitoringFailed,
+                    payment = proposalModel.payment
+                )
             )
-        )
-        coreService.startForegroundWithNotification(
-            appNotificationManager.defaultNotificationID,
-            appNotificationManager.createConnectedToVPNNotification()
-        )
+            startForegroundWithNotification(
+                appNotificationManager.defaultNotificationID,
+                appNotificationManager.createConnectedToVPNNotification()
+            )
+        }
     }
 
     private suspend fun disconnectNode() {
-        connectionUseCase.disconnect()
-        coreService.setActiveProposal(null)
-        coreService.stopForeground()
-        isConnected = false
+        if (_connectionState.value == ConnectionStateModel.CONNECTED) {
+            connectionUseCase.disconnect()
+            coreService.setActiveProposal(null)
+            coreService.setDeferredNode(null)
+            coreService.stopForeground()
+        }
     }
 }

@@ -32,6 +32,7 @@ class MysteriumAndroidCoreService : VpnService() {
     private var mobileNode: MobileNode? = null
 
     private var activeProposal: ProposalViewItem? = null
+    private var deferredNode: DeferredNode? = null
 
     override fun onDestroy() {
         super.onDestroy()
@@ -80,6 +81,13 @@ class MysteriumAndroidCoreService : VpnService() {
     }
 
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
+
+        override fun getDeferredNode() = deferredNode
+
+        override fun setDeferredNode(node: DeferredNode?) {
+            deferredNode = node
+        }
+
         override fun setActiveProposal(proposal: ProposalViewItem?) {
             activeProposal = proposal
         }

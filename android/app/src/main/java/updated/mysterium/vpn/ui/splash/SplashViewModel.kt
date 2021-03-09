@@ -30,7 +30,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val loginUseCase = useCaseProvider.login()
     private var isTimerFinished = false
     private var isDataLoaded = false
-    private val deferredNode = DeferredNode()
+    private var deferredNode = DeferredNode()
 
     fun startLoading(deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
         startTimer()
@@ -45,9 +45,15 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     ) {
         viewModelScope.launch {
-            deferredMysteriumCoreService.await()
-            if (!deferredNode.startedOrStarting()) {
-                deferredNode.start(deferredMysteriumCoreService.await())
+            val service = deferredMysteriumCoreService.await()
+            if (service.getDeferredNode() != null) {
+                service.getDeferredNode()?.let {
+                    deferredNode = it
+                }
+            } else {
+                if (!deferredNode.startedOrStarting()) {
+                    deferredNode.start(service)
+                }
             }
             initRepository()
         }
