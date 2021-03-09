@@ -15,6 +15,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.profile.ProfileActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class MenuActivity : AppCompatActivity() {
@@ -117,7 +118,7 @@ class MenuActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 1 -> menuItem.onItemClickListener = {
-                    // TODO("Implement navigation to Profile")
+                    startActivity(Intent(this, ProfileActivity::class.java))
                 }
                 2 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, WalletActivity::class.java))
