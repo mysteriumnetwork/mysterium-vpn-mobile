@@ -242,6 +242,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="TextAppearance.BodyRegular" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="TextAppearance.Caption" parent="TextAppearance.AppCompat.Caption">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>

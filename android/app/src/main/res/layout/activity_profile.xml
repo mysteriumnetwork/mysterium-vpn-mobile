@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_menu" />
+
+    <TextView
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:text="@string/profile_title"
+        android:textColor="@android:color/white" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/walletInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:background="@drawable/shape_gradient_background">
+
+        <ImageView
+            android:id="@+id/profileCardImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:src="@drawable/icon_profile_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textViewIdentityTitle"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:text="@string/profile_identity"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileCardImageView" />
+
+        <TextView
+            android:id="@+id/textViewIdentityDescription"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="@string/profile_identity_description"
+            android:textAlignment="center"
+            android:textColor="@color/manual_connect_value_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewIdentityTitle" />
+
+        <FrameLayout
+            android:id="@+id/identityValueContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+            android:layout_marginTop="@dimen/margin_padding_size_large"
+            app:layout_constraintTop_toBottomOf="@+id/textViewIdentityDescription">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_edit_text"
+                android:textColor="@android:color/white">
+
+                <TextView
+                    android:id="@+id/identityValueTextView"
+                    style="@style/TextAppearance.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/manual_connect_value_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/copyButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="O×9954B7C616176BD20C8BE1DE9616176BD" />
+
+                <ImageButton
+                    android:id="@+id/copyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@drawable/shape_button_copy"
+                    android:src="@drawable/icon_copy"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+        <TextView
+            style="@style/TextAppearance.BodyRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_padding_size_large"
+            android:text="@string/profile_change_keys"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/identityValueContainer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

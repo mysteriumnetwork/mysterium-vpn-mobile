@@ -210,4 +210,11 @@
     <string name="wallet_current_balance">"%.3f"</string>
     <string name="wallet_top_up">Top up</string>
     <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain, we’’re using it in the Testnet environment</string>
+
+    <!--  Profile  -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_identity">Identity Address</string>
+    <string name="profile_identity_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
+    <string name="profile_change_keys">Change Private keys</string>
+    <string name="profile_copy_to_clipboard">Copied to clipboard</string>
 </resources>
