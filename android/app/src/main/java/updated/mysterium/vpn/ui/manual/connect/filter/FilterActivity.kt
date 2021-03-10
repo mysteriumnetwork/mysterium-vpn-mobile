@@ -18,6 +18,7 @@ import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class FilterActivity : AppCompatActivity() {
 
@@ -85,6 +86,9 @@ class FilterActivity : AppCompatActivity() {
         }
         binding.manualConnectToolbar.onRightButtonClicked {
             navigateToSearch()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
         }
     }
 

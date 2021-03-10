@@ -12,6 +12,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/animationGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
     <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"
@@ -84,19 +91,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ipTextView" />
 
-    <ImageView
-        android:id="@+id/appLogoView"
+    <updated.mysterium.vpn.ui.custom.view.MultiAnimationView
+        android:id="@+id/multiAnimation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-        android:layout_marginVertical="@dimen/margin_padding_size_medium"
-        android:src="@drawable/home_logo"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/animationGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectionTypeTextView"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/ipTextView" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -110,10 +112,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/connectedNodeInfo"
-            android:visibility="invisible"
             style="@style/Widget.SemiTransparentCardView"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:visibility="invisible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -223,7 +225,7 @@
             <updated.mysterium.vpn.ui.custom.view.ConnectionState
                 android:id="@+id/connectionState"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </com.google.android.material.card.MaterialCardView>
 

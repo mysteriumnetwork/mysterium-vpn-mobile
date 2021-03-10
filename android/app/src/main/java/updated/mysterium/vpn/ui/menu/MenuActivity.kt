@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import network.mysterium.ui.onItemSelected
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
 import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
@@ -80,17 +80,22 @@ class MenuActivity : AppCompatActivity() {
 
     private fun inflateCustomToolbarView() {
         val viewSelectorBinding = SpinnerLanguageSelectorBinding.inflate(layoutInflater)
+        val languagesList = resources.getStringArray(R.array.menu_languages).toMutableList()
+        val spinnerAdapter = SpinnerArrayAdapter(
+            this@MenuActivity,
+            R.layout.item_spinner_languages,
+            languagesList
+        )
         viewSelectorBinding.apply {
             languageSelector.setOnClickListener {
                 viewSelectorBinding.spinner.performClick()
             }
-            spinner.adapter = ArrayAdapter(
-                this@MenuActivity,
-                R.layout.item_spinner_languages,
-                resources.getStringArray(R.array.menu_languages).toList(),
-            )
+            spinner.adapter = spinnerAdapter
+            spinner.onItemSelected {
+                spinnerAdapter.selectedPosition = it
+            }
         }
-        binding.manualConnectToolbar.setLeftView(viewSelectorBinding.languageSelector)
+        binding.manualConnectToolbar.setRightView(viewSelectorBinding.languageSelector)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -108,6 +113,9 @@ class MenuActivity : AppCompatActivity() {
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
         }
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {

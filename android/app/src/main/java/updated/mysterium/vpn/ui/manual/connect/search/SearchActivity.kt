@@ -12,6 +12,7 @@ import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class SearchActivity : AppCompatActivity() {
 
@@ -33,6 +34,9 @@ class SearchActivity : AppCompatActivity() {
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
         }
         binding.editText.addTextChangedListener {
             viewModel.search(it.toString())

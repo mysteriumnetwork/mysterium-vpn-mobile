@@ -165,7 +165,7 @@
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
     <string name="manual_connect_search">Search</string>
-    <string name="manual_connect_node_id">Node id</string>
+    <string name="manual_connect_node_id">Node id or Country</string>
 
     <!--  Filters  -->
     <string name="filter_type_all">All types</string>

@@ -13,6 +13,7 @@ import network.mysterium.vpn.databinding.ActivityProfileBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -59,6 +60,9 @@ class ProfileActivity : AppCompatActivity() {
     private fun bindsAction() {
         binding.copyButton.setOnClickListener {
             copyToClipboard()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             val intent = Intent(this, MenuActivity::class.java).apply {

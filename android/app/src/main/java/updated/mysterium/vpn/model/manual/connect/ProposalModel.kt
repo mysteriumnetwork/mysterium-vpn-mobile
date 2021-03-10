@@ -12,7 +12,7 @@ import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.service.core.ProposalPaymentRate
 import network.mysterium.ui.Countries
 import updated.mysterium.vpn.database.entity.NodeEntity
-import java.util.Locale
+import java.util.*
 
 @Parcelize
 data class ProposalModel(
@@ -66,26 +66,4 @@ data class ProposalModel(
     )
 
     var priceLevel = PriceLevel.MEDIUM
-        private set
-
-    fun calculatePriceLevel(
-        minPrice: Double,
-        firstPriceBorder: Double,
-        secondPriceBorder: Double
-    ) {
-        priceLevel = when (payment.rate.perBytes) {
-            0.0 -> {
-                PriceLevel.FREE
-            }
-            in minPrice..firstPriceBorder -> {
-                PriceLevel.LOW
-            }
-            in firstPriceBorder..secondPriceBorder -> {
-                PriceLevel.MEDIUM
-            }
-            else -> {
-                PriceLevel.HIGH
-            }
-        }
-    }
 }
