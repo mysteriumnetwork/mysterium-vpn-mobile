@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.intercom.android.sdk.Intercom
+import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
@@ -19,6 +21,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     companion object {
         private const val ONE_SECOND_DELAY = 1000L
+        private const val NODE_IDENTITY_KEY = "node_identity"
     }
 
     val navigateForward: LiveData<String>
@@ -82,7 +85,18 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             channelAddress = nodeIdentity.channelAddress,
             status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
         )
+        registerIntercomClient(identity.address)
         registerIdentity(identity)
+    }
+
+    private fun registerIntercomClient(address: String) {
+        Intercom.client().apply {
+            registerUnidentifiedUser()
+            val attrs = UserAttributes.Builder()
+                .withCustomAttribute(NODE_IDENTITY_KEY, address)
+                .build()
+            updateUser(attrs)
+        }
     }
 
     private suspend fun registerIdentity(identity: IdentityModel) {

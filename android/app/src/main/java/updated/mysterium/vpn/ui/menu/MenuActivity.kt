@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.intercom.android.sdk.Intercom
 import network.mysterium.ui.onItemSelected
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
@@ -116,6 +117,9 @@ class MenuActivity : AppCompatActivity() {
         }
         binding.manualConnectToolbar.onBalanceClickListener {
             startActivity(Intent(this, WalletActivity::class.java))
+        }
+        binding.helpButton.setOnClickListener {
+            Intercom.client().displayMessenger()
         }
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
