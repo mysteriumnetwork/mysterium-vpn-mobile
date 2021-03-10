@@ -15,23 +15,23 @@ import network.mysterium.service.core.Statistics
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.model.manual.connect.ConnectionStateModel
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    val connectionState: LiveData<ConnectionStateModel>
+    val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
     val statisticsUpdate: LiveData<Statistics>
         get() = _statisticsUpdate
 
-    private lateinit var proposalModel: ProposalModel
+    private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
     private val _statisticsUpdate = MutableLiveData<Statistics>()
-    private val _connectionState = MutableLiveData<ConnectionStateModel>()
+    private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
     private val connectionUseCase = useCaseProvider.connection()
@@ -49,9 +49,9 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun connectNode(proposal: ProposalModel) {
+    fun connectNode(proposal: Proposal) {
         viewModelScope.launch {
-            proposalModel = proposal
+            this@HomeViewModel.proposal = proposal
             disconnectNode()
             connect()
         }
@@ -69,7 +69,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun addToFavourite(proposal: ProposalModel) = liveDataResult {
+    fun addToFavourite(proposal: Proposal) = liveDataResult {
         nodesUseCase.addToFavourite(proposal)
     }
 
@@ -81,7 +81,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun updateCurrentConnectionStatus() = liveDataResult {
         val status = connectionUseCase.status()
-        val connectionModel = ConnectionStateModel.valueOf(status.state.toUpperCase())
+        val connectionModel = ConnectionState.valueOf(status.state.toUpperCase())
         _connectionState.postValue(connectionModel)
         connectionModel
     }
@@ -109,8 +109,8 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             _statisticsUpdate.postValue(it)
         }
         connectionUseCase.connectionStatusCallback {
-            val connectionStateModel = ConnectionStateModel.valueOf(it.toUpperCase())
-            if (connectionStateModel == ConnectionStateModel.NOTCONNECTED) {
+            val connectionStateModel = ConnectionState.valueOf(it.toUpperCase())
+            if (connectionStateModel == ConnectionState.NOTCONNECTED) {
                 coreService.setDeferredNode(null)
                 coreService.setActiveProposal(null)
                 coreService.stopForeground()
@@ -132,8 +132,8 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun connect() {
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
-            providerID = proposalModel.providerID
-            serviceType = proposalModel.serviceType.type
+            providerID = proposal.providerID
+            serviceType = proposal.serviceType.type
         }
         connectionUseCase.connect(req)
         updateService()
@@ -144,13 +144,13 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             setDeferredNode(deferredNode)
             setActiveProposal(
                 ProposalViewItem(
-                    id = proposalModel.id,
-                    providerID = proposalModel.providerID,
-                    serviceType = proposalModel.serviceType,
-                    countryCode = proposalModel.countryCode,
-                    nodeType = proposalModel.nodeType,
-                    monitoringFailed = proposalModel.monitoringFailed,
-                    payment = proposalModel.payment
+                    id = proposal.id,
+                    providerID = proposal.providerID,
+                    serviceType = proposal.serviceType,
+                    countryCode = proposal.countryCode,
+                    nodeType = proposal.nodeType,
+                    monitoringFailed = proposal.monitoringFailed,
+                    payment = proposal.payment
                 )
             )
             startForegroundWithNotification(
@@ -161,7 +161,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
-        if (_connectionState.value == ConnectionStateModel.CONNECTED) {
+        if (_connectionState.value == ConnectionState.CONNECTED) {
             connectionUseCase.disconnect()
             coreService.setActiveProposal(null)
             coreService.setDeferredNode(null)

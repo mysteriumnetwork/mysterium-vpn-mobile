@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CountryNodesModel(
+data class CountryNodes(
     val countryFlagRes: Int? = null,
     val countryCode: String,
     val countryName: String,
-    val proposalList: List<ProposalModel>
+    val proposalList: List<Proposal>
 ) : Parcelable

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import network.mysterium.service.core.ProposalItem
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 
 @Entity
 data class NodeEntity(
@@ -39,19 +39,19 @@ data class NodeEntity(
         isSaved = isFavourite
     )
 
-    constructor(proposalModel: ProposalModel, isFavourite: Boolean = false) : this(
-        id = proposalModel.providerID + proposalModel.serviceType,
-        providerID = proposalModel.providerID,
-        serviceType = proposalModel.serviceType.type,
-        countryCode = proposalModel.countryCode,
-        nodeType = proposalModel.nodeType.nodeType,
-        monitoringFailed = proposalModel.monitoringFailed,
-        paymentType = proposalModel.payment.type,
-        paymentAmount = proposalModel.payment.price.amount,
-        currency = proposalModel.payment.price.currency,
-        pricePerSecond = proposalModel.payment.rate.perSeconds,
-        pricePerByte = proposalModel.payment.rate.perBytes,
-        qualityLevel = proposalModel.qualityLevel.level,
+    constructor(proposal: Proposal, isFavourite: Boolean = false) : this(
+        id = proposal.providerID + proposal.serviceType,
+        providerID = proposal.providerID,
+        serviceType = proposal.serviceType.type,
+        countryCode = proposal.countryCode,
+        nodeType = proposal.nodeType.nodeType,
+        monitoringFailed = proposal.monitoringFailed,
+        paymentType = proposal.payment.type,
+        paymentAmount = proposal.payment.price.amount,
+        currency = proposal.payment.price.currency,
+        pricePerSecond = proposal.payment.rate.perSeconds,
+        pricePerByte = proposal.payment.rate.perBytes,
+        qualityLevel = proposal.qualityLevel.level,
         isSaved = isFavourite
     )
 }

@@ -15,7 +15,7 @@ import updated.mysterium.vpn.database.entity.NodeEntity
 import java.util.*
 
 @Parcelize
-data class ProposalModel(
+data class Proposal(
     val id: String,
     val providerID: String,
     val serviceType: ServiceType,

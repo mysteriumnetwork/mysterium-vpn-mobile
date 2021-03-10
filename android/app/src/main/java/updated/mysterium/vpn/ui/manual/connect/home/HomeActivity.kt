@@ -24,8 +24,8 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.getTypeLabel
-import updated.mysterium.vpn.model.manual.connect.ConnectionStateModel
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var appNotificationManager: AppNotificationManager
-    private lateinit var proposalModel: ProposalModel
+    private lateinit var proposal: Proposal
     private val viewModel: HomeViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
@@ -85,15 +85,15 @@ class HomeActivity : AppCompatActivity() {
         viewModel.init(deferredMysteriumCoreService, appNotificationManager)
     }
 
-    private fun handleConnectionChange(connectionModel: ConnectionStateModel) {
-        when (connectionModel) {
-            ConnectionStateModel.NOTCONNECTED -> disconnect()
-            ConnectionStateModel.CONNECTING -> inflateConnectingCardView()
-            ConnectionStateModel.CONNECTED -> {
+    private fun handleConnectionChange(connection: ConnectionState) {
+        when (connection) {
+            ConnectionState.NOTCONNECTED -> disconnect()
+            ConnectionState.CONNECTING -> inflateConnectingCardView()
+            ConnectionState.CONNECTED -> {
                 loadIpAddress()
                 inflateConnectedCardView()
             }
-            ConnectionStateModel.DISCONNECTING -> {
+            ConnectionState.DISCONNECTING -> {
                 // TODO("Implement disconnecting state, not approved UI yet")
             }
         }
@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
     private fun checkCurrentStatus() {
         viewModel.updateCurrentConnectionStatus().observe(this, { result ->
             result.onSuccess {
-                if (it == ConnectionStateModel.CONNECTED) {
+                if (it == ConnectionState.CONNECTED) {
                     getProposal()
                 }
             }
@@ -117,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getProposalModel(deferredMysteriumCoreService).observe(this, { result ->
             result.onSuccess { proposal ->
                 proposal?.let {
-                    proposalModel = ProposalModel(proposal)
+                    this.proposal = Proposal(proposal)
                     inflateNodeInfo()
                 }
             }
@@ -131,7 +131,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun updateStatistics(statistics: StatisticsModel) {
         binding.connectionState.updateConnectedStatistics(statistics, CURRENCY)
-        val countryName = proposalModel.countryName
+        val countryName = proposal.countryName
         val notificationTitle = getString(R.string.notification_title_connected, countryName)
         val tokensSpent = PriceUtils.displayMoney(
             ProposalPaymentMoney(
@@ -150,8 +150,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun checkProposalArgument() {
-        intent.extras?.getParcelable<ProposalModel>(EXTRA_PROPOSAL_MODEL)?.let {
-            proposalModel = it
+        intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
+            proposal = it
             bindMysteriumService()
             viewModel.connectNode(it)
             inflateNodeInfo()
@@ -208,7 +208,7 @@ class HomeActivity : AppCompatActivity() {
             navigateToMenu()
         }
         binding.manualConnectToolbar.onRightButtonClicked {
-            viewModel.addToFavourite(proposalModel).observe(this, { result ->
+            viewModel.addToFavourite(proposal).observe(this, { result ->
                 result.onSuccess {
                     Toast.makeText(
                         this,
@@ -249,15 +249,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun inflateNodeInfo() {
-        binding.nodeType.text = proposalModel.nodeType.getTypeLabel()
-        binding.nodeProvider.text = proposalModel.providerID
+        binding.nodeType.text = proposal.nodeType.getTypeLabel()
+        binding.nodeProvider.text = proposal.providerID
         binding.pricePerHour.text = getString(
             R.string.manual_connect_price_per_hour,
-            proposalModel.payment.rate.perSeconds / 3600.0
+            proposal.payment.rate.perSeconds / 3600.0
         )
         binding.pricePerGigabyte.text = getString(
             R.string.manual_connect_price_per_gigabyte,
-            proposalModel.payment.rate.perBytes / 1024.0 / 1024.0
+            proposal.payment.rate.perBytes / 1024.0 / 1024.0
         )
     }
 
@@ -273,7 +273,7 @@ class HomeActivity : AppCompatActivity() {
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.primary)
         )
-        binding.connectionState.showConnectionState(proposalModel)
+        binding.connectionState.showConnectionState(proposal)
         binding.multiAnimation.connectingState()
     }
 
@@ -281,7 +281,7 @@ class HomeActivity : AppCompatActivity() {
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_connected)
-        binding.connectionTypeTextView.text = proposalModel.countryName
+        binding.connectionTypeTextView.text = proposal.countryName
         binding.securityStatusTextView.visibility = View.VISIBLE
         binding.securityStatusImageView.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.shape_connected_status)

@@ -1,11 +1,8 @@
 package updated.mysterium.vpn.ui.manual.connect.select.node.saved
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SavedNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -16,7 +13,7 @@ class SavedNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         nodesUseCase.getFavourites()
     }
 
-    fun deleteNodeFromFavourite(proposalModel: ProposalModel) = liveDataResult {
-        nodesUseCase.deleteFromFavourite(proposalModel)
+    fun deleteNodeFromFavourite(proposal: Proposal) = liveDataResult {
+        nodesUseCase.deleteFromFavourite(proposal)
     }
 }

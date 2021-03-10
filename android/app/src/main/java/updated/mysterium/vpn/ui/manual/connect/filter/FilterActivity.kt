@@ -13,8 +13,8 @@ import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
-import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.CountryNodes
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
@@ -23,7 +23,7 @@ import updated.mysterium.vpn.ui.wallet.WalletActivity
 class FilterActivity : AppCompatActivity() {
 
     companion object {
-        var countryNodesModel: CountryNodesModel? = null
+        var countryNodes: CountryNodes? = null
     }
 
     private lateinit var binding: ActivityFilterBinding
@@ -44,7 +44,7 @@ class FilterActivity : AppCompatActivity() {
     }
 
     private fun getNodesList() {
-        countryNodesModel?.let {
+        countryNodes?.let {
             if (it.countryName.isEmpty()) {
                 binding.nodesTitle.text = getString(R.string.manual_connect_all_countries)
                 nodeListAdapter.isCountryNamedMode = true
@@ -92,7 +92,7 @@ class FilterActivity : AppCompatActivity() {
         }
     }
 
-    private fun showNodeList(proposalList: List<ProposalModel>) {
+    private fun showNodeList(proposalList: List<Proposal>) {
         nodeListAdapter.replaceAll(proposalList)
     }
 
@@ -106,9 +106,9 @@ class FilterActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToHome(proposalModel: ProposalModel) {
+    private fun navigateToHome(proposal: Proposal) {
         val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposalModel)
+        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposal)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
