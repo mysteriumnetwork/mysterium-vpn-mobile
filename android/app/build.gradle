@@ -77,6 +77,9 @@ android {
         versionName getVersionName()
         multiDexEnabled true
 
+        buildConfigField "String", "INTERCOM_API_KEY", "\"android_sdk-e480f3fce4f2572742b13c282c453171c1715516\""
+        buildConfigField "String", "INTERCOM_APP_ID", "\"h7hlm9on\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
