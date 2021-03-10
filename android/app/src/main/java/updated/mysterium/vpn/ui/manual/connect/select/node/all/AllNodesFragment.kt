@@ -6,13 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.FragmentAllNodesBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
+import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.SortType
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterActivity
 
@@ -90,7 +89,7 @@ class AllNodesFragment : Fragment() {
         })
     }
 
-    private fun updateProposalList(result: Result<List<CountryNodesModel>>) {
+    private fun updateProposalList(result: Result<List<CountryNodes>>) {
         result.onSuccess { proposalList ->
             allNodesAdapter.replaceAll(proposalList)
         }
@@ -101,8 +100,8 @@ class AllNodesFragment : Fragment() {
         }
     }
 
-    private fun navigateToNodeList(countryNodesModel: CountryNodesModel) {
-        FilterActivity.countryNodesModel = countryNodesModel
+    private fun navigateToNodeList(countryNodes: CountryNodes) {
+        FilterActivity.countryNodes = countryNodes
         val intent = Intent(requireContext(), FilterActivity::class.java)
         startActivity(intent)
     }

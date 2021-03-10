@@ -6,8 +6,8 @@ import network.mysterium.service.core.NodeRepository
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
-import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.CountryNodes
+import updated.mysterium.vpn.model.manual.connect.Proposal
 
 class NodesUseCase(
     private val nodeRepository: NodeRepository,
@@ -30,11 +30,11 @@ class NodesUseCase(
     suspend fun getFavourites() = createProposalList(nodeDao.getFavourites())
 
     suspend fun addToFavourite(
-        proposalModel: ProposalModel
-    ) = nodeDao.addToFavourite(NodeEntity(proposalModel, true))
+        proposal: Proposal
+    ) = nodeDao.addToFavourite(NodeEntity(proposal, true))
 
-    suspend fun deleteFromFavourite(proposalModel: ProposalModel) {
-        nodeDao.deleteFromFavourite(proposalModel.id)
+    suspend fun deleteFromFavourite(proposal: Proposal) {
+        nodeDao.deleteFromFavourite(proposal.id)
     }
 
     private suspend fun getAllNodes(): List<NodeEntity> {
@@ -47,32 +47,20 @@ class NodesUseCase(
             .map { NodeEntity(it) }
     }
 
-    private fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodesModel> {
+    private fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodes> {
         val proposalList = createProposalList(allNodesList)
         return groupListByCountries(proposalList).sortedByDescending { it.proposalList.size }
     }
 
-    private fun createProposalList(allNodesList: List<NodeEntity>): List<ProposalModel> {
-        val minPricePerByte = allNodesList.minOf { it.pricePerByte }
-        val maxPricePerByte = allNodesList.maxOf { it.pricePerByte }
-        val firstPriceBorder = ((maxPricePerByte - minPricePerByte) / 3) + minPricePerByte
-        val secondPriceBorder = (((maxPricePerByte - minPricePerByte) / 3) * 2) + minPricePerByte
-        return allNodesList.map {
-            ProposalModel(it).apply {
-                calculatePriceLevel(
-                    minPricePerByte,
-                    firstPriceBorder,
-                    secondPriceBorder
-                )
-            }
-        }
+    private fun createProposalList(allNodesList: List<NodeEntity>) = allNodesList.map {
+        Proposal(it)
     }
 
-    private fun groupListByCountries(proposalList: List<ProposalModel>): List<CountryNodesModel> {
-        val countryNodesList = mutableListOf<CountryNodesModel>()
+    private fun groupListByCountries(proposalList: List<Proposal>): List<CountryNodes> {
+        val countryNodesList = mutableListOf<CountryNodes>()
         countryNodesList.add(
             index = 0,
-            element = CountryNodesModel(
+            element = CountryNodes(
                 countryCode = ALL_COUNTRY_CODE,
                 countryName = "",
                 countryFlagRes = R.drawable.icon_all_countries,
@@ -83,14 +71,14 @@ class NodesUseCase(
             .forEach { node ->
                 val currentCountry = countryNodesList.find { it.countryCode == node.countryCode }
                 if (currentCountry == null) {
-                    val allNodesByCountry = mutableListOf<ProposalModel>()
+                    val allNodesByCountry = mutableListOf<Proposal>()
                     proposalList.forEach {
                         if (it.countryCode == node.countryCode) {
                             allNodesByCountry.add(it)
                         }
                     }
                     countryNodesList.add(
-                        CountryNodesModel(
+                        CountryNodes(
                             countryCode = node.countryCode,
                             countryName = node.countryName,
                             proposalList = allNodesByCountry.toList()

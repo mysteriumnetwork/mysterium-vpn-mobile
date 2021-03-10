@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SearchViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    val searchResult: LiveData<List<ProposalModel>>
+    val searchResult: LiveData<List<Proposal>>
         get() = _searchResult
 
     private val nodesUseCase = useCaseProvider.nodes()
-    private val _searchResult = MutableLiveData<List<ProposalModel>>()
-    private var allProposal = emptyList<ProposalModel>()
+    private val _searchResult = MutableLiveData<List<Proposal>>()
+    private var allProposal = emptyList<Proposal>()
 
     init {
         viewModelScope.launch {

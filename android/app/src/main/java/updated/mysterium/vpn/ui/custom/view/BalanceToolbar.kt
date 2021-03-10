@@ -15,18 +15,16 @@ class BalanceToolbar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private var leftView: View? = null
-    private var rightView: View? = null
     private var leftIconDrawable: Drawable? = null
     private var rightIconDrawable: Drawable? = null
     private var leftButtonListener: (() -> Unit)? = null
     private var rightButtonListener: (() -> Unit)? = null
+    private var balanceClickListener: (() -> Unit)? = null
     private lateinit var binding: ToolbarBaseConnectBinding
 
     init {
         attrs?.let {
             getIconsAttributes(it)
-            getViewsAttributes(it)
         }
     }
 
@@ -44,15 +42,8 @@ class BalanceToolbar @JvmOverloads constructor(
         )
     }
 
-    fun setLeftView(leftView: View) {
-        binding.rightViewFrame.addView(leftView)
-    }
-
-    fun setLeftIcon(drawable: Drawable?) {
-        drawable?.let {
-            binding.leftButton.setImageDrawable(it)
-            binding.leftButton.visibility = View.VISIBLE
-        }
+    fun setRightView(rightView: View) {
+        binding.rightViewFrame.addView(rightView)
     }
 
     fun setRightIcon(drawable: Drawable?) {
@@ -70,6 +61,10 @@ class BalanceToolbar @JvmOverloads constructor(
         rightButtonListener = action
     }
 
+    fun onBalanceClickListener(action: () -> Unit) {
+        balanceClickListener = action
+    }
+
     private fun getIconsAttributes(attrs: AttributeSet) {
         val iconsAttributes = context.obtainStyledAttributes(
             attrs, R.styleable.BalanceToolbar
@@ -81,20 +76,6 @@ class BalanceToolbar @JvmOverloads constructor(
             rightIconDrawable = iconsAttributes.getDrawable(R.styleable.BalanceToolbar_rightIcon)
         }
         iconsAttributes.recycle()
-    }
-
-    private fun getViewsAttributes(attrs: AttributeSet) {
-        val viewsAttributes = context.obtainStyledAttributes(
-            attrs, R.styleable.BalanceToolbar
-        )
-        if (viewsAttributes.hasValue(R.styleable.BalanceToolbar_leftView)) {
-            val leftViewLayoutRes = viewsAttributes.getInt(R.styleable.BalanceToolbar_leftView, -1)
-
-        }
-        if (viewsAttributes.hasValue(R.styleable.BalanceToolbar_rightIcon)) {
-            rightIconDrawable = viewsAttributes.getDrawable(R.styleable.BalanceToolbar_rightIcon)
-        }
-        viewsAttributes.recycle()
     }
 
     private fun inflateToolbarWithIcons(toolbarView: View) {
@@ -112,6 +93,9 @@ class BalanceToolbar @JvmOverloads constructor(
         }
         binding.rightButton.setOnClickListener {
             rightButtonListener?.invoke()
+        }
+        binding.balanceCardView.setOnClickListener {
+            balanceClickListener?.invoke()
         }
     }
 }

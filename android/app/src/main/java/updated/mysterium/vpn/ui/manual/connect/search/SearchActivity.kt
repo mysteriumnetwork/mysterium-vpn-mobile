@@ -8,10 +8,11 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class SearchActivity : AppCompatActivity() {
 
@@ -33,6 +34,9 @@ class SearchActivity : AppCompatActivity() {
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
         }
         binding.editText.addTextChangedListener {
             viewModel.search(it.toString())
@@ -65,9 +69,9 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToHome(proposalModel: ProposalModel) {
+    private fun navigateToHome(proposal: Proposal) {
         val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposalModel)
+        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposal)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }

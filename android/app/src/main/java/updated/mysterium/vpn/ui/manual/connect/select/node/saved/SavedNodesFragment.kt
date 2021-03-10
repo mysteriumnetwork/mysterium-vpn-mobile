@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.FragmentSavedNodesBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 class SavedNodesFragment : Fragment() {
@@ -73,9 +73,9 @@ class SavedNodesFragment : Fragment() {
         })
     }
 
-    private fun navigateToHome(proposalModel: ProposalModel) {
+    private fun navigateToHome(proposal: Proposal) {
         val intent = Intent(requireContext(), HomeActivity::class.java)
-        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposalModel)
+        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposal)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
