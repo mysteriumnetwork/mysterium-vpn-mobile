@@ -21,6 +21,24 @@ class FilterViewModel : ViewModel() {
 
     fun applyInitialFilter(countryNodesModel: CountryNodesModel, nodeFilter: NodeFilter) {
         nodesModel = countryNodesModel
+        nodesModel.proposalList.sortedBy {
+            it.payment.rate.perBytes
+        }.forEachIndexed { index, proposalModel ->
+            when {
+                proposalModel.payment.rate.perBytes == 0.0 -> {
+                    proposalModel.priceLevel = PriceLevel.FREE
+                }
+                index <= nodesModel.proposalList.size * 0.3 -> {
+                    proposalModel.priceLevel = PriceLevel.LOW
+                }
+                index >= nodesModel.proposalList.size * 0.7 -> {
+                    proposalModel.priceLevel = PriceLevel.HIGH
+                }
+                else -> {
+                    proposalModel.priceLevel = PriceLevel.MEDIUM
+                }
+            }
+        }
         _proposalsList.value = getFilteredProposalList(nodeFilter)
     }
 

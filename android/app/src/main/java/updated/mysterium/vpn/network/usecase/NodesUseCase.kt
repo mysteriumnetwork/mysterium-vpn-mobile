@@ -52,20 +52,8 @@ class NodesUseCase(
         return groupListByCountries(proposalList).sortedByDescending { it.proposalList.size }
     }
 
-    private fun createProposalList(allNodesList: List<NodeEntity>): List<ProposalModel> {
-        val minPricePerByte = allNodesList.minOf { it.pricePerByte }
-        val maxPricePerByte = allNodesList.maxOf { it.pricePerByte }
-        val firstPriceBorder = ((maxPricePerByte - minPricePerByte) / 3) + minPricePerByte
-        val secondPriceBorder = (((maxPricePerByte - minPricePerByte) / 3) * 2) + minPricePerByte
-        return allNodesList.map {
-            ProposalModel(it).apply {
-                calculatePriceLevel(
-                    minPricePerByte,
-                    firstPriceBorder,
-                    secondPriceBorder
-                )
-            }
-        }
+    private fun createProposalList(allNodesList: List<NodeEntity>) = allNodesList.map {
+        ProposalModel(it)
     }
 
     private fun groupListByCountries(proposalList: List<ProposalModel>): List<CountryNodesModel> {

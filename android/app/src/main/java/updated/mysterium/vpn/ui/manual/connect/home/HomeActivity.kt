@@ -29,6 +29,7 @@ import updated.mysterium.vpn.model.manual.connect.ProposalModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -200,6 +201,9 @@ class HomeActivity : AppCompatActivity() {
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
         }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
+        }
         binding.manualConnectToolbar.onLeftButtonClicked {
             navigateToMenu()
         }
@@ -240,6 +244,7 @@ class HomeActivity : AppCompatActivity() {
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.primary)
         )
+        binding.multiAnimation.disconnectedState()
         loadIpAddress()
     }
 
@@ -269,6 +274,7 @@ class HomeActivity : AppCompatActivity() {
             ContextCompat.getColor(this, R.color.primary)
         )
         binding.connectionState.showConnectionState(proposalModel)
+        binding.multiAnimation.connectingState()
     }
 
     private fun inflateConnectedCardView() {
@@ -286,6 +292,7 @@ class HomeActivity : AppCompatActivity() {
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
+        binding.multiAnimation.connectedState()
     }
 
     private fun navigateToSelectNode() {

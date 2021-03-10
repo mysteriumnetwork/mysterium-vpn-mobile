@@ -17,6 +17,7 @@ import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.TabItemModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class SelectNodeActivity : AppCompatActivity() {
 
@@ -112,6 +113,9 @@ class SelectNodeActivity : AppCompatActivity() {
         }
         binding.manualConnectToolbar.onRightButtonClicked {
             navigateToSearch()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
         }
     }
 
