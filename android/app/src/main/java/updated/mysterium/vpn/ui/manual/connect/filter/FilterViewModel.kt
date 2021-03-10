@@ -7,31 +7,31 @@ import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
-import updated.mysterium.vpn.model.manual.connect.CountryNodesModel
+import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 
 class FilterViewModel : ViewModel() {
 
-    val proposalsList: LiveData<List<ProposalModel>>
+    val proposalsList: LiveData<List<Proposal>>
         get() = _proposalsList
 
-    lateinit var nodesModel: CountryNodesModel
-    private val _proposalsList = MutableLiveData<List<ProposalModel>>()
+    lateinit var countryNodes: CountryNodes
+    private val _proposalsList = MutableLiveData<List<Proposal>>()
 
-    fun applyInitialFilter(countryNodesModel: CountryNodesModel, nodeFilter: NodeFilter) {
-        nodesModel = countryNodesModel
-        nodesModel.proposalList.sortedBy {
+    fun applyInitialFilter(nodes: CountryNodes, nodeFilter: NodeFilter) {
+        countryNodes = nodes
+        countryNodes.proposalList.sortedBy {
             it.payment.rate.perBytes
         }.forEachIndexed { index, proposalModel ->
             when {
                 proposalModel.payment.rate.perBytes == 0.0 -> {
                     proposalModel.priceLevel = PriceLevel.FREE
                 }
-                index <= nodesModel.proposalList.size * 0.3 -> {
+                index <= countryNodes.proposalList.size * 0.3 -> {
                     proposalModel.priceLevel = PriceLevel.LOW
                 }
-                index >= nodesModel.proposalList.size * 0.7 -> {
+                index >= countryNodes.proposalList.size * 0.7 -> {
                     proposalModel.priceLevel = PriceLevel.HIGH
                 }
                 else -> {
@@ -46,7 +46,7 @@ class FilterViewModel : ViewModel() {
         _proposalsList.value = getFilteredProposalList(nodeFilter)
     }
 
-    private fun getFilteredProposalList(nodeFilter: NodeFilter) = nodesModel.proposalList
+    private fun getFilteredProposalList(nodeFilter: NodeFilter) = countryNodes.proposalList
         .filter {
             filterByType(it, nodeFilter.typeFilter)
         }.filter {
@@ -55,16 +55,16 @@ class FilterViewModel : ViewModel() {
             filterByQuality(it, nodeFilter.qualityFilter)
         }
 
-    private fun filterByType(proposalModel: ProposalModel, nodeType: NodeType): Boolean {
+    private fun filterByType(proposal: Proposal, nodeType: NodeType): Boolean {
         return if (nodeType == NodeType.ALL) {
             true
         } else {
-            NodeType.from(proposalModel.nodeType) == nodeType
+            NodeType.from(proposal.nodeType) == nodeType
         }
     }
 
-    private fun filterByPrice(proposalModel: ProposalModel, nodePrice: NodePrice): Boolean {
-        val currentNodePrice = proposalModel.priceLevel
+    private fun filterByPrice(proposal: Proposal, nodePrice: NodePrice): Boolean {
+        val currentNodePrice = proposal.priceLevel
         return if (nodePrice == NodePrice.HIGH || currentNodePrice == PriceLevel.FREE) {
             true
         } else {
@@ -72,8 +72,8 @@ class FilterViewModel : ViewModel() {
         }
     }
 
-    private fun filterByQuality(proposalModel: ProposalModel, nodeQuality: NodeQuality): Boolean {
-        val currentNodeQuality = NodeQuality.from(proposalModel.qualityLevel)
+    private fun filterByQuality(proposal: Proposal, nodeQuality: NodeQuality): Boolean {
+        val currentNodeQuality = NodeQuality.from(proposal.qualityLevel)
         return when (nodeQuality) {
             NodeQuality.LOW -> true
             NodeQuality.MEDIUM -> {

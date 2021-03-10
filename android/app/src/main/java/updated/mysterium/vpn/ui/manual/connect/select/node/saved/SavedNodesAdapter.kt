@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemSavedNodeBinding
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
 
-class SavedNodesAdapter : BaseNodeAdapter<ProposalModel, SavedNodesAdapter.SavedNodesViewHolder>() {
+class SavedNodesAdapter : BaseNodeAdapter<Proposal, SavedNodesAdapter.SavedNodesViewHolder>() {
 
-    var onDeleteClicked: ((ProposalModel) -> Unit)? = null
-    var onProposalClicked: ((ProposalModel) -> Unit)? = null
+    var onDeleteClicked: ((Proposal) -> Unit)? = null
+    var onProposalClicked: ((Proposal) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SavedNodesViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_saved_node, parent, false)
@@ -21,31 +21,31 @@ class SavedNodesAdapter : BaseNodeAdapter<ProposalModel, SavedNodesAdapter.Saved
 
         val binding = ItemSavedNodeBinding.bind(itemView)
 
-        override fun bindSingleItemInList(item: ProposalModel) {
+        override fun bindSingleItemInList(item: Proposal) {
             binding.itemContent.background = getSingleItemShape()
             binding.lastItemMargin.visibility = View.VISIBLE
             binding.divider.visibility = View.GONE
         }
 
-        override fun bindFirstItem(item: ProposalModel) {
+        override fun bindFirstItem(item: Proposal) {
             binding.itemContent.background = getFirstItemShape()
             binding.lastItemMargin.visibility = View.GONE
             binding.divider.visibility = View.VISIBLE
         }
 
-        override fun bindMiddleItem(item: ProposalModel) {
+        override fun bindMiddleItem(item: Proposal) {
             binding.itemContent.background = getMiddleItemShape()
             binding.lastItemMargin.visibility = View.GONE
             binding.divider.visibility = View.VISIBLE
         }
 
-        override fun bindLastItem(item: ProposalModel) {
+        override fun bindLastItem(item: Proposal) {
             binding.itemContent.background = getLastItemShape()
             binding.lastItemMargin.visibility = View.VISIBLE
             binding.divider.visibility = View.GONE
         }
 
-        override fun bind(item: ProposalModel) {
+        override fun bind(item: Proposal) {
             binding.nodeCountryTextView.text = item.countryName
             binding.nodeCodeTextView.text = item.providerID
             binding.nodeTypeImage.setImageDrawable(getNodeTypeDrawable(item.nodeType))

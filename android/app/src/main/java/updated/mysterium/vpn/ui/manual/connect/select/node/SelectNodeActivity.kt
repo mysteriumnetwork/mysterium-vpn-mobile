@@ -14,7 +14,7 @@ import network.mysterium.vpn.databinding.ActivitySelectBinding
 import network.mysterium.vpn.databinding.ItemTabBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
-import updated.mysterium.vpn.model.manual.connect.TabItemModel
+import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
@@ -24,12 +24,12 @@ class SelectNodeActivity : AppCompatActivity() {
     private companion object {
 
         val TAB_ITEMS_CONTENT = listOf(
-            TabItemModel(
+            OnboardingTabItem(
                 textResId = R.string.manual_connect_all_nodes,
                 selectedBackgroundResId = R.drawable.shape_all_nodes_selected,
                 unselectedBackgroundResId = R.drawable.shape_all_nodes_unselected
             ),
-            TabItemModel(
+            OnboardingTabItem(
                 textResId = R.string.manual_connect_saved_nodes,
                 selectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
                 unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected

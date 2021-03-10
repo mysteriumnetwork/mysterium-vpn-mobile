@@ -13,7 +13,7 @@ import network.mysterium.ui.PriceUtils
 import network.mysterium.ui.StatisticsModel
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ConnectionStateLayoutBinding
-import updated.mysterium.vpn.model.manual.connect.ProposalModel
+import updated.mysterium.vpn.model.manual.connect.Proposal
 
 class ConnectionState @JvmOverloads constructor(
     context: Context,
@@ -49,18 +49,18 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
     }
 
-    fun showConnectionState(proposalModel: ProposalModel) {
+    fun showConnectionState(proposal: Proposal) {
         binding.connectedLayout.cardConnectedLayout.visibility = View.INVISIBLE
         binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
         binding.connectingLayout.apply {
             cardConnectingLayout.visibility = View.VISIBLE
-            countryNameTextView.text = proposalModel.countryName
+            countryNameTextView.text = proposal.countryName
             Glide.with(context)
-                .load(proposalModel.countryFlagImage)
+                .load(proposal.countryFlagImage)
                 .circleCrop()
                 .into(countryFlagImageView)
-            nodeProviderCodeTextView.text = proposalModel.providerID
-            val nodeTypeDrawable = if (proposalModel.nodeType == NodeType.RESIDENTIAL) {
+            nodeProviderCodeTextView.text = proposal.providerID
+            val nodeTypeDrawable = if (proposal.nodeType == NodeType.RESIDENTIAL) {
                 R.drawable.item_residential
             } else {
                 R.drawable.item_non_residential
