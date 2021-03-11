@@ -19,7 +19,6 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.ui.DisplayMoneyOptions
 import network.mysterium.ui.PriceUtils
-import network.mysterium.ui.StatisticsModel
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
@@ -247,6 +246,7 @@ class HomeActivity : AppCompatActivity() {
         )
         binding.multiAnimation.disconnectedState()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
+        binding.manualConnectToolbar.setRightIcon(null)
         loadIpAddress()
     }
 
@@ -275,6 +275,7 @@ class HomeActivity : AppCompatActivity() {
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.primary)
         )
+        binding.manualConnectToolbar.setRightIcon(null)
         binding.connectionState.showConnectionState(proposal)
         binding.multiAnimation.connectingState()
     }

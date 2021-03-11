@@ -59,9 +59,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_padding_size_small_medium"
             android:src="@drawable/icon_issue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -76,10 +73,7 @@
             android:minLines="3"
             android:text="@string/report_issue_description"
             android:textAlignment="center"
-            android:textColor="@color/manual_connect_subtitle_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/issueImageView" />
+            android:textColor="@color/manual_connect_subtitle_white" />
 
         <TextView
             android:id="@+id/emailSubtitleTextView"
@@ -89,10 +83,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_padding_size_medium_large"
             android:text="@string/report_issue_email_subtitle"
-            android:textColor="@color/manual_connect_value_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewIsssueDescription" />
+            android:textColor="@color/manual_connect_value_white" />
 
         <EditText
             android:id="@+id/emailEditText"
@@ -106,7 +97,6 @@
             android:inputType="textEmailAddress"
             android:paddingHorizontal="@dimen/margin_padding_size_small"
             android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@+id/emailSubtitleTextView"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -116,10 +106,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_padding_size_medium_large"
             android:text="@string/report_issue_problem_subtitle"
-            android:textColor="@color/manual_connect_value_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+            android:textColor="@color/manual_connect_value_white" />
 
         <EditText
             android:id="@+id/issueEditText"
@@ -137,21 +124,16 @@
             android:paddingHorizontal="@dimen/margin_padding_size_small"
             android:scrollbars="vertical"
             android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@+id/problemSubtitleTextView"
             tools:ignore="LabelFor" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.ReportButton"
             android:id="@+id/sendReportButton"
+            style="@style/Widget.ReportButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginVertical="@dimen/margin_padding_size_large"
-            android:text="@string/report_issue_send"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/issueEditText" />
+            android:text="@string/report_issue_send" />
 
     </LinearLayout>
 
