@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.util.Locale
+import java.util.*
 
 class SearchViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -32,7 +32,9 @@ class SearchViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     .contains(text.toLowerCase(Locale.ROOT))
             }
             val resultByProviderId = allProposal.filter {
-                it.providerID.contains(text)
+                it.providerID
+                    .toLowerCase(Locale.ROOT)
+                    .contains(text.toLowerCase(Locale.ROOT))
             }
             _searchResult.value = resultByCountry + resultByProviderId
         } else {
