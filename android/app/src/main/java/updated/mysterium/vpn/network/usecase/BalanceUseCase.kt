@@ -6,6 +6,10 @@ import network.mysterium.service.core.NodeRepository
 
 class BalanceUseCase(private val nodeRepository: NodeRepository) {
 
+    private companion object {
+        const val CURRENCY = "USD"
+    }
+
     fun initDeferredNode(deferredNode: DeferredNode) {
         nodeRepository.deferredNode = deferredNode
     }
@@ -17,4 +21,6 @@ class BalanceUseCase(private val nodeRepository: NodeRepository) {
     suspend fun initBalanceListener(
         callback: (Double) -> Unit
     ) = nodeRepository.registerBalanceChangeCallback(callback)
+
+    suspend fun getUsdEquivalent() = nodeRepository.getExchangeRate(CURRENCY)
 }

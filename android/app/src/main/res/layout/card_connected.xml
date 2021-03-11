@@ -253,7 +253,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
-                        android:text="0.001"
                         android:textColor="@color/manual_connect_divider_grey_blue"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

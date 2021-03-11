@@ -25,6 +25,7 @@ import network.mysterium.vpn.databinding.ActivityHomeBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
@@ -71,7 +72,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun subscribeViewModel() {
         viewModel.statisticsUpdate.observe(this, {
-            updateStatistics(StatisticsModel.from(it))
+            updateStatistics(it)
         })
         viewModel.connectionState.observe(this, {
             handleConnectionChange(it)
@@ -129,7 +130,7 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    private fun updateStatistics(statistics: StatisticsModel) {
+    private fun updateStatistics(statistics: ConnectionStatistic) {
         binding.connectionState.updateConnectedStatistics(statistics, CURRENCY)
         val countryName = proposal.countryName
         val notificationTitle = getString(R.string.notification_title_connected, countryName)

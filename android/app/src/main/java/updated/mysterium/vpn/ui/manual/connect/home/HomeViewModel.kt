@@ -12,10 +12,12 @@ import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.Statistics
+import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
@@ -24,17 +26,18 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
-    val statisticsUpdate: LiveData<Statistics>
+    val statisticsUpdate: LiveData<ConnectionStatistic>
         get() = _statisticsUpdate
 
     private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
-    private val _statisticsUpdate = MutableLiveData<Statistics>()
+    private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
     private val connectionUseCase = useCaseProvider.connection()
+    private val balanceUseCase = useCaseProvider.balance()
     private val deferredNode = DeferredNode()
     private var identity: IdentityModel? = null
 
@@ -106,7 +109,9 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun initListeners() {
         connectionUseCase.registerStatisticsChangeCallback {
-            _statisticsUpdate.postValue(it)
+            viewModelScope.launch {
+                updateStatistic(it)
+            }
         }
         connectionUseCase.connectionStatusCallback {
             val connectionStateModel = ConnectionState.valueOf(it.toUpperCase())
@@ -117,6 +122,19 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             _connectionState.postValue(connectionStateModel)
         }
+    }
+
+    private suspend fun updateStatistic(statisticsCallback: Statistics) {
+        val statistics = StatisticsModel.from(statisticsCallback)
+        val currencySpent = balanceUseCase.getUsdEquivalent() * statistics.tokensSpent
+        val connectionStatistic = ConnectionStatistic(
+            duration = statistics.duration,
+            bytesReceived = statistics.bytesReceived,
+            bytesSent = statistics.bytesSent,
+            tokensSpent = statistics.tokensSpent,
+            currencySpent = currencySpent
+        )
+        _statisticsUpdate.postValue(connectionStatistic)
     }
 
     private suspend fun loadIdentity() {
