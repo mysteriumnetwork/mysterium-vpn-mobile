@@ -245,6 +245,7 @@ class HomeActivity : AppCompatActivity() {
             ContextCompat.getColor(this, R.color.primary)
         )
         binding.multiAnimation.disconnectedState()
+        binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         loadIpAddress()
     }
 
@@ -278,6 +279,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun inflateConnectedCardView() {
+        binding.selectAnotherNodeButton.visibility = View.VISIBLE
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_connected)

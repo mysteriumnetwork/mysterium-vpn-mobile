@@ -2,12 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/margin_padding_size_medium"
-    android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
-    android:layout_marginStart="@dimen/margin_padding_size_medium"
-    android:layout_height="wrap_content"
     android:id="@+id/menuItemView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_padding_size_small"
+    android:layout_marginTop="@dimen/margin_padding_size_medium"
     android:background="@drawable/shape_menu_item">
 
     <ImageView

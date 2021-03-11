@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -37,13 +38,13 @@
                 android:id="@+id/menuRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_small"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:horizontalSpacing="@dimen/margin_padding_size_medium"
                 android:numColumns="2"
-                android:verticalSpacing="@dimen/margin_padding_size_medium"
                 app:layout_constraintBottom_toTopOf="@+id/settingsButton"
-                app:layout_constraintTop_toBottomOf="@+id/menuTitleTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/menuTitleTextView"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_menu" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsButton"
@@ -101,8 +102,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_size_medium_large"
-                android:text="@string/menu_app_version"
                 android:paddingBottom="@dimen/margin_padding_size_medium"
+                android:text="@string/menu_app_version"
                 android:textColor="@color/manual_connect_value_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
