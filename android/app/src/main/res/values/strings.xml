@@ -149,6 +149,7 @@
     <string name="manual_connect_connecting">Connecting…</string>
     <string name="manual_connect_connected">Connected</string>
     <string name="manual_connect_disconnect">Disconnect</string>
+    <string name="manual_connect_disconnecting">Disconnecting</string>
     <string name="manual_connect_connecting_title">Manual connect</string>
     <string name="manual_connect_connecting_description">Connecting manually to node</string>
     <string name="manual_connect_duration">Duration</string>

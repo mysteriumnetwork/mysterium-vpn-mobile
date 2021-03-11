@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var appNotificationManager: AppNotificationManager
-    private lateinit var proposal: Proposal
+    private var proposal: Proposal? = null
     private val viewModel: HomeViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
@@ -76,6 +76,11 @@ class HomeActivity : AppCompatActivity() {
         viewModel.connectionState.observe(this, {
             handleConnectionChange(it)
         })
+        viewModel.connectionException.observe(this, {
+            Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show()
+            Log.i(TAG, it.localizedMessage ?: it.toString())
+            // TODO("Implement error handling")
+        })
         balanceViewModel.balanceLiveData.observe(this, {
             binding.manualConnectToolbar.setBalance(it)
         })
@@ -94,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
                 inflateConnectedCardView()
             }
             ConnectionState.DISCONNECTING -> {
-                // TODO("Implement disconnecting state, not approved UI yet")
+                binding.connectionState.showDisconnectingState()
             }
         }
     }
@@ -131,7 +136,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun updateStatistics(statistics: ConnectionStatistic) {
         binding.connectionState.updateConnectedStatistics(statistics, CURRENCY)
-        val countryName = proposal.countryName
+        val countryName = proposal?.countryName ?: "Unknown"
         val notificationTitle = getString(R.string.notification_title_connected, countryName)
         val tokensSpent = PriceUtils.displayMoney(
             ProposalPaymentMoney(
@@ -208,19 +213,21 @@ class HomeActivity : AppCompatActivity() {
             navigateToMenu()
         }
         binding.manualConnectToolbar.onRightButtonClicked {
-            viewModel.addToFavourite(proposal).observe(this, { result ->
-                result.onSuccess {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.manual_connect_saved_to_favourite),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                result.onFailure {
-                    Log.e(TAG, "Saving failed")
-                    // TODO("Implement error handling")
-                }
-            })
+            proposal?.let {
+                viewModel.addToFavourite(it).observe(this, { result ->
+                    result.onSuccess {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.manual_connect_saved_to_favourite),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    result.onFailure {
+                        Log.e(TAG, "Saving failed")
+                        // TODO("Implement error handling")
+                    }
+                })
+            }
         }
         binding.connectionState.initListeners(
             selectNodeManually = {
@@ -251,16 +258,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun inflateNodeInfo() {
-        binding.nodeType.text = proposal.nodeType.getTypeLabel()
-        binding.nodeProvider.text = proposal.providerID
-        binding.pricePerHour.text = getString(
-            R.string.manual_connect_price_per_hour,
-            proposal.payment.rate.perSeconds / 3600.0
-        )
-        binding.pricePerGigabyte.text = getString(
-            R.string.manual_connect_price_per_gigabyte,
-            proposal.payment.rate.perBytes / 1024.0 / 1024.0
-        )
+        proposal?.let {
+            binding.nodeType.text = it.nodeType.getTypeLabel()
+            binding.nodeProvider.text = it.providerID
+            binding.pricePerHour.text = getString(
+                R.string.manual_connect_price_per_hour,
+                it.payment.rate.perSeconds / 3600.0
+            )
+            binding.pricePerGigabyte.text = getString(
+                R.string.manual_connect_price_per_gigabyte,
+                it.payment.rate.perBytes / 1024.0 / 1024.0
+            )
+        }
     }
 
     private fun inflateConnectingCardView() {
@@ -276,7 +285,9 @@ class HomeActivity : AppCompatActivity() {
             ContextCompat.getColor(this, R.color.primary)
         )
         binding.manualConnectToolbar.setRightIcon(null)
-        binding.connectionState.showConnectionState(proposal)
+        proposal?.let {
+            binding.connectionState.showConnectionState(it)
+        }
         binding.multiAnimation.connectingState()
     }
 
@@ -285,7 +296,7 @@ class HomeActivity : AppCompatActivity() {
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_connected)
-        binding.connectionTypeTextView.text = proposal.countryName
+        binding.connectionTypeTextView.text = proposal?.countryName ?: "UNKNOWN"
         binding.securityStatusTextView.visibility = View.VISIBLE
         binding.securityStatusImageView.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.shape_connected_status)

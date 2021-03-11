@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.proposal.ProposalViewItem
@@ -29,9 +32,13 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val statisticsUpdate: LiveData<ConnectionStatistic>
         get() = _statisticsUpdate
 
+    val connectionException: LiveData<Exception>
+        get() = _connectionException
+
     private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
+    private val _connectionException = MutableLiveData<Exception>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
@@ -40,6 +47,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val deferredNode = DeferredNode()
     private var identity: IdentityModel? = null
+    private var exchangeRate: Double? = null
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
@@ -53,10 +61,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun connectNode(proposal: Proposal) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            _connectionException.postValue(exception as Exception)
+        }
+        viewModelScope.launch(handler) {
             this@HomeViewModel.proposal = proposal
             disconnectNode()
             connect()
+            getExchangeRate()
         }
     }
 
@@ -109,9 +121,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun initListeners() {
         connectionUseCase.registerStatisticsChangeCallback {
-            viewModelScope.launch {
-                updateStatistic(it)
-            }
+            updateStatistic(it)
         }
         connectionUseCase.connectionStatusCallback {
             val connectionStateModel = ConnectionState.valueOf(it.toUpperCase())
@@ -124,15 +134,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    private suspend fun updateStatistic(statisticsCallback: Statistics) {
+    private fun updateStatistic(statisticsCallback: Statistics) {
         val statistics = StatisticsModel.from(statisticsCallback)
-        val currencySpent = balanceUseCase.getUsdEquivalent() * statistics.tokensSpent
         val connectionStatistic = ConnectionStatistic(
             duration = statistics.duration,
             bytesReceived = statistics.bytesReceived,
             bytesSent = statistics.bytesSent,
             tokensSpent = statistics.tokensSpent,
-            currencySpent = currencySpent
+            currencySpent = (exchangeRate ?: 0.0) * statistics.tokensSpent
         )
         _statisticsUpdate.postValue(connectionStatistic)
     }
@@ -155,6 +164,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.connect(req)
         updateService()
+    }
+
+    private suspend fun getExchangeRate() {
+        viewModelScope.launch {
+            exchangeRate = withContext(Dispatchers.Default) {
+                balanceUseCase.getUsdEquivalent()
+            }
+        }
     }
 
     private fun updateService() {

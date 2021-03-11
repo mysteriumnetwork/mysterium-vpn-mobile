@@ -82,6 +82,15 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
     }
 
+    fun showDisconnectingState() {
+        binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
+        binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
+        binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
+        binding.connectedLayout.disconnectButton.text = context.getString(
+            R.string.manual_connect_disconnecting
+        )
+    }
+
     fun updateConnectedStatistics(statistics: ConnectionStatistic, currency: String) {
         val tokensSpent = PriceUtils.displayMoney(
             ProposalPaymentMoney(
