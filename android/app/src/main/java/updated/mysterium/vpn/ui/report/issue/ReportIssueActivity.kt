@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.ui.report.issue
 
-import android.content.pm.PackageManager
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,8 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityReportIssueBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class ReportIssueActivity : AppCompatActivity() {
 
@@ -45,6 +47,15 @@ class ReportIssueActivity : AppCompatActivity() {
     private fun bindsAction() {
         binding.sendReportButton.setOnClickListener {
             checkDescriptionContent()
+        }
+        binding.manualConnectToolbar.onBalanceClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
+        }
+        binding.manualConnectToolbar.onLeftButtonClicked {
+            val intent = Intent(this, MenuActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
         }
     }
 
