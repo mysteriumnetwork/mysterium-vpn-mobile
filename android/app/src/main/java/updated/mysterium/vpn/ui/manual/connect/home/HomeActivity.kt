@@ -37,6 +37,8 @@ class HomeActivity : AppCompatActivity() {
         const val EXTRA_PROPOSAL_MODEL = "PROPOSAL_MODEL"
         private const val TAG = "HomeActivity"
         private const val CURRENCY = "MYSTT"
+        private const val SECONDS_PER_HOUR = 3600.0
+        private const val BYTES_PER_GIGABYTE = 1024.0 * 1024.0 * 1024.0
     }
 
     private lateinit var binding: ActivityHomeBinding
@@ -261,13 +263,15 @@ class HomeActivity : AppCompatActivity() {
         proposal?.let {
             binding.nodeType.text = it.nodeType.getTypeLabel()
             binding.nodeProvider.text = it.providerID
+            // convert seconds to hours
             binding.pricePerHour.text = getString(
                 R.string.manual_connect_price_per_hour,
-                it.payment.rate.perSeconds / 3600.0
+                it.payment.rate.perSeconds / SECONDS_PER_HOUR
             )
+            // convert price by bytes to price by gigabytes
             binding.pricePerGigabyte.text = getString(
                 R.string.manual_connect_price_per_gigabyte,
-                it.payment.rate.perBytes / 1024.0 / 1024.0
+                it.payment.rate.perBytes / BYTES_PER_GIGABYTE
             )
         }
     }
