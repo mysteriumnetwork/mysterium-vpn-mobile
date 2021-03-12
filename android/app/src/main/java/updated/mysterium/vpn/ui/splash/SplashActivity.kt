@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.splash
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -8,10 +9,16 @@ import android.net.VpnService
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
@@ -22,7 +29,6 @@ class SplashActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "SplashActivity"
-        private const val VPN_SERVICE_REQUEST = 1
     }
 
     private lateinit var binding: ActivitySplashBinding
@@ -37,8 +43,6 @@ class SplashActivity : AppCompatActivity() {
         bindMysteriumService()
         subscribeViewModel()
         ensureVpnServicePermission()
-        balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-        viewModel.startLoading(deferredMysteriumCoreService)
     }
 
     private fun subscribeViewModel() {
@@ -56,8 +60,29 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun ensureVpnServicePermission() {
-        val intent: Intent = VpnService.prepare(this) ?: return
-        startActivityForResult(intent, VPN_SERVICE_REQUEST)
+        val vpnServiceIntent = VpnService.prepare(this)
+        if (vpnServiceIntent == null) {
+            startLoading()
+        } else {
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    startLoading()
+                } else {
+                    showPermissionErrorToast()
+                    finish()
+                }
+            }.launch(vpnServiceIntent)
+        }
+    }
+
+    private fun showPermissionErrorToast() {
+        Toast.makeText(
+            this,
+            getString(R.string.error_vpn_permission),
+            Toast.LENGTH_LONG
+        ).apply {
+            (view.findViewById<View>(android.R.id.message) as TextView).gravity = Gravity.CENTER
+        }.show()
     }
 
     private fun bindMysteriumService() {
@@ -78,5 +103,10 @@ class SplashActivity : AppCompatActivity() {
                 Context.BIND_AUTO_CREATE
             )
         }
+    }
+
+    private fun startLoading() {
+        balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+        viewModel.startLoading(deferredMysteriumCoreService)
     }
 }

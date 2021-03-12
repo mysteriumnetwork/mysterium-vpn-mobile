@@ -231,4 +231,7 @@
     <string name="report_issue_error_empty_issue">Description of problem can\'t be empty</string>
     <string name="report_issue_error_request">Something went wrong, please try again later</string>
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
+
+    <!--  Error  -->
+    <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
 </resources>
