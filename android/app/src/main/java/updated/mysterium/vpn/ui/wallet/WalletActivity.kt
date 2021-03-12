@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.wallet
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityWalletBinding
@@ -11,16 +12,34 @@ import updated.mysterium.vpn.ui.menu.MenuActivity
 
 class WalletActivity : AppCompatActivity() {
 
+    private companion object {
+        const val TAG = "WalletActivity"
+    }
+
     private lateinit var binding: ActivityWalletBinding
     private val balanceViewModel: BalanceViewModel by inject()
+    private val viewModel: WalletViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWalletBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configure()
         subscribeViewModel()
         bindsAction()
         balanceViewModel.getCurrentBalance()
+    }
+
+    private fun configure() {
+        viewModel.getUsdEquivalent().observe(this, { result ->
+            result.onSuccess {
+                binding.usdEquivalentTextView.text = getString(R.string.wallet_usd_equivalent, it)
+            }
+            result.onFailure {
+                Log.e(TAG, "Getting exchange rate failed")
+                // TODO("Implement error handling")
+            }
+        })
     }
 
     private fun subscribeViewModel() {

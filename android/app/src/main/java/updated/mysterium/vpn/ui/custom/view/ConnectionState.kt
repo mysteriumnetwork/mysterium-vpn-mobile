@@ -10,9 +10,9 @@ import network.mysterium.proposal.NodeType
 import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.ui.DisplayMoneyOptions
 import network.mysterium.ui.PriceUtils
-import network.mysterium.ui.StatisticsModel
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ConnectionStateLayoutBinding
+import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 
 class ConnectionState @JvmOverloads constructor(
@@ -20,6 +20,10 @@ class ConnectionState @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
+
+    private companion object {
+        const val DOUBLE_FORMAT_TEMPLATE = "%.3f"
+    }
 
     private lateinit var binding: ConnectionStateLayoutBinding
 
@@ -78,7 +82,16 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
     }
 
-    fun updateConnectedStatistics(statistics: StatisticsModel, currency: String) {
+    fun showDisconnectingState() {
+        binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
+        binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
+        binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
+        binding.connectedLayout.disconnectButton.text = context.getString(
+            R.string.manual_connect_disconnecting
+        )
+    }
+
+    fun updateConnectedStatistics(statistics: ConnectionStatistic, currency: String) {
         val tokensSpent = PriceUtils.displayMoney(
             ProposalPaymentMoney(
                 amount = statistics.tokensSpent,
@@ -90,6 +103,7 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectedLayout.dataTypeTextView.text = statistics.bytesSent.units
         binding.connectedLayout.paidMystValueTextView.text = tokensSpent
         binding.connectedLayout.dataSendValueTextView.text = statistics.bytesSent.value
+        binding.connectedLayout.paidEurValueTextView.text = DOUBLE_FORMAT_TEMPLATE.format(statistics.currencySpent)
         binding.connectedLayout.dataReceiveValueTextView.text = context.getString(
             R.string.manual_connect_data_received, statistics.bytesReceived.value
         )

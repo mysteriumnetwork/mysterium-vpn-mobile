@@ -47,8 +47,10 @@ class BalanceToolbar @JvmOverloads constructor(
     }
 
     fun setRightIcon(drawable: Drawable?) {
-        drawable?.let {
-            binding.rightButton.setImageDrawable(it)
+        if (drawable == null) {
+            binding.rightButton.visibility = View.INVISIBLE
+        } else {
+            binding.rightButton.setImageDrawable(drawable)
             binding.rightButton.visibility = View.VISIBLE
         }
     }

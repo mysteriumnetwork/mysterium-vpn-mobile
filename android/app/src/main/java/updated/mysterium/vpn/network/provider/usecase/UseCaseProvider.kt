@@ -3,11 +3,7 @@ package updated.mysterium.vpn.network.provider.usecase
 import android.content.Context
 import network.mysterium.service.core.NodeRepository
 import updated.mysterium.vpn.database.AppDatabase
-import updated.mysterium.vpn.network.usecase.BalanceUseCase
-import updated.mysterium.vpn.network.usecase.ConnectionUseCase
-import updated.mysterium.vpn.network.usecase.LocationUseCase
-import updated.mysterium.vpn.network.usecase.LoginUseCase
-import updated.mysterium.vpn.network.usecase.NodesUseCase
+import updated.mysterium.vpn.network.usecase.*
 
 class UseCaseProvider(
     private val nodeRepository: NodeRepository,
@@ -24,4 +20,6 @@ class UseCaseProvider(
     fun login() = LoginUseCase(context)
 
     fun balance() = BalanceUseCase(nodeRepository)
+
+    fun report() = ReportUseCase(nodeRepository)
 }

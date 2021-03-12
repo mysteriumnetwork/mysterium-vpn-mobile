@@ -298,6 +298,8 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().sendFeedback(req)
     }
 
+    suspend fun getExchangeRate(currency: String) = 1 / deferredNode.await().exchangeRate(currency)
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

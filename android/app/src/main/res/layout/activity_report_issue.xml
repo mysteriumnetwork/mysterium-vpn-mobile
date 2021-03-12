@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightVerticalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftVerticalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_menu" />
+
+    <TextView
+        android:id="@+id/reportIssueTitle"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:text="@string/report_issue_title"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
+
+    <LinearLayout
+        android:id="@+id/walletInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:background="@drawable/shape_gradient_background"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reportIssueTitle">
+
+        <ImageView
+            android:id="@+id/issueImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:src="@drawable/icon_issue"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textViewIsssueDescription"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:maxLines="3"
+            android:minLines="3"
+            android:text="@string/report_issue_description"
+            android:textAlignment="center"
+            android:textColor="@color/manual_connect_subtitle_white" />
+
+        <TextView
+            android:id="@+id/emailSubtitleTextView"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+            android:text="@string/report_issue_email_subtitle"
+            android:textColor="@color/manual_connect_value_white" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:background="@drawable/shape_edit_text"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="@dimen/margin_padding_size_small"
+            android:textColor="@android:color/white"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/problemSubtitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+            android:text="@string/report_issue_problem_subtitle"
+            android:textColor="@color/manual_connect_value_white" />
+
+        <EditText
+            android:id="@+id/issueEditText"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:layout_weight="1"
+            android:background="@drawable/shape_big_edit_text"
+            android:gravity="top|start"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="@dimen/margin_padding_size_small"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/white"
+            tools:ignore="LabelFor" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendReportButton"
+            style="@style/Widget.ReportButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_padding_size_large"
+            android:text="@string/report_issue_send" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/nodeVersionTitleTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report_issue_node_version"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintBottom_toTopOf="@+id/appVersionTitleTextView"
+        app:layout_constraintEnd_toStartOf="@+id/rightVerticalGuideline"
+        app:layout_constraintStart_toEndOf="@+id/leftVerticalGuideline" />
+
+    <TextView
+        android:id="@+id/nodeVersionValueTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintBottom_toTopOf="@+id/appVersionValueTextView"
+        app:layout_constraintStart_toEndOf="@+id/rightVerticalGuideline"
+        tools:text="0.25" />
+
+    <TextView
+        android:id="@+id/appVersionTitleTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padding_size_large"
+        android:text="@string/report_issue_app_version"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightVerticalGuideline"
+        app:layout_constraintStart_toEndOf="@+id/leftVerticalGuideline" />
+
+    <TextView
+        android:id="@+id/appVersionValueTextView"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padding_size_large"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rightVerticalGuideline"
+        tools:text="0.25" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

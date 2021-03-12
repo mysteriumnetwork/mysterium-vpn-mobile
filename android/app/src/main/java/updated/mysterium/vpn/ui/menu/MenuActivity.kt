@@ -2,13 +2,13 @@ package updated.mysterium.vpn.ui.menu
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.intercom.android.sdk.Intercom
 import network.mysterium.ui.onItemSelected
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
 import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
@@ -17,6 +17,7 @@ import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.profile.ProfileActivity
+import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class MenuActivity : AppCompatActivity() {
@@ -107,8 +108,9 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun inflateAppVersion() {
-        val info = packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-        binding.appVersionTextView.text = getString(R.string.menu_app_version, info.versionName)
+        val version = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
+        val formattedVersion = getString(R.string.report_issue_app_version_template, version)
+        binding.appVersionTextView.text = getString(R.string.menu_app_version, formattedVersion)
     }
 
     private fun bindsAction() {
@@ -120,6 +122,9 @@ class MenuActivity : AppCompatActivity() {
         }
         binding.helpButton.setOnClickListener {
             Intercom.client().displayMessenger()
+        }
+        binding.reportButton.setOnClickListener {
+            startActivity(Intent(this, ReportIssueActivity::class.java))
         }
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {

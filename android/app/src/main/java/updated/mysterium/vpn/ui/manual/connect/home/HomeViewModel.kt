@@ -6,16 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.service.core.Statistics
+import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
@@ -24,19 +29,25 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
-    val statisticsUpdate: LiveData<Statistics>
+    val statisticsUpdate: LiveData<ConnectionStatistic>
         get() = _statisticsUpdate
+
+    val connectionException: LiveData<Exception>
+        get() = _connectionException
 
     private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
-    private val _statisticsUpdate = MutableLiveData<Statistics>()
+    private val _connectionException = MutableLiveData<Exception>()
+    private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
     private val connectionUseCase = useCaseProvider.connection()
+    private val balanceUseCase = useCaseProvider.balance()
     private val deferredNode = DeferredNode()
     private var identity: IdentityModel? = null
+    private var exchangeRate: Double? = null
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
@@ -50,10 +61,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun connectNode(proposal: Proposal) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            _connectionException.postValue(exception as Exception)
+        }
+        viewModelScope.launch(handler) {
             this@HomeViewModel.proposal = proposal
             disconnectNode()
             connect()
+            getExchangeRate()
         }
     }
 
@@ -106,7 +121,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun initListeners() {
         connectionUseCase.registerStatisticsChangeCallback {
-            _statisticsUpdate.postValue(it)
+            updateStatistic(it)
         }
         connectionUseCase.connectionStatusCallback {
             val connectionStateModel = ConnectionState.valueOf(it.toUpperCase())
@@ -117,6 +132,18 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             _connectionState.postValue(connectionStateModel)
         }
+    }
+
+    private fun updateStatistic(statisticsCallback: Statistics) {
+        val statistics = StatisticsModel.from(statisticsCallback)
+        val connectionStatistic = ConnectionStatistic(
+            duration = statistics.duration,
+            bytesReceived = statistics.bytesReceived,
+            bytesSent = statistics.bytesSent,
+            tokensSpent = statistics.tokensSpent,
+            currencySpent = (exchangeRate ?: 0.0) * statistics.tokensSpent
+        )
+        _statisticsUpdate.postValue(connectionStatistic)
     }
 
     private suspend fun loadIdentity() {
@@ -137,6 +164,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.connect(req)
         updateService()
+    }
+
+    private suspend fun getExchangeRate() {
+        viewModelScope.launch {
+            exchangeRate = withContext(Dispatchers.Default) {
+                balanceUseCase.getUsdEquivalent()
+            }
+        }
     }
 
     private fun updateService() {
