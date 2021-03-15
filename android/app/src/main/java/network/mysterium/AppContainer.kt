@@ -72,7 +72,7 @@ class AppContainer {
         deferredMysteriumCoreService = mysteriumCoreService
         bugReporter = BugReporter()
         nodeRepository = NodeRepository(deferredNode)
-        appNotificationManager = AppNotificationManager(notificationManager, deferredMysteriumCoreService)
+        appNotificationManager = AppNotificationManager(notificationManager)
         walletViewModel = WalletViewModel(nodeRepository, bugReporter)
         sharedViewModel = SharedViewModel(appCtx, nodeRepository, deferredMysteriumCoreService, appNotificationManager, walletViewModel)
         proposalsViewModel = ProposalsViewModel(sharedViewModel, nodeRepository, appDatabase)

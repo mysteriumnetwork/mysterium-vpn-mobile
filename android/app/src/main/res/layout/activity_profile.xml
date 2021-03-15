@@ -132,4 +132,85 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/privateKeys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:background="@drawable/shape_gradient_background">
+
+        <ImageView
+            android:id="@+id/privateKeyCardImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:src="@drawable/icon_private_key"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textViewPrivateKeysTitle"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:text="@string/profile_private_keys"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privateKeyCardImageView" />
+
+        <TextView
+            android:id="@+id/textViewKeysDescription"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:maxLines="3"
+            android:minLines="3"
+            android:text="@string/profile_keys_description"
+            android:textAlignment="center"
+            android:textColor="@color/manual_connect_value_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPrivateKeysTitle" />
+
+        <TextView
+            android:id="@+id/backupHintTextView"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="@string/profile_backup"
+            android:textAlignment="center"
+            android:textColor="@color/manual_connect_subtitle_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewKeysDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/downloadButton"
+            style="@style/Widget.GreySecondaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_padding_size_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
+            android:text="@string/profile_download_keys"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backupHintTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

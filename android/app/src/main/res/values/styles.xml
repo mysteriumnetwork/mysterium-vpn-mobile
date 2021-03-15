@@ -88,6 +88,24 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <!--  GreySecondaryButton  -->
+    <style name="Widget.GreySecondaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.GreySecondaryButton</item>
+        <item name="android:background">@drawable/shape_secondary_button</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.GreySecondaryButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <!--  RoundedSemiTransparentButton  -->
     <style name="Widget.RoundedSemiTransparentButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
