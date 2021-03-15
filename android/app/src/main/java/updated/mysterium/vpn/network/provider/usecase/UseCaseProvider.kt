@@ -22,4 +22,6 @@ class UseCaseProvider(
     fun balance() = BalanceUseCase(nodeRepository)
 
     fun report() = ReportUseCase(nodeRepository)
+
+    fun statistic() = StatisticUseCase(nodeRepository)
 }

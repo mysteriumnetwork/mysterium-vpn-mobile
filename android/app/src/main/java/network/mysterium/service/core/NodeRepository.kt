@@ -55,7 +55,7 @@ class ProposalPaymentMoney(
 
     @Json(name = "currency")
     val currency: String
-): Parcelable
+) : Parcelable
 
 @Parcelize
 class ProposalPaymentRate(
@@ -64,7 +64,7 @@ class ProposalPaymentRate(
 
     @Json(name = "perBytes")
     val perBytes: Double
-): Parcelable
+) : Parcelable
 
 class ProposalsResponse(
     @Json(name = "proposals")
@@ -298,7 +298,13 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().sendFeedback(req)
     }
 
-    suspend fun getExchangeRate(currency: String) = 1 / deferredNode.await().exchangeRate(currency)
+    suspend fun getExchangeRate(currency: String) = withContext(Dispatchers.IO) {
+        1 / deferredNode.await().exchangeRate(currency)
+    }
+
+    suspend fun getLastSessions(sessionFilter: SessionFilter): ByteArray = withContext(Dispatchers.IO) {
+        deferredNode.await().listConsumerSessions(sessionFilter)
+    }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
