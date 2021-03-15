@@ -24,9 +24,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mysterium.GetProposalsRequest
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
+import network.mysterium.db.SavedProposalFilter
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.ui.PriceUtils
 import network.mysterium.ui.SharedViewModel
@@ -96,7 +98,27 @@ data class ProposalsFilter(
         var nodeType: NodeType,
         var pricePerHour: Double,
         var pricePerGiB: Double
-)
+) {
+    fun updateFrom(saved: SavedProposalFilter) {
+        country = ProposalFilterCountry(code = saved.countryCode, name = saved.countryName)
+        quality = ProposalFilterQuality(level = saved.qualityLevel, qualityIncludeUnreachable = saved.qualityIncludeUnreachable)
+        nodeType = saved.nodeType
+        pricePerHour = saved.pricePerHour
+        pricePerGiB = saved.pricePerGiB
+    }
+
+    fun savedProposalFilter(): SavedProposalFilter {
+        return SavedProposalFilter(
+                countryCode = this.country.code,
+                countryName = this.country.name,
+                qualityLevel = this.quality.level,
+                qualityIncludeUnreachable = this.quality.qualityIncludeUnreachable,
+                pricePerHour = this.pricePerHour,
+                pricePerGiB = this.pricePerGiB,
+                nodeType = this.nodeType
+        )
+    }
+}
 
 data class ProposalFilterCountry(
         val code: String = "",
@@ -153,7 +175,7 @@ class ProposalsViewModel(
 
     suspend fun load() {
         favoriteProposals = loadFavoriteProposals()
-        loadPriceSettings()
+        loadSavedProposalFilter()
         loadInitialProposals(false, favoriteProposals)
     }
 
@@ -296,15 +318,21 @@ class ProposalsViewModel(
         }
     }
 
-    private suspend fun loadPriceSettings() {
+    private suspend fun loadSavedProposalFilter() {
         val prices = nodeRepository.getPriceSettings()
-
-        filter.pricePerHour = prices.defaultHour.toDouble()
-        filter.pricePerGiB = prices.defaultPerGib.toDouble()
         priceSettings.perHourMax = prices.perHourMax.toDouble()
         priceSettings.perGibMax = prices.perGibMax.toDouble()
         priceSettings.defaultHour = prices.defaultHour.toDouble()
         priceSettings.defaultPricePerGiB = prices.defaultPerGib.toDouble()
+
+        val savedFilter = appDatabase.proposalFilterDao().get()
+        savedFilter?.let {
+            if (!it.pricesWithinBound(priceSettings.perHourMax, priceSettings.perGibMax)) {
+                filter.pricePerHour = prices.defaultHour.toDouble()
+                filter.pricePerGiB = prices.defaultPerGib.toDouble()
+            }
+            filter.updateFrom(it)
+        }
     }
 
     private suspend fun loadInitialProposals(refresh: Boolean = false, favoriteProposals: MutableMap<String, FavoriteProposal>) {
@@ -330,7 +358,18 @@ class ProposalsViewModel(
         }
     }
 
+    private suspend fun trySaveProposalFilter(filter: ProposalsFilter) {
+        try {
+            appDatabase.proposalFilterDao().save(filter.savedProposalFilter())
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to save proposal filter", e)
+        }
+    }
+
     private fun applyFilter(filter: ProposalsFilter, allProposals: List<ProposalViewItem>): List<ProposalViewItem> {
+        viewModelScope.launch {
+            trySaveProposalFilter(filter)
+        }
         return allProposals.asSequence()
                 // Filter by node type.
                 .filter {

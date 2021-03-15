@@ -27,6 +27,7 @@ import androidx.room.Room
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.MIGRATION_1_2
+import network.mysterium.db.MIGRATION_2_3
 import network.mysterium.feedback.VersionViewModel
 import network.mysterium.logging.BugReporter
 import network.mysterium.net.NetworkMonitor
@@ -67,6 +68,7 @@ class AppContainer {
         appCtx = ctx
         appDatabase = Room.databaseBuilder(ctx, AppDatabase::class.java, "mysteriumvpn")
                 .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_2_3)
                 .build()
 
         deferredMysteriumCoreService = mysteriumCoreService
