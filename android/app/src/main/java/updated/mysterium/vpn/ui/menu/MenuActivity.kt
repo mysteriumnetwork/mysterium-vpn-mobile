@@ -16,6 +16,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.monitoring.MonitoringActivity
 import updated.mysterium.vpn.ui.profile.ProfileActivity
 import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
@@ -141,7 +142,7 @@ class MenuActivity : AppCompatActivity() {
                     startActivity(Intent(this, WalletActivity::class.java))
                 }
                 3 -> menuItem.onItemClickListener = {
-                    // TODO("Implement navigation to Monitoring")
+                    startActivity(Intent(this, MonitoringActivity::class.java))
                 }
                 4 -> menuItem.onItemClickListener = {
                     // TODO("Implement navigation to Black list")

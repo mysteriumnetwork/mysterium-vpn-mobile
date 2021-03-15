@@ -22,7 +22,7 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val deferredNode = DeferredNode()
     private val _balanceLiveData = MutableLiveData<Double>()
-    private lateinit var balanceRequest: GetBalanceRequest
+    private var balanceRequest: GetBalanceRequest? = null
 
     fun initDeferredNode(mysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
         viewModelScope.launch {
@@ -32,7 +32,9 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getCurrentBalance() {
         viewModelScope.launch {
-            _balanceLiveData.postValue(balanceUseCase.getBalance(balanceRequest))
+            balanceRequest?.let {
+                _balanceLiveData.postValue(balanceUseCase.getBalance(it))
+            }
         }
     }
 
