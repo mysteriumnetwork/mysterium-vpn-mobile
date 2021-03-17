@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin_padding_size_small_plus">
+
+    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_back" />
+
+    <TextView
+        android:id="@+id/termsTitleTextView"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:text="@string/terms_title"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fadeScrollbars="true"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/termsTitleTextView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:text="@string/terms_short"
+                android:textColor="@android:color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shortVersionRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:background="@drawable/shape_gradient_background"
+                android:paddingVertical="@dimen/margin_padding_size_medium_large"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_short_term" />
+
+            <TextView
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:text="@string/terms_full"
+                android:textColor="@android:color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fullVersionRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:paddingVertical="@dimen/margin_padding_size_medium_large"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_full_term" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        style="@style/Widget.PrimaryCardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+        android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
+        app:cardBackgroundColor="@color/onboarding_current_screen_white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/contentDescription"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                android:layout_marginVertical="@dimen/margin_padding_size_xlarge"
+                android:textAlignment="center"
+                android:textColor="@color/onboarding_description_grey_blue"
+                app:layout_constraintBottom_toTopOf="@+id/acceptButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/terms_onboarding_description" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/acceptButton"
+                style="@style/Widget.PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_medium"
+                android:layout_weight="0"
+                android:text="@string/terms_accept_button"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

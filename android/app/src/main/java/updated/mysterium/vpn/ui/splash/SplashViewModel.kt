@@ -31,6 +31,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
+    private val termsUseCase = useCaseProvider.terms()
     private var isTimerFinished = false
     private var isDataLoaded = false
     private var deferredNode = DeferredNode()
@@ -43,6 +44,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
+
+    fun isTermsAccepted() = termsUseCase.isTermsAccepted()
 
     private suspend fun startDeferredNode(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>

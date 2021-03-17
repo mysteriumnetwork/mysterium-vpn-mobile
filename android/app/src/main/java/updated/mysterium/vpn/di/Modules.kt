@@ -20,6 +20,7 @@ import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
 import updated.mysterium.vpn.ui.profile.ProfileViewModel
 import updated.mysterium.vpn.ui.report.issue.ReportIssueViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
+import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 
 object Modules {
@@ -73,6 +74,9 @@ object Modules {
         }
         viewModel {
             MonitoringViewModel(get())
+        }
+        viewModel {
+            TermsOfUseViewModel(get())
         }
     }
 

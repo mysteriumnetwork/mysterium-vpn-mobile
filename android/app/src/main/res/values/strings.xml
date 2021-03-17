@@ -238,6 +238,13 @@
     <string name="monitoring_statistics">Statistics</string>
     <string name="monitoring_empty_line_chart">You don\'t have any sessions yet</string>
 
+    <!--  Terms of Use  -->
+    <string name="terms_title">Terms of use</string>
+    <string name="terms_short">Short version</string>
+    <string name="terms_full">Full version</string>
+    <string name="terms_accept_button">Accept</string>
+    <string name="terms_onboarding_description">Short description about why is it necessary to apply all terms of use before using app</string>
+
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
 </resources>

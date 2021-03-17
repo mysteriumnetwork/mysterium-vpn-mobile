@@ -24,4 +24,6 @@ class UseCaseProvider(
     fun report() = ReportUseCase(nodeRepository)
 
     fun statistic() = StatisticUseCase(nodeRepository)
+
+    fun terms() = TermsUseCase(context)
 }
