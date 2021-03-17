@@ -235,6 +235,8 @@
     <!--  Monitoring  -->
     <string name="monitoring_title">Monitoring</string>
     <string name="monitoring_last_sessions">Last Sessions</string>
+    <string name="monitoring_statistics">Statistics</string>
+    <string name="monitoring_empty_line_chart">You don\'t have any sessions yet</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
