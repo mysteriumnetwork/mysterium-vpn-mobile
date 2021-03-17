@@ -1,14 +1,19 @@
 package updated.mysterium.vpn.common.date
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.concurrent.TimeUnit
+import java.util.Locale
 
 object DateUtil {
 
     private const val DEFAULT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    private const val SHORT_PATTERN = "dd.MM"
     private const val MS_TO_SEC = 1000
     private const val SEC_TO_MN = 60
     private const val MN_TO_HOUR = 60
+    private const val HOUR_TO_DAY = 24
+    private const val DAY_IN_MS = MS_TO_SEC * SEC_TO_MN * MN_TO_HOUR * HOUR_TO_DAY
     private const val SEC_TYPE = " sec"
     private const val MIN_TYPE = " min"
     private const val HOUR_TYPE = " h"
@@ -29,5 +34,19 @@ object DateUtil {
         else -> { // Time is less then an hour, show N min
             (dateMs / MS_TO_SEC / SEC_TO_MN).toString() + MIN_TYPE
         }
+    }
+
+    fun formatDate(date: String): String {
+        val dateInMs = SimpleDateFormat(DEFAULT_PATTERN, Locale.ROOT).parse(date)?.time ?: 0L
+        val dateFormat = SimpleDateFormat(SHORT_PATTERN, Locale.ROOT)
+        return dateFormat.format(dateInMs)
+    }
+
+    fun dateDiffInDaysFromCurrent(date: String): Long {
+        val dateInMs = SimpleDateFormat(DEFAULT_PATTERN, Locale.ROOT).parse(date)?.time ?: 0L
+        // Convert milliseconds to days
+        val currentDays = (Date().time / DAY_IN_MS)
+        val dateDays = (dateInMs / DAY_IN_MS)
+        return TimeUnit.DAYS.convert(currentDays - dateDays, TimeUnit.DAYS)
     }
 }
