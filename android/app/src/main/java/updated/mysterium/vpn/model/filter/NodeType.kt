@@ -14,5 +14,11 @@ enum class NodeType {
             FullNodeType.CELLULAR -> RESIDENTIAL
             else -> NON_RESIDENTIAL
         }
+
+        fun from(nodeType: String) = when (nodeType) {
+            "residential" -> RESIDENTIAL
+            "cellular" -> RESIDENTIAL
+            else -> NON_RESIDENTIAL
+        }
     }
 }

@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.splash
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
@@ -19,9 +21,10 @@ import kotlin.concurrent.timerTask
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    companion object {
-        private const val ONE_SECOND_DELAY = 1000L
-        private const val NODE_IDENTITY_KEY = "node_identity"
+    private companion object {
+        const val TAG = "SplashViewModel"
+        const val ONE_SECOND_DELAY = 1000L
+        const val NODE_IDENTITY_KEY = "node_identity"
     }
 
     val navigateForward: LiveData<String>
@@ -107,7 +110,12 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             val req = RegisterIdentityRequest().apply {
                 identityAddress = identity.address
             }
-            connectionUseCase.registerIdentity(req)
+            val handler = CoroutineExceptionHandler { _, exception ->
+                Log.e(TAG, "Identity registration error")
+            }
+            viewModelScope.launch(handler) {
+                connectionUseCase.registerIdentity(req)
+            }
         }
         loadRegistrationFees()
     }

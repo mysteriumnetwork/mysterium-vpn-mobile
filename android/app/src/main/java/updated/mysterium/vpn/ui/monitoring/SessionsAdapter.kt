@@ -33,14 +33,12 @@ class SessionsAdapter : ContentListAdapter<Session, SessionsAdapter.SessionViewH
 
         fun bind(session: Session) {
             binding.apply {
-                providerIdTextView.text = session.providerId.address
+                providerIdTextView.text = session.providerId
                 countryTextView.text = Countries
                     .values[session.providerCountry.toLowerCase(Locale.ROOT)]
                     ?.name
                     ?: UNKNOWN
-                durationTextView.text = DateUtil.convertToDateType(
-                    DateUtil.dateDiff(session.timeStarted, session.timeUpdated)
-                )
+                durationTextView.text = DateUtil.convertToDateType((session.duration) * 1000)
                 val dataReceivedText = "${UnitFormatter.bytesDisplay(session.dataReceived).value} " +
                     UnitFormatter.bytesDisplay(session.dataReceived).units
                 dataReceivedTextView.text = dataReceivedText
