@@ -34,6 +34,7 @@ class MonitoringActivity : AppCompatActivity() {
         const val LINE_LENGTH = 5f
         const val SPACE_LENGTH = 10f
         const val SPACE_PHASE_LENGTH = 50f
+        const val YAXIS_SIZE = 6
     }
 
     private lateinit var binding: ActivityMonitoringBinding
@@ -136,14 +137,14 @@ class MonitoringActivity : AppCompatActivity() {
     }
 
     private fun inflateXAxis(xAxis: XAxis, sessions: List<Session>) {
-        xAxis.setLabelCount(sessions.size, true)
+        xAxis.setLabelCount(sessions.size, false)
         xAxis.mAxisMaximum = sessions.size.toFloat()
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.valueFormatter = object : ValueFormatter() {
 
             override fun getAxisLabel(value: Float, axis: AxisBase?) = sessions.map {
                 DateUtil.formatDate(it.timeStarted)
-            }.getOrNull(value.toInt()) ?: value.toString()
+            }.getOrNull(value.toInt()) ?: ""
         }
         xAxis.setDrawGridLines(false)
         xAxis.textColor = getColor(R.color.manual_connect_value_white)
@@ -152,6 +153,7 @@ class MonitoringActivity : AppCompatActivity() {
     }
 
     private fun inflateAxisLeft(axisLeft: YAxis) {
+        axisLeft.setLabelCount(YAXIS_SIZE, false)
         axisLeft.textColor = getColor(R.color.manual_connect_value_white)
         axisLeft.axisLineColor = Color.TRANSPARENT
         axisLeft.gridColor = getColor(R.color.manual_connect_value_white)

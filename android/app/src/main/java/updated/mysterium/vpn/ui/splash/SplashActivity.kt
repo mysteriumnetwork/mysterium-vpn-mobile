@@ -24,6 +24,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
+import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -51,12 +52,15 @@ class SplashActivity : AppCompatActivity() {
 
     private fun navigateForward() {
         if (viewModel.isUserAlreadyLogin()) {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
+            if (viewModel.isTermsAccepted()) {
+                startActivity(Intent(this, HomeActivity::class.java))
+            } else {
+                startActivity(Intent(this, TermsOfUseActivity::class.java))
+            }
         } else {
             startActivity(Intent(this, OnboardingActivity::class.java))
-            finish()
         }
+        finish()
     }
 
     private fun ensureVpnServicePermission() {

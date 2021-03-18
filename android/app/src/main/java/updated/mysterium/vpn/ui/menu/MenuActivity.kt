@@ -19,6 +19,7 @@ import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.monitoring.MonitoringActivity
 import updated.mysterium.vpn.ui.profile.ProfileActivity
 import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
+import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class MenuActivity : AppCompatActivity() {
@@ -126,6 +127,9 @@ class MenuActivity : AppCompatActivity() {
         }
         binding.reportButton.setOnClickListener {
             startActivity(Intent(this, ReportIssueActivity::class.java))
+        }
+        binding.termsTextView.setOnClickListener {
+            startActivity(Intent(this, TermsOfUseActivity::class.java))
         }
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {

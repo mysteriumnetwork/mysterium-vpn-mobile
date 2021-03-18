@@ -11,6 +11,7 @@ import network.mysterium.vpn.databinding.ActivityOnboardingBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.viewpager.*
+import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
 class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChildViewMeasured {
 
@@ -77,7 +78,11 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
 
     private fun skipOnboarding() {
         viewModel.userLoggedIn()
-        startActivity(Intent(this, HomeActivity::class.java))
+        if (viewModel.isTermsAccepted()) {
+            startActivity(Intent(this, HomeActivity::class.java))
+        } else {
+            startActivity(Intent(this, TermsOfUseActivity::class.java))
+        }
         finish()
     }
 }
