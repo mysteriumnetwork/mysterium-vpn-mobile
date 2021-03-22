@@ -79,6 +79,8 @@ class AllNodesFragment : Fragment() {
 
     private fun loadInitialProposalList() {
         viewModel.getInitialProposals().observe(viewLifecycleOwner, { result ->
+            binding.loaderAnimation.visibility = View.GONE
+            binding.loaderAnimation.cancelAnimation()
             updateProposalList(result)
         })
     }

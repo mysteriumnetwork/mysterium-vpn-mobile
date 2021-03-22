@@ -81,6 +81,7 @@ class HomeActivity : AppCompatActivity() {
         viewModel.connectionException.observe(this, {
             Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show()
             Log.i(TAG, it.localizedMessage ?: it.toString())
+            disconnect()
             // TODO("Implement error handling")
         })
         balanceViewModel.balanceLiveData.observe(this, {

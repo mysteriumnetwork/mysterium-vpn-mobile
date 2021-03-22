@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import network.mysterium.proposal.NodeType
 import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.ui.DisplayMoneyOptions
+import network.mysterium.ui.FormattedBytesViewItem
 import network.mysterium.ui.PriceUtils
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ConnectionStateLayoutBinding
@@ -99,13 +100,25 @@ class ConnectionState @JvmOverloads constructor(
             ),
             DisplayMoneyOptions(fractionDigits = 4, showCurrency = false)
         )
+        showDataType(statistics)
         binding.connectedLayout.durationValueTextView.text = statistics.duration
-        binding.connectedLayout.dataTypeTextView.text = statistics.bytesSent.units
         binding.connectedLayout.paidMystValueTextView.text = tokensSpent
         binding.connectedLayout.dataSendValueTextView.text = statistics.bytesSent.value
         binding.connectedLayout.paidEurValueTextView.text = DOUBLE_FORMAT_TEMPLATE.format(statistics.currencySpent)
         binding.connectedLayout.dataReceiveValueTextView.text = context.getString(
             R.string.manual_connect_data_received, statistics.bytesReceived.value
         )
+    }
+
+    private fun showDataType(statistics: ConnectionStatistic) {
+        if (statistics.bytesReceived.units == statistics.bytesSent.units) {
+            binding.connectedLayout.dataTypeTextView.text = statistics.bytesSent.units
+        } else {
+            binding.connectedLayout.dataTypeTextView.text = context.getString(
+                R.string.manual_connect_multi_data_type,
+                statistics.bytesReceived.units,
+                statistics.bytesSent.units
+            )
+        }
     }
 }

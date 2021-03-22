@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.custom.view
 
-import android.animation.Animator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.widget.FrameLayout
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.MultiAnimationBinding
-import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 
 class MultiAnimationView @JvmOverloads constructor(
     context: Context,
@@ -27,21 +25,17 @@ class MultiAnimationView @JvmOverloads constructor(
     }
 
     fun disconnectedState() {
-        binding.disconnectedAnimation.apply {
-            visibility = View.VISIBLE
-            playAnimation()
-        }
         binding.connectingAnimation.apply {
             visibility = View.INVISIBLE
             cancelAnimation()
         }
-        binding.connectedLoopAnimation.apply {
+        binding.connectedAnimation.apply {
             visibility = View.INVISIBLE
             cancelAnimation()
         }
-        binding.connectedSingleAnimation.apply {
-            visibility = View.INVISIBLE
-            cancelAnimation()
+        binding.disconnectedAnimation.apply {
+            visibility = View.VISIBLE
+            playAnimation()
         }
     }
 
@@ -50,17 +44,13 @@ class MultiAnimationView @JvmOverloads constructor(
             visibility = View.INVISIBLE
             cancelAnimation()
         }
+        binding.connectedAnimation.apply {
+            visibility = View.INVISIBLE
+            cancelAnimation()
+        }
         binding.connectingAnimation.apply {
             visibility = View.VISIBLE
             playAnimation()
-        }
-        binding.connectedLoopAnimation.apply {
-            visibility = View.INVISIBLE
-            cancelAnimation()
-        }
-        binding.connectedSingleAnimation.apply {
-            visibility = View.INVISIBLE
-            cancelAnimation()
         }
     }
 
@@ -73,24 +63,9 @@ class MultiAnimationView @JvmOverloads constructor(
             visibility = View.INVISIBLE
             cancelAnimation()
         }
-        binding.connectedLoopAnimation.apply {
-            visibility = View.INVISIBLE
-            cancelAnimation()
-        }
-        binding.connectedSingleAnimation.apply {
+        binding.connectedAnimation.apply {
             visibility = View.VISIBLE
             playAnimation()
-            addAnimatorListener(object : OnAnimationCompletedListener() {
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    visibility = View.INVISIBLE
-                    cancelAnimation()
-                    binding.connectedLoopAnimation.apply {
-                        visibility = View.VISIBLE
-                        playAnimation()
-                    }
-                }
-            })
         }
     }
 }

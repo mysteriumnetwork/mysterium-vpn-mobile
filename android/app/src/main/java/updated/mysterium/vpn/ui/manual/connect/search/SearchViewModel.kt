@@ -14,13 +14,18 @@ class SearchViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val searchResult: LiveData<List<Proposal>>
         get() = _searchResult
 
+    val initialDataLoaded: LiveData<Unit>
+        get() = _initialDataLoaded
+
     private val nodesUseCase = useCaseProvider.nodes()
     private val _searchResult = MutableLiveData<List<Proposal>>()
+    private val _initialDataLoaded = MutableLiveData<Unit>()
     private var allProposal = emptyList<Proposal>()
 
     init {
         viewModelScope.launch {
             allProposal = nodesUseCase.getAllProposals()
+            _initialDataLoaded.postValue(Unit)
         }
     }
 

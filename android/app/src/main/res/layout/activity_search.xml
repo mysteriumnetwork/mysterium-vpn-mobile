@@ -45,6 +45,8 @@
         android:background="@drawable/shape_edit_text"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:lines="1"
+        android:maxLines="1"
         android:paddingHorizontal="@dimen/margin_padding_size_small"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/searchTypeTitle"
@@ -64,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/search_hint_logo"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,5 +84,18 @@
         app:layout_constraintTop_toBottomOf="@+id/horizontalDivider"
         tools:itemCount="20"
         tools:listitem="@layout/item_saved_node" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loaderAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loader_animation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

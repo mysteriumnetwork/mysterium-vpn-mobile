@@ -56,6 +56,11 @@ class SearchActivity : AppCompatActivity() {
                 nodeListAdapter.clear()
             }
         })
+        viewModel.initialDataLoaded.observe(this, {
+            binding.loaderAnimation.visibility = View.GONE
+            binding.loaderAnimation.cancelAnimation()
+            binding.searchLogo.visibility = View.VISIBLE
+        })
     }
 
     private fun initProposalListRecycler() {

@@ -41,7 +41,7 @@ class TermsOfUseActivity : AppCompatActivity() {
         if (viewModel.isTermsAccepted()) {
             binding.cardView.visibility = View.GONE
         } else {
-            binding.manualConnectToolbar.setLeftIcon(null)
+            binding.manualConnectToolbar.visibility = View.GONE
             binding.nestedScrollView.isVerticalScrollBarEnabled = true
             binding.nestedScrollView.scrollBarFadeDuration = 0
             binding.shortVersionRecyclerView.setBackgroundColor(Color.TRANSPARENT)
