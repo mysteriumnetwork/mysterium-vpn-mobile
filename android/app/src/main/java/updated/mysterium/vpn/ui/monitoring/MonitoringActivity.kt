@@ -18,6 +18,7 @@ import network.mysterium.vpn.databinding.ActivityMonitoringBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.DataUtil
 import updated.mysterium.vpn.common.date.DateUtil
+import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
 import updated.mysterium.vpn.model.session.Session
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
@@ -86,7 +87,7 @@ class MonitoringActivity : AppCompatActivity() {
         inflateAxisLeft(binding.sessionChart.axisLeft)
         inflateAxisRight(binding.sessionChart.axisRight)
         binding.sessionChart.apply {
-            data = LineData(getDataSet(entries, sessions))
+            data = LineData(getDataSet(entries))
             legend.isEnabled = false
             setNoDataText(getString(R.string.monitoring_empty_line_chart))
             setNoDataTextColor(getColor(R.color.manual_connect_value_white))
@@ -124,7 +125,7 @@ class MonitoringActivity : AppCompatActivity() {
         })
     }
 
-    private fun getDataSet(entries: List<Entry>, sessions: List<Session>): LineDataSet {
+    private fun getDataSet(entries: List<Entry>): LineDataSet {
         val dataSet = LineDataSet(entries, "")
         dataSet.axisDependency = AxisDependency.LEFT
         dataSet.color = getColor(R.color.primary)
@@ -137,14 +138,21 @@ class MonitoringActivity : AppCompatActivity() {
     }
 
     private fun inflateXAxis(xAxis: XAxis, sessions: List<Session>) {
-        xAxis.setLabelCount(sessions.size, false)
-        xAxis.mAxisMaximum = sessions.size.toFloat()
+        xAxis.mAxisMaximum = sessions.size.toFloat() - 1
+        xAxis.mAxisMinimum = 0f
+        if (sessions.size == 1) {
+            xAxis.mAxisRange = sessions.size.toFloat() - 1
+            xAxis.setLabelCount(sessions.size, false)
+        } else {
+            xAxis.mAxisRange = sessions.size.toFloat()
+            xAxis.setLabelCount(sessions.size, true)
+        }
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.valueFormatter = object : ValueFormatter() {
 
             override fun getAxisLabel(value: Float, axis: AxisBase?) = sessions.map {
-                DateUtil.formatDate(it.timeStarted)
-            }.getOrNull(value.toInt()) ?: ""
+                DateUtil.formatDate(it.createdAt)
+            }.getOrNull(value.toIntWithoutRounding()) ?: ""
         }
         xAxis.setDrawGridLines(false)
         xAxis.textColor = getColor(R.color.manual_connect_value_white)
@@ -172,7 +180,7 @@ class MonitoringActivity : AppCompatActivity() {
         val groupedSessionsList = mutableListOf<Session>()
         sessions.forEach { session ->
             val sessionWithSameDate = groupedSessionsList.find {
-                DateUtil.formatDate(it.timeStarted) == DateUtil.formatDate(session.timeStarted)
+                DateUtil.formatDate(it.createdAt) == DateUtil.formatDate(session.createdAt)
             }
             if (sessionWithSameDate != null) {
                 groupedSessionsList.remove(sessionWithSameDate)
@@ -184,7 +192,7 @@ class MonitoringActivity : AppCompatActivity() {
             }
         }
         setBiggestDataType(groupedSessionsList)
-        setUpLineChart(groupedSessionsList.sortedBy { it.timeStarted })
+        setUpLineChart(groupedSessionsList.sortedBy { it.createdAt })
     }
 
     private fun setBiggestDataType(sessions: List<Session>) {

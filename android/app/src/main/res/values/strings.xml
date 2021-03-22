@@ -155,7 +155,7 @@
     <string name="manual_connect_duration">Duration</string>
     <string name="manual_connect_data_received_hint">Receive/Send</string>
     <string name="manual_connect_paid_hint">Paid</string>
-    <string name="manual_connect_time_format">SS MM HH</string>
+    <string name="manual_connect_time_format">HH MM SS</string>
     <string name="manual_connect_data_type">Mb</string>
     <string name="manual_connect_paid_types">MYSTT / EUR</string>
     <string name="manual_connect_loading">Loading</string>
@@ -211,6 +211,15 @@
     <string name="wallet_current_balance">"%.3f"</string>
     <string name="wallet_top_up">Top up</string>
     <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain, we’’re using it in the Testnet environment</string>
+    <string name="wallet_top_up_label">Top up events</string>
+    <string name="wallet_spedings_label">Spendings</string>
+    <string name="wallet_spendings_country">Country</string>
+    <string name="wallet_spendings_duration">Duration</string>
+    <string name="wallet_spendings_currency">MYST / USD</string>
+    <string name="wallet_spendings_quality">Quality</string>
+    <string name="wallet_spendings_size">Size</string>
+    <string name="wallet_spendings_connected">Connected</string>
+    <string name="wallet_spendings_connected_value">%d days ago</string>
 
     <!--  Profile  -->
     <string name="profile_title">Profile</string>
