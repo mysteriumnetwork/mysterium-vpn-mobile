@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/Widget.SemiTransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:src="@drawable/icon_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:text="@string/top_up_amount_title"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <ImageView
+        android:id="@+id/leftHorizontalDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:src="@drawable/divider_top_up"
+        app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/videoTopUpItem"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/rightHorizontalDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:src="@drawable/divider_top_up"
+        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/videoTopUpItem"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/topVerticalDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:src="@drawable/divider_top_up_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/videoTopUpItem"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/bottomVerticalDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:src="@drawable/divider_top_up_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/musicTopUpItem"
+        tools:ignore="ContentDescription" />
+
+    <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+        android:id="@+id/videoTopUpItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:topUpIcon="@drawable/icon_video"
+        app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:topUpTitle="@string/top_up_amount_video"
+        app:topUpType="H"
+        app:topUpValue="10" />
+
+    <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+        android:id="@+id/musicTopUpItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:topUpIcon="@drawable/icon_music"
+        app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leftHorizontalDivider"
+        app:topUpTitle="@string/top_up_amount_music"
+        app:topUpType="H"
+        app:topUpValue="60" />
+
+    <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+        android:id="@+id/pagesTopUpItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:topUpIcon="@drawable/icon_pages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:topUpTitle="@string/top_up_amount_pages"
+        app:topUpValue="1500" />
+
+    <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+        android:id="@+id/trafficTopUpItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:topUpIcon="@drawable/icon_cloud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/rightHorizontalDivider"
+        app:topUpTitle="@string/top_up_amount_traffic"
+        app:topUpType="GiB"
+        app:topUpValue="15" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,9 +17,8 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
-import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
-import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodePagerAdapter
 import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class WalletActivity : AppCompatActivity() {
 
@@ -81,6 +80,9 @@ class WalletActivity : AppCompatActivity() {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
             startActivity(intent)
+        }
+        binding.topUpButton.setOnClickListener {
+            startActivity(Intent(this, TopUpAmountActivity::class.java))
         }
     }
 
