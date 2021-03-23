@@ -26,4 +26,6 @@ class UseCaseProvider(
     fun statistic() = StatisticUseCase(nodeRepository)
 
     fun terms() = TermsUseCase(context)
+
+    fun privateKey() = PrivateKeyUseCase(nodeRepository)
 }

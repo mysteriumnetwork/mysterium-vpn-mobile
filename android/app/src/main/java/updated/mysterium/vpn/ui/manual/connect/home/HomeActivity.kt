@@ -168,8 +168,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun bindMysteriumService() {
         appNotificationManager = AppNotificationManager(
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
-            deferredMysteriumCoreService
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         ).apply { init(this@HomeActivity) }
         Intent(this, MysteriumAndroidCoreService::class.java).also { intent ->
             bindService(

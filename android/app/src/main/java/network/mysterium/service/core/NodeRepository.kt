@@ -306,6 +306,12 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().listConsumerSessions(sessionFilter)
     }
 
+    suspend fun downloadPrivateKey(
+        identityAddress: String, newPassphrase: String
+    ): ByteArray = withContext(Dispatchers.IO) {
+        deferredNode.await().exportIdentity(identityAddress, newPassphrase)
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

@@ -227,6 +227,10 @@
     <string name="profile_identity_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
     <string name="profile_change_keys">Change Private keys</string>
     <string name="profile_copy_to_clipboard">Copied to clipboard</string>
+    <string name="profile_private_keys">Private keys</string>
+    <string name="profile_keys_description">On Mysterium your account is not stored in centralised servers. Private keys which holds your tokens are stored only in your application. </string>
+    <string name="profile_backup">Please make its backup, so you could recover your account later.</string>
+    <string name="profile_download_keys">Download</string>
 
     <!--  Report issue  -->
     <string name="report_issue_app_version_template">%1$s</string>

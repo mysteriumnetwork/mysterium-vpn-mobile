@@ -8,17 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import kotlinx.coroutines.CompletableDeferred
-import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 typealias NotificationFactory = (Context) -> Notification
 
-class AppNotificationManager(
-    private val notificationManager: NotificationManager,
-    private val mysteriumCoreService: CompletableDeferred<MysteriumCoreService>
-) {
+class AppNotificationManager(private val notificationManager: NotificationManager) {
 
     companion object {
         const val ACTION_DISCONNECT = "DISCONNECT"
@@ -29,12 +24,14 @@ class AppNotificationManager(
     private val connLostChannel = "connectionlost"
     private val topUpBalanceChannel = "topupbalance"
     private val topupBalanceNotificationID = 2
+    private lateinit var context: Context
 
     // pendingAppIntent is used to navigate back to MainActivity
     // when user taps on notification.
     private lateinit var pendingAppIntent: PendingIntent
 
     fun init(ctx: Context) {
+        context = ctx
         val intent = Intent(ctx, HomeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
@@ -67,14 +64,13 @@ class AppNotificationManager(
         }
     }
 
-    suspend fun showStatisticsNotification(title: String, content: String) {
-        val ctx = mysteriumCoreService.await().getContext()
-        val disconnectIntent = Intent(ctx, AppBroadcastReceiver::class.java).apply {
+    fun showStatisticsNotification(title: String, content: String) {
+        val disconnectIntent = Intent(context, AppBroadcastReceiver::class.java).apply {
             action = ACTION_DISCONNECT
         }
-        val disconnectPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, 0, disconnectIntent, 0)
+        val disconnectPendingIntent: PendingIntent = PendingIntent.getBroadcast(context, 0, disconnectIntent, 0)
 
-        val notification = NotificationCompat.Builder(ctx, statisticsChannel)
+        val notification = NotificationCompat.Builder(context, statisticsChannel)
             .setSmallIcon(R.drawable.notification_icon)
             .setContentTitle(title)
             .setAutoCancel(true)
@@ -88,9 +84,8 @@ class AppNotificationManager(
         notificationManager.notify(defaultNotificationID, notification)
     }
 
-    suspend fun showConnectionLostNotification() {
-        val ctx = mysteriumCoreService.await().getContext()
-        val notification = NotificationCompat.Builder(ctx, connLostChannel)
+    fun showConnectionLostNotification() {
+        val notification = NotificationCompat.Builder(context, connLostChannel)
             .setSmallIcon(R.drawable.notification_icon)
             .setContentTitle("Connection lost")
             .setContentText("VPN connection was closed.")
@@ -102,9 +97,8 @@ class AppNotificationManager(
         notificationManager.notify(defaultNotificationID, notification)
     }
 
-    suspend fun showTopUpBalanceNotification() {
-        val ctx = mysteriumCoreService.await().getContext()
-        val notification = NotificationCompat.Builder(ctx, topUpBalanceChannel)
+    fun showTopUpBalanceNotification() {
+        val notification = NotificationCompat.Builder(context, topUpBalanceChannel)
             .setSmallIcon(R.drawable.notification_icon)
             .setContentTitle("Top-up balance")
             .setContentText("You need to top-up your balance to continue using VPN service.")
@@ -114,5 +108,17 @@ class AppNotificationManager(
             .setOnlyAlertOnce(true)
             .build()
         notificationManager.notify(topupBalanceNotificationID, notification)
+    }
+
+    fun showDownloadedNotification() {
+        val notification = NotificationCompat.Builder(context, connLostChannel)
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle("MysteriumKeystore")
+            .setContentText("File downloaded to Download folder")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVibrate(LongArray(0))
+            .setOnlyAlertOnce(true)
+            .build()
+        notificationManager.notify(defaultNotificationID, notification)
     }
 }
