@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.splash
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
@@ -21,6 +22,7 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
@@ -40,14 +42,30 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
+        configure()
         setContentView(binding.root)
         bindMysteriumService()
         subscribeViewModel()
         ensureVpnServicePermission()
     }
 
+    private fun configure() {
+        binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
+
+            override fun onAnimationEnd(animation: Animator?) {
+                viewModel.animationLoaded()
+                binding.onceAnimationView.visibility = View.GONE
+                binding.onceAnimationView.cancelAnimation()
+                binding.loopAnimationView.visibility = View.VISIBLE
+                binding.loopAnimationView.playAnimation()
+            }
+        })
+    }
+
     private fun subscribeViewModel() {
-        viewModel.navigateForward.observe(this, { navigateForward() })
+        viewModel.navigateForward.observe(this, {
+            navigateForward()
+        })
     }
 
     private fun navigateForward() {

@@ -182,7 +182,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'
 
     //Animation
-    implementation "com.airbnb.android:lottie:3.6.0"
+    implementation "com.airbnb.android:lottie:3.6.1"
 
     //Glide
     implementation "com.github.bumptech.glide:glide:4.12.0"

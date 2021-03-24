@@ -16,31 +16,27 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.util.Timer
-import kotlin.concurrent.timerTask
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
         const val TAG = "SplashViewModel"
-        const val ONE_SECOND_DELAY = 1000L
         const val NODE_IDENTITY_KEY = "node_identity"
     }
 
-    val navigateForward: LiveData<String>
+    val navigateForward: LiveData<Unit>
         get() = _navigateForward
 
-    private val _navigateForward = MutableLiveData<String>()
+    private val _navigateForward = MutableLiveData<Unit>()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
     private val termsUseCase = useCaseProvider.terms()
-    private var isTimerFinished = false
+    private var isAnimationLoaded = false
     private var isDataLoaded = false
     private var deferredNode = DeferredNode()
 
     fun startLoading(deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
-        startTimer()
         viewModelScope.launch {
             startDeferredNode(deferredMysteriumCoreService)
         }
@@ -49,6 +45,14 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
 
     fun isTermsAccepted() = termsUseCase.isTermsAccepted()
+
+    fun animationLoaded() {
+        if (isDataLoaded) {
+            _navigateForward.postValue(Unit)
+        } else {
+            isAnimationLoaded = true
+        }
+    }
 
     private suspend fun startDeferredNode(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
@@ -72,16 +76,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         balanceUseCase.initDeferredNode(deferredNode)
         connectionUseCase.initDeferredNode(deferredNode)
         loadIdentity()
-    }
-
-    private fun startTimer() {
-        Timer().schedule(timerTask {
-            if (isDataLoaded) {
-                _navigateForward.postValue("")
-            } else {
-                isTimerFinished = true
-            }
-        }, ONE_SECOND_DELAY)
     }
 
     private suspend fun loadIdentity() {
@@ -122,8 +116,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun loadRegistrationFees() {
         connectionUseCase.registrationFees()
-        if (isTimerFinished) {
-            _navigateForward.postValue("")
+        if (isAnimationLoaded) {
+            _navigateForward.postValue(Unit)
         } else {
             isDataLoaded = true
         }

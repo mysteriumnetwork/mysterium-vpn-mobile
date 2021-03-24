@@ -31,9 +31,9 @@ object UnitFormatter {
         val bytesDouble = bytes.toDouble()
         return when {
             bytesDouble < KB -> FormattedBytesViewItem("$bytesDouble", "B")
-            bytesDouble < MB -> FormattedBytesViewItem("%.2f".format(bytesDouble / KB), "KB")
-            bytesDouble < GB -> FormattedBytesViewItem("%.2f".format(bytesDouble / MB), "MB")
-            else -> FormattedBytesViewItem("%.2f".format(bytesDouble / GB), "GB")
+            bytesDouble < MB -> FormattedBytesViewItem("%.2f".format(bytesDouble / KB), "KiB")
+            bytesDouble < GB -> FormattedBytesViewItem("%.2f".format(bytesDouble / MB), "MiB")
+            else -> FormattedBytesViewItem("%.2f".format(bytesDouble / GB), "GiB")
         }
     }
 
