@@ -270,6 +270,9 @@
     <string name="top_up_amount_music">Music</string>
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
+    <string name="top_up_amount_description">Select how much MYST credits \n you would like to add into your account</string>
+    <string name="top_up_amount_confirm">Confirm</string>
+    <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
