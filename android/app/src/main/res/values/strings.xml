@@ -221,6 +221,10 @@
     <string name="wallet_spendings_size">Size</string>
     <string name="wallet_spendings_connected">Connected</string>
     <string name="wallet_spendings_connected_value">%d days ago</string>
+    <string name="wallet_video">Online video</string>
+    <string name="wallet_web">Web browsing</string>
+    <string name="wallet_download">of data download</string>
+    <string name="wallet_music">Music Songs</string>
 
     <!--  Profile  -->
     <string name="profile_title">Profile</string>
@@ -259,6 +263,13 @@
     <string name="terms_full">Full version</string>
     <string name="terms_accept_button">Accept</string>
     <string name="terms_onboarding_description">Short description about why is it necessary to apply all terms of use before using app</string>
+
+    <!--  Top up  -->
+    <string name="top_up_amount_title">Top up your account</string>
+    <string name="top_up_amount_video">Online video</string>
+    <string name="top_up_amount_music">Music</string>
+    <string name="top_up_amount_pages">Web pages</string>
+    <string name="top_up_amount_traffic">Traffic</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

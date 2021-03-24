@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="BalanceToolbar">
         <attr name="leftIcon" format="integer" />
         <attr name="rightIcon" format="integer" />
         <attr name="leftView" format="integer" />
         <attr name="rightView" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="TopUpItemView">
+        <attr name="topUpIcon" format="integer" />
+        <attr name="topUpValue" format="string" />
+        <attr name="topUpType" format="string" />
+        <attr name="topUpTitle" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="WalletItemView">
+        <attr name="walletIcon" format="integer" />
+        <attr name="walletValue" format="string" />
+        <attr name="walletTitle" format="string" />
+    </declare-styleable>
+
 </resources>

@@ -80,6 +80,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="network.mysterium.MainActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
