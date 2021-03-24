@@ -176,7 +176,7 @@ dependencies {
             'androidx.test:rules:1.3.0-rc01',
     )
 
-    implementation 'network.mysterium:mobile-node:0.41.8'
+    implementation 'network.mysterium:mobile-node:0.45.0'
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     // implementation files('/Users/soffokl/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
 }
