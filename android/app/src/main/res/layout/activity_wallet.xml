@@ -98,7 +98,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/currencyTextView" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_padding_size_xxsmall"
                     android:layout_marginTop="@dimen/margin_padding_size_small"
@@ -110,30 +110,34 @@
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         app:walletIcon="@drawable/icon_video"
-                        app:walletValue="12h"
-                        app:walletTitle="@string/wallet_video"/>
+                        app:walletTitle="@string/wallet_video"
+                        app:walletValue="12h" />
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         app:walletIcon="@drawable/icon_pages"
-                        app:walletValue="180h"
-                        app:walletTitle="@string/wallet_web"/>
+                        app:walletTitle="@string/wallet_web"
+                        app:walletValue="180h" />
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         app:walletIcon="@drawable/icon_cloud"
-                        app:walletValue="80GiB"
-                        app:walletTitle="@string/wallet_download"/>
+                        app:walletTitle="@string/wallet_download"
+                        app:walletValue="80GiB" />
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         app:walletIcon="@drawable/icon_music"
-                        app:walletValue="1500h"
-                        app:walletTitle="@string/wallet_music"/>
+                        app:walletTitle="@string/wallet_music"
+                        app:walletValue="1500h" />
 
                 </LinearLayout>
 
