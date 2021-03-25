@@ -24,7 +24,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import mysterium.GetProposalsRequest
 import network.mysterium.db.AppDatabase
 import network.mysterium.db.FavoriteProposal
@@ -164,7 +163,7 @@ class ProposalsViewModel(
                 searchText = "",
                 country = ProposalFilterCountry(),
                 quality = ProposalFilterQuality(
-                        level = QualityLevel.HIGH,
+                        level = QualityLevel.MEDIUM,
                         qualityIncludeUnreachable = false
                 ),
                 nodeType = NodeType.ALL,
@@ -383,7 +382,7 @@ class ProposalsViewModel(
                     when (filter.quality.level) {
                         QualityLevel.UNKNOWN -> true
                         // Include proposals with unknown quality by default.
-                        else -> filter.quality.level <= it.qualityLevel || it.qualityLevel == QualityLevel.UNKNOWN
+                        else -> filter.quality.level <= it.qualityLevel
                     }
                 }
                 // Filter by unreachable nodes.
