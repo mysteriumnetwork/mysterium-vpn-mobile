@@ -273,6 +273,7 @@
     <string name="top_up_amount_description">Select how much MYST credits \n you would like to add into your account</string>
     <string name="top_up_amount_confirm">Confirm</string>
     <string name="top_up_crypto_description">Select the crypto currency \n in which the topup will be done</string>
+    <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
 
     <!--  Error  -->

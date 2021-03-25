@@ -47,6 +47,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:id="@+id/switchFrame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                android:background="@drawable/shape_lighting"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title">
+
+                <TextView
+                    style="@style/TextAppearance.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+                    android:text="@string/top_up_crypto_lighting"
+                    android:textColor="@android:color/white" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    style="@style/SwitchStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:checked="false"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium"
+                    app:track="@drawable/switch_track_selector"/>
+
+            </LinearLayout>
+
             <updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
                 android:id="@+id/cryptoAnimation"
                 android:layout_width="0dp"
@@ -54,7 +85,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/horizontalDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/switchFrame"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/btc_animation" />

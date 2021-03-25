@@ -378,4 +378,10 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
+    <!--  SwitchStyle  -->
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="trackTint">@color/switch_track_selector</item>
+        <item name="thumbTint">@android:color/white</item>
+    </style>
+
 </resources>
