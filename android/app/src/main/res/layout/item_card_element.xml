@@ -5,17 +5,33 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/leftDynamicMargin"
+        android:layout_width="8dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/rightDynamicMargin"
+        android:layout_width="8dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/shadow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:elevation="4dp"
-        android:visibility="invisible"
         android:src="@drawable/shadow_card_element_item"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightDynamicMargin"
+        app:layout_constraintStart_toEndOf="@+id/leftDynamicMargin"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -27,8 +43,8 @@
         android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
         android:layout_marginTop="@dimen/margin_padding_size_xsmall"
         android:background="@drawable/shape_card_element_unselected"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightDynamicMargin"
+        app:layout_constraintStart_toEndOf="@+id/leftDynamicMargin"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

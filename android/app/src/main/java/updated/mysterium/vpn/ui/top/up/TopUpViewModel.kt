@@ -1,10 +1,10 @@
-package updated.mysterium.vpn.ui.top.up.amount
+package updated.mysterium.vpn.ui.top.up
 
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class TopUpAmountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val balanceUseCase = useCaseProvider.balance()
     private var usdEquivalent: Double? = null

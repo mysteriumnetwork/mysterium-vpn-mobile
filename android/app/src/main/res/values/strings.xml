@@ -221,10 +221,10 @@
     <string name="wallet_spendings_size">Size</string>
     <string name="wallet_spendings_connected">Connected</string>
     <string name="wallet_spendings_connected_value">%d days ago</string>
-    <string name="wallet_video">Online video</string>
-    <string name="wallet_web">Web browsing</string>
-    <string name="wallet_download">of data download</string>
-    <string name="wallet_music">Music Songs</string>
+    <string name="wallet_video">Online\n video</string>
+    <string name="wallet_web">Web\n browsing</string>
+    <string name="wallet_download">of data\n download</string>
+    <string name="wallet_music">Music\n Songs</string>
 
     <!--  Profile  -->
     <string name="profile_title">Profile</string>
@@ -272,6 +272,7 @@
     <string name="top_up_amount_traffic">Traffic</string>
     <string name="top_up_amount_description">Select how much MYST credits \n you would like to add into your account</string>
     <string name="top_up_amount_confirm">Confirm</string>
+    <string name="top_up_crypto_description">Select the crypto currency \n in which the topup will be done</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
 
     <!--  Error  -->

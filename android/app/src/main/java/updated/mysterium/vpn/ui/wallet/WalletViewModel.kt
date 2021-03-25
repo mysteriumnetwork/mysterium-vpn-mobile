@@ -8,7 +8,7 @@ class WalletViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val balanceUseCase = useCaseProvider.balance()
 
-    fun getUsdEquivalent() = liveDataResult {
-        balanceUseCase.getUsdEquivalent()
+    fun getUsdEquivalent(balance: Double) = liveDataResult {
+        balanceUseCase.getUsdEquivalent() * balance
     }
 }

@@ -1,0 +1,69 @@
+package updated.mysterium.vpn.ui.top.up.crypto
+
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import network.mysterium.vpn.R
+import network.mysterium.vpn.databinding.ActivityTopUpCryptoBinding
+import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.top.up.CryptoCardItem
+import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
+import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+
+class TopUpCryptoActivity : AppCompatActivity() {
+
+    companion object {
+        const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
+        private const val TAG = "TopUpAmountActivity"
+        private val CRYPTO_VALUES = listOf(
+            CryptoCardItem(CryptoAnimationView.MYST, R.raw.myst_animation, true),
+            CryptoCardItem(CryptoAnimationView.BTC, R.raw.btc_animation),
+            CryptoCardItem(CryptoAnimationView.ETH, R.raw.eth_animation),
+            CryptoCardItem(CryptoAnimationView.LTC, R.raw.ltc_animation),
+            CryptoCardItem(CryptoAnimationView.DAI, R.raw.dai_animation),
+            CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation)
+        )
+    }
+
+    private lateinit var binding: ActivityTopUpCryptoBinding
+    private val viewModel: TopUpViewModel by inject()
+    private val topUpAdapter = TopUpCryptoAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityTopUpCryptoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        getCryptoValue()
+        configure()
+        bindsAction()
+    }
+
+    private fun configure() {
+        binding.amountRecycler.adapter = topUpAdapter
+        topUpAdapter.replaceAll(CRYPTO_VALUES)
+        topUpAdapter.onItemSelected = {
+            binding.cryptoAnimation.changeAnimation(it.value)
+        }
+        binding.cryptoAnimation.changeAnimation(CRYPTO_VALUES.first().value)
+    }
+
+    private fun bindsAction() {
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun getCryptoValue() {
+        intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.let {
+            viewModel.getUsdEquivalent(it).observe(this, { result ->
+                result.onSuccess {
+                    binding.usdEquivalentTextView.text = getString(R.string.top_up_usd_equivalent, it)
+                }
+                result.onFailure { throwable ->
+                    Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
+                    // TODO("Add UI error, failed to load equivalent")
+                }
+            })
+        }
+    }
+}

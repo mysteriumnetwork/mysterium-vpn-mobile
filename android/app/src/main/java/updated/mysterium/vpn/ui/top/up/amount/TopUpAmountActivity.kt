@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.top.up.amount
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,8 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
+import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 
 class TopUpAmountActivity : AppCompatActivity() {
 
@@ -22,7 +25,7 @@ class TopUpAmountActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityTopUpAmountBinding
-    private val viewModel: TopUpAmountViewModel by inject()
+    private val viewModel: TopUpViewModel by inject()
     private val topUpAdapter = TopUpAmountAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +50,12 @@ class TopUpAmountActivity : AppCompatActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            topUpAdapter.getSelectedValue()
-            // TODO("Get selected value and move forward to next screen")
+            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
+            val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
+                putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            }
+            startActivity(intent)
+
         }
     }
 
