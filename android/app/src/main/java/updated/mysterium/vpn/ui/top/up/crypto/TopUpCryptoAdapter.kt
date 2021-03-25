@@ -24,6 +24,8 @@ class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter
         holder.bind(items[position], position)
     }
 
+    fun getSelectedValue() = selectedCardItem?.value
+
     inner class TopUpCryptoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding = ItemCardElementBinding.bind(itemView)

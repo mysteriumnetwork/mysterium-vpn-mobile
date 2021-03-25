@@ -55,7 +55,6 @@ class TopUpAmountActivity : AppCompatActivity() {
                 putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
             }
             startActivity(intent)
-
         }
     }
 

@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.top.up.crypto
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
 
 class TopUpCryptoActivity : AppCompatActivity() {
 
@@ -28,6 +30,7 @@ class TopUpCryptoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTopUpCryptoBinding
     private val viewModel: TopUpViewModel by inject()
     private val topUpAdapter = TopUpCryptoAdapter()
+    private var cryptoAmount: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +54,23 @@ class TopUpCryptoActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
+        binding.confirmButton.setOnClickListener {
+            val cryptoName = topUpAdapter.getSelectedValue()
+            val intent = Intent(this, TopUpPaymentActivity::class.java).apply {
+                putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+                putExtra(TopUpPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
+                putExtra(
+                    TopUpPaymentActivity.CRYPTO_IS_LIGHTING_EXTRA_KEY,
+                    binding.lightingSwitch.isChecked
+                )
+            }
+            startActivity(intent)
+        }
     }
 
     private fun getCryptoValue() {
-        intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.let {
+        cryptoAmount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
+        cryptoAmount?.let {
             viewModel.getUsdEquivalent(it).observe(this, { result ->
                 result.onSuccess {
                     binding.usdEquivalentTextView.text = getString(R.string.top_up_usd_equivalent, it)

@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.manual.connect.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,10 @@ import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+
+    private companion object {
+        const val TAG = "HomeViewModel"
+    }
 
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
@@ -167,7 +172,10 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun getExchangeRate() {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, "Failed to load currency: $exception")
+        }
+        viewModelScope.launch(handler) {
             exchangeRate = withContext(Dispatchers.Default) {
                 balanceUseCase.getUsdEquivalent()
             }
