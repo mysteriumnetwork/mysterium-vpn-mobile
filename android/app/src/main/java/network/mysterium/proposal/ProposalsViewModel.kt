@@ -163,7 +163,7 @@ class ProposalsViewModel(
                 searchText = "",
                 country = ProposalFilterCountry(),
                 quality = ProposalFilterQuality(
-                        level = QualityLevel.HIGH,
+                        level = QualityLevel.MEDIUM,
                         qualityIncludeUnreachable = false
                 ),
                 nodeType = NodeType.ALL,
