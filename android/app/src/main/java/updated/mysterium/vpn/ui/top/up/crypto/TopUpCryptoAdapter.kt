@@ -9,12 +9,9 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemCardElementBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
+import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 
 class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter.TopUpCryptoViewHolder>() {
-
-    private companion object {
-        const val MARGIN_DP = 24f
-    }
 
     private var selectedCardItem: CryptoCardItem? = null
     var onItemSelected: ((CryptoCardItem) -> Unit)? = null
@@ -26,8 +23,6 @@ class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter
     override fun onBindViewHolder(holder: TopUpCryptoViewHolder, position: Int) {
         holder.bind(items[position], position)
     }
-
-    fun getSelectedValue() = selectedCardItem?.value
 
     inner class TopUpCryptoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -41,6 +36,11 @@ class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter
             } else {
                 unselectedState()
             }
+            if (cardItem.value == CryptoAnimationView.MYST) {
+                binding.mystHint.visibility = View.VISIBLE
+            } else {
+                binding.mystHint.visibility = View.INVISIBLE
+            }
             binding.cardItemFrame.setOnClickListener {
                 if (cardItem != selectedCardItem) {
                     onItemSelected?.invoke(cardItem)
@@ -51,11 +51,7 @@ class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter
                     notifyItemChanged(items.indexOf(selectedCardItem))
                 }
             }
-            if (position == 0) {
-                binding.leftDynamicMargin.visibility = View.VISIBLE
-            } else if (position == items.lastIndex) {
-                binding.rightDynamicMargin.visibility = View.VISIBLE
-            }
+            checkMargin(position)
         }
 
         private fun selectedState() {
@@ -76,6 +72,21 @@ class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter
                 itemView.context, R.drawable.shape_card_element_unselected
             )
             binding.shadow.visibility = View.INVISIBLE
+        }
+
+        private fun checkMargin(position: Int) {
+            when (position) {
+                0 -> {
+                    binding.leftDynamicMargin.visibility = View.VISIBLE
+                }
+                items.lastIndex -> {
+                    binding.rightDynamicMargin.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.leftDynamicMargin.visibility = View.GONE
+                    binding.rightDynamicMargin.visibility = View.GONE
+                }
+            }
         }
     }
 }
