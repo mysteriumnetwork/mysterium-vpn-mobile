@@ -1,3 +1,4 @@
+
 package updated.mysterium.vpn.ui.wallet
 
 import android.annotation.SuppressLint
@@ -56,21 +57,13 @@ class WalletActivity : AppCompatActivity() {
     private fun configure() {
         initViewPager()
         initTabLayout()
-        viewModel.getUsdEquivalent().observe(this, { result ->
-            result.onSuccess {
-                binding.usdEquivalentTextView.text = getString(R.string.wallet_usd_equivalent, it)
-            }
-            result.onFailure {
-                Log.e(TAG, "Getting exchange rate failed")
-                // TODO("Implement error handling")
-            }
-        })
     }
 
     private fun subscribeViewModel() {
         balanceViewModel.balanceLiveData.observe(this, {
             binding.balanceTextView.text = getString(R.string.wallet_current_balance, it)
             binding.manualConnectToolbar.setBalance(it)
+            getUsdEquivalent(it)
         })
     }
 
@@ -148,5 +141,17 @@ class WalletActivity : AppCompatActivity() {
         TabLayoutMediator(binding.chooseListTabLayout, viewPager) { tab, _ ->
             viewPager.setCurrentItem(tab.position, true)
         }.attach()
+    }
+
+    private fun getUsdEquivalent(balance: Double) {
+        viewModel.getUsdEquivalent(balance).observe(this, { result ->
+            result.onSuccess {
+                binding.usdEquivalentTextView.text = getString(R.string.wallet_usd_equivalent, it)
+            }
+            result.onFailure {
+                Log.e(TAG, "Getting exchange rate failed")
+                // TODO("Implement error handling")
+            }
+        })
     }
 }

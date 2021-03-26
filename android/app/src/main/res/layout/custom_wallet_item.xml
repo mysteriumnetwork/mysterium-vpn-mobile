@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
     android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
-    android:background="@drawable/shape_wallet_item_gradient">
+    android:background="@drawable/shape_wallet_item_gradient"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iconImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:layout_gravity="center"
         android:src="@drawable/icon_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
         style="@style/TextAppearance.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_padding_size_small_plus"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,14 +38,11 @@
     <TextView
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.BodyMedium"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_padding_size_small"
         android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
-        android:lines="2"
-        android:maxLines="2"
-        android:minLines="2"
         android:textAlignment="center"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,4 +51,4 @@
         app:layout_constraintTop_toBottomOf="@+id/dataValueTextView"
         tools:text="@string/wallet_video" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

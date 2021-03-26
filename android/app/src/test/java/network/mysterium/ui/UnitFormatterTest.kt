@@ -35,10 +35,10 @@ class UnitFormatterBytesDisplayTest(private val value: Long, private val expecte
         fun data(): Collection<Array<Any>> {
             return listOf(
                     arrayOf(101L, "101.0 B"),
-                    arrayOf(1_028L, "1.00 KB"),
-                    arrayOf(81_068L, "79.17 KB"),
-                    arrayOf(9_381_068L, "8.95 MB"),
-                    arrayOf(1_309_381_068L, "1.22 GB")
+                    arrayOf(1_028L, "1.00 KiB"),
+                    arrayOf(81_068L, "79.17 KiB"),
+                    arrayOf(9_381_068L, "8.95 MiB"),
+                    arrayOf(1_309_381_068L, "1.22 GiB")
             )
         }
     }
