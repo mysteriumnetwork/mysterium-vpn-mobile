@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_item_onboarding.*
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.FragmentItemOnboardingBinding
-import updated.mysterium.vpn.common.extensions.dpToPx
 import updated.mysterium.vpn.model.onboarding.OnboardingScreen
 import updated.mysterium.vpn.ui.onboarding.viewpager.ViewPagerActionListener
 

@@ -29,4 +29,6 @@
     <color name="manual_connect_time_format_grey_blue">#8386A4</color>
 
     <color name="menu_subtitle_light_pink">#ED5BAC</color>
+
+    <color name="pop_up_transparent_dark_blue">#703C3857</color>
 </resources>

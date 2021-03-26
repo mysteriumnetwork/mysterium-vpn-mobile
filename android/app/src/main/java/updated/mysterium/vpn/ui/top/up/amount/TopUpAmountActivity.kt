@@ -8,10 +8,11 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 
-class TopUpAmountActivity : AppCompatActivity() {
+class TopUpAmountActivity : BaseActivity() {
 
     private companion object {
         const val TAG = "TopUpAmountActivity"

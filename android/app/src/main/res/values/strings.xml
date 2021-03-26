@@ -280,6 +280,12 @@
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_currency_equivalent">%1$s %2$s</string>
 
+    <!--  Pop up  -->
+    <string name="pop_up_top_up_title">Top up Your\n Account</string>
+    <string name="pop_up_top_up_description">Credits is running out</string>
+    <string name="pop_up_top_up_positive">Top up now</string>
+    <string name="pop_up_top_up_negative">Continue</string>
+
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
 </resources>

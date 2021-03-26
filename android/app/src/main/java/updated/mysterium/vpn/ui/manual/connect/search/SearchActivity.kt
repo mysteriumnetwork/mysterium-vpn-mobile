@@ -10,11 +10,12 @@ import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private val viewModel: SearchViewModel by inject()

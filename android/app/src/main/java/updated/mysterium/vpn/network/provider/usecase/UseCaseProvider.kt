@@ -19,7 +19,7 @@ class UseCaseProvider(
 
     fun login() = LoginUseCase(context)
 
-    fun balance() = BalanceUseCase(nodeRepository)
+    fun balance() = BalanceUseCase(nodeRepository, context)
 
     fun report() = ReportUseCase(nodeRepository)
 

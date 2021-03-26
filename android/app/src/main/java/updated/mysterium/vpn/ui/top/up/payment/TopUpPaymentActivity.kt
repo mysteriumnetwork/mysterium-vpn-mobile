@@ -14,10 +14,11 @@ import network.mysterium.payment.Order
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpPaymentBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import java.math.BigDecimal
 
-class TopUpPaymentActivity : AppCompatActivity() {
+class TopUpPaymentActivity : BaseActivity() {
 
     companion object {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
