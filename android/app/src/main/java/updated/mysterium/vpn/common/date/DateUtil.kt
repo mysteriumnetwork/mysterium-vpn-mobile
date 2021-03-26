@@ -1,9 +1,8 @@
 package updated.mysterium.vpn.common.date
 
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.Locale
 
 object DateUtil {
 
@@ -42,5 +41,21 @@ object DateUtil {
         val currentDays = (Date().time / DAY_IN_MS)
         val dateDays = (dateInMs / DAY_IN_MS)
         return TimeUnit.DAYS.convert(currentDays - dateDays, TimeUnit.DAYS)
+    }
+
+    fun convertTimeToStringMinutesFormat(milliseconds: Long): String {
+        val minutes = milliseconds / 1000 / 60
+        val seconds = (milliseconds / 1000) - (minutes * 60)
+        val formattedMinutes = if (minutes < 10) {
+            "0$minutes"
+        } else {
+            minutes.toString()
+        }
+        val formattedSeconds = if (seconds < 10) {
+            "0$seconds"
+        } else {
+            seconds.toString()
+        }
+        return formattedMinutes + formattedSeconds
     }
 }

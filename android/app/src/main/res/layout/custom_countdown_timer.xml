@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_padding_size_xxsmall"
+        android:background="@drawable/shape_timer">
+
+        <TextView
+            android:id="@+id/min1"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            tools:text="0" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_timer">
+
+        <TextView
+            android:id="@+id/min2"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            tools:text="9" />
+
+    </FrameLayout>
+
+    <TextView
+        style="@style/TextAppearance.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small"
+        android:text=":"
+        android:textColor="@color/primary"
+        tools:ignore="HardcodedText" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_padding_size_xxsmall"
+        android:background="@drawable/shape_timer">
+
+        <TextView
+            android:id="@+id/sec1"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            tools:text="4" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_timer">
+
+        <TextView
+            android:id="@+id/sec2"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            tools:text="5" />
+
+    </FrameLayout>
+
+</LinearLayout>

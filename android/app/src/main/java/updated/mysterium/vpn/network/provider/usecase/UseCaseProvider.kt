@@ -28,4 +28,6 @@ class UseCaseProvider(
     fun terms() = TermsUseCase(context)
 
     fun privateKey() = PrivateKeyUseCase(nodeRepository)
+
+    fun payment() = PaymentUseCase(nodeRepository)
 }
