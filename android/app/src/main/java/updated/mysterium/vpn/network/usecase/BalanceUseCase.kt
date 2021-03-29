@@ -3,6 +3,7 @@ package updated.mysterium.vpn.network.usecase
 import mysterium.GetBalanceRequest
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
 class BalanceUseCase(
@@ -28,7 +29,12 @@ class BalanceUseCase(
 
     suspend fun getUsdEquivalent() = nodeRepository.getExchangeRate(CURRENCY)
 
-    fun isBalancePopUpShown() = sharedPreferencesManager.isBalancePopUpShown()
+    fun isBalancePopUpShown() = sharedPreferencesManager.getPreferenceValue(
+        SharedPreferencesList.BALANCE
+    )
 
-    fun balancePopUpShown() = sharedPreferencesManager.balancePopUpShown()
+    fun balancePopUpShown() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.BALANCE,
+        value = true
+    )
 }

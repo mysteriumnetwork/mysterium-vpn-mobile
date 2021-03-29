@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.network.usecase
 
 import network.mysterium.terms.Terms
+import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 
@@ -16,9 +17,12 @@ class TermsUseCase(private val sharedPreferencesManager: SharedPreferencesManage
         Terms.endUserMD()
     }
 
-    fun isTermsAccepted() = sharedPreferencesManager.isTermsAccepted()
+    fun isTermsAccepted() = sharedPreferencesManager.getPreferenceValue(SharedPreferencesList.TERMS)
 
-    fun userAcceptTerms() = sharedPreferencesManager.userAcceptTerms()
+    fun userAcceptTerms() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.TERMS,
+        value = true
+    )
 
     fun getShortTerms(): List<String> {
         val startPosition = fullTermsData.indexOf(SHORT_VERSION_LABEL)

@@ -1,10 +1,14 @@
 package updated.mysterium.vpn.network.usecase
 
+import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
 class LoginUseCase(private val sharedPreferencesManager: SharedPreferencesManager) {
 
-    fun isAlreadyLogin() = sharedPreferencesManager.isAlreadyLogin()
+    fun isAlreadyLogin() = sharedPreferencesManager.getPreferenceValue(SharedPreferencesList.LOGIN)
 
-    fun userLoggedIn() = sharedPreferencesManager.userLoggedIn()
+    fun userLoggedIn() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.LOGIN,
+        value = true
+    )
 }
