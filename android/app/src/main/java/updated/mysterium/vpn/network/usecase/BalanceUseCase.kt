@@ -29,7 +29,7 @@ class BalanceUseCase(
 
     suspend fun getUsdEquivalent() = nodeRepository.getExchangeRate(CURRENCY)
 
-    fun isBalancePopUpShown() = sharedPreferencesManager.getPreferenceValue(
+    fun isBalancePopUpShown() = sharedPreferencesManager.containsPreferenceValue(
         SharedPreferencesList.BALANCE
     )
 

@@ -57,6 +57,11 @@ class HomeActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkCurrentStatus()
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -67,7 +72,6 @@ class HomeActivity : BaseActivity() {
         loadIpAddress()
         bindMysteriumService()
         initViewModel()
-        checkCurrentStatus()
         balanceViewModel.getCurrentBalance()
     }
 

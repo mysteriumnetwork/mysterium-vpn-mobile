@@ -280,6 +280,16 @@
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_currency_equivalent">%1$s %2$s</string>
 
+    <!--  Settings  -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
+    <string name="settings_dns_title">DNS</string>
+    <string name="settings_resident_title">Resident country</string>
+    <string name="settings_dns_system">System</string>
+    <string name="settings_dns_provider">Provider</string>
+    <string name="settings_dns_cloudflare">Cloudflare</string>
+    <string name="settings_dns_default">Default</string>
+
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
     <string name="pop_up_top_up_description">Credits is running out</string>

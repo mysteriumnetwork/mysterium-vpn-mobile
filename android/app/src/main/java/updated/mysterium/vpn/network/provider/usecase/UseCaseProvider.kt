@@ -30,4 +30,6 @@ class UseCaseProvider(
     fun privateKey() = PrivateKeyUseCase(nodeRepository)
 
     fun payment() = PaymentUseCase(nodeRepository)
+
+    fun settings() = SettingsUseCase(sharedPreferencesManager)
 }

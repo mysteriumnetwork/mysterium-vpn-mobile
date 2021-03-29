@@ -21,6 +21,7 @@ import updated.mysterium.vpn.ui.monitoring.MonitoringViewModel
 import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
 import updated.mysterium.vpn.ui.profile.ProfileViewModel
 import updated.mysterium.vpn.ui.report.issue.ReportIssueViewModel
+import updated.mysterium.vpn.ui.settings.SettingsViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
@@ -97,6 +98,9 @@ object Modules {
         }
         viewModel {
             BaseViewModel(get())
+        }
+        viewModel {
+            SettingsViewModel(get())
         }
     }
 

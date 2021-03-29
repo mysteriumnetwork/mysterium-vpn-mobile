@@ -10,6 +10,10 @@ import updated.mysterium.vpn.model.session.Spending
 
 class StatisticUseCase(private val nodeRepository: NodeRepository) {
 
+    private companion object {
+        const val MAX_SPENDINGS_INDEX = 99
+    }
+
     suspend fun getLastSessions(): List<Session> {
         val jsonResponse = nodeRepository.getLastSessions(SessionFilter())
         val collectionType = object : TypeToken<Collection<Session?>?>() {}.type
@@ -22,6 +26,11 @@ class StatisticUseCase(private val nodeRepository: NodeRepository) {
     suspend fun getSpendings(): List<Spending> {
         val jsonResponse = nodeRepository.getLastSessions(SessionFilter())
         val collectionType = object : TypeToken<Collection<Spending?>?>() {}.type
-        return Gson().fromJson(String(jsonResponse), collectionType)
+        val spendings: List<Spending> = Gson().fromJson(String(jsonResponse), collectionType)
+        return if (spendings.size <= MAX_SPENDINGS_INDEX) {
+            spendings
+        } else {
+            spendings.subList(0, MAX_SPENDINGS_INDEX) // Get only last 100 spendings
+        }
     }
 }
