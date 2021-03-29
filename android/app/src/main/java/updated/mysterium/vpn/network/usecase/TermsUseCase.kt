@@ -1,14 +1,12 @@
 package updated.mysterium.vpn.network.usecase
 
-import android.content.Context
 import network.mysterium.terms.Terms
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 
-class TermsUseCase(private val context: Context) {
+class TermsUseCase(private val sharedPreferencesManager: SharedPreferencesManager) {
 
     private companion object {
-        const val TERMS_PREFERENCES_KEY = "TERMS"
-        const val ALREADY_ACCEPTED_KEY = "ALREADY_ACCEPTED"
         const val SHORT_VERSION_LABEL = "**SHORT VERSION IN HUMAN LANGUAGE:**"
         const val FULL_VERSION_LABEL = "**FULL VERSION:**"
         const val QUOTES = "**"
@@ -18,12 +16,9 @@ class TermsUseCase(private val context: Context) {
         Terms.endUserMD()
     }
 
-    fun isTermsAccepted() = context.getSharedPreferences(TERMS_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        .contains(ALREADY_ACCEPTED_KEY)
+    fun isTermsAccepted() = sharedPreferencesManager.isTermsAccepted()
 
-    fun userAcceptTerms() = context.getSharedPreferences(TERMS_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        .edit()
-        .putBoolean(ALREADY_ACCEPTED_KEY, true).apply()
+    fun userAcceptTerms() = sharedPreferencesManager.userAcceptTerms()
 
     fun getShortTerms(): List<String> {
         val startPosition = fullTermsData.indexOf(SHORT_VERSION_LABEL)

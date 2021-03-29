@@ -1,18 +1,10 @@
 package updated.mysterium.vpn.network.usecase
 
-import android.content.Context
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
-class LoginUseCase(private val context: Context) {
+class LoginUseCase(private val sharedPreferencesManager: SharedPreferencesManager) {
 
-    private companion object {
-        const val LOGIN_PREFERENCES_KEY = "LOGIN"
-        const val ALREADY_LOGIN_KEY = "ALREADY_LOGIN"
-    }
+    fun isAlreadyLogin() = sharedPreferencesManager.isAlreadyLogin()
 
-    fun isAlreadyLogin() = context.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        .contains(ALREADY_LOGIN_KEY)
-
-    fun userLoggedIn() = context.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE)
-        .edit()
-        .putBoolean(ALREADY_LOGIN_KEY, true).apply()
+    fun userLoggedIn() = sharedPreferencesManager.userLoggedIn()
 }

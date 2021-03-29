@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.database.AppDatabase
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseViewModel
@@ -40,7 +41,10 @@ object Modules {
             NodeRepository(get())
         }
         single {
-            UseCaseProvider(get(), get(), androidContext())
+            SharedPreferencesManager(androidContext())
+        }
+        single {
+            UseCaseProvider(get(), get(), get())
         }
         single {
             BalanceViewModel(get())
