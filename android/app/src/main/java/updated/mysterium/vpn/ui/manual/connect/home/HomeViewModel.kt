@@ -165,15 +165,15 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun connect() {
-        var dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
-        if (dnsOption == UNSTABLE_DNS_OPTION) {
-            dnsOption = DEFAULT_DNS_OPTION
+        var userDnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
+        if (userDnsOption == UNSTABLE_DNS_OPTION) {
+            userDnsOption = DEFAULT_DNS_OPTION
         }
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
             providerID = proposal.providerID
             serviceType = proposal.serviceType.type
-            dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
+            dnsOption = userDnsOption
         }
         connectionUseCase.connect(req)
         updateService()
