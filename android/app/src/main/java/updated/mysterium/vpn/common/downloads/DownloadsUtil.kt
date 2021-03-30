@@ -12,9 +12,9 @@ import java.io.FileOutputStream
 
 object DownloadsUtil {
 
-    private const val MIME_TYPE = "application/json"
     private const val FILE_TITLE = "MysteriumKeystore"
     private const val FILE_NAME = "keystore"
+    const val MIME_TYPE = "application/json"
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun saveWithContentResolver(
@@ -28,7 +28,6 @@ object DownloadsUtil {
         contentValues.put(MediaStore.Downloads.MIME_TYPE, MIME_TYPE)
         contentValues.put(MediaStore.Downloads.SIZE, fileContent.size)
         contentValues.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + File.separator + "Mysterium")
-        contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
         contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)?.let {
             contentResolver.openOutputStream(it).use { outputStream ->
                 outputStream?.write(fileContent)

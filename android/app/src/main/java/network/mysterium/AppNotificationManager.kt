@@ -1,9 +1,6 @@
 package network.mysterium
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -24,6 +21,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     private val connLostChannel = "connectionlost"
     private val topUpBalanceChannel = "topupbalance"
     private val topupBalanceNotificationID = 2
+    private val privateKeyNotificationID = 3
     private lateinit var context: Context
 
     // pendingAppIntent is used to navigate back to MainActivity
@@ -111,14 +109,22 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     }
 
     fun showDownloadedNotification() {
+        val intent = Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)
+        val contentIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
         val notification = NotificationCompat.Builder(context, connLostChannel)
             .setSmallIcon(R.drawable.notification_logo)
             .setContentTitle("MysteriumKeystore")
             .setContentText("File downloaded to Download folder")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(contentIntent)
             .setVibrate(LongArray(0))
             .setOnlyAlertOnce(true)
             .build()
-        notificationManager.notify(defaultNotificationID, notification)
+        notificationManager.notify(privateKeyNotificationID, notification)
     }
 }
