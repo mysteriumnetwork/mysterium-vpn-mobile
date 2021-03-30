@@ -10,7 +10,6 @@ import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.AppNotificationManager
@@ -27,11 +26,12 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PROPOSAL_MODEL = "PROPOSAL_MODEL"

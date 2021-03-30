@@ -8,11 +8,12 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpCryptoBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
 
-class TopUpCryptoActivity : AppCompatActivity() {
+class TopUpCryptoActivity : BaseActivity() {
 
     companion object {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"

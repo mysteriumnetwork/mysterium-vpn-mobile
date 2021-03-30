@@ -1,14 +1,14 @@
 package updated.mysterium.vpn.network.provider.usecase
 
-import android.content.Context
 import network.mysterium.service.core.NodeRepository
 import updated.mysterium.vpn.database.AppDatabase
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.network.usecase.*
 
 class UseCaseProvider(
     private val nodeRepository: NodeRepository,
     private val database: AppDatabase,
-    private val context: Context
+    private val sharedPreferencesManager: SharedPreferencesManager
 ) {
 
     fun nodes() = NodesUseCase(nodeRepository, database.nodeDao())
@@ -17,15 +17,15 @@ class UseCaseProvider(
 
     fun connection() = ConnectionUseCase(nodeRepository)
 
-    fun login() = LoginUseCase(context)
+    fun login() = LoginUseCase(sharedPreferencesManager)
 
-    fun balance() = BalanceUseCase(nodeRepository)
+    fun balance() = BalanceUseCase(nodeRepository, sharedPreferencesManager)
 
     fun report() = ReportUseCase(nodeRepository)
 
     fun statistic() = StatisticUseCase(nodeRepository)
 
-    fun terms() = TermsUseCase(context)
+    fun terms() = TermsUseCase(sharedPreferencesManager)
 
     fun privateKey() = PrivateKeyUseCase(nodeRepository)
 

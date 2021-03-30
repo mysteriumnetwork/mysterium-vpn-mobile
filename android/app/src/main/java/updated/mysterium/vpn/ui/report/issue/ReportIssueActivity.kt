@@ -13,10 +13,11 @@ import network.mysterium.vpn.databinding.ActivityReportIssueBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.isEmail
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class ReportIssueActivity : AppCompatActivity() {
+class ReportIssueActivity : BaseActivity() {
 
     private lateinit var binding: ActivityReportIssueBinding
     private val viewModel: ReportIssueViewModel by inject()

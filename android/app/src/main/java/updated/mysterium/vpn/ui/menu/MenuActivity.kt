@@ -15,6 +15,7 @@ import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.monitoring.MonitoringActivity
 import updated.mysterium.vpn.ui.profile.ProfileActivity
@@ -22,7 +23,7 @@ import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class MenuActivity : AppCompatActivity() {
+class MenuActivity : BaseActivity() {
 
     private companion object {
         val MENU_ITEMS = listOf(

@@ -21,11 +21,12 @@ import updated.mysterium.vpn.common.date.DateUtil
 import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
 import updated.mysterium.vpn.model.session.Session
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 import java.util.*
 
-class MonitoringActivity : AppCompatActivity() {
+class MonitoringActivity : BaseActivity() {
 
     private companion object {
         const val TAG = "MonitoringActivity"

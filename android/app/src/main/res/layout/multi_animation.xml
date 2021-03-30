@@ -2,13 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_padding_size_medium">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/disconnectedAnimation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/disconnected_animation" />
@@ -16,7 +16,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/connectingAnimation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/connecting_animation" />
@@ -24,7 +24,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/connectedAnimation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/connected_animation" />

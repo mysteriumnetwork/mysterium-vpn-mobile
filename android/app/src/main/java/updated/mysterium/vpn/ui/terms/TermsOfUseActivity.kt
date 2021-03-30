@@ -11,10 +11,11 @@ import network.mysterium.vpn.databinding.ActivityTermsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class TermsOfUseActivity : AppCompatActivity() {
+class TermsOfUseActivity : BaseActivity() {
 
     private companion object {
         const val TAG = "TermsOfUseActivity"

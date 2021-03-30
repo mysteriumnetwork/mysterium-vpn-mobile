@@ -16,11 +16,12 @@ import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class FilterActivity : AppCompatActivity() {
+class FilterActivity : BaseActivity() {
 
     companion object {
         var countryNodes: CountryNodes? = null
