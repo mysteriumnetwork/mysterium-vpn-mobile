@@ -5,7 +5,7 @@ import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
 class LoginUseCase(private val sharedPreferencesManager: SharedPreferencesManager) {
 
-    fun isAlreadyLogin() = sharedPreferencesManager.getPreferenceValue(SharedPreferencesList.LOGIN)
+    fun isAlreadyLogin() = sharedPreferencesManager.containsPreferenceValue(SharedPreferencesList.LOGIN)
 
     fun userLoggedIn() = sharedPreferencesManager.setPreferenceValue(
         key = SharedPreferencesList.LOGIN,

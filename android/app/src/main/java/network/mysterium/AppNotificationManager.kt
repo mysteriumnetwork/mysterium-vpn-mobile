@@ -54,7 +54,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     fun createConnectedToVPNNotification(): NotificationFactory {
         return {
             NotificationCompat.Builder(it, statisticsChannel)
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.notification_logo)
                 .setContentTitle("Connected")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVibrate(LongArray(0))
@@ -71,7 +71,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         val disconnectPendingIntent: PendingIntent = PendingIntent.getBroadcast(context, 0, disconnectIntent, 0)
 
         val notification = NotificationCompat.Builder(context, statisticsChannel)
-            .setSmallIcon(R.drawable.notification_icon)
+            .setSmallIcon(R.drawable.notification_logo)
             .setContentTitle(title)
             .setAutoCancel(true)
             .setContentText(content)
@@ -86,7 +86,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
     fun showConnectionLostNotification() {
         val notification = NotificationCompat.Builder(context, connLostChannel)
-            .setSmallIcon(R.drawable.notification_icon)
+            .setSmallIcon(R.drawable.notification_logo)
             .setContentTitle("Connection lost")
             .setContentText("VPN connection was closed.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -99,7 +99,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
     fun showTopUpBalanceNotification() {
         val notification = NotificationCompat.Builder(context, topUpBalanceChannel)
-            .setSmallIcon(R.drawable.notification_icon)
+            .setSmallIcon(R.drawable.notification_logo)
             .setContentTitle("Top-up balance")
             .setContentText("You need to top-up your balance to continue using VPN service.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -112,7 +112,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
     fun showDownloadedNotification() {
         val notification = NotificationCompat.Builder(context, connLostChannel)
-            .setSmallIcon(R.drawable.notification_icon)
+            .setSmallIcon(R.drawable.notification_logo)
             .setContentTitle("MysteriumKeystore")
             .setContentText("File downloaded to Download folder")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

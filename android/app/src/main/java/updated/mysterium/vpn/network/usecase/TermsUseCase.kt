@@ -17,7 +17,7 @@ class TermsUseCase(private val sharedPreferencesManager: SharedPreferencesManage
         Terms.endUserMD()
     }
 
-    fun isTermsAccepted() = sharedPreferencesManager.getPreferenceValue(SharedPreferencesList.TERMS)
+    fun isTermsAccepted() = sharedPreferencesManager.containsPreferenceValue(SharedPreferencesList.TERMS)
 
     fun userAcceptTerms() = sharedPreferencesManager.setPreferenceValue(
         key = SharedPreferencesList.TERMS,

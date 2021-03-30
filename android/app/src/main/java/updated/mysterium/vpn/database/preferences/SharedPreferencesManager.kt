@@ -12,7 +12,19 @@ class SharedPreferencesManager(private val context: Context) {
             }
     }
 
-    fun getPreferenceValue(key: SharedPreferencesList) = context
+    fun setPreferenceValue(key: SharedPreferencesList, value: String) {
+        context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
+            .edit().let {
+                it.putString(key.prefName, value)
+                it.apply()
+            }
+    }
+
+    fun containsPreferenceValue(key: SharedPreferencesList) = context
         .getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
         .contains(key.prefName)
+
+    fun getStringPreferenceValue(key: SharedPreferencesList) = context
+        .getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
+        .getString(key.prefName, null)
 }
