@@ -2,20 +2,28 @@ package updated.mysterium.vpn.ui.top.up.payment
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.payment.Order
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityTopUpPaymentBinding
+import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 import java.math.BigDecimal
 
 class TopUpPaymentActivity : BaseActivity() {
@@ -30,7 +38,7 @@ class TopUpPaymentActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTopUpPaymentBinding
     private val topUpViewModel: TopUpViewModel by inject()
-    private val vieModel: TopUpPaymentViewModel by inject()
+    private val viewModel: TopUpPaymentViewModel by inject()
     private var link: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +46,21 @@ class TopUpPaymentActivity : BaseActivity() {
         binding = ActivityTopUpPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getExtra()
+        subscribeViewModel()
         bindsAction()
+    }
+
+    private fun subscribeViewModel() {
+        viewModel.paymentSuccessfully.observe(this, {
+            viewModel.clearPopUpTopUpHistory()
+            showTopUpSuccessfully()
+        })
+        viewModel.paymentExpired.observe(this, {
+            showTopUpExpired()
+        })
+        viewModel.paymentFailed.observe(this, {
+            showTopUpServerFailed()
+        })
     }
 
     private fun bindsAction() {
@@ -67,11 +89,12 @@ class TopUpPaymentActivity : BaseActivity() {
                 }
             })
         }
-        vieModel.createPaymentOrder(
+        viewModel.createPaymentOrder(
             currency,
             amount?.toDouble() ?: 0.0,
             isLighting ?: false
         ).observe(this, { result ->
+            binding.timer.startTimer()
             binding.loader.visibility = View.GONE
             binding.loader.cancelAnimation()
             binding.qrShadow.visibility = View.VISIBLE
@@ -113,6 +136,46 @@ class TopUpPaymentActivity : BaseActivity() {
             clipManager.setPrimaryClip(clipData)
             showToast()
         }
+    }
+
+    private fun showTopUpSuccessfully() {
+        val bindingPopUp = PopUpPaymentSuccessfullyBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.closeButton.setOnClickListener {
+            val intent = Intent(this, WalletActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+        }
+        dialog.show()
+    }
+
+    private fun showTopUpServerFailed() {
+        val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.closeButton.setOnClickListener {
+            val intent = Intent(this, WalletActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+        }
+        dialog.show()
+    }
+
+    private fun showTopUpExpired() {
+        val bindingPopUp = PopUpPaymentExpiredBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.tryAgainButton.setOnClickListener {
+            dialog.dismiss()
+            getExtra()
+        }
+        bindingPopUp.topUpLaterButton.setOnClickListener {
+            val intent = Intent(this, WalletActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+        }
+        dialog.show()
     }
 
     private fun showToast() {

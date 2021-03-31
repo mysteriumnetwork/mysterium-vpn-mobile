@@ -22,6 +22,7 @@ class CountdownTimerView @JvmOverloads constructor(
     }
 
     private lateinit var binding: CustomCountdownTimerBinding
+    private var countDownTimer: CountDownTimer? = null
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -31,13 +32,9 @@ class CountdownTimerView @JvmOverloads constructor(
         addView(itemView)
     }
 
-    private fun inflateItem(item: View) {
-        binding = CustomCountdownTimerBinding.bind(item)
-        startTimer()
-    }
-
-    private fun startTimer() {
-        object : CountDownTimer(TIMER_IN_MS, ONE_SECOND_INTERVAL) {
+    fun startTimer() {
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(TIMER_IN_MS, ONE_SECOND_INTERVAL) {
 
             override fun onTick(millisUntilFinished: Long) {
                 updateTimerUI(DateUtil.convertTimeToStringMinutesFormat(millisUntilFinished))
@@ -49,6 +46,11 @@ class CountdownTimerView @JvmOverloads constructor(
         }.apply {
             start()
         }
+    }
+
+    private fun inflateItem(item: View) {
+        binding = CustomCountdownTimerBinding.bind(item)
+        startTimer()
     }
 
     private fun updateTimerUI(time: String) {

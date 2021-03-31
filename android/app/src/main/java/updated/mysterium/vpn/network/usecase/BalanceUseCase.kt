@@ -37,4 +37,21 @@ class BalanceUseCase(
         key = SharedPreferencesList.BALANCE,
         value = true
     )
+
+    fun clearBalancePopUpHistory() {
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.BALANCE)
+    }
+
+    fun isMinBalancePopUpShown() = sharedPreferencesManager.containsPreferenceValue(
+        SharedPreferencesList.MIN_BALANCE
+    )
+
+    fun minBalancePopUpShown() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.MIN_BALANCE,
+        value = true
+    )
+
+    fun clearMinBalancePopUpHistory() {
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.MIN_BALANCE)
+    }
 }

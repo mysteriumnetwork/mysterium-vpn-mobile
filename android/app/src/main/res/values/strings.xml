@@ -295,6 +295,17 @@
     <string name="pop_up_top_up_description">Credits is running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
+    <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
+    <string name="pop_up_payment_successfully_done">Well done</string>
+    <string name="pop_up_payment_successfully_close">Close</string>
+    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn’t Work</string>Please try again later
+    <string name="pop_up_payment_not_work_try_again">Please try again later</string>
+    <string name="pop_up_payment_not_work_okay">Okay, got it</string>
+    <string name="pop_up_payment_expired_title">Payment is not\n Successful</string>
+    <string name="pop_up_payment_expired_description">Time is over</string>
+    <string name="pop_up_payment_expired_try_again">Try again</string>Top up later
+    <string name="pop_up_payment_expired_later">Top up later</string>
+
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

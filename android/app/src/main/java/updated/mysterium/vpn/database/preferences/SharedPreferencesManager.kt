@@ -27,4 +27,11 @@ class SharedPreferencesManager(private val context: Context) {
     fun getStringPreferenceValue(key: SharedPreferencesList) = context
         .getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
         .getString(key.prefName, null)
+
+    fun removePreferenceValue(key: SharedPreferencesList) {
+        context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
+            .edit()
+            .remove(key.prefName)
+            .apply()
+    }
 }
