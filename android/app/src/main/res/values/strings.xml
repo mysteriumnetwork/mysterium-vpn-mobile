@@ -305,7 +305,9 @@
     <string name="pop_up_payment_expired_description">Time is over</string>
     <string name="pop_up_payment_expired_try_again">Try again</string>Top up later
     <string name="pop_up_payment_expired_later">Top up later</string>
-
+    <string name="pop_up_node_failed_title">Failed to Connect</string>
+    <string name="pop_up_node_failed_description">Check your network</string>
+    <string name="pop_up_node_failed_another">Choose another node</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
