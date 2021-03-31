@@ -11,6 +11,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
         const val BALANCE_LIMIT = 1.0
+        const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.1
     }
 
     val balanceRunningOut: LiveData<Double>
@@ -25,6 +26,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePopUpShown()) {
                     _balanceRunningOut.postValue(it)
                     balanceUseCase.balancePopUpShown()
+                }
+                if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
+                    _balanceRunningOut.postValue(it)
+                    balanceUseCase.minBalancePopUpShown()
                 }
             }
         }
