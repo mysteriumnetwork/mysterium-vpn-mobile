@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mysterium.GetBalanceRequest
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
@@ -25,13 +27,13 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var balanceRequest: GetBalanceRequest? = null
 
     fun initDeferredNode(mysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             startDeferredNode(mysteriumCoreService)
         }
     }
 
     fun getCurrentBalance() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             balanceRequest?.let {
                 _balanceLiveData.postValue(balanceUseCase.getBalance(it))
             }

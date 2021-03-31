@@ -44,6 +44,7 @@
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:background="@drawable/shape_edit_text"
         android:importantForAutofill="no"
+        android:singleLine="true"
         android:inputType="text"
         android:lines="1"
         android:maxLines="1"

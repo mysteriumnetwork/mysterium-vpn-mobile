@@ -10,11 +10,12 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginVertical="@dimen/margin_padding_size_small"
+        android:alpha="0.3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
+        app:lottie_autoPlay="false"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/splash_once_animation" />
 
@@ -25,6 +26,7 @@
         android:layout_gravity="center"
         android:layout_marginVertical="@dimen/margin_padding_size_small"
         android:visibility="gone"
+        android:alpha="0.3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

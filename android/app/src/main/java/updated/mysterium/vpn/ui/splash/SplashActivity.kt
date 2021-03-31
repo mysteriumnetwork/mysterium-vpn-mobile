@@ -42,14 +42,15 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
-        configure()
         setContentView(binding.root)
+        configure()
         bindMysteriumService()
         subscribeViewModel()
         ensureVpnServicePermission()
     }
 
     private fun configure() {
+        binding.onceAnimationView.playAnimation()
         binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
 
             override fun onAnimationEnd(animation: Animator?) {
