@@ -27,6 +27,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val paymentUseCase = useCaseProvider.payment()
     private val connectionUseCase = useCaseProvider.connection()
+    private val balanceUseCase = useCaseProvider.balance()
     private val _paymentSuccessfully = MutableLiveData<Unit>()
     private val _paymentExpired = MutableLiveData<Unit>()
     private val _paymentFailed = MutableLiveData<Unit>()
@@ -44,6 +45,11 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             mystAmount,
             isLighting
         )
+    }
+
+    fun clearPopUpTopUpHistory() {
+        balanceUseCase.clearBalancePopUpHistory()
+        balanceUseCase.clearMinBalancePopUpHistory()
     }
 
     private suspend fun registerOrderCallback() {

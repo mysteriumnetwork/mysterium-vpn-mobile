@@ -52,6 +52,7 @@ class TopUpPaymentActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this, {
+            viewModel.clearPopUpTopUpHistory()
             showTopUpSuccessfully()
         })
         viewModel.paymentExpired.observe(this, {
