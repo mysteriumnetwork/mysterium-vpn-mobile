@@ -3,7 +3,6 @@ package updated.mysterium.vpn.ui.manual.connect.search
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivitySearchBinding

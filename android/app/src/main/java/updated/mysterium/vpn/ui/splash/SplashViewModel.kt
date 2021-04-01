@@ -9,6 +9,7 @@ import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
@@ -57,7 +58,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun startDeferredNode(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val service = deferredMysteriumCoreService.await()
             if (service.getDeferredNode() != null) {
                 service.getDeferredNode()?.let {
