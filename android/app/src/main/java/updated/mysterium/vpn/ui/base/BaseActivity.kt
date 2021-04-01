@@ -1,14 +1,18 @@
 package updated.mysterium.vpn.ui.base
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
+import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
@@ -21,8 +25,9 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         alertDialogBuilder = AlertDialog.Builder(this)
         viewModel.balanceRunningOut.observe(this, {
-            showTopUpPopUp()
+            balanceRunningOutPopUp()
         })
+        handleInternetConnection()
     }
 
     fun createPopUp(popUpView: View, cancelable: Boolean): AlertDialog {
@@ -48,7 +53,25 @@ abstract class BaseActivity : AppCompatActivity() {
         return dialog
     }
 
-    private fun showTopUpPopUp() {
+    private fun handleInternetConnection() {
+        if (!isInternetAvailable()) {
+            wifiNetworkErrorPopUp()
+        }
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        return when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+    }
+
+    private fun balanceRunningOutPopUp() {
         val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.topUpButton.setOnClickListener {
@@ -56,6 +79,16 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun wifiNetworkErrorPopUp() {
+        val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.retryButton.setOnClickListener {
+            dialog.dismiss()
+            handleInternetConnection()
         }
         dialog.show()
     }

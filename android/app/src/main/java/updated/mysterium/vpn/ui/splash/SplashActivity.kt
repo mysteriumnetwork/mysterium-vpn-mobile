@@ -15,7 +15,6 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
@@ -24,11 +23,12 @@ import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "SplashActivity"
@@ -50,7 +50,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun configure() {
-        binding.onceAnimationView.playAnimation()
         binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
 
             override fun onAnimationEnd(animation: Animator?) {
@@ -130,6 +129,14 @@ class SplashActivity : AppCompatActivity() {
 
     private fun startLoading() {
         balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-        viewModel.startLoading(deferredMysteriumCoreService)
+        viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
+            result.onSuccess {
+                binding.onceAnimationView.playAnimation()
+                viewModel.initRepository()
+            }
+            result.onFailure {
+                // Exception
+            }
+        }
     }
 }

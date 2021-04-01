@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:overlapAnchor="false"
         android:paddingHorizontal="@dimen/margin_padding_size_small_medium"
-        android:popupBackground="@android:color/transparent"
+        android:popupBackground="@drawable/shape_spinner_language_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

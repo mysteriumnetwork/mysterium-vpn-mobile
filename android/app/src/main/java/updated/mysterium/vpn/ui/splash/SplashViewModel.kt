@@ -16,6 +16,7 @@ import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -37,10 +38,20 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var isDataLoaded = false
     private var deferredNode = DeferredNode()
 
-    fun startLoading(deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
-        viewModelScope.launch {
-            startDeferredNode(deferredMysteriumCoreService)
+    fun startLoading(
+        deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
+    ) = liveDataResult {
+        val service = deferredMysteriumCoreService.await()
+        if (service.getDeferredNode() != null) {
+            service.getDeferredNode()?.let {
+                deferredNode = it
+            }
+        } else {
+            if (!deferredNode.startedOrStarting()) {
+                deferredNode.start(service)
+            }
         }
+        service
     }
 
     fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
@@ -55,28 +66,12 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    private suspend fun startDeferredNode(
-        deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val service = deferredMysteriumCoreService.await()
-            if (service.getDeferredNode() != null) {
-                service.getDeferredNode()?.let {
-                    deferredNode = it
-                }
-            } else {
-                if (!deferredNode.startedOrStarting()) {
-                    deferredNode.start(service)
-                }
-            }
-            initRepository()
+    fun initRepository() {
+        viewModelScope.launch {
+            balanceUseCase.initDeferredNode(deferredNode)
+            connectionUseCase.initDeferredNode(deferredNode)
+            loadIdentity()
         }
-    }
-
-    private suspend fun initRepository() {
-        balanceUseCase.initDeferredNode(deferredNode)
-        connectionUseCase.initDeferredNode(deferredNode)
-        loadIdentity()
     }
 
     private suspend fun loadIdentity() {

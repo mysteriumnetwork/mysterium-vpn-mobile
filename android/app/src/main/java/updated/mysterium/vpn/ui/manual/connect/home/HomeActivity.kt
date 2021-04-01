@@ -20,8 +20,8 @@ import network.mysterium.ui.DisplayMoneyOptions
 import network.mysterium.ui.PriceUtils
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
+import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
-import network.mysterium.vpn.databinding.PopUpPaymentExpiredBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -49,6 +49,7 @@ class HomeActivity : BaseActivity() {
     private val viewModel: HomeViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
+    private var isDisconnectedByUser = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +87,7 @@ class HomeActivity : BaseActivity() {
         })
         viewModel.connectionException.observe(this, {
             disconnect()
-            showErrorPopUp()
+            showFailedToConnectPopUp()
         })
         balanceViewModel.balanceLiveData.observe(this, {
             binding.manualConnectToolbar.setBalance(it)
@@ -107,6 +108,7 @@ class HomeActivity : BaseActivity() {
             }
             ConnectionState.DISCONNECTING -> {
                 binding.connectionState.showDisconnectingState()
+                checkDisconnectingReason()
             }
         }
     }
@@ -123,6 +125,13 @@ class HomeActivity : BaseActivity() {
                 // TODO("Implement error handling")
             }
         })
+    }
+
+    private fun checkDisconnectingReason() {
+        if (!isDisconnectedByUser) {
+            showLostConnectionPopUp()
+        }
+        isDisconnectedByUser = false
     }
 
     private fun getProposal() {
@@ -240,6 +249,7 @@ class HomeActivity : BaseActivity() {
                 navigateToSelectNode()
             },
             disconnect = {
+                isDisconnectedByUser = true
                 viewModel.disconnect()
             }
         )
@@ -318,11 +328,21 @@ class HomeActivity : BaseActivity() {
         binding.multiAnimation.connectedState()
     }
 
-    private fun showErrorPopUp() {
+    private fun showFailedToConnectPopUp() {
         val bindingPopUp = PopUpNodeFailedBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.chooseAnother.setOnClickListener {
+            dialog.dismiss()
             navigateToSelectNode()
+        }
+        dialog.show()
+    }
+
+    private fun showLostConnectionPopUp() {
+        val bindingPopUp = PopUpLostConnectionBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.closeButton.setOnClickListener {
+            dialog.dismiss()
         }
         dialog.show()
     }
