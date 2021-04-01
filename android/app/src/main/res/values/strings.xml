@@ -5,6 +5,7 @@
     <string name="connect_button_disconnect">Disconnect</string>
     <string name="connect_button_disconnecting">Disconnecting</string>
     <string name="conn_state_connected">Connected</string>
+    <string name="conn_state_on_hold">On Hold</string>
     <string name="conn_state_connecting">Connecting</string>
     <string name="conn_state_reconnecting">Reconnecting</string>
     <string name="conn_state_not_connected">Disconnected</string>

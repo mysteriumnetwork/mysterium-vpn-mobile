@@ -212,6 +212,7 @@ class MainVpnFragment : Fragment() {
         val connStateText = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.conn_state_not_connected)
             ConnectionState.CONNECTED, ConnectionState.IP_NOT_CHANGED -> getString(R.string.conn_state_connected)
+            ConnectionState.ON_HOLD -> getString(R.string.conn_state_on_hold)
             ConnectionState.CONNECTING -> getString(R.string.conn_state_connecting)
             ConnectionState.DISCONNECTING -> getString(R.string.conn_state_disconnecting)
         }
@@ -251,7 +252,7 @@ class MainVpnFragment : Fragment() {
     private fun updateConnButtonState(state: ConnectionState) {
         connectionButton.text = when (state) {
             ConnectionState.NOT_CONNECTED, ConnectionState.UNKNOWN -> getString(R.string.connect_button_connect)
-            ConnectionState.CONNECTED, ConnectionState.IP_NOT_CHANGED -> getString(R.string.connect_button_disconnect)
+            ConnectionState.CONNECTED, ConnectionState.IP_NOT_CHANGED, ConnectionState.ON_HOLD -> getString(R.string.connect_button_disconnect)
             ConnectionState.CONNECTING -> getString(R.string.connect_button_cancel)
             ConnectionState.DISCONNECTING -> getString(R.string.connect_button_disconnecting)
         }
