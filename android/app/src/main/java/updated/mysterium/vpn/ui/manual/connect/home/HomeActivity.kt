@@ -20,6 +20,8 @@ import network.mysterium.ui.DisplayMoneyOptions
 import network.mysterium.ui.PriceUtils
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
+import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
+import network.mysterium.vpn.databinding.PopUpPaymentExpiredBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -83,10 +85,8 @@ class HomeActivity : BaseActivity() {
             handleConnectionChange(it)
         })
         viewModel.connectionException.observe(this, {
-            Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show()
-            Log.i(TAG, it.localizedMessage ?: it.toString())
             disconnect()
-            // TODO("Implement error handling")
+            showErrorPopUp()
         })
         balanceViewModel.balanceLiveData.observe(this, {
             binding.manualConnectToolbar.setBalance(it)
@@ -316,6 +316,15 @@ class HomeActivity : BaseActivity() {
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
         binding.multiAnimation.connectedState()
+    }
+
+    private fun showErrorPopUp() {
+        val bindingPopUp = PopUpNodeFailedBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.chooseAnother.setOnClickListener {
+            navigateToSelectNode()
+        }
+        dialog.show()
     }
 
     private fun navigateToSelectNode() {
