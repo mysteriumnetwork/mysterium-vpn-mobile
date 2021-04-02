@@ -134,9 +134,6 @@ class SplashActivity : BaseActivity() {
                 binding.onceAnimationView.playAnimation()
                 viewModel.initRepository()
             }
-            result.onFailure {
-                // Exception
-            }
         }
     }
 }
