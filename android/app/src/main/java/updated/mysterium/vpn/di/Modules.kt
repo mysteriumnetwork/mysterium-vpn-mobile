@@ -50,10 +50,10 @@ object Modules {
         single {
             BalanceViewModel(get())
         }
-
-        viewModel {
+        single {
             AllNodesViewModel(get())
         }
+
         viewModel {
             SplashViewModel(get())
         }

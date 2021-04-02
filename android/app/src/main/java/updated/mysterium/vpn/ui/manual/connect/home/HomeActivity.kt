@@ -30,6 +30,7 @@ import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
+import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
@@ -48,6 +49,7 @@ class HomeActivity : BaseActivity() {
     private var proposal: Proposal? = null
     private val viewModel: HomeViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
+    private val allNodesViewModel: AllNodesViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private var isDisconnectedByUser = false
 
@@ -76,6 +78,7 @@ class HomeActivity : BaseActivity() {
         bindMysteriumService()
         initViewModel()
         balanceViewModel.getCurrentBalance()
+        allNodesViewModel.initProposals()
     }
 
     private fun subscribeViewModel() {
