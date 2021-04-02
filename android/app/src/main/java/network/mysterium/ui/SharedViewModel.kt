@@ -36,6 +36,7 @@ import network.mysterium.wallet.WalletViewModel
 enum class ConnectionState(val type: String) {
     UNKNOWN("Unknown"),
     CONNECTED("Connected"),
+    ON_HOLD("OnHold"),
     CONNECTING("Connecting"),
     NOT_CONNECTED("NotConnected"),
     DISCONNECTING("Disconnecting"),
@@ -110,7 +111,7 @@ class SharedViewModel(
 
     fun isConnected(): Boolean {
         val state = connectionState.value
-        return state != null && (state == ConnectionState.CONNECTED || state == ConnectionState.IP_NOT_CHANGED)
+        return state != null && (state == ConnectionState.CONNECTED || state == ConnectionState.IP_NOT_CHANGED || state == ConnectionState.ON_HOLD)
     }
 
     override fun onChanged(t: NetworkState) {

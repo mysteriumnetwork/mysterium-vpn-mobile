@@ -5,6 +5,7 @@
     <string name="connect_button_disconnecting">Отсоединение</string>
 
     <string name="conn_state_connected">Соединенно</string>
+    <string name="conn_state_on_hold">Удержание</string>
     <string name="conn_state_connecting">Подключение</string>
     <string name="conn_state_not_connected">Отсоединено</string>
     <string name="conn_state_disconnecting">Отсоединение</string>

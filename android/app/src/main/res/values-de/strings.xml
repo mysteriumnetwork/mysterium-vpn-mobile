@@ -4,6 +4,7 @@
     <string name="connect_button_disconnect">Verbindung trennen</string>
     <string name="connect_button_disconnecting">Am trennen</string>
     <string name="conn_state_connected">Verbunden</string>
+    <string name="conn_state_on_hold">Wartestellung</string>
     <string name="conn_state_connecting">Verbindungsaufbau</string>
     <string name="conn_state_reconnecting">Erneutes verbinden</string>
     <string name="conn_state_not_connected">Verbindung getrennt</string>
