@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.manual.connect.select.node.all
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +37,7 @@ class AllNodesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initProposalListRecycler()
+        subscribeViewModel()
         bindsAction()
         loadInitialProposalList()
     }
@@ -48,6 +48,14 @@ class AllNodesFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = allNodesAdapter
         }
+    }
+
+    private fun subscribeViewModel() {
+        viewModel.proposals.observe(viewLifecycleOwner, { result ->
+            binding.loaderAnimation.visibility = View.GONE
+            binding.loaderAnimation.cancelAnimation()
+            allNodesAdapter.replaceAll(result)
+        })
     }
 
     private fun bindsAction() {
@@ -78,28 +86,13 @@ class AllNodesFragment : Fragment() {
     }
 
     private fun loadInitialProposalList() {
-        viewModel.getInitialProposals().observe(viewLifecycleOwner, { result ->
-            binding.loaderAnimation.visibility = View.GONE
-            binding.loaderAnimation.cancelAnimation()
-            updateProposalList(result)
-        })
+        viewModel.getProposals()
     }
 
     private fun getSortedProposal() {
         viewModel.getSortedProposal(sortType).observe(viewLifecycleOwner, { result ->
-            updateProposalList(result)
+            allNodesAdapter.replaceAll(result.getOrDefault(emptyList()))
         })
-    }
-
-    private fun updateProposalList(result: Result<List<CountryNodes>>) {
-        result.onSuccess { proposalList ->
-            allNodesAdapter.replaceAll(proposalList)
-        }
-
-        result.onFailure { throwable ->
-            Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-            // TODO("Replace for error dialog or something else")
-        }
     }
 
     private fun navigateToNodeList(countryNodes: CountryNodes) {

@@ -74,9 +74,9 @@
     <!--  Primary Button  -->
     <style name="Widget.PrimaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.PrimaryButton</item>
-        <item name="android:background">@drawable/shape_primary_button</item>
+        <item name="android:background">@drawable/primary_button_background</item>
         <item name="backgroundTint">@color/primary</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingStart">@dimen/margin_padding_size_medium</item>
         <item name="android:paddingEnd">@dimen/margin_padding_size_medium</item>
@@ -91,13 +91,13 @@
     <!--  GreySecondaryButton  -->
     <style name="Widget.GreySecondaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.GreySecondaryButton</item>
-        <item name="android:background">@drawable/shape_secondary_button</item>
+        <item name="android:background">@drawable/secondary_grey_button_background</item>
         <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="elevation">0dp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
-        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xxlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xxlarge</item>
     </style>
 
     <style name="TextAppearance.GreySecondaryButton" parent="TextAppearance.AppCompat.Title">
@@ -160,12 +160,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <!--  RoundedSemiTransparentButton  -->
+    <!--  SecondaryButton  -->
     <style name="Widget.SecondaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
-        <item name="android:background">@drawable/shape_rounded_dark_blue</item>
+        <item name="android:background">@drawable/secondary_button_background</item>
         <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="elevation">0dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>

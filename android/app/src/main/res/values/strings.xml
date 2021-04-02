@@ -308,6 +308,18 @@
     <string name="pop_up_node_failed_title">Failed to Connect</string>
     <string name="pop_up_node_failed_description">Check your network</string>
     <string name="pop_up_node_failed_another">Choose another node</string>
+    <string name="pop_up_registration_failed_title">Connection\n Troubles</string>
+    <string name="pop_up_registration_failed_description">Check your network</string>
+    <string name="pop_up_registration_failed_cancel">Cancel</string>
+    <string name="pop_up_registration_failed_retry">Retry Registration</string>
+    <string name="pop_up_lost_connection_title">Lost\n Connection</string>
+    <string name="pop_up_lost_connection_description">Finding new node</string>
+    <string name="pop_up_wi_fi_error_title">Wi-fi Network\n Error</string>
+    <string name="pop_up_wi_fi_error_description">Please check your\n network connection</string>
+    <string name="pop_up_wi_fi_error_retry">Retry</string>
+    <string name="pop_up_terms_title">Term of Use\n Changed</string>
+    <string name="pop_up_terms_description">Check out the updated\n version here</string>
+    <string name="pop_up_terms_confirm">Confirm</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
