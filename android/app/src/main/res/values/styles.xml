@@ -106,6 +106,24 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!--  TrialButton  -->
+    <style name="Widget.TrialButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.TrialButton</item>
+        <item name="android:background">@drawable/trial_button_background</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/trial_text_color</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xxlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xxlarge</item>
+    </style>
+
+    <style name="TextAppearance.TrialButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <!--  NegativeButton  -->
     <style name="Widget.NegativeButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.NegativeButton</item>

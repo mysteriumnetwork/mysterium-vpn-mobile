@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
@@ -18,6 +19,7 @@ import network.mysterium.vpn.databinding.PopUpPaymentNotWorkBinding
 import network.mysterium.vpn.databinding.PopUpPaymentSuccessfullyBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 import java.math.BigDecimal
@@ -25,11 +27,14 @@ import java.math.BigDecimal
 class TopUpPaymentActivity : BaseActivity() {
 
     companion object {
+        const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
         private const val TAG = "TopUpPaymentActivity"
         private const val COPY_LABEL = "User identity address"
+        private const val QR_CODE_SIZE = 500
+        private const val ANIMATION_MARGIN = 80
     }
 
     private lateinit var binding: ActivityTopUpPaymentBinding
@@ -66,9 +71,13 @@ class TopUpPaymentActivity : BaseActivity() {
         binding.copyButton.setOnClickListener {
             copyToClipboard()
         }
+        binding.freeTrialButtonButton.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
     }
 
     private fun getExtra() {
+        checkTrialState()
         val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY) ?: ""
         val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
         val isLighting = intent.extras?.getBoolean(CRYPTO_IS_LIGHTING_EXTRA_KEY)
@@ -90,6 +99,7 @@ class TopUpPaymentActivity : BaseActivity() {
             amount?.toDouble() ?: 0.0,
             isLighting ?: false
         ).observe(this, { result ->
+            binding.timer.visibility = View.VISIBLE
             binding.timer.startTimer()
             binding.loader.visibility = View.GONE
             binding.loader.cancelAnimation()
@@ -109,9 +119,25 @@ class TopUpPaymentActivity : BaseActivity() {
         })
     }
 
+    private fun checkTrialState() {
+        if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) == true) {
+            binding.freeTrialButtonButton.visibility = View.VISIBLE
+        } else {
+            val param = binding.paymentAnimation.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0, ANIMATION_MARGIN, 0, ANIMATION_MARGIN)
+            binding.paymentAnimation.layoutParams = param
+            binding.freeTrialButtonButton.visibility = View.GONE
+        }
+    }
+
     private fun showQrCode(link: String) {
         val barcodeEncoder = BarcodeEncoder()
-        val bitmap = barcodeEncoder.encodeBitmap(link, BarcodeFormat.QR_CODE, 500, 500)
+        val bitmap = barcodeEncoder.encodeBitmap(
+            link,
+            BarcodeFormat.QR_CODE,
+            QR_CODE_SIZE,
+            QR_CODE_SIZE
+        )
         binding.qrCode.setImageBitmap(bitmap)
     }
 

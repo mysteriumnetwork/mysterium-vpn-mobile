@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/manual_connect_country_dark_blue" android:state_pressed="true" />
+    <item android:color="@color/pop_up_transparent_dark_blue" />
+</selector>

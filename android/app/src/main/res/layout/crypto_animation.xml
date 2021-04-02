@@ -18,7 +18,6 @@
         android:layout_height="match_parent"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
-        android:alpha="0.3"
         app:lottie_rawRes="@raw/btc_animation" />
 
     <com.airbnb.lottie.LottieAnimationView

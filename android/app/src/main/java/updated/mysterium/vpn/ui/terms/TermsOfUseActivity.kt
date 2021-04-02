@@ -5,14 +5,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivityTermsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class TermsOfUseActivity : BaseActivity() {
@@ -86,7 +86,10 @@ class TermsOfUseActivity : BaseActivity() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
-            startActivity(Intent(this, HomeActivity::class.java))
+            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
+                putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
+            }
+            startActivity(intent)
             finish()
         }
     }

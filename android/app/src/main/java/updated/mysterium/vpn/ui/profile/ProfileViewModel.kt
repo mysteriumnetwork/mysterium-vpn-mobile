@@ -13,17 +13,16 @@ class ProfileViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val connectionUseCase = useCaseProvider.connection()
     private val privateKeyUseCase = useCaseProvider.privateKey()
-    private var identityAddress: String? = null
 
     fun getIdentity() = liveDataResult {
         val identity = connectionUseCase.getIdentity()
-        identityAddress = identity.address
         identity
     }
 
     fun downloadKey() = liveDataResult {
-        identityAddress?.let {
-            privateKeyUseCase.downloadPrivateKey(it, PRIVATE_KEY_PASSPHRASE)
-        }
+        privateKeyUseCase.downloadPrivateKey(
+            connectionUseCase.getIdentityAddress(),
+            PRIVATE_KEY_PASSPHRASE
+        )
     }
 }
