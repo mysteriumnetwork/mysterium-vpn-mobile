@@ -7,11 +7,14 @@ import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
+import java.util.*
 
 class TopUpAmountActivity : BaseActivity() {
 
@@ -29,6 +32,8 @@ class TopUpAmountActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTopUpAmountBinding
     private val viewModel: TopUpViewModel by inject()
+    private val walletViewModel: TopUpAmountViewModel by inject()
+    private val balanceViewModel: BalanceViewModel by inject()
     private val topUpAdapter = TopUpAmountAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +41,7 @@ class TopUpAmountActivity : BaseActivity() {
         binding = ActivityTopUpAmountBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
+        subscribeViewModel()
         bindsAction()
         checkTrialState()
     }
@@ -47,6 +53,12 @@ class TopUpAmountActivity : BaseActivity() {
             updateEquivalent(it.value.toInt())
         }
         updateEquivalent(AMOUNT_VALUES.first().value.toInt())
+    }
+
+    private fun subscribeViewModel() {
+        balanceViewModel.balanceLiveData.observe(this, {
+            updateWalletEstimates(it)
+        })
     }
 
     private fun bindsAction() {
@@ -85,6 +97,27 @@ class TopUpAmountActivity : BaseActivity() {
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
                 // TODO("Add UI error, failed to load equivalent")
+            }
+        })
+    }
+
+    private fun updateWalletEstimates(balance: Double) {
+        walletViewModel.getWalletEquivalent(balance).observe(this, { result ->
+            result.onSuccess { estimates ->
+                binding.videoTopUpItem.setData(WalletEstimatesUtil.convertVideoData(estimates))
+                binding.videoTopUpItem.setType(
+                    WalletEstimatesUtil.convertVideoType(estimates).toUpperCase(Locale.ROOT)
+                )
+                binding.pagesTopUpItem.setData(WalletEstimatesUtil.convertWebData(estimates))
+                binding.pagesTopUpItem.setType(
+                    WalletEstimatesUtil.convertWebType(estimates).toUpperCase(Locale.ROOT)
+                )
+                binding.trafficTopUpItem.setData(WalletEstimatesUtil.convertDownloadData(estimates))
+                binding.trafficTopUpItem.setType(WalletEstimatesUtil.convertDownloadType(estimates))
+                binding.musicTopUpItem.setData(WalletEstimatesUtil.convertMusicTimeData(estimates))
+                binding.musicTopUpItem.setType(
+                    WalletEstimatesUtil.convertMusicTimeType(estimates).toUpperCase(Locale.ROOT)
+                )
             }
         })
     }

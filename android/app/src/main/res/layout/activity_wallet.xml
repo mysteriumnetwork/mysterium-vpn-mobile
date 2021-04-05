@@ -108,36 +108,36 @@
                     app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView">
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
+                        android:id="@+id/video"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:walletIcon="@drawable/icon_video"
-                        app:walletTitle="@string/wallet_video"
-                        app:walletValue="12h" />
+                        app:walletTitle="@string/wallet_video" />
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
+                        android:id="@+id/browsing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:walletIcon="@drawable/icon_pages"
-                        app:walletTitle="@string/wallet_web"
-                        app:walletValue="180h" />
+                        app:walletTitle="@string/wallet_web" />
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
+                        android:id="@+id/download"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:walletIcon="@drawable/icon_cloud"
-                        app:walletTitle="@string/wallet_download"
-                        app:walletValue="80GiB" />
+                        app:walletTitle="@string/wallet_download" />
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
+                        android:id="@+id/music"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:walletIcon="@drawable/icon_music"
-                        app:walletTitle="@string/wallet_music"
-                        app:walletValue="1500h" />
+                        app:walletTitle="@string/wallet_music" />
 
                 </LinearLayout>
 
