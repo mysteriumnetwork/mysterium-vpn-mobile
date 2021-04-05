@@ -23,7 +23,7 @@ class UseCaseProvider(
 
     fun report() = ReportUseCase(nodeRepository)
 
-    fun statistic() = StatisticUseCase(nodeRepository)
+    fun statistic() = StatisticUseCase(nodeRepository, sharedPreferencesManager)
 
     fun terms() = TermsUseCase(sharedPreferencesManager)
 

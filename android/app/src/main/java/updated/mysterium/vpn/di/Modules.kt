@@ -28,6 +28,7 @@ import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 import updated.mysterium.vpn.ui.wallet.spendings.SpendingsViewModel
+import updated.mysterium.vpn.ui.wallet.top.up.TopUpsListViewModel
 
 object Modules {
 
@@ -101,6 +102,9 @@ object Modules {
         }
         viewModel {
             SettingsViewModel(get())
+        }
+        viewModel {
+            TopUpsListViewModel(get())
         }
     }
 

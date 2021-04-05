@@ -164,6 +164,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentSuccessfullyBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
+            dialog.hide()
             val intent = Intent(this, WalletActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }

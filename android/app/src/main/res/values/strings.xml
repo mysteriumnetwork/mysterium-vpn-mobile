@@ -221,6 +221,10 @@
     <string name="wallet_spendings_size">Size</string>
     <string name="wallet_spendings_connected">Connected</string>
     <string name="wallet_spendings_connected_value">%d days ago</string>
+    <string name="wallet_top_ups_time">Time</string>Paid
+    <string name="wallet_top_ups_paid">Paid</string>
+    <string name="wallet_top_ups_myst">Myst</string>topUp.payAmount + topUp.payCurrency
+    <string name="wallet_top_ups_currency">%1$s %2$s</string>
     <string name="wallet_video">Online\n video</string>
     <string name="wallet_web">Web\n browsing</string>
     <string name="wallet_download">of data\n download</string>
