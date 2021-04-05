@@ -278,7 +278,8 @@
     <string name="top_up_payment_link">Or use a payment link</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
-    <string name="top_up_currency_equivalent">%1$s %2$s</string>
+    <string name="top_up_currency_equivalent">%1$s %2$s</string>Free Trial
+    <string name="top_up_free_trial">Free Trial</string>
 
     <!--  Settings  -->
     <string name="settings_title">Settings</string>

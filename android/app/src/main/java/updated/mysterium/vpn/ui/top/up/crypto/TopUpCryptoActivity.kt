@@ -3,19 +3,21 @@ package updated.mysterium.vpn.ui.top.up.crypto
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpCryptoBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
 
 class TopUpCryptoActivity : BaseActivity() {
 
     companion object {
+        const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         private const val TAG = "TopUpAmountActivity"
         private val CRYPTO_VALUES = listOf(
@@ -49,17 +51,24 @@ class TopUpCryptoActivity : BaseActivity() {
             binding.cryptoAnimation.changeAnimation(it.value)
         }
         binding.cryptoAnimation.changeAnimation(CRYPTO_VALUES.first().value)
+        checkTrialState()
     }
 
     private fun bindsAction() {
         binding.backButton.setOnClickListener {
             finish()
         }
+        binding.freeTrialButtonButton.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
         binding.confirmButton.setOnClickListener {
             val cryptoName = topUpAdapter.getSelectedValue()
             val intent = Intent(this, TopUpPaymentActivity::class.java).apply {
                 putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
                 putExtra(TopUpPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
+                if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) == true) {
+                    putExtra(TRIAL_MODE_EXTRA_KEY, true)
+                }
                 putExtra(
                     TopUpPaymentActivity.CRYPTO_IS_LIGHTING_EXTRA_KEY,
                     binding.lightingSwitch.isChecked
@@ -81,6 +90,14 @@ class TopUpCryptoActivity : BaseActivity() {
                     // TODO("Add UI error, failed to load equivalent")
                 }
             })
+        }
+    }
+
+    private fun checkTrialState() {
+        if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) == true) {
+            binding.freeTrialButtonButton.visibility = View.VISIBLE
+        } else {
+            binding.freeTrialButtonButton.visibility = View.GONE
         }
     }
 }

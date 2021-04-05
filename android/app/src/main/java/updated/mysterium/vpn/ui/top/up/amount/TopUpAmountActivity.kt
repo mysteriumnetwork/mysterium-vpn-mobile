@@ -3,25 +3,27 @@ package updated.mysterium.vpn.ui.top.up.amount
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 
 class TopUpAmountActivity : BaseActivity() {
 
-    private companion object {
-        const val TAG = "TopUpAmountActivity"
-        val AMOUNT_VALUES = listOf(
-            TopUpCardItem("5", true),
-            TopUpCardItem("10"),
-            TopUpCardItem("15"),
-            TopUpCardItem("20"),
-            TopUpCardItem("25")
+    companion object {
+        const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
+        private const val TAG = "TopUpAmountActivity"
+        private val AMOUNT_VALUES = listOf(
+            TopUpCardItem("20", true),
+            TopUpCardItem("40"),
+            TopUpCardItem("60"),
+            TopUpCardItem("80"),
+            TopUpCardItem("100")
         )
     }
 
@@ -35,6 +37,7 @@ class TopUpAmountActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        checkTrialState()
     }
 
     private fun configure() {
@@ -54,8 +57,23 @@ class TopUpAmountActivity : BaseActivity() {
             val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
             val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
                 putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+                if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) != null) {
+                    putExtra(TopUpCryptoActivity.TRIAL_MODE_EXTRA_KEY, true)
+                }
             }
             startActivity(intent)
+        }
+        binding.freeTrialButtonButton.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+    }
+
+    private fun checkTrialState() {
+        val isFreeTrialAvailable = intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY)
+        if (isFreeTrialAvailable != null) {
+            binding.freeTrialButtonButton.visibility = View.VISIBLE
+        } else {
+            binding.freeTrialButtonButton.visibility = View.GONE
         }
     }
 

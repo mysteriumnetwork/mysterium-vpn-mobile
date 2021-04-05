@@ -5,5 +5,6 @@ enum class SharedPreferencesList(val prefName: String) {
     MIN_BALANCE("MIN_BALANCE"),
     LOGIN("LOGIN"),
     TERMS("TERMS"),
-    DNS("DNS")
+    DNS("DNS"),
+    IDENTITY_ADDRESS("IDENTITY_ADDRESS")
 }

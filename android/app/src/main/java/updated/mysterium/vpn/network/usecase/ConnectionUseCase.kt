@@ -1,13 +1,18 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.ConnectRequest
-import mysterium.GetBalanceRequest
 import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
+import network.mysterium.service.core.Identity
 import network.mysterium.service.core.NodeRepository
 import network.mysterium.service.core.Statistics
+import updated.mysterium.vpn.database.preferences.SharedPreferencesList
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
-class ConnectionUseCase(private val nodeRepository: NodeRepository) {
+class ConnectionUseCase(
+    private val nodeRepository: NodeRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
+) {
 
     fun initDeferredNode(deferredNode: DeferredNode) {
         nodeRepository.deferredNode = deferredNode
@@ -15,7 +20,21 @@ class ConnectionUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun connect(connectRequest: ConnectRequest) = nodeRepository.connect(connectRequest)
 
-    suspend fun getIdentity() = nodeRepository.getIdentity()
+    suspend fun getIdentity(): Identity {
+        val identity = nodeRepository.getIdentity()
+        sharedPreferencesManager.setPreferenceValue(
+            key = SharedPreferencesList.IDENTITY_ADDRESS,
+            value = identity.address
+        )
+        return identity
+    }
+
+    suspend fun getIdentityAddress(): String {
+        val savedAddress = sharedPreferencesManager.getStringPreferenceValue(
+            SharedPreferencesList.IDENTITY_ADDRESS
+        )
+        return savedAddress ?: nodeRepository.getIdentity().address
+    }
 
     suspend fun registerIdentity(
         registerIdentityRequest: RegisterIdentityRequest

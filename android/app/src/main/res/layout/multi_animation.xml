@@ -17,6 +17,7 @@
         android:id="@+id/connectingAnimation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/connecting_animation" />
@@ -25,6 +26,7 @@
         android:id="@+id/connectedAnimation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/connected_animation" />

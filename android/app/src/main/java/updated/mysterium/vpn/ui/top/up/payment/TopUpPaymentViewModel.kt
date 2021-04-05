@@ -31,6 +31,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _paymentSuccessfully = MutableLiveData<Unit>()
     private val _paymentExpired = MutableLiveData<Unit>()
     private val _paymentFailed = MutableLiveData<Unit>()
+    private var orderId: Long? = null
 
     fun createPaymentOrder(
         currency: String,
@@ -38,13 +39,14 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         isLighting: Boolean
     ) = liveDataResult {
         registerOrderCallback()
-        val identity = connectionUseCase.getIdentity()
-        paymentUseCase.createPaymentOrder(
+        val order = paymentUseCase.createPaymentOrder(
             currency,
-            identity.address,
+            connectionUseCase.getIdentityAddress(),
             mystAmount,
             isLighting
         )
+        orderId = order.id
+        order
     }
 
     fun clearPopUpTopUpHistory() {
@@ -54,10 +56,12 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun registerOrderCallback() {
         paymentUseCase.paymentOrderCallback {
-            when (it.status) {
-                STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
-                STATUS_EXPIRED -> _paymentExpired.postValue(Unit)
-                STATUS_INVALID, STATUS_CANCELED, STATUS_REFUNDED -> _paymentFailed.postValue(Unit)
+            if (orderId == it.orderID) {
+                when (it.status) {
+                    STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
+                    STATUS_EXPIRED -> _paymentExpired.postValue(Unit)
+                    STATUS_INVALID, STATUS_CANCELED, STATUS_REFUNDED -> _paymentFailed.postValue(Unit)
+                }
             }
         }
     }

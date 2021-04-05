@@ -15,7 +15,7 @@ class UseCaseProvider(
 
     fun location() = LocationUseCase(nodeRepository)
 
-    fun connection() = ConnectionUseCase(nodeRepository)
+    fun connection() = ConnectionUseCase(nodeRepository, sharedPreferencesManager)
 
     fun login() = LoginUseCase(sharedPreferencesManager)
 
