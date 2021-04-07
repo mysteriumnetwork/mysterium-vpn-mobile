@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
@@ -75,10 +75,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/spinner_settings_selected"
-                android:gravity="center"
-                android:overlapAnchor="false"
                 android:dropDownWidth="match_parent"
                 android:dropDownVerticalOffset="@dimen/margin_padding_size_xsmall"
+                android:gravity="center"
+                android:overlapAnchor="false"
                 android:popupBackground="@drawable/spinner_settings_menu"
                 android:textAlignment="center" />
 
@@ -131,15 +131,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/residentTitle" />
 
-        <Spinner
-            android:id="@+id/residentSpinner"
+        <FrameLayout
+            android:id="@+id/residentSpinnerFrame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_medium"
+            android:background="@drawable/shape_edit_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/residentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/residentDescription">
+
+            <TextView
+                android:id="@+id/selectedCountry"
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/onboarding_skip_white"
+                tools:text="Ukraine" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
+                android:src="@drawable/icon_drop_down_png"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

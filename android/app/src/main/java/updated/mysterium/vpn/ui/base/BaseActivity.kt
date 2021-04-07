@@ -68,6 +68,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
                 activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE) -> true
                 else -> false
             }
         } else {
