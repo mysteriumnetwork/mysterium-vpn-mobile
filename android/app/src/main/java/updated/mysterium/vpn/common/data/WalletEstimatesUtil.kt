@@ -34,11 +34,7 @@ object WalletEstimatesUtil {
 
     fun convertDownloadData(estimates: Estimates): String {
         val downloadData = UnitFormatter.bytesDisplay(estimates.trafficMB * 1024 * 1024)
-        return downloadData.value
-            .replace(',', '.')
-            .toDouble()
-            .toLong()
-            .toString()
+        return downloadData.value.substringBefore(",")
     }
 
     fun convertDownloadType(estimates: Estimates): String {
@@ -46,7 +42,7 @@ object WalletEstimatesUtil {
         return downloadData.units
     }
 
-    // One song - 3 minute.toString()
+    // One song - 3 minute
     fun convertMusicCount(estimates: Estimates) = (estimates.musicMinutes / 3L).toString()
 
     fun convertMusicTimeData(estimates: Estimates) = if (estimates.musicMinutes < 60) {

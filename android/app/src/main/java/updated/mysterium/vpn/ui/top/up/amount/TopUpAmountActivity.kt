@@ -9,7 +9,6 @@ import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
@@ -33,7 +32,6 @@ class TopUpAmountActivity : BaseActivity() {
     private lateinit var binding: ActivityTopUpAmountBinding
     private val viewModel: TopUpViewModel by inject()
     private val walletViewModel: TopUpAmountViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private val topUpAdapter = TopUpAmountAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +39,6 @@ class TopUpAmountActivity : BaseActivity() {
         binding = ActivityTopUpAmountBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
-        subscribeViewModel()
         bindsAction()
         checkTrialState()
     }
@@ -51,14 +48,10 @@ class TopUpAmountActivity : BaseActivity() {
         topUpAdapter.replaceAll(AMOUNT_VALUES)
         topUpAdapter.onItemSelected = {
             updateEquivalent(it.value.toInt())
+            updateWalletEstimates(it.value.toDouble())
         }
         updateEquivalent(AMOUNT_VALUES.first().value.toInt())
-    }
-
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            updateWalletEstimates(it)
-        })
+        updateWalletEstimates(AMOUNT_VALUES.first().value.toDouble())
     }
 
     private fun bindsAction() {
