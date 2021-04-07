@@ -34,6 +34,10 @@ class WalletItemView @JvmOverloads constructor(
         addView(itemView)
     }
 
+    fun setData(data: String) {
+        binding.dataValueTextView.text = data
+    }
+
     private fun getItemAttributes(attrs: AttributeSet) {
         val iconsAttributes = context.obtainStyledAttributes(
             attrs, R.styleable.WalletItemView

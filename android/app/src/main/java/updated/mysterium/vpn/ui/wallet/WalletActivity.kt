@@ -1,4 +1,3 @@
-
 package updated.mysterium.vpn.ui.wallet
 
 import android.annotation.SuppressLint
@@ -6,15 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import mysterium.Estimates
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityWalletBinding
 import network.mysterium.vpn.databinding.ItemTabBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
@@ -64,6 +64,7 @@ class WalletActivity : BaseActivity() {
         balanceViewModel.balanceLiveData.observe(this, {
             binding.balanceTextView.text = getString(R.string.wallet_current_balance, it)
             binding.manualConnectToolbar.setBalance(it)
+            getWalletEquivalent(it)
             getUsdEquivalent(it)
         })
     }
@@ -150,9 +151,38 @@ class WalletActivity : BaseActivity() {
                 binding.usdEquivalentTextView.text = getString(R.string.wallet_usd_equivalent, it)
             }
             result.onFailure {
-                Log.e(TAG, "Getting exchange rate failed")
+                Log.e(TAG, "Getting exchange rate failed $it")
                 // TODO("Implement error handling")
             }
         })
+    }
+
+    private fun getWalletEquivalent(balance: Double) {
+        viewModel.getWalletEquivalent(balance).observe(this, { result ->
+            result.onSuccess { estimates ->
+                inflateVideoEstimate(estimates)
+                inflateWebEstimate(estimates)
+                inflateDownloadEstimate(estimates)
+                binding.music.setData(WalletEstimatesUtil.convertMusicCount(estimates))
+            }
+        })
+    }
+
+    private fun inflateVideoEstimate(estimates: Estimates) {
+        val data = WalletEstimatesUtil.convertVideoData(estimates)
+        val type = WalletEstimatesUtil.convertVideoType(estimates)
+        binding.video.setData(data + type)
+    }
+
+    private fun inflateWebEstimate(estimates: Estimates) {
+        val data = WalletEstimatesUtil.convertWebData(estimates)
+        val type = WalletEstimatesUtil.convertWebType(estimates)
+        binding.browsing.setData(data + type)
+    }
+
+    private fun inflateDownloadEstimate(estimates: Estimates) {
+        val data = WalletEstimatesUtil.convertDownloadData(estimates)
+        val type = WalletEstimatesUtil.convertDownloadType(estimates)
+        binding.download.setData(data + type)
     }
 }

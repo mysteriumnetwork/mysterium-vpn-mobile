@@ -1,16 +1,12 @@
-package updated.mysterium.vpn.ui.wallet
+package updated.mysterium.vpn.ui.top.up.amount
 
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class WalletViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class TopUpAmountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val balanceUseCase = useCaseProvider.balance()
-
-    fun getUsdEquivalent(balance: Double) = liveDataResult {
-        balanceUseCase.getUsdEquivalent() * balance
-    }
 
     fun getWalletEquivalent(balance: Double) = liveDataResult {
         balanceUseCase.getWalletEquivalent(balance)
