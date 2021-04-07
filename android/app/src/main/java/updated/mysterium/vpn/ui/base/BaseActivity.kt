@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +13,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.connection.ConnectionUtil
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -28,6 +30,10 @@ abstract class BaseActivity : AppCompatActivity() {
             balanceRunningOutPopUp()
         })
         handleInternetConnection()
+    }
+
+    open fun retryLoading() {
+        // Override in activity for handle retry loading click
     }
 
     fun createPopUp(popUpView: View, cancelable: Boolean): AlertDialog {
@@ -53,26 +59,37 @@ abstract class BaseActivity : AppCompatActivity() {
         return dialog
     }
 
-    private fun handleInternetConnection() {
-        if (!isInternetAvailable()) {
-            wifiNetworkErrorPopUp()
-        }
-    }
-
-    private fun isInternetAvailable(): Boolean {
+    fun isInternetAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkCapabilities = connectivityManager.activeNetwork
         val activeNetworksCapabilities = connectivityManager.getNetworkCapabilities(networkCapabilities)
         return if (activeNetworksCapabilities != null) {
-            when {
-                activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                activeNetworksCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE) -> true
-                else -> false
+            if (ConnectionUtil.isConnectionWithoutVPNAvailable(activeNetworksCapabilities)) {
+                true // connection available
+            } else {
+                // check connection with VPN
+                ConnectionUtil.isConnectionWithVPNAvailable(activeNetworksCapabilities)
             }
         } else {
+            // can't get info about connection
             false
+        }
+    }
+
+    fun wifiNetworkErrorPopUp() {
+        val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.retryButton.setOnClickListener {
+            dialog.dismiss()
+            retryLoading()
+            handleInternetConnection()
+        }
+        dialog.show()
+    }
+
+    private fun handleInternetConnection() {
+        if (!isInternetAvailable()) {
+            wifiNetworkErrorPopUp()
         }
     }
 
@@ -84,16 +101,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
-        }
-        dialog.show()
-    }
-
-    private fun wifiNetworkErrorPopUp() {
-        val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.retryButton.setOnClickListener {
-            dialog.dismiss()
-            handleInternetConnection()
         }
         dialog.show()
     }
