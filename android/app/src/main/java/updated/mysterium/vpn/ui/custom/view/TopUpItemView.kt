@@ -35,6 +35,14 @@ class TopUpItemView @JvmOverloads constructor(
         addView(itemView)
     }
 
+    fun setData(data: String) {
+        binding.itemValueTextView.text = data
+    }
+
+    fun setType(type: String) {
+        binding.itemDataTypeTextView.text = type
+    }
+
     private fun getItemAttributes(attrs: AttributeSet) {
         val iconsAttributes = context.obtainStyledAttributes(
             attrs, R.styleable.TopUpItemView

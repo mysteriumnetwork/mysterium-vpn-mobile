@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/TextAppearance.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:text="@string/wallet_top_ups_time"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintStart_toStartOf="@id/topUpsRecycler"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/durationTextView"
+        style="@style/TextAppearance.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
+        android:text="@string/wallet_top_ups_paid"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/TextAppearance.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_medium_large"
+        android:text="@string/wallet_top_ups_myst"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintEnd_toEndOf="@id/topUpsRecycler"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/topUpsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        app:layout_constraintTop_toBottomOf="@+id/durationTextView"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_spending" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

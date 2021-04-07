@@ -43,6 +43,18 @@ object DateUtil {
         return TimeUnit.DAYS.convert(currentDays - dateDays, TimeUnit.DAYS)
     }
 
+    fun getHowLongHoursAgo(date: String): String {
+        val dateInMs = SimpleDateFormat(DEFAULT_PATTERN, Locale.ROOT).parse(date)?.time ?: 0L
+        val msDiff = Date().time - dateInMs
+        val hoursAgo = (msDiff / (MS_TO_SEC * SEC_TO_MN * MN_TO_HOUR))
+        val minutesAgo = (hoursAgo % MN_TO_HOUR)
+        return if (hoursAgo >= 1) {
+            "${hoursAgo}h $minutesAgo min"
+        } else {
+            "$minutesAgo min"
+        }
+    }
+
     fun convertTimeToStringMinutesFormat(milliseconds: Long): String {
         val minutes = milliseconds / 1000 / 60
         val seconds = (milliseconds / 1000) - (minutes * 60)
