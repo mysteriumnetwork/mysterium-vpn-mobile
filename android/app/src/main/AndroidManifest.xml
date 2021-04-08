@@ -96,6 +96,14 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="updated.mysterium.vpn.ui.create.account.CreateAccountActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.private.key.PrivateKeyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="network.mysterium.MainActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"

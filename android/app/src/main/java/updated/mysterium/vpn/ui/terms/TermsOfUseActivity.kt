@@ -11,8 +11,8 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class TermsOfUseActivity : BaseActivity() {
@@ -86,7 +86,7 @@ class TermsOfUseActivity : BaseActivity() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
-            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
+            val intent = Intent(this, CreateAccountActivity::class.java).apply {
                 putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
             }
             startActivity(intent)

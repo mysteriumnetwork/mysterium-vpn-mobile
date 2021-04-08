@@ -295,6 +295,16 @@
     <string name="settings_dns_cloudflare">Cloudflare</string>
     <string name="settings_dns_default">Default</string>
 
+    <!--  Create account  -->
+    <string name="create_account_title">Your account</string>Create New Account
+    <string name="create_account_new">Create New\n Account</string>
+    <string name="create_account_import">Import\n Account</string>
+    <string name="create_account_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
+
+    <!--  Private key  -->
+    <string name="private_key_back_up">Back up\n Private Key</string>
+    <string name="private_key_back_up_later">Back up\n Later</string>
+
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
     <string name="pop_up_top_up_description">Credits is running out</string>
@@ -325,6 +335,10 @@
     <string name="pop_up_terms_title">Term of Use\n Changed</string>
     <string name="pop_up_terms_description">Check out the updated\n version here</string>
     <string name="pop_up_terms_confirm">Confirm</string>
+    <string name="pop_up_private_key_title">Download key</string>
+    <string name="pop_up_private_key_description">Type Your Password</string>
+    <string name="pop_up_private_key_download">Download</string>
+    <string name="pop_up_private_key_error">Incorrect Password</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

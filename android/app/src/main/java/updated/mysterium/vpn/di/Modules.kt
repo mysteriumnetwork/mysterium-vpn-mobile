@@ -19,6 +19,7 @@ import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.saved.SavedNodesViewModel
 import updated.mysterium.vpn.ui.monitoring.MonitoringViewModel
 import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
+import updated.mysterium.vpn.ui.private.key.PrivateKeyViewModel
 import updated.mysterium.vpn.ui.profile.ProfileViewModel
 import updated.mysterium.vpn.ui.report.issue.ReportIssueViewModel
 import updated.mysterium.vpn.ui.settings.SettingsViewModel
@@ -109,6 +110,9 @@ object Modules {
         }
         viewModel {
             TopUpAmountViewModel(get())
+        }
+        viewModel {
+            PrivateKeyViewModel(get())
         }
     }
 
