@@ -44,9 +44,19 @@ class SplashActivity : BaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
-        bindMysteriumService()
-        subscribeViewModel()
-        ensureVpnServicePermission()
+        prepareNodeForStarting()
+    }
+
+    override fun retryLoading() {
+        prepareNodeForStarting()
+    }
+
+    private fun prepareNodeForStarting() {
+        if (isInternetAvailable()) {
+            bindMysteriumService()
+            subscribeViewModel()
+            ensureVpnServicePermission()
+        }
     }
 
     private fun configure() {
