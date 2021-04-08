@@ -106,7 +106,7 @@ class ReportIssueActivity : BaseActivity() {
         )
         binding.issueEditText.hint = ""
         binding.issueEditText.setHintTextColor(getColor(R.color.primary))
-        binding.issueEditText.gravity = Gravity.START or Gravity.TOP
+        binding.issueEditText.gravity = Gravity.CENTER_VERTICAL or Gravity.TOP
     }
 
     private fun emailDefaultState() {
@@ -117,7 +117,7 @@ class ReportIssueActivity : BaseActivity() {
         binding.emailEditText.hint = ""
         binding.emailEditText.requestFocus()
         binding.emailEditText.setHintTextColor(getColor(R.color.primary))
-        binding.emailEditText.gravity = Gravity.START
+        binding.emailEditText.gravity = Gravity.CENTER_VERTICAL
     }
 
     private fun issueErrorState() {

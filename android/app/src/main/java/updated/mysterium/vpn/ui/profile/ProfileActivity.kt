@@ -81,9 +81,7 @@ class ProfileActivity : BaseActivity() {
         binding.downloadButton.setOnClickListener {
             viewModel.downloadKey().observe(this, { result ->
                 result.onSuccess {
-                    it?.let {
-                        saveFile(it)
-                    }
+                    saveFile(it)
                 }
                 result.onFailure { throwable ->
                     Log.e(TAG, throwable.localizedMessage ?: throwable.toString())

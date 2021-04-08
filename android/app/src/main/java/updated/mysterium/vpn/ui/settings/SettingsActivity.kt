@@ -1,15 +1,19 @@
 package updated.mysterium.vpn.ui.settings
 
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
-import android.widget.ArrayAdapter
+import android.util.TypedValue
+import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.ui.onItemSelected
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
 
@@ -39,6 +43,7 @@ class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
+    private lateinit var listPopupWindow: ListPopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,11 @@ class SettingsActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        calculateSpinnerSize()
+    }
+
     private fun subscribeViewModel() {
         balanceViewModel.balanceLiveData.observe(this, {
             binding.manualConnectToolbar.setBalance(it)
@@ -57,6 +67,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun configure() {
         setUpDnsSpinner()
+        setUpResidentCountryList()
         checkPreviousDnsOption()
     }
 
@@ -67,12 +78,15 @@ class SettingsActivity : BaseActivity() {
             }
             startActivity(intent)
         }
+        binding.residentSpinnerFrame.setOnClickListener {
+            listPopupWindow.show()
+        }
     }
 
     private fun setUpDnsSpinner() {
         val languagesList = DNS_OPTIONS.map { getString(it.translatableValueResId) }
         val spinnerAdapter = SpinnerArrayAdapter(
-            this@SettingsActivity,
+            this,
             R.layout.item_spinner_dns,
             languagesList
         )
@@ -93,5 +107,37 @@ class SettingsActivity : BaseActivity() {
             val dnsOption = DNS_OPTIONS.find { it.backendValue == selectedValue }
             binding.dnsSpinner.setSelection(DNS_OPTIONS.indexOf(dnsOption))
         }
+    }
+
+    private fun setUpResidentCountryList() {
+        val countriesList = CountriesUtil().getAllCountries().map { it.fullName }
+        binding.selectedCountry.text = countriesList.first()
+        val spinnerAdapter = SpinnerArrayAdapter(
+            this,
+            R.layout.item_spinner_dns,
+            countriesList
+        )
+        listPopupWindow = LongListPopUpWindow(this).apply {
+            inflateView(spinnerAdapter, binding.residentSpinnerFrame)
+            setOnItemClickListener { _, _, position, _ ->
+                dismiss()
+                binding.selectedCountry.text = countriesList[position]
+                // TODO("Send country to back-end when it will implemented")
+            }
+        }
+    }
+
+    private fun calculateSpinnerSize() {
+        val size = Point()
+        windowManager.defaultDisplay.getSize(size) // get screen size
+        val location = IntArray(2)
+        binding.residentSpinnerFrame.getLocationOnScreen(location) // get view coordinates
+        val popUpHeight = size.y - location[1] // distance from view to screen bottom
+        val margin = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            resources.getDimension(R.dimen.margin_padding_size_large),
+            resources.displayMetrics
+        ).toInt()
+        listPopupWindow.height = popUpHeight - margin // add margin from bottom
     }
 }

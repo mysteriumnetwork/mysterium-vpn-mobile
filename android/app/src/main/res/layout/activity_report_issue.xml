@@ -87,7 +87,7 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
             android:layout_marginTop="@dimen/margin_padding_size_small"
             android:background="@drawable/shape_edit_text"
@@ -110,6 +110,7 @@
         <EditText
             android:id="@+id/issueEditText"
             style="@style/TextAppearance.BodyMedium"
+            android:paddingVertical="@dimen/margin_padding_size_xxsmall"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"

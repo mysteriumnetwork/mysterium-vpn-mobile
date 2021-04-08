@@ -132,7 +132,11 @@ class HomeActivity : BaseActivity() {
 
     private fun checkDisconnectingReason() {
         if (!isDisconnectedByUser) {
-            showLostConnectionPopUp()
+            if (isInternetAvailable()) {
+                showLostConnectionPopUp()
+            } else {
+                wifiNetworkErrorPopUp()
+            }
         }
         isDisconnectedByUser = false
     }

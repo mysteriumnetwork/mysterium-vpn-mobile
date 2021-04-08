@@ -312,6 +312,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().exportIdentity(identityAddress, newPassphrase)
     }
 
+    suspend fun exportIdentity(address: String, newPassphrase: String) = withContext(Dispatchers.IO) {
+        deferredNode.await().exportIdentity(address, newPassphrase)
+    }
+
     suspend fun getWalletEquivalent(balance: Double): Estimates = withContext(Dispatchers.IO) {
         deferredNode.await().calculateEstimates(balance)
     }
