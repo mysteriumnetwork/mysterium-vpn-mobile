@@ -1,13 +1,11 @@
 package updated.mysterium.vpn.ui.balance
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import mysterium.GetBalanceRequest
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
@@ -16,6 +14,10 @@ import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+
+    private companion object {
+        const val TAG = "BalanceViewModel"
+    }
 
     val balanceLiveData: LiveData<Double>
         get() = _balanceLiveData
@@ -27,7 +29,10 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var balanceRequest: GetBalanceRequest? = null
 
     fun initDeferredNode(mysteriumCoreService: CompletableDeferred<MysteriumCoreService>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
             startDeferredNode(mysteriumCoreService)
         }
     }

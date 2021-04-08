@@ -250,7 +250,7 @@
     <string name="report_issue_send">Send</string>
     <string name="report_issue_app_version">App version</string>
     <string name="report_issue_node_version">Node version</string>
-    <string name="report_issue_error_empty_issue">Description of problem can\'t be empty</string>
+    <string name="report_issue_error_empty_issue">Can’t be empty</string>
     <string name="report_issue_error_incorrect_email">Incorrect email</string>
     <string name="report_issue_error_request">Something went wrong, please try again later</string>
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
