@@ -73,7 +73,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancekButton"
+                android:id="@+id/cancelButton"
                 style="@style/Widget.NegativeButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
