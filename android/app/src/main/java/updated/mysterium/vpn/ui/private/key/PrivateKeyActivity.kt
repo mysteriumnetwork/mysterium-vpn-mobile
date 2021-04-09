@@ -41,7 +41,10 @@ class PrivateKeyActivity : BaseActivity() {
             showDownloadKeyPopUp()
         }
         binding.backUpLaterFrame.setOnClickListener {
-            exportIdentity()
+            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
+                putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
+            }
+            startActivity(intent)
         }
         binding.backButton.setOnClickListener {
             finish()
@@ -63,6 +66,7 @@ class PrivateKeyActivity : BaseActivity() {
                 bindingPopUp.passwordEditText.text?.clear()
                 bindingPopUp.passwordEditText.clearFocus()
                 bindingPopUp.errorText.visibility = View.VISIBLE
+                bindingPopUp.passwordEditText.hint = ""
             }
         }
         bindingPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -71,6 +75,7 @@ class PrivateKeyActivity : BaseActivity() {
                     this, R.drawable.shape_password_field
                 )
                 bindingPopUp.passwordEditText.text?.clear()
+                bindingPopUp.passwordEditText.hint = getString(R.string.pop_up_private_key_hint)
                 bindingPopUp.errorText.visibility = View.GONE
             }
         }
@@ -85,7 +90,6 @@ class PrivateKeyActivity : BaseActivity() {
             result.onSuccess {
                 exportIdentity(passphrase)
                 saveFile(it)
-                startActivity(Intent(this, TopUpAmountActivity::class.java))
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
@@ -115,10 +119,13 @@ class PrivateKeyActivity : BaseActivity() {
         }
     }
 
-    private fun exportIdentity(passphrase: String = "") {
+    private fun exportIdentity(passphrase: String) {
         viewModel.exportIdentity(passphrase).observe(this, { result ->
             result.onSuccess {
-                startActivity(Intent(this, TopUpAmountActivity::class.java))
+                val intent = Intent(this, TopUpAmountActivity::class.java).apply {
+                    putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
+                }
+                startActivity(intent)
             }
             result.onFailure {
                 Log.i(TAG, "onFailure ${it.localizedMessage}")

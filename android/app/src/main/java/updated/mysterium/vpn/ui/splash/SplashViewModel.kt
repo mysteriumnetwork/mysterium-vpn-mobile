@@ -9,7 +9,6 @@ import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
@@ -57,6 +56,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
 
     fun isTermsAccepted() = termsUseCase.isTermsAccepted()
+
+    fun isAccountFlowShown() = loginUseCase.isAccountFlowShown()
 
     fun animationLoaded() {
         if (isDataLoaded) {

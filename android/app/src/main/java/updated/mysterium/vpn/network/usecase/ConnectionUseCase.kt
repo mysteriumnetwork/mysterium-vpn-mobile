@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.ConnectRequest
+import mysterium.GetIdentityRequest
 import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.Identity
@@ -22,6 +23,18 @@ class ConnectionUseCase(
 
     suspend fun getIdentity(): Identity {
         val identity = nodeRepository.getIdentity()
+        sharedPreferencesManager.setPreferenceValue(
+            key = SharedPreferencesList.IDENTITY_ADDRESS,
+            value = identity.address
+        )
+        return identity
+    }
+
+    suspend fun getNewIdentity(newIdentityAddress: String): Identity {
+        val getIdentityRequest = GetIdentityRequest().apply {
+            address = newIdentityAddress
+        }
+        val identity = nodeRepository.getIdentity(getIdentityRequest)
         sharedPreferencesManager.setPreferenceValue(
             key = SharedPreferencesList.IDENTITY_ADDRESS,
             value = identity.address

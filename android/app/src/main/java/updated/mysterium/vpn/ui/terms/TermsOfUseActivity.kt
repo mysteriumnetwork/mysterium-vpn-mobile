@@ -86,9 +86,7 @@ class TermsOfUseActivity : BaseActivity() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
-            val intent = Intent(this, CreateAccountActivity::class.java).apply {
-                putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
-            }
+            val intent = Intent(this, CreateAccountActivity::class.java)
             startActivity(intent)
             finish()
         }

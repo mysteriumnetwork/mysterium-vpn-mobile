@@ -11,4 +11,11 @@ class LoginUseCase(private val sharedPreferencesManager: SharedPreferencesManage
         key = SharedPreferencesList.LOGIN,
         value = true
     )
+
+    fun isAccountFlowShown() = sharedPreferencesManager.containsPreferenceValue(SharedPreferencesList.ACCOUNT)
+
+    fun accountFlowShown() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.ACCOUNT,
+        value = true
+    )
 }

@@ -69,8 +69,12 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        setIntent(intent)
-        checkProposalArgument()
+        if (isInternetAvailable()) {
+            setIntent(intent)
+            checkProposalArgument()
+        } else {
+            wifiNetworkErrorPopUp()
+        }
     }
 
     private fun configure() {

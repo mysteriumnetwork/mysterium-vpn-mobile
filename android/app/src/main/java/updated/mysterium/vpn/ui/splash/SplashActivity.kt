@@ -24,9 +24,11 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
+import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class SplashActivity : BaseActivity() {
 
@@ -79,14 +81,19 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateForward() {
-        if (viewModel.isUserAlreadyLogin()) {
-            if (viewModel.isTermsAccepted()) {
+        when {
+            !viewModel.isUserAlreadyLogin() -> {
+                startActivity(Intent(this, OnboardingActivity::class.java))
+            }
+            viewModel.isAccountFlowShown() -> {
                 startActivity(Intent(this, HomeActivity::class.java))
-            } else {
+            }
+            viewModel.isTermsAccepted() -> {
+                startActivity(Intent(this, CreateAccountActivity::class.java))
+            }
+            else -> {
                 startActivity(Intent(this, TermsOfUseActivity::class.java))
             }
-        } else {
-            startActivity(Intent(this, OnboardingActivity::class.java))
         }
         finish()
     }

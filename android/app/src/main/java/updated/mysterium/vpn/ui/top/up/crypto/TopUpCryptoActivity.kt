@@ -59,6 +59,7 @@ class TopUpCryptoActivity : BaseActivity() {
             finish()
         }
         binding.freeTrialButtonButton.setOnClickListener {
+            viewModel.accountFlowShown()
             startActivity(Intent(this, HomeActivity::class.java))
         }
         binding.confirmButton.setOnClickListener {

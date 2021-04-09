@@ -72,6 +72,7 @@ class TopUpPaymentActivity : BaseActivity() {
             copyToClipboard()
         }
         binding.freeTrialButtonButton.setOnClickListener {
+            topUpViewModel.accountFlowShown()
             startActivity(Intent(this, HomeActivity::class.java))
         }
     }

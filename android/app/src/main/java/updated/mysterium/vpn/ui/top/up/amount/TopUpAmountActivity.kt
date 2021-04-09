@@ -69,6 +69,7 @@ class TopUpAmountActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.freeTrialButtonButton.setOnClickListener {
+            viewModel.accountFlowShown()
             startActivity(Intent(this, HomeActivity::class.java))
         }
     }

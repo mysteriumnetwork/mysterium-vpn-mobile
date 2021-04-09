@@ -127,7 +127,7 @@
     <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
-    
+
     <!--  ManualConnection  -->
     <string name="manual_connect_country_select_title">Select node</string>
     <string name="manual_connect_all_nodes">All nodes</string>
@@ -313,7 +313,8 @@
     <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
     <string name="pop_up_payment_successfully_done">Well done</string>
     <string name="pop_up_payment_successfully_close">Close</string>
-    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn’t Work</string>Please try again later
+    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn’t Work</string>Please try
+    again later
     <string name="pop_up_payment_not_work_try_again">Please try again later</string>
     <string name="pop_up_payment_not_work_okay">Okay, got it</string>
     <string name="pop_up_payment_expired_title">Payment is not\n Successful</string>
@@ -339,6 +340,12 @@
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
     <string name="pop_up_private_key_error">Incorrect Password</string>
+    <string name="pop_up_private_key_hint">Password length 12-16 characters</string>
+    <string name="pop_up_import_account_title">Import account</string>
+    <string name="pop_up_import_account_upload">Upload</string>
+    <string name="pop_up_password_account_title">Account password</string>
+    <string name="pop_up_password_account_apply">Apply</string>
+    <string name="pop_up_password_account_hint">Enter password here</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
