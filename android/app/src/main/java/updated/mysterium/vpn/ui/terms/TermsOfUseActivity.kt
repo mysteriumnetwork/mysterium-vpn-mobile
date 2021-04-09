@@ -12,7 +12,6 @@ import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class TermsOfUseActivity : BaseActivity() {

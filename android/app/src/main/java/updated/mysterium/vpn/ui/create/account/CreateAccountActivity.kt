@@ -13,8 +13,8 @@ import network.mysterium.vpn.databinding.PopUpAccountPasswordBinding
 import network.mysterium.vpn.databinding.PopUpImportAccountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -125,9 +125,7 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun applyNewIdentity(newIdentityAddress: String) {
         viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
-            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-                putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
-            }
+            val intent = Intent(this, PrepareTopUpActivity::class.java)
             startActivity(intent)
         })
     }

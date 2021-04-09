@@ -70,7 +70,11 @@ class TopUpAmountActivity : BaseActivity() {
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
-            startActivity(Intent(this, HomeActivity::class.java))
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+            finish()
         }
     }
 

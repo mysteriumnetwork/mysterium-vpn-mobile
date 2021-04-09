@@ -28,7 +28,6 @@ import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class SplashActivity : BaseActivity() {
 
