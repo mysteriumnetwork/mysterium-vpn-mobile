@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
@@ -105,8 +104,8 @@ class ReportIssueActivity : BaseActivity() {
             R.drawable.shape_big_edit_text
         )
         binding.issueEditText.hint = ""
-        binding.issueEditText.setHintTextColor(getColor(R.color.primary))
         binding.issueEditText.gravity = Gravity.CENTER_VERTICAL or Gravity.TOP
+        binding.issueErrorIcon.visibility = View.INVISIBLE
     }
 
     private fun emailDefaultState() {
@@ -116,28 +115,31 @@ class ReportIssueActivity : BaseActivity() {
         )
         binding.emailEditText.hint = ""
         binding.emailEditText.requestFocus()
-        binding.emailEditText.setHintTextColor(getColor(R.color.primary))
         binding.emailEditText.gravity = Gravity.CENTER_VERTICAL
+        binding.emailErrorIcon.visibility = View.INVISIBLE
     }
 
     private fun issueErrorState() {
-        binding.issueEditText.background = ContextCompat.getDrawable(this, R.drawable.shape_big_edit_text_error)
+        binding.issueEditText.background = ContextCompat.getDrawable(
+            this, R.drawable.shape_big_edit_text_error
+        )
         binding.issueEditText.hint = getString(R.string.report_issue_error_empty_issue)
-        binding.issueEditText.setHintTextColor(getColor(R.color.primary))
+        binding.issueEditText.setHintTextColor(getColor(R.color.menu_subtitle_light_pink))
         binding.issueEditText.gravity = Gravity.CENTER
         binding.issueEditText.text?.clear()
+        binding.issueErrorIcon.visibility = View.VISIBLE
     }
 
     private fun emailErrorState() {
         binding.emailEditText.background = ContextCompat.getDrawable(
-            this,
-            R.drawable.shape_edit_text_error
+            this, R.drawable.shape_edit_text_error
         )
         binding.emailEditText.hint = getString(R.string.report_issue_error_incorrect_email)
-        binding.emailEditText.setHintTextColor(getColor(R.color.primary))
+        binding.emailEditText.setHintTextColor(getColor(R.color.menu_subtitle_light_pink))
         binding.emailEditText.text?.clear()
         binding.emailEditText.clearFocus()
         binding.emailEditText.gravity = Gravity.CENTER
+        binding.emailErrorIcon.visibility = View.VISIBLE
     }
 
     private fun sendReport() {

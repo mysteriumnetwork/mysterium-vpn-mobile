@@ -83,23 +83,46 @@
             android:text="@string/report_issue_email_subtitle"
             android:textColor="@color/manual_connect_value_white" />
 
-        <EditText
-            android:id="@+id/emailEditText"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
-            android:layout_marginTop="@dimen/margin_padding_size_small"
-            android:background="@drawable/shape_edit_text"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="@dimen/margin_padding_size_small"
-            android:textColor="@android:color/white"
-            tools:ignore="LabelFor" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/emailEditText"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:background="@drawable/shape_edit_text"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="@dimen/margin_padding_size_small"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="LabelFor" />
+
+            <ImageView
+                android:id="@+id/emailErrorIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_error_state"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/emailEditText"
+                app:layout_constraintEnd_toStartOf="@+id/emailEditText"
+                app:layout_constraintStart_toStartOf="@+id/emailEditText"
+                app:layout_constraintTop_toTopOf="@+id/emailEditText"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            style="@style/TextAppearance.BodyMedium"
             android:id="@+id/problemSubtitleTextView"
+            style="@style/TextAppearance.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -107,24 +130,45 @@
             android:text="@string/report_issue_problem_subtitle"
             android:textColor="@color/manual_connect_value_white" />
 
-        <EditText
-            android:id="@+id/issueEditText"
-            style="@style/TextAppearance.BodyMedium"
-            android:paddingVertical="@dimen/margin_padding_size_xxsmall"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
-            android:layout_marginTop="@dimen/margin_padding_size_small"
-            android:layout_weight="1"
-            android:background="@drawable/shape_big_edit_text"
-            android:gravity="top|start"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:paddingHorizontal="@dimen/margin_padding_size_small"
-            android:scrollbars="vertical"
-            android:textColor="@android:color/white"
-            tools:ignore="LabelFor" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/issueEditText"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:layout_weight="1"
+                android:background="@drawable/shape_big_edit_text"
+                android:gravity="top|start"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:paddingHorizontal="@dimen/margin_padding_size_small"
+                android:paddingVertical="@dimen/margin_padding_size_xxsmall"
+                android:scrollbars="vertical"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="LabelFor" />
+
+            <ImageView
+                android:id="@+id/issueErrorIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_error_state"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/issueEditText"
+                app:layout_constraintEnd_toStartOf="@+id/issueEditText"
+                app:layout_constraintStart_toStartOf="@+id/issueEditText"
+                app:layout_constraintTop_toTopOf="@+id/issueEditText"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sendReportButton"
