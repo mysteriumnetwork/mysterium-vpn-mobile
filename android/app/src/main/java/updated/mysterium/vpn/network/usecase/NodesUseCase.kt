@@ -27,7 +27,9 @@ class NodesUseCase(
 
     suspend fun getAllCountries() = mapNodesToCountriesGroups(getAllNodes())
 
-    suspend fun getFavourites() = createProposalList(nodeDao.getFavourites())
+    suspend fun getFavourites() = checkFavouriteRelevance(
+        createProposalList(nodeDao.getFavourites())
+    )
 
     suspend fun addToFavourite(
         proposal: Proposal
@@ -36,6 +38,8 @@ class NodesUseCase(
     suspend fun deleteFromFavourite(proposal: Proposal) {
         nodeDao.deleteFromFavourite(proposal.id)
     }
+
+    suspend fun isFavourite(nodeId: String): NodeEntity? = nodeDao.getById(nodeId)
 
     private suspend fun getAllNodes(): List<NodeEntity> {
         val proposalsRequest = GetProposalsRequest().apply {
@@ -87,5 +91,18 @@ class NodesUseCase(
                 }
             }
         return countryNodesList.toList()
+    }
+
+    private suspend fun checkFavouriteRelevance(favourites: List<Proposal>): List<Proposal> {
+        val allAvailableNodes = getAllNodes()
+        favourites.forEach { favourite ->
+            val nodeEntity = allAvailableNodes.find { node ->
+                node.providerID == favourite.providerID
+            }
+            if (nodeEntity == null) {
+                favourite.isAvailable = false
+            }
+        }
+        return favourites
     }
 }

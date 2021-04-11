@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.AppNotificationManager
@@ -239,18 +238,17 @@ class HomeActivity : BaseActivity() {
             navigateToMenu()
         }
         binding.manualConnectToolbar.onRightButtonClicked {
-            proposal?.let {
-                viewModel.addToFavourite(it).observe(this, { result ->
+            proposal?.let { proposal ->
+                viewModel.isFavourite(proposal.providerID + proposal.serviceType).observe(this, { result ->
                     result.onSuccess {
-                        Toast.makeText(
-                            this,
-                            getString(R.string.manual_connect_saved_to_favourite),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (it != null) {
+                            deleteFromFavourite(proposal)
+                        } else {
+                            addToFavourite(proposal)
+                        }
                     }
                     result.onFailure {
-                        Log.e(TAG, "Saving failed")
-                        // TODO("Implement error handling")
+                        Log.i(TAG, it.localizedMessage ?: it.toString())
                     }
                 })
             }
@@ -263,6 +261,27 @@ class HomeActivity : BaseActivity() {
                 isDisconnectedByUser = true
                 viewModel.disconnect()
             }
+        )
+    }
+
+    private fun deleteFromFavourite(proposal: Proposal) {
+        viewModel.deleteFromFavourite(proposal)
+        binding.manualConnectToolbar.setRightIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_save)
+        )
+    }
+
+    private fun addToFavourite(proposal: Proposal) {
+        viewModel.addToFavourite(proposal).observe(this, { result ->
+            result.onSuccess {
+                Log.i(TAG, "onSuccess")
+            }
+            result.onFailure {
+                Log.i(TAG, it.localizedMessage ?: it.toString())
+            }
+        })
+        binding.manualConnectToolbar.setRightIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_saved)
         )
     }
 
@@ -330,13 +349,29 @@ class HomeActivity : BaseActivity() {
         binding.securityStatusImageView.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.shape_connected_status)
         )
-        binding.manualConnectToolbar.setRightIcon(
-            ContextCompat.getDrawable(this, R.drawable.icon_save)
-        )
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
         binding.multiAnimation.connectedState()
+        isFavourite()
+    }
+
+    private fun isFavourite() {
+        proposal?.let {
+            viewModel.isFavourite(it.providerID + it.serviceType).observe(this, { result ->
+                result.onSuccess { nodeEntity ->
+                    if (nodeEntity != null) {
+                        binding.manualConnectToolbar.setRightIcon(
+                            ContextCompat.getDrawable(this, R.drawable.icon_saved)
+                        )
+                    } else {
+                        binding.manualConnectToolbar.setRightIcon(
+                            ContextCompat.getDrawable(this, R.drawable.icon_save)
+                        )
+                    }
+                }
+            })
+        }
     }
 
     private fun showFailedToConnectPopUp() {

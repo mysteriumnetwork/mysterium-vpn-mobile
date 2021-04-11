@@ -22,25 +22,25 @@ class SavedNodesAdapter : BaseNodeAdapter<Proposal, SavedNodesAdapter.SavedNodes
         val binding = ItemSavedNodeBinding.bind(itemView)
 
         override fun bindSingleItemInList(item: Proposal) {
-            binding.itemContent.background = getSingleItemShape()
+            binding.itemContent.background = getSingleItemShape(item.isAvailable)
             binding.lastItemMargin.visibility = View.VISIBLE
             binding.divider.visibility = View.GONE
         }
 
         override fun bindFirstItem(item: Proposal) {
-            binding.itemContent.background = getFirstItemShape()
+            binding.itemContent.background = getFirstItemShape(item.isAvailable)
             binding.lastItemMargin.visibility = View.GONE
             binding.divider.visibility = View.VISIBLE
         }
 
         override fun bindMiddleItem(item: Proposal) {
-            binding.itemContent.background = getMiddleItemShape()
+            binding.itemContent.background = getMiddleItemShape(item.isAvailable)
             binding.lastItemMargin.visibility = View.GONE
             binding.divider.visibility = View.VISIBLE
         }
 
         override fun bindLastItem(item: Proposal) {
-            binding.itemContent.background = getLastItemShape()
+            binding.itemContent.background = getLastItemShape(item.isAvailable)
             binding.lastItemMargin.visibility = View.VISIBLE
             binding.divider.visibility = View.GONE
         }
@@ -49,13 +49,21 @@ class SavedNodesAdapter : BaseNodeAdapter<Proposal, SavedNodesAdapter.SavedNodes
             binding.nodeCountryTextView.text = item.countryName
             binding.nodeCodeTextView.text = item.providerID
             binding.nodeTypeImage.setImageDrawable(getNodeTypeDrawable(item.nodeType))
-            binding.qualityImageView.setImageDrawable(getNodeQualityDrawable(item.qualityLevel))
-            binding.priceImageView.setImageDrawable(getNodePriceDrawable(item.priceLevel))
             binding.proposalLayout.setOnClickListener {
                 onProposalClicked?.invoke(item)
             }
             binding.deleteImageView.setOnClickListener {
                 onDeleteClicked?.invoke(item)
+            }
+            if (item.isAvailable) {
+                binding.qualityImageView.visibility = View.VISIBLE
+                binding.priceImageView.visibility = View.VISIBLE
+                binding.qualityImageView.setImageDrawable(getNodeQualityDrawable(item.qualityLevel))
+                binding.priceImageView.setImageDrawable(getNodePriceDrawable(item.priceLevel))
+            } else {
+                binding.qualityImageView.visibility = View.INVISIBLE
+                binding.priceImageView.visibility = View.INVISIBLE
+                binding.root.isClickable = false
             }
         }
     }
