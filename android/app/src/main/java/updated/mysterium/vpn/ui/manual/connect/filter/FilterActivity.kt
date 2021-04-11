@@ -3,7 +3,6 @@ package updated.mysterium.vpn.ui.manual.connect.filter
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
@@ -15,11 +14,9 @@ import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.Proposal
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class FilterActivity : BaseActivity() {
 
@@ -30,7 +27,6 @@ class FilterActivity : BaseActivity() {
     private lateinit var binding: ActivityFilterBinding
     private val nodeListAdapter = FilterAdapter()
     private val viewModel: FilterViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private val nodeFilter = NodeFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +37,6 @@ class FilterActivity : BaseActivity() {
         bindsActions()
         subscribeViewModel()
         getNodesList()
-        balanceViewModel.getCurrentBalance()
     }
 
     private fun getNodesList() {
@@ -61,9 +56,6 @@ class FilterActivity : BaseActivity() {
             this,
             { proposals -> showNodeList(proposals) }
         )
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
     }
 
     private fun bindsActions() {
@@ -88,8 +80,11 @@ class FilterActivity : BaseActivity() {
         binding.manualConnectToolbar.onRightButtonClicked {
             navigateToSearch()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
     }
 

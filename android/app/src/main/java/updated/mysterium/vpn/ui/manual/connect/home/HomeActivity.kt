@@ -26,12 +26,10 @@ import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class HomeActivity : BaseActivity() {
 
@@ -47,7 +45,6 @@ class HomeActivity : BaseActivity() {
     private lateinit var appNotificationManager: AppNotificationManager
     private var proposal: Proposal? = null
     private val viewModel: HomeViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private var isDisconnectedByUser = false
@@ -80,7 +77,6 @@ class HomeActivity : BaseActivity() {
         loadIpAddress()
         bindMysteriumService()
         initViewModel()
-        balanceViewModel.getCurrentBalance()
         allNodesViewModel.initProposals()
     }
 
@@ -94,9 +90,6 @@ class HomeActivity : BaseActivity() {
         viewModel.connectionException.observe(this, {
             disconnect()
             showFailedToConnectPopUp()
-        })
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
         })
     }
 
@@ -231,9 +224,6 @@ class HomeActivity : BaseActivity() {
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
-        }
         binding.manualConnectToolbar.onLeftButtonClicked {
             navigateToMenu()
         }
@@ -293,10 +283,7 @@ class HomeActivity : BaseActivity() {
         binding.securityStatusImageView.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.short_divider)
         )
-        binding.connectionTypeTextView.text = getString(R.string.manual_connect_country_status)
-        binding.connectionTypeTextView.setTextColor(
-            ContextCompat.getColor(this, R.color.primary)
-        )
+        binding.manualConnectToolbar.unprotectedState()
         binding.multiAnimation.disconnectedState()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         binding.manualConnectToolbar.setRightIcon(null)
@@ -328,10 +315,8 @@ class HomeActivity : BaseActivity() {
         binding.securityStatusImageView.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.short_divider)
         )
-        binding.connectionTypeTextView.text = getString(R.string.manual_connect_country_status)
-        binding.connectionTypeTextView.setTextColor(
-            ContextCompat.getColor(this, R.color.primary)
-        )
+        binding.connectionTypeTextView.visibility = View.INVISIBLE
+        binding.manualConnectToolbar.unprotectedState()
         binding.manualConnectToolbar.setRightIcon(null)
         proposal?.let {
             binding.connectionState.showConnectionState(it)
@@ -344,11 +329,13 @@ class HomeActivity : BaseActivity() {
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_connected)
+        binding.connectionTypeTextView.visibility = View.VISIBLE
         binding.connectionTypeTextView.text = proposal?.countryName ?: "UNKNOWN"
         binding.securityStatusTextView.visibility = View.VISIBLE
         binding.securityStatusImageView.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.shape_connected_status)
         )
+        binding.manualConnectToolbar.protectedState(isFill = false)
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
