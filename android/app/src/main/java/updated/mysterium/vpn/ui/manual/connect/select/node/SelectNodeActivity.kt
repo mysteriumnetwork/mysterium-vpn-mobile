@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -12,13 +11,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySelectBinding
 import network.mysterium.vpn.databinding.ItemTabBinding
-import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class SelectNodeActivity : BaseActivity() {
 
@@ -40,23 +37,14 @@ class SelectNodeActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySelectBinding
     private lateinit var viewPager: ViewPager2
-    private val balanceViewModel: BalanceViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        subscribeViewModel()
         bindsAction()
         initViewPager()
         initTabLayout()
-        balanceViewModel.getCurrentBalance()
-    }
-
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
     }
 
     @SuppressLint("InflateParams")
@@ -115,8 +103,11 @@ class SelectNodeActivity : BaseActivity() {
         binding.manualConnectToolbar.onRightButtonClicked {
             navigateToSearch()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
     }
 

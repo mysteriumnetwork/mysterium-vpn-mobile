@@ -81,6 +81,9 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
         binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
+        binding.connectedLayout.disconnectButton.text = context.getString(
+            R.string.manual_connect_disconnect
+        )
     }
 
     fun showDisconnectingState() {

@@ -18,10 +18,9 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityProfileBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class ProfileActivity : BaseActivity() {
 
@@ -32,7 +31,6 @@ class ProfileActivity : BaseActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private var identityAddress = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,9 +38,7 @@ class ProfileActivity : BaseActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
-        subscribeViewModel()
         bindsAction()
-        balanceViewModel.getCurrentBalance()
         requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 1)
     }
 
@@ -59,18 +55,15 @@ class ProfileActivity : BaseActivity() {
         })
     }
 
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
-    }
-
     private fun bindsAction() {
         binding.copyButton.setOnClickListener {
             copyToClipboard()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             val intent = Intent(this, MenuActivity::class.java).apply {

@@ -8,17 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class SearchActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private val viewModel: SearchViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private val nodeListAdapter = FilterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,22 +25,21 @@ class SearchActivity : BaseActivity() {
         bindsAction()
         initProposalListRecycler()
         subscribeViewModel()
-        balanceViewModel.getCurrentBalance()
     }
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.editText.addTextChangedListener {
             viewModel.search(it.toString())
         }
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
     }
 
     private fun subscribeViewModel() {

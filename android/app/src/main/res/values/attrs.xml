@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="BalanceToolbar">
+    <declare-styleable name="ConnectionToolbar">
         <attr name="leftIcon" format="integer" />
         <attr name="rightIcon" format="integer" />
         <attr name="leftView" format="integer" />

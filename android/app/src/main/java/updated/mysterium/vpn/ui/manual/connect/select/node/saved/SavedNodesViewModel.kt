@@ -8,9 +8,15 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 class SavedNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val nodesUseCase = useCaseProvider.nodes()
+    private var allNodes: List<Proposal> = emptyList()
 
-    fun getSavedNodes() = liveDataResult {
-        nodesUseCase.getFavourites()
+    fun getSavedNodes(proposals: List<Proposal>?) = liveDataResult {
+        if (proposals == null) {
+            nodesUseCase.getFavourites(allNodes)
+        } else {
+            allNodes = proposals
+            nodesUseCase.getFavourites(proposals)
+        }
     }
 
     fun deleteNodeFromFavourite(proposal: Proposal) = liveDataResult {

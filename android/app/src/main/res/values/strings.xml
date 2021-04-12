@@ -151,7 +151,7 @@
     <string name="manual_connect_disconnect">Disconnect</string>
     <string name="manual_connect_disconnecting">Disconnecting</string>
     <string name="manual_connect_connecting_title">Manual connect</string>
-    <string name="manual_connect_connecting_description">Connecting manually to node</string>
+    <string name="manual_connect_connecting_description">Creating an encrypted tunnel to your node</string>
     <string name="manual_connect_duration">Duration</string>
     <string name="manual_connect_data_received_hint">Receive/Send</string>
     <string name="manual_connect_paid_hint">Paid</string>

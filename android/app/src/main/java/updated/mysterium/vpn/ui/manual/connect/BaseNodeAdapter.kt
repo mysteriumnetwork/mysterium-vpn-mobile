@@ -67,28 +67,56 @@ abstract class BaseNodeAdapter<T, V : BaseNodeAdapter<T, V>.BaseNodeViewHolder> 
             return ContextCompat.getDrawable(itemView.context, nodePriceDrawable)
         }
 
-        protected fun getSingleItemShape() = ResourcesCompat.getDrawable(
-            itemView.context.resources,
-            R.drawable.shape_rounded_card_view,
-            null
-        )
+        protected fun getSingleItemShape(isAvailable: Boolean = true): Drawable? {
+            val backgroundRes = if (isAvailable) {
+                R.drawable.shape_rounded_card_view
+            } else {
+                R.drawable.shape_rounded_card_view_unavailable
+            }
+            return ResourcesCompat.getDrawable(
+                itemView.context.resources,
+                backgroundRes,
+                null
+            )
+        }
 
-        protected fun getFirstItemShape() = ResourcesCompat.getDrawable(
-            itemView.context.resources,
-            R.drawable.shape_top_rounded,
-            null
-        )
+        protected fun getFirstItemShape(isAvailable: Boolean = true): Drawable? {
+            val backgroundRes = if (isAvailable) {
+                R.drawable.shape_top_rounded
+            } else {
+                R.drawable.shape_top_rounded_unavailable
+            }
+            return ResourcesCompat.getDrawable(
+                itemView.context.resources,
+                backgroundRes,
+                null
+            )
+        }
 
-        protected fun getMiddleItemShape() = ResourcesCompat.getDrawable(
-            itemView.context.resources,
-            R.drawable.shape_square,
-            null
-        )
+        protected fun getMiddleItemShape(isAvailable: Boolean = true): Drawable? {
+            val backgroundRes = if (isAvailable) {
+                R.drawable.shape_square
+            } else {
+                R.drawable.shape_square_unavailable
+            }
+            return ResourcesCompat.getDrawable(
+                itemView.context.resources,
+                backgroundRes,
+                null
+            )
+        }
 
-        protected fun getLastItemShape() = ResourcesCompat.getDrawable(
-            itemView.context.resources,
-            R.drawable.shape_bottom_rounded,
-            null
-        )
+        protected fun getLastItemShape(isAvailable: Boolean = true): Drawable? {
+            val backgroundRes = if (isAvailable) {
+                R.drawable.shape_bottom_rounded
+            } else {
+                R.drawable.shape_bottom_rounded_unavailable
+            }
+            return ResourcesCompat.getDrawable(
+                itemView.context.resources,
+                backgroundRes,
+                null
+            )
+        }
     }
 }

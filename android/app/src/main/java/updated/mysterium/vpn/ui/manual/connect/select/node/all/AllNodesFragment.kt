@@ -16,10 +16,6 @@ import updated.mysterium.vpn.ui.manual.connect.filter.FilterActivity
 
 class AllNodesFragment : Fragment() {
 
-    companion object {
-        private const val TAG = "CountrySelectFragment"
-    }
-
     private lateinit var binding: FragmentAllNodesBinding
     private val viewModel: AllNodesViewModel by inject()
     private val allNodesAdapter = AllNodesAdapter()
