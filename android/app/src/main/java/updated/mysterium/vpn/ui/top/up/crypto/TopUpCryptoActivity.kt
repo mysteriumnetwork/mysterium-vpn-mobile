@@ -59,7 +59,12 @@ class TopUpCryptoActivity : BaseActivity() {
             finish()
         }
         binding.freeTrialButtonButton.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            viewModel.accountFlowShown()
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+            finish()
         }
         binding.confirmButton.setOnClickListener {
             val cryptoName = topUpAdapter.getSelectedValue()

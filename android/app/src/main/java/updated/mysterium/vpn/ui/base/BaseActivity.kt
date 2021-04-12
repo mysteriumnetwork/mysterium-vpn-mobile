@@ -14,9 +14,7 @@ import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.connection.ConnectionUtil
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -29,6 +27,10 @@ abstract class BaseActivity : AppCompatActivity() {
         viewModel.balanceRunningOut.observe(this, {
             balanceRunningOutPopUp()
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
         handleInternetConnection()
     }
 

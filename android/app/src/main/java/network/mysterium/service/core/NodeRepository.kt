@@ -224,8 +224,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     // Unlock identity and return it's address. Internally mobile node will create default identity
     // if it is not created yet.
-    suspend fun getIdentity(): Identity = withContext(Dispatchers.IO) {
-        val res = deferredNode.await().getIdentity(GetIdentityRequest())
+    suspend fun getIdentity(
+        getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
+    ): Identity = withContext(Dispatchers.IO) {
+        val res = deferredNode.await().getIdentity(getIdentityRequest)
         Identity(address = res.identityAddress, channelAddress = res.channelAddress, registrationStatus = res.registrationStatus)
     }
 
@@ -312,8 +314,16 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().exportIdentity(identityAddress, newPassphrase)
     }
 
-    suspend fun exportIdentity(address: String, newPassphrase: String) = withContext(Dispatchers.IO) {
+    suspend fun exportIdentity(
+        address: String, newPassphrase: String
+    ): ByteArray = withContext(Dispatchers.IO) {
         deferredNode.await().exportIdentity(address, newPassphrase)
+    }
+
+    suspend fun importIdentity(
+        privateKey: ByteArray, passphrase: String
+    ): String = withContext(Dispatchers.IO) {
+        deferredNode.await().importIdentity(privateKey, passphrase)
     }
 
     suspend fun getWalletEquivalent(balance: Double): Estimates = withContext(Dispatchers.IO) {

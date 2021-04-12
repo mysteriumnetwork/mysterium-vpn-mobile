@@ -12,6 +12,7 @@ import network.mysterium.vpn.databinding.FragmentSavedNodesBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 
 class SavedNodesFragment : Fragment() {
 
@@ -20,6 +21,7 @@ class SavedNodesFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentSavedNodesBinding
+    private val allNodesViewModel: AllNodesViewModel by inject()
     private val viewModel: SavedNodesViewModel by inject()
     private val savedNodesAdapter = SavedNodesAdapter()
 
@@ -35,6 +37,13 @@ class SavedNodesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSavedListRecycler()
+        subscribeViewModel()
+    }
+
+    private fun subscribeViewModel() {
+        allNodesViewModel.proposals.observe(viewLifecycleOwner, {
+            getFavouritesList(it.first().proposalList)
+        })
     }
 
     private fun initSavedListRecycler() {
@@ -56,11 +65,11 @@ class SavedNodesFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = savedNodesAdapter
         }
-        getFavouritesList()
+        allNodesViewModel.getProposals()
     }
 
-    private fun getFavouritesList() {
-        viewModel.getSavedNodes().observe(viewLifecycleOwner, { result ->
+    private fun getFavouritesList(proposals: List<Proposal>? = null) {
+        viewModel.getSavedNodes(proposals).observe(viewLifecycleOwner, { result ->
             result.onSuccess {
                 savedNodesAdapter.replaceAll(it)
             }
@@ -70,6 +79,8 @@ class SavedNodesFragment : Fragment() {
                     savedNodesAdapter.clear()
                 }
             }
+            binding.loaderAnimation.visibility = View.GONE
+            binding.loaderAnimation.cancelAnimation()
         })
     }
 

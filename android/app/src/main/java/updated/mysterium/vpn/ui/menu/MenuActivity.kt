@@ -11,9 +11,7 @@ import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
 import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
-import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.menu.MenuItem
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.monitoring.MonitoringActivity
@@ -58,14 +56,12 @@ class MenuActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityMenuBinding
-    private val balanceViewModel: BalanceViewModel by inject()
     private val menuGridAdapter = MenuGridAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        subscribeViewModel()
         inflateLayout()
         bindsAction()
     }
@@ -74,13 +70,6 @@ class MenuActivity : BaseActivity() {
         inflateCustomToolbarView()
         inflateGridLayout()
         inflateAppVersion()
-        balanceViewModel.getCurrentBalance()
-    }
-
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
     }
 
     private fun inflateCustomToolbarView() {
@@ -120,8 +109,11 @@ class MenuActivity : BaseActivity() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.helpButton.setOnClickListener {
             Intercom.client().displayMessenger()

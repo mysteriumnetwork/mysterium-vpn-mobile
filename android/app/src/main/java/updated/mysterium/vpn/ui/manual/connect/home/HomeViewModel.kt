@@ -96,6 +96,12 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         nodesUseCase.addToFavourite(proposal)
     }
 
+    fun deleteFromFavourite(proposal: Proposal) {
+        viewModelScope.launch {
+            nodesUseCase.deleteFromFavourite(proposal)
+        }
+    }
+
     fun disconnect() {
         viewModelScope.launch {
             disconnectNode()
@@ -114,6 +120,10 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     ) = liveDataResult {
         coreService = deferredMysteriumCoreService.await()
         deferredMysteriumCoreService.await().getActiveProposal()
+    }
+
+    fun isFavourite(nodeId: String) = liveDataResult {
+        nodesUseCase.isFavourite(nodeId)
     }
 
     private suspend fun startDeferredNode() {

@@ -12,6 +12,7 @@ import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseViewModel
+import updated.mysterium.vpn.ui.create.account.CreateAccountViewModel
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterViewModel
 import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
 import updated.mysterium.vpn.ui.manual.connect.search.SearchViewModel
@@ -19,6 +20,7 @@ import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.manual.connect.select.node.saved.SavedNodesViewModel
 import updated.mysterium.vpn.ui.monitoring.MonitoringViewModel
 import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
+import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpViewModel
 import updated.mysterium.vpn.ui.private.key.PrivateKeyViewModel
 import updated.mysterium.vpn.ui.profile.ProfileViewModel
 import updated.mysterium.vpn.ui.report.issue.ReportIssueViewModel
@@ -113,6 +115,12 @@ object Modules {
         }
         viewModel {
             PrivateKeyViewModel(get())
+        }
+        viewModel {
+            CreateAccountViewModel(get())
+        }
+        viewModel {
+            PrepareTopUpViewModel(get())
         }
     }
 

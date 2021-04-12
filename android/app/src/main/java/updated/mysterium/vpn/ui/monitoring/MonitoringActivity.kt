@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -20,10 +19,9 @@ import updated.mysterium.vpn.common.data.DataUtil
 import updated.mysterium.vpn.common.date.DateUtil
 import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
 import updated.mysterium.vpn.model.session.Session
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 import java.util.*
 
 class MonitoringActivity : BaseActivity() {
@@ -41,7 +39,6 @@ class MonitoringActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMonitoringBinding
     private val viewModel: MonitoringViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private val sessionsAdapter = SessionsAdapter()
     private var dataType = "B" // Bytes - smaller data type
 
@@ -50,7 +47,6 @@ class MonitoringActivity : BaseActivity() {
         binding = ActivityMonitoringBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
-        subscribeViewModel()
         bindsAction()
     }
 
@@ -59,15 +55,12 @@ class MonitoringActivity : BaseActivity() {
         getLastSessions()
     }
 
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
-    }
-
     private fun bindsAction() {
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             navigateToMenu()

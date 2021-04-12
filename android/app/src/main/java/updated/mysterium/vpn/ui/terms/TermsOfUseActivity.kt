@@ -9,11 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivityTermsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.terms.FullVersionTerm
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 class TermsOfUseActivity : BaseActivity() {
 
@@ -23,7 +21,6 @@ class TermsOfUseActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTermsBinding
     private val viewModel: TermsOfUseViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private val shortVersionAdapter = ShortTermsAdapter()
     private val fullVersionAdapter = FullTermsAdapter()
 
@@ -33,9 +30,7 @@ class TermsOfUseActivity : BaseActivity() {
         setContentView(binding.root)
         checkCurrentState()
         configure()
-        subscribeViewModel()
         bindsAction()
-        balanceViewModel.getCurrentBalance()
     }
 
     private fun checkCurrentState() {
@@ -71,24 +66,19 @@ class TermsOfUseActivity : BaseActivity() {
         })
     }
 
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
-    }
-
     private fun bindsAction() {
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
         }
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
-            val intent = Intent(this, CreateAccountActivity::class.java).apply {
-                putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
-            }
+            val intent = Intent(this, CreateAccountActivity::class.java)
             startActivity(intent)
             finish()
         }
