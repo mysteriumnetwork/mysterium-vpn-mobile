@@ -38,33 +38,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
 
-    <FrameLayout
-        android:id="@+id/securityStatusView"
+    <ImageView
+        android:id="@+id/securityStatusImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/short_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/securityStatusImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/short_divider"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/securityStatusTextView"
-            style="@style/TextAppearance.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/manual_connect_protected"
-            android:textColor="@android:color/white"
-            android:visibility="invisible" />
-
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/connectedStatusImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:src="@drawable/short_connected_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/ipTextView"
@@ -75,7 +70,7 @@
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/securityStatusView"
+        app:layout_constraintTop_toBottomOf="@+id/securityStatusImageView"
         tools:text="185.358.45.304" />
 
     <TextView

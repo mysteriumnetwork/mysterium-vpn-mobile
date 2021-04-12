@@ -279,10 +279,8 @@ class HomeActivity : BaseActivity() {
         binding.connectionState.showDisconnectedState()
         binding.connectedNodeInfo.visibility = View.INVISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
-        binding.securityStatusTextView.visibility = View.INVISIBLE
-        binding.securityStatusImageView.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.short_divider)
-        )
+        binding.securityStatusImageView.visibility = View.VISIBLE
+        binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.manualConnectToolbar.unprotectedState()
         binding.multiAnimation.disconnectedState()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
@@ -310,11 +308,9 @@ class HomeActivity : BaseActivity() {
     private fun inflateConnectingCardView() {
         binding.selectAnotherNodeButton.visibility = View.VISIBLE
         binding.connectedNodeInfo.visibility = View.INVISIBLE
-        binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
-        binding.securityStatusTextView.visibility = View.INVISIBLE
-        binding.securityStatusImageView.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.short_divider)
-        )
+        binding.titleTextView.text = getString(R.string.manual_connect_connecting)
+        binding.securityStatusImageView.visibility = View.VISIBLE
+        binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.connectionTypeTextView.visibility = View.INVISIBLE
         binding.manualConnectToolbar.unprotectedState()
         binding.manualConnectToolbar.setRightIcon(null)
@@ -331,10 +327,8 @@ class HomeActivity : BaseActivity() {
         binding.titleTextView.text = getString(R.string.manual_connect_connected)
         binding.connectionTypeTextView.visibility = View.VISIBLE
         binding.connectionTypeTextView.text = proposal?.countryName ?: "UNKNOWN"
-        binding.securityStatusTextView.visibility = View.VISIBLE
-        binding.securityStatusImageView.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.shape_connected_status)
-        )
+        binding.securityStatusImageView.visibility = View.INVISIBLE
+        binding.connectedStatusImageView.visibility = View.VISIBLE
         binding.manualConnectToolbar.protectedState(isFill = false)
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
