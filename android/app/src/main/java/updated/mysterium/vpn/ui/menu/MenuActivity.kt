@@ -62,11 +62,12 @@ class MenuActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        inflateLayout()
+        configure()
         bindsAction()
     }
 
-    private fun inflateLayout() {
+    private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         inflateCustomToolbarView()
         inflateGridLayout()
         inflateAppVersion()

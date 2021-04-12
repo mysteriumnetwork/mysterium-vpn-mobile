@@ -57,6 +57,7 @@ class WalletActivity : BaseActivity() {
     }
 
     private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         initViewPager()
         initTabLayout()
     }

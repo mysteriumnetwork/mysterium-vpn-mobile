@@ -73,7 +73,12 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    override fun protectedConnection() {
+        connectionStateToolbar?.protectedState(false)
+    }
+
     private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         loadIpAddress()
         bindMysteriumService()
         initViewModel()
@@ -281,7 +286,6 @@ class HomeActivity : BaseActivity() {
         binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
         binding.securityStatusImageView.visibility = View.VISIBLE
         binding.connectedStatusImageView.visibility = View.INVISIBLE
-        binding.manualConnectToolbar.unprotectedState()
         binding.multiAnimation.disconnectedState()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         binding.manualConnectToolbar.setRightIcon(null)
@@ -312,7 +316,6 @@ class HomeActivity : BaseActivity() {
         binding.securityStatusImageView.visibility = View.VISIBLE
         binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.connectionTypeTextView.visibility = View.INVISIBLE
-        binding.manualConnectToolbar.unprotectedState()
         binding.manualConnectToolbar.setRightIcon(null)
         proposal?.let {
             binding.connectionState.showConnectionState(it)
@@ -329,7 +332,6 @@ class HomeActivity : BaseActivity() {
         binding.connectionTypeTextView.text = proposal?.countryName ?: "UNKNOWN"
         binding.securityStatusImageView.visibility = View.INVISIBLE
         binding.connectedStatusImageView.visibility = View.VISIBLE
-        binding.manualConnectToolbar.protectedState(isFill = false)
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
