@@ -20,14 +20,6 @@ class TopUpCryptoActivity : BaseActivity() {
         const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         private const val TAG = "TopUpAmountActivity"
-        private val CRYPTO_VALUES = listOf(
-            CryptoCardItem(CryptoAnimationView.MYST, R.raw.myst_animation, true),
-            CryptoCardItem(CryptoAnimationView.BTC, R.raw.btc_animation),
-            CryptoCardItem(CryptoAnimationView.ETH, R.raw.eth_animation),
-            CryptoCardItem(CryptoAnimationView.LTC, R.raw.ltc_animation),
-            CryptoCardItem(CryptoAnimationView.DAI, R.raw.dai_animation),
-            CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation)
-        )
     }
 
     private lateinit var binding: ActivityTopUpCryptoBinding
@@ -46,11 +38,11 @@ class TopUpCryptoActivity : BaseActivity() {
 
     private fun configure() {
         binding.amountRecycler.adapter = topUpAdapter
-        topUpAdapter.replaceAll(CRYPTO_VALUES)
+        topUpAdapter.replaceAll(getCryptoList())
         topUpAdapter.onItemSelected = {
             binding.cryptoAnimation.changeAnimation(it.value)
         }
-        binding.cryptoAnimation.changeAnimation(CRYPTO_VALUES.first().value)
+        binding.cryptoAnimation.changeAnimation(getCryptoList().first().value)
         checkTrialState()
     }
 
@@ -105,4 +97,13 @@ class TopUpCryptoActivity : BaseActivity() {
             binding.freeTrialButtonButton.visibility = View.GONE
         }
     }
+
+    private fun getCryptoList() = listOf(
+        CryptoCardItem(CryptoAnimationView.MYST, R.raw.myst_animation, true),
+        CryptoCardItem(CryptoAnimationView.BTC, R.raw.btc_animation),
+        CryptoCardItem(CryptoAnimationView.ETH, R.raw.eth_animation),
+        CryptoCardItem(CryptoAnimationView.LTC, R.raw.ltc_animation),
+        CryptoCardItem(CryptoAnimationView.DAI, R.raw.dai_animation),
+        CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation)
+    )
 }

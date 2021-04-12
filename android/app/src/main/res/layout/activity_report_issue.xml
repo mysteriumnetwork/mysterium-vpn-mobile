@@ -132,29 +132,37 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/issueEditText"
-                style="@style/TextAppearance.BodyRegular"
+            <FrameLayout
+                android:id="@+id/issueEditTextFrame"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
                 android:layout_marginTop="@dimen/margin_padding_size_small"
-                android:layout_weight="1"
-                android:background="@drawable/shape_big_edit_text"
-                android:gravity="top|start"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine"
-                android:paddingHorizontal="@dimen/margin_padding_size_small"
-                android:paddingVertical="@dimen/margin_padding_size_xxsmall"
-                android:scrollbars="vertical"
-                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="LabelFor" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/issueEditText"
+                    style="@style/TextAppearance.BodyRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/shape_big_edit_text"
+                    android:gravity="top|start"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:paddingHorizontal="@dimen/margin_padding_size_small"
+                    android:paddingVertical="@dimen/margin_padding_size_xxsmall"
+                    android:scrollbars="vertical"
+                    android:textColor="@android:color/white"
+                    tools:ignore="LabelFor" />
+
+            </FrameLayout>
 
             <ImageView
                 android:id="@+id/issueErrorIcon"
@@ -162,10 +170,10 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_error_state"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/issueEditText"
-                app:layout_constraintEnd_toStartOf="@+id/issueEditText"
-                app:layout_constraintStart_toStartOf="@+id/issueEditText"
-                app:layout_constraintTop_toTopOf="@+id/issueEditText"
+                app:layout_constraintBottom_toTopOf="@+id/issueEditTextFrame"
+                app:layout_constraintEnd_toStartOf="@+id/issueEditTextFrame"
+                app:layout_constraintStart_toStartOf="@+id/issueEditTextFrame"
+                app:layout_constraintTop_toTopOf="@+id/issueEditTextFrame"
                 tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -120,6 +120,7 @@ class ReportIssueActivity : BaseActivity() {
         binding.issueEditText.setHintTextColor(getColor(R.color.menu_subtitle_light_pink))
         binding.issueEditText.gravity = Gravity.CENTER
         binding.issueEditText.text?.clear()
+        binding.issueEditText.clearFocus()
         binding.issueErrorIcon.visibility = View.VISIBLE
     }
 

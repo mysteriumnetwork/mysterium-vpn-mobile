@@ -86,8 +86,8 @@ class PrivateKeyActivity : BaseActivity() {
     private fun downloadKey(passphrase: String) {
         viewModel.downloadKey(passphrase).observe(this, { result ->
             result.onSuccess {
-                exportIdentity(passphrase)
                 saveFile(it)
+                exportIdentity(passphrase)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())

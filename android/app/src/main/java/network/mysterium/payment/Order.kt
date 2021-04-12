@@ -1,6 +1,5 @@
 package network.mysterium.payment
 
-import com.beust.klaxon.Klaxon
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
