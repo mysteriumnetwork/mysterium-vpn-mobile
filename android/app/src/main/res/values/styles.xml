@@ -338,6 +338,12 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextAppearance.MediumCaption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="TextAppearance.BoldInfo" parent="TextAppearance.AppCompat.Caption">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>

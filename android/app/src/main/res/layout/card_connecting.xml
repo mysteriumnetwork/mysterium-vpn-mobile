@@ -8,29 +8,13 @@
     android:layout_weight="3"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:layout_marginBottom="@dimen/margin_padding_size_small">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/selectNodeManuallyButton"
-            style="@style/Widget.RoundedUnfocusedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-            android:text="@string/manual_connect_connecting" />
-
-    </FrameLayout>
-
     <TextView
         style="@style/TextAppearance.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
         android:text="@string/manual_connect_connecting_title"
         android:textColor="@color/manual_connect_connecting_title_grey_blue" />
 
@@ -39,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-        android:layout_marginTop="@dimen/margin_padding_size_small"
         android:text="@string/manual_connect_connecting_description"
         android:textAlignment="center"
         android:textColor="@color/manual_connect_attention_text_light_grey" />
@@ -47,16 +30,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-        android:layout_marginBottom="@dimen/margin_padding_size_small_medium">
+        android:layout_weight="1.5">
 
         <androidx.cardview.widget.CardView
-            android:layout_gravity="center"
             style="@style/Widget.SmallRoundedCardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -82,8 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_padding_size_small_medium"
                     android:layout_marginEnd="@dimen/margin_padding_size_small"
-                    android:textAlignment="center"
                     android:gravity="center"
+                    android:textAlignment="center"
                     android:textColor="@color/manual_connect_country_name_dark_blue"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/nodeTypeImageView"
@@ -121,6 +103,24 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginBottom="@dimen/margin_padding_size_small"
+        android:layout_weight="1.5">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectNodeManuallyButton"
+            style="@style/Widget.RoundedUnfocusedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:text="@string/manual_connect_connecting" />
 
     </FrameLayout>
 
