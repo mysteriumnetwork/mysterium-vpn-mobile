@@ -10,4 +10,5 @@ data class MenuItem(
 ) {
 
     var onItemClickListener: (() -> Unit)? = null
+    var dynamicSubtitle: String? = null
 }
