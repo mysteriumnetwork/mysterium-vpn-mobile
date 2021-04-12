@@ -6,10 +6,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ToolbarBaseConnectBinding
 
-class BalanceToolbar @JvmOverloads constructor(
+class ConnectionToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -19,7 +20,7 @@ class BalanceToolbar @JvmOverloads constructor(
     private var rightIconDrawable: Drawable? = null
     private var leftButtonListener: (() -> Unit)? = null
     private var rightButtonListener: (() -> Unit)? = null
-    private var balanceClickListener: (() -> Unit)? = null
+    private var connectionClickListener: (() -> Unit)? = null
     private lateinit var binding: ToolbarBaseConnectBinding
 
     init {
@@ -36,10 +37,34 @@ class BalanceToolbar @JvmOverloads constructor(
         addView(toolbarView)
     }
 
-    fun setBalance(balance: Double) {
-        binding.currentBalanceTextView.text = context.getString(
-            R.string.wallet_current_balance, balance
+    fun protectedState(isFill: Boolean) {
+        if (isFill) {
+            binding.connectionCardView.background = ContextCompat.getDrawable(
+                context, R.drawable.shape_toolbar_fill
+            )
+            binding.connectionCurrentStatus.text = context.getString(R.string.manual_connect_protected)
+            binding.connectionCurrentStatus.setTextColor(ContextCompat.getColor(
+                context, R.color.onboarding_current_screen_white
+            ))
+        } else {
+            binding.connectionCardView.background = ContextCompat.getDrawable(
+                context, R.drawable.shape_toolbar_blur
+            )
+            binding.connectionCurrentStatus.text = context.getString(R.string.manual_connect_protected)
+            binding.connectionCurrentStatus.setTextColor(ContextCompat.getColor(
+                context, R.color.manual_connect_connection_state
+            ))
+        }
+    }
+
+    fun unprotectedState() {
+        binding.connectionCardView.background = ContextCompat.getDrawable(
+            context, R.drawable.shape_toolbar_connect
         )
+        binding.connectionCurrentStatus.text = context.getString(R.string.manual_connect_country_status)
+        binding.connectionCurrentStatus.setTextColor(ContextCompat.getColor(
+            context, R.color.menu_subtitle_light_pink
+        ))
     }
 
     fun setRightView(rightView: View) {
@@ -72,19 +97,19 @@ class BalanceToolbar @JvmOverloads constructor(
         rightButtonListener = action
     }
 
-    fun onBalanceClickListener(action: () -> Unit) {
-        balanceClickListener = action
+    fun onConnectClickListener(action: () -> Unit) {
+        connectionClickListener = action
     }
 
     private fun getIconsAttributes(attrs: AttributeSet) {
         val iconsAttributes = context.obtainStyledAttributes(
-            attrs, R.styleable.BalanceToolbar
+            attrs, R.styleable.ConnectionToolbar
         )
-        if (iconsAttributes.hasValue(R.styleable.BalanceToolbar_leftIcon)) {
-            leftIconDrawable = iconsAttributes.getDrawable(R.styleable.BalanceToolbar_leftIcon)
+        if (iconsAttributes.hasValue(R.styleable.ConnectionToolbar_leftIcon)) {
+            leftIconDrawable = iconsAttributes.getDrawable(R.styleable.ConnectionToolbar_leftIcon)
         }
-        if (iconsAttributes.hasValue(R.styleable.BalanceToolbar_rightIcon)) {
-            rightIconDrawable = iconsAttributes.getDrawable(R.styleable.BalanceToolbar_rightIcon)
+        if (iconsAttributes.hasValue(R.styleable.ConnectionToolbar_rightIcon)) {
+            rightIconDrawable = iconsAttributes.getDrawable(R.styleable.ConnectionToolbar_rightIcon)
         }
         iconsAttributes.recycle()
     }
@@ -105,8 +130,8 @@ class BalanceToolbar @JvmOverloads constructor(
         binding.rightButton.setOnClickListener {
             rightButtonListener?.invoke()
         }
-        binding.balanceCardView.setOnClickListener {
-            balanceClickListener?.invoke()
+        binding.connectionCardView.setOnClickListener {
+            connectionClickListener?.invoke()
         }
     }
 }

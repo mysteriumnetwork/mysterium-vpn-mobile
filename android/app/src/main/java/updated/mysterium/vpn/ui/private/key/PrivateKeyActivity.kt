@@ -18,7 +18,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 
 class PrivateKeyActivity : BaseActivity() {
 
@@ -41,9 +41,7 @@ class PrivateKeyActivity : BaseActivity() {
             showDownloadKeyPopUp()
         }
         binding.backUpLaterFrame.setOnClickListener {
-            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-                putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
-            }
+            val intent = Intent(this, PrepareTopUpActivity::class.java)
             startActivity(intent)
         }
         binding.backButton.setOnClickListener {
@@ -122,9 +120,7 @@ class PrivateKeyActivity : BaseActivity() {
     private fun exportIdentity(passphrase: String) {
         viewModel.exportIdentity(passphrase).observe(this, { result ->
             result.onSuccess {
-                val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-                    putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
-                }
+                val intent = Intent(this, PrepareTopUpActivity::class.java)
                 startActivity(intent)
             }
             result.onFailure {

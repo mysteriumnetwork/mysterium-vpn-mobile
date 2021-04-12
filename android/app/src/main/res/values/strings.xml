@@ -151,7 +151,7 @@
     <string name="manual_connect_disconnect">Disconnect</string>
     <string name="manual_connect_disconnecting">Disconnecting</string>
     <string name="manual_connect_connecting_title">Manual connect</string>
-    <string name="manual_connect_connecting_description">Connecting manually to node</string>
+    <string name="manual_connect_connecting_description">Creating an encrypted tunnel to your node</string>
     <string name="manual_connect_duration">Duration</string>
     <string name="manual_connect_data_received_hint">Receive/Send</string>
     <string name="manual_connect_paid_hint">Paid</string>
@@ -223,7 +223,7 @@
     <string name="wallet_spendings_connected_value">%d days ago</string>
     <string name="wallet_top_ups_time">Time</string>Paid
     <string name="wallet_top_ups_paid">Paid</string>
-    <string name="wallet_top_ups_myst">Myst</string>topUp.payAmount + topUp.payCurrency
+    <string name="wallet_top_ups_myst">Myst</string>
     <string name="wallet_top_ups_currency">%1$s %2$s</string>
     <string name="wallet_video">Online\n video</string>
     <string name="wallet_web">Web\n browsing</string>
@@ -305,6 +305,11 @@
     <string name="private_key_back_up">Back up\n Private Key</string>
     <string name="private_key_back_up_later">Back up\n Later</string>
 
+    <!--  Prepare top up  -->
+    <string name="prepare_top_up_referral">Use referral code</string>
+    <string name="prepare_top_up_now">Top up now</string>
+    <string name="prepare_top_up_later">Top up later</string>
+
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
     <string name="pop_up_top_up_description">Credits is running out</string>
@@ -339,12 +344,15 @@
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
     <string name="pop_up_private_key_error">Incorrect Password</string>
-    <string name="pop_up_private_key_hint">Password length 12-16 characters</string>
+    <string name="pop_up_private_key_hint">Password length 12–16 characters</string>
     <string name="pop_up_import_account_title">Import account</string>
     <string name="pop_up_import_account_upload">Upload</string>
     <string name="pop_up_password_account_title">Account password</string>
     <string name="pop_up_password_account_apply">Apply</string>
     <string name="pop_up_password_account_hint">Enter password here</string>
+    <string name="pop_up_referral_hint">Enter code here</string>
+    <string name="pop_up_referral_title">Referral code</string>
+    <string name="pop_up_referral_description">You will get</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

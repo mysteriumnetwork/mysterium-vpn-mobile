@@ -11,9 +11,9 @@ import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.model.settings.DnsOption
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
 
@@ -42,7 +42,6 @@ class SettingsActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
     private lateinit var listPopupWindow: ListPopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,19 +49,12 @@ class SettingsActivity : BaseActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
-        subscribeViewModel()
         bindsAction()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         calculateSpinnerSize()
-    }
-
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
     }
 
     private fun configure() {
@@ -72,9 +64,15 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun bindsAction() {
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+        }
         binding.manualConnectToolbar.onLeftButtonClicked {
             val intent = Intent(this, MenuActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)
         }

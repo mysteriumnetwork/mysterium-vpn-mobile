@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <updated.mysterium.vpn.ui.custom.view.BalanceToolbar
+    <updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

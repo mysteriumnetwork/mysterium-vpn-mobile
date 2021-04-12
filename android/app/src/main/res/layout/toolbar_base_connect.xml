@@ -19,12 +19,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/balanceCardView"
-        style="@style/Widget.SemiTransparentCardView"
+    <FrameLayout
+        android:id="@+id/connectionCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:background="@drawable/shape_toolbar_connect"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/leftButton"
@@ -32,42 +32,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/connectionCurrentStatus"
+            style="@style/TextAppearance.MediumCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_small"
-            android:layout_marginVertical="@dimen/margin_padding_size_xsmall"
-            android:orientation="horizontal">
+            android:layout_gravity="center"
+            android:text="@string/manual_connect_country_status"
+            android:textAlignment="center"
+            android:textColor="@color/menu_subtitle_light_pink" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_balance"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/currentBalanceTextView"
-                style="@style/TextAppearance.BodyBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_small"
-                android:textColor="@color/manual_connect_title_grey"
-                android:text="@string/wallet_start_balance" />
-
-            <TextView
-                android:id="@+id/currentValueTextView"
-                style="@style/TextAppearance.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_medium"
-                android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
-                android:textColor="@color/manual_connect_value_white"
-                android:text="@string/wallet_balance_currency" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/rightButton"

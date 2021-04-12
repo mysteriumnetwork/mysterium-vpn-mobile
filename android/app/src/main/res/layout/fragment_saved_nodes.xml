@@ -60,4 +60,17 @@
         tools:itemCount="20"
         tools:listitem="@layout/item_saved_node" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loaderAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loader_animation" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

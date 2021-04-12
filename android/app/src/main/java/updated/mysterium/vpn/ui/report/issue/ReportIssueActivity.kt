@@ -11,25 +11,21 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityReportIssueBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.isEmail
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class ReportIssueActivity : BaseActivity() {
 
     private lateinit var binding: ActivityReportIssueBinding
     private val viewModel: ReportIssueViewModel by inject()
-    private val balanceViewModel: BalanceViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReportIssueBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
-        subscribeViewModel()
         bindsAction()
-        balanceViewModel.getCurrentBalance()
     }
 
     private fun configure() {
@@ -41,18 +37,15 @@ class ReportIssueActivity : BaseActivity() {
         binding.nodeVersionValueTextView.text = BuildConfig.NODE_VERSION
     }
 
-    private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
-            binding.manualConnectToolbar.setBalance(it)
-        })
-    }
-
     private fun bindsAction() {
         binding.sendReportButton.setOnClickListener {
             checkCorrectInputData()
         }
-        binding.manualConnectToolbar.onBalanceClickListener {
-            startActivity(Intent(this, WalletActivity::class.java))
+        binding.manualConnectToolbar.onConnectClickListener {
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             val intent = Intent(this, MenuActivity::class.java).apply {

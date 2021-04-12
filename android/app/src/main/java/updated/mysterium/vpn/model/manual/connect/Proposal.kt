@@ -66,4 +66,5 @@ data class Proposal(
     )
 
     var priceLevel = PriceLevel.MEDIUM
+    var isAvailable = true
 }

@@ -17,4 +17,7 @@ interface NodeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addToFavourite(nodeEntity: NodeEntity)
+
+    @Query("SELECT * FROM NodeEntity WHERE id = :nodeId")
+    suspend fun getById(nodeId: String): NodeEntity?
 }
