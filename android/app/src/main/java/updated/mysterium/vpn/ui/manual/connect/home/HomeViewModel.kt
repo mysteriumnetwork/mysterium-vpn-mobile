@@ -24,6 +24,7 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import java.util.*
 
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -110,7 +111,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun updateCurrentConnectionStatus() = liveDataResult {
         val status = connectionUseCase.status()
-        val connectionModel = ConnectionState.valueOf(status.state.toUpperCase())
+        val connectionModel = ConnectionState.valueOf(status.state.toUpperCase(Locale.ROOT))
         _connectionState.postValue(connectionModel)
         connectionModel
     }

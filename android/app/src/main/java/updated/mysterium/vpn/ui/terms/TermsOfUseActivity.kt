@@ -46,6 +46,7 @@ class TermsOfUseActivity : BaseActivity() {
     }
 
     private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         viewModel.getShortVersion().observe(this, { result ->
             result.onSuccess { terms ->
                 showShortVersion(terms)

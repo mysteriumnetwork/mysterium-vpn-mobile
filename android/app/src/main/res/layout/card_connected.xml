@@ -8,24 +8,6 @@
     android:layout_weight="1.5"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-        android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:layout_weight="1">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/disconnectButton"
-            style="@style/Widget.SecondaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/manual_connect_disconnect"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </FrameLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -278,5 +260,23 @@
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:layout_weight="1">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/disconnectButton"
+            style="@style/Widget.SecondaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/manual_connect_disconnect"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
 
 </LinearLayout>

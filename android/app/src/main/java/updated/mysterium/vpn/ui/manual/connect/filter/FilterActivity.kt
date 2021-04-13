@@ -33,9 +33,14 @@ class FilterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initProposalListRecycler()
-        bindsActions()
+        configure()
         subscribeViewModel()
+        bindsActions()
+    }
+
+    private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
+        initProposalListRecycler()
         getNodesList()
     }
 
