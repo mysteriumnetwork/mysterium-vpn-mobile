@@ -14,28 +14,34 @@ import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.connection.ConnectionUtil
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    protected var connectionStateToolbar: ConnectionToolbar? = null
     private val viewModel: BaseViewModel by inject()
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         alertDialogBuilder = AlertDialog.Builder(this)
-        viewModel.balanceRunningOut.observe(this, {
-            balanceRunningOutPopUp()
-        })
+        subscribeViewModel()
     }
 
     override fun onResume() {
         super.onResume()
+        viewModel.checkCurrentConnection()
         handleInternetConnection()
     }
 
     open fun retryLoading() {
         // Override in activity for handle retry loading click
+    }
+
+    fun initToolbar(connectionToolbar: ConnectionToolbar) {
+        connectionStateToolbar = connectionToolbar
     }
 
     fun createPopUp(popUpView: View, cancelable: Boolean): AlertDialog {
@@ -87,6 +93,27 @@ abstract class BaseActivity : AppCompatActivity() {
             handleInternetConnection()
         }
         dialog.show()
+    }
+
+    protected open fun protectedConnection() {
+        connectionStateToolbar?.protectedState(true)
+    }
+
+    private fun unprotectedConnection() {
+        connectionStateToolbar?.unprotectedState()
+    }
+
+    private fun subscribeViewModel() {
+        viewModel.balanceRunningOut.observe(this, {
+            balanceRunningOutPopUp()
+        })
+        viewModel.connectionState.observe(this, {
+            if (it == ConnectionState.CONNECTED) {
+                protectedConnection()
+            } else {
+                unprotectedConnection()
+            }
+        })
     }
 
     private fun handleInternetConnection() {

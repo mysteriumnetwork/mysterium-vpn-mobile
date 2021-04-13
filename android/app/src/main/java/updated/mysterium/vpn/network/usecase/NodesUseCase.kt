@@ -37,7 +37,7 @@ class NodesUseCase(
     ) = nodeDao.addToFavourite(NodeEntity(proposal, true))
 
     suspend fun deleteFromFavourite(proposal: Proposal) {
-        nodeDao.deleteFromFavourite(proposal.id)
+        nodeDao.deleteFromFavourite(proposal.providerID + proposal.serviceType)
     }
 
     suspend fun isFavourite(nodeId: String): NodeEntity? = nodeDao.getById(nodeId)

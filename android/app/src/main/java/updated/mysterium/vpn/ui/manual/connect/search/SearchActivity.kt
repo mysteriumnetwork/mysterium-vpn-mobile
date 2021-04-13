@@ -22,9 +22,14 @@ class SearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configure()
         bindsAction()
-        initProposalListRecycler()
         subscribeViewModel()
+    }
+
+    private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
+        initProposalListRecycler()
     }
 
     private fun bindsAction() {

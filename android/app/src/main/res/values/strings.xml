@@ -181,16 +181,15 @@
     <string name="filter_quality_low">Any</string>
 
     <!--  Menu  -->
+    <string name="menu_current_balance">"%.3f" MYST</string>
     <string name="menu_title">Mysterium Network</string>
-    <string name="menu_item_home_title">Home</string>
     <string name="menu_item_profile_title">Profile</string>
-    <string name="menu_item_wallet_title">Wallet</string>
-    <string name="menu_item_monitoring_title">Monitoring</string>
-    <string name="menu_item_black_list_title">Black list</string>
+    <string name="menu_item_wallet_title">Account</string>
+    <string name="menu_item_monitoring_title">History</string>
     <string name="menu_item_referral_title">Referral program</string>
+    <string name="menu_item_referral_subtitle">Earn VPN Credits</string>
     <string name="menu_item_wallet_subtitle">Top up your account</string>
-    <string name="menu_item_monitoring_subtitle">Traffic usage history</string>
-    <string name="menu_item_black_list_subtitle">15 nodes</string>
+    <string name="menu_item_monitoring_subtitle">Connection history</string>
     <string name="menu_list_item_settings">Settings</string>
     <string name="menu_list_item_report">Report an issue</string>
     <string name="menu_list_item_help">Get help</string>

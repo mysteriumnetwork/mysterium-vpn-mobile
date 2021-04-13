@@ -43,6 +43,7 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         viewModel.getIdentity().observe(this, { result ->
             result.onSuccess { identity ->
                 binding.identityValueTextView.text = identity.address
