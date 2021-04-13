@@ -67,6 +67,7 @@ class HomeActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (isInternetAvailable()) {
+            isDisconnectedByUser = true
             setIntent(intent)
             checkProposalArgument()
         } else {
@@ -97,6 +98,9 @@ class HomeActivity : BaseActivity() {
             disconnect()
             showFailedToConnectPopUp()
         })
+        viewModel.manualDisconnect.observe(this, {
+            isDisconnectedByUser = true
+        })
     }
 
     private fun initViewModel() {
@@ -108,6 +112,7 @@ class HomeActivity : BaseActivity() {
             ConnectionState.NOTCONNECTED -> disconnect()
             ConnectionState.CONNECTING -> inflateConnectingCardView()
             ConnectionState.CONNECTED -> {
+                isDisconnectedByUser = false
                 loadIpAddress()
                 inflateConnectedCardView()
             }
@@ -140,7 +145,6 @@ class HomeActivity : BaseActivity() {
                 wifiNetworkErrorPopUp()
             }
         }
-        isDisconnectedByUser = false
     }
 
     private fun getProposal() {
@@ -304,6 +308,7 @@ class HomeActivity : BaseActivity() {
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         loadIpAddress()
         toolbarWalletIcon()
+        isDisconnectedByUser = false
     }
 
     private fun inflateNodeInfo() {

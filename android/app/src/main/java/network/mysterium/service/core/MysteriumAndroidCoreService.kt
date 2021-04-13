@@ -55,6 +55,7 @@ class MysteriumAndroidCoreService : VpnService() {
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
 
         val options = Mysterium.defaultNodeOptions()
+        options.pilvytisAddress = "http://hadex.lt:8002/api/v1" // Testing payment, should be deleted after testing
         mobileNode = Mysterium.newNode(filesPath, options)
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 

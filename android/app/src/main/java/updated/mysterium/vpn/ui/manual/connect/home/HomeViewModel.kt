@@ -43,10 +43,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionException: LiveData<Exception>
         get() = _connectionException
 
+    val manualDisconnect: LiveData<Unit>
+        get() = _manualDisconnect
+
     private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
     private lateinit var coreService: MysteriumCoreService
     private val _connectionException = MutableLiveData<Exception>()
+    private val _manualDisconnect = MutableLiveData<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
@@ -224,6 +228,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun disconnectNode() {
         if (_connectionState.value == ConnectionState.CONNECTED) {
+            _manualDisconnect.postValue(Unit)
             connectionUseCase.disconnect()
             coreService.setActiveProposal(null)
             coreService.setDeferredNode(null)
