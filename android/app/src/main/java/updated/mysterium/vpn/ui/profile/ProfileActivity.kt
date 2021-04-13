@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import network.mysterium.AppNotificationManager
 import network.mysterium.vpn.R
@@ -20,7 +21,6 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.menu.MenuActivity
 
 class ProfileActivity : BaseActivity() {
 
@@ -44,6 +44,9 @@ class ProfileActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
+        binding.manualConnectToolbar.setLeftIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_back)
+        )
         viewModel.getIdentity().observe(this, { result ->
             result.onSuccess { identity ->
                 binding.identityValueTextView.text = identity.address
@@ -67,10 +70,7 @@ class ProfileActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
-            val intent = Intent(this, MenuActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            finish()
         }
         binding.downloadButton.setOnClickListener {
             viewModel.downloadKey().observe(this, { result ->

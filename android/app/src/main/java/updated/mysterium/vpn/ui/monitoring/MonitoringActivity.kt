@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -21,7 +22,6 @@ import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
 import updated.mysterium.vpn.model.session.Session
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.menu.MenuActivity
 import java.util.*
 
 class MonitoringActivity : BaseActivity() {
@@ -52,6 +52,9 @@ class MonitoringActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
+        binding.manualConnectToolbar.setLeftIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_back)
+        )
         initSessionsRecycler()
         getLastSessions()
     }
@@ -64,7 +67,7 @@ class MonitoringActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
-            navigateToMenu()
+            finish()
         }
     }
 
@@ -200,9 +203,5 @@ class MonitoringActivity : BaseActivity() {
             }
         }
         binding.dataTypeTextView.text = dataType
-    }
-
-    private fun navigateToMenu() {
-        startActivity(Intent(this, MenuActivity::class.java))
     }
 }
