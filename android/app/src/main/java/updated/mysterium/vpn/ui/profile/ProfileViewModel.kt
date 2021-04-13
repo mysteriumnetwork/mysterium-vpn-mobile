@@ -8,7 +8,7 @@ class ProfileViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     // MOCK data - random char set. Should be replaced on user passphrase after implementing it
     private companion object {
-        const val PRIVATE_KEY_PASSPHRASE = "fhHGF12G2g"
+        const val PRIVATE_KEY_PASSPHRASE = "fhHGF12G2g3g4g"
     }
 
     private val connectionUseCase = useCaseProvider.connection()

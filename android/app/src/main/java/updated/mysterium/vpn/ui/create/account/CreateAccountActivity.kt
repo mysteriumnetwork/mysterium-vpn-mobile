@@ -11,6 +11,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCreateAccountBinding
 import network.mysterium.vpn.databinding.PopUpAccountPasswordBinding
 import network.mysterium.vpn.databinding.PopUpImportAccountBinding
+import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
@@ -26,9 +27,9 @@ class CreateAccountActivity : BaseActivity() {
         const val TAG = "CreateAccountActivity"
     }
 
-    private lateinit var binding: ActivityCreateAccountBinding
     private val viewModel: CreateAccountViewModel by inject()
     private var privateKeyJson: String? = null
+    private lateinit var binding: ActivityCreateAccountBinding
     private lateinit var bindingPasswordPopUp: PopUpAccountPasswordBinding
     private lateinit var dialogPasswordPopup: AlertDialog
 
@@ -36,6 +37,7 @@ class CreateAccountActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        subscribeViewModel()
         bindsAction()
     }
 
@@ -50,27 +52,20 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.createNewAccountFrame.setOnClickListener {
-            startActivity(Intent(this, PrivateKeyActivity::class.java))
+            viewModel.createNewAccount()
         }
         binding.importAccountFrame.setOnClickListener {
             showUploadFilePopUp()
         }
     }
 
-    private fun showUploadFilePopUp() {
-        val bindingPopUp = PopUpImportAccountBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
-        bindingPopUp.uploadButton.setOnClickListener {
-            uploadKey()
-            dialog.dismiss()
-        }
-        bindingPopUp.cancelButton.setOnClickListener {
-            dialog.dismiss()
-        }
-        bindingPopUp.closeButton.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.show()
+    private fun subscribeViewModel() {
+        viewModel.navigateForward.observe(this, {
+            startActivity(Intent(this, PrivateKeyActivity::class.java))
+        })
+        viewModel.registrationError.observe(this, {
+            showRegistrationErrorPopUp()
+        })
     }
 
     private fun uploadKey() {
@@ -84,30 +79,6 @@ class CreateAccountActivity : BaseActivity() {
         privateKeyJson = br.readLine()
         br.close()
         showPasswordPopUp()
-    }
-
-    private fun showPasswordPopUp() {
-        bindingPasswordPopUp = PopUpAccountPasswordBinding.inflate(layoutInflater)
-        dialogPasswordPopup = createPopUp(bindingPasswordPopUp.root, true)
-        bindingPasswordPopUp.applyButton.setOnClickListener {
-            privateKeyJson?.let {
-                importAccount(it, bindingPasswordPopUp.passwordEditText.text.toString())
-            }
-        }
-        bindingPasswordPopUp.closeButton.setOnClickListener {
-            dialogPasswordPopup.dismiss()
-        }
-        bindingPasswordPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bindingPasswordPopUp.passwordEditText.background = ContextCompat.getDrawable(
-                    this, R.drawable.shape_password_field
-                )
-                bindingPasswordPopUp.passwordEditText.text?.clear()
-                bindingPasswordPopUp.errorText.visibility = View.GONE
-                bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
-            }
-        }
-        dialogPasswordPopup.show()
     }
 
     private fun importAccount(privateKey: String, passphrase: String) {
@@ -138,5 +109,58 @@ class CreateAccountActivity : BaseActivity() {
         bindingPasswordPopUp.passwordEditText.clearFocus()
         bindingPasswordPopUp.passwordEditText.hint = ""
         bindingPasswordPopUp.errorText.visibility = View.VISIBLE
+    }
+
+    private fun showRegistrationErrorPopUp() {
+        val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.tryAgainButton.setOnClickListener {
+            dialog.dismiss()
+            viewModel.createNewAccount()
+        }
+        bindingPopUp.cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun showUploadFilePopUp() {
+        val bindingPopUp = PopUpImportAccountBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.uploadButton.setOnClickListener {
+            uploadKey()
+            dialog.dismiss()
+        }
+        bindingPopUp.cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        bindingPopUp.closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun showPasswordPopUp() {
+        bindingPasswordPopUp = PopUpAccountPasswordBinding.inflate(layoutInflater)
+        dialogPasswordPopup = createPopUp(bindingPasswordPopUp.root, true)
+        bindingPasswordPopUp.applyButton.setOnClickListener {
+            privateKeyJson?.let {
+                importAccount(it, bindingPasswordPopUp.passwordEditText.text.toString())
+            }
+        }
+        bindingPasswordPopUp.closeButton.setOnClickListener {
+            dialogPasswordPopup.dismiss()
+        }
+        bindingPasswordPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                bindingPasswordPopUp.passwordEditText.background = ContextCompat.getDrawable(
+                    this, R.drawable.shape_password_field
+                )
+                bindingPasswordPopUp.passwordEditText.text?.clear()
+                bindingPasswordPopUp.errorText.visibility = View.GONE
+                bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
+            }
+        }
+        dialogPasswordPopup.show()
     }
 }

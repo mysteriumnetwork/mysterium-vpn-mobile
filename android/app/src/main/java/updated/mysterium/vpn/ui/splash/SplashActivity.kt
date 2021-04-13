@@ -21,6 +21,7 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -31,14 +32,9 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
 class SplashActivity : BaseActivity() {
 
-    companion object {
-        private const val TAG = "SplashActivity"
-    }
-
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
-    private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +50,6 @@ class SplashActivity : BaseActivity() {
 
     private fun prepareNodeForStarting() {
         if (isInternetAvailable()) {
-            bindMysteriumService()
             subscribeViewModel()
             ensureVpnServicePermission()
         }
@@ -123,27 +118,8 @@ class SplashActivity : BaseActivity() {
         }.show()
     }
 
-    private fun bindMysteriumService() {
-        Intent(this, MysteriumAndroidCoreService::class.java).also { intent ->
-            bindService(
-                intent,
-                object : ServiceConnection {
-
-                    override fun onServiceDisconnected(name: ComponentName?) {
-                        Log.i(TAG, "Service disconnected")
-                    }
-
-                    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                        Log.i(TAG, "Service connected")
-                        deferredMysteriumCoreService.complete(service as MysteriumCoreService)
-                    }
-                },
-                Context.BIND_AUTO_CREATE
-            )
-        }
-    }
-
     private fun startLoading() {
+        val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
         balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
         viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
             result.onSuccess {
