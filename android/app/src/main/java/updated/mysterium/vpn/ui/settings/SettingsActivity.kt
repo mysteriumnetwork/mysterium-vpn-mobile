@@ -58,6 +58,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         setUpDnsSpinner()
         setUpResidentCountryList()
         checkPreviousDnsOption()

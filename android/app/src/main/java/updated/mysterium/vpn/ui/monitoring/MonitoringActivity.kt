@@ -51,6 +51,7 @@ class MonitoringActivity : BaseActivity() {
     }
 
     private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         initSessionsRecycler()
         getLastSessions()
     }

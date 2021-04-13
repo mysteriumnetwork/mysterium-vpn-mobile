@@ -42,7 +42,12 @@ class SelectNodeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configure()
         bindsAction()
+    }
+
+    private fun configure() {
+        initToolbar(binding.manualConnectToolbar)
         initViewPager()
         initTabLayout()
     }

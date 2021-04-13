@@ -28,8 +28,14 @@ class MenuGridAdapter : ContentListAdapter<MenuItem, MenuGridAdapter.MenuGridVie
             binding.itemLogoImageView.setImageDrawable(
                 ContextCompat.getDrawable(itemView.context, item.iconResId)
             )
-            item.subTitleResId?.let { subTitleRes ->
-                binding.itemSubTitleTextView.text = itemView.context.getString(subTitleRes)
+            if (item.dynamicSubtitle != null) {
+                item.dynamicSubtitle?.let {
+                    binding.itemSubTitleTextView.text = it
+                }
+            } else {
+                item.subTitleResId?.let { subTitleRes ->
+                    binding.itemSubTitleTextView.text = itemView.context.getString(subTitleRes)
+                }
             }
             binding.menuItemView.setOnClickListener {
                 item.onItemClickListener?.invoke()
