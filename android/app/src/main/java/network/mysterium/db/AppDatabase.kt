@@ -68,7 +68,7 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
 val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("""
-            CREATE TABLE IF NOT EXISTS `SavedProposalFilter_backup` (
+            CREATE TABLE `SavedProposalFilter_backup` (
             `id` TEXT PRIMARY KEY NOT NULL, 
             `countryCode` TEXT NOT NULL, 
             `countryName` TEXT NOT NULL, 
@@ -88,7 +88,7 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
 
         database.execSQL("DROP TABLE `SavedProposalFilter`")
         database.execSQL("""
-            CREATE TABLE IF NOT EXISTS `SavedProposalFilter` (
+            CREATE TABLE `SavedProposalFilter` (
             `id` INTEGER PRIMARY KEY NOT NULL, 
             `countryCode` TEXT NOT NULL, 
             `countryName` TEXT NOT NULL, 
