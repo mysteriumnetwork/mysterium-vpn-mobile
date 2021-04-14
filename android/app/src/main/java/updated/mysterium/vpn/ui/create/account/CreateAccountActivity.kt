@@ -13,6 +13,8 @@ import network.mysterium.vpn.databinding.PopUpAccountPasswordBinding
 import network.mysterium.vpn.databinding.PopUpImportAccountBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.App
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
@@ -28,6 +30,7 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private val viewModel: CreateAccountViewModel by inject()
+    private val balanceViewModel: BalanceViewModel by inject()
     private var privateKeyJson: String? = null
     private lateinit var binding: ActivityCreateAccountBinding
     private lateinit var bindingPasswordPopUp: PopUpAccountPasswordBinding
@@ -96,6 +99,8 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun applyNewIdentity(newIdentityAddress: String) {
         viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
+            val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
+            balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             val intent = Intent(this, PrepareTopUpActivity::class.java)
             startActivity(intent)
         })
