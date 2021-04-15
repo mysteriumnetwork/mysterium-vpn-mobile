@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import network.mysterium.vpn.R
+import org.koin.core.component.KoinApiExtension
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 typealias NotificationFactory = (Context) -> Notification
@@ -62,6 +63,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         }
     }
 
+    @KoinApiExtension
     fun showStatisticsNotification(title: String, content: String) {
         val disconnectIntent = Intent(context, AppBroadcastReceiver::class.java).apply {
             action = ACTION_DISCONNECT

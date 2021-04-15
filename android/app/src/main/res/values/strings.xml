@@ -358,6 +358,10 @@
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
 
+    <!--  Push notifications  -->
+    <string name="push_notification_balance_title">Mysterium balance</string>
+    <string name="push_notification_balance_message">Your balance is running out!</string>
+
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
 </resources>
