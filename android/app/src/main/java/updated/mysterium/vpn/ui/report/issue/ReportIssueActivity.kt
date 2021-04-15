@@ -49,10 +49,7 @@ class ReportIssueActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
-            val intent = Intent(this, MenuActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            finish()
         }
         binding.emailEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {

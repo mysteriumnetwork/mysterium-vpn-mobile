@@ -52,9 +52,6 @@ class MonitoringActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        binding.manualConnectToolbar.setLeftIcon(
-            ContextCompat.getDrawable(this, R.drawable.icon_back)
-        )
         initSessionsRecycler()
         getLastSessions()
     }

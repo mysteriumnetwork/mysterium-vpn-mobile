@@ -40,7 +40,6 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import java.util.*
 
-@KoinApiExtension
 class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
     private companion object {
