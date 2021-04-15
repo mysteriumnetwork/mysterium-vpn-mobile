@@ -36,7 +36,9 @@ import network.mysterium.vpn.R
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import java.util.*
 
 @KoinApiExtension
 class MysteriumAndroidCoreService : VpnService(), KoinComponent {
@@ -49,9 +51,11 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
     private val useCaseProvider: UseCaseProvider by inject()
     private val balanceUseCase = useCaseProvider.balance()
+    private val connectionUseCase = useCaseProvider.connection()
     private var mobileNode: MobileNode? = null
     private var activeProposal: ProposalViewItem? = null
     private var deferredNode: DeferredNode? = null
+    private var isDisconnectManual = false
 
     override fun onDestroy() {
         super.onDestroy()
@@ -79,6 +83,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
         Log.i(TAG, "Node started")
         initBalanceListener()
+        initConnectionListener()
         return mobileNode!!
     }
 
@@ -103,18 +108,49 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         GlobalScope.launch {
             balanceUseCase.initBalanceListener {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePushShown()) {
-                    makePushNotification()
+                    makeBalancePushNotification()
                     balanceUseCase.balancePushShown()
                 }
                 if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePushShown()) {
-                    makePushNotification()
+                    makeBalancePushNotification()
                     balanceUseCase.minBalancePushShown()
                 }
             }
         }
     }
 
-    private fun makePushNotification() {
+    private fun initConnectionListener() {
+        GlobalScope.launch {
+            connectionUseCase.connectionStatusCallback {
+                val connectionStateModel = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
+                if (connectionStateModel == ConnectionState.DISCONNECTING && !isDisconnectManual) {
+                    makeConnectionPushNotification()
+                } else if (
+                    connectionStateModel == ConnectionState.CONNECTED ||
+                    connectionStateModel == ConnectionState.NOTCONNECTED
+                ) {
+                    isDisconnectManual = false
+                }
+            }
+        }
+    }
+
+    private fun makeConnectionPushNotification() {
+        registerReceiver(PushReceiver(), IntentFilter(PushReceiver.PUSHY_CONNECTION_ACTION))
+        val extra = Bundle().apply {
+            putString(
+                PushReceiver.NOTIFICATION_TITLE,
+                getString(R.string.push_notification_connection_title)
+            )
+            putString(
+                PushReceiver.NOTIFICATION_MESSAGE,
+                getString(R.string.push_notification_connection_message)
+            )
+        }
+        sendBroadcast(Intent(PushReceiver.PUSHY_CONNECTION_ACTION).putExtras(extra))
+    }
+
+    private fun makeBalancePushNotification() {
         registerReceiver(PushReceiver(), IntentFilter(PushReceiver.PUSHY_BALANCE_ACTION))
         val extra = Bundle().apply {
             putString(
@@ -137,8 +173,13 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             deferredNode = node
         }
 
-        override fun subscribeToBalance() {
+        override fun subscribeToListeners() {
             initBalanceListener()
+            initConnectionListener()
+        }
+
+        override fun manualDisconnect() {
+            isDisconnectManual = true
         }
 
         override fun setActiveProposal(proposal: ProposalViewItem?) {

@@ -131,6 +131,10 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         nodesUseCase.isFavourite(nodeId)
     }
 
+    fun manualDisconnect() {
+        coreService.manualDisconnect()
+    }
+
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {
             deferredNode.start(coreService)
@@ -147,7 +151,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             updateStatistic(it)
         }
         connectionUseCase.connectionStatusCallback {
-            val connectionStateModel = ConnectionState.valueOf(it.toUpperCase())
+            val connectionStateModel = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
             if (connectionStateModel == ConnectionState.NOTCONNECTED) {
                 coreService.setDeferredNode(null)
                 coreService.setActiveProposal(null)
@@ -228,6 +232,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun disconnectNode() {
         if (_connectionState.value == ConnectionState.CONNECTED) {
+            coreService.manualDisconnect()
             _manualDisconnect.postValue(Unit)
             connectionUseCase.disconnect()
             coreService.setActiveProposal(null)

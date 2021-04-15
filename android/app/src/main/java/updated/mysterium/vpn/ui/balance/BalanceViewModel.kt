@@ -46,7 +46,7 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun startDeferredNode(coreService: CompletableDeferred<MysteriumCoreService>) {
-        coreService.await().subscribeToBalance()
+        coreService.await().subscribeToListeners()
         if (!deferredNode.startedOrStarting()) {
             deferredNode.start(coreService.await())
         }

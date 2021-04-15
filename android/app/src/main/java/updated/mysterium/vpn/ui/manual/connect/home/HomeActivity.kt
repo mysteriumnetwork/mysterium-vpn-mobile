@@ -22,6 +22,8 @@ import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinApiExtension
+import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
@@ -67,7 +69,7 @@ class HomeActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (isInternetAvailable()) {
-            isDisconnectedByUser = true
+            manualDisconnecting()
             setIntent(intent)
             checkProposalArgument()
         } else {
@@ -99,12 +101,17 @@ class HomeActivity : BaseActivity() {
             showFailedToConnectPopUp()
         })
         viewModel.manualDisconnect.observe(this, {
-            isDisconnectedByUser = true
+            manualDisconnecting()
         })
     }
 
     private fun initViewModel() {
         viewModel.init(deferredMysteriumCoreService, appNotificationManager)
+    }
+
+    private fun manualDisconnecting() {
+        isDisconnectedByUser = true
+        viewModel.manualDisconnect()
     }
 
     private fun handleConnectionChange(connection: ConnectionState) {
@@ -193,6 +200,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    @KoinApiExtension
     private fun bindMysteriumService() {
         appNotificationManager = AppNotificationManager(
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -242,7 +250,7 @@ class HomeActivity : BaseActivity() {
                 navigateToSelectNode()
             },
             disconnect = {
-                isDisconnectedByUser = true
+                manualDisconnecting()
                 viewModel.disconnect()
             }
         )
