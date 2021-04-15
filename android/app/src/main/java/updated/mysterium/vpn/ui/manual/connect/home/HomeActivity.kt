@@ -30,6 +30,7 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class HomeActivity : BaseActivity() {
 
@@ -66,6 +67,7 @@ class HomeActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (isInternetAvailable()) {
+            isDisconnectedByUser = true
             setIntent(intent)
             checkProposalArgument()
         } else {
@@ -96,6 +98,9 @@ class HomeActivity : BaseActivity() {
             disconnect()
             showFailedToConnectPopUp()
         })
+        viewModel.manualDisconnect.observe(this, {
+            isDisconnectedByUser = true
+        })
     }
 
     private fun initViewModel() {
@@ -107,6 +112,7 @@ class HomeActivity : BaseActivity() {
             ConnectionState.NOTCONNECTED -> disconnect()
             ConnectionState.CONNECTING -> inflateConnectingCardView()
             ConnectionState.CONNECTED -> {
+                isDisconnectedByUser = false
                 loadIpAddress()
                 inflateConnectedCardView()
             }
@@ -139,7 +145,6 @@ class HomeActivity : BaseActivity() {
                 wifiNetworkErrorPopUp()
             }
         }
-        isDisconnectedByUser = false
     }
 
     private fun getProposal() {
@@ -232,6 +237,18 @@ class HomeActivity : BaseActivity() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             navigateToMenu()
         }
+        binding.connectionState.initListeners(
+            selectNodeManually = {
+                navigateToSelectNode()
+            },
+            disconnect = {
+                isDisconnectedByUser = true
+                viewModel.disconnect()
+            }
+        )
+    }
+
+    private fun toolbarSaveIcon() {
         binding.manualConnectToolbar.onRightButtonClicked {
             proposal?.let { proposal ->
                 viewModel.isFavourite(proposal.providerID + proposal.serviceType).observe(this, { result ->
@@ -248,14 +265,15 @@ class HomeActivity : BaseActivity() {
                 })
             }
         }
-        binding.connectionState.initListeners(
-            selectNodeManually = {
-                navigateToSelectNode()
-            },
-            disconnect = {
-                isDisconnectedByUser = true
-                viewModel.disconnect()
-            }
+        isFavourite()
+    }
+
+    private fun toolbarWalletIcon() {
+        binding.manualConnectToolbar.onRightButtonClicked {
+            startActivity(Intent(this, WalletActivity::class.java))
+        }
+        binding.manualConnectToolbar.setRightIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_wallet_toolbar)
         )
     }
 
@@ -288,8 +306,9 @@ class HomeActivity : BaseActivity() {
         binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.multiAnimation.disconnectedState()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
-        binding.manualConnectToolbar.setRightIcon(null)
         loadIpAddress()
+        toolbarWalletIcon()
+        isDisconnectedByUser = false
     }
 
     private fun inflateNodeInfo() {
@@ -324,6 +343,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun inflateConnectedCardView() {
+        toolbarSaveIcon()
         binding.selectAnotherNodeButton.visibility = View.VISIBLE
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE
@@ -336,7 +356,6 @@ class HomeActivity : BaseActivity() {
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
         binding.multiAnimation.connectedState()
-        isFavourite()
     }
 
     private fun isFavourite() {

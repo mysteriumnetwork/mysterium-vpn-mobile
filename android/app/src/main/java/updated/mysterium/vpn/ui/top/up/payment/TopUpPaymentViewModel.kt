@@ -60,7 +60,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 when (it.status) {
                     STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
                     STATUS_EXPIRED -> _paymentExpired.postValue(Unit)
-                    STATUS_INVALID, STATUS_CANCELED, STATUS_REFUNDED -> _paymentFailed.postValue(Unit)
+                    STATUS_INVALID, STATUS_REFUNDED -> _paymentFailed.postValue(Unit)
                 }
             }
         }

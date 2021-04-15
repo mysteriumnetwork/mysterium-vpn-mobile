@@ -9,13 +9,12 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
 
 @KoinApiExtension
 class AppBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
-    private val useCaseProvider: UseCaseProvider by inject()
-    private val connectionUseCase = useCaseProvider.connection()
+    private val viewModel: HomeViewModel by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == AppNotificationManager.ACTION_DISCONNECT) {
@@ -25,7 +24,7 @@ class AppBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun handleDisconnect() {
         CoroutineScope(Dispatchers.Main).launch {
-            connectionUseCase.disconnect()
+            viewModel.disconnect()
         }
     }
 }

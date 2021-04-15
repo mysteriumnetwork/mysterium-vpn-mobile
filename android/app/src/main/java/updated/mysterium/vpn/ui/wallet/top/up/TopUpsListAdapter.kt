@@ -28,7 +28,7 @@ class TopUpsListAdapter : ContentListAdapter<Order, TopUpsListAdapter.TopUpsList
             binding.mystSpentTextView.text = topUp.mystAmount.toString()
             binding.paidTextView.text = itemView.context.getString(
                 R.string.wallet_top_ups_currency,
-                topUp.payAmount.toString(),
+                topUp.payAmount,
                 topUp.payCurrency
             )
             topUp.createdAt?.let {

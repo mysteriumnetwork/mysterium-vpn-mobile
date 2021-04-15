@@ -58,12 +58,12 @@ object Modules {
         single {
             AllNodesViewModel(get())
         }
+        single {
+            HomeViewModel(get())
+        }
 
         viewModel {
             SplashViewModel(get())
-        }
-        viewModel {
-            HomeViewModel(get())
         }
         viewModel {
             FilterViewModel()

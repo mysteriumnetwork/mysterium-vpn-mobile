@@ -11,16 +11,19 @@ import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import network.mysterium.AppNotificationManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityProfileBinding
+import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
+import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.menu.MenuActivity
 
 class ProfileActivity : BaseActivity() {
 
@@ -44,6 +47,9 @@ class ProfileActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
+        binding.manualConnectToolbar.setLeftIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_back)
+        )
         viewModel.getIdentity().observe(this, { result ->
             result.onSuccess { identity ->
                 binding.identityValueTextView.text = identity.address
@@ -67,21 +73,56 @@ class ProfileActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
-            val intent = Intent(this, MenuActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            finish()
         }
         binding.downloadButton.setOnClickListener {
-            viewModel.downloadKey().observe(this, { result ->
-                result.onSuccess {
-                    saveFile(it)
-                }
-                result.onFailure { throwable ->
-                    Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                }
-            })
+            showDownloadKeyPopUp()
         }
+    }
+
+    private fun showDownloadKeyPopUp() {
+        val bindingPopUp = PopUpDownloadKeyBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.downloadButton.setOnClickListener {
+            val passphrase = bindingPopUp.passwordEditText.text.toString()
+            if (passphrase.isValidPassword()) {
+                downloadKey(passphrase)
+                dialog.dismiss()
+            } else {
+                bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
+                    this, R.drawable.shape_wrong_password
+                )
+                bindingPopUp.passwordEditText.text?.clear()
+                bindingPopUp.passwordEditText.clearFocus()
+                bindingPopUp.errorText.visibility = View.VISIBLE
+                bindingPopUp.passwordEditText.hint = ""
+            }
+        }
+        bindingPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
+                    this, R.drawable.shape_password_field
+                )
+                bindingPopUp.passwordEditText.text?.clear()
+                bindingPopUp.passwordEditText.hint = getString(R.string.pop_up_private_key_hint)
+                bindingPopUp.errorText.visibility = View.GONE
+            }
+        }
+        bindingPopUp.closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun downloadKey(passphrase: String) {
+        viewModel.downloadKey(passphrase).observe(this, { result ->
+            result.onSuccess {
+                saveFile(it)
+            }
+            result.onFailure { throwable ->
+                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
+            }
+        })
     }
 
     private fun saveFile(bytesFileContent: ByteArray) {
