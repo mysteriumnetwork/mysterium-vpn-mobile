@@ -2,9 +2,11 @@ package updated.mysterium.vpn.ui.manual.connect.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
@@ -30,6 +32,7 @@ class SearchActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         initProposalListRecycler()
+        initHintText()
     }
 
     private fun bindsAction() {
@@ -51,9 +54,11 @@ class SearchActivity : BaseActivity() {
         viewModel.searchResult.observe(this, {
             if (it.isNotEmpty()) {
                 binding.searchLogo.visibility = View.INVISIBLE
+                binding.searchHint.visibility = View.INVISIBLE
                 nodeListAdapter.replaceAll(it)
             } else {
                 binding.searchLogo.visibility = View.VISIBLE
+                binding.searchHint.visibility = View.VISIBLE
                 nodeListAdapter.clear()
             }
         })
@@ -61,6 +66,7 @@ class SearchActivity : BaseActivity() {
             binding.loaderAnimation.visibility = View.GONE
             binding.loaderAnimation.cancelAnimation()
             binding.searchLogo.visibility = View.VISIBLE
+            binding.searchHint.visibility = View.VISIBLE
         })
     }
 
@@ -73,6 +79,15 @@ class SearchActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@SearchActivity)
             adapter = nodeListAdapter
         }
+    }
+
+    private fun initHintText() {
+        val firstPart = getString(R.string.search_hint_first_part)
+        val highlighted = "<font color='#FFFFFF'> " + getString(R.string.search_hint_highlighted) + " </font>"
+        val secondPart = getString(R.string.search_hint_second_part)
+        binding.searchHint.text = Html.fromHtml(
+            firstPart + highlighted + secondPart, Html.FROM_HTML_MODE_LEGACY
+        )
     }
 
     private fun navigateToHome(proposal: Proposal) {

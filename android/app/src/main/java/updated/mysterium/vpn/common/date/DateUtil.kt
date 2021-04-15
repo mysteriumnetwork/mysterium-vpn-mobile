@@ -44,7 +44,9 @@ object DateUtil {
     }
 
     fun getHowLongHoursAgo(date: String): String {
-        val dateInMs = SimpleDateFormat(DEFAULT_PATTERN, Locale.ROOT).parse(date)?.time ?: 0L
+        val dateFormat = SimpleDateFormat(DEFAULT_PATTERN, Locale.US)
+        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        val dateInMs = dateFormat.parse(date)?.time ?: 0L
         val msDiff = Date().time - dateInMs
         val hoursAgo = (msDiff / (MS_TO_SEC * SEC_TO_MN * MN_TO_HOUR))
         val minutesAgo = (hoursAgo % MN_TO_HOUR)

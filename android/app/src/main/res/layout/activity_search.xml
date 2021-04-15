@@ -44,11 +44,11 @@
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:background="@drawable/shape_edit_text"
         android:importantForAutofill="no"
-        android:singleLine="true"
         android:inputType="text"
         android:lines="1"
         android:maxLines="1"
         android:paddingHorizontal="@dimen/margin_padding_size_small"
+        android:singleLine="true"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/searchTypeTitle"
         tools:ignore="LabelFor" />
@@ -73,6 +73,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTypeTitle"
         tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/searchHint"
+        style="@style/TextAppearance.Headline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+        android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+        android:paddingHorizontal="@dimen/margin_padding_size_xlarge"
+        android:textAlignment="center"
+        android:textColor="@color/onboarding_faded_screen_white"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchLogo" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nodesRecyclerView"
