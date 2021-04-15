@@ -2,22 +2,16 @@ package updated.mysterium.vpn.ui.splash
 
 import android.animation.Animator
 import android.app.Activity
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.net.VpnService
 import android.os.Bundle
-import android.os.IBinder
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import kotlinx.coroutines.CompletableDeferred
-import network.mysterium.service.core.MysteriumAndroidCoreService
-import network.mysterium.service.core.MysteriumCoreService
+import androidx.core.app.ActivityCompat
+import network.mysterium.notification.Notifications
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
@@ -30,11 +24,12 @@ import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
+    private val pushyNotifications = Notifications(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +37,12 @@ class SplashActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         prepareNodeForStarting()
+        setUpPushyNotifications()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        pushyNotifications.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun retryLoading() {
@@ -72,6 +73,11 @@ class SplashActivity : BaseActivity() {
         viewModel.navigateForward.observe(this, {
             navigateForward()
         })
+    }
+
+    private fun setUpPushyNotifications() {
+        pushyNotifications.registerOrRequestPermissions()
+        pushyNotifications.listen()
     }
 
     private fun navigateForward() {

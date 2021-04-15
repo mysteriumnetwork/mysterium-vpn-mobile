@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.base
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -21,6 +22,7 @@ import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
+    private val dialogs = emptyList<Dialog>().toMutableList()
     private val viewModel: BaseViewModel by inject()
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
@@ -34,6 +36,13 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onResume()
         viewModel.checkCurrentConnection()
         handleInternetConnection()
+    }
+
+    override fun onPause() {
+        dialogs.forEach {
+            it.dismiss()
+        }
+        super.onPause()
     }
 
     open fun retryLoading() {
@@ -64,6 +73,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             )
         }
+        dialogs.add(dialog)
         return dialog
     }
 
