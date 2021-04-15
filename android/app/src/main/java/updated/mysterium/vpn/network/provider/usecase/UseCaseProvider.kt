@@ -31,5 +31,5 @@ class UseCaseProvider(
 
     fun payment() = PaymentUseCase(nodeRepository)
 
-    fun settings() = SettingsUseCase(sharedPreferencesManager)
+    fun settings() = SettingsUseCase(nodeRepository, sharedPreferencesManager)
 }

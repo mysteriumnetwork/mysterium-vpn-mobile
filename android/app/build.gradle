@@ -79,7 +79,7 @@ android {
 
         buildConfigField "String", "INTERCOM_API_KEY", "\"android_sdk-e480f3fce4f2572742b13c282c453171c1715516\""
         buildConfigField "String", "INTERCOM_APP_ID", "\"h7hlm9on\""
-        buildConfigField "String", "NODE_VERSION", "\"0.46.0-rc5\""
+        buildConfigField "String", "NODE_VERSION", "\"0.46.0-rc6\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -205,7 +205,7 @@ dependencies {
 
     //Mysterium
     implementation "network.mysterium:terms:0.0.30"
-    implementation "network.mysterium:mobile-node:0.46.0-rc5"
+    implementation "network.mysterium:mobile-node:0.46.0-rc6"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     // implementation files('/Users/soffokl/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')

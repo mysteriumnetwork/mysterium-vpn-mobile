@@ -52,6 +52,8 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun clearPopUpTopUpHistory() {
         balanceUseCase.clearBalancePopUpHistory()
         balanceUseCase.clearMinBalancePopUpHistory()
+        balanceUseCase.clearBalancePushHistory()
+        balanceUseCase.clearMinBalancePushHistory()
     }
 
     private suspend fun registerOrderCallback() {
