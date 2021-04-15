@@ -37,6 +37,8 @@ interface MysteriumCoreService : IBinder {
 
     fun setDeferredNode(node: DeferredNode?)
 
+    fun subscribeToBalance()
+
     fun getContext(): Context
 
     fun startForegroundWithNotification(id: Int, notificationFactory: NotificationFactory)

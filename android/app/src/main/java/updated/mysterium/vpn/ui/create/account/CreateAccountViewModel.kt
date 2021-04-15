@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.create.account
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,12 +13,10 @@ import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.lang.Exception
 
 class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
-        const val TAG = "CreateAccountViewModel"
         const val NODE_IDENTITY_KEY = "node_identity"
     }
 

@@ -19,18 +19,37 @@ package network.mysterium.service.core
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.VpnService
 import android.os.Binder
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.NotificationFactory
+import network.mysterium.notification.PushReceiver
 import network.mysterium.proposal.ProposalViewItem
+import network.mysterium.vpn.R
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class MysteriumAndroidCoreService : VpnService() {
+@KoinApiExtension
+class MysteriumAndroidCoreService : VpnService(), KoinComponent {
+
+    private companion object {
+        const val TAG = "MysteriumVPNService"
+        const val BALANCE_LIMIT = 1.0
+        const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.1
+    }
+
+    private val useCaseProvider: UseCaseProvider by inject()
+    private val balanceUseCase = useCaseProvider.balance()
     private var mobileNode: MobileNode? = null
-
     private var activeProposal: ProposalViewItem? = null
     private var deferredNode: DeferredNode? = null
 
@@ -59,6 +78,7 @@ class MysteriumAndroidCoreService : VpnService() {
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 
         Log.i(TAG, "Node started")
+        initBalanceListener()
         return mobileNode!!
     }
 
@@ -79,12 +99,46 @@ class MysteriumAndroidCoreService : VpnService() {
         }
     }
 
+    private fun initBalanceListener() {
+        GlobalScope.launch {
+            balanceUseCase.initBalanceListener {
+                if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePushShown()) {
+                    makePushNotification()
+                    balanceUseCase.balancePushShown()
+                }
+                if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePushShown()) {
+                    makePushNotification()
+                    balanceUseCase.minBalancePushShown()
+                }
+            }
+        }
+    }
+
+    private fun makePushNotification() {
+        registerReceiver(PushReceiver(), IntentFilter(PushReceiver.PUSHY_BALANCE_ACTION))
+        val extra = Bundle().apply {
+            putString(
+                PushReceiver.NOTIFICATION_TITLE,
+                getString(R.string.push_notification_balance_title)
+            )
+            putString(
+                PushReceiver.NOTIFICATION_MESSAGE,
+                getString(R.string.push_notification_balance_message)
+            )
+        }
+        sendBroadcast(Intent(PushReceiver.PUSHY_BALANCE_ACTION).putExtras(extra))
+    }
+
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
 
         override fun getDeferredNode() = deferredNode
 
         override fun setDeferredNode(node: DeferredNode?) {
             deferredNode = node
+        }
+
+        override fun subscribeToBalance() {
+            initBalanceListener()
         }
 
         override fun setActiveProposal(proposal: ProposalViewItem?) {
@@ -114,9 +168,5 @@ class MysteriumAndroidCoreService : VpnService() {
         override fun stopForeground() {
             stopForeground(true)
         }
-    }
-
-    companion object {
-        private const val TAG = "MysteriumVPNService"
     }
 }
