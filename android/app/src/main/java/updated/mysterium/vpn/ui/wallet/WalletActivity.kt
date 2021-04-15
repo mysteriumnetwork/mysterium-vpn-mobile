@@ -74,7 +74,14 @@ class WalletActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            finish()
+            if (isTaskRoot) {
+                val intent = Intent(this, HomeActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
+            } else {
+                finish()
+            }
         }
         binding.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))
