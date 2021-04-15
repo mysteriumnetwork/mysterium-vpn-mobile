@@ -223,7 +223,7 @@
     <string name="wallet_top_ups_time">Time</string>Paid
     <string name="wallet_top_ups_paid">Paid</string>
     <string name="wallet_top_ups_myst">Myst</string>
-    <string name="wallet_top_ups_currency">%1$s %2$s</string>
+    <string name="wallet_top_ups_currency">%.6f %2$s</string>
     <string name="wallet_video">Online\n video</string>
     <string name="wallet_web">Web\n browsing</string>
     <string name="wallet_download">of data\n download</string>
@@ -309,6 +309,11 @@
     <string name="prepare_top_up_now">Top up now</string>
     <string name="prepare_top_up_later">Top up later</string>
 
+    <!--  Search  -->
+    <string name="search_hint_first_part">Use </string>
+    <string name="search_hint_highlighted">Search Bar</string>
+    <string name="search_hint_second_part">at the top\n to find right node</string>
+
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
     <string name="pop_up_top_up_description">Credits is running out</string>
@@ -352,6 +357,10 @@
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
+
+    <!--  Push notifications  -->
+    <string name="push_notification_balance_title">Mysterium balance</string>
+    <string name="push_notification_balance_message">Your balance is running out!</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

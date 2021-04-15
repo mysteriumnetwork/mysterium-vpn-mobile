@@ -1,16 +1,11 @@
 package updated.mysterium.vpn.ui.splash
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.intercom.android.sdk.Intercom
-import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import mysterium.RegisterIdentityRequest
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.wallet.IdentityModel
@@ -19,11 +14,6 @@ import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
-
-    private companion object {
-        const val TAG = "SplashViewModel"
-        const val NODE_IDENTITY_KEY = "node_identity"
-    }
 
     val navigateForward: LiveData<Unit>
         get() = _navigateForward
@@ -50,7 +40,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 deferredNode.start(service)
             }
         }
-        service
+        deferredNode
     }
 
     fun isUserAlreadyLogin() = loginUseCase.isAlreadyLogin()
@@ -71,52 +61,28 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         viewModelScope.launch {
             balanceUseCase.initDeferredNode(deferredNode)
             connectionUseCase.initDeferredNode(deferredNode)
-            loadIdentity()
+            if (isAnimationLoaded) {
+                _navigateForward.postValue(Unit)
+            } else {
+                isDataLoaded = true
+            }
+            getIdentity()
         }
     }
 
-    private suspend fun loadIdentity() {
-        val nodeIdentity = connectionUseCase.getIdentity()
-        val identity = IdentityModel(
-            address = nodeIdentity.address,
-            channelAddress = nodeIdentity.channelAddress,
-            status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
-        )
-        registerIntercomClient(identity.address)
-        registerIdentity(identity)
-    }
-
-    private fun registerIntercomClient(address: String) {
-        Intercom.client().apply {
-            registerUnidentifiedUser()
-            val attrs = UserAttributes.Builder()
-                .withCustomAttribute(NODE_IDENTITY_KEY, address)
-                .build()
-            updateUser(attrs)
-        }
-    }
-
-    private suspend fun registerIdentity(identity: IdentityModel) {
-        if (!identity.registered) {
-            val req = RegisterIdentityRequest().apply {
-                identityAddress = identity.address
+    private fun getIdentity() {
+        viewModelScope.launch {
+            val nodeIdentity = connectionUseCase.getIdentity()
+            val identity = IdentityModel(
+                address = nodeIdentity.address,
+                channelAddress = nodeIdentity.channelAddress,
+                status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
+            )
+            if (isAnimationLoaded) {
+                _navigateForward.postValue(Unit)
+            } else {
+                isDataLoaded = true
             }
-            val handler = CoroutineExceptionHandler { _, exception ->
-                Log.e(TAG, "Identity registration error")
-            }
-            viewModelScope.launch(handler) {
-                connectionUseCase.registerIdentity(req)
-            }
-        }
-        loadRegistrationFees()
-    }
-
-    private suspend fun loadRegistrationFees() {
-        connectionUseCase.registrationFees()
-        if (isAnimationLoaded) {
-            _navigateForward.postValue(Unit)
-        } else {
-            isDataLoaded = true
         }
     }
 }

@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_large">
+            android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge">
 
             <TextView
                 android:id="@+id/title"
@@ -38,7 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
                 android:src="@drawable/icon_pop_up_connection_failed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +50,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
                 android:paddingHorizontal="@dimen/margin_padding_size_large"
                 android:text="@string/pop_up_registration_failed_description"
                 android:textColor="@color/manual_connect_connecting_title_grey_blue"
