@@ -26,15 +26,6 @@
             android:text="@string/monitoring_title"
             android:textColor="@android:color/white" />
 
-        <TextView
-            style="@style/TextAppearance.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-            android:text="@string/monitoring_statistics"
-            android:textColor="@android:color/white" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
