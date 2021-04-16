@@ -83,8 +83,8 @@ class CreateAccountActivity : BaseActivity() {
     private fun uploadKey() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
-        val mimetypes = arrayOf("application/json", "application/octet-stream")
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
+        val mimeTypes = arrayOf(MIME_TYPE_JSON)
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         startActivityForResult(intent, KEY_REQUEST_CODE)
     }
 
