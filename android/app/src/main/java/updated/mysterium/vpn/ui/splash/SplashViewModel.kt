@@ -47,7 +47,9 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun isTermsAccepted() = termsUseCase.isTermsAccepted()
 
-    fun isAccountFlowShown() = loginUseCase.isAccountFlowShown()
+    fun isAccountCreated() = loginUseCase.isAccountCreated()
+
+    fun isTopUpFlowShown() = loginUseCase.isTopFlowShown()
 
     fun animationLoaded() {
         if (isDataLoaded) {

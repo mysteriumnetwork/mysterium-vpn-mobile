@@ -41,11 +41,7 @@ class PrivateKeyActivity : BaseActivity() {
             showDownloadKeyPopUp()
         }
         binding.backUpLaterFrame.setOnClickListener {
-            val intent = Intent(this, PrepareTopUpActivity::class.java)
-            startActivity(intent)
-        }
-        binding.backButton.setOnClickListener {
-            finish()
+            navigateToPrepareTopUp()
         }
     }
 
@@ -105,23 +101,27 @@ class PrivateKeyActivity : BaseActivity() {
                 bytesFileContent,
                 getSystemService(DOWNLOAD_SERVICE) as DownloadManager
             )
+            showDownloadedNotification()
         }
     }
 
     private fun scanFile(path: String) {
         MediaScannerConnection.scanFile(this, arrayOf(path), null) { _, _ ->
-            val appNotificationManager = AppNotificationManager(
-                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            ).apply { init(this@PrivateKeyActivity) }
-            appNotificationManager.showDownloadedNotification()
+            showDownloadedNotification()
         }
+    }
+
+    private fun showDownloadedNotification() {
+        val appNotificationManager = AppNotificationManager(
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        ).apply { init(this@PrivateKeyActivity) }
+        appNotificationManager.showDownloadedNotification()
     }
 
     private fun exportIdentity(passphrase: String) {
         viewModel.exportIdentity(passphrase).observe(this, { result ->
             result.onSuccess {
-                val intent = Intent(this, PrepareTopUpActivity::class.java)
-                startActivity(intent)
+                navigateToPrepareTopUp()
             }
             result.onFailure {
                 Log.i(TAG, "onFailure ${it.localizedMessage}")
@@ -141,5 +141,13 @@ class PrivateKeyActivity : BaseActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun navigateToPrepareTopUp() {
+        viewModel.accountCreated()
+        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
     }
 }

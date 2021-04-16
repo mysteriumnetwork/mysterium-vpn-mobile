@@ -6,7 +6,8 @@ enum class SharedPreferencesList(val prefName: String) {
     BALANCE_PUSH("BALANCE_PUSH"),
     MIN_BALANCE_PUSH("MIN_BALANCE_PUSH"),
     LOGIN("LOGIN"),
-    ACCOUNT("ACCOUNT"),
+    TOP_UP_FLOW("TOP_UP_FLOW"),
+    ACCOUNT_CREATED("ACCOUNT_CREATED"),
     TERMS("TERMS"),
     DNS("DNS"),
     IDENTITY_ADDRESS("IDENTITY_ADDRESS")

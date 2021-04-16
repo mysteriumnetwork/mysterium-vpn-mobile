@@ -16,6 +16,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import java.io.BufferedReader
@@ -24,7 +25,7 @@ import java.io.InputStreamReader
 class CreateAccountActivity : BaseActivity() {
 
     private companion object {
-        const val MIME_TYPE_JSON = "application/json"
+        const val MIME_TYPE_JSON = "application/json|application/octet-stream"
         const val KEY_REQUEST_CODE = 0
         const val TAG = "CreateAccountActivity"
     }
@@ -55,6 +56,8 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.createNewAccountFrame.setOnClickListener {
+            binding.createNewAccountFrame.isClickable = false
+            binding.importAccountFrame.isClickable = false
             viewModel.createNewAccount()
         }
         binding.importAccountFrame.setOnClickListener {
@@ -64,16 +67,24 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
-            startActivity(Intent(this, PrivateKeyActivity::class.java))
+            viewModel.accountCreated()
+            val intent = Intent(this, PrivateKeyActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         })
         viewModel.registrationError.observe(this, {
+            binding.createNewAccountFrame.isClickable = true
+            binding.importAccountFrame.isClickable = true
             showRegistrationErrorPopUp()
         })
     }
 
     private fun uploadKey() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = MIME_TYPE_JSON
+        intent.type = "*/*"
+        val mimetypes = arrayOf("application/json", "application/octet-stream")
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
         startActivityForResult(intent, KEY_REQUEST_CODE)
     }
 
@@ -101,7 +112,10 @@ class CreateAccountActivity : BaseActivity() {
         viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-            val intent = Intent(this, PrepareTopUpActivity::class.java)
+            viewModel.accountCreated()
+            val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
             startActivity(intent)
         })
     }
