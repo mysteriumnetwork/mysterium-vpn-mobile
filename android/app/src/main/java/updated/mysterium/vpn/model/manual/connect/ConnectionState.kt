@@ -4,5 +4,6 @@ enum class ConnectionState(val state: String) {
     NOTCONNECTED("NotConnected"),
     CONNECTING("Connecting"),
     CONNECTED("Connected"),
-    DISCONNECTING("Disconnecting")
+    DISCONNECTING("Disconnecting"),
+    ON_HOLD("OnHold")
 }

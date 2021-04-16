@@ -203,14 +203,15 @@
     </string-array>
 
     <!--  Wallet  -->
-    <string name="wallet_main_title">Wallet</string>
+    <string name="wallet_main_title">Account balance</string>
     <string name="wallet_currency">MYSTT</string>
     <string name="wallet_balance_currency">MYST</string>
     <string name="wallet_start_balance">0,000</string>
     <string name="wallet_usd_equivalent">USD equivalent ≈ $%.3f</string>
+    <string name="wallet_buys_for_you">This buys you:</string>
     <string name="wallet_current_balance">"%.3f"</string>
     <string name="wallet_top_up">Top up</string>
-    <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain, we’’re using it in the Testnet environment</string>
+    <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain</string>
     <string name="wallet_top_up_label">Top up events</string>
     <string name="wallet_spedings_label">Spendings</string>
     <string name="wallet_spendings_country">Country</string>
@@ -231,7 +232,7 @@
 
     <!--  Profile  -->
     <string name="profile_title">Profile</string>
-    <string name="profile_identity">Identity Address</string>
+    <string name="profile_identity">Mysterium Identity Address</string>
     <string name="profile_identity_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
     <string name="profile_change_keys">Change Private keys</string>
     <string name="profile_copy_to_clipboard">Copied to clipboard</string>
@@ -242,8 +243,8 @@
 
     <!--  Report issue  -->
     <string name="report_issue_app_version_template">%1$s</string>
-    <string name="report_issue_title">Report an issue</string>
-    <string name="report_issue_description">Describe the problem you got while using the application. We will try to solve it. Also leave your email so that we can contact you if needed.</string>
+    <string name="report_issue_title">Get help</string>
+    <string name="report_issue_description">Please let us know about the problem you are\n facing within the app. We will get back to you\n shortly via email.</string>
     <string name="report_issue_email_subtitle">Email (optional)</string>
     <string name="report_issue_problem_subtitle">Problem description</string>
     <string name="report_issue_send">Send</string>
@@ -255,9 +256,8 @@
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
 
     <!--  Monitoring  -->
-    <string name="monitoring_title">Monitoring</string>
+    <string name="monitoring_title">History Statistics</string>
     <string name="monitoring_last_sessions">Last Sessions</string>
-    <string name="monitoring_statistics">Statistics</string>
     <string name="monitoring_empty_line_chart">You don\'t have any sessions yet</string>
 
     <!--  Terms of Use  -->
