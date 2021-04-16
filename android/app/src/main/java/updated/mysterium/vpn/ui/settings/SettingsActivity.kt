@@ -75,10 +75,7 @@ class SettingsActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
-            val intent = Intent(this, MenuActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            finish()
         }
         binding.residentSpinnerFrame.setOnClickListener {
             listPopupWindow.show()
