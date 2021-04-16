@@ -8,6 +8,7 @@ class PrivateKeyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val privateKeyUseCase = useCaseProvider.privateKey()
     private val connectionUseCase = useCaseProvider.connection()
+    private val loginUseCase = useCaseProvider.login()
 
     fun downloadKey(passphrase: String) = liveDataResult {
         privateKeyUseCase.downloadPrivateKey(
@@ -20,4 +21,6 @@ class PrivateKeyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         val address = connectionUseCase.getIdentityAddress()
         privateKeyUseCase.exportIdentity(address, newPassphrase)
     }
+
+    fun accountCreated() = loginUseCase.accountCreated()
 }

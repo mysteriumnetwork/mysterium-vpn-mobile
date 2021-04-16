@@ -22,6 +22,7 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
+import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
 class SplashActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
@@ -85,8 +86,11 @@ class SplashActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResult
             !viewModel.isUserAlreadyLogin() -> {
                 startActivity(Intent(this, OnboardingActivity::class.java))
             }
-            viewModel.isAccountFlowShown() -> {
+            viewModel.isTopUpFlowShown() -> {
                 startActivity(Intent(this, HomeActivity::class.java))
+            }
+            viewModel.isAccountCreated() -> {
+                startActivity(Intent(this, PrepareTopUpActivity::class.java))
             }
             viewModel.isTermsAccepted() -> {
                 startActivity(Intent(this, CreateAccountActivity::class.java))

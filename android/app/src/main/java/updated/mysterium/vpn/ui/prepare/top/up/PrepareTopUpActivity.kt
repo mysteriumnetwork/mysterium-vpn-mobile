@@ -22,9 +22,6 @@ class PrepareTopUpActivity : BaseActivity() {
     }
 
     private fun bindsAction() {
-        binding.backButton.setOnClickListener {
-            finish()
-        }
         binding.topUpLater.setOnClickListener {
             viewModel.accountFlowShown()
             val intent = Intent(this, HomeActivity::class.java).apply {

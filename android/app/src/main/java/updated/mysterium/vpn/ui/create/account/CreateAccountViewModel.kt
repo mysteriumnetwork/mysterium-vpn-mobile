@@ -30,6 +30,7 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _registrationError = MutableLiveData<Exception>()
     private val privateKeyUseCase = useCaseProvider.privateKey()
     private val connectionUseCase = useCaseProvider.connection()
+    private val loginUseCase = useCaseProvider.login()
 
     fun importAccount(privateKey: String, passphrase: String) = liveDataResult {
         privateKeyUseCase.importIdentity(privateKey, passphrase)
@@ -54,6 +55,8 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             registerIdentity(identity)
         }
     }
+
+    fun accountCreated() = loginUseCase.accountCreated()
 
     private fun registerIntercomClient(address: String) {
         Intercom.client().apply {

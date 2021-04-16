@@ -126,6 +126,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setContentIntent(contentIntent)
             .setVibrate(LongArray(0))
             .setOnlyAlertOnce(true)
+            .setAutoCancel(true)
             .build()
         notificationManager.notify(privateKeyNotificationID, notification)
     }
