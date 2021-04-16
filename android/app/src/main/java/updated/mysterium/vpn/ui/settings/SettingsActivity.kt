@@ -3,6 +3,7 @@ package updated.mysterium.vpn.ui.settings
 import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.ui.onItemSelected
@@ -20,6 +21,7 @@ import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
 class SettingsActivity : BaseActivity() {
 
     private companion object {
+        const val TAG = "SettingsActivity"
         val DNS_OPTIONS = listOf(
             DnsOption(
                 translatableValueResId = R.string.settings_dns_default,
@@ -62,6 +64,7 @@ class SettingsActivity : BaseActivity() {
         setUpDnsSpinner()
         setUpResidentCountryList()
         checkPreviousDnsOption()
+        checkPreviousResidentCountry()
     }
 
     private fun bindsAction() {
@@ -72,10 +75,7 @@ class SettingsActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
-            val intent = Intent(this, MenuActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            finish()
         }
         binding.residentSpinnerFrame.setOnClickListener {
             listPopupWindow.show()
@@ -108,20 +108,34 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
+    private fun checkPreviousResidentCountry() {
+        viewModel.getResidentCountry().observe(this, { result ->
+            result.onSuccess { residentDigitCode ->
+                val countriesList = CountriesUtil().getAllCountries()
+                val residentCountry = countriesList.find { it.digitCode == residentDigitCode }
+                binding.selectedCountry.text = residentCountry?.fullName
+            }
+            result.onFailure {
+                Log.e(TAG, it.localizedMessage ?: it.toString())
+            }
+        })
+    }
+
     private fun setUpResidentCountryList() {
-        val countriesList = CountriesUtil().getAllCountries().map { it.fullName }
-        binding.selectedCountry.text = countriesList.first()
+        val countriesList = CountriesUtil().getAllCountries()
+        val countriesListName = countriesList.map { it.fullName }
+        binding.selectedCountry.text = countriesListName.first()
         val spinnerAdapter = SpinnerArrayAdapter(
             this,
             R.layout.item_spinner_dns,
-            countriesList
+            countriesListName
         )
         listPopupWindow = LongListPopUpWindow(this).apply {
             inflateView(spinnerAdapter, binding.residentSpinnerFrame)
             setOnItemClickListener { _, _, position, _ ->
                 dismiss()
-                binding.selectedCountry.text = countriesList[position]
-                // TODO("Send country to back-end when it will implemented")
+                binding.selectedCountry.text = countriesListName[position]
+                viewModel.saveResidentCountry(countriesList[position].digitCode)
             }
         }
     }

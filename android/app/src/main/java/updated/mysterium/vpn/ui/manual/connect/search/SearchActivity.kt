@@ -67,6 +67,9 @@ class SearchActivity : BaseActivity() {
             binding.loaderAnimation.cancelAnimation()
             binding.searchLogo.visibility = View.VISIBLE
             binding.searchHint.visibility = View.VISIBLE
+            if (binding.editText.text.toString().isNotEmpty()) {
+                viewModel.search(binding.editText.text.toString())
+            }
         })
     }
 

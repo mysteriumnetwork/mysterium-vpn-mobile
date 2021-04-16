@@ -330,6 +330,16 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().calculateEstimates(balance)
     }
 
+    suspend fun getResidentCountry(): String = withContext(Dispatchers.IO) {
+        deferredNode.await().residentCountry()
+    }
+
+    suspend fun saveResidentCountry(
+        residentCountryUpdateRequest: ResidentCountryUpdateRequest
+    ) = withContext(Dispatchers.IO) {
+        deferredNode.await().updateResidentCountry(residentCountryUpdateRequest)
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

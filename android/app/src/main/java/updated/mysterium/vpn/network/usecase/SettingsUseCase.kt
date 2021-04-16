@@ -1,9 +1,14 @@
 package updated.mysterium.vpn.network.usecase
 
+import mysterium.ResidentCountryUpdateRequest
+import network.mysterium.service.core.NodeRepository
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
-class SettingsUseCase(private val sharedPreferencesManager: SharedPreferencesManager) {
+class SettingsUseCase(
+    private val nodeRepository: NodeRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
+) {
 
     fun getSavedDns() = sharedPreferencesManager.getStringPreferenceValue(SharedPreferencesList.DNS)
 
@@ -11,4 +16,14 @@ class SettingsUseCase(private val sharedPreferencesManager: SharedPreferencesMan
         key = SharedPreferencesList.DNS,
         value = dnsOption
     )
+
+    suspend fun getResidentCountry() = nodeRepository.getResidentCountry()
+
+    suspend fun saveResidentCountry(identityAddress: String, countryCode: String) {
+        val residentCountryUpdateRequest = ResidentCountryUpdateRequest().apply {
+            this.country = countryCode
+            this.identityAddress = identityAddress
+        }
+        nodeRepository.saveResidentCountry(residentCountryUpdateRequest)
+    }
 }

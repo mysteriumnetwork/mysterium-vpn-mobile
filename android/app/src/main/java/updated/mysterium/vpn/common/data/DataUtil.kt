@@ -8,8 +8,8 @@ object DataUtil {
 
     fun convertDataToDataType(bytesDouble: Long, dataType: String) = when (dataType) {
         "B" -> bytesDouble.toFloat()
-        "KB" -> (bytesDouble / UnitFormatter.KB).toFloat()
-        "MB" -> (bytesDouble / UnitFormatter.MB).toFloat()
+        "KiB" -> (bytesDouble / UnitFormatter.KB).toFloat()
+        "MiB" -> (bytesDouble / UnitFormatter.MB).toFloat()
         else -> (bytesDouble / UnitFormatter.GB).toFloat()
     }
 

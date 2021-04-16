@@ -145,6 +145,7 @@
                 <!-- Do not modify this -->
                 <action android:name="pushy.me" />
                 <action android:name="android.intent.action.BALANCE_RUNNING_OUT" />
+                <action android:name="android.intent.action.PUSHY_CONNECTION_ACTION" />
             </intent-filter>
         </receiver>
 

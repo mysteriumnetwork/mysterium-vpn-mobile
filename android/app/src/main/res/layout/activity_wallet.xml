@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftIcon="@drawable/icon_menu" />
+        app:leftIcon="@drawable/icon_back" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -97,6 +97,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/currencyTextView" />
 
+                <TextView
+                    android:id="@+id/buysForYouTextView"
+                    style="@style/TextAppearance.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_padding_size_small"
+                    android:text="@string/wallet_buys_for_you"
+                    android:textColor="@color/onboarding_faded_screen_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -105,7 +117,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView">
+                    app:layout_constraintTop_toBottomOf="@+id/buysForYouTextView">
 
                     <updated.mysterium.vpn.ui.custom.view.WalletItemView
                         android:id="@+id/video"

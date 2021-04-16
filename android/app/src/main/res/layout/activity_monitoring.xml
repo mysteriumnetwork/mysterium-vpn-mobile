@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:leftIcon="@drawable/icon_menu" />
+            app:leftIcon="@drawable/icon_back" />
 
         <TextView
             style="@style/TextAppearance.HeadTitle"
@@ -24,15 +24,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_padding_size_small_medium"
             android:text="@string/monitoring_title"
-            android:textColor="@android:color/white" />
-
-        <TextView
-            style="@style/TextAppearance.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-            android:text="@string/monitoring_statistics"
             android:textColor="@android:color/white" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
