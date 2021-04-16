@@ -65,6 +65,7 @@ class HomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         checkCurrentStatus()
+        allNodesViewModel.initProposals()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -87,7 +88,6 @@ class HomeActivity : BaseActivity() {
         loadIpAddress()
         bindMysteriumService()
         initViewModel()
-        allNodesViewModel.initProposals()
     }
 
     private fun subscribeViewModel() {
