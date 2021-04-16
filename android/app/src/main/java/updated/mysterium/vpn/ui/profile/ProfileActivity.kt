@@ -47,9 +47,6 @@ class ProfileActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        binding.manualConnectToolbar.setLeftIcon(
-            ContextCompat.getDrawable(this, R.drawable.icon_back)
-        )
         viewModel.getIdentity().observe(this, { result ->
             result.onSuccess { identity ->
                 binding.identityValueTextView.text = identity.address
