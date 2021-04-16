@@ -34,7 +34,6 @@ import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-@KoinApiExtension
 class HomeActivity : BaseActivity() {
 
     companion object {
