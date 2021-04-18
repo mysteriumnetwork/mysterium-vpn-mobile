@@ -12,6 +12,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
 import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -22,6 +23,7 @@ import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.settings.SettingsActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
+import java.util.*
 
 class MenuActivity : BaseActivity() {
 
@@ -51,6 +53,7 @@ class MenuActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMenuBinding
     private val balanceViewModel: BalanceViewModel by inject()
+    private val viewModel: MenuViewModel by inject()
     private val menuGridAdapter = MenuGridAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,8 +95,11 @@ class MenuActivity : BaseActivity() {
             }
             spinner.adapter = spinnerAdapter
             spinner.onItemSelected {
+                setLocale(LanguagesUtil.getCountryCodeByIndex(it))
+                viewModel.saveUserSelectedLanguage(it)
                 spinnerAdapter.selectedPosition = it
             }
+            spinner.setSelection(viewModel.getUserLanguageIndex())
         }
         binding.manualConnectToolbar.setRightView(viewSelectorBinding.languageSelector)
     }
@@ -109,6 +115,12 @@ class MenuActivity : BaseActivity() {
         val version = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
         val formattedVersion = getString(R.string.report_issue_app_version_template, version)
         binding.appVersionTextView.text = getString(R.string.menu_app_version, formattedVersion)
+    }
+
+    private fun setLocale(languageCode: String) {
+        Locale.setDefault(Locale(languageCode))
+        resources.configuration.setLocale(Locale(languageCode))
+        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
     }
 
     private fun bindsAction() {

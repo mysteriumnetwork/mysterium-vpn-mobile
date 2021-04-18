@@ -108,4 +108,6 @@
     <string name="button_register">Регистрация</string>
     <string name="enter_referral_code">Введите реферальный код:</string>
     <string name="mysterium_network_logo">Mysterium Network логотип</string>
+
+    <string name="manual_connect_disconnected">Отключено</string>
 </resources>
