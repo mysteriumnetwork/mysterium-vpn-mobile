@@ -24,7 +24,7 @@ class SettingsActivity : BaseActivity() {
         const val TAG = "SettingsActivity"
         val DNS_OPTIONS = listOf(
             DnsOption(
-                translatableValueResId = R.string.settings_dns_default,
+                translatableValueResId = R.string.settings_dns_cloudflare,
                 backendValue = "auto"
             ),
             DnsOption(
@@ -34,10 +34,6 @@ class SettingsActivity : BaseActivity() {
             DnsOption(
                 translatableValueResId = R.string.settings_dns_provider,
                 backendValue = "provider"
-            ),
-            DnsOption(
-                translatableValueResId = R.string.settings_dns_cloudflare,
-                backendValue = "cloudflare" // TODO("Replace when it will implemented on back")
             )
         )
     }

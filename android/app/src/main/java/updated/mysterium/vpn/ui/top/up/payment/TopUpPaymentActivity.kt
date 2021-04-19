@@ -104,24 +104,27 @@ class TopUpPaymentActivity : BaseActivity() {
             amount?.toDouble() ?: 0.0,
             isLighting ?: false
         ).observe(this, { result ->
-            binding.timer.visibility = View.VISIBLE
-            binding.timer.startTimer()
             binding.loader.visibility = View.GONE
             binding.loader.cancelAnimation()
-            binding.qrShadow.visibility = View.VISIBLE
-            binding.qrCodeFrame.visibility = View.VISIBLE
-            binding.currencyEquivalentFrame.visibility = View.VISIBLE
             result.onSuccess {
-                link = it.paymentURL
-                link?.let { qrLink ->
-                    showQrCode(qrLink)
-                }
-                showEquivalent(currency, it)
+                paymentLoaded(currency, it)
             }
             result.onFailure {
-                Log.e(TAG, it.localizedMessage ?: it.toString())
+                showTopUpServerFailed()
             }
         })
+    }
+
+    private fun paymentLoaded(currency: String, order: Order) {
+        order.paymentURL?.let { qrLink ->
+            showQrCode(qrLink)
+        }
+        showEquivalent(currency, order)
+        binding.timer.visibility = View.VISIBLE
+        binding.timer.startTimer()
+        binding.qrShadow.visibility = View.VISIBLE
+        binding.qrCodeFrame.visibility = View.VISIBLE
+        binding.currencyEquivalentFrame.visibility = View.VISIBLE
     }
 
     private fun checkTrialState() {

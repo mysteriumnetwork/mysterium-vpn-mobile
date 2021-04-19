@@ -31,7 +31,6 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private companion object {
         const val TAG = "HomeViewModel"
         const val DEFAULT_DNS_OPTION = "auto"
-        const val UNSTABLE_DNS_OPTION = "cloudflare"
     }
 
     val connectionState: LiveData<ConnectionState>
@@ -176,15 +175,11 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun connect() {
-        var userDnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
-        if (userDnsOption == UNSTABLE_DNS_OPTION) {
-            userDnsOption = DEFAULT_DNS_OPTION
-        }
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
             providerID = proposal.providerID
             serviceType = proposal.serviceType.type
-            dnsOption = userDnsOption
+            dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
         }
         connectionUseCase.connect(req)
         updateService()
