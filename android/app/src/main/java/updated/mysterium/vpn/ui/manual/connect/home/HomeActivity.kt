@@ -92,7 +92,7 @@ class HomeActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.statisticsUpdate.observe(this, {
-            updateStatistics(it)
+            binding.connectionState.updateConnectedStatistics(it, CURRENCY)
         })
         viewModel.connectionState.observe(this, {
             handleConnectionChange(it)
@@ -173,26 +173,6 @@ class HomeActivity : BaseActivity() {
                 // TODO("Implement error handling")
             }
         })
-    }
-
-    private fun updateStatistics(statistics: ConnectionStatistic) {
-        binding.connectionState.updateConnectedStatistics(statistics, CURRENCY)
-        val countryName = proposal?.countryName ?: "Unknown"
-        val notificationTitle = getString(R.string.notification_title_connected, countryName)
-        val tokensSpent = PriceUtils.displayMoney(
-            ProposalPaymentMoney(
-                amount = statistics.tokensSpent,
-                currency = CURRENCY
-            ),
-            DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
-        )
-        val notificationContent = getString(
-            R.string.notification_content,
-            "${statistics.bytesReceived.value} ${statistics.bytesReceived.units}",
-            "${statistics.bytesSent.value} ${statistics.bytesSent.units}",
-            tokensSpent
-        )
-        viewModel.showStatisticsNotification(notificationTitle, notificationContent)
     }
 
     private fun checkProposalArgument() {

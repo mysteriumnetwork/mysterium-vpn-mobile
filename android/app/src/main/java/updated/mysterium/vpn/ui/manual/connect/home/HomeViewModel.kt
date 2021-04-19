@@ -89,14 +89,6 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         locationUseCase.getLocation()
     }
 
-    fun showStatisticsNotification(notificationTitle: String, notificationContent: String) {
-        viewModelScope.launch {
-            appNotificationManager.showStatisticsNotification(
-                notificationTitle, notificationContent
-            )
-        }
-    }
-
     fun addToFavourite(proposal: Proposal) = liveDataResult {
         nodesUseCase.addToFavourite(proposal)
     }
