@@ -1,15 +1,19 @@
 package updated.mysterium.vpn.ui.private.key
 
+import android.Manifest
 import android.app.DownloadManager
 import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import network.mysterium.AppNotificationManager
+import network.mysterium.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPrivateKeyBinding
 import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
@@ -20,7 +24,7 @@ import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 
-class PrivateKeyActivity : BaseActivity() {
+class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private companion object {
         const val TAG = "PrivateKeyActivity"
@@ -36,12 +40,37 @@ class PrivateKeyActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        showDownloadKeyPopUp()
+    }
+
     private fun bindsAction() {
         binding.backUpKeyFrame.setOnClickListener {
-            showDownloadKeyPopUp()
+            checkPermissions()
         }
         binding.backUpLaterFrame.setOnClickListener {
             navigateToPrepareTopUp()
+        }
+    }
+
+    private fun checkPermissions() {
+        if (
+            ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                PERMISSION_REQUEST_EXT_STORAGE
+            )
+        } else {
+            showDownloadKeyPopUp()
         }
     }
 

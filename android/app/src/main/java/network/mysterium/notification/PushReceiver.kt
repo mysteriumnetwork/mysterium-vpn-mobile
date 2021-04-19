@@ -12,10 +12,17 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import me.pushy.sdk.Pushy
 import network.mysterium.vpn.R
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
+import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
+import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
-class PushReceiver : BroadcastReceiver() {
+class PushReceiver : BroadcastReceiver(), KoinComponent {
 
     companion object {
         const val PUSHY_BALANCE_ACTION = "android.intent.action.BALANCE_RUNNING_OUT"
@@ -26,6 +33,10 @@ class PushReceiver : BroadcastReceiver() {
         private const val BALANCE_NOTIFICATION_ID = 2
         private const val CONNECTION_NOTIFICATION_ID = 3
     }
+
+    private val useCaseProvider: UseCaseProvider by inject()
+    private val loginUseCase = useCaseProvider.login()
+    private val termsUseCase = useCaseProvider.terms()
 
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
@@ -69,7 +80,7 @@ class PushReceiver : BroadcastReceiver() {
 
     private fun showMarketingPush(context: Context, intent: Intent) {
         val builder = createNotification(intent, context)
-        val resultIntent = Intent(context, HomeActivity::class.java)
+        val resultIntent = getMarketingPushResultIntent(context)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
             getPendingIntent(0, FLAG_UPDATE_CURRENT)
@@ -94,5 +105,23 @@ class PushReceiver : BroadcastReceiver() {
         Pushy.setNotificationChannel(builder, context)
 
         return builder
+    }
+
+    private fun getMarketingPushResultIntent(context: Context) = when {
+        !loginUseCase.isAlreadyLogin() -> {
+            Intent(context, OnboardingActivity::class.java)
+        }
+        loginUseCase.isTopFlowShown() -> {
+            Intent(context, HomeActivity::class.java)
+        }
+        loginUseCase.isAccountCreated() -> {
+            Intent(context, PrepareTopUpActivity::class.java)
+        }
+        termsUseCase.isTermsAccepted() -> {
+            Intent(context, CreateAccountActivity::class.java)
+        }
+        else -> {
+            Intent(context, TermsOfUseActivity::class.java)
+        }
     }
 }
