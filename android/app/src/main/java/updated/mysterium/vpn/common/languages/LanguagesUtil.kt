@@ -1,0 +1,30 @@
+package updated.mysterium.vpn.common.languages
+
+import java.util.*
+
+object LanguagesUtil {
+
+    private const val DEFAULT_LANGUAGE = "EN"
+    private val languagesList = listOf(
+        "EN",
+        "AR",
+        "RU",
+        "ZN"
+    )
+
+    fun convertUserLanguage(countryCode: String) = if (languagesList.contains(countryCode)) {
+        countryCode
+    } else {
+        DEFAULT_LANGUAGE
+    }
+
+    fun getUserDefaultLanguage() = Locale.getDefault().language.toUpperCase(Locale.ROOT)
+
+    fun getCountryCodeByIndex(index: Int) = languagesList[index]
+
+    fun getIndexByCountry(countryCode: String?) = if (countryCode == null) {
+        languagesList.indexOf(DEFAULT_LANGUAGE)
+    } else {
+        languagesList.indexOf(countryCode)
+    }
+}

@@ -19,21 +19,18 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _proposals = MutableLiveData<List<CountryNodes>>()
     private val nodesUseCase = useCaseProvider.nodes()
     private var cachedNodesList: List<CountryNodes> = emptyList()
-    private var isLoaded = false
 
     fun initProposals() {
         viewModelScope.launch(Dispatchers.IO) {
             cachedNodesList = nodesUseCase.getAllCountries()
-            isLoaded = true
         }
     }
 
     fun getProposals() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (!isLoaded) {
-                cachedNodesList = nodesUseCase.getAllCountries()
-            }
-            _proposals.postValue(cachedNodesList)
+            updateLiveData()
+            cachedNodesList = nodesUseCase.getAllCountries()
+            updateLiveData()
         }
     }
 
@@ -42,6 +39,12 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             cachedNodesList.sortedByDescending { it.proposalList.size }
         } else {
             cachedNodesList.sortedBy { it.countryName }
+        }
+    }
+
+    private fun updateLiveData() {
+        if (cachedNodesList.isNotEmpty()) {
+            _proposals.postValue(cachedNodesList)
         }
     }
 }

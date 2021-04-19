@@ -11,6 +11,7 @@ import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -23,6 +24,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
     private val termsUseCase = useCaseProvider.terms()
+    private val settingsUseCase = useCaseProvider.settings()
     private var isAnimationLoaded = false
     private var isDataLoaded = false
     private var deferredNode = DeferredNode()
@@ -71,6 +73,10 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             getIdentity()
         }
     }
+
+    fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
+        countryCode = LanguagesUtil.convertUserLanguage(countryCode)
+    )
 
     private fun getIdentity() {
         viewModelScope.launch {

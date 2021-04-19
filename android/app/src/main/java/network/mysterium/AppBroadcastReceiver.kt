@@ -11,7 +11,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
 
-@KoinApiExtension
 class AppBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
     private val viewModel: HomeViewModel by inject()

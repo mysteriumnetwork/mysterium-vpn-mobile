@@ -63,7 +63,6 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         }
     }
 
-    @KoinApiExtension
     fun showStatisticsNotification(title: String, content: String) {
         val disconnectIntent = Intent(context, AppBroadcastReceiver::class.java).apply {
             action = ACTION_DISCONNECT
