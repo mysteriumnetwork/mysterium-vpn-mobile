@@ -10,5 +10,6 @@ enum class SharedPreferencesList(val prefName: String) {
     ACCOUNT_CREATED("ACCOUNT_CREATED"),
     TERMS("TERMS"),
     DNS("DNS"),
-    IDENTITY_ADDRESS("IDENTITY_ADDRESS")
+    IDENTITY_ADDRESS("IDENTITY_ADDRESS"),
+    LANGUAGE("LANGUAGE")
 }

@@ -8,9 +8,9 @@ object DataUtil {
 
     fun convertDataToDataType(bytesDouble: Long, dataType: String) = when (dataType) {
         "B" -> bytesDouble.toFloat()
-        "KiB" -> (bytesDouble / UnitFormatter.KB).toFloat()
-        "MiB" -> (bytesDouble / UnitFormatter.MB).toFloat()
-        else -> (bytesDouble / UnitFormatter.GB).toFloat()
+        "KiB" -> (bytesDouble.toFloat() / UnitFormatter.KB)
+        "MiB" -> (bytesDouble.toFloat() / UnitFormatter.MB)
+        else -> (bytesDouble.toFloat() / UnitFormatter.GB)
     }
 
     fun convertTokenToMyst(tokens: Long) = tokens / ETHER_VALUE

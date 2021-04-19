@@ -17,6 +17,7 @@
 
 package network.mysterium.service.core
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -29,14 +30,18 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mysterium.MobileNode
 import mysterium.Mysterium
+import network.mysterium.AppNotificationManager
 import network.mysterium.NotificationFactory
 import network.mysterium.notification.PushReceiver
 import network.mysterium.proposal.ProposalViewItem
+import network.mysterium.ui.DisplayMoneyOptions
+import network.mysterium.ui.PriceUtils
+import network.mysterium.ui.StatisticsModel
 import network.mysterium.vpn.R
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import java.util.*
 
@@ -46,8 +51,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         const val TAG = "MysteriumVPNService"
         const val BALANCE_LIMIT = 1.0
         const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.1
+        const val CURRENCY = "MYSTT"
     }
 
+    private lateinit var appNotificationManager: AppNotificationManager
     private val useCaseProvider: UseCaseProvider by inject()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
@@ -75,14 +82,17 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         }
 
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
-
         val options = Mysterium.defaultNodeOptions()
+        options.pilvytisAddress = "http://hadex.lt:8002/api/v1" // Testing payment, should be deleted after testing
         mobileNode = Mysterium.newNode(filesPath, options)
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 
         Log.i(TAG, "Node started")
         initBalanceListener()
         initConnectionListener()
+        appNotificationManager = AppNotificationManager(
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        ).apply { init(this@MysteriumAndroidCoreService) }
         return mobileNode!!
     }
 
@@ -121,14 +131,19 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private fun initConnectionListener() {
         GlobalScope.launch {
             connectionUseCase.connectionStatusCallback {
-                val connectionStateModel = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
-                if (connectionStateModel == ConnectionState.DISCONNECTING && !isDisconnectManual) {
-                    makeConnectionPushNotification()
-                } else if (
-                    connectionStateModel == ConnectionState.CONNECTED ||
-                    connectionStateModel == ConnectionState.NOTCONNECTED
-                ) {
-                    isDisconnectManual = false
+                when (ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))) {
+                    ConnectionState.DISCONNECTING -> {
+                        if (!isDisconnectManual) {
+                            makeConnectionPushNotification()
+                        }
+                    }
+                    ConnectionState.CONNECTED -> {
+                        isDisconnectManual = false
+                        initStatisticListener()
+                    }
+                    ConnectionState.NOTCONNECTED -> {
+                        isDisconnectManual = false
+                    }
                 }
             }
         }
@@ -162,6 +177,46 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             )
         }
         sendBroadcast(Intent(PushReceiver.PUSHY_BALANCE_ACTION).putExtras(extra))
+    }
+
+    private fun initStatisticListener() {
+        GlobalScope.launch {
+            connectionUseCase.registerStatisticsChangeCallback {
+                updateStatistic(it)
+            }
+        }
+    }
+
+    private fun updateStatistic(statisticsCallback: Statistics) {
+        GlobalScope.launch {
+            val exchangeRate = balanceUseCase.getUsdEquivalent()
+            val statistics = StatisticsModel.from(statisticsCallback)
+            val connectionStatistic = ConnectionStatistic(
+                duration = statistics.duration,
+                bytesReceived = statistics.bytesReceived,
+                bytesSent = statistics.bytesSent,
+                tokensSpent = statistics.tokensSpent,
+                currencySpent = exchangeRate * statistics.tokensSpent
+            )
+            val countryName = activeProposal?.countryName ?: "Unknown"
+            val notificationTitle = getString(R.string.notification_title_connected, countryName)
+            val tokensSpent = PriceUtils.displayMoney(
+                ProposalPaymentMoney(
+                    amount = connectionStatistic.tokensSpent,
+                    currency = CURRENCY
+                ),
+                DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
+            )
+            val notificationContent = getString(
+                R.string.notification_content,
+                "${connectionStatistic.bytesReceived.value} ${connectionStatistic.bytesReceived.units}",
+                "${connectionStatistic.bytesSent.value} ${connectionStatistic.bytesSent.units}",
+                tokensSpent
+            )
+            appNotificationManager.showStatisticsNotification(
+                notificationTitle, notificationContent
+            )
+        }
     }
 
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {

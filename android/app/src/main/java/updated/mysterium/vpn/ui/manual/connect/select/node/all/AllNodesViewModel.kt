@@ -28,8 +28,9 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getProposals() {
         viewModelScope.launch(Dispatchers.IO) {
-            _proposals.postValue(cachedNodesList)
+            updateLiveData()
             cachedNodesList = nodesUseCase.getAllCountries()
+            updateLiveData()
         }
     }
 
@@ -38,6 +39,12 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             cachedNodesList.sortedByDescending { it.proposalList.size }
         } else {
             cachedNodesList.sortedBy { it.countryName }
+        }
+    }
+
+    private fun updateLiveData() {
+        if (cachedNodesList.isNotEmpty()) {
+            _proposals.postValue(cachedNodesList)
         }
     }
 }
