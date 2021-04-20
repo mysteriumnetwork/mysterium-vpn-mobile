@@ -5,16 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
+import network.mysterium.service.core.ProposalItem
 import network.mysterium.service.core.Statistics
 import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
@@ -199,17 +196,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private fun updateService() {
         coreService.apply {
             setDeferredNode(deferredNode)
-            setActiveProposal(
-                ProposalViewItem(
-                    id = proposal.id,
-                    providerID = proposal.providerID,
-                    serviceType = proposal.serviceType,
-                    countryCode = proposal.countryCode,
-                    nodeType = proposal.nodeType,
-                    monitoringFailed = proposal.monitoringFailed,
-                    payment = proposal.payment
-                )
-            )
+            setActiveProposal(ProposalViewItem.parse(proposal))
             startForegroundWithNotification(
                 appNotificationManager.defaultNotificationID,
                 appNotificationManager.createConnectedToVPNNotification()
