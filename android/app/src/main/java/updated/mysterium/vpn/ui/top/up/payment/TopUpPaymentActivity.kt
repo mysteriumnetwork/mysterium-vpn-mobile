@@ -116,6 +116,7 @@ class TopUpPaymentActivity : BaseActivity() {
     }
 
     private fun paymentLoaded(currency: String, order: Order) {
+        link = order.paymentURL
         order.paymentURL?.let { qrLink ->
             showQrCode(qrLink)
         }
