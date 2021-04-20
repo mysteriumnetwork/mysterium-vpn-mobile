@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">MysteriumVPN</string>
+    <string name="myst_currency" translatable="false">MYSTT</string>
     <string name="connect_button_cancel">Cancel</string>
     <string name="connect_button_connect">Connect</string>
     <string name="connect_button_disconnect">Disconnect</string>
@@ -45,7 +46,7 @@
     <string name="wallet_registration_try_again">Something went wrong while registering your identity. Please try again.</string>
     <string name="wallet_registration_retry">RETRY</string>
     <string name="wallet_topup_title">Topup</string>
-    <string name="wallet_topup_hint">Topup your wallet by sending MYSTT to the address bellow.</string>
+    <string name="wallet_topup_hint">Topup your wallet by sending ${myst_currency} to the address bellow.</string>
     <string name="wallet_topup_free_tokens">GET FREE TOKENS</string>
     <string name="wallet_identity_channel_address_copy">COPY TOPUP ADDRESS</string>
     <string name="wallet_topup_address_copied">Copied</string>
@@ -86,7 +87,7 @@
     <string name="proposals_filter_price_per_gib">Price/GiB:</string>
     <string name="proposals_price_combined">%1$s/h %2$s/GiB</string>
     <string name="feedback_send_feedback_button">Send feedback</string>
-    <string name="wallet_mystt_test_explanation">MYSTT is a test token which you get for free while we are in the Testnet environment.</string>
+    <string name="wallet_myst_test_explanation">${myst_currency} is a test token which you get for free while we are in the Testnet environment.</string>
     <string name="wallet_balance">Balance</string>
     <string name="wallet_identity_address">Identity Address</string>
     <string name="wallet_identity_address_explanation">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
@@ -94,9 +95,8 @@
     <string name="vpn_ip">IP: %1$s</string>
     <string name="registration_description">MysteriumVPN requires account activation to prevent spam and network attacks.</string>
     <string name="registration_have_a_referral_code">Have a referral code</string>
-    <string name="mystt_display">%1$s MYSTT</string>
-    <string name="mystt" translatable="false">MYSTT</string>
-    <string name="registration_topup_payment_hint">Transfer %1$s MYSTT to your wallet (Görli Testnet blockchain) to proceed.</string>
+    <string name="myst_display">%1$s ${myst_currency}</string>
+    <string name="registration_topup_payment_hint">Transfer %1$s ${myst_currency} to your wallet (Görli Testnet blockchain) to proceed.</string>
     <string name="registration_successful">Registration successful!</string>
     <string name="have_a_referral_code">Have a referral code?</string>
     <string name="get_started">Get started</string>

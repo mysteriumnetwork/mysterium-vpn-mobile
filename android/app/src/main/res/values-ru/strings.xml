@@ -44,7 +44,7 @@
     <string name="wallet_registration_try_again">Что-то пошло не так при регистрации. Пожалуйста, попробуйте еще раз.</string>
     <string name="wallet_registration_retry">ПОВТОРИТЬ</string>
     <string name="wallet_topup_title">Пополнить</string>
-    <string name="wallet_topup_hint">Пополните свой кошелек, отправив MYSTT по указанному ниже адресу.</string>
+    <string name="wallet_topup_hint">Пополните свой кошелек, отправив ${myst_currency} по указанному ниже адресу.</string>
     <string name="wallet_topup_free_tokens">ПОЛУЧИТЬ БЕСПЛАТНЫЕ ТОКЕНЫ</string>
     <string name="wallet_identity_channel_address_copy">СКОПИРУЙТЕ АДРЕС ДЛЯ ПОПОЛНЕНИЯ</string>
     <string name="wallet_topup_address_copied">Скопированно</string>
@@ -87,7 +87,7 @@
     <string name="proposals_price_combined">%1$s/мин %2$s/ГиБ</string>
     <string name="wallet_balance">Баланс</string>
     <string name="feedback_send_feedback_button">Отправить отзыв</string>
-    <string name="wallet_mystt_test_explanation">MYSTT - это тестовый токен, который вы получаете бесплатно, пока мы находимся в Testnet</string>
+    <string name="wallet_myst_test_explanation">${myst_currency} - это тестовый токен, который вы получаете бесплатно, пока мы находимся в Testnet</string>
     <string name="wallet_identity_address">Идентификационный адрес</string>
     <string name="wallet_identity_address_explanation">Идентификатор - это ваш внутренний идентификатор пользователя Mysterium. Никогда не посылайте эфир или какие-либо ERC20 токены сюда.</string>
     <string name="no_internet_connection">Нет соединения с интернетом</string>
@@ -95,8 +95,8 @@
     <string name="conn_state_reconnecting">Переподключениe</string>
     <string name="registration_description">Необходима активация аккаунта MysteriumVPN для предотвращения спама и сетевых атак.</string>
     <string name="registration_have_a_referral_code">У меня есть реферальный код</string>
-    <string name="mystt_display">%1$s MYSTT</string>
-    <string name="registration_topup_payment_hint">Пришлите %1$s MYSTT на ваш кошелёк (в тестовом блокчейне Görli), чтобы продолжить.</string>
+    <string name="myst_display">%1$s ${myst_currency}</string>
+    <string name="registration_topup_payment_hint">Пришлите %1$s ${myst_currency} на ваш кошелёк (в тестовом блокчейне Görli), чтобы продолжить.</string>
     <string name="registration_successful">Регистрация прошла успешно!</string>
     <string name="have_a_referral_code">У Вас есть реферальный код?</string>
     <string name="get_started">Начать</string>

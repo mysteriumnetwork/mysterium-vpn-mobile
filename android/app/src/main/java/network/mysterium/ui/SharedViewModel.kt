@@ -281,7 +281,7 @@ class SharedViewModel(
                 val countryName = selectedProposal.value?.countryName
                 val notificationTitle = appCtx.getString(R.string.notification_title_connected, countryName)
                 val tokensSpent = PriceUtils.displayMoney(
-                        ProposalPaymentMoney(amount = s.tokensSpent, currency = "MYSTT"),
+                        ProposalPaymentMoney(amount = s.tokensSpent, currency = appCtx.getString(R.string.myst_currency)),
                         DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
                 )
                 val notificationContent = appCtx.getString(R.string.notification_content, "${s.bytesReceived.value} ${s.bytesReceived.units}", "${s.bytesSent.value} ${s.bytesSent.units}", tokensSpent)

@@ -198,7 +198,7 @@ class MainVpnFragment : Fragment() {
         vpnStatsBytesSentUnits.text = stats.bytesSent.units
 
         val tokensSpent = PriceUtils.displayMoney(
-                ProposalPaymentMoney(amount = stats.tokensSpent, currency = "MYSTT"),
+                ProposalPaymentMoney(amount = stats.tokensSpent, currency = getString(R.string.myst_currency)),
                 DisplayMoneyOptions(fractionDigits = 3, showCurrency = false)
         )
         vpnStatsPaid.text = tokensSpent

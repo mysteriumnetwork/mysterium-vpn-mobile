@@ -164,7 +164,7 @@
                             android:textSize="20dp"
                             android:enabled="false"
                             android:gravity="top"
-                            android:text="0 MYSTT"
+                            android:text="@{@string/myst_display(0)}"
                             app:layout_constraintTop_toBottomOf="@id/account_balance_card_title" />
 
                         <Button

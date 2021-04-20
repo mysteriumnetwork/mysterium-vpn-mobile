@@ -70,17 +70,21 @@ class IdentityModel(
 
 class BalanceModel(val balance: TokenModel)
 
-class TokenModel(token: Double = 0.0) {
+class TokenModel(token: Double = 0.0, mystCurrency: String) {
     var displayValue = ""
     var value = 0.00
 
     init {
         value = token
-        displayValue = "%.3f MYSTT".format(value)
+        displayValue = "%.3f $mystCurrency".format(value)
     }
 }
 
-class WalletViewModel(private val nodeRepository: NodeRepository, private val bugReporter: BugReporter) : ViewModel() {
+class WalletViewModel(
+        private val nodeRepository: NodeRepository,
+        private val bugReporter: BugReporter,
+        private val mystCurrency: String,
+        ) : ViewModel() {
     val balance = MutableLiveData<BalanceModel>()
     val identity = MutableLiveData<IdentityModel>()
 
@@ -171,7 +175,7 @@ class WalletViewModel(private val nodeRepository: NodeRepository, private val bu
 
     private fun handleBalanceChange(changedBalance: Double) {
         viewModelScope.launch {
-            balance.value = BalanceModel(TokenModel(changedBalance))
+            balance.value = BalanceModel(TokenModel(changedBalance, mystCurrency))
         }
     }
 

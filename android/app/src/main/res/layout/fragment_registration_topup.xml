@@ -62,7 +62,7 @@
             android:width="100dp"
             android:height="30sp"
             android:gravity="center_vertical|end"
-            android:text="@{@string/mystt_display(viewModel.topupAmount.setScale(0).toPlainString())}"
+            android:text="@{@string/myst_display(viewModel.topupAmount.setScale(0).toPlainString())}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_toggle" />
 
@@ -87,7 +87,7 @@
             android:width="100dp"
             android:height="30sp"
             android:gravity="center_vertical|end"
-            android:text="@{@string/mystt_display(viewModel.registrationFee.setScale(0).toPlainString())}"
+            android:text="@{@string/myst_display(viewModel.registrationFee.setScale(0).toPlainString())}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registration_topup_amount_display" />
 
@@ -112,7 +112,7 @@
             android:width="100dp"
             android:height="30sp"
             android:gravity="center_vertical|end"
-            android:text="@{@string/mystt_display(viewModel.totalAmount.setScale(0).toPlainString())}"
+            android:text="@{@string/myst_display(viewModel.totalAmount.setScale(0).toPlainString())}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registration_topup_registration_fee_display" />
 
@@ -147,21 +147,21 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/mystt_display(10)}" />
+                android:text="@{@string/myst_display(10)}" />
 
             <Button
                 android:id="@+id/registration_topup_button_20"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/mystt_display(20)}" />
+                android:text="@{@string/myst_display(20)}" />
 
             <Button
                 android:id="@+id/registration_topup_button_50"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/mystt_display(50)}" />
+                android:text="@{@string/myst_display(50)}" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
