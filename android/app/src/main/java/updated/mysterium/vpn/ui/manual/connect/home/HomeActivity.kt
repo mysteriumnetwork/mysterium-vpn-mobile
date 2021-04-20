@@ -15,18 +15,13 @@ import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.AppNotificationManager
 import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.ProposalPaymentMoney
-import network.mysterium.ui.DisplayMoneyOptions
-import network.mysterium.ui.PriceUtils
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
-import org.koin.core.component.KoinApiExtension
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
-import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
@@ -223,6 +218,10 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun bindsAction() {
+        binding.cancelConnectionButton.setOnClickListener {
+            manualDisconnecting()
+            viewModel.stopConnecting()
+        }
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
         }
@@ -297,6 +296,7 @@ class HomeActivity : BaseActivity() {
         binding.securityStatusImageView.visibility = View.VISIBLE
         binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.multiAnimation.disconnectedState()
+        binding.cancelConnectionButton.visibility = View.INVISIBLE
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         loadIpAddress()
         toolbarWalletIcon()
@@ -321,7 +321,8 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun inflateConnectingCardView() {
-        binding.selectAnotherNodeButton.visibility = View.VISIBLE
+        binding.selectAnotherNodeButton.visibility = View.INVISIBLE
+        binding.cancelConnectionButton.visibility = View.VISIBLE
         binding.connectedNodeInfo.visibility = View.INVISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_connecting)
         binding.securityStatusImageView.visibility = View.VISIBLE
@@ -336,6 +337,7 @@ class HomeActivity : BaseActivity() {
 
     private fun inflateConnectedCardView() {
         toolbarSaveIcon()
+        binding.cancelConnectionButton.visibility = View.INVISIBLE
         binding.selectAnotherNodeButton.visibility = View.VISIBLE
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE

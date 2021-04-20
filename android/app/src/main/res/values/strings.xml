@@ -146,6 +146,7 @@
     <string name="manual_connect_type_filter_title">Select the node type</string>
     <string name="manual_connect_node">Node</string>
     <string name="manual_connect_another_node">Select another node </string>
+    <string name="manual_connect_cancel">Cancel and choose another node</string>
     <string name="manual_connect_connecting">Connecting…</string>
     <string name="manual_connect_connected">Connected</string>
     <string name="manual_connect_disconnect">Disconnect</string>

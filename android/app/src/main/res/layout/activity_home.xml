@@ -239,4 +239,16 @@
         app:layout_constraintEnd_toEndOf="@+id/connectionInfoFrame"
         app:layout_constraintStart_toStartOf="@+id/connectionInfoFrame" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelConnectionButton"
+        style="@style/Widget.RoundedSemiTransparentButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+        android:text="@string/manual_connect_cancel"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/connectionInfoFrame"
+        app:layout_constraintStart_toStartOf="@+id/connectionInfoFrame" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
