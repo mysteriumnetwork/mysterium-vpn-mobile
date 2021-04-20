@@ -26,6 +26,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mysterium.MobileNode
@@ -188,7 +189,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun updateStatistic(statisticsCallback: Statistics) {
-        GlobalScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        GlobalScope.launch(handler) {
             val exchangeRate = balanceUseCase.getUsdEquivalent()
             val statistics = StatisticsModel.from(statisticsCallback)
             val connectionStatistic = ConnectionStatistic(

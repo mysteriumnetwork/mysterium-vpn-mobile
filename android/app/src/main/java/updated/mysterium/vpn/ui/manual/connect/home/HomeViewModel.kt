@@ -183,14 +183,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun getExchangeRate() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, "Failed to load currency: $exception")
-        }
-        viewModelScope.launch(handler) {
-            exchangeRate = withContext(Dispatchers.Default) {
-                balanceUseCase.getUsdEquivalent()
-            }
-        }
+        exchangeRate = balanceUseCase.getUsdEquivalent()
     }
 
     private fun updateService() {
