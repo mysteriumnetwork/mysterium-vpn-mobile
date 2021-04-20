@@ -16,7 +16,6 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import java.io.BufferedReader
@@ -25,7 +24,7 @@ import java.io.InputStreamReader
 class CreateAccountActivity : BaseActivity() {
 
     private companion object {
-        const val MIME_TYPE_JSON = "application/json|application/octet-stream"
+        const val MIME_TYPE_JSON = "application/json"
         const val KEY_REQUEST_CODE = 0
         const val TAG = "CreateAccountActivity"
     }
