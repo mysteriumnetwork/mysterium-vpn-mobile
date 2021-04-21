@@ -19,25 +19,27 @@ package network.mysterium.proposal
 
 import android.graphics.Bitmap
 import android.util.Log
-import network.mysterium.service.core.ProposalItem
 import network.mysterium.db.FavoriteProposal
+import network.mysterium.service.core.ProposalItem
 import network.mysterium.service.core.ProposalPaymentMethod
 import network.mysterium.ui.Countries
 import network.mysterium.vpn.R
+import updated.mysterium.vpn.model.manual.connect.Proposal
+import java.util.*
 
 class ProposalGroupViewItem constructor(
-        val title: String,
-        val children: List<ProposalViewItem>
+    val title: String,
+    val children: List<ProposalViewItem>
 )
 
 class ProposalViewItem constructor(
-        val id: String,
-        val providerID: String,
-        val serviceType: ServiceType,
-        val countryCode: String,
-        val nodeType: NodeType,
-        val monitoringFailed: Boolean,
-        val payment: ProposalPaymentMethod
+    val id: String,
+    val providerID: String,
+    val serviceType: ServiceType,
+    val countryCode: String,
+    val nodeType: NodeType,
+    val monitoringFailed: Boolean,
+    val payment: ProposalPaymentMethod
 ) {
     var countryFlagImage: Bitmap? = null
     var serviceTypeResID: Int = R.drawable.service_openvpn
@@ -58,17 +60,17 @@ class ProposalViewItem constructor(
 
     companion object {
         fun parse(
-                proposal: ProposalItem,
-                favoriteProposals: (Map<String, FavoriteProposal>)? = null
+            proposal: ProposalItem,
+            favoriteProposals: (Map<String, FavoriteProposal>)? = null
         ): ProposalViewItem {
             val res = ProposalViewItem(
-                    id = proposal.providerID+proposal.serviceType,
-                    providerID = proposal.providerID,
-                    serviceType = ServiceType.parse(proposal.serviceType),
-                    countryCode = proposal.countryCode.toLowerCase(),
-                    nodeType = NodeType.parse(proposal.nodeType),
-                    monitoringFailed = proposal.monitoringFailed,
-                    payment = proposal.payment
+                id = proposal.providerID + proposal.serviceType,
+                providerID = proposal.providerID,
+                serviceType = ServiceType.parse(proposal.serviceType),
+                countryCode = proposal.countryCode.toLowerCase(Locale.ROOT),
+                nodeType = NodeType.parse(proposal.nodeType),
+                monitoringFailed = proposal.monitoringFailed,
+                payment = proposal.payment
             )
 
             if (Countries.bitmaps.contains(res.countryCode)) {
@@ -89,8 +91,37 @@ class ProposalViewItem constructor(
             return res
         }
 
+        fun parse(proposal: Proposal): ProposalViewItem {
+            val proposalViewItem = ProposalViewItem(
+                id = proposal.providerID + proposal.serviceType,
+                providerID = proposal.providerID,
+                serviceType = proposal.serviceType,
+                countryCode = proposal.countryCode.toLowerCase(Locale.ROOT),
+                nodeType = proposal.nodeType,
+                monitoringFailed = proposal.monitoringFailed,
+                payment = proposal.payment
+            )
+
+            if (Countries.bitmaps.contains(proposalViewItem.countryCode)) {
+                proposalViewItem.countryFlagImage = Countries.bitmaps[proposalViewItem.countryCode]
+                proposalViewItem.countryName = Countries.values[proposalViewItem.countryCode]?.name
+                    ?: ""
+            } else {
+                Log.e("ProposalViewItem", "Country with code ${proposalViewItem.countryCode} not found")
+            }
+
+            proposalViewItem.serviceTypeResID = mapServiceTypeResourceID(proposalViewItem.serviceType)
+            proposalViewItem.qualityLevel = proposal.qualityLevel
+            proposalViewItem.qualityResID = mapQualityLevelResourceID(proposalViewItem.qualityLevel)
+            if (proposalViewItem.isFavorite) {
+                proposalViewItem.isFavoriteResID = R.drawable.ic_star_black_24dp
+            }
+
+            return proposalViewItem
+        }
+
         private fun mapServiceTypeResourceID(serviceType: ServiceType): Int {
-            return when(serviceType) {
+            return when (serviceType) {
                 ServiceType.OPENVPN -> R.drawable.service_openvpn
                 ServiceType.WIREGUARD -> R.drawable.service_wireguard
                 else -> R.drawable.service_openvpn
@@ -98,7 +129,7 @@ class ProposalViewItem constructor(
         }
 
         private fun mapQualityLevelResourceID(qualityLevel: QualityLevel): Int {
-            return when(qualityLevel) {
+            return when (qualityLevel) {
                 QualityLevel.HIGH -> R.drawable.filter_quality_high
                 QualityLevel.MEDIUM -> R.drawable.filter_quality_medium
                 QualityLevel.LOW -> R.drawable.filter_quality_low

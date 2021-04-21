@@ -26,6 +26,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mysterium.MobileNode
@@ -188,7 +189,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun updateStatistic(statisticsCallback: Statistics) {
-        GlobalScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        GlobalScope.launch(handler) {
             val exchangeRate = balanceUseCase.getUsdEquivalent()
             val statistics = StatisticsModel.from(statisticsCallback)
             val connectionStatistic = ConnectionStatistic(
@@ -199,7 +203,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 currencySpent = exchangeRate * statistics.tokensSpent
             )
             val countryName = activeProposal?.countryName ?: "Unknown"
-            val notificationTitle = getString(R.string.notification_title_connected, countryName)
+            val notificationTitle = getString(R.string.push_notification_connected_title, countryName)
             val tokensSpent = PriceUtils.displayMoney(
                 ProposalPaymentMoney(
                     amount = connectionStatistic.tokensSpent,
@@ -208,7 +212,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
             )
             val notificationContent = getString(
-                R.string.notification_content,
+                R.string.push_notification_content,
                 "${connectionStatistic.bytesReceived.value} ${connectionStatistic.bytesReceived.units}",
                 "${connectionStatistic.bytesSent.value} ${connectionStatistic.bytesSent.units}",
                 tokensSpent
