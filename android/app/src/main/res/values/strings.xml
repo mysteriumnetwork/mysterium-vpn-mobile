@@ -316,6 +316,9 @@
     <string name="search_hint_highlighted">Search Bar</string>
     <string name="search_hint_second_part">at the top\n to find right node</string>
 
+    <!--  Favourites  -->
+    <string name="favourites_title">Favourites</string>
+
     <!--  Toolbar  -->
     <string name="toolbar_hint">Back to Connection Screen</string>
 
