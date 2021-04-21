@@ -13,10 +13,7 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.payment.Order
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityTopUpPaymentBinding
-import network.mysterium.vpn.databinding.PopUpPaymentExpiredBinding
-import network.mysterium.vpn.databinding.PopUpPaymentNotWorkBinding
-import network.mysterium.vpn.databinding.PopUpPaymentSuccessfullyBinding
+import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
@@ -61,6 +58,9 @@ class TopUpPaymentActivity : BaseActivity() {
         })
         viewModel.paymentFailed.observe(this, {
             showTopUpServerFailed()
+        })
+        viewModel.paymentCanceled.observe(this, {
+            showTopUpCanceled()
         })
     }
 
@@ -182,14 +182,24 @@ class TopUpPaymentActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun showTopUpServerFailed() {
-        val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
+    private fun showTopUpCanceled() {
+        val bindingPopUp = PopUpPaymentCanceledBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
+            dialog.hide()
             val intent = Intent(this, WalletActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
             startActivity(intent)
+        }
+        dialog.show()
+    }
+
+    private fun showTopUpServerFailed() {
+        val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.closeButton.setOnClickListener {
+            navigateToWallet()
         }
         dialog.show()
     }
@@ -202,12 +212,16 @@ class TopUpPaymentActivity : BaseActivity() {
             getExtra()
         }
         bindingPopUp.topUpLaterButton.setOnClickListener {
-            val intent = Intent(this, WalletActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            navigateToWallet()
         }
         dialog.show()
+    }
+
+    private fun navigateToWallet() {
+        val intent = Intent(this, WalletActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        startActivity(intent)
     }
 
     private fun showToast() {

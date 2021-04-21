@@ -11,6 +11,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
@@ -129,6 +130,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 unprotectedConnection()
             }
         })
+        baseViewModel.insufficientFunds.observe(this, {
+            insufficientFundsPopUp()
+        })
     }
 
     private fun isHintAlreadyShown() {
@@ -145,6 +149,18 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun balanceRunningOutPopUp() {
         val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.topUpButton.setOnClickListener {
+            startActivity(Intent(this, TopUpAmountActivity::class.java))
+        }
+        bindingPopUp.continueButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun insufficientFundsPopUp() {
+        val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))
