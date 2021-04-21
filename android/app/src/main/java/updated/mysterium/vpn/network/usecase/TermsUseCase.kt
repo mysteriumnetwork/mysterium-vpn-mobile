@@ -17,11 +17,23 @@ class TermsUseCase(private val sharedPreferencesManager: SharedPreferencesManage
         Terms.endUserMD()
     }
 
-    fun isTermsAccepted() = sharedPreferencesManager.containsPreferenceValue(SharedPreferencesList.TERMS)
+    fun isTermsUpdated(): Boolean {
+        val userAcceptedVersion = sharedPreferencesManager.getStringPreferenceValue(
+            SharedPreferencesList.TERMS
+        )
+        return (userAcceptedVersion != null)
+    }
+
+    fun isTermsAccepted(): Boolean {
+        val userAcceptedVersion = sharedPreferencesManager.getStringPreferenceValue(
+            SharedPreferencesList.TERMS
+        )
+        return (userAcceptedVersion == Terms.version())
+    }
 
     fun userAcceptTerms() = sharedPreferencesManager.setPreferenceValue(
         key = SharedPreferencesList.TERMS,
-        value = true
+        value = Terms.version()
     )
 
     fun getShortTerms(): List<String> {
