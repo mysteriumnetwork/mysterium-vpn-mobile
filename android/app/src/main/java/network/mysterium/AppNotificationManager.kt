@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import network.mysterium.vpn.R
-import org.koin.core.component.KoinApiExtension
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 
 typealias NotificationFactory = (Context) -> Notification

@@ -1,7 +1,6 @@
 package updated.mysterium.vpn.ui.private.key
 
 import android.Manifest
-import android.app.DownloadManager
 import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -126,10 +125,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
                 scanFile(it)
             }
         } else {
-            DownloadsUtil.saveWithDownloadManager(
-                bytesFileContent,
-                getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-            )
+            DownloadsUtil.saveDirectlyToDownloads(bytesFileContent)
             showDownloadedNotification()
         }
     }
