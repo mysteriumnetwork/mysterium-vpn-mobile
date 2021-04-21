@@ -184,6 +184,7 @@
     <!--  Menu  -->
     <string name="menu_current_balance">"%.3f" MYST</string>
     <string name="menu_title">Mysterium Network</string>
+    <string name="menu_item_home_title">Home</string>
     <string name="menu_item_profile_title">Profile</string>
     <string name="menu_item_wallet_title">Account</string>
     <string name="menu_item_monitoring_title">History</string>
@@ -314,6 +315,9 @@
     <string name="search_hint_first_part">Use </string>
     <string name="search_hint_highlighted">Search Bar</string>
     <string name="search_hint_second_part">at the top\n to find right node</string>
+
+    <!--  Toolbar  -->
+    <string name="toolbar_hint">Back to Connection Screen</string>
 
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>

@@ -26,6 +26,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
+    private val settingsUseCase = useCaseProvider.settings()
 
     init {
         balanceListener()
@@ -39,6 +40,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             _connectionState.postValue(connectionModel)
         }
     }
+
+    fun isHintAlreadyShown() = settingsUseCase.isConnectionHintShown()
+
+    fun hintShown() = settingsUseCase.connectionHintShown()
 
     private fun balanceListener() {
         viewModelScope.launch {

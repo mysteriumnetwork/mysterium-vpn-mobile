@@ -28,6 +28,11 @@ class ReportIssueActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
+    }
+
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         val version = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"

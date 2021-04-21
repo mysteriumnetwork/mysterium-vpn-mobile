@@ -261,10 +261,10 @@ class HomeActivity : BaseActivity() {
 
     private fun toolbarWalletIcon() {
         binding.manualConnectToolbar.onRightButtonClicked {
-            startActivity(Intent(this, WalletActivity::class.java))
+            //TODO("Implement with favourites screen")
         }
         binding.manualConnectToolbar.setRightIcon(
-            ContextCompat.getDrawable(this, R.drawable.icon_wallet_toolbar)
+            ContextCompat.getDrawable(this, R.drawable.icon_favourites)
         )
     }
 
@@ -321,6 +321,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun inflateConnectingCardView() {
+        toolbarSaveIcon()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         binding.cancelConnectionButton.visibility = View.VISIBLE
         binding.connectedNodeInfo.visibility = View.INVISIBLE

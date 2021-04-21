@@ -22,8 +22,8 @@ import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
+    protected val baseViewModel: BaseViewModel by inject()
     private val dialogs = emptyList<Dialog>().toMutableList()
-    private val viewModel: BaseViewModel by inject()
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkCurrentConnection()
+        baseViewModel.checkCurrentConnection()
         handleInternetConnection()
     }
 
@@ -47,6 +47,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun retryLoading() {
         // Override in activity for handle retry loading click
+    }
+
+    open fun showConnectionHint() {
+        // Override in activity for show connection hint
     }
 
     fun initToolbar(connectionToolbar: ConnectionToolbar) {
@@ -114,16 +118,23 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.balanceRunningOut.observe(this, {
+        baseViewModel.balanceRunningOut.observe(this, {
             balanceRunningOutPopUp()
         })
-        viewModel.connectionState.observe(this, {
+        baseViewModel.connectionState.observe(this, {
             if (it == ConnectionState.CONNECTED) {
+                isHintAlreadyShown()
                 protectedConnection()
             } else {
                 unprotectedConnection()
             }
         })
+    }
+
+    private fun isHintAlreadyShown() {
+        if (!baseViewModel.isHintAlreadyShown()) {
+            showConnectionHint()
+        }
     }
 
     private fun handleInternetConnection() {

@@ -5,6 +5,7 @@ import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.View
 import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.ui.onItemSelected
 import network.mysterium.vpn.R
@@ -53,6 +54,11 @@ class SettingsActivity : BaseActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         calculateSpinnerSize()
+    }
+
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
     }
 
     private fun configure() {

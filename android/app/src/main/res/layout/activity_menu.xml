@@ -12,6 +12,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftIcon="@drawable/icon_back" />
 
+    <FrameLayout
+        android:id="@+id/connectionHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="@dimen/margin_padding_size_micro"
+        android:background="@drawable/shape_connected_hint"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+        <TextView
+            style="@style/TextAppearance.BodyRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:text="@string/toolbar_hint"
+            android:textColor="@color/manual_connect_connection_state" />
+
+    </FrameLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -41,23 +64,10 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_small"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
                 android:numColumns="2"
-                app:layout_constraintBottom_toTopOf="@+id/settingsButton"
+                app:layout_constraintBottom_toTopOf="@+id/reportButton"
                 app:layout_constraintTop_toBottomOf="@+id/menuTitleTextView"
                 tools:itemCount="6"
                 tools:listitem="@layout/item_menu" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settingsButton"
-                style="@style/Widget.GradientButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-                android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:background="@drawable/shape_menu_button"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="@string/menu_list_item_settings"
-                app:layout_constraintTop_toBottomOf="@+id/menuRecyclerView" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/reportButton"
@@ -70,7 +80,7 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/menu_list_item_report"
-                app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
+                app:layout_constraintTop_toBottomOf="@+id/menuRecyclerView" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/helpButton"

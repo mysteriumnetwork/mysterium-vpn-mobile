@@ -9,18 +9,30 @@
     android:layout_marginTop="@dimen/margin_padding_size_medium"
     android:background="@drawable/shape_menu_item">
 
-    <ImageView
-        android:id="@+id/itemLogoImageView"
+    <FrameLayout
+        android:id="@+id/itemLogoFrame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:background="@drawable/circle_menu_item"
-        android:padding="@dimen/margin_padding_size_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/menu_icon_profile" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/circle_menu_item"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/itemLogoImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/menu_icon_profile" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/itemTitleTextView"
@@ -31,7 +43,7 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemLogoImageView"
+        app:layout_constraintTop_toBottomOf="@+id/itemLogoFrame"
         tools:text="Home" />
 
     <TextView

@@ -3,6 +3,7 @@ package updated.mysterium.vpn.ui.menu
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.intercom.android.sdk.Intercom
@@ -30,9 +31,16 @@ class MenuActivity : BaseActivity() {
     private companion object {
         val MENU_ITEMS = listOf(
             MenuItem(
+                iconResId = R.drawable.menu_icon_home,
+                titleResId = R.string.menu_item_home_title
+            ),
+            MenuItem(
                 iconResId = R.drawable.menu_icon_wallet,
-                titleResId = R.string.menu_item_wallet_title,
-                subTitleResId = R.string.menu_item_wallet_subtitle
+                titleResId = R.string.menu_item_wallet_title
+            ),
+            MenuItem(
+                iconResId = R.drawable.menu_icon_profile,
+                titleResId = R.string.menu_item_profile_title
             ),
             MenuItem(
                 iconResId = R.drawable.menu_icon_monitoring,
@@ -40,13 +48,14 @@ class MenuActivity : BaseActivity() {
                 subTitleResId = R.string.menu_item_monitoring_subtitle
             ),
             MenuItem(
-                iconResId = R.drawable.menu_icon_profile,
-                titleResId = R.string.menu_item_profile_title
+                iconResId = R.drawable.menu_icon_settings,
+                titleResId = R.string.menu_list_item_settings,
             ),
             MenuItem(
-                iconResId = R.drawable.menu_icon_referral,
+                iconResId = R.drawable.menu_icon_referral_deactivated,
                 titleResId = R.string.menu_item_referral_title,
-                subTitleResId = R.string.menu_item_referral_subtitle
+                subTitleResId = R.string.menu_item_referral_subtitle,
+                isActive = false
             )
         )
     }
@@ -65,6 +74,11 @@ class MenuActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
+    }
+
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         balanceViewModel.getCurrentBalance()
@@ -76,7 +90,7 @@ class MenuActivity : BaseActivity() {
     private fun subscribeViewModel() {
         balanceViewModel.balanceLiveData.observe(this, {
             val balance = getString(R.string.menu_current_balance, it)
-            MENU_ITEMS.first().dynamicSubtitle = balance
+            MENU_ITEMS[1].dynamicSubtitle = balance // Added balance to wallet item
             menuGridAdapter.replaceAll(MENU_ITEMS)
         })
     }
@@ -142,21 +156,25 @@ class MenuActivity : BaseActivity() {
         binding.termsTextView.setOnClickListener {
             startActivity(Intent(this, TermsOfUseActivity::class.java))
         }
-        binding.settingsButton.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-        }
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
                 0 -> menuItem.onItemClickListener = {
-                    startActivity(Intent(this, WalletActivity::class.java))
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
                 }
                 1 -> menuItem.onItemClickListener = {
-                    startActivity(Intent(this, MonitoringActivity::class.java))
+                    startActivity(Intent(this, WalletActivity::class.java))
                 }
                 2 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, ProfileActivity::class.java))
                 }
                 3 -> menuItem.onItemClickListener = {
+                    startActivity(Intent(this, MonitoringActivity::class.java))
+                }
+                4 -> menuItem.onItemClickListener = {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                }
+                5 -> menuItem.onItemClickListener = {
                     // TODO("Implement navigation to Referral")
                 }
             }

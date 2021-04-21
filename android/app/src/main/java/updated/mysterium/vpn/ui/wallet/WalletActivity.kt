@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -53,6 +54,11 @@ class WalletActivity : BaseActivity() {
         subscribeViewModel()
         bindsAction()
         balanceViewModel.getCurrentBalance()
+    }
+
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
     }
 
     private fun configure() {
