@@ -87,15 +87,13 @@ class TermsOfUseActivity : BaseActivity() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
-            if (viewModel.isAccountCreated()) {
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+            val intent = if (viewModel.isAccountCreated()) {
+                Intent(this, HomeActivity::class.java)
             } else {
-                val intent = Intent(this, CreateAccountActivity::class.java)
-                startActivity(intent)
-                finish()
+                Intent(this, CreateAccountActivity::class.java)
             }
+            startActivity(intent)
+            finish()
         }
     }
 
