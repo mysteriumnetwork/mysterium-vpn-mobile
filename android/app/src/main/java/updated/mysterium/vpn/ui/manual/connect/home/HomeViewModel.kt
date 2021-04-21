@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.manual.connect.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,6 @@ import network.mysterium.AppNotificationManager
 import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.DeferredNode
 import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.ProposalItem
 import network.mysterium.service.core.Statistics
 import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
@@ -26,7 +24,6 @@ import java.util.*
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
-        const val TAG = "HomeViewModel"
         const val DEFAULT_DNS_OPTION = "auto"
     }
 
@@ -57,6 +54,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val deferredNode = DeferredNode()
     private var identity: IdentityModel? = null
     private var exchangeRate: Double? = null
+    private var isConnectionStopped = false
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
@@ -71,11 +69,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun connectNode(proposal: Proposal) {
         val handler = CoroutineExceptionHandler { _, exception ->
-            _connectionException.postValue(exception as Exception)
+            if (!isConnectionStopped) {
+                _connectionException.postValue(exception as Exception)
+            }
+            isConnectionStopped = false
         }
         viewModelScope.launch(handler) {
             this@HomeViewModel.proposal = proposal
-            disconnectNode()
+            disconnectIfConnectedNode()
             connect()
             getExchangeRate()
         }
@@ -96,6 +97,13 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun disconnect() {
+        viewModelScope.launch {
+            disconnectIfConnectedNode()
+        }
+    }
+
+    fun stopConnecting() {
+        isConnectionStopped = true
         viewModelScope.launch {
             disconnectNode()
         }
@@ -197,8 +205,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    private suspend fun disconnectNode() {
+    private suspend fun disconnectIfConnectedNode() {
         if (_connectionState.value == ConnectionState.CONNECTED) {
+            disconnectNode()
+        }
+    }
+
+    private suspend fun disconnectNode() {
+        viewModelScope.launch {
             coreService.manualDisconnect()
             _manualDisconnect.postValue(Unit)
             connectionUseCase.disconnect()

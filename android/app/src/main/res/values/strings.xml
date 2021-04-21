@@ -146,6 +146,7 @@
     <string name="manual_connect_type_filter_title">Select the node type</string>
     <string name="manual_connect_node">Node</string>
     <string name="manual_connect_another_node">Select another node </string>
+    <string name="manual_connect_cancel">Cancel and choose another node</string>
     <string name="manual_connect_connecting">Connecting…</string>
     <string name="manual_connect_connected">Connected</string>
     <string name="manual_connect_disconnect">Disconnect</string>
@@ -363,6 +364,8 @@
     <string name="push_notification_balance_message">Your balance is running out!</string>
     <string name="push_notification_connection_title">Mysterium connection</string>
     <string name="push_notification_connection_message">Connection to node is lost!</string>
+    <string name="push_notification_connected_title">Connected to %1$s</string>
+    <string name="push_notification_content">Received %1$s | Send %2$s | Paid %3$s</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
