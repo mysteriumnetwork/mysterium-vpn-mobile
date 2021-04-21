@@ -27,7 +27,7 @@ import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import java.util.*
 
-class SplashActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
+class SplashActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
@@ -41,11 +41,6 @@ class SplashActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResult
         configure()
         prepareNodeForStarting()
         setUpPushyNotifications()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        pushyNotifications.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun retryLoading() {
@@ -79,7 +74,7 @@ class SplashActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResult
     }
 
     private fun setUpPushyNotifications() {
-        pushyNotifications.registerOrRequestPermissions()
+        pushyNotifications.register()
         pushyNotifications.listen()
     }
 

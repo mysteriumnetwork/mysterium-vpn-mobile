@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             appContainer.networkMonitor.start()
         }
 
-        notifications.registerOrRequestPermissions()
+        notifications.register()
         notifications.listen()
 
         navigate(R.id.main_vpn_fragment)
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        notifications.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        //notifications.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onDestroy() {

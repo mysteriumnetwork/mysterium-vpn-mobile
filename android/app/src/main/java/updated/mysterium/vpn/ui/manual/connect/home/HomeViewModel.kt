@@ -1,15 +1,10 @@
 package updated.mysterium.vpn.ui.manual.connect.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.proposal.ProposalViewItem
@@ -29,9 +24,7 @@ import java.util.*
 class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
-        const val TAG = "HomeViewModel"
         const val DEFAULT_DNS_OPTION = "auto"
-        const val UNSTABLE_DNS_OPTION = "cloudflare"
     }
 
     val connectionState: LiveData<ConnectionState>
@@ -61,6 +54,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val deferredNode = DeferredNode()
     private var identity: IdentityModel? = null
     private var exchangeRate: Double? = null
+    private var isConnectionStopped = false
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
@@ -75,11 +69,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun connectNode(proposal: Proposal) {
         val handler = CoroutineExceptionHandler { _, exception ->
-            _connectionException.postValue(exception as Exception)
+            if (!isConnectionStopped) {
+                _connectionException.postValue(exception as Exception)
+            }
+            isConnectionStopped = false
         }
         viewModelScope.launch(handler) {
             this@HomeViewModel.proposal = proposal
-            disconnectNode()
+            disconnectIfConnectedNode()
             connect()
             getExchangeRate()
         }
@@ -100,6 +97,13 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun disconnect() {
+        viewModelScope.launch {
+            disconnectIfConnectedNode()
+        }
+    }
+
+    fun stopConnecting() {
+        isConnectionStopped = true
         viewModelScope.launch {
             disconnectNode()
         }
@@ -176,45 +180,24 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun connect() {
-        var userDnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
-        if (userDnsOption == UNSTABLE_DNS_OPTION) {
-            userDnsOption = DEFAULT_DNS_OPTION
-        }
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
             providerID = proposal.providerID
             serviceType = proposal.serviceType.type
-            dnsOption = userDnsOption
+            dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
         }
         connectionUseCase.connect(req)
         updateService()
     }
 
     private suspend fun getExchangeRate() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, "Failed to load currency: $exception")
-        }
-        viewModelScope.launch(handler) {
-            exchangeRate = withContext(Dispatchers.Default) {
-                balanceUseCase.getUsdEquivalent()
-            }
-        }
+        exchangeRate = balanceUseCase.getUsdEquivalent()
     }
 
     private fun updateService() {
         coreService.apply {
             setDeferredNode(deferredNode)
-            setActiveProposal(
-                ProposalViewItem(
-                    id = proposal.id,
-                    providerID = proposal.providerID,
-                    serviceType = proposal.serviceType,
-                    countryCode = proposal.countryCode,
-                    nodeType = proposal.nodeType,
-                    monitoringFailed = proposal.monitoringFailed,
-                    payment = proposal.payment
-                )
-            )
+            setActiveProposal(ProposalViewItem.parse(proposal))
             startForegroundWithNotification(
                 appNotificationManager.defaultNotificationID,
                 appNotificationManager.createConnectedToVPNNotification()
@@ -222,8 +205,14 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    private suspend fun disconnectNode() {
+    private suspend fun disconnectIfConnectedNode() {
         if (_connectionState.value == ConnectionState.CONNECTED) {
+            disconnectNode()
+        }
+    }
+
+    private suspend fun disconnectNode() {
+        viewModelScope.launch {
             coreService.manualDisconnect()
             _manualDisconnect.postValue(Unit)
             connectionUseCase.disconnect()

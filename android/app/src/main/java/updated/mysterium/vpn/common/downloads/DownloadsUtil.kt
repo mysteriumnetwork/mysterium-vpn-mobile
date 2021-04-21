@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.common.downloads
 
-import android.app.DownloadManager
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.os.Build
@@ -9,13 +8,13 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.FileOutputStream
+import java.io.PrintWriter
 
 object DownloadsUtil {
 
     private const val MIME_TYPE = "application/json"
     private const val FILE_TITLE = "MysteriumKeystore"
     private const val FILE_NAME = "keystore"
-    private const val FILE_NAME_JSON_TEMPORARY = "keystore_temporary.json"
     private const val FILE_NAME_JSON = "keystore.json"
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -38,29 +37,15 @@ object DownloadsUtil {
         }
     }
 
-    fun saveWithDownloadManager(fileContent: ByteArray, downloadManager: DownloadManager) {
-        val file = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            FILE_NAME_JSON_TEMPORARY
-        )
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        file.parentFile?.mkdirs()
-        FileOutputStream(file).write(fileContent)
-        downloadManager.addCompletedDownload(
-            FILE_TITLE,
-            FILE_NAME,
-            true,
-            MIME_TYPE,
-            file.absolutePath,
-            file.length(),
-            true
-        )
-        val renamedFile = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            FILE_NAME_JSON
-        )
-        file.renameTo(renamedFile)
+    fun saveDirectlyToDownloads(fileContent: ByteArray) {
+        val dir = File(Environment.getExternalStorageDirectory().absolutePath + "/download")
+        dir.mkdirs()
+        val file = File(dir, FILE_NAME_JSON)
+        val fileOutputStream = FileOutputStream(file)
+        val printWriter = PrintWriter(fileOutputStream)
+        printWriter.write(String(fileContent))
+        printWriter.flush()
+        printWriter.close()
+        fileOutputStream.close()
     }
 }
