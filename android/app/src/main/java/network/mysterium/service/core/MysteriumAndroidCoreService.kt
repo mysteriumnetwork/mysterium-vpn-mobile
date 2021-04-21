@@ -203,7 +203,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 currencySpent = exchangeRate * statistics.tokensSpent
             )
             val countryName = activeProposal?.countryName ?: "Unknown"
-            val notificationTitle = getString(R.string.notification_title_connected, countryName)
+            val notificationTitle = getString(R.string.push_notification_connected_title, countryName)
             val tokensSpent = PriceUtils.displayMoney(
                 ProposalPaymentMoney(
                     amount = connectionStatistic.tokensSpent,
@@ -212,7 +212,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 DisplayMoneyOptions(fractionDigits = 3, showCurrency = true)
             )
             val notificationContent = getString(
-                R.string.notification_content,
+                R.string.push_notification_content,
                 "${connectionStatistic.bytesReceived.value} ${connectionStatistic.bytesReceived.units}",
                 "${connectionStatistic.bytesSent.value} ${connectionStatistic.bytesSent.units}",
                 tokensSpent
