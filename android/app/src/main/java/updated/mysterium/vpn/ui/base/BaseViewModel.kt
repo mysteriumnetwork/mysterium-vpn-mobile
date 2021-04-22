@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import java.util.Locale
@@ -14,6 +14,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private companion object {
         const val BALANCE_LIMIT = 1.0
         const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.1
+        const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
     }
 
     val balanceRunningOut: LiveData<Double>
@@ -25,12 +26,17 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val insufficientFunds: LiveData<Unit>
         get() = _insufficientFunds
 
+    val isInternetNotAvailable: LiveData<Boolean>
+        get() = _isInternetNotAvailable
+
     private val _balanceRunningOut = MutableLiveData<Double>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val _insufficientFunds = MutableLiveData<Unit>()
+    private val _isInternetNotAvailable = MutableLiveData<Boolean>()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()
+    private var isInternetChecking = false
 
     init {
         balanceListener()
@@ -48,6 +54,28 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun isHintAlreadyShown() = settingsUseCase.isConnectionHintShown()
 
     fun hintShown() = settingsUseCase.connectionHintShown()
+
+    fun checkInternetConnection() {
+        if (!isInternetChecking) {
+            isInternetChecking = true
+            val handler = CoroutineExceptionHandler { _, _ ->
+                isInternetChecking = false
+                _isInternetNotAvailable.postValue(false)
+            }
+            viewModelScope.launch(handler) {
+                val exitValue = withContext(Dispatchers.Default) {
+                    val ipProcess = Runtime.getRuntime().exec(PING_A_SERVER_COMMAND)
+                    ipProcess.waitFor()
+                }
+                isInternetChecking = false
+                if (exitValue == 0) {
+                    _isInternetNotAvailable.postValue(true)
+                } else {
+                    _isInternetNotAvailable.postValue(false)
+                }
+            }
+        }
+    }
 
     private fun balanceListener() {
         viewModelScope.launch {

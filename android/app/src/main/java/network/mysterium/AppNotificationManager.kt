@@ -17,6 +17,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     }
 
     val defaultNotificationID = 1
+    val statisticsNotification = 4
     private val statisticsChannel = "statistics"
     private val connLostChannel = "connectionlost"
     private val topUpBalanceChannel = "topupbalance"
@@ -79,7 +80,11 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setOnlyAlertOnce(true)
             .addAction(R.drawable.ic_close_black_24dp, "Disconnect", disconnectPendingIntent)
             .build()
-        notificationManager.notify(defaultNotificationID, notification)
+        notificationManager.notify(statisticsNotification, notification)
+    }
+
+    fun hideStatisticsNotification() {
+        notificationManager.cancel(statisticsNotification)
     }
 
     fun showConnectionLostNotification() {

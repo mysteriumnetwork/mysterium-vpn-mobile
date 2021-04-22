@@ -1,25 +1,20 @@
 package updated.mysterium.vpn.ui.manual.connect.home
 
 import android.app.NotificationManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.AppNotificationManager
-import network.mysterium.service.core.MysteriumAndroidCoreService
-import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
@@ -40,11 +35,9 @@ class HomeActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var appNotificationManager: AppNotificationManager
     private var proposal: Proposal? = null
     private val viewModel: HomeViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
-    private val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private var isDisconnectedByUser = false
     private var lostConnectionPopUpDialog: AlertDialog? = null
 
@@ -65,7 +58,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (isInternetAvailable()) {
+        if (isInternetAvailable) {
             manualDisconnecting()
             setIntent(intent)
             checkProposalArgument()
@@ -81,7 +74,6 @@ class HomeActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         loadIpAddress()
-        bindMysteriumService()
         initViewModel()
     }
 
@@ -102,7 +94,12 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initViewModel() {
-        viewModel.init(deferredMysteriumCoreService, appNotificationManager)
+        viewModel.init(
+            deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService,
+            notificationManager = AppNotificationManager(
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            ).apply { init(this@HomeActivity) }
+        )
     }
 
     private fun manualDisconnecting() {
@@ -146,7 +143,7 @@ class HomeActivity : BaseActivity() {
 
     private fun checkDisconnectingReason() {
         if (!isDisconnectedByUser) {
-            if (isInternetAvailable()) {
+            if (isInternetAvailable) {
                 showLostConnectionPopUp()
             } else {
                 wifiNetworkErrorPopUp()
@@ -155,7 +152,9 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun getProposal() {
-        viewModel.getProposalModel(deferredMysteriumCoreService).observe(this, { result ->
+        viewModel.getProposalModel(
+            App.getInstance(this).deferredMysteriumCoreService
+        ).observe(this, { result ->
             result.onSuccess { proposal ->
                 proposal?.let {
                     this.proposal = Proposal(proposal)
@@ -173,33 +172,9 @@ class HomeActivity : BaseActivity() {
     private fun checkProposalArgument() {
         intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
             proposal = it
-            bindMysteriumService()
             viewModel.connectNode(it)
             inflateNodeInfo()
             inflateConnectingCardView()
-        }
-    }
-
-    private fun bindMysteriumService() {
-        appNotificationManager = AppNotificationManager(
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        ).apply { init(this@HomeActivity) }
-        Intent(this, MysteriumAndroidCoreService::class.java).also { intent ->
-            bindService(
-                intent,
-                object : ServiceConnection {
-
-                    override fun onServiceDisconnected(name: ComponentName?) {
-                        Log.i(TAG, "Service disconnected")
-                    }
-
-                    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                        Log.i(TAG, "Service connected")
-                        deferredMysteriumCoreService.complete(service as MysteriumCoreService)
-                    }
-                },
-                Context.BIND_AUTO_CREATE
-            )
         }
     }
 
@@ -291,6 +266,8 @@ class HomeActivity : BaseActivity() {
 
     private fun disconnect() {
         binding.connectionState.showDisconnectedState()
+        binding.connectionTypeTextView.visibility = View.VISIBLE
+        binding.connectionTypeTextView.text = getString(R.string.manual_connect_country_status)
         binding.connectedNodeInfo.visibility = View.INVISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
         binding.securityStatusImageView.visibility = View.VISIBLE

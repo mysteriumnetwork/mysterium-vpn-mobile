@@ -37,20 +37,14 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        ensureVpnServicePermission()
         configure()
-        prepareNodeForStarting()
+        subscribeViewModel()
         setUpPushyNotifications()
     }
 
     override fun retryLoading() {
-        prepareNodeForStarting()
-    }
-
-    private fun prepareNodeForStarting() {
-        if (isInternetAvailable()) {
-            subscribeViewModel()
-            ensureVpnServicePermission()
-        }
+        startLoading()
     }
 
     private fun configure() {
@@ -125,15 +119,17 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun startLoading() {
-        val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
-        balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-        viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
-            result.onSuccess {
-                binding.onceAnimationView.playAnimation()
-                viewModel.initRepository()
+        if (isInternetAvailable) {
+            val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
+            balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+            viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
+                result.onSuccess {
+                    binding.onceAnimationView.playAnimation()
+                    viewModel.initRepository()
+                }
             }
+            checkUserLocale()
         }
-        checkUserLocale()
     }
 
     private fun checkUserLocale() {
