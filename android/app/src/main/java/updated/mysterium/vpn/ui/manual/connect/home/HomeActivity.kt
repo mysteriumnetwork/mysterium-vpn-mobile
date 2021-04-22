@@ -24,10 +24,10 @@ import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 
 class HomeActivity : BaseActivity() {
 
@@ -261,7 +261,7 @@ class HomeActivity : BaseActivity() {
 
     private fun toolbarWalletIcon() {
         binding.manualConnectToolbar.onRightButtonClicked {
-            //TODO("Implement with favourites screen")
+            startActivity(Intent(this, FavouritesActivity::class.java))
         }
         binding.manualConnectToolbar.setRightIcon(
             ContextCompat.getDrawable(this, R.drawable.icon_favourites)

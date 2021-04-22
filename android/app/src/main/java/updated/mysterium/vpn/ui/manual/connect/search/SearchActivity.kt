@@ -13,11 +13,13 @@ import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 
 class SearchActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private val viewModel: SearchViewModel by inject()
+    private val allNodesViewModel: AllNodesViewModel by inject()
     private val nodeListAdapter = FilterAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,7 @@ class SearchActivity : BaseActivity() {
         initToolbar(binding.manualConnectToolbar)
         initProposalListRecycler()
         initHintText()
+        allNodesViewModel.getProposals()
     }
 
     private fun bindsAction() {
@@ -57,25 +60,32 @@ class SearchActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.searchResult.observe(this, {
-            if (it.isNotEmpty()) {
-                binding.searchLogo.visibility = View.INVISIBLE
-                binding.searchHint.visibility = View.INVISIBLE
-                nodeListAdapter.replaceAll(it)
-            } else {
-                binding.searchLogo.visibility = View.VISIBLE
-                binding.searchHint.visibility = View.VISIBLE
-                nodeListAdapter.clear()
+            if (binding.loaderAnimation.visibility == View.GONE) {
+                if (it.isNotEmpty()) {
+                    binding.searchLogo.visibility = View.INVISIBLE
+                    binding.searchHint.visibility = View.INVISIBLE
+                    nodeListAdapter.replaceAll(it)
+                } else {
+                    binding.searchLogo.visibility = View.VISIBLE
+                    binding.searchHint.visibility = View.VISIBLE
+                    nodeListAdapter.clear()
+                }
             }
         })
-        viewModel.initialDataLoaded.observe(this, {
-            binding.loaderAnimation.visibility = View.GONE
-            binding.loaderAnimation.cancelAnimation()
-            binding.searchLogo.visibility = View.VISIBLE
-            binding.searchHint.visibility = View.VISIBLE
-            if (binding.editText.text.toString().isNotEmpty()) {
-                viewModel.search(binding.editText.text.toString())
-            }
+        allNodesViewModel.proposals.observe(this, { allNodes ->
+            initialDataLoaded()
+            viewModel.setAllNodes(allNodes.first().proposalList)
         })
+    }
+
+    private fun initialDataLoaded() {
+        binding.loaderAnimation.visibility = View.GONE
+        binding.loaderAnimation.cancelAnimation()
+        binding.searchLogo.visibility = View.VISIBLE
+        binding.searchHint.visibility = View.VISIBLE
+        if (binding.editText.text.toString().isNotEmpty()) {
+            viewModel.search(binding.editText.text.toString())
+        }
     }
 
     private fun initProposalListRecycler() {

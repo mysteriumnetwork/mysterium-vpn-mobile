@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.select.node.saved
+package updated.mysterium.vpn.ui.favourites
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import network.mysterium.vpn.databinding.ItemSavedNodeBinding
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
 
-class SavedNodesAdapter : BaseNodeAdapter<Proposal, SavedNodesAdapter.SavedNodesViewHolder>() {
+class FavouritesAdapter : BaseNodeAdapter<Proposal, FavouritesAdapter.SavedNodesViewHolder>() {
 
     var onDeleteClicked: ((Proposal) -> Unit)? = null
     var onProposalClicked: ((Proposal) -> Unit)? = null
