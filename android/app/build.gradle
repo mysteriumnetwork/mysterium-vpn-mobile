@@ -204,7 +204,7 @@ dependencies {
     implementation "me.pushy:sdk:1.0.68"
 
     //Mysterium
-    implementation "network.mysterium:terms:0.0.30"
+    implementation "network.mysterium:terms:0.0.31"
     implementation "network.mysterium:mobile-node:0.46.0-rc6"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.

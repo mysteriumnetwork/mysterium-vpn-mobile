@@ -44,6 +44,11 @@ class ProfileActivity : BaseActivity() {
         requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 1)
     }
 
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
+    }
+
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         viewModel.getIdentity().observe(this, { result ->

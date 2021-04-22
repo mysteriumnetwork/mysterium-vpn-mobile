@@ -12,6 +12,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftIcon="@drawable/icon_back" />
 
+    <FrameLayout
+        android:id="@+id/connectionHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_micro"
+        android:background="@drawable/shape_connected_hint"
+        android:elevation="1dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+        <TextView
+            style="@style/TextAppearance.BodyRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:text="@string/toolbar_hint"
+            android:textColor="@color/manual_connect_connection_state" />
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/searchTitle"
         style="@style/TextAppearance.HeadTitle"

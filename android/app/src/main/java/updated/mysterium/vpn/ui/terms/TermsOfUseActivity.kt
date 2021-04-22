@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivityTermsBinding
+import network.mysterium.vpn.databinding.PopUpTermsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -28,9 +29,21 @@ class TermsOfUseActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTermsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        isTermsUpdated()
         checkCurrentState()
         configure()
         bindsAction()
+    }
+
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
+    }
+
+    private fun isTermsUpdated() {
+        if (viewModel.isTermsUpdated()) {
+            showUpdatedTermsPopUp()
+        }
     }
 
     private fun checkCurrentState() {
@@ -79,7 +92,11 @@ class TermsOfUseActivity : BaseActivity() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
-            val intent = Intent(this, CreateAccountActivity::class.java)
+            val intent = if (viewModel.isAccountCreated()) {
+                Intent(this, HomeActivity::class.java)
+            } else {
+                Intent(this, CreateAccountActivity::class.java)
+            }
             startActivity(intent)
             finish()
         }
@@ -101,5 +118,14 @@ class TermsOfUseActivity : BaseActivity() {
             adapter = fullVersionAdapter
             isNestedScrollingEnabled = false
         }
+    }
+
+    private fun showUpdatedTermsPopUp() {
+        val bindingPopUp = PopUpTermsBinding.inflate(layoutInflater)
+        val termsUpdatedPopUp = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.confirmButton.setOnClickListener {
+            termsUpdatedPopUp.dismiss()
+        }
+        termsUpdatedPopUp.show()
     }
 }

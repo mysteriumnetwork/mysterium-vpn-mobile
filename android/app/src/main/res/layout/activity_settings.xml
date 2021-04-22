@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,14 +13,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftIcon="@drawable/icon_back" />
 
+    <FrameLayout
+        android:id="@+id/connectionHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_micro"
+        android:background="@drawable/shape_connected_hint"
+        android:elevation="1dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+        <TextView
+            style="@style/TextAppearance.BodyRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:text="@string/toolbar_hint"
+            android:textColor="@color/manual_connect_connection_state" />
+
+    </FrameLayout>
+
     <TextView
+        android:id="@+id/titleTextView"
         style="@style/TextAppearance.HeadTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:text="@string/settings_title"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/walletInfo"
@@ -29,7 +56,10 @@
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-        android:background="@drawable/shape_gradient_background">
+        android:background="@drawable/shape_gradient_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
 
         <TextView
             android:id="@+id/dnsTitle"
@@ -101,7 +131,10 @@
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
         android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:background="@drawable/shape_gradient_background">
+        android:background="@drawable/shape_gradient_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walletInfo">
 
         <TextView
             android:id="@+id/residentTitle"
@@ -135,9 +168,9 @@
             android:id="@+id/residentSpinnerFrame"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
             android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
             android:layout_marginBottom="@dimen/margin_padding_size_medium"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
             android:background="@drawable/shape_edit_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -166,4 +199,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

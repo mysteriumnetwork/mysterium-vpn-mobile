@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.FragmentSavedNodesBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.ui.favourites.FavouritesAdapter
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
 import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
 
@@ -23,7 +24,7 @@ class SavedNodesFragment : Fragment() {
     private lateinit var binding: FragmentSavedNodesBinding
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val viewModel: SavedNodesViewModel by inject()
-    private val savedNodesAdapter = SavedNodesAdapter()
+    private val savedNodesAdapter = FavouritesAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,

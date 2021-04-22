@@ -38,6 +38,11 @@ class FilterActivity : BaseActivity() {
         bindsActions()
     }
 
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
+    }
+
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         initProposalListRecycler()

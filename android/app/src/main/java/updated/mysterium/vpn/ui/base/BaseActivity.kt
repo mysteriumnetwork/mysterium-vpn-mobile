@@ -11,6 +11,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
@@ -22,8 +23,8 @@ import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
+    protected val baseViewModel: BaseViewModel by inject()
     private val dialogs = emptyList<Dialog>().toMutableList()
-    private val viewModel: BaseViewModel by inject()
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkCurrentConnection()
+        baseViewModel.checkCurrentConnection()
         handleInternetConnection()
     }
 
@@ -47,6 +48,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun retryLoading() {
         // Override in activity for handle retry loading click
+    }
+
+    open fun showConnectionHint() {
+        // Override in activity for show connection hint
     }
 
     fun initToolbar(connectionToolbar: ConnectionToolbar) {
@@ -114,16 +119,26 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.balanceRunningOut.observe(this, {
+        baseViewModel.balanceRunningOut.observe(this, {
             balanceRunningOutPopUp()
         })
-        viewModel.connectionState.observe(this, {
+        baseViewModel.connectionState.observe(this, {
             if (it == ConnectionState.CONNECTED) {
+                isHintAlreadyShown()
                 protectedConnection()
             } else {
                 unprotectedConnection()
             }
         })
+        baseViewModel.insufficientFunds.observe(this, {
+            insufficientFundsPopUp()
+        })
+    }
+
+    private fun isHintAlreadyShown() {
+        if (!baseViewModel.isHintAlreadyShown()) {
+            showConnectionHint()
+        }
     }
 
     private fun handleInternetConnection() {
@@ -134,6 +149,18 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun balanceRunningOutPopUp() {
         val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.topUpButton.setOnClickListener {
+            startActivity(Intent(this, TopUpAmountActivity::class.java))
+        }
+        bindingPopUp.continueButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun insufficientFundsPopUp() {
+        val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))

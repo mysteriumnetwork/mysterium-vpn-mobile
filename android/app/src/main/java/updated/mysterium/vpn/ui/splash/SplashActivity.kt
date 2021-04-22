@@ -83,6 +83,9 @@ class SplashActivity : BaseActivity() {
             !viewModel.isUserAlreadyLogin() -> {
                 startActivity(Intent(this, OnboardingActivity::class.java))
             }
+            !viewModel.isTermsAccepted() -> {
+                startActivity(Intent(this, TermsOfUseActivity::class.java))
+            }
             viewModel.isTopUpFlowShown() -> {
                 startActivity(Intent(this, HomeActivity::class.java))
             }
@@ -91,9 +94,6 @@ class SplashActivity : BaseActivity() {
             }
             viewModel.isTermsAccepted() -> {
                 startActivity(Intent(this, CreateAccountActivity::class.java))
-            }
-            else -> {
-                startActivity(Intent(this, TermsOfUseActivity::class.java))
             }
         }
         finish()

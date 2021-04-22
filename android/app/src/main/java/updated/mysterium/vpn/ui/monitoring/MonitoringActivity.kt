@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -47,6 +48,11 @@ class MonitoringActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+    }
+
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
     }
 
     private fun configure() {
