@@ -22,10 +22,15 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
+    val insufficientFunds: LiveData<Unit>
+        get() = _insufficientFunds
+
     private val _balanceRunningOut = MutableLiveData<Double>()
     private val _connectionState = MutableLiveData<ConnectionState>()
+    private val _insufficientFunds = MutableLiveData<Unit>()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
+    private val settingsUseCase = useCaseProvider.settings()
 
     init {
         balanceListener()
@@ -40,6 +45,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
+    fun isHintAlreadyShown() = settingsUseCase.isConnectionHintShown()
+
+    fun hintShown() = settingsUseCase.connectionHintShown()
+
     private fun balanceListener() {
         viewModelScope.launch {
             balanceUseCase.initBalanceListener {
@@ -50,6 +59,9 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
                     _balanceRunningOut.postValue(it)
                     balanceUseCase.minBalancePopUpShown()
+                }
+                if (it == 0.0 && balanceUseCase.isMinBalancePushShown()) {
+                    _insufficientFunds.postValue(Unit)
                 }
             }
         }

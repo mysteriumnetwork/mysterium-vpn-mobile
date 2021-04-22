@@ -184,6 +184,7 @@
     <!--  Menu  -->
     <string name="menu_current_balance">"%.3f" MYST</string>
     <string name="menu_title">Mysterium Network</string>
+    <string name="menu_item_home_title">Home</string>
     <string name="menu_item_profile_title">Profile</string>
     <string name="menu_item_wallet_title">Account</string>
     <string name="menu_item_monitoring_title">History</string>
@@ -315,11 +316,21 @@
     <string name="search_hint_highlighted">Search Bar</string>
     <string name="search_hint_second_part">at the top\n to find right node</string>
 
+    <!--  Favourites  -->
+    <string name="favourites_title">Favourites</string>
+
+    <!--  Toolbar  -->
+    <string name="toolbar_hint">Back to Connection Screen</string>
+
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
     <string name="pop_up_top_up_description">Credits is running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
+    <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
+    <string name="pop_up_payment_canceled_description">You canceled the\n payment process</string>
+    <string name="pop_up_insufficient_funds_title">Insufficient\n Funds</string>
+    <string name="pop_up_insufficient_funds_description">Please top up your\n account</string>
     <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
     <string name="pop_up_payment_successfully_done">Well done</string>
     <string name="pop_up_payment_successfully_close">Close</string>

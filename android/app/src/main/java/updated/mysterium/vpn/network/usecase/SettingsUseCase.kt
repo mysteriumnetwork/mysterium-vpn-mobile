@@ -11,6 +11,17 @@ class SettingsUseCase(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) {
 
+    fun isConnectionHintShown() = sharedPreferencesManager.containsPreferenceValue(
+        SharedPreferencesList.CONNECTION_HINT
+    )
+
+    fun connectionHintShown() {
+        sharedPreferencesManager.setPreferenceValue(
+            SharedPreferencesList.CONNECTION_HINT,
+            true
+        )
+    }
+
     fun userInitialCountryLanguage(countryCode: String) = if (getUserSelectedLanguage() == null) {
         sharedPreferencesManager.setPreferenceValue(
             key = SharedPreferencesList.LANGUAGE,

@@ -25,12 +25,16 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val paymentFailed: LiveData<Unit>
         get() = _paymentFailed
 
+    val paymentCanceled: LiveData<Unit>
+        get() = _paymentCanceled
+
     private val paymentUseCase = useCaseProvider.payment()
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
     private val _paymentSuccessfully = MutableLiveData<Unit>()
     private val _paymentExpired = MutableLiveData<Unit>()
     private val _paymentFailed = MutableLiveData<Unit>()
+    private val _paymentCanceled = MutableLiveData<Unit>()
     private var orderId: Long? = null
 
     fun createPaymentOrder(
@@ -63,6 +67,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
                     STATUS_EXPIRED -> _paymentExpired.postValue(Unit)
                     STATUS_INVALID, STATUS_REFUNDED -> _paymentFailed.postValue(Unit)
+                    STATUS_CANCELED -> _paymentCanceled.postValue(Unit)
                 }
             }
         }

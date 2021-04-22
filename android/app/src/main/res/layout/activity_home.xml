@@ -24,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftIcon="@drawable/icon_menu" />
+        app:leftIcon="@drawable/icon_menu"
+        app:rightIcon="@drawable/icon_favourites"/>
 
     <TextView
         android:id="@+id/titleTextView"

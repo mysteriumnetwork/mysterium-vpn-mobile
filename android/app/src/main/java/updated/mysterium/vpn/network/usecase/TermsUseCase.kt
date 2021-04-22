@@ -21,7 +21,7 @@ class TermsUseCase(private val sharedPreferencesManager: SharedPreferencesManage
         val userAcceptedVersion = sharedPreferencesManager.getStringPreferenceValue(
             SharedPreferencesList.TERMS
         )
-        return (userAcceptedVersion != null)
+        return (userAcceptedVersion != null && userAcceptedVersion != Terms.version())
     }
 
     fun isTermsAccepted(): Boolean {

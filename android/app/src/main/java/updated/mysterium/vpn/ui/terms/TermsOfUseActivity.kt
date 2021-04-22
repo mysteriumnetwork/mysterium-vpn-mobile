@@ -35,6 +35,11 @@ class TermsOfUseActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun showConnectionHint() {
+        binding.connectionHint.visibility = View.VISIBLE
+        baseViewModel.hintShown()
+    }
+
     private fun isTermsUpdated() {
         if (viewModel.isTermsUpdated()) {
             showUpdatedTermsPopUp()
