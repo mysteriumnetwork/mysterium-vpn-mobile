@@ -29,6 +29,8 @@ class Notifications(val activity: Activity) {
             CoroutineScope(Dispatchers.IO).launch(handler) {
                 Pushy.register(activity.applicationContext)
             }
+        } else {
+            Pushy.getDeviceCredentials(activity.applicationContext).token
         }
     }
 }

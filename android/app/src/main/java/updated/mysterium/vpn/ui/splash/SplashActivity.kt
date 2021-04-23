@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import network.mysterium.notification.Notifications
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
