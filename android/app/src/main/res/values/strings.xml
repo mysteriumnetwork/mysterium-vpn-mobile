@@ -267,7 +267,7 @@
     <string name="terms_short">Short version</string>
     <string name="terms_full">Full version</string>
     <string name="terms_accept_button">Accept</string>
-    <string name="terms_onboarding_description">Short description about why is it necessary to apply all terms of use before using app</string>
+    <string name="terms_onboarding_description">Please accept our terms of use so that you can begin surfing the open internet with Mysterium Network.</string>
 
     <!--  Top up  -->
     <string name="top_up_amount_title">Top up your account</string>

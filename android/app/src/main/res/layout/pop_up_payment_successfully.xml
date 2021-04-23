@@ -30,7 +30,7 @@
                 android:paddingBottom="@dimen/margin_padding_size_medium_large"
                 android:text="@string/pop_up_payment_successfully_title"
                 android:textAlignment="center"
-                android:textColor="@color/manual_connect_connecting_title_grey_blue"
+                android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,7 @@
                 android:layout_marginVertical="@dimen/margin_padding_size_xxlarge"
                 android:text="@string/pop_up_payment_successfully_done"
                 android:textAlignment="center"
-                android:textColor="@color/manual_connect_connecting_title_grey_blue"
+                android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon" />

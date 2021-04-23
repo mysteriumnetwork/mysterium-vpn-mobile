@@ -4,5 +4,5 @@
     <corners
         android:bottomLeftRadius="20dp"
         android:bottomRightRadius="20dp" />
-    <solid android:color="@android:color/white" />
+    <solid android:color="@color/manual_connect_list_background" />
 </shape>

@@ -63,6 +63,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var activeProposal: ProposalViewItem? = null
     private var deferredNode: DeferredNode? = null
     private var isDisconnectManual = false
+    private var currentState = ConnectionState.NOTCONNECTED
 
     override fun onDestroy() {
         super.onDestroy()
@@ -133,7 +134,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private fun initConnectionListener() {
         GlobalScope.launch {
             connectionUseCase.connectionStatusCallback {
-                when (ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))) {
+                currentState = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
+                when (currentState) {
                     ConnectionState.ON_HOLD -> {
                         makeConnectionPushNotification()
                     }
@@ -191,7 +193,11 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         }
         GlobalScope.launch(handler) {
             connectionUseCase.registerStatisticsChangeCallback {
-                updateStatistic(it)
+                if (currentState == ConnectionState.CONNECTED) {
+                    updateStatistic(it)
+                } else {
+                    appNotificationManager.hideStatisticsNotification()
+                }
             }
         }
     }
