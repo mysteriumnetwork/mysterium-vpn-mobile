@@ -84,7 +84,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
         val options = Mysterium.defaultNodeOptions()
-        options.pilvytisAddress = "http://hadex.lt:8002/api/v1" // Testing payment, should be deleted after testing
+        // Testing payment, should be deleted after testing
+        options.pilvytisAddress = "http://testnet2-pilvytis-sandbox.mysterium.network/api/v1"
         mobileNode = Mysterium.newNode(filesPath, options)
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 
@@ -133,6 +134,9 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         GlobalScope.launch {
             connectionUseCase.connectionStatusCallback {
                 when (ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))) {
+                    ConnectionState.ON_HOLD -> {
+                        makeConnectionPushNotification()
+                    }
                     ConnectionState.DISCONNECTING -> {
                         if (!isDisconnectManual) {
                             makeConnectionPushNotification()
@@ -143,6 +147,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                         initStatisticListener()
                     }
                     ConnectionState.NOTCONNECTED -> {
+                        appNotificationManager.hideStatisticsNotification()
                         isDisconnectManual = false
                     }
                 }
@@ -181,7 +186,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun initStatisticListener() {
-        GlobalScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        GlobalScope.launch(handler) {
             connectionUseCase.registerStatisticsChangeCallback {
                 updateStatistic(it)
             }

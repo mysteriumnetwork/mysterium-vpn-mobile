@@ -1,11 +1,9 @@
 package updated.mysterium.vpn.ui.base
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -15,7 +13,6 @@ import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.connection.ConnectionUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
@@ -24,11 +21,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
+    protected var isInternetAvailable = false
     private val dialogs = emptyList<Dialog>().toMutableList()
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        baseViewModel.checkInternetConnection()
         alertDialogBuilder = AlertDialog.Builder(this)
         subscribeViewModel()
     }
@@ -36,7 +35,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         baseViewModel.checkCurrentConnection()
-        handleInternetConnection()
     }
 
     override fun onPause() {
@@ -82,30 +80,13 @@ abstract class BaseActivity : AppCompatActivity() {
         return dialog
     }
 
-    fun isInternetAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCapabilities = connectivityManager.activeNetwork
-        val activeNetworksCapabilities = connectivityManager.getNetworkCapabilities(networkCapabilities)
-        return if (activeNetworksCapabilities != null) {
-            if (ConnectionUtil.isConnectionWithoutVPNAvailable(activeNetworksCapabilities)) {
-                true // connection available
-            } else {
-                // check connection with VPN
-                ConnectionUtil.isConnectionWithVPNAvailable(activeNetworksCapabilities)
-            }
-        } else {
-            // can't get info about connection
-            false
-        }
-    }
-
     fun wifiNetworkErrorPopUp() {
         val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.retryButton.setOnClickListener {
             dialog.dismiss()
             retryLoading()
-            handleInternetConnection()
+            baseViewModel.checkInternetConnection()
         }
         dialog.show()
     }
@@ -133,17 +114,19 @@ abstract class BaseActivity : AppCompatActivity() {
         baseViewModel.insufficientFunds.observe(this, {
             insufficientFundsPopUp()
         })
+        baseViewModel.isInternetNotAvailable.observe(this, { isAvailable ->
+            isInternetAvailable = isAvailable
+            if (!isAvailable) {
+                wifiNetworkErrorPopUp()
+            } else {
+                retryLoading()
+            }
+        })
     }
 
     private fun isHintAlreadyShown() {
         if (!baseViewModel.isHintAlreadyShown()) {
             showConnectionHint()
-        }
-    }
-
-    private fun handleInternetConnection() {
-        if (!isInternetAvailable()) {
-            wifiNetworkErrorPopUp()
         }
     }
 

@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.manual.connect.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
         const val DEFAULT_DNS_OPTION = "auto"
+        const val TAG = "HomeViewModel"
     }
 
     val connectionState: LiveData<ConnectionState>
@@ -60,7 +62,10 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager
     ) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
@@ -69,7 +74,8 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun connectNode(proposal: Proposal) {
         val handler = CoroutineExceptionHandler { _, exception ->
-            if (!isConnectionStopped) {
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
+            if (!isConnectionStopped && _connectionState.value != ConnectionState.CONNECTED) {
                 _connectionException.postValue(exception as Exception)
             }
             isConnectionStopped = false
@@ -199,7 +205,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             setDeferredNode(deferredNode)
             setActiveProposal(ProposalViewItem.parse(proposal))
             startForegroundWithNotification(
-                appNotificationManager.defaultNotificationID,
+                appNotificationManager.statisticsNotification,
                 appNotificationManager.createConnectedToVPNNotification()
             )
         }
