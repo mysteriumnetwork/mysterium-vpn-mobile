@@ -17,7 +17,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
     }
 
-    val balanceRunningOut: LiveData<Double>
+    val balanceRunningOut: LiveData<Boolean>
         get() = _balanceRunningOut
 
     val connectionState: LiveData<ConnectionState>
@@ -29,7 +29,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val isInternetNotAvailable: LiveData<Boolean>
         get() = _isInternetNotAvailable
 
-    private val _balanceRunningOut = MutableLiveData<Double>()
+    private val _balanceRunningOut = MutableLiveData<Boolean>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val _insufficientFunds = MutableLiveData<Unit>()
     private val _isInternetNotAvailable = MutableLiveData<Boolean>()
@@ -77,16 +77,22 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
+    fun firstWarningBalanceShown() {
+        balanceUseCase.balancePopUpShown()
+    }
+
+    fun secondWarningBalanceShown() {
+        balanceUseCase.minBalancePopUpShown()
+    }
+
     private fun balanceListener() {
         viewModelScope.launch {
             balanceUseCase.initBalanceListener {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePopUpShown()) {
-                    _balanceRunningOut.postValue(it)
-                    balanceUseCase.balancePopUpShown()
+                    _balanceRunningOut.postValue(true)
                 }
                 if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
-                    _balanceRunningOut.postValue(it)
-                    balanceUseCase.minBalancePopUpShown()
+                    _balanceRunningOut.postValue(false)
                 }
                 if (it == 0.0 && balanceUseCase.isMinBalancePushShown()) {
                     _insufficientFunds.postValue(Unit)
