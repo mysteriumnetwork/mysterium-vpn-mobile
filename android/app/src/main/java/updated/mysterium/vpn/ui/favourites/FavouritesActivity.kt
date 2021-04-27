@@ -23,7 +23,7 @@ class FavouritesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFavouritesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        configure()
+        initSavedListRecycler()
         subscribeViewModel()
         bindsAction()
     }
@@ -31,10 +31,6 @@ class FavouritesActivity : BaseActivity() {
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
-    }
-
-    private fun configure() {
-        initSavedListRecycler()
     }
 
     private fun subscribeViewModel() {
