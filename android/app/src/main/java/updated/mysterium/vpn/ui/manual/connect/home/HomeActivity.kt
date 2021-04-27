@@ -86,7 +86,7 @@ class HomeActivity : BaseActivity() {
         })
         viewModel.connectionException.observe(this, {
             disconnect()
-            showFailedToConnectPopUp()
+            failedToConnect()
         })
         viewModel.manualDisconnect.observe(this, {
             manualDisconnecting()
@@ -346,6 +346,18 @@ class HomeActivity : BaseActivity() {
                 }
             })
         }
+    }
+
+    private fun failedToConnect() {
+        viewModel.getBalance().observe(this, {
+            it.onSuccess { balance ->
+                if (balance > 0.0) {
+                    showFailedToConnectPopUp()
+                } else {
+                    insufficientFundsPopUp()
+                }
+            }
+        })
     }
 
     private fun showFailedToConnectPopUp() {

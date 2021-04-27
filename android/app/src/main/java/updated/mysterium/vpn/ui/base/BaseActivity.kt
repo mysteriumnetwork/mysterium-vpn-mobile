@@ -91,6 +91,18 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    fun insufficientFundsPopUp() {
+        val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.topUpButton.setOnClickListener {
+            startActivity(Intent(this, TopUpAmountActivity::class.java))
+        }
+        bindingPopUp.continueButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
     protected open fun protectedConnection() {
         connectionStateToolbar?.protectedState(true)
     }
@@ -142,18 +154,6 @@ abstract class BaseActivity : AppCompatActivity() {
             } else {
                 baseViewModel.secondWarningBalanceShown()
             }
-            dialog.dismiss()
-        }
-        dialog.show()
-    }
-
-    private fun insufficientFundsPopUp() {
-        val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
-        bindingPopUp.topUpButton.setOnClickListener {
-            startActivity(Intent(this, TopUpAmountActivity::class.java))
-        }
-        bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
