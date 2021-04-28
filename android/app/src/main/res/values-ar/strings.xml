@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="menu_languages">
-    <item>الإنجليزية</item>
-    <item>العربية</item>
-    <item>الروسية</item>
-    <item>النيوزيلندية</item>
-  </string-array>
   <string name="onboarding_main_title_1">شبكة العقدة العالمية اللامركزية</string>
   <string name="onboarding_description_title_1">يديره الناس، من أجل الناس</string>
   <string name="onboarding_description_content_1">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا واستخدم وظائف محدودة وعقدًا مجانية</string>
