@@ -327,10 +327,14 @@ class ProposalsViewModel(
         val savedFilter = appDatabase.proposalFilterDao().get()
         savedFilter?.let {
             if (!it.pricesWithinBound(priceSettings.perHourMax, priceSettings.perGibMax)) {
-                filter.pricePerHour = prices.defaultHour.toDouble()
-                filter.pricePerGiB = prices.defaultPerGib.toDouble()
+                it.pricePerHour = prices.defaultHour.toDouble()
+                it.pricePerGiB = prices.defaultPerGib.toDouble()
             }
             filter.updateFrom(it)
+        }
+        if (savedFilter == null) {
+            filter.pricePerGiB = prices.defaultPerGib.toDouble()
+            filter.pricePerHour = prices.defaultHour.toDouble()
         }
     }
 
