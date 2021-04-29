@@ -1,15 +1,19 @@
 package updated.mysterium.vpn.ui.manual.connect.select.node.all
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.SortType
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
 
 class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -27,7 +31,10 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getProposals() {
-        viewModelScope.launch(Dispatchers.IO) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.i("AllNodesViewModel", exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
             updateLiveData()
             cachedNodesList = nodesUseCase.getAllCountries()
             updateLiveData()

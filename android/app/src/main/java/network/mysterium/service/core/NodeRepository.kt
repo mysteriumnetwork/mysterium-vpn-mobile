@@ -151,14 +151,14 @@ class NodeRepository(var deferredNode: DeferredNode) {
     //
     // Note that this method need to deserialize JSON byte array since Go Mobile
     // does not support passing complex slices via it's bridge.
-    suspend fun proposals(req: GetProposalsRequest): List<ProposalItem> {
+    suspend fun proposals(req: GetProposalsRequest): List<ProposalItem> = withContext(Dispatchers.IO) {
         val bytes = getProposals(req)
         val proposalsResponse = parseProposals(bytes)
         if (proposalsResponse?.proposals == null) {
-            return listOf()
+            listOf()
+        } else {
+            proposalsResponse.proposals
         }
-
-        return proposalsResponse.proposals
     }
 
     // Register connection status callback.
