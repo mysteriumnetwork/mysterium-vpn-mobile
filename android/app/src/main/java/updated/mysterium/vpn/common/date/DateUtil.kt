@@ -49,7 +49,7 @@ object DateUtil {
         val dateInMs = dateFormat.parse(date)?.time ?: 0L
         val msDiff = Date().time - dateInMs
         val hoursAgo = (msDiff / (MS_TO_SEC * SEC_TO_MN * MN_TO_HOUR))
-        val minutesAgo = (msDiff % MN_TO_HOUR)
+        val minutesAgo = (msDiff - (hoursAgo * (MS_TO_SEC * SEC_TO_MN * MN_TO_HOUR))) / (MS_TO_SEC * SEC_TO_MN)
         return if (hoursAgo >= 1) {
             "${hoursAgo}h $minutesAgo min"
         } else {

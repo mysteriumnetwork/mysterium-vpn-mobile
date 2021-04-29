@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import mysterium.ConnectRequest
+import mysterium.GetBalanceRequest
 import network.mysterium.AppNotificationManager
 import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.service.core.DeferredNode
@@ -135,6 +136,13 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun manualDisconnect() {
         coreService.manualDisconnect()
+    }
+
+    fun getBalance() = liveDataResult {
+        val balanceRequest = GetBalanceRequest().apply {
+            identityAddress = identity?.address
+        }
+        balanceUseCase.getBalance(balanceRequest)
     }
 
     private suspend fun startDeferredNode() {

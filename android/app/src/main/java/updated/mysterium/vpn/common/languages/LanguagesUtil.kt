@@ -9,7 +9,9 @@ object LanguagesUtil {
         "EN",
         "AR",
         "RU",
-        "ZN"
+        "TR",
+        "PT",
+        "ZH"
     )
 
     fun convertUserLanguage(countryCode: String) = if (languagesList.contains(countryCode)) {

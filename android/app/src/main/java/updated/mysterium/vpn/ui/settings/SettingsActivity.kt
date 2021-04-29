@@ -16,7 +16,6 @@ import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
 
 class SettingsActivity : BaseActivity() {

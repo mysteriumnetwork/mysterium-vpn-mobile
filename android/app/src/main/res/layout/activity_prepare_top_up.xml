@@ -50,7 +50,6 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        app:cardBackgroundColor="@color/onboarding_current_screen_white"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +66,7 @@
 
             <LinearLayout
                 android:id="@+id/topUpNow"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginStart="@dimen/margin_padding_size_large"
@@ -94,13 +93,13 @@
                     android:layout_marginTop="@dimen/margin_padding_size_small_medium"
                     android:text="@string/prepare_top_up_now"
                     android:textAlignment="center"
-                    android:textColor="@color/primary" />
+                    android:textColor="@color/create_account_import_text" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/topUpLater"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginStart="@dimen/margin_padding_size_small"

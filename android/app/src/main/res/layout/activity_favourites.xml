@@ -78,9 +78,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
             android:text="@string/manual_connect_price"
             android:textColor="@color/manual_connect_value_white"
+            app:drawableStartCompat="@drawable/semi_transparent_arrow_drop_down"
             app:layout_constraintEnd_toStartOf="@+id/qualityTextView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,9 +91,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
             android:text="@string/manual_connect_quality"
             android:textColor="@color/manual_connect_value_white"
+            app:drawableStartCompat="@drawable/semi_transparent_arrow_drop_down"
             app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
             app:layout_constraintTop_toTopOf="parent" />
 

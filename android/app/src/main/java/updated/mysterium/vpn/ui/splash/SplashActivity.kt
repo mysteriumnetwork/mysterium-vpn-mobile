@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import network.mysterium.notification.Notifications
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
@@ -32,6 +33,7 @@ class SplashActivity : BaseActivity() {
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val pushyNotifications = Notifications(this)
+    private var isVpnPermissionGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +46,13 @@ class SplashActivity : BaseActivity() {
     }
 
     override fun retryLoading() {
-        startLoading()
+        if (isVpnPermissionGranted) {
+            startLoading()
+        }
     }
 
     private fun configure() {
+        applyDarkMode()
         binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
 
             override fun onAnimationEnd(animation: Animator?) {
@@ -64,6 +69,11 @@ class SplashActivity : BaseActivity() {
         viewModel.navigateForward.observe(this, {
             navigateForward()
         })
+    }
+
+    private fun applyDarkMode() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        delegate.applyDayNight()
     }
 
     private fun setUpPushyNotifications() {
@@ -95,10 +105,12 @@ class SplashActivity : BaseActivity() {
     private fun ensureVpnServicePermission() {
         val vpnServiceIntent = VpnService.prepare(this)
         if (vpnServiceIntent == null) {
+            isVpnPermissionGranted = true
             startLoading()
         } else {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+                    isVpnPermissionGranted = true
                     startLoading()
                 } else {
                     showPermissionErrorToast()

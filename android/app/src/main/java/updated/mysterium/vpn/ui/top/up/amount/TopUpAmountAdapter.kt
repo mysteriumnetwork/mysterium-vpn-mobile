@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.top.up.amount
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,9 +64,7 @@ class TopUpAmountAdapter : ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.
         }
 
         private fun selectedState() {
-            binding.cardItemValue.setTextColor(
-                itemView.context.getColor(R.color.onboarding_current_screen_white)
-            )
+            binding.cardItemValue.setTextColor(Color.WHITE)
             binding.cardItemFrame.background = ContextCompat.getDrawable(
                 itemView.context, R.drawable.shape_card_element_selected
             )

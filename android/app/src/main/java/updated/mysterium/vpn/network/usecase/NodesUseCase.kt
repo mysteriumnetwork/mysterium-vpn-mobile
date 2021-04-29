@@ -44,7 +44,7 @@ class NodesUseCase(
 
     private suspend fun getAllNodes(): List<NodeEntity> {
         val proposalsRequest = GetProposalsRequest().apply {
-            this.refresh = refresh
+            this.refresh = true
             includeFailed = true
             serviceType = SERVICE_TYPE
         }

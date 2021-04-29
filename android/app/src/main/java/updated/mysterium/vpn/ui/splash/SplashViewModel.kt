@@ -70,27 +70,10 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             } else {
                 isDataLoaded = true
             }
-            getIdentity()
         }
     }
 
     fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
         countryCode = LanguagesUtil.convertUserLanguage(countryCode)
     )
-
-    private fun getIdentity() {
-        viewModelScope.launch {
-            val nodeIdentity = connectionUseCase.getIdentity()
-            val identity = IdentityModel(
-                address = nodeIdentity.address,
-                channelAddress = nodeIdentity.channelAddress,
-                status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
-            )
-            if (isAnimationLoaded) {
-                _navigateForward.postValue(Unit)
-            } else {
-                isDataLoaded = true
-            }
-        }
-    }
 }
