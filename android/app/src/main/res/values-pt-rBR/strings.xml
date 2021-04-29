@@ -29,7 +29,7 @@
   <string name="manual_connect_node">Nó</string>
   <string name="manual_connect_another_node">Selecione outro nó </string>
   <string name="manual_connect_cancel">Cancele e escolha outro nó</string>
-  <string name="manual_connect_connecting">Conectando...</string>
+  <string name="manual_connect_connecting">Conectando…</string>
   <string name="manual_connect_connected">Conectado</string>
   <string name="manual_connect_disconnect">Desconectar</string>
   <string name="manual_connect_disconnecting">Desconectando</string>
@@ -39,11 +39,9 @@
   <string name="manual_connect_data_received_hint">Recebido/Enviado</string>
   <string name="manual_connect_paid_hint">Pago</string>
   <string name="manual_connect_time_format">HH MM SS</string>
-  <string name="manual_connect_data_type"></string>
   <string name="manual_connect_paid_types">MYSTT / EUR</string>
   <string name="manual_connect_loading">Carregando</string>
   <string name="manual_connect_unknown">Desconhecido</string>
-  <string name="manual_connect_data_received"></string>
   <string name="manual_connect_price_per_hour">%.4f/h</string>
   <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
   <string name="manual_connect_saved_to_favourite">Salvo com sucesso</string>
@@ -76,12 +74,9 @@
   <string name="menu_terms">Termos de Uso</string>
   <string name="menu_app_version">Versão do app %s</string>
   <string name="wallet_main_title">Saldo da conta</string>
-  <string name="wallet_currency"></string>
-  <string name="wallet_balance_currency"></string>
   <string name="wallet_start_balance">0.000</string>
   <string name="wallet_usd_equivalent">Equivalente em USD ≈ $%.3f</string>
   <string name="wallet_buys_for_you">Essa quantia pode comprar:</string>
-  <string name="wallet_current_balance"></string>
   <string name="wallet_top_up">Recarregar</string>
   <string name="wallet_mystt_about">MYSTT é um token de teste no blockchain Ethereum Goerli</string>
   <string name="wallet_top_up_label">Eventos de recarga</string>
@@ -96,7 +91,6 @@
   <string name="wallet_top_ups_time">Hora</string>
   <string name="wallet_top_ups_paid">Pago</string>
   <string name="wallet_top_ups_myst">MYST</string>
-  <string name="wallet_top_ups_currency"></string>
   <string name="wallet_video">Vídeo\n on-line</string>
   <string name="wallet_web">Navegação\n na Web</string>
   <string name="wallet_download">de download\n de dados</string>
@@ -142,7 +136,6 @@
   <string name="top_up_payment_link">Ou use um link de pagamento</string>
   <string name="top_up_crypto_lighting">Rede Lightning</string>
   <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>
-  <string name="top_up_currency_equivalent"></string>
   <string name="top_up_free_trial">Teste Grátis</string>
   <string name="settings_title">Configurações</string>
   <string name="settings_description">A identidade é o seu ID de usuário interno no Mysterium. Nunca envie Ethereum ou qualquer tipo de tokens ERC20 nesse local.</string>
