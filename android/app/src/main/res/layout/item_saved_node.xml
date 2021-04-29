@@ -42,7 +42,7 @@
 
             <TextView
                 android:id="@+id/nodeCodeTextView"
-                style="@style/TextAppearance.BodyMedium"
+                style="@style/TextAppearance.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -67,7 +67,7 @@
                 android:layout_marginEnd="@dimen/margin_padding_size_xxlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small"
                 android:layout_weight="2.3"
-                android:textColor="@color/manual_connect_country_dark_blue"
+                android:textColor="@color/manual_connect_favourite_country"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/priceImageView"
                 app:layout_constraintStart_toEndOf="@+id/nodeTypeImage"

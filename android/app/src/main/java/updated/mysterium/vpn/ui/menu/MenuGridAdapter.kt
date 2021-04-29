@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.menu
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,9 +43,7 @@ class MenuGridAdapter : ContentListAdapter<MenuItem, MenuGridAdapter.MenuGridVie
                 }
             }
             if (item.isActive) {
-                binding.itemTitleTextView.setTextColor(
-                    ContextCompat.getColor(itemView.context, R.color.onboarding_current_screen_white)
-                )
+                binding.itemTitleTextView.setTextColor(Color.WHITE)
             } else {
                 binding.itemTitleTextView.setTextColor(
                     ContextCompat.getColor(itemView.context, R.color.manual_connect_icon_white)

@@ -81,7 +81,7 @@
                 android:paddingBottom="@dimen/margin_padding_size_xsmall"
                 android:text="@string/pop_up_private_key_title"
                 android:textAlignment="center"
-                android:textColor="@color/manual_connect_connecting_title_grey_blue"
+                android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pop_up_private_key_description"
-                android:textColor="@color/manual_connect_connecting_title_grey_blue"
+                android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -123,7 +123,8 @@
                 android:inputType="textPassword"
                 android:paddingHorizontal="@dimen/margin_padding_size_small"
                 android:textAlignment="center"
-                android:textColor="@color/onboarding_title_dark_blue"
+                android:textColor="@color/pop_up_password_text"
+                android:textColorHint="@color/pop_up_password_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon"

@@ -5,7 +5,7 @@
     android:viewportHeight="39">
   <path
       android:pathData="M10,0L142,0A10,10 0,0 1,152 10L152,29A10,10 0,0 1,142 39L10,39A10,10 0,0 1,0 29L0,10A10,10 0,0 1,10 0z"
-      android:fillColor="#883A7A"/>
+      android:fillColor="@color/settings_dns_background"/>
   <path
       android:strokeWidth="1"
       android:pathData="M10,0.5L142,0.5A9.5,9.5 0,0 1,151.5 10L151.5,29A9.5,9.5 0,0 1,142 38.5L10,38.5A9.5,9.5 0,0 1,0.5 29L0.5,10A9.5,9.5 0,0 1,10 0.5z"

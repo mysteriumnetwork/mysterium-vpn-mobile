@@ -64,6 +64,7 @@ class MenuActivity : BaseActivity() {
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: MenuViewModel by inject()
     private val menuGridAdapter = MenuGridAdapter()
+    private var isLanguageSelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,11 @@ class MenuActivity : BaseActivity() {
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
+    }
+
+    override fun onDestroy() {
+        isLanguageSelected = false
+        super.onDestroy()
     }
 
     private fun configure() {
@@ -108,10 +114,18 @@ class MenuActivity : BaseActivity() {
                 viewSelectorBinding.spinner.performClick()
             }
             spinner.adapter = spinnerAdapter
+            spinner.setOnTouchListener { _, _ ->
+                isLanguageSelected = true
+                viewSelectorBinding.spinner.performClick()
+            }
             spinner.onItemSelected {
                 setLocale(LanguagesUtil.getCountryCodeByIndex(it))
                 viewModel.saveUserSelectedLanguage(it)
                 spinnerAdapter.selectedPosition = it
+                if (isLanguageSelected) {
+                    isLanguageSelected = false
+                    recreate()
+                }
             }
             spinner.setSelection(viewModel.getUserLanguageIndex())
         }
@@ -139,6 +153,7 @@ class MenuActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
+            startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
         binding.manualConnectToolbar.onConnectClickListener {

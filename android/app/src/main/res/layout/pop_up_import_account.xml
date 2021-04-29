@@ -52,7 +52,7 @@
                 android:paddingBottom="@dimen/margin_padding_size_xsmall"
                 android:text="@string/pop_up_import_account_title"
                 android:textAlignment="center"
-                android:textColor="@color/manual_connect_connecting_title_grey_blue"
+                android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

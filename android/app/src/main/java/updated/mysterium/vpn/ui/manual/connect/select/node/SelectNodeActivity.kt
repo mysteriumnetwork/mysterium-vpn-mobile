@@ -26,12 +26,16 @@ class SelectNodeActivity : BaseActivity() {
             OnboardingTabItem(
                 textResId = R.string.manual_connect_all_nodes,
                 selectedBackgroundResId = R.drawable.shape_all_nodes_selected,
-                unselectedBackgroundResId = R.drawable.shape_all_nodes_unselected
+                unselectedBackgroundResId = R.drawable.shape_all_nodes_unselected,
+                rtlSelectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
+                rtlUnselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected
             ),
             OnboardingTabItem(
                 textResId = R.string.manual_connect_saved_nodes,
                 selectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
-                unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected
+                unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected,
+                rtlSelectedBackgroundResId = R.drawable.shape_all_nodes_selected,
+                rtlUnselectedBackgroundResId = R.drawable.shape_all_nodes_unselected
             )
         )
     }
@@ -55,25 +59,39 @@ class SelectNodeActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         initViewPager()
-        initTabLayout()
+        initTabLayout(resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL)
     }
 
     @SuppressLint("InflateParams")
-    private fun initTabLayout() {
+    private fun initTabLayout(isRTL: Boolean) {
         for (index in 0 until binding.chooseListTabLayout.tabCount) {
             val tab = LayoutInflater.from(this).inflate(R.layout.item_tab, null)
             val tabBinding = ItemTabBinding.bind(tab)
             tabBinding.allNodesImageButton.text = resources.getString(TAB_ITEMS_CONTENT[index].textResId)
             if (index == 0) {
-                tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
-                    this@SelectNodeActivity,
-                    (TAB_ITEMS_CONTENT[index].selectedBackgroundResId)
-                )
+                if (isRTL) {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@SelectNodeActivity,
+                        (TAB_ITEMS_CONTENT[index].rtlSelectedBackgroundResId)
+                    )
+                } else {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@SelectNodeActivity,
+                        (TAB_ITEMS_CONTENT[index].selectedBackgroundResId)
+                    )
+                }
             } else {
-                tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
-                    this@SelectNodeActivity,
-                    (TAB_ITEMS_CONTENT[index].unselectedBackgroundResId)
-                )
+                if (isRTL) {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@SelectNodeActivity,
+                        (TAB_ITEMS_CONTENT[index].rtlUnselectedBackgroundResId)
+                    )
+                } else {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@SelectNodeActivity,
+                        (TAB_ITEMS_CONTENT[index].unselectedBackgroundResId)
+                    )
+                }
             }
             binding.chooseListTabLayout.getTabAt(index)?.customView = tab
         }
@@ -83,22 +101,32 @@ class SelectNodeActivity : BaseActivity() {
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.customView?.let {
+                        val backgroundRes = if (isRTL) {
+                            (TAB_ITEMS_CONTENT[tab.position].rtlSelectedBackgroundResId)
+                        } else {
+                            (TAB_ITEMS_CONTENT[tab.position].selectedBackgroundResId)
+                        }
                         ItemTabBinding.bind(it)
                             .allNodesImageButton
                             .background = ContextCompat.getDrawable(
                             this@SelectNodeActivity,
-                            (TAB_ITEMS_CONTENT[tab.position].selectedBackgroundResId)
+                            backgroundRes
                         )
                     }
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
                     tab?.customView?.let {
+                        val backgroundRes = if (isRTL) {
+                            (TAB_ITEMS_CONTENT[tab.position].rtlUnselectedBackgroundResId)
+                        } else {
+                            (TAB_ITEMS_CONTENT[tab.position].unselectedBackgroundResId)
+                        }
                         ItemTabBinding.bind(it)
                             .allNodesImageButton
                             .background = ContextCompat.getDrawable(
                             this@SelectNodeActivity,
-                            (TAB_ITEMS_CONTENT[tab.position].unselectedBackgroundResId)
+                            backgroundRes
                         )
 
                     }

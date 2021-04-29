@@ -201,7 +201,9 @@
         <item>EN</item>
         <item>AR</item>
         <item>RU</item>
-        <item>ZN</item>
+        <item>TR</item>
+        <item>PT</item>
+        <item>ZH</item>
     </string-array>
 
     <!--  Wallet  -->
@@ -267,7 +269,7 @@
     <string name="terms_short">Short version</string>
     <string name="terms_full">Full version</string>
     <string name="terms_accept_button">Accept</string>
-    <string name="terms_onboarding_description">Short description about why is it necessary to apply all terms of use before using app</string>
+    <string name="terms_onboarding_description">Please accept our terms of use so that you can begin surfing the open internet with Mysterium Network.</string>
 
     <!--  Top up  -->
     <string name="top_up_amount_title">Top up your account</string>
@@ -369,6 +371,9 @@
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
+    <string name="pop_up_new_version_title">New Version\n Available</string>
+    <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
+    <string name="pop_up_new_version_update">Update</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium balance</string>

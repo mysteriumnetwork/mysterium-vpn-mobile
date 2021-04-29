@@ -5,5 +5,5 @@
     android:viewportHeight="149">
   <path
       android:pathData="M10,0L128,0A10,10 0,0 1,138 10L138,139A10,10 0,0 1,128 149L10,149A10,10 0,0 1,0 139L0,10A10,10 0,0 1,10 0z"
-      android:fillColor="#F4F4FC"/>
+      android:fillColor="@color/create_account_import_background"/>
 </vector>
