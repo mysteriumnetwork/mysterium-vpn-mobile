@@ -13,7 +13,6 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.isEmail
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.menu.MenuActivity
 
 class ReportIssueActivity : BaseActivity() {
 
