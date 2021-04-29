@@ -21,6 +21,7 @@ import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class WalletActivity : BaseActivity() {
@@ -31,12 +32,16 @@ class WalletActivity : BaseActivity() {
             OnboardingTabItem(
                 textResId = R.string.wallet_top_up_label,
                 selectedBackgroundResId = R.drawable.shape_all_nodes_selected,
-                unselectedBackgroundResId = R.drawable.shape_all_nodes_unselected
+                unselectedBackgroundResId = R.drawable.shape_all_nodes_unselected,
+                rtlSelectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
+                rtlUnselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected
             ),
             OnboardingTabItem(
                 textResId = R.string.wallet_spedings_label,
                 selectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
-                unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected
+                unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected,
+                rtlSelectedBackgroundResId = R.drawable.shape_all_nodes_selected,
+                rtlUnselectedBackgroundResId = R.drawable.shape_all_nodes_unselected
             )
         )
     }
@@ -64,7 +69,7 @@ class WalletActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         initViewPager()
-        initTabLayout()
+        initTabLayout(resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL)
     }
 
     private fun subscribeViewModel() {
@@ -98,21 +103,35 @@ class WalletActivity : BaseActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun initTabLayout() {
+    private fun initTabLayout(isRTL: Boolean) {
         for (index in 0 until binding.chooseListTabLayout.tabCount) {
             val tab = LayoutInflater.from(this).inflate(R.layout.item_tab, null)
             val tabBinding = ItemTabBinding.bind(tab)
             tabBinding.allNodesImageButton.text = resources.getString(TAB_ITEMS_CONTENT[index].textResId)
             if (index == 0) {
-                tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
-                    this@WalletActivity,
-                    (TAB_ITEMS_CONTENT[index].selectedBackgroundResId)
-                )
+                if (isRTL) {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@WalletActivity,
+                        (TAB_ITEMS_CONTENT[index].rtlSelectedBackgroundResId)
+                    )
+                } else {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@WalletActivity,
+                        (TAB_ITEMS_CONTENT[index].selectedBackgroundResId)
+                    )
+                }
             } else {
-                tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
-                    this@WalletActivity,
-                    (TAB_ITEMS_CONTENT[index].unselectedBackgroundResId)
-                )
+                if (isRTL) {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@WalletActivity,
+                        (TAB_ITEMS_CONTENT[index].rtlUnselectedBackgroundResId)
+                    )
+                } else {
+                    tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
+                        this@WalletActivity,
+                        (TAB_ITEMS_CONTENT[index].unselectedBackgroundResId)
+                    )
+                }
             }
             binding.chooseListTabLayout.getTabAt(index)?.customView = tab
         }
@@ -122,24 +141,33 @@ class WalletActivity : BaseActivity() {
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.customView?.let {
+                        val backgroundRes = if (isRTL) {
+                            (TAB_ITEMS_CONTENT[tab.position].rtlSelectedBackgroundResId)
+                        } else {
+                            (TAB_ITEMS_CONTENT[tab.position].selectedBackgroundResId)
+                        }
                         ItemTabBinding.bind(it)
                             .allNodesImageButton
                             .background = ContextCompat.getDrawable(
                             this@WalletActivity,
-                            (TAB_ITEMS_CONTENT[tab.position].selectedBackgroundResId)
+                            backgroundRes
                         )
                     }
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
                     tab?.customView?.let {
+                        val backgroundRes = if (isRTL) {
+                            (TAB_ITEMS_CONTENT[tab.position].rtlUnselectedBackgroundResId)
+                        } else {
+                            (TAB_ITEMS_CONTENT[tab.position].unselectedBackgroundResId)
+                        }
                         ItemTabBinding.bind(it)
                             .allNodesImageButton
                             .background = ContextCompat.getDrawable(
                             this@WalletActivity,
-                            (TAB_ITEMS_CONTENT[tab.position].unselectedBackgroundResId)
+                            backgroundRes
                         )
-
                     }
                 }
             }
