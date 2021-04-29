@@ -32,4 +32,6 @@ class UseCaseProvider(
     fun payment() = PaymentUseCase(nodeRepository)
 
     fun settings() = SettingsUseCase(nodeRepository, sharedPreferencesManager)
+
+    fun filters() = FilterUseCase(nodeRepository)
 }

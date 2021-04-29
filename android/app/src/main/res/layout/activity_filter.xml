@@ -13,14 +13,27 @@
         app:leftIcon="@drawable/icon_back"
         app:rightIcon="@drawable/icon_search" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loader_animation" />
+
     <FrameLayout
         android:id="@+id/connectionHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:layout_marginTop="@dimen/margin_padding_size_micro"
         android:background="@drawable/shape_connected_hint"
         android:elevation="1dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
@@ -41,19 +54,34 @@
         style="@style/TextAppearance.HeadTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/home_selection_all_nodes"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar"
-        tools:text="Austria" />
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
 
-    <include
-        android:id="@+id/filters"
-        layout="@layout/filters_layout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/countryName"
+        style="@style/TextAppearance.Caption"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+        android:text="@string/manual_connect_all_countries"
+        android:textColor="@color/onboarding_skip_white"
+        app:layout_constraintEnd_toEndOf="@+id/nodesTitle"
+        app:layout_constraintStart_toStartOf="@+id/nodesTitle"
         app:layout_constraintTop_toBottomOf="@+id/nodesTitle" />
+
+    <ImageView
+        android:id="@+id/countryFlag"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="@dimen/margin_padding_size_small"
+        android:src="@drawable/icon_all_countries"
+        app:layout_constraintBottom_toBottomOf="@+id/countryName"
+        app:layout_constraintEnd_toStartOf="@+id/countryName"
+        app:layout_constraintTop_toTopOf="@+id/countryName"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/nodeTextView"
@@ -65,7 +93,7 @@
         android:text="@string/manual_connect_node"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintStart_toStartOf="@+id/nodesRecyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/filters" />
+        app:layout_constraintTop_toBottomOf="@+id/countryName" />
 
     <TextView
         android:id="@+id/priceTextView"
@@ -77,7 +105,7 @@
         android:text="@string/manual_connect_price"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintEnd_toStartOf="@+id/qualityTextView"
-        app:layout_constraintTop_toBottomOf="@+id/filters" />
+        app:layout_constraintTop_toBottomOf="@+id/countryName" />
 
     <TextView
         android:id="@+id/qualityTextView"
@@ -89,7 +117,7 @@
         android:text="@string/manual_connect_quality"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintEnd_toEndOf="@id/nodesRecyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/filters" />
+        app:layout_constraintTop_toBottomOf="@+id/countryName" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nodesRecyclerView"

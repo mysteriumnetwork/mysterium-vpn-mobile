@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_onboarding.*
 import network.mysterium.vpn.databinding.ActivityOnboardingBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.viewpager.*
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
@@ -79,7 +79,7 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
     private fun skipOnboarding() {
         viewModel.userLoggedIn()
         if (viewModel.isTermsAccepted()) {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, HomeSelectionActivity::class.java))
         } else {
             startActivity(Intent(this, TermsOfUseActivity::class.java))
         }

@@ -16,7 +16,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
@@ -67,7 +67,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun showConnectionPush(context: Context, intent: Intent) {
         val builder = createNotification(intent, context)
-        val resultIntent = Intent(context, HomeActivity::class.java)
+        val resultIntent = Intent(context, HomeSelectionActivity::class.java)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
             getPendingIntent(0, FLAG_UPDATE_CURRENT)
@@ -112,7 +112,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
             Intent(context, OnboardingActivity::class.java)
         }
         loginUseCase.isTopFlowShown() -> {
-            Intent(context, HomeActivity::class.java)
+            Intent(context, HomeSelectionActivity::class.java)
         }
         loginUseCase.isAccountCreated() -> {
             Intent(context, PrepareTopUpActivity::class.java)

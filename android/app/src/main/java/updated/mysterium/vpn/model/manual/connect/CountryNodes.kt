@@ -8,5 +8,11 @@ data class CountryNodes(
     val countryFlagRes: Int? = null,
     val countryCode: String,
     val countryName: String,
-    val proposalList: List<Proposal>
-) : Parcelable
+    val proposalList: List<Proposal>,
+    var isSelected: Boolean = false
+) : Parcelable {
+
+    fun changeSelectionState() {
+        isSelected = !isSelected
+    }
+}

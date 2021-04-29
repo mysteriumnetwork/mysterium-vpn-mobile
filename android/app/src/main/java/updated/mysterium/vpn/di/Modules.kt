@@ -14,11 +14,11 @@ import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseViewModel
 import updated.mysterium.vpn.ui.create.account.CreateAccountViewModel
 import updated.mysterium.vpn.ui.favourites.FavouritesViewModel
-import updated.mysterium.vpn.ui.manual.connect.filter.FilterViewModel
-import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
-import updated.mysterium.vpn.ui.manual.connect.search.SearchViewModel
-import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
-import updated.mysterium.vpn.ui.manual.connect.select.node.saved.SavedNodesViewModel
+import updated.mysterium.vpn.ui.nodes.list.FilterViewModel
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
+import updated.mysterium.vpn.ui.connection.ConnectionViewModel
+import updated.mysterium.vpn.ui.search.SearchViewModel
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuViewModel
 import updated.mysterium.vpn.ui.monitoring.MonitoringViewModel
 import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
@@ -61,17 +61,14 @@ object Modules {
             AllNodesViewModel(get())
         }
         single {
-            HomeViewModel(get())
+            ConnectionViewModel(get())
         }
 
         viewModel {
             SplashViewModel(get())
         }
         viewModel {
-            FilterViewModel()
-        }
-        viewModel {
-            SavedNodesViewModel(get())
+            FilterViewModel(get())
         }
         viewModel {
             SearchViewModel()
@@ -129,6 +126,9 @@ object Modules {
         }
         viewModel {
             FavouritesViewModel(get())
+        }
+        viewModel {
+            HomeSelectionViewModel(get())
         }
     }
 

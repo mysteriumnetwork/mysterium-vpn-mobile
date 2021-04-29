@@ -19,9 +19,11 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.DataUtil
 import updated.mysterium.vpn.common.date.DateUtil
 import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.session.Session
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import java.util.*
 
 class MonitoringActivity : BaseActivity() {
@@ -63,7 +65,12 @@ class MonitoringActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
+            val intent = if (connectionState == ConnectionState.CONNECTED) {
+                Intent(this, ConnectionActivity::class.java)
+            } else {
+                Intent(this, HomeSelectionActivity::class.java)
+            }
+            intent.apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)

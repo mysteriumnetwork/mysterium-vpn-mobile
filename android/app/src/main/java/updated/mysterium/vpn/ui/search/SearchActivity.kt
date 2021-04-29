@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.search
+package updated.mysterium.vpn.ui.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.filter.FilterAdapter
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
+import updated.mysterium.vpn.ui.nodes.list.FilterAdapter
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 
 class SearchActivity : BaseActivity() {
 
@@ -48,7 +50,12 @@ class SearchActivity : BaseActivity() {
             finish()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
+            val intent = if (connectionState == ConnectionState.CONNECTED) {
+                Intent(this, ConnectionActivity::class.java)
+            } else {
+                Intent(this, HomeSelectionActivity::class.java)
+            }
+            intent.apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)
@@ -109,8 +116,8 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun navigateToHome(proposal: Proposal) {
-        val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposal)
+        val intent = Intent(this, ConnectionActivity::class.java)
+        intent.putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }

@@ -21,7 +21,7 @@ import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
@@ -90,7 +90,7 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this, TermsOfUseActivity::class.java))
             }
             viewModel.isTopUpFlowShown() -> {
-                startActivity(Intent(this, HomeActivity::class.java))
+                startActivity(Intent(this, HomeSelectionActivity::class.java))
             }
             viewModel.isAccountCreated() -> {
                 startActivity(Intent(this, PrepareTopUpActivity::class.java))

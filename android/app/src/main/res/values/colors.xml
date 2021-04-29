@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#D61F85</color>
+    <color name="primary_item_selected">#D61F85</color>
     <color name="primary_dark">#501d4f</color>
     <color name="primary_card_view">#FFFFFF</color>
+    <color name="gradient_card_view_top">#50F4F4FC</color>
+    <color name="gradient_card_view_bottom">#80D6D6EA</color>
 
     <color name="common_icon_background_white">#10FFFFFF</color>
 
@@ -26,7 +29,7 @@
     <color name="manual_connect_value_white">#50FFFFFF</color>
     <color name="manual_connect_divider_grey_blue">#9090BB</color>
     <color name="manual_connect_connecting">#9090BB</color>
-    <color name="manual_connect_scrollbar_grey">#40E0E3EE</color>
+    <color name="manual_connect_scrollbar_grey">#9090BB</color>
     <color name="manual_connect_track_background_white">#10FFFFFF</color>
     <color name="manual_connect_icon_white">#20FFFFFF</color>
     <color name="manual_connect_attention_text_light_grey">#B5B3CA</color>
@@ -47,6 +50,8 @@
     <color name="manual_connect_connected_icons">#5A597D</color>
     <color name="manual_connect_connected_receive">#5A597D</color>
     <color name="manual_connect_connected_output_icons">#9090BB</color>
+
+    <color name="home_country_amount">#9090BB</color>
 
     <color name="menu_subtitle_light_pink">#ED5BAC</color>
 

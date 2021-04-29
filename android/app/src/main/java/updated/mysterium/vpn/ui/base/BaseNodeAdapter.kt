@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect
+package updated.mysterium.vpn.ui.base
 
 import android.graphics.drawable.Drawable
 import android.view.View

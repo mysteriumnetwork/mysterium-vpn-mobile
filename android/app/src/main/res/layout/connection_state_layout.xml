@@ -4,17 +4,11 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/selectNodeLayout"
-        layout="@layout/card_select_node"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <include
         android:id="@+id/connectingLayout"
         layout="@layout/card_connecting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <include
         android:id="@+id/connectedLayout"

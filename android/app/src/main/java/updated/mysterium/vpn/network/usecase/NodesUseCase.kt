@@ -7,6 +7,7 @@ import network.mysterium.vpn.R
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
+import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
 
 class NodesUseCase(
@@ -22,8 +23,6 @@ class NodesUseCase(
     fun initDeferredNode(deferredNode: DeferredNode) {
         nodeRepository.deferredNode = deferredNode
     }
-
-    suspend fun getAllProposals() = createProposalList(getAllNodes())
 
     suspend fun getAllCountries() = mapNodesToCountriesGroups(getAllNodes())
 
@@ -57,9 +56,7 @@ class NodesUseCase(
         return groupListByCountries(proposalList).sortedByDescending { it.proposalList.size }
     }
 
-    private fun createProposalList(allNodesList: List<NodeEntity>) = allNodesList.map {
-        Proposal(it)
-    }
+    private fun createProposalList(allNodesList: List<NodeEntity>) = parsePriceLevel(allNodesList)
 
     private fun groupListByCountries(proposalList: List<Proposal>): List<CountryNodes> {
         val countryNodesList = mutableListOf<CountryNodes>()
@@ -69,7 +66,8 @@ class NodesUseCase(
                 countryCode = ALL_COUNTRY_CODE,
                 countryName = "",
                 countryFlagRes = R.drawable.icon_all_countries,
-                proposalList = proposalList
+                proposalList = proposalList,
+                isSelected = true
             )
         )
         proposalList.filter { it.countryCode != "" }
@@ -107,5 +105,30 @@ class NodesUseCase(
             }
         }
         return favourites
+    }
+
+    private fun parsePriceLevel(proposals: List<NodeEntity>): List<Proposal> {
+        val parsedProposals = proposals.map {
+            Proposal(it)
+        }
+        val sortedByPriceNodes = ArrayList(proposals)
+        sortedByPriceNodes.sortedBy {
+            it.pricePerByte
+        }.forEachIndexed { index, _ ->
+            if (index < parsedProposals.size) {
+                when {
+                    index <= (sortedByPriceNodes.size * 0.33) -> {
+                        parsedProposals[index].priceLevel = PriceLevel.LOW
+                    }
+                    index <= (sortedByPriceNodes.size * 0.66) -> {
+                        parsedProposals[index].priceLevel = PriceLevel.MEDIUM
+                    }
+                    else -> {
+                        parsedProposals[index].priceLevel = PriceLevel.HIGH
+                    }
+                }
+            }
+        }
+        return parsedProposals
     }
 }

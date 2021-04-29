@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.home
+package updated.mysterium.vpn.ui.connection
 
 import android.app.NotificationManager
 import android.content.Context
@@ -18,13 +18,13 @@ import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.getTypeLabel
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.favourites.FavouritesActivity
-import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
-import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 
-class HomeActivity : BaseActivity() {
+class ConnectionActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PROPOSAL_MODEL = "PROPOSAL_MODEL"
@@ -36,7 +36,7 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private var proposal: Proposal? = null
-    private val viewModel: HomeViewModel by inject()
+    private val viewModel: ConnectionViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private var isDisconnectedByUser = false
     private var lostConnectionPopUpDialog: AlertDialog? = null
@@ -59,12 +59,21 @@ class HomeActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (isInternetAvailable) {
-            manualDisconnecting()
             setIntent(intent)
-            checkProposalArgument()
+            intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
+                proposal = it
+                manualDisconnecting()
+                inflateNodeInfo()
+                inflateConnectingCardView()
+                viewModel.connectNode(it)
+            }
         } else {
             wifiNetworkErrorPopUp()
         }
+    }
+
+    override fun retryLoading() {
+        getSelectedNode()
     }
 
     override fun protectedConnection() {
@@ -74,7 +83,6 @@ class HomeActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         loadIpAddress()
-        initViewModel()
     }
 
     private fun subscribeViewModel() {
@@ -85,6 +93,7 @@ class HomeActivity : BaseActivity() {
             handleConnectionChange(it)
         })
         viewModel.connectionException.observe(this, {
+            Log.e(TAG, it.localizedMessage ?: it.toString())
             disconnect()
             failedToConnect()
         })
@@ -93,12 +102,21 @@ class HomeActivity : BaseActivity() {
         })
     }
 
-    private fun initViewModel() {
+    private fun getSelectedNode() {
+        if (isInternetAvailable) {
+            checkProposalArgument()
+        } else {
+            wifiNetworkErrorPopUp()
+        }
+    }
+
+    private fun initViewModel(proposal: Proposal) {
         viewModel.init(
             deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService,
             notificationManager = AppNotificationManager(
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            ).apply { init(this@HomeActivity) }
+            ).apply { init(this@ConnectionActivity) },
+            proposal = proposal
         )
     }
 
@@ -171,8 +189,9 @@ class HomeActivity : BaseActivity() {
 
     private fun checkProposalArgument() {
         intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
+            manualDisconnecting()
             proposal = it
-            viewModel.connectNode(it)
+            initViewModel(it)
             inflateNodeInfo()
             inflateConnectingCardView()
         }
@@ -204,12 +223,13 @@ class HomeActivity : BaseActivity() {
             navigateToMenu()
         }
         binding.connectionState.initListeners(
-            selectNodeManually = {
-                navigateToSelectNode()
-            },
             disconnect = {
                 manualDisconnecting()
                 viewModel.disconnect()
+                val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
             }
         )
     }
@@ -265,16 +285,6 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun disconnect() {
-        binding.connectionState.showDisconnectedState()
-        binding.connectionTypeTextView.visibility = View.VISIBLE
-        binding.connectionTypeTextView.text = getString(R.string.manual_connect_country_status)
-        binding.connectedNodeInfo.visibility = View.INVISIBLE
-        binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
-        binding.securityStatusImageView.visibility = View.VISIBLE
-        binding.connectedStatusImageView.visibility = View.INVISIBLE
-        binding.multiAnimation.disconnectedState()
-        binding.cancelConnectionButton.visibility = View.INVISIBLE
-        binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         loadIpAddress()
         toolbarWalletIcon()
         isDisconnectedByUser = false
@@ -380,7 +390,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun navigateToSelectNode() {
-        startActivity(Intent(this, SelectNodeActivity::class.java))
+        startActivity(Intent(this, HomeSelectionActivity::class.java))
     }
 
     private fun navigateToMenu() {

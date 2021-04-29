@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemSavedNodeBinding
 import updated.mysterium.vpn.model.manual.connect.Proposal
-import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
+import updated.mysterium.vpn.ui.base.BaseNodeAdapter
 
 class FavouritesAdapter : BaseNodeAdapter<Proposal, FavouritesAdapter.SavedNodesViewHolder>() {
 

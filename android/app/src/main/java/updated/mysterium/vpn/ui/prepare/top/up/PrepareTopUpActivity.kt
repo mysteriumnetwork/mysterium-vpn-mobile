@@ -6,7 +6,7 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class PrepareTopUpActivity : BaseActivity() {
@@ -24,7 +24,7 @@ class PrepareTopUpActivity : BaseActivity() {
     private fun bindsAction() {
         binding.topUpLater.setOnClickListener {
             viewModel.accountFlowShown()
-            val intent = Intent(this, HomeActivity::class.java).apply {
+            val intent = Intent(this, HomeSelectionActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)

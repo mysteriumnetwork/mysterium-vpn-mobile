@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.home
+package updated.mysterium.vpn.ui.connection
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -23,7 +23,7 @@ import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import java.util.*
 
-class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
         const val DEFAULT_DNS_OPTION = "auto"
@@ -44,7 +44,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
-    private lateinit var coreService: MysteriumCoreService
+    private var coreService: MysteriumCoreService? = null
     private val _connectionException = MutableLiveData<Exception>()
     private val _manualDisconnect = MutableLiveData<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
@@ -61,7 +61,8 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
-        notificationManager: AppNotificationManager
+        notificationManager: AppNotificationManager,
+        proposal: Proposal
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
@@ -70,6 +71,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
+            connectNode(proposal)
         }
     }
 
@@ -82,7 +84,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             isConnectionStopped = false
         }
         viewModelScope.launch(handler) {
-            this@HomeViewModel.proposal = proposal
+            this@ConnectionViewModel.proposal = proposal
             disconnectIfConnectedNode()
             connect()
             getExchangeRate()
@@ -135,7 +137,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun manualDisconnect() {
-        coreService.manualDisconnect()
+        coreService?.manualDisconnect()
     }
 
     fun getBalance() = liveDataResult {
@@ -147,7 +149,9 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {
-            deferredNode.start(coreService)
+            coreService?.let {
+                deferredNode.start(it)
+            }
         }
         connectionUseCase.initDeferredNode(deferredNode)
         locationUseCase.initDeferredNode(deferredNode)
@@ -163,9 +167,9 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         connectionUseCase.connectionStatusCallback {
             val connectionStateModel = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
             if (connectionStateModel == ConnectionState.NOTCONNECTED) {
-                coreService.setDeferredNode(null)
-                coreService.setActiveProposal(null)
-                coreService.stopForeground()
+                coreService?.setDeferredNode(null)
+                coreService?.setActiveProposal(null)
+                coreService?.stopForeground()
             }
             _connectionState.postValue(connectionStateModel)
         }
@@ -209,7 +213,7 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private fun updateService() {
-        coreService.apply {
+        coreService?.apply {
             setDeferredNode(deferredNode)
             setActiveProposal(ProposalViewItem.parse(proposal))
             startForegroundWithNotification(
@@ -227,12 +231,12 @@ class HomeViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun disconnectNode() {
         viewModelScope.launch {
-            coreService.manualDisconnect()
+            coreService?.manualDisconnect()
             _manualDisconnect.postValue(Unit)
             connectionUseCase.disconnect()
-            coreService.setActiveProposal(null)
-            coreService.setDeferredNode(null)
-            coreService.stopForeground()
+            coreService?.setActiveProposal(null)
+            coreService?.setDeferredNode(null)
+            coreService?.stopForeground()
         }
     }
 }

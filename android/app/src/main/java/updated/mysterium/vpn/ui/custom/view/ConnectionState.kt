@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import network.mysterium.proposal.NodeType
 import network.mysterium.service.core.ProposalPaymentMoney
 import network.mysterium.ui.DisplayMoneyOptions
-import network.mysterium.ui.FormattedBytesViewItem
 import network.mysterium.ui.PriceUtils
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ConnectionStateLayoutBinding
@@ -36,13 +35,7 @@ class ConnectionState @JvmOverloads constructor(
         binding = ConnectionStateLayoutBinding.bind(connectionState)
     }
 
-    fun initListeners(
-        selectNodeManually: () -> Unit,
-        disconnect: () -> Unit
-    ) {
-        binding.selectNodeLayout.selectNodeManuallyButton.setOnClickListener {
-            selectNodeManually.invoke()
-        }
+    fun initListeners(disconnect: () -> Unit) {
         binding.connectedLayout.disconnectButton.setOnClickListener {
             disconnect.invoke()
         }
@@ -50,13 +43,11 @@ class ConnectionState @JvmOverloads constructor(
 
     fun showDisconnectedState() {
         binding.connectedLayout.cardConnectedLayout.visibility = View.INVISIBLE
-        binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.VISIBLE
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
     }
 
     fun showConnectionState(proposal: Proposal) {
         binding.connectedLayout.cardConnectedLayout.visibility = View.INVISIBLE
-        binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
         binding.connectingLayout.apply {
             cardConnectingLayout.visibility = View.VISIBLE
             countryNameTextView.text = proposal.countryName
@@ -79,7 +70,6 @@ class ConnectionState @JvmOverloads constructor(
 
     fun showConnectedState() {
         binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
-        binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
         binding.connectedLayout.disconnectButton.text = context.getString(
             R.string.manual_connect_disconnect
@@ -88,7 +78,6 @@ class ConnectionState @JvmOverloads constructor(
 
     fun showDisconnectingState() {
         binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
-        binding.selectNodeLayout.cardSelectNodeLayout.visibility = View.INVISIBLE
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
         binding.connectedLayout.disconnectButton.text = context.getString(
             R.string.manual_connect_disconnecting

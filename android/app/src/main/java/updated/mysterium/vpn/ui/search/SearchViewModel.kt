@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.search
+package updated.mysterium.vpn.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
