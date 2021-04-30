@@ -173,7 +173,7 @@
     <string name="pop_up_payment_successfully_title">Оплата\n успешно произведена</string>
     <string name="pop_up_payment_successfully_done">Отличная работа</string>
     <string name="pop_up_payment_successfully_close">Закрыть</string>
-    <string name="pop_up_payment_not_work_title">Платежный сервер/n не работает</string>
+    <string name="pop_up_payment_not_work_title">Платежный сервер\n не работает</string>
     <string name="pop_up_payment_not_work_try_again">Пожалуйста, повторите попытку позже</string>
     <string name="pop_up_payment_not_work_okay">Хорошо, понятно</string>
     <string name="pop_up_payment_expired_title">Оплата\n не произведена</string>

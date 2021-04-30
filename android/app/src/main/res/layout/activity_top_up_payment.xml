@@ -128,7 +128,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
-        android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
         android:text="@string/top_up_payment_description"
         android:textAlignment="center"
         android:textColor="@android:color/white"
@@ -141,7 +141,7 @@
         style="@style/Widget.PrimaryCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_size_small_medium"
+        android:layout_margin="@dimen/margin_padding_size_small_plus"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
