@@ -9,13 +9,15 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.SortType
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import updated.mysterium.vpn.ui.manual.connect.home.HomeViewModel
 
 class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+
+    private companion object {
+        const val TAG = "AllNodesViewModel"
+    }
 
     val proposals: LiveData<List<CountryNodes>>
         get() = _proposals
@@ -32,7 +34,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getProposals() {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.i("AllNodesViewModel", exception.localizedMessage ?: exception.toString())
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(handler) {
             updateLiveData()
