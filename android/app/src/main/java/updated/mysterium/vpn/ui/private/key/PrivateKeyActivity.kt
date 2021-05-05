@@ -172,6 +172,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         viewModel.accountCreated()
         val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
         }
         startActivity(intent)
     }

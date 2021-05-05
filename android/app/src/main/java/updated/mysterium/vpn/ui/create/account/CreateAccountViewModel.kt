@@ -8,7 +8,6 @@ import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import mysterium.RegisterIdentityRequest
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
@@ -52,11 +51,13 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
             )
             registerIntercomClient(identity.address)
-            registerIdentity(identity)
         }
     }
 
-    fun accountCreated() = loginUseCase.accountCreated()
+    fun accountCreated(isNewUser: Boolean) {
+        loginUseCase.accountCreated()
+        loginUseCase.userCreateOrImportAccount(isNewUser)
+    }
 
     private fun registerIntercomClient(address: String) {
         Intercom.client().apply {
@@ -66,22 +67,7 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 .build()
             updateUser(attrs)
         }
-    }
-
-    private suspend fun registerIdentity(identity: IdentityModel) {
-        if (!identity.registered) {
-            val req = RegisterIdentityRequest().apply {
-                identityAddress = identity.address
-            }
-            viewModelScope.launch {
-                connectionUseCase.registerIdentity(req)
-            }
-        }
-        loadRegistrationFees()
-    }
-
-    private suspend fun loadRegistrationFees() {
-        connectionUseCase.registrationFees()
+        loginUseCase.userCreateOrImportAccount(true)
         _navigateForward.postValue(Unit)
     }
 }

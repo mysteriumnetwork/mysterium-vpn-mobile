@@ -31,4 +31,13 @@ class LoginUseCase(private val sharedPreferencesManager: SharedPreferencesManage
         key = SharedPreferencesList.ACCOUNT_CREATED,
         value = true
     )
+
+    fun userCreateOrImportAccount(isNewUser: Boolean) = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.IS_NEW_USER,
+        value = isNewUser
+    )
+
+    fun isNewUser() = sharedPreferencesManager.getBoolPreferenceValue(
+        SharedPreferencesList.IS_NEW_USER
+    )
 }

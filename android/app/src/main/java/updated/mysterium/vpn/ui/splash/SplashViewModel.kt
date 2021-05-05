@@ -53,6 +53,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun isTopUpFlowShown() = loginUseCase.isTopFlowShown()
 
+    fun isNewUser() = loginUseCase.isNewUser()
+
     fun animationLoaded() {
         if (isDataLoaded) {
             _navigateForward.postValue(Unit)

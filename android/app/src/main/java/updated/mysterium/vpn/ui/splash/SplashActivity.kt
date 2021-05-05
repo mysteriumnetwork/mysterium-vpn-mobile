@@ -93,7 +93,10 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this, HomeSelectionActivity::class.java))
             }
             viewModel.isAccountCreated() -> {
-                startActivity(Intent(this, PrepareTopUpActivity::class.java))
+                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
+                }
+                startActivity(intent)
             }
             viewModel.isTermsAccepted() -> {
                 startActivity(Intent(this, CreateAccountActivity::class.java))

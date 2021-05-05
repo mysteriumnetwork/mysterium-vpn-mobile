@@ -354,6 +354,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
     }
 
+    suspend fun getRegistrationTokenReward(registrationToken: String) = withContext(Dispatchers.IO) {
+        deferredNode.await().registrationTokenReward(registrationToken)
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge">
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large">
 
             <TextView
                 android:id="@+id/title"
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                 android:layout_marginTop="@dimen/margin_padding_size_large"
                 android:text="@string/pop_up_registration_failed_title"
                 android:textAlignment="center"
@@ -69,6 +69,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:paddingHorizontal="@dimen/margin_padding_size_large"
                 android:text="@string/pop_up_registration_failed_description"
+                android:textAlignment="center"
                 android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

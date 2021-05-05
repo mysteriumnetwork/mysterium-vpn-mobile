@@ -73,6 +73,7 @@
                 android:layout_marginEnd="@dimen/margin_padding_size_small"
                 android:background="@drawable/shape_create_new_account"
                 android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/referralProgram"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -106,6 +107,7 @@
                 android:layout_marginEnd="@dimen/margin_padding_size_large"
                 android:background="@drawable/shape_import_account"
                 android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/referralProgram"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/centerGuideline"
                 app:layout_constraintTop_toTopOf="parent">
@@ -139,8 +141,7 @@
                 android:text="@string/prepare_top_up_referral"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/topUpLater"
-                app:layout_constraintStart_toStartOf="@+id/topUpNow"
-                app:layout_constraintTop_toBottomOf="@+id/topUpLater" />
+                app:layout_constraintStart_toStartOf="@+id/topUpNow" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
