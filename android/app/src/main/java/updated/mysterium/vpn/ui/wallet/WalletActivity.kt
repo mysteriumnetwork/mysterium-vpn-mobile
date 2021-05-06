@@ -25,6 +25,7 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
+
 class WalletActivity : BaseActivity() {
 
     private companion object {
@@ -171,6 +172,7 @@ class WalletActivity : BaseActivity() {
                 }
             }
         )
+        binding.chooseListTabLayout.getTabAt(1)?.select()
     }
 
     private fun initViewPager() {

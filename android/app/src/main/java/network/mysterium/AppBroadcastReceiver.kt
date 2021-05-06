@@ -22,7 +22,7 @@ class AppBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun handleDisconnect() {
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.disconnect()
+            viewModel.disconnect(isPushDisconnect = true)
         }
     }
 }

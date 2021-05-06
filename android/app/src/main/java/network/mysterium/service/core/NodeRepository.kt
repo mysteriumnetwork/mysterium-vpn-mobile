@@ -301,7 +301,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     }
 
     suspend fun getExchangeRate(currency: String) = withContext(Dispatchers.IO) {
-        1 / deferredNode.await().exchangeRate(currency)
+        deferredNode.await().exchangeRate(currency)
     }
 
     suspend fun getLastSessions(sessionFilter: SessionFilter): ByteArray = withContext(Dispatchers.IO) {

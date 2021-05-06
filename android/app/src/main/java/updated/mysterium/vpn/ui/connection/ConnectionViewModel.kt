@@ -39,6 +39,9 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionException: LiveData<Exception>
         get() = _connectionException
 
+    val pushDisconnect: LiveData<Unit>
+        get() = _pushDisconnect
+
     val manualDisconnect: LiveData<Unit>
         get() = _manualDisconnect
 
@@ -47,6 +50,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var coreService: MysteriumCoreService? = null
     private val _connectionException = MutableLiveData<Exception>()
     private val _manualDisconnect = MutableLiveData<Unit>()
+    private val _pushDisconnect = MutableLiveData<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
@@ -105,9 +109,12 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun disconnect() {
+    fun disconnect(isPushDisconnect: Boolean = false) {
         viewModelScope.launch {
             disconnectIfConnectedNode()
+            if (isPushDisconnect) {
+                _pushDisconnect.postValue(Unit)
+            }
         }
     }
 
@@ -230,13 +237,11 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
-        viewModelScope.launch {
-            coreService?.manualDisconnect()
-            _manualDisconnect.postValue(Unit)
-            connectionUseCase.disconnect()
-            coreService?.setActiveProposal(null)
-            coreService?.setDeferredNode(null)
-            coreService?.stopForeground()
-        }
+        coreService?.manualDisconnect()
+        _manualDisconnect.postValue(Unit)
+        connectionUseCase.disconnect()
+        coreService?.setActiveProposal(null)
+        coreService?.setDeferredNode(null)
+        coreService?.stopForeground()
     }
 }
