@@ -100,6 +100,9 @@ class ConnectionActivity : BaseActivity() {
         viewModel.manualDisconnect.observe(this, {
             manualDisconnecting()
         })
+        viewModel.pushDisconnect.observe(this, {
+            navigateToSelectNode()
+        })
     }
 
     private fun getSelectedNode() {

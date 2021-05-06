@@ -158,7 +158,7 @@
     <string name="manual_connect_paid_hint">Paid</string>
     <string name="manual_connect_time_format">HH MM SS</string>
     <string name="manual_connect_data_type">MiB</string>
-    <string name="manual_connect_paid_types">MYSTT / EUR</string>
+    <string name="manual_connect_paid_types">MYSTT / USD</string>
     <string name="manual_connect_loading">Loading</string>
     <string name="manual_connect_unknown">Unknown</string>
     <string name="manual_connect_data_received">%1$s/</string>
@@ -297,6 +297,7 @@
     <string name="settings_dns_provider">Provider</string>
     <string name="settings_dns_cloudflare">Cloudflare</string>
     <string name="settings_dns_default">Default</string>
+    <string name="settings_dark_mode">Dark Mode</string>
 
     <!--  Create account  -->
     <string name="create_account_title">Your account</string>Create New Account

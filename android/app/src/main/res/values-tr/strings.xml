@@ -39,7 +39,7 @@
   <string name="manual_connect_data_received_hint">Al/Gönder</string>
   <string name="manual_connect_paid_hint">Ödendi</string>
   <string name="manual_connect_time_format">SS DD ss</string>
-  <string name="manual_connect_paid_types">MYSTT / EUR</string>
+  <string name="manual_connect_paid_types">MYSTT / USD</string>
   <string name="manual_connect_loading">Yükleniyor</string>
   <string name="manual_connect_unknown">Bilinmiyor</string>
   <string name="manual_connect_price_per_hour">%.4f/sa</string>

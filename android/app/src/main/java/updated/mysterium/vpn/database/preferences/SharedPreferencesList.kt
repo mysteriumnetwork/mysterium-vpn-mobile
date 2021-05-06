@@ -13,5 +13,6 @@ enum class SharedPreferencesList(val prefName: String) {
     IDENTITY_ADDRESS("IDENTITY_ADDRESS"),
     LANGUAGE("LANGUAGE"),
     CONNECTION_HINT("CONNECTION_HINT"),
-    IS_NEW_USER("IS_NEW_USER")
+    IS_NEW_USER("IS_NEW_USER"),
+    DARK_MODE("DARK_MODE")
 }
