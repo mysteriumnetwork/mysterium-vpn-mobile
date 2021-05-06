@@ -12,7 +12,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 
 class TermsOfUseActivity : BaseActivity() {
 
@@ -82,7 +82,7 @@ class TermsOfUseActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
+            val intent = Intent(this, HomeSelectionActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)
@@ -93,7 +93,7 @@ class TermsOfUseActivity : BaseActivity() {
         binding.acceptButton.setOnClickListener {
             viewModel.termsAccepted()
             val intent = if (viewModel.isAccountCreated()) {
-                Intent(this, HomeActivity::class.java)
+                Intent(this, HomeSelectionActivity::class.java)
             } else {
                 Intent(this, CreateAccountActivity::class.java)
             }

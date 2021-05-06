@@ -17,11 +17,12 @@ import network.mysterium.vpn.databinding.ItemTabBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class WalletActivity : BaseActivity() {
@@ -82,20 +83,18 @@ class WalletActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            if (isTaskRoot) {
-                val intent = Intent(this, HomeActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-                startActivity(intent)
-            } else {
-                finish()
-            }
+            finish()
         }
         binding.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
+            val intent = if (connectionState == ConnectionState.CONNECTED) {
+                Intent(this, ConnectionActivity::class.java)
+            } else {
+                Intent(this, HomeSelectionActivity::class.java)
+            }
+            intent.apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)

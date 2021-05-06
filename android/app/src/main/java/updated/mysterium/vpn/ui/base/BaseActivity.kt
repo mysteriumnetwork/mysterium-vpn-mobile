@@ -22,6 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
     protected var isInternetAvailable = false
+    protected var connectionState = ConnectionState.NOTCONNECTED
     private val dialogs = emptyList<Dialog>().toMutableList()
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
@@ -116,6 +117,7 @@ abstract class BaseActivity : AppCompatActivity() {
             balanceRunningOutPopUp(it)
         })
         baseViewModel.connectionState.observe(this, {
+            connectionState = it
             if (it == ConnectionState.CONNECTED) {
                 isHintAlreadyShown()
                 protectedConnection()

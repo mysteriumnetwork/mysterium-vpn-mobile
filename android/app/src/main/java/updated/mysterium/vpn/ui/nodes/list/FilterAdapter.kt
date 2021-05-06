@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.filter
+package updated.mysterium.vpn.ui.nodes.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemNodeBinding
 import updated.mysterium.vpn.model.manual.connect.Proposal
-import updated.mysterium.vpn.ui.manual.connect.BaseNodeAdapter
+import updated.mysterium.vpn.ui.base.BaseNodeAdapter
 
 class FilterAdapter : BaseNodeAdapter<Proposal, FilterAdapter.NodeListViewHolder>() {
 

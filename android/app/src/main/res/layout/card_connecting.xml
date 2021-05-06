@@ -48,8 +48,8 @@
 
                 <ImageView
                     android:id="@+id/countryFlagImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginStart="@dimen/margin_padding_size_medium"
                     android:src="@drawable/icon_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -75,8 +75,8 @@
 
                 <ImageView
                     android:id="@+id/nodeTypeImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/icon_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

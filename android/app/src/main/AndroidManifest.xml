@@ -38,19 +38,15 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.manual.connect.home.HomeActivity"
+            android:name="updated.mysterium.vpn.ui.connection.ConnectionActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.manual.connect.select.node.SelectNodeActivity"
+            android:name="updated.mysterium.vpn.ui.nodes.list.FilterActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.manual.connect.filter.FilterActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.manual.connect.search.SearchActivity"
+            android:name="updated.mysterium.vpn.ui.search.SearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
@@ -109,6 +105,10 @@
 
         <activity
             android:name="updated.mysterium.vpn.ui.favourites.FavouritesActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
             android:screenOrientation="portrait" />
 
         <activity

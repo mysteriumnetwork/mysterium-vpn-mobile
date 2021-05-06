@@ -385,4 +385,8 @@
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
+
+    <!--  HomeSelection  -->
+    <string name="home_selection_smart_connect">Smart Connect is coming soon</string>
+    <string name="home_selection_all_nodes">All nodes</string>
 </resources>

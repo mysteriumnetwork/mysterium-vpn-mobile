@@ -340,6 +340,20 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().updateResidentCountry(residentCountryUpdateRequest)
     }
 
+    suspend fun getFilterPresets(): ByteArray = withContext(Dispatchers.IO) {
+        deferredNode.await().listProposalFilterPresets()
+    }
+
+    suspend fun getProposalsByFilterId(filterId: Long) = withContext(Dispatchers.IO) {
+        val bytesProposals = deferredNode.await().getProposalsByPreset(filterId)
+        val proposalsResponse = parseProposals(bytesProposals)
+        if (proposalsResponse?.proposals == null) {
+            listOf()
+        } else {
+            proposalsResponse.proposals
+        }
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.manual.connect.select.node.all
+package updated.mysterium.vpn.ui.base
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,9 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
-import updated.mysterium.vpn.model.manual.connect.SortType
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -27,7 +25,10 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var cachedNodesList: List<CountryNodes> = emptyList()
 
     fun initProposals() {
-        viewModelScope.launch(Dispatchers.IO) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
             cachedNodesList = nodesUseCase.getAllCountries()
         }
     }
@@ -40,14 +41,6 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             updateLiveData()
             cachedNodesList = nodesUseCase.getAllCountries()
             updateLiveData()
-        }
-    }
-
-    fun getSortedProposal(sortType: SortType) = liveDataResult {
-        if (sortType == SortType.NODES) {
-            cachedNodesList.sortedByDescending { it.proposalList.size }
-        } else {
-            cachedNodesList.sortedBy { it.countryName }
         }
     }
 

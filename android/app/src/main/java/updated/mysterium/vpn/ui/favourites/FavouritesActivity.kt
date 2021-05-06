@@ -8,9 +8,9 @@ import network.mysterium.vpn.databinding.ActivityFavouritesBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.manual.connect.home.HomeActivity
-import updated.mysterium.vpn.ui.manual.connect.search.SearchActivity
-import updated.mysterium.vpn.ui.manual.connect.select.node.all.AllNodesViewModel
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.search.SearchActivity
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 
 class FavouritesActivity : BaseActivity() {
 
@@ -89,8 +89,8 @@ class FavouritesActivity : BaseActivity() {
     }
 
     private fun navigateToHome(proposal: Proposal) {
-        val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra(HomeActivity.EXTRA_PROPOSAL_MODEL, proposal)
+        val intent = Intent(this, ConnectionActivity::class.java)
+        intent.putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
