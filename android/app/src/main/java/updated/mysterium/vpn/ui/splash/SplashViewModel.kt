@@ -53,6 +53,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun isTopUpFlowShown() = loginUseCase.isTopFlowShown()
 
+    fun isNewUser() = loginUseCase.isNewUser()
+
     fun animationLoaded() {
         if (isDataLoaded) {
             _navigateForward.postValue(Unit)
@@ -76,4 +78,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
         countryCode = LanguagesUtil.convertUserLanguage(countryCode)
     )
+
+    fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 }

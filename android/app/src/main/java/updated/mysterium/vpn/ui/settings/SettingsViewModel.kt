@@ -27,4 +27,8 @@ class SettingsViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun getResidentCountry() = liveDataResult {
         settingsUseCase.getResidentCountry()
     }
+
+    fun changeLightMode(isDark: Boolean) {
+        settingsUseCase.setUserDarkMode(isDark)
+    }
 }

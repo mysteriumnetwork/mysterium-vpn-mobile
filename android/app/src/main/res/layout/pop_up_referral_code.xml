@@ -91,11 +91,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/description">
 
                 <ImageView
+                    android:id="@+id/tokenNotWorkingImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_referral_none"
                     tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/rewardAmount"
+                    android:textColor="@color/primary"
+                    style="@style/TextAppearance.HeadNumbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     style="@style/TextAppearance.BodyMedium"
@@ -109,7 +118,7 @@
             </FrameLayout>
 
             <EditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/registrationTokenEditText"
                 style="@style/TextAppearance.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -155,7 +164,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/registrationTokenEditText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

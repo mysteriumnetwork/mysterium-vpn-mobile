@@ -39,7 +39,7 @@
   <string name="manual_connect_data_received_hint">Recebido/Enviado</string>
   <string name="manual_connect_paid_hint">Pago</string>
   <string name="manual_connect_time_format">HH MM SS</string>
-  <string name="manual_connect_paid_types">MYSTT / EUR</string>
+  <string name="manual_connect_paid_types">MYSTT / USD</string>
   <string name="manual_connect_loading">Carregando</string>
   <string name="manual_connect_unknown">Desconhecido</string>
   <string name="manual_connect_price_per_hour">%.4f/h</string>

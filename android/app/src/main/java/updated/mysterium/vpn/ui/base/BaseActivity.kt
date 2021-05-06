@@ -39,9 +39,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        dialogs.forEach {
-            it.dismiss()
-        }
+        closeAllPopUps()
         super.onPause()
     }
 
@@ -102,6 +100,12 @@ abstract class BaseActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun closeAllPopUps() {
+        dialogs.forEach {
+            it.dismiss()
+        }
     }
 
     protected open fun protectedConnection() {

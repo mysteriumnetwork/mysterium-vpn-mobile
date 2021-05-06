@@ -66,7 +66,7 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
-            viewModel.accountCreated()
+            viewModel.accountCreated(true)
             val intent = Intent(this, PrivateKeyActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
@@ -111,9 +111,10 @@ class CreateAccountActivity : BaseActivity() {
         viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-            viewModel.accountCreated()
+            viewModel.accountCreated(false)
             val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, false)
             }
             startActivity(intent)
         })

@@ -50,6 +50,25 @@ class SettingsUseCase(
         value = dnsOption
     )
 
+    fun getUserDarkMode(): Boolean? {
+        val isUserChoose = sharedPreferencesManager.containsPreferenceValue(
+            SharedPreferencesList.DARK_MODE
+        )
+        return if (isUserChoose) {
+            sharedPreferencesManager.getBoolPreferenceValue(
+                SharedPreferencesList.DARK_MODE
+            )
+        } else {
+            null
+        }
+    }
+
+    fun setUserDarkMode(isDark: Boolean) {
+        sharedPreferencesManager.setPreferenceValue(
+            SharedPreferencesList.DARK_MODE, isDark
+        )
+    }
+
     suspend fun getResidentCountry() = nodeRepository.getResidentCountry()
 
     suspend fun saveResidentCountry(identityAddress: String, countryCode: String) {

@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
             android:checked="false"
             app:track="@drawable/switch_track_selector" />
 

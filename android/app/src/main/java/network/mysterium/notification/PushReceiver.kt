@@ -115,7 +115,9 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
             Intent(context, HomeSelectionActivity::class.java)
         }
         loginUseCase.isAccountCreated() -> {
-            Intent(context, PrepareTopUpActivity::class.java)
+            Intent(context, PrepareTopUpActivity::class.java).apply {
+                putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, loginUseCase.isNewUser())
+            }
         }
         termsUseCase.isTermsAccepted() -> {
             Intent(context, CreateAccountActivity::class.java)

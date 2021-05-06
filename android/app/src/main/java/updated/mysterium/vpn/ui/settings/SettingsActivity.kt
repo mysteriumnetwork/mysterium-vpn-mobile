@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.ui.onItemSelected
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
+import updated.mysterium.vpn.common.extensions.isDarkThemeOn
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -68,6 +70,7 @@ class SettingsActivity : BaseActivity() {
         setUpResidentCountryList()
         checkPreviousDnsOption()
         checkPreviousResidentCountry()
+        checkCurrentLightMode()
     }
 
     private fun bindsAction() {
@@ -88,6 +91,28 @@ class SettingsActivity : BaseActivity() {
         binding.residentSpinnerFrame.setOnClickListener {
             listPopupWindow.show()
         }
+        binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.changeLightMode(isChecked)
+            if (isChecked) {
+                applyDarkTheme()
+            } else {
+                applyLightTheme()
+            }
+        }
+    }
+
+    private fun checkCurrentLightMode() {
+        binding.darkModeSwitch.isChecked = isDarkThemeOn()
+    }
+
+    private fun applyDarkTheme() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        delegate.applyDayNight()
+    }
+
+    private fun applyLightTheme() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        delegate.applyDayNight()
     }
 
     private fun setUpDnsSpinner() {

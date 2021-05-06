@@ -155,19 +155,10 @@ class MenuActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            startActivity(Intent(this, ConnectionActivity::class.java))
-            finish()
+            navigateToHome()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = if (connectionState == ConnectionState.CONNECTED) {
-                Intent(this, ConnectionActivity::class.java)
-            } else {
-                Intent(this, HomeSelectionActivity::class.java)
-            }
-            intent.apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToHome()
         }
         binding.helpButton.setOnClickListener {
             Intercom.client().displayMessenger()
@@ -181,16 +172,7 @@ class MenuActivity : BaseActivity() {
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
                 0 -> menuItem.onItemClickListener = {
-                    val intent = if (connectionState == ConnectionState.CONNECTED) {
-                        Intent(this, ConnectionActivity::class.java)
-                    } else {
-                        Intent(this, HomeSelectionActivity::class.java)
-                    }
-                    intent.apply {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    }
-                    startActivity(intent)
-                    finish()
+                    navigateToHome()
                 }
                 1 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, WalletActivity::class.java))
@@ -209,5 +191,17 @@ class MenuActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun navigateToHome() {
+        val intent = if (connectionState == ConnectionState.CONNECTED) {
+            Intent(this, ConnectionActivity::class.java)
+        } else {
+            Intent(this, HomeSelectionActivity::class.java)
+        }
+        intent.apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
     }
 }

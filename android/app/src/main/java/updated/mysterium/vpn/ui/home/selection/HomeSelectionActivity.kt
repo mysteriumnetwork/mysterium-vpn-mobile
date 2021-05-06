@@ -61,7 +61,7 @@ class HomeSelectionActivity : BaseActivity() {
                         ContextCompat.getDrawable(this, R.drawable.icon_menu)
                     )
                     binding.manualConnectToolbar.onRightButtonClicked {
-                        startActivity(Intent(this, MenuActivity::class.java))
+                        startActivity(Intent(this, FavouritesActivity::class.java))
                     }
                 }
             }

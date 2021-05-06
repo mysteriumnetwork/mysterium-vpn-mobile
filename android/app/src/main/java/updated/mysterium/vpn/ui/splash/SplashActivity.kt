@@ -38,6 +38,7 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
+        applyDarkMode()
         setContentView(binding.root)
         ensureVpnServicePermission()
         configure()
@@ -52,7 +53,6 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun configure() {
-        applyDarkMode()
         binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
 
             override fun onAnimationEnd(animation: Animator?) {
@@ -72,8 +72,20 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun applyDarkMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        delegate.applyDayNight()
+        when (viewModel.getUserSavedMode()) {
+            null -> { // default system theme
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                delegate.applyDayNight()
+            }
+            true -> { // user choose dark theme
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                delegate.applyDayNight()
+            }
+            else -> { // user choose light theme
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                delegate.applyDayNight()
+            }
+        }
     }
 
     private fun setUpPushyNotifications() {
@@ -93,7 +105,10 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this, HomeSelectionActivity::class.java))
             }
             viewModel.isAccountCreated() -> {
-                startActivity(Intent(this, PrepareTopUpActivity::class.java))
+                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
+                }
+                startActivity(intent)
             }
             viewModel.isTermsAccepted() -> {
                 startActivity(Intent(this, CreateAccountActivity::class.java))
