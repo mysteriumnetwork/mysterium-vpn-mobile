@@ -58,7 +58,7 @@
   <string name="filter_quality_high">Alto</string>
   <string name="filter_quality_medium">Médio +</string>
   <string name="filter_quality_low">Qualquer</string>
-  <string name="menu_current_balance">\"%.3f\" MYST</string>
+  <string name="menu_current_balance">"%.3f" MYST</string>
   <string name="menu_title">Rede Mysterium</string>
   <string name="menu_item_home_title">Início</string>
   <string name="menu_item_profile_title">Perfil</string>
@@ -132,7 +132,7 @@
   <string name="top_up_amount_confirm">Confirmar</string>
   <string name="top_up_crypto_description">Selecione a croptomoeda\n em que a recarga será feita</string>
   <string name="top_up_payment_title">Aguardando por um pagamento</string>
-  <string name="top_up_payment_description">Leia este código QR\n que contém o seu endereço de recarga</string>
+  <string name="top_up_payment_description">Leia este código QR que contém o seu endereço de recarga</string>
   <string name="top_up_payment_link">Ou use um link de pagamento</string>
   <string name="top_up_crypto_lighting">Rede Lightning</string>
   <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>

@@ -43,13 +43,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_small"
-                android:layout_marginVertical="@dimen/margin_padding_size_small_medium">
+                android:layout_marginHorizontal="@dimen/margin_padding_size_small">
 
                 <ImageView
                     android:id="@+id/countryFlagImageView"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginVertical="@dimen/margin_padding_size_small_medium"
                     android:layout_marginStart="@dimen/margin_padding_size_medium"
                     android:src="@drawable/icon_delete"
                     app:layout_constraintBottom_toBottomOf="parent"

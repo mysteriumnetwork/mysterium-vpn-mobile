@@ -113,6 +113,7 @@ class MenuActivity : BaseActivity() {
         )
         viewSelectorBinding.apply {
             languageSelector.setOnClickListener {
+                isLanguageSelected = true
                 viewSelectorBinding.spinner.performClick()
             }
             spinner.adapter = spinnerAdapter

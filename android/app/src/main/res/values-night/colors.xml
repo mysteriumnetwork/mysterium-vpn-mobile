@@ -33,6 +33,8 @@
 
     <color name="onboarding_title_dark_blue">#FFFFFF</color>
 
+    <color name="menu_drop_down">#686882</color>
+
     <color name="settings_dns_background">#10FFFFFF</color>
 
     <color name="pop_up_title">#FFFFFF</color>

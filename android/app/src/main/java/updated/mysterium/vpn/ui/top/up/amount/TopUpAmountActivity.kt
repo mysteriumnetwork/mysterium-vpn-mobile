@@ -117,7 +117,9 @@ class TopUpAmountActivity : BaseActivity() {
                 binding.pagesTopUpItem.setType(
                     WalletEstimatesUtil.convertWebType(estimates).toUpperCase(Locale.ROOT)
                 )
-                binding.trafficTopUpItem.setData(WalletEstimatesUtil.convertDownloadData(estimates))
+                binding.trafficTopUpItem.setData(
+                    WalletEstimatesUtil.convertDownloadData(estimates).toString()
+                )
                 binding.trafficTopUpItem.setType(WalletEstimatesUtil.convertDownloadType(estimates))
                 binding.musicTopUpItem.setData(WalletEstimatesUtil.convertMusicTimeData(estimates))
                 binding.musicTopUpItem.setType(

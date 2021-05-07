@@ -58,7 +58,7 @@
   <string name="filter_quality_high">مرتفع</string>
   <string name="filter_quality_medium">متوسط +</string>
   <string name="filter_quality_low">أي</string>
-  <string name="menu_current_balance">\"%.3f\" MYST</string>
+  <string name="menu_current_balance">"%.3f" MYST</string>
   <string name="menu_title">شبكة Mysterium</string>
   <string name="menu_item_home_title">الصفحة الرئيسية</string>
   <string name="menu_item_profile_title">ملف التعريف</string>
@@ -132,7 +132,7 @@
   <string name="top_up_amount_confirm">تأكيد</string>
   <string name="top_up_crypto_description">حدد العملة المشفرة التي\n سيتم بها تعبئة الرصيد</string>
   <string name="top_up_payment_title">في انتظار الدفع</string>
-  <string name="top_up_payment_description">امسح رمز الاستجابة السريعة هذا ضوئيًا\n الذي يحتوي على عنوان التعبئة الخاص بك</string>
+  <string name="top_up_payment_description">امسح رمز الاستجابة السريعة هذا ضوئيًا الذي يحتوي على عنوان التعبئة الخاص بك</string>
   <string name="top_up_payment_link">أو استخدم رابط الدفع</string>
   <string name="top_up_crypto_lighting">شبكة الإضاءة</string>
   <string name="top_up_usd_equivalent">ما يعادل دولار أمريكي ≈ %.2f دولار</string>

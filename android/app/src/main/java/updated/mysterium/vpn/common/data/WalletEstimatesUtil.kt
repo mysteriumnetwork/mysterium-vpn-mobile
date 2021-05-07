@@ -2,6 +2,7 @@ package updated.mysterium.vpn.common.data
 
 import mysterium.Estimates
 import network.mysterium.ui.UnitFormatter
+import kotlin.math.roundToInt
 
 object WalletEstimatesUtil {
 
@@ -32,9 +33,10 @@ object WalletEstimatesUtil {
         HOUR
     }
 
-    fun convertDownloadData(estimates: Estimates): String {
+    fun convertDownloadData(estimates: Estimates): Int {
         val downloadData = UnitFormatter.bytesDisplay(estimates.trafficMB * 1024 * 1024)
-        return downloadData.value.substringBefore(",")
+        val stringDataFormat = downloadData.value.substringBefore(",")
+        return stringDataFormat.toDouble().roundToInt()
     }
 
     fun convertDownloadType(estimates: Estimates): String {

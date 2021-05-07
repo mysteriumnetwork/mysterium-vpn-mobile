@@ -232,6 +232,7 @@
                 style="@style/CustomShapeTabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
                 android:layout_marginTop="@dimen/margin_padding_size_small_medium" />
 
             <androidx.viewpager2.widget.ViewPager2

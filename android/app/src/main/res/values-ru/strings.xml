@@ -58,7 +58,7 @@
     <string name="filter_quality_high">Высокое</string>
     <string name="filter_quality_medium">Среднее +</string>
     <string name="filter_quality_low">Любой</string>
-    <string name="menu_current_balance">«%.3f» MYST</string>
+    <string name="menu_current_balance">"%.3f" MYST</string>
     <string name="menu_title">Сеть Mysterium</string>
     <string name="menu_item_home_title">Главная</string>
     <string name="menu_item_profile_title">Профиль</string>
@@ -134,7 +134,7 @@
     <string name="top_up_amount_confirm">Подтвердить</string>
     <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение</string>
     <string name="top_up_payment_title">Ожидание оплаты</string>
-    <string name="top_up_payment_description">Отсканируйте этот QR-код,\n который содержит ваш адрес пополнения</string>
+    <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
     <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_usd_equivalent">Эквивалент в долларах США ≈ %.2f$</string>

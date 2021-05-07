@@ -58,7 +58,7 @@
   <string name="filter_quality_high">高</string>
   <string name="filter_quality_medium">中 +</string>
   <string name="filter_quality_low">任何</string>
-  <string name="menu_current_balance">\"%.3f\" MYST</string>
+  <string name="menu_current_balance">"%.3f" MYST</string>
   <string name="menu_title">Mysterium Network</string>
   <string name="menu_item_home_title">主页</string>
   <string name="menu_item_profile_title">个人资料</string>
@@ -132,7 +132,7 @@
   <string name="top_up_amount_confirm">确认</string>
   <string name="top_up_crypto_description">选择要进行充值\n 的加密货币</string>
   <string name="top_up_payment_title">等待付款</string>
-  <string name="top_up_payment_description">扫描这个包含您的\n 充值地址的二维码</string>
+  <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
   <string name="top_up_payment_link">或使用付款链接</string>
   <string name="top_up_crypto_lighting">快如闪电的网络</string>
   <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>

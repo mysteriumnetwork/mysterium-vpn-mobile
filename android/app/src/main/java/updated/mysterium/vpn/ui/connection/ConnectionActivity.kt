@@ -15,7 +15,7 @@ import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
-import updated.mysterium.vpn.common.extensions.getTypeLabel
+import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
@@ -295,7 +295,7 @@ class ConnectionActivity : BaseActivity() {
 
     private fun inflateNodeInfo() {
         proposal?.let {
-            binding.nodeType.text = it.nodeType.getTypeLabel()
+            binding.nodeType.text = getString(it.nodeType.getTypeLabelResource())
             binding.nodeProvider.text = it.providerID
             // convert seconds to hours
             binding.pricePerHour.text = getString(

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
-    android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
+    android:layout_marginHorizontal="@dimen/margin_padding_size_xxsmall"
+    android:layout_marginBottom="@dimen/margin_padding_size_small"
     android:background="@drawable/shape_wallet_item_gradient"
     android:orientation="vertical">
 
