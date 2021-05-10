@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import java.util.Locale
@@ -84,6 +85,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun secondWarningBalanceShown() {
         balanceUseCase.minBalancePopUpShown()
     }
+
+    fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
+        countryCode = LanguagesUtil.convertUserLanguage(countryCode)
+    )
 
     private fun balanceListener() {
         viewModelScope.launch {

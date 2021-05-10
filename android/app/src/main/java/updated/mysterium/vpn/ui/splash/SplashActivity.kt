@@ -17,7 +17,6 @@ import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
-import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
@@ -25,7 +24,6 @@ import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
-import java.util.*
 
 class SplashActivity : BaseActivity() {
 
@@ -155,16 +153,6 @@ class SplashActivity : BaseActivity() {
                     viewModel.initRepository()
                 }
             }
-            checkUserLocale()
         }
-    }
-
-    private fun checkUserLocale() {
-        val languageForApply = viewModel.initUserLocaleLanguage(
-            countryCode = LanguagesUtil.getUserDefaultLanguage()
-        )
-        Locale.setDefault(Locale(languageForApply))
-        resources.configuration.setLocale(Locale(languageForApply))
-        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
     }
 }
