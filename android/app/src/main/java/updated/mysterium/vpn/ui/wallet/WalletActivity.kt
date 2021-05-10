@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.wallet
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,7 +24,6 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-
 
 class WalletActivity : BaseActivity() {
 
@@ -69,11 +67,6 @@ class WalletActivity : BaseActivity() {
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        calculateTabEquivalent()
     }
 
     private fun configure() {
@@ -198,22 +191,6 @@ class WalletActivity : BaseActivity() {
         TabLayoutMediator(binding.chooseListTabLayout, viewPager) { tab, _ ->
             viewPager.setCurrentItem(tab.position, true)
         }.attach()
-    }
-
-    private fun calculateTabEquivalent() {
-        var maxTabWidth = 0
-        Log.i(TAG, firstTabBinding?.root?.width.toString())
-        Log.i(TAG, secondTabBinding?.root?.width.toString())
-//        for (index in 0 until binding.chooseListTabLayout.tabCount) {
-//            binding.chooseListTabLayout.getTabAt(index)?.let { tab ->
-//                Log.i(TAG, tab.view.width.toString())
-//                if (tab.view.width > maxTabWidth) {
-//                    maxTabWidth = tab.view.width
-//                } else {
-//                    //tab.view.width = maxTabWidth
-//                }
-//            }
-//        }
     }
 
     private fun getUsdEquivalent(balance: Double) {
