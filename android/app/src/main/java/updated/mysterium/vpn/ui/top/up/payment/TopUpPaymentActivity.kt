@@ -203,10 +203,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
             dialog.hide()
-            val intent = Intent(this, WalletActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            navigateToHome()
         }
         dialog.show()
     }
@@ -215,7 +212,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
-            navigateToWallet()
+            navigateToHome()
         }
         dialog.show()
     }
@@ -228,13 +225,13 @@ class TopUpPaymentActivity : BaseActivity() {
             getExtra()
         }
         bindingPopUp.topUpLaterButton.setOnClickListener {
-            navigateToWallet()
+            navigateToHome()
         }
         dialog.show()
     }
 
-    private fun navigateToWallet() {
-        val intent = Intent(this, WalletActivity::class.java).apply {
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         startActivity(intent)
