@@ -56,6 +56,7 @@ class HomeSelectionActivity : BaseActivity() {
                     binding.manualConnectToolbar.onLeftButtonClicked {
                         navigateToConnection()
                     }
+                    binding.titleTextView.text = getString(R.string.manual_connect_connected)
                 } else {
                     binding.manualConnectToolbar.setLeftIcon(
                         ContextCompat.getDrawable(this, R.drawable.icon_menu)
@@ -63,6 +64,7 @@ class HomeSelectionActivity : BaseActivity() {
                     binding.manualConnectToolbar.onRightButtonClicked {
                         startActivity(Intent(this, FavouritesActivity::class.java))
                     }
+                    binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
                 }
             }
             result.onFailure { throwable ->

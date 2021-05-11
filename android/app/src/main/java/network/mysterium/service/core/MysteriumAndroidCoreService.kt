@@ -192,8 +192,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         GlobalScope.launch(handler) {
+            val status = connectionUseCase.status()
             connectionUseCase.registerStatisticsChangeCallback {
-                if (currentState == ConnectionState.CONNECTED) {
+                val connectionModel = ConnectionState.valueOf(status.state.toUpperCase(Locale.ROOT))
+                if (connectionModel == ConnectionState.CONNECTED) {
                     updateStatistic(it)
                 } else {
                     appNotificationManager.hideStatisticsNotification()
@@ -252,6 +254,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
         override fun manualDisconnect() {
             isDisconnectManual = true
+            appNotificationManager.hideStatisticsNotification()
         }
 
         override fun setActiveProposal(proposal: ProposalViewItem?) {

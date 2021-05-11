@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.custom.view
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -43,9 +44,7 @@ class ConnectionToolbar @JvmOverloads constructor(
                 context, R.drawable.shape_toolbar_fill
             )
             binding.connectionCurrentStatus.text = context.getString(R.string.manual_connect_protected)
-            binding.connectionCurrentStatus.setTextColor(ContextCompat.getColor(
-                context, R.color.onboarding_current_screen_white
-            ))
+            binding.connectionCurrentStatus.setTextColor(Color.WHITE)
         } else {
             binding.connectionCardView.background = ContextCompat.getDrawable(
                 context, R.drawable.shape_toolbar_blur
