@@ -35,7 +35,7 @@
 
     <color name="menu_drop_down">#686882</color>
 
-    <color name="settings_dns_background">#10FFFFFF</color>
+    <color name="settings_dns_background">#686882</color>
 
     <color name="pop_up_title">#FFFFFF</color>
     <color name="pop_up_password_text">#50FFFFFF</color>
