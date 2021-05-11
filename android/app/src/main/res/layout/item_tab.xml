@@ -2,18 +2,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:minWidth="72dp"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="72dp">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/allNodesImageButton"
         style="@style/Widget.TextButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_all_nodes_unselected"
         android:clickable="false"
+        android:ellipsize="end"
         android:focusable="false"
+        android:maxLines="1"
         android:text="@string/manual_connect_all_nodes"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toStartOf="@+id/centralVerticalGuideline"

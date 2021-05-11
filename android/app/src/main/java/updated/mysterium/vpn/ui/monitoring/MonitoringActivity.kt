@@ -60,6 +60,7 @@ class MonitoringActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
         initSessionsRecycler()
+        setUpLineChart()
         getLastSessions()
     }
 
@@ -80,7 +81,24 @@ class MonitoringActivity : BaseActivity() {
         }
     }
 
-    private fun setUpLineChart(sessions: List<Session>) {
+    private fun setUpLineChart() {
+        binding.sessionChart.apply {
+            legend.isEnabled = false
+            setNoDataText(getString(R.string.monitoring_empty_line_chart))
+            setNoDataTextColor(getColor(R.color.manual_connect_subtitle_white))
+            setDrawGridBackground(false)
+            setDrawBorders(false)
+            description = Description().apply {
+                text = ""
+            }
+            marker = MarkerImage(context, R.drawable.marker)
+            setTouchEnabled(false)
+            isClickable = false
+            invalidate()
+        }
+    }
+
+    private fun inflateLineChart(sessions: List<Session>) {
         val entries = mutableListOf<Entry>()
         sessions.forEachIndexed { index, session ->
             entries.add(
@@ -93,22 +111,7 @@ class MonitoringActivity : BaseActivity() {
         inflateXAxis(binding.sessionChart.xAxis, sessions)
         inflateAxisLeft(binding.sessionChart.axisLeft)
         inflateAxisRight(binding.sessionChart.axisRight)
-        binding.sessionChart.apply {
-            data = LineData(getDataSet(entries))
-            legend.isEnabled = false
-            setNoDataText(getString(R.string.monitoring_empty_line_chart))
-            setNoDataTextColor(getColor(R.color.manual_connect_value_white))
-            setDrawGridBackground(false)
-            setDrawBorders(false)
-            description = Description().apply {
-                text = ""
-            }
-            marker = MarkerImage(context, R.drawable.marker)
-            setTouchEnabled(false)
-            isClickable = false
-            invalidate()
-        }
-
+        binding.sessionChart.data = LineData(getDataSet(entries))
     }
 
     private fun initSessionsRecycler() {
@@ -199,7 +202,7 @@ class MonitoringActivity : BaseActivity() {
             }
         }
         setBiggestDataType(groupedSessionsList)
-        setUpLineChart(groupedSessionsList.sortedBy { it.createdAt })
+        inflateLineChart(groupedSessionsList.sortedBy { it.createdAt })
     }
 
     private fun setBiggestDataType(sessions: List<Session>) {

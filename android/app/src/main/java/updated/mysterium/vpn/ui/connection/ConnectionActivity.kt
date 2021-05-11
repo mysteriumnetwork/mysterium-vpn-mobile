@@ -15,7 +15,7 @@ import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
-import updated.mysterium.vpn.common.extensions.getTypeLabel
+import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
@@ -217,7 +217,14 @@ class ConnectionActivity : BaseActivity() {
     private fun bindsAction() {
         binding.cancelConnectionButton.setOnClickListener {
             manualDisconnecting()
-            viewModel.stopConnecting()
+            viewModel.stopConnecting().observe(this, { result ->
+                result.onSuccess {
+                    navigateToSelectNode(clearTasks = true)
+                }
+                result.onFailure {
+                    Log.e(TAG, it.localizedMessage ?: it.toString())
+                }
+            })
         }
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
@@ -295,7 +302,7 @@ class ConnectionActivity : BaseActivity() {
 
     private fun inflateNodeInfo() {
         proposal?.let {
-            binding.nodeType.text = it.nodeType.getTypeLabel()
+            binding.nodeType.text = getString(it.nodeType.getTypeLabelResource())
             binding.nodeProvider.text = it.providerID
             // convert seconds to hours
             binding.pricePerHour.text = getString(
@@ -392,8 +399,14 @@ class ConnectionActivity : BaseActivity() {
         lostConnectionPopUpDialog?.show()
     }
 
-    private fun navigateToSelectNode() {
-        startActivity(Intent(this, HomeSelectionActivity::class.java))
+    private fun navigateToSelectNode(clearTasks: Boolean = false) {
+        val intent = Intent(this, HomeSelectionActivity::class.java)
+        if (clearTasks) {
+            intent.apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        }
+        startActivity(intent)
     }
 
     private fun navigateToMenu() {

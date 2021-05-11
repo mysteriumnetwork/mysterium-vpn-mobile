@@ -1,279 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardConnectedLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1.5"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/durationCardView"
+        style="@style/Widget.SmallRoundedCardView"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5">
+        android:layout_marginVertical="@dimen/margin_padding_size_medium"
+        app:layout_constraintBottom_toTopOf="@+id/disconnectButtonFrame"
+        app:layout_constraintEnd_toStartOf="@+id/dataCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/durationCardView"
-            style="@style/Widget.SmallRoundedCardView"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dataCardView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/margin_padding_size_small_medium">
 
-            <LinearLayout
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:src="@drawable/icon_clock"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/durationHintTextView"
+                style="@style/TextAppearance.Info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/manual_connect_duration"
+                android:textAlignment="center"
+                android:textColor="@color/manual_connect_info_text_grey_blue" />
+
+            <TextView
+                android:id="@+id/durationValueTextView"
+                style="@style/TextAppearance.BoldCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
+                android:textColor="@color/manual_connect_country_name_dark_blue"
+                tools:text="25:12:00" />
+
+            <TextView
+                style="@style/TextAppearance.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
+                android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
+                android:text="@string/manual_connect_time_format"
+                android:textColor="@color/manual_connect_time_format_grey_blue" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dataCardView"
+        style="@style/Widget.SmallRoundedCardView"
+        android:layout_width="90dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/durationCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/durationCardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/margin_padding_size_small_medium">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/margin_padding_size_small_medium">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_small"
-                    android:src="@drawable/icon_clock"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+                    android:src="@drawable/icon_circle_down"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:id="@+id/durationHintTextView"
-                    style="@style/TextAppearance.Info"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xsmall"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/manual_connect_duration"
-                    android:textAlignment="center"
-                    android:textColor="@color/manual_connect_info_text_grey_blue" />
+                    android:layout_marginEnd="@dimen/margin_padding_size_medium_large"
+                    android:src="@drawable/icon_circle_up"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/dataHintTextView"
+                style="@style/TextAppearance.Info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/manual_connect_data_received_hint"
+                android:textAlignment="center"
+                android:textColor="@color/manual_connect_info_text_grey_blue" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xxsmall">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/dataVerticalGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
-                    android:id="@+id/durationValueTextView"
+                    android:id="@+id/dataReceiveValueTextView"
                     style="@style/TextAppearance.BoldCaption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
                     android:textColor="@color/manual_connect_country_name_dark_blue"
-                    tools:text="25:12:00" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/dataVerticalGuideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="25.63/" />
 
                 <TextView
-                    style="@style/TextAppearance.Caption"
+                    android:id="@+id/dataSendValueTextView"
+                    style="@style/TextAppearance.BoldCaption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
-                    android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
-                    android:text="@string/manual_connect_time_format"
-                    android:textColor="@color/manual_connect_time_format_grey_blue" />
+                    android:textColor="@color/manual_connect_divider_grey_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/dataVerticalGuideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="18.23" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/dataTypeTextView"
+                style="@style/TextAppearance.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
+                android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
+                android:text="@string/manual_connect_data_type"
+                android:textColor="@color/manual_connect_time_format_grey_blue" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/dataCardView"
-            style="@style/Widget.SmallRoundedCardView"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/durationCardView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/durationCardView">
+        </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/margin_padding_size_small_medium">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_padding_size_small">
+    </androidx.cardview.widget.CardView>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_padding_size_medium_large"
-                        android:src="@drawable/icon_circle_down"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/paidCardView"
+        style="@style/Widget.SmallRoundedCardView"
+        android:layout_width="90dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/durationCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dataCardView"
+        app:layout_constraintTop_toTopOf="@+id/durationCardView">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_padding_size_medium_large"
-                        android:src="@drawable/icon_circle_up"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/margin_padding_size_small_medium">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:src="@drawable/icon_paid"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/paidHintTextView"
+                style="@style/TextAppearance.Info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/manual_connect_paid_hint"
+                android:textAlignment="center"
+                android:textColor="@color/manual_connect_info_text_grey_blue" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xxsmall">
 
                 <TextView
-                    android:id="@+id/dataHintTextView"
-                    style="@style/TextAppearance.Info"
+                    android:id="@+id/paidMystValueTextView"
+                    style="@style/TextAppearance.BoldCaption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xsmall"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/manual_connect_data_received_hint"
-                    android:textAlignment="center"
-                    android:textColor="@color/manual_connect_info_text_grey_blue" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xxsmall">
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/dataVerticalGuideline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.5" />
-
-                    <TextView
-                        android:id="@+id/dataReceiveValueTextView"
-                        style="@style/TextAppearance.BoldCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/manual_connect_country_name_dark_blue"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/dataVerticalGuideline"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="25.63/" />
-
-                    <TextView
-                        android:id="@+id/dataSendValueTextView"
-                        style="@style/TextAppearance.BoldCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/manual_connect_divider_grey_blue"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/dataVerticalGuideline"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="18.23" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginEnd="@dimen/margin_padding_size_xxsmall"
+                    android:textColor="@color/manual_connect_country_name_dark_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/paidEurValueTextView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0.0452" />
 
                 <TextView
-                    android:id="@+id/dataTypeTextView"
-                    style="@style/TextAppearance.Caption"
+                    android:id="@+id/paidEurValueTextView"
+                    style="@style/TextAppearance.BoldInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
-                    android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
-                    android:text="@string/manual_connect_data_type"
-                    android:textColor="@color/manual_connect_time_format_grey_blue" />
+                    android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
+                    android:textColor="@color/manual_connect_divider_grey_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                style="@style/TextAppearance.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
+                android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
+                android:text="@string/manual_connect_paid_types"
+                android:textColor="@color/manual_connect_time_format_grey_blue" />
 
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/paidCardView"
-            style="@style/Widget.SmallRoundedCardView"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/durationCardView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dataCardView"
-            app:layout_constraintTop_toTopOf="@+id/durationCardView">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/margin_padding_size_small_medium">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_small"
-                    android:src="@drawable/icon_paid"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/paidHintTextView"
-                    style="@style/TextAppearance.Info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xsmall"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/manual_connect_paid_hint"
-                    android:textAlignment="center"
-                    android:textColor="@color/manual_connect_info_text_grey_blue" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xxsmall">
-
-                    <TextView
-                        android:id="@+id/paidMystValueTextView"
-                        style="@style/TextAppearance.BoldCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_padding_size_xxsmall"
-                        android:textColor="@color/manual_connect_country_name_dark_blue"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/paidEurValueTextView"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="0.0452" />
-
-                    <TextView
-                        android:id="@+id/paidEurValueTextView"
-                        style="@style/TextAppearance.BoldInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
-                        android:textColor="@color/manual_connect_divider_grey_blue"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    style="@style/TextAppearance.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_xxsmall"
-                    android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
-                    android:text="@string/manual_connect_paid_types"
-                    android:textColor="@color/manual_connect_time_format_grey_blue" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <FrameLayout
+        android:id="@+id/disconnectButtonFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        android:layout_weight="1">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/disconnectButton"
@@ -286,4 +280,5 @@
 
     </FrameLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

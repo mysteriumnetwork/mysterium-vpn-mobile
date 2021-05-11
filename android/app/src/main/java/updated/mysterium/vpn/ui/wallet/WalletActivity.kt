@@ -25,7 +25,6 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
-
 class WalletActivity : BaseActivity() {
 
     private companion object {
@@ -52,6 +51,8 @@ class WalletActivity : BaseActivity() {
     private lateinit var viewPager: ViewPager2
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: WalletViewModel by inject()
+    private var firstTabBinding: ItemTabBinding? = null
+    private var secondTabBinding: ItemTabBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +121,7 @@ class WalletActivity : BaseActivity() {
                         (TAB_ITEMS_CONTENT[index].selectedBackgroundResId)
                     )
                 }
+                firstTabBinding = tabBinding
             } else {
                 if (isRTL) {
                     tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
@@ -132,6 +134,7 @@ class WalletActivity : BaseActivity() {
                         (TAB_ITEMS_CONTENT[index].unselectedBackgroundResId)
                     )
                 }
+                secondTabBinding = tabBinding
             }
             binding.chooseListTabLayout.getTabAt(index)?.customView = tab
         }
@@ -228,6 +231,6 @@ class WalletActivity : BaseActivity() {
     private fun inflateDownloadEstimate(estimates: Estimates) {
         val data = WalletEstimatesUtil.convertDownloadData(estimates)
         val type = WalletEstimatesUtil.convertDownloadType(estimates)
-        binding.download.setData(data + type)
+        binding.download.setData("$data$type")
     }
 }

@@ -143,12 +143,14 @@ class SettingsActivity : BaseActivity() {
 
     private fun checkPreviousResidentCountry() {
         viewModel.getResidentCountry().observe(this, { result ->
+            val countriesList = CountriesUtil().getAllCountries()
             result.onSuccess { residentDigitCode ->
-                val countriesList = CountriesUtil().getAllCountries()
                 val residentCountry = countriesList.find { it.digitCode == residentDigitCode }
                 binding.selectedCountry.text = residentCountry?.fullName
+                    ?: countriesList.first().fullName
             }
             result.onFailure {
+                binding.selectedCountry.text = countriesList.first().fullName
                 Log.e(TAG, it.localizedMessage ?: it.toString())
             }
         })

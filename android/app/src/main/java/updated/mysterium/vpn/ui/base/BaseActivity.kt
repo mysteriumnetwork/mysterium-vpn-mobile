@@ -13,9 +13,11 @@ import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -35,6 +37,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        checkUserLocale()
         baseViewModel.checkCurrentConnection()
     }
 
@@ -163,5 +166,14 @@ abstract class BaseActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun checkUserLocale() {
+        val languageForApply = baseViewModel.initUserLocaleLanguage(
+            countryCode = LanguagesUtil.getUserDefaultLanguage()
+        )
+        Locale.setDefault(Locale(languageForApply))
+        resources.configuration.setLocale(Locale(languageForApply))
+        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
     }
 }

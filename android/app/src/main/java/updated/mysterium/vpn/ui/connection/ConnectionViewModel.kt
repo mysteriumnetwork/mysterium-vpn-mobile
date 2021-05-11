@@ -118,11 +118,9 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun stopConnecting() {
+    fun stopConnecting() = liveDataResult {
         isConnectionStopped = true
-        viewModelScope.launch {
-            disconnectNode()
-        }
+        disconnectNode()
     }
 
     fun updateCurrentConnectionStatus() = liveDataResult {
