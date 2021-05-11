@@ -75,9 +75,5 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
-        countryCode = LanguagesUtil.convertUserLanguage(countryCode)
-    )
-
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 }

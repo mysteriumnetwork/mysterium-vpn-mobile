@@ -217,7 +217,14 @@ class ConnectionActivity : BaseActivity() {
     private fun bindsAction() {
         binding.cancelConnectionButton.setOnClickListener {
             manualDisconnecting()
-            viewModel.stopConnecting()
+            viewModel.stopConnecting().observe(this, { result ->
+                result.onSuccess {
+                    navigateToSelectNode(clearTasks = true)
+                }
+                result.onFailure {
+                    Log.e(TAG, it.localizedMessage ?: it.toString())
+                }
+            })
         }
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
@@ -392,8 +399,14 @@ class ConnectionActivity : BaseActivity() {
         lostConnectionPopUpDialog?.show()
     }
 
-    private fun navigateToSelectNode() {
-        startActivity(Intent(this, HomeSelectionActivity::class.java))
+    private fun navigateToSelectNode(clearTasks: Boolean = false) {
+        val intent = Intent(this, HomeSelectionActivity::class.java)
+        if (clearTasks) {
+            intent.apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        }
+        startActivity(intent)
     }
 
     private fun navigateToMenu() {

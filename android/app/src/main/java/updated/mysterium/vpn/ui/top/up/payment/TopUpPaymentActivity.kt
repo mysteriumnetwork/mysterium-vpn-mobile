@@ -15,6 +15,7 @@ import network.mysterium.payment.Order
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -22,6 +23,7 @@ import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 import java.math.BigDecimal
+import kotlin.math.abs
 
 class TopUpPaymentActivity : BaseActivity() {
 
@@ -32,7 +34,6 @@ class TopUpPaymentActivity : BaseActivity() {
         const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
         private const val TAG = "TopUpPaymentActivity"
         private const val COPY_LABEL = "User identity address"
-        private const val QR_CODE_SIZE = 500
         private const val ANIMATION_MARGIN = 80
     }
 
@@ -148,13 +149,21 @@ class TopUpPaymentActivity : BaseActivity() {
 
     private fun showQrCode(link: String) {
         val barcodeEncoder = BarcodeEncoder()
+        val qrSize = calculateQrSize()
         val bitmap = barcodeEncoder.encodeBitmap(
             link,
             BarcodeFormat.QR_CODE,
-            QR_CODE_SIZE,
-            QR_CODE_SIZE
+            qrSize,
+            qrSize
         )
         binding.qrCode.setImageBitmap(bitmap)
+    }
+
+    private fun calculateQrSize(): Int {
+        val topCoordinate = binding.currencyEquivalentFrame.calculateRectOnScreen().bottom
+        val bottomCoordinate = binding.topUpDescription.calculateRectOnScreen().top
+        val fullSize = topCoordinate - bottomCoordinate
+        return abs(fullSize * 0.8).toInt() // size with spaces
     }
 
     private fun showEquivalent(currency: String, order: Order) {
@@ -194,10 +203,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
             dialog.hide()
-            val intent = Intent(this, WalletActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            navigateToHome()
         }
         dialog.show()
     }
@@ -206,7 +212,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
-            navigateToWallet()
+            navigateToHome()
         }
         dialog.show()
     }
@@ -219,13 +225,13 @@ class TopUpPaymentActivity : BaseActivity() {
             getExtra()
         }
         bindingPopUp.topUpLaterButton.setOnClickListener {
-            navigateToWallet()
+            navigateToHome()
         }
         dialog.show()
     }
 
-    private fun navigateToWallet() {
-        val intent = Intent(this, WalletActivity::class.java).apply {
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         startActivity(intent)
