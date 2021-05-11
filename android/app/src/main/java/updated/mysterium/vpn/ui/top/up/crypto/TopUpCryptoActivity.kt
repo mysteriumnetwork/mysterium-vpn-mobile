@@ -116,6 +116,7 @@ class TopUpCryptoActivity : BaseActivity() {
         CryptoCardItem(CryptoAnimationView.ETH, R.raw.eth_animation),
         CryptoCardItem(CryptoAnimationView.LTC, R.raw.ltc_animation),
         CryptoCardItem(CryptoAnimationView.DAI, R.raw.dai_animation),
-        CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation)
+        CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation),
+        CryptoCardItem(CryptoAnimationView.DOGE, R.raw.doge_animation)
     )
 }
