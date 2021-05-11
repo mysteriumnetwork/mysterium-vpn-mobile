@@ -2,6 +2,7 @@
 <resources>
     <color name="primary">#D61F85</color>
     <color name="primary_item_selected">#D61F85</color>
+    <color name="primary_icon">#20D61F85</color>
     <color name="primary_dark">#501d4f</color>
     <color name="primary_card_view">#FFFFFF</color>
     <color name="gradient_card_view_top">#50F4F4FC</color>

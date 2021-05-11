@@ -13,11 +13,11 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.search.SearchActivity
-import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.search.SearchActivity
 import java.util.*
 
 class FilterActivity : BaseActivity() {

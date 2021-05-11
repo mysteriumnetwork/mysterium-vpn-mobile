@@ -16,10 +16,10 @@
         android:id="@+id/connectionHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:layout_marginTop="@dimen/margin_padding_size_micro"
         android:background="@drawable/shape_connected_hint"
         android:elevation="1dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
