@@ -152,6 +152,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         balanceUseCase.getBalance(balanceRequest)
     }
 
+    fun isMinBalancePushShown() = balanceUseCase.isMinBalancePushShown()
+
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {
             coreService?.let {
