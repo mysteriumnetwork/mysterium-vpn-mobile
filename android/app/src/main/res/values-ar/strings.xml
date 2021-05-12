@@ -166,7 +166,7 @@
   <string name="pop_up_payment_canceled_title">تم إلغاء\n الدفع</string>
   <string name="pop_up_payment_canceled_description">لقد ألغيت\n عملية الدفع</string>
   <string name="pop_up_insufficient_funds_title">أموال\n غير كافية</string>
-  <string name="pop_up_insufficient_funds_description">يُرجى تعبئة\n حسابك</string>
+  <string name="pop_up_insufficient_funds_description">يُرجى تعبئة حسابك</string>
   <string name="pop_up_payment_successfully_title">نجح\n الدفع</string>
   <string name="pop_up_payment_successfully_done">أحسنت</string>
   <string name="pop_up_payment_successfully_close">إغلاق</string>

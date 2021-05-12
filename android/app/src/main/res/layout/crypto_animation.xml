@@ -52,4 +52,12 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/t_animation" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/dogeAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/doge_animation" />
+
 </FrameLayout>

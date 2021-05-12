@@ -169,7 +169,7 @@
     <string name="pop_up_payment_canceled_title">Платеж\n отменен</string>
     <string name="pop_up_payment_canceled_description">Вы отменили\n процесс оплаты</string>
     <string name="pop_up_insufficient_funds_title">Недостаточно\n средств</string>
-    <string name="pop_up_insufficient_funds_description">Пожалуйста, пополните\n свой аккаунт</string>
+    <string name="pop_up_insufficient_funds_description">Пожалуйста, пополните свой аккаунт</string>
     <string name="pop_up_payment_successfully_title">Оплата\n успешно произведена</string>
     <string name="pop_up_payment_successfully_done">Отличная работа</string>
     <string name="pop_up_payment_successfully_close">Закрыть</string>

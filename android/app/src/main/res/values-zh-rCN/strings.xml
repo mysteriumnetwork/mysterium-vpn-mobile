@@ -166,7 +166,7 @@
   <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
   <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>
   <string name="pop_up_insufficient_funds_title">资金\n 不足</string>
-  <string name="pop_up_insufficient_funds_description">请为您的账户\n 充值</string>
+  <string name="pop_up_insufficient_funds_description">请为您的账户 充值</string>
   <string name="pop_up_payment_successfully_title">付款\n 成功</string>
   <string name="pop_up_payment_successfully_done">做得好</string>
   <string name="pop_up_payment_successfully_close">关闭</string>
