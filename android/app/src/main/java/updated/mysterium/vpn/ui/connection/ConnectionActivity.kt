@@ -32,6 +32,7 @@ class ConnectionActivity : BaseActivity() {
         private const val CURRENCY = "MYSTT"
         private const val SECONDS_PER_HOUR = 3600.0
         private const val BYTES_PER_GIGABYTE = 1024.0 * 1024.0 * 1024.0
+        private const val MIN_BALANCE = 0.0001
     }
 
     private lateinit var binding: ActivityHomeBinding
@@ -54,6 +55,7 @@ class ConnectionActivity : BaseActivity() {
         super.onResume()
         subscribeConnectionListener()
         checkCurrentStatus()
+        checkAbilityToConnect()
         allNodesViewModel.initProposals()
     }
 
@@ -155,6 +157,20 @@ class ConnectionActivity : BaseActivity() {
         }
     }
 
+    private fun checkAbilityToConnect() {
+        viewModel.getBalance().observe(this, {
+            it.onSuccess { balance ->
+                if (balance == 0.0) {
+                    insufficientFundsPopUp {
+                        manualDisconnecting()
+                        viewModel.disconnect()
+                        navigateToSelectNode(true)
+                    }
+                }
+            }
+        })
+    }
+
     private fun checkCurrentStatus() {
         viewModel.updateCurrentConnectionStatus().observe(this, { result ->
             result.onSuccess {
@@ -231,10 +247,7 @@ class ConnectionActivity : BaseActivity() {
             disconnect = {
                 manualDisconnecting()
                 viewModel.disconnect()
-                val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-                startActivity(intent)
+                navigateToSelectNode(true)
             }
         )
     }
@@ -366,8 +379,12 @@ class ConnectionActivity : BaseActivity() {
     private fun failedToConnect() {
         viewModel.getBalance().observe(this, {
             it.onSuccess { balance ->
-                if (viewModel.isMinBalancePushShown() && balance == 0.0) {
-                    insufficientFundsPopUp()
+                if (balance < MIN_BALANCE) {
+                    insufficientFundsPopUp {
+                        manualDisconnecting()
+                        viewModel.disconnect()
+                        navigateToSelectNode(true)
+                    }
                 } else {
                     showFailedToConnectPopUp()
                 }
