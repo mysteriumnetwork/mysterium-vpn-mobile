@@ -40,7 +40,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionException: LiveData<Exception>
         get() = _connectionException
 
-    val pushDisconnect: LiveData<Boolean>
+    val pushDisconnect: LiveData<Unit>
         get() = _pushDisconnect
 
     val manualDisconnect: LiveData<Unit>
@@ -51,7 +51,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var coreService: MysteriumCoreService? = null
     private val _connectionException = SingleLiveEvent<Exception>()
     private val _manualDisconnect = MutableLiveData<Unit>()
-    private val _pushDisconnect = MutableLiveData<Boolean>()
+    private val _pushDisconnect = SingleLiveEvent<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
@@ -110,9 +110,12 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun disconnect() {
+    fun disconnect(isDisconnectedFromNotification: Boolean = false) {
         viewModelScope.launch {
             disconnectIfConnectedNode()
+            if (isDisconnectedFromNotification) {
+                _pushDisconnect.call()
+            }
         }
     }
 
@@ -140,12 +143,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun manualDisconnect() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.i(TAG, exception.localizedMessage ?: exception.toString())
-        }
-        viewModelScope.launch(handler) {
-            disconnectNode()
-        }
+        coreService?.manualDisconnect()
     }
 
     fun getBalance() = liveDataResult {

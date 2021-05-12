@@ -80,7 +80,12 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setOnlyAlertOnce(true)
             .addAction(R.drawable.ic_close_black_24dp, "Disconnect", disconnectPendingIntent)
             .build()
-        notificationManager.notify(statisticsNotification, notification)
+        val statisticNotification = notificationManager.activeNotifications.find {
+            it.id == statisticsNotification
+        }
+        if (statisticNotification != null) {
+            notificationManager.notify(statisticsNotification, notification)
+        }
     }
 
     fun hideStatisticsNotification() {
