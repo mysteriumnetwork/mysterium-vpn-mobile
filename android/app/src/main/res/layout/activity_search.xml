@@ -106,7 +106,7 @@
         android:layout_marginTop="@dimen/margin_padding_size_xlarge"
         android:paddingHorizontal="@dimen/margin_padding_size_xlarge"
         android:textAlignment="center"
-        android:textColor="@color/onboarding_faded_screen_white"
+        android:textColor="@color/search_text"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

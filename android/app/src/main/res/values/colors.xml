@@ -55,6 +55,8 @@
 
     <color name="home_country_amount">#9090BB</color>
 
+    <color name="search_text">#50FFFFFF</color>
+
     <color name="menu_subtitle_light_pink">#ED5BAC</color>
     <color name="menu_drop_down">#A469A9</color>
 
