@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
@@ -89,6 +92,10 @@ class PrepareTopUpActivity : BaseActivity() {
                         dialog.dismiss()
                     }
                 }
+                it.onFailure {
+                    showPopUpErrorState(bindingPopUp.registrationTokenEditText)
+                    bindingPopUp.errorText.visibility = View.VISIBLE
+                }
             })
         }
         bindingPopUp.closeButton.setOnClickListener {
@@ -111,7 +118,26 @@ class PrepareTopUpActivity : BaseActivity() {
                 })
             }
         }
+        bindingPopUp.registrationTokenEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                bindingPopUp.registrationTokenEditText.background = ContextCompat.getDrawable(
+                    this, R.drawable.shape_password_field
+                )
+                bindingPopUp.registrationTokenEditText.text?.clear()
+                bindingPopUp.registrationTokenEditText.hint = getString(R.string.pop_up_referral_hint)
+                bindingPopUp.errorText.visibility = View.INVISIBLE
+            }
+        }
         dialog.show()
+    }
+
+    private fun showPopUpErrorState(editText: EditText) {
+        editText.background = ContextCompat.getDrawable(
+            this, R.drawable.shape_wrong_password
+        )
+        editText.text?.clear()
+        editText.clearFocus()
+        editText.hint = ""
     }
 
     private fun applyToken(token: String, onSuccess: () -> Unit) {

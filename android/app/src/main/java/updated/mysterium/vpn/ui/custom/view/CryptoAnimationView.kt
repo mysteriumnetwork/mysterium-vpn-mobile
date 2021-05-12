@@ -22,6 +22,7 @@ class CryptoAnimationView @JvmOverloads constructor(
         const val LTC = "LTC"
         const val DAI = "DAI"
         const val T = "T"
+        const val DOGE = "DOGE"
     }
 
     private lateinit var binding: CryptoAnimationBinding
@@ -43,6 +44,7 @@ class CryptoAnimationView @JvmOverloads constructor(
             LTC -> playAnimation(binding.ltcAnimation)
             DAI -> playAnimation(binding.daiAnimation)
             T -> playAnimation(binding.tAnimation)
+            DOGE -> playAnimation(binding.dogeAnimation)
         }
     }
 
@@ -68,6 +70,10 @@ class CryptoAnimationView @JvmOverloads constructor(
             cancelAnimation()
         }
         binding.tAnimation.apply {
+            visibility = View.INVISIBLE
+            cancelAnimation()
+        }
+        binding.dogeAnimation.apply {
             visibility = View.INVISIBLE
             cancelAnimation()
         }

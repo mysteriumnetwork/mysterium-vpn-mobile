@@ -39,7 +39,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionException: LiveData<Exception>
         get() = _connectionException
 
-    val pushDisconnect: LiveData<Unit>
+    val pushDisconnect: LiveData<Boolean>
         get() = _pushDisconnect
 
     val manualDisconnect: LiveData<Unit>
@@ -50,7 +50,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var coreService: MysteriumCoreService? = null
     private val _connectionException = MutableLiveData<Exception>()
     private val _manualDisconnect = MutableLiveData<Unit>()
-    private val _pushDisconnect = MutableLiveData<Unit>()
+    private val _pushDisconnect = MutableLiveData<Boolean>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
@@ -109,12 +109,9 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun disconnect(isPushDisconnect: Boolean = false) {
+    fun disconnect() {
         viewModelScope.launch {
             disconnectIfConnectedNode()
-            if (isPushDisconnect) {
-                _pushDisconnect.postValue(Unit)
-            }
         }
     }
 
@@ -151,6 +148,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         balanceUseCase.getBalance(balanceRequest)
     }
+
+    fun isMinBalancePushShown() = balanceUseCase.isMinBalancePushShown()
 
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {

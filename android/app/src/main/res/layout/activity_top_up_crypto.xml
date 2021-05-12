@@ -35,6 +35,7 @@
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:background="@drawable/shape_lighting"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title">

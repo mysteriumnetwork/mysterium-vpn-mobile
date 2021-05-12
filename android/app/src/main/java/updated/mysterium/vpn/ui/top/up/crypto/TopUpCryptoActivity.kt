@@ -10,8 +10,8 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
@@ -43,6 +43,11 @@ class TopUpCryptoActivity : BaseActivity() {
         topUpAdapter.replaceAll(getCryptoList())
         topUpAdapter.onItemSelected = {
             binding.cryptoAnimation.changeAnimation(it.value)
+            if (it.value == CryptoAnimationView.MYST) {
+                binding.switchFrame.visibility = View.INVISIBLE
+            } else {
+                binding.switchFrame.visibility = View.VISIBLE
+            }
         }
         binding.cryptoAnimation.changeAnimation(getCryptoList().first().value)
         checkTrialState()
@@ -111,6 +116,7 @@ class TopUpCryptoActivity : BaseActivity() {
         CryptoCardItem(CryptoAnimationView.ETH, R.raw.eth_animation),
         CryptoCardItem(CryptoAnimationView.LTC, R.raw.ltc_animation),
         CryptoCardItem(CryptoAnimationView.DAI, R.raw.dai_animation),
-        CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation)
+        CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation),
+        CryptoCardItem(CryptoAnimationView.DOGE, R.raw.doge_animation)
     )
 }

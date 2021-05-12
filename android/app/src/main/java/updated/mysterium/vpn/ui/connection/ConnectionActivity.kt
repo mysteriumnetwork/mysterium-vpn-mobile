@@ -371,10 +371,10 @@ class ConnectionActivity : BaseActivity() {
     private fun failedToConnect() {
         viewModel.getBalance().observe(this, {
             it.onSuccess { balance ->
-                if (balance > 0.0) {
-                    showFailedToConnectPopUp()
-                } else {
+                if (viewModel.isMinBalancePushShown() && balance == 0.0) {
                     insufficientFundsPopUp()
+                } else {
+                    showFailedToConnectPopUp()
                 }
             }
         })

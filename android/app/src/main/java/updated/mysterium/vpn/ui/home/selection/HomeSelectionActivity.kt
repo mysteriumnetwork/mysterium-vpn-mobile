@@ -49,21 +49,7 @@ class HomeSelectionActivity : BaseActivity() {
     private fun checkCurrentState() {
         viewModel.getCurrentState().observe(this, { result ->
             result.onSuccess {
-                if (it == ConnectionState.CONNECTED || it == ConnectionState.CONNECTING) {
-                    binding.manualConnectToolbar.setLeftIcon(
-                        ContextCompat.getDrawable(this, R.drawable.icon_back)
-                    )
-                    binding.manualConnectToolbar.onLeftButtonClicked {
-                        navigateToConnection()
-                    }
-                } else {
-                    binding.manualConnectToolbar.setLeftIcon(
-                        ContextCompat.getDrawable(this, R.drawable.icon_menu)
-                    )
-                    binding.manualConnectToolbar.onRightButtonClicked {
-                        startActivity(Intent(this, FavouritesActivity::class.java))
-                    }
-                }
+                handleConnectionState(it)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
@@ -77,6 +63,7 @@ class HomeSelectionActivity : BaseActivity() {
         getCurrentIpAddress()
         initFiltersList()
         initCountriesList()
+        viewModel.initConnectionListener()
     }
 
     private fun subscribeViewModel() {
@@ -85,6 +72,9 @@ class HomeSelectionActivity : BaseActivity() {
             binding.filterCardView.visibility = View.VISIBLE
             binding.countriesCardView.visibility = View.VISIBLE
             allNodesAdapter.replaceAll(it)
+        })
+        viewModel.connectionState.observe(this, {
+            handleConnectionState(it)
         })
     }
 
@@ -110,6 +100,26 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnection()
+        }
+    }
+
+    private fun handleConnectionState(connection: ConnectionState) {
+        if (connection == ConnectionState.CONNECTED || connection == ConnectionState.CONNECTING) {
+            binding.manualConnectToolbar.setLeftIcon(
+                ContextCompat.getDrawable(this, R.drawable.icon_back)
+            )
+            binding.manualConnectToolbar.onLeftButtonClicked {
+                navigateToConnection()
+            }
+            binding.titleTextView.text = getString(R.string.manual_connect_connected)
+        } else {
+            binding.manualConnectToolbar.setLeftIcon(
+                ContextCompat.getDrawable(this, R.drawable.icon_menu)
+            )
+            binding.manualConnectToolbar.onLeftButtonClicked {
+                navigateToMenu()
+            }
+            binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
         }
     }
 
@@ -150,5 +160,9 @@ class HomeSelectionActivity : BaseActivity() {
             }
             startActivity(intent)
         }
+    }
+
+    private fun navigateToMenu() {
+        startActivity(Intent(this, MenuActivity::class.java))
     }
 }

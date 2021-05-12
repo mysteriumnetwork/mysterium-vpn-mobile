@@ -77,6 +77,7 @@ android {
         versionName getVersionName()
         multiDexEnabled true
 
+        buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
         buildConfigField "String", "INTERCOM_API_KEY", "\"android_sdk-e480f3fce4f2572742b13c282c453171c1715516\""
         buildConfigField "String", "INTERCOM_APP_ID", "\"h7hlm9on\""
         buildConfigField "String", "NODE_VERSION", "\"0.46.2-rc1\""
@@ -202,6 +203,9 @@ dependencies {
 
     //Pushy
     implementation "me.pushy:sdk:1.0.68"
+
+    //Bugfender
+    implementation "com.bugfender.sdk:android:3.0.8"
 
     //Mysterium
     implementation "network.mysterium:terms:0.0.32"

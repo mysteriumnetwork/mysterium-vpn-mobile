@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
+import com.bugfender.sdk.Bugfender
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.service.core.MysteriumAndroidCoreService
@@ -35,6 +36,7 @@ class App : Application() {
             androidContext(this@App)
             modules(Modules.main)
         }
+        setUpBugfender()
         bindMysteriumService()
     }
 
@@ -44,6 +46,11 @@ class App : Application() {
             BuildConfig.INTERCOM_API_KEY,
             BuildConfig.INTERCOM_APP_ID
         )
+    }
+
+    private fun setUpBugfender() {
+        Bugfender.init(this, BuildConfig.BUGFENDER_KEY, BuildConfig.DEBUG)
+        Bugfender.enableCrashReporting()
     }
 
     private fun bindMysteriumService() {
