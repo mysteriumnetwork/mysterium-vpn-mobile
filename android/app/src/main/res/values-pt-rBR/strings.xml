@@ -166,7 +166,7 @@
   <string name="pop_up_payment_canceled_title">Pagamento\n Cancelado</string>
   <string name="pop_up_payment_canceled_description">Você cancelou o\n processo de pagamento</string>
   <string name="pop_up_insufficient_funds_title">Saldo\n Insuficiente</string>
-  <string name="pop_up_insufficient_funds_description">Recarregue a sua\n conta</string>
+  <string name="pop_up_insufficient_funds_description">Recarregue a sua conta</string>
   <string name="pop_up_payment_successfully_title">Pagamento\n Feito com Sucesso</string>
   <string name="pop_up_payment_successfully_done">Muito bem</string>
   <string name="pop_up_payment_successfully_close">Fechar</string>
