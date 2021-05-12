@@ -100,11 +100,11 @@
 
                 <TextView
                     android:id="@+id/rewardAmount"
-                    android:textColor="@color/primary"
                     style="@style/TextAppearance.HeadNumbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:textColor="@color/primary" />
 
                 <TextView
                     style="@style/TextAppearance.BodyMedium"
@@ -128,7 +128,7 @@
                 android:background="@drawable/shape_password_field"
                 android:hint="@string/pop_up_referral_hint"
                 android:importantForAutofill="no"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:paddingHorizontal="@dimen/margin_padding_size_small"
                 android:textAlignment="center"
                 android:textColor="@color/pop_up_password_text"
@@ -143,13 +143,13 @@
                 style="@style/TextAppearance.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pop_up_private_key_error"
+                android:text="@string/pop_up_referral_error"
                 android:textColor="@color/menu_subtitle_light_pink"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/passwordEditText"
-                app:layout_constraintEnd_toEndOf="@+id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@+id/passwordEditText"
-                app:layout_constraintTop_toTopOf="@+id/passwordEditText" />
+                app:layout_constraintBottom_toBottomOf="@+id/registrationTokenEditText"
+                app:layout_constraintEnd_toEndOf="@+id/registrationTokenEditText"
+                app:layout_constraintStart_toStartOf="@+id/registrationTokenEditText"
+                app:layout_constraintTop_toTopOf="@+id/registrationTokenEditText" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/applyButton"
