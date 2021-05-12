@@ -17,6 +17,7 @@ import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
@@ -48,7 +49,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private lateinit var proposal: Proposal
     private lateinit var appNotificationManager: AppNotificationManager
     private var coreService: MysteriumCoreService? = null
-    private val _connectionException = MutableLiveData<Exception>()
+    private val _connectionException = SingleLiveEvent<Exception>()
     private val _manualDisconnect = MutableLiveData<Unit>()
     private val _pushDisconnect = MutableLiveData<Boolean>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
@@ -139,7 +140,12 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun manualDisconnect() {
-        coreService?.manualDisconnect()
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
+            disconnectNode()
+        }
     }
 
     fun getBalance() = liveDataResult {

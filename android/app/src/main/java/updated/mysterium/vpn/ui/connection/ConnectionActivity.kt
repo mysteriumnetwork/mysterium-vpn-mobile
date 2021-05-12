@@ -93,9 +93,11 @@ class ConnectionActivity : BaseActivity() {
             handleConnectionChange(it)
         })
         viewModel.connectionException.observe(this, {
-            Log.e(TAG, it.localizedMessage ?: it.toString())
-            disconnect()
-            failedToConnect()
+            if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+                Log.e(TAG, it.localizedMessage ?: it.toString())
+                disconnect()
+                failedToConnect()
+            }
         })
         viewModel.manualDisconnect.observe(this, {
             manualDisconnecting()
@@ -218,12 +220,10 @@ class ConnectionActivity : BaseActivity() {
         binding.cancelConnectionButton.setOnClickListener {
             manualDisconnecting()
             viewModel.stopConnecting().observe(this, { result ->
-                result.onSuccess {
-                    navigateToSelectNode(clearTasks = true)
-                }
                 result.onFailure {
                     Log.e(TAG, it.localizedMessage ?: it.toString())
                 }
+                navigateToSelectNode(clearTasks = true)
             })
         }
         binding.selectAnotherNodeButton.setOnClickListener {
