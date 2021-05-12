@@ -4,6 +4,7 @@
     <color name="primary_icon">#D61F85</color>
     <color name="primary_dark">#2B2745</color>
     <color name="primary_card_view">#64637D</color>
+    <color name="primary_light_terms">#D61F85</color>
 
     <color name="onboarding_description_grey_blue">#70FFFFFF</color>
     <color name="onboarding_current_screen_white">#64637D</color>

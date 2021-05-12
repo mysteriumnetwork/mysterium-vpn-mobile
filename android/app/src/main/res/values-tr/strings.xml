@@ -169,7 +169,7 @@
   <string name="pop_up_payment_canceled_title">Ödeme\n İptal Edildi</string>
   <string name="pop_up_payment_canceled_description">Ödeme işlemini\n iptal ettiniz</string>
   <string name="pop_up_insufficient_funds_title">Para\n Yetersiz</string>
-  <string name="pop_up_insufficient_funds_description">Lütfen hesabınıza\n para ekleyin</string>
+  <string name="pop_up_insufficient_funds_description">Lütfen hesabınıza para ekleyin</string>
   <string name="pop_up_payment_successfully_title">Ödeme\n Başarılı</string>
   <string name="pop_up_payment_successfully_done">Tebrikler</string>
   <string name="pop_up_payment_successfully_close">Kapat</string>
