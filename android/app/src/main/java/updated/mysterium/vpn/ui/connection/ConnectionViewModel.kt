@@ -46,7 +46,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val manualDisconnect: LiveData<Unit>
         get() = _manualDisconnect
 
-    private lateinit var proposal: Proposal
+    var proposal: Proposal? = null
+        private set
     private lateinit var appNotificationManager: AppNotificationManager
     private var coreService: MysteriumCoreService? = null
     private val _connectionException = SingleLiveEvent<Exception>()
@@ -208,8 +209,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun connect() {
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
-            providerID = proposal.providerID
-            serviceType = proposal.serviceType.type
+            providerID = proposal?.providerID
+            serviceType = proposal?.serviceType?.type
             dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
         }
         connectionUseCase.connect(req)
@@ -222,8 +223,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private fun updateService() {
         coreService?.apply {
+            proposal?.let {
+                setActiveProposal(ProposalViewItem.parse(it))
+            }
             setDeferredNode(deferredNode)
-            setActiveProposal(ProposalViewItem.parse(proposal))
             startForegroundWithNotification(
                 appNotificationManager.statisticsNotification,
                 appNotificationManager.createConnectedToVPNNotification()
@@ -238,6 +241,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
+        proposal = null
         coreService?.manualDisconnect()
         _manualDisconnect.postValue(Unit)
         connectionUseCase.disconnect()

@@ -52,6 +52,7 @@ class ConnectionActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        subscribeConnectionListener()
         checkCurrentStatus()
         allNodesViewModel.initProposals()
     }
@@ -86,11 +87,9 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
+        subscribeConnectionListener()
         viewModel.statisticsUpdate.observe(this, {
             binding.connectionState.updateConnectedStatistics(it, CURRENCY)
-        })
-        viewModel.connectionState.observe(this, {
-            handleConnectionChange(it)
         })
         viewModel.connectionException.observe(this, {
             if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
@@ -103,7 +102,13 @@ class ConnectionActivity : BaseActivity() {
             manualDisconnecting()
         })
         viewModel.pushDisconnect.observe(this, {
-            navigateToSelectNode()
+            navigateToSelectNode(true)
+        })
+    }
+
+    private fun subscribeConnectionListener() {
+        viewModel.connectionState.observe(this, {
+            handleConnectionChange(it)
         })
     }
 
@@ -153,11 +158,12 @@ class ConnectionActivity : BaseActivity() {
     private fun checkCurrentStatus() {
         viewModel.updateCurrentConnectionStatus().observe(this, { result ->
             result.onSuccess {
-                if (it == ConnectionState.CONNECTED) {
+                if (it == ConnectionState.CONNECTED || it == ConnectionState.CONNECTING) {
                     getProposal()
                 }
             }
             result.onFailure { throwable ->
+                navigateToSelectNode(true)
                 Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
                 // TODO("Implement error handling")
             }
@@ -175,21 +181,10 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun getProposal() {
-        viewModel.getProposalModel(
-            App.getInstance(this).deferredMysteriumCoreService
-        ).observe(this, { result ->
-            result.onSuccess { proposal ->
-                proposal?.let {
-                    this.proposal = Proposal(proposal)
-                    inflateNodeInfo()
-                }
-            }
-
-            result.onFailure { throwable ->
-                Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
-                // TODO("Implement error handling")
-            }
-        })
+        viewModel.proposal?.let {
+            this.proposal = it
+            inflateNodeInfo()
+        }
     }
 
     private fun checkProposalArgument() {

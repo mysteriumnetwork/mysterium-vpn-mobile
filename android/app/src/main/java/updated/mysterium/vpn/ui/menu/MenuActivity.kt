@@ -195,7 +195,10 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun navigateToHome() {
-        val intent = if (connectionState == ConnectionState.CONNECTED) {
+        val intent = if (
+            connectionState == ConnectionState.CONNECTED ||
+            connectionState == ConnectionState.CONNECTING
+        ) {
             Intent(this, ConnectionActivity::class.java)
         } else {
             Intent(this, HomeSelectionActivity::class.java)
