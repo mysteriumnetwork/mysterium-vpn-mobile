@@ -20,7 +20,6 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 
@@ -272,15 +271,6 @@ class ConnectionActivity : BaseActivity() {
         isFavourite()
     }
 
-    private fun toolbarWalletIcon() {
-        binding.manualConnectToolbar.onRightButtonClicked {
-            startActivity(Intent(this, FavouritesActivity::class.java))
-        }
-        binding.manualConnectToolbar.setRightIcon(
-            ContextCompat.getDrawable(this, R.drawable.icon_favourites)
-        )
-    }
-
     private fun deleteFromFavourite(proposal: Proposal) {
         viewModel.deleteFromFavourite(proposal)
         binding.manualConnectToolbar.setRightIcon(
@@ -304,7 +294,6 @@ class ConnectionActivity : BaseActivity() {
 
     private fun disconnect() {
         loadIpAddress()
-        toolbarWalletIcon()
         isDisconnectedByUser = false
     }
 

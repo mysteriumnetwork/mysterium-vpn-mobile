@@ -96,7 +96,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun insufficientFundsPopUp(onContinueAction: (() -> Unit)? = null) {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
+        val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))
         }
