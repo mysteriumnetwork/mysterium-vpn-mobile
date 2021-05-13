@@ -23,6 +23,7 @@ import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class WalletActivity : BaseActivity() {
@@ -85,7 +86,10 @@ class WalletActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            finish()
+            val intent = Intent(this, MenuActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
         binding.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))
