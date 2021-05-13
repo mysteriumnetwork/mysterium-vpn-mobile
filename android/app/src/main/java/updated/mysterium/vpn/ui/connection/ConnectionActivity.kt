@@ -62,12 +62,32 @@ class ConnectionActivity : BaseActivity() {
         super.onNewIntent(intent)
         if (isInternetAvailable) {
             setIntent(intent)
-            intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
-                proposal = it
-                manualDisconnecting()
-                inflateNodeInfo()
-                inflateConnectingCardView()
-                viewModel.connectNode(it)
+            intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposal ->
+                this.proposal = proposal
+                if (
+                    viewModel.connectionState.value == ConnectionState.CONNECTED ||
+                    viewModel.connectionState.value == ConnectionState.CONNECTING
+                ) {
+                    manualDisconnecting()
+                    viewModel.disconnect().observe(this, { result ->
+                        result.onSuccess {
+                            Log.i(TAG, "onSuccess")
+                            inflateNodeInfo()
+                            inflateConnectingCardView()
+                            viewModel.connectNode(proposal)
+                        }
+                        result.onFailure {
+                            Log.i(TAG, "onFailure ${it.localizedMessage}")
+                            inflateNodeInfo()
+                            inflateConnectingCardView()
+                            viewModel.connectNode(proposal)
+                        }
+                    })
+                } else {
+                    inflateNodeInfo()
+                    inflateConnectingCardView()
+                    viewModel.connectNode(proposal)
+                }
             }
         } else {
             wifiNetworkErrorPopUp()
@@ -157,17 +177,19 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun checkAbilityToConnect() {
-        viewModel.getBalance().observe(this, {
-            it.onSuccess { balance ->
-                if (balance == 0.0) {
-                    insufficientFundsPopUp {
-                        manualDisconnecting()
-                        viewModel.disconnect()
-                        navigateToSelectNode(true)
+        viewModel.identity?.let { identity ->
+            viewModel.getBalance(identity.address).observe(this, {
+                it.onSuccess { balance ->
+                    if (balance == 0.0) {
+                        insufficientFundsPopUp {
+                            manualDisconnecting()
+                            viewModel.disconnect()
+                            navigateToSelectNode(true)
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun checkCurrentStatus() {
@@ -245,8 +267,9 @@ class ConnectionActivity : BaseActivity() {
         binding.connectionState.initListeners(
             disconnect = {
                 manualDisconnecting()
-                viewModel.disconnect()
-                navigateToSelectNode(true)
+                viewModel.disconnect().observe(this, {
+                    navigateToSelectNode(true)
+                })
             }
         )
     }

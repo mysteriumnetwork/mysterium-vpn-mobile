@@ -71,6 +71,7 @@
                 android:layout_marginTop="@dimen/margin_padding_size_xlarge"
                 android:paddingHorizontal="@dimen/margin_padding_size_large"
                 android:text="@string/pop_up_top_up_description"
+                android:textAlignment="center"
                 android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
