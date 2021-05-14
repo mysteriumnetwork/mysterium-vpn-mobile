@@ -15,7 +15,6 @@ class FilterUseCase(private val nodeRepository: NodeRepository) {
 
     private companion object {
         const val ALL_NODES_FILTER_ID = 0
-        const val ALL_COUNTRY_CODE = "all_country"
         const val SERVICE_TYPE = "wireguard"
         val selectedResources = listOf(
             R.drawable.all_filters_selected,
@@ -53,18 +52,12 @@ class FilterUseCase(private val nodeRepository: NodeRepository) {
         return filters
     }
 
-    suspend fun getProposalsByFilterId(filterId: Int): List<NodeEntity> {
-        return if (filterId == ALL_NODES_FILTER_ID) {
-            val proposalsRequest = GetProposalsRequest().apply {
-                this.refresh = true
-                includeFailed = true
-                serviceType = SERVICE_TYPE
-            }
-            nodeRepository.proposals(proposalsRequest)
-                .map { NodeEntity(it) }
-        } else {
+    suspend fun getProposalsByFilterId(filterId: Int): List<NodeEntity>? {
+        return if (filterId != ALL_NODES_FILTER_ID) {
             nodeRepository.getProposalsByFilterId(filterId.toLong())
                 .map { NodeEntity(it) }
+        } else {
+            null
         }
     }
 }

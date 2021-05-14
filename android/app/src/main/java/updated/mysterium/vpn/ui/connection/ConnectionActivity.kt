@@ -20,7 +20,6 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 
@@ -32,6 +31,7 @@ class ConnectionActivity : BaseActivity() {
         private const val CURRENCY = "MYSTT"
         private const val SECONDS_PER_HOUR = 3600.0
         private const val BYTES_PER_GIGABYTE = 1024.0 * 1024.0 * 1024.0
+        private const val MIN_BALANCE = 0.0001
     }
 
     private lateinit var binding: ActivityHomeBinding
@@ -52,7 +52,9 @@ class ConnectionActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        subscribeConnectionListener()
         checkCurrentStatus()
+        checkAbilityToConnect()
         allNodesViewModel.initProposals()
     }
 
@@ -60,12 +62,32 @@ class ConnectionActivity : BaseActivity() {
         super.onNewIntent(intent)
         if (isInternetAvailable) {
             setIntent(intent)
-            intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
-                proposal = it
-                manualDisconnecting()
-                inflateNodeInfo()
-                inflateConnectingCardView()
-                viewModel.connectNode(it)
+            intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposal ->
+                this.proposal = proposal
+                if (
+                    viewModel.connectionState.value == ConnectionState.CONNECTED ||
+                    viewModel.connectionState.value == ConnectionState.CONNECTING
+                ) {
+                    manualDisconnecting()
+                    viewModel.disconnect().observe(this, { result ->
+                        result.onSuccess {
+                            Log.i(TAG, "onSuccess")
+                            inflateNodeInfo()
+                            inflateConnectingCardView()
+                            viewModel.connectNode(proposal)
+                        }
+                        result.onFailure {
+                            Log.i(TAG, "onFailure ${it.localizedMessage}")
+                            inflateNodeInfo()
+                            inflateConnectingCardView()
+                            viewModel.connectNode(proposal)
+                        }
+                    })
+                } else {
+                    inflateNodeInfo()
+                    inflateConnectingCardView()
+                    viewModel.connectNode(proposal)
+                }
             }
         } else {
             wifiNetworkErrorPopUp()
@@ -86,22 +108,28 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
+        subscribeConnectionListener()
         viewModel.statisticsUpdate.observe(this, {
             binding.connectionState.updateConnectedStatistics(it, CURRENCY)
         })
-        viewModel.connectionState.observe(this, {
-            handleConnectionChange(it)
-        })
         viewModel.connectionException.observe(this, {
-            Log.e(TAG, it.localizedMessage ?: it.toString())
-            disconnect()
-            failedToConnect()
+            if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+                Log.e(TAG, it.localizedMessage ?: it.toString())
+                disconnect()
+                failedToConnect()
+            }
         })
         viewModel.manualDisconnect.observe(this, {
             manualDisconnecting()
         })
         viewModel.pushDisconnect.observe(this, {
-            navigateToSelectNode()
+            navigateToSelectNode(true)
+        })
+    }
+
+    private fun subscribeConnectionListener() {
+        viewModel.connectionState.observe(this, {
+            handleConnectionChange(it)
         })
     }
 
@@ -148,14 +176,31 @@ class ConnectionActivity : BaseActivity() {
         }
     }
 
+    private fun checkAbilityToConnect() {
+        viewModel.identity?.let { identity ->
+            viewModel.getBalance(identity.address).observe(this, {
+                it.onSuccess { balance ->
+                    if (balance == 0.0) {
+                        insufficientFundsPopUp {
+                            manualDisconnecting()
+                            viewModel.disconnect()
+                            navigateToSelectNode(true)
+                        }
+                    }
+                }
+            })
+        }
+    }
+
     private fun checkCurrentStatus() {
         viewModel.updateCurrentConnectionStatus().observe(this, { result ->
             result.onSuccess {
-                if (it == ConnectionState.CONNECTED) {
+                if (it == ConnectionState.CONNECTED || it == ConnectionState.CONNECTING) {
                     getProposal()
                 }
             }
             result.onFailure { throwable ->
+                navigateToSelectNode(true)
                 Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
                 // TODO("Implement error handling")
             }
@@ -173,21 +218,10 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun getProposal() {
-        viewModel.getProposalModel(
-            App.getInstance(this).deferredMysteriumCoreService
-        ).observe(this, { result ->
-            result.onSuccess { proposal ->
-                proposal?.let {
-                    this.proposal = Proposal(proposal)
-                    inflateNodeInfo()
-                }
-            }
-
-            result.onFailure { throwable ->
-                Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
-                // TODO("Implement error handling")
-            }
-        })
+        viewModel.proposal?.let {
+            this.proposal = it
+            inflateNodeInfo()
+        }
     }
 
     private fun checkProposalArgument() {
@@ -218,12 +252,10 @@ class ConnectionActivity : BaseActivity() {
         binding.cancelConnectionButton.setOnClickListener {
             manualDisconnecting()
             viewModel.stopConnecting().observe(this, { result ->
-                result.onSuccess {
-                    navigateToSelectNode(clearTasks = true)
-                }
                 result.onFailure {
                     Log.e(TAG, it.localizedMessage ?: it.toString())
                 }
+                navigateToSelectNode(clearTasks = true)
             })
         }
         binding.selectAnotherNodeButton.setOnClickListener {
@@ -235,11 +267,9 @@ class ConnectionActivity : BaseActivity() {
         binding.connectionState.initListeners(
             disconnect = {
                 manualDisconnecting()
-                viewModel.disconnect()
-                val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-                startActivity(intent)
+                viewModel.disconnect().observe(this, {
+                    navigateToSelectNode(true)
+                })
             }
         )
     }
@@ -262,15 +292,6 @@ class ConnectionActivity : BaseActivity() {
             }
         }
         isFavourite()
-    }
-
-    private fun toolbarWalletIcon() {
-        binding.manualConnectToolbar.onRightButtonClicked {
-            startActivity(Intent(this, FavouritesActivity::class.java))
-        }
-        binding.manualConnectToolbar.setRightIcon(
-            ContextCompat.getDrawable(this, R.drawable.icon_favourites)
-        )
     }
 
     private fun deleteFromFavourite(proposal: Proposal) {
@@ -296,7 +317,6 @@ class ConnectionActivity : BaseActivity() {
 
     private fun disconnect() {
         loadIpAddress()
-        toolbarWalletIcon()
         isDisconnectedByUser = false
     }
 
@@ -371,8 +391,12 @@ class ConnectionActivity : BaseActivity() {
     private fun failedToConnect() {
         viewModel.getBalance().observe(this, {
             it.onSuccess { balance ->
-                if (viewModel.isMinBalancePushShown() && balance == 0.0) {
-                    insufficientFundsPopUp()
+                if (balance < MIN_BALANCE) {
+                    insufficientFundsPopUp {
+                        manualDisconnecting()
+                        viewModel.disconnect()
+                        navigateToSelectNode(true)
+                    }
                 } else {
                     showFailedToConnectPopUp()
                 }

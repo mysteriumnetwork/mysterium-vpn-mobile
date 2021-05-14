@@ -15,6 +15,20 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.3" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerVerticalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightVerticalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
     <TextView
         android:id="@+id/providerIdTextView"
         style="@style/TextAppearance.Caption"
@@ -23,9 +37,10 @@
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/leftVerticalGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/leftVerticalGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="0x28358e2a89d04895739857349857342" />
@@ -36,7 +51,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/vertical_divider"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/leftVerticalGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/leftVerticalGuideline"
+        app:layout_constraintStart_toStartOf="@+id/leftVerticalGuideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -46,12 +62,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/divider2"
-        app:layout_constraintStart_toEndOf="@+id/divider1"
+        app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuideline"
+        app:layout_constraintStart_toEndOf="@+id/leftVerticalGuideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="United States of America" />
 
@@ -59,22 +76,25 @@
         android:id="@+id/divider2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_padding_size_medium"
         android:src="@drawable/vertical_divider"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/durationTextView"
+        app:layout_constraintEnd_toEndOf="@+id/centerVerticalGuideline"
+        app:layout_constraintStart_toStartOf="@+id/centerVerticalGuideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/durationTextView"
         style="@style/TextAppearance.Caption"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_padding_size_medium"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/divider3"
+        app:layout_constraintEnd_toStartOf="@+id/rightVerticalGuideline"
+        app:layout_constraintStart_toEndOf="@+id/centerVerticalGuideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="25 min" />
 
@@ -82,22 +102,26 @@
         android:id="@+id/divider3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_padding_size_medium"
         android:src="@drawable/vertical_divider"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dataReceivedTextView"
+        app:layout_constraintEnd_toEndOf="@+id/rightVerticalGuideline"
+        app:layout_constraintStart_toStartOf="@+id/rightVerticalGuideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/dataReceivedTextView"
         style="@style/TextAppearance.Caption"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_padding_size_large"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rightVerticalGuideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="46.8 MiB" />
 

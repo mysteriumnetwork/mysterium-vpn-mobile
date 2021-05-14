@@ -26,6 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var isInternetAvailable = false
     protected var connectionState = ConnectionState.NOTCONNECTED
     private val dialogs = emptyList<Dialog>().toMutableList()
+    private var insufficientFoundsDialog: AlertDialog? = null
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,14 +94,15 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun insufficientFundsPopUp() {
+    fun insufficientFundsPopUp(onContinueAction: (() -> Unit)? = null) {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
+        val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
+            onContinueAction?.invoke()
         }
         dialog.show()
     }
@@ -152,20 +154,25 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun balanceRunningOutPopUp(isFirstWarning: Boolean) {
-        val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
-        bindingPopUp.topUpButton.setOnClickListener {
-            startActivity(Intent(this, TopUpAmountActivity::class.java))
-        }
-        bindingPopUp.continueButton.setOnClickListener {
-            if (isFirstWarning) {
-                baseViewModel.firstWarningBalanceShown()
-            } else {
-                baseViewModel.secondWarningBalanceShown()
+        if (insufficientFoundsDialog == null) {
+            val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
+            insufficientFoundsDialog = createPopUp(bindingPopUp.root, true)
+            bindingPopUp.topUpButton.setOnClickListener {
+                insufficientFoundsDialog?.dismiss()
+                insufficientFoundsDialog = null
+                startActivity(Intent(this, TopUpAmountActivity::class.java))
             }
-            dialog.dismiss()
+            bindingPopUp.continueButton.setOnClickListener {
+                if (isFirstWarning) {
+                    baseViewModel.firstWarningBalanceShown()
+                } else {
+                    baseViewModel.secondWarningBalanceShown()
+                }
+                insufficientFoundsDialog?.dismiss()
+                insufficientFoundsDialog = null
+            }
+            insufficientFoundsDialog?.show()
         }
-        dialog.show()
     }
 
     private fun checkUserLocale() {

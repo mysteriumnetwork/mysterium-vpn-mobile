@@ -17,6 +17,7 @@ import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
@@ -39,18 +40,21 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionException: LiveData<Exception>
         get() = _connectionException
 
-    val pushDisconnect: LiveData<Boolean>
+    val pushDisconnect: LiveData<Unit>
         get() = _pushDisconnect
 
     val manualDisconnect: LiveData<Unit>
         get() = _manualDisconnect
 
-    private lateinit var proposal: Proposal
+    var proposal: Proposal? = null
+        private set
+    var identity: IdentityModel? = null
+        private set
     private lateinit var appNotificationManager: AppNotificationManager
     private var coreService: MysteriumCoreService? = null
-    private val _connectionException = MutableLiveData<Exception>()
+    private val _connectionException = SingleLiveEvent<Exception>()
     private val _manualDisconnect = MutableLiveData<Unit>()
-    private val _pushDisconnect = MutableLiveData<Boolean>()
+    private val _pushDisconnect = SingleLiveEvent<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val nodesUseCase = useCaseProvider.nodes()
@@ -59,7 +63,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val settingsUseCase = useCaseProvider.settings()
     private val deferredNode = DeferredNode()
-    private var identity: IdentityModel? = null
     private var exchangeRate: Double? = null
     private var isConnectionStopped = false
 
@@ -109,9 +112,17 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun disconnect() {
-        viewModelScope.launch {
+    fun disconnect() = liveDataResult {
+        disconnectIfConnectedNode()
+    }
+
+    fun disconnectFromNotification() {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
             disconnectIfConnectedNode()
+            _pushDisconnect.call()
         }
     }
 
@@ -127,13 +138,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         connectionModel
     }
 
-    fun getProposalModel(
-        deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
-    ) = liveDataResult {
-        coreService = deferredMysteriumCoreService.await()
-        deferredMysteriumCoreService.await().getActiveProposal()
-    }
-
     fun isFavourite(nodeId: String) = liveDataResult {
         nodesUseCase.isFavourite(nodeId)
     }
@@ -142,14 +146,12 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         coreService?.manualDisconnect()
     }
 
-    fun getBalance() = liveDataResult {
+    fun getBalance(identityAddress: String? = null) = liveDataResult {
         val balanceRequest = GetBalanceRequest().apply {
-            identityAddress = identity?.address
+            this.identityAddress = identity?.address ?: identityAddress
         }
         balanceUseCase.getBalance(balanceRequest)
     }
-
-    fun isMinBalancePushShown() = balanceUseCase.isMinBalancePushShown()
 
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {
@@ -204,8 +206,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun connect() {
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
-            providerID = proposal.providerID
-            serviceType = proposal.serviceType.type
+            providerID = proposal?.providerID
+            serviceType = proposal?.serviceType?.type
             dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
         }
         connectionUseCase.connect(req)
@@ -218,8 +220,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private fun updateService() {
         coreService?.apply {
+            proposal?.let {
+                setActiveProposal(ProposalViewItem.parse(it))
+            }
             setDeferredNode(deferredNode)
-            setActiveProposal(ProposalViewItem.parse(proposal))
             startForegroundWithNotification(
                 appNotificationManager.statisticsNotification,
                 appNotificationManager.createConnectedToVPNNotification()
@@ -234,6 +238,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
+        proposal = null
         coreService?.manualDisconnect()
         _manualDisconnect.postValue(Unit)
         connectionUseCase.disconnect()
