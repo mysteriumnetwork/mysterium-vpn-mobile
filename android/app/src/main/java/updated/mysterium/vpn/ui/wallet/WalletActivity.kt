@@ -71,6 +71,9 @@ class WalletActivity : BaseActivity() {
     }
 
     private fun configure() {
+        balanceViewModel.balanceLiveData.value?.let {
+            handleBalance(it)
+        }
         initToolbar(binding.manualConnectToolbar)
         initViewPager()
         initTabLayout(resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL)
@@ -78,9 +81,7 @@ class WalletActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         balanceViewModel.balanceLiveData.observe(this, {
-            binding.balanceTextView.text = getString(R.string.wallet_current_balance, it)
-            getWalletEquivalent(it)
-            getUsdEquivalent(it)
+            handleBalance(it)
         })
     }
 
@@ -105,6 +106,12 @@ class WalletActivity : BaseActivity() {
             }
             startActivity(intent)
         }
+    }
+
+    private fun handleBalance(balance: Double) {
+        binding.balanceTextView.text = getString(R.string.wallet_current_balance, balance)
+        getWalletEquivalent(balance)
+        getUsdEquivalent(balance)
     }
 
     @SuppressLint("InflateParams")
