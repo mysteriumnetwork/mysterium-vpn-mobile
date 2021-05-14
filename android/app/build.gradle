@@ -207,6 +207,9 @@ dependencies {
     //Bugfender
     implementation "com.bugfender.sdk:android:3.0.8"
 
+    //Matomo - user tracking
+    implementation "org.matomo.sdk:tracker:4.1.2"
+
     //Mysterium
     implementation "network.mysterium:terms:0.0.32"
     implementation "network.mysterium:mobile-node:0.47.0-rc0"

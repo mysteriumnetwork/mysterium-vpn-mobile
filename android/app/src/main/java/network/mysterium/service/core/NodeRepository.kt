@@ -131,7 +131,6 @@ class PriceSettings(config: ConsumerPaymentConfig) {
         perHourMax = perMinuteMax.multiply(60.toBigDecimal())
         defaultHour = defaultMinute.multiply(60.toBigDecimal())
     }
-
     companion object {
         const val DECIMAL_PART = 1_000_000_000_000_000_000
     }
