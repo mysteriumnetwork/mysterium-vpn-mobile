@@ -60,6 +60,8 @@
     <color name="menu_subtitle_light_pink">#ED5BAC</color>
     <color name="menu_drop_down">#A469A9</color>
 
+    <color name="wallet_description">#50FFFFFF</color>
+
     <color name="settings_dns_background">#883A7A</color>
 
     <color name="pop_up_transparent_dark_blue">#703C3857</color>

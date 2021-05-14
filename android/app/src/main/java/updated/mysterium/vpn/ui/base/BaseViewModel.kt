@@ -13,8 +13,8 @@ import java.util.Locale
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
-        const val BALANCE_LIMIT = 1.0
-        const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.1
+        const val BALANCE_LIMIT = 0.5
+        const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.2
         const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
     }
 

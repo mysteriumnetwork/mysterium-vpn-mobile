@@ -89,7 +89,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_padding_size_medium"
-                    android:text="@string/wallet_start_balance"
                     android:textColor="@android:color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/margin_padding_size_small"
                     android:text="@string/wallet_buys_for_you"
-                    android:textColor="@color/onboarding_faded_screen_white"
+                    android:textColor="@color/wallet_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView" />

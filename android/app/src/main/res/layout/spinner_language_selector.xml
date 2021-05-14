@@ -22,12 +22,11 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_padding_size_medium"
+        android:layout_marginStart="@dimen/margin_padding_size_small_medium"
         android:src="@drawable/icon_language"
         app:layout_constraintBottom_toBottomOf="@+id/spinner"
         app:layout_constraintStart_toEndOf="@+id/spinner"
         app:layout_constraintTop_toTopOf="@+id/spinner"
-        app:layout_goneMarginStart="@dimen/margin_padding_size_small"
         tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
