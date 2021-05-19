@@ -38,7 +38,7 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
             return listOf(
                     arrayOf(
                             ProposalPaymentMethod(
-                                    type = "BYTES_TRANSFERRED_WITH_TIME",
+                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
                                             perSeconds = 60.0,
                                             perBytes = 7_669_584.0
@@ -53,7 +53,7 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
                     ),
                     arrayOf(
                             ProposalPaymentMethod(
-                                    type = "BYTES_TRANSFERRED_WITH_TIME",
+                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
                                             perSeconds = 60.0,
                                             perBytes = 0.0
@@ -68,7 +68,7 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
                     ),
                     arrayOf(
                             ProposalPaymentMethod(
-                                    type = "BYTES_TRANSFERRED_WITH_TIME",
+                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
                                             perSeconds = 0.0,
                                             perBytes = 0.0
@@ -84,13 +84,6 @@ class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private
             )
         }
     }
-
-    @Test
-    fun testPricePerMinute() {
-        val price = PriceUtils.pricePerMinute(value)
-        assertEquals(expectedAmount, price.amount, 0.0)
-        assertEquals(expectedCurrency, price.currency)
-    }
 }
 
 @RunWith(Parameterized::class)
@@ -102,7 +95,7 @@ class PriceUtilsPricePerGiB(private val value: ProposalPaymentMethod, private va
             return listOf(
                     arrayOf(
                             ProposalPaymentMethod(
-                                    type = "BYTES_TRANSFERRED_WITH_TIME",
+                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
                                             perSeconds = 60_000_000_000.0,
                                             perBytes = 7_669_584.0
@@ -117,7 +110,7 @@ class PriceUtilsPricePerGiB(private val value: ProposalPaymentMethod, private va
                     ),
                     arrayOf(
                             ProposalPaymentMethod(
-                                    type = "BYTES_TRANSFERRED_WITH_TIME",
+                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
                                             perSeconds = 0.0,
                                             perBytes = 7_669_584.0
@@ -132,7 +125,7 @@ class PriceUtilsPricePerGiB(private val value: ProposalPaymentMethod, private va
                     ),
                     arrayOf(
                             ProposalPaymentMethod(
-                                    type = "BYTES_TRANSFERRED_WITH_TIME",
+                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
                                     rate = ProposalPaymentRate(
                                             perSeconds = 0.0,
                                             perBytes = 0.0
@@ -147,12 +140,5 @@ class PriceUtilsPricePerGiB(private val value: ProposalPaymentMethod, private va
                     )
             )
         }
-    }
-
-    @Test
-    fun testPricePerGiB() {
-        val res = PriceUtils.pricePerGiB(value)
-        assertEquals(expectedAmount, res.amount, 0.0)
-        assertEquals(expectedCurrency, res.currency)
     }
 }

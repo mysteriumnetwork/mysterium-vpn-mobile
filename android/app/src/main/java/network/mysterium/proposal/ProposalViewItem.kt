@@ -38,7 +38,6 @@ class ProposalViewItem constructor(
     val serviceType: ServiceType,
     val countryCode: String,
     val nodeType: NodeType,
-    val monitoringFailed: Boolean,
     val payment: ProposalPaymentMethod
 ) {
     var countryFlagImage: Bitmap? = null
@@ -69,7 +68,6 @@ class ProposalViewItem constructor(
                 serviceType = ServiceType.parse(proposal.serviceType),
                 countryCode = proposal.countryCode.toLowerCase(Locale.ROOT),
                 nodeType = NodeType.parse(proposal.nodeType),
-                monitoringFailed = proposal.monitoringFailed,
                 payment = proposal.payment
             )
 
@@ -98,7 +96,6 @@ class ProposalViewItem constructor(
                 serviceType = proposal.serviceType,
                 countryCode = proposal.countryCode.toLowerCase(Locale.ROOT),
                 nodeType = proposal.nodeType,
-                monitoringFailed = proposal.monitoringFailed,
                 payment = proposal.payment
             )
 

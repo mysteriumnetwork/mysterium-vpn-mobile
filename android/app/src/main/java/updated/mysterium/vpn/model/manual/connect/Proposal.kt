@@ -8,8 +8,6 @@ import network.mysterium.proposal.ProposalViewItem
 import network.mysterium.proposal.QualityLevel
 import network.mysterium.proposal.ServiceType
 import network.mysterium.service.core.ProposalPaymentMethod
-import network.mysterium.service.core.ProposalPaymentMoney
-import network.mysterium.service.core.ProposalPaymentRate
 import network.mysterium.ui.Countries
 import updated.mysterium.vpn.database.entity.NodeEntity
 import java.util.*
@@ -21,7 +19,6 @@ data class Proposal(
     val serviceType: ServiceType,
     val countryCode: String,
     val nodeType: NodeType,
-    val monitoringFailed: Boolean,
     val payment: ProposalPaymentMethod,
     val countryFlagImage: Bitmap?,
     val qualityLevel: QualityLevel,
@@ -34,11 +31,10 @@ data class Proposal(
         serviceType = ServiceType.parse(nodeEntity.serviceType),
         countryCode = nodeEntity.countryCode.toLowerCase(Locale.ROOT),
         nodeType = NodeType.parse(nodeEntity.nodeType),
-        monitoringFailed = nodeEntity.monitoringFailed,
         payment = ProposalPaymentMethod(
-            type = nodeEntity.paymentType,
-            price = ProposalPaymentMoney(nodeEntity.paymentAmount, nodeEntity.currency),
-            rate = ProposalPaymentRate(nodeEntity.pricePerSecond, nodeEntity.pricePerByte)
+            currency = nodeEntity.currency,
+            perGib = nodeEntity.pricePerByte * 1024 * 1024 * 1024,
+            perHour = nodeEntity.pricePerSecond * 60 * 60
         ),
         countryFlagImage = Countries.bitmaps.getOrDefault(
             nodeEntity.countryCode.toLowerCase(Locale.ROOT),
@@ -56,7 +52,6 @@ data class Proposal(
         serviceType = proposalViewItem.serviceType,
         countryCode = proposalViewItem.countryCode.toLowerCase(Locale.ROOT),
         nodeType = proposalViewItem.nodeType,
-        monitoringFailed = proposalViewItem.monitoringFailed,
         payment = proposalViewItem.payment,
         countryFlagImage = proposalViewItem.countryFlagImage,
         qualityLevel = proposalViewItem.qualityLevel,
