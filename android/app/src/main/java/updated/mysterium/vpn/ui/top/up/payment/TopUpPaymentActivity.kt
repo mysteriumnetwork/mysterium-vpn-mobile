@@ -15,13 +15,14 @@ import network.mysterium.payment.Order
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.analitics.AnalyticEvent
+import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.wallet.WalletActivity
 import java.math.BigDecimal
 import kotlin.math.abs
 
@@ -40,6 +41,7 @@ class TopUpPaymentActivity : BaseActivity() {
     private lateinit var binding: ActivityTopUpPaymentBinding
     private val topUpViewModel: TopUpViewModel by inject()
     private val viewModel: TopUpPaymentViewModel by inject()
+    private val analyticWrapper: AnalyticWrapper by inject()
     private var link: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,11 @@ class TopUpPaymentActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this, {
+            val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
+            val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.toFloat()
+            if (currency != null && amount != null) {
+                analyticWrapper.track(AnalyticEvent.PAYMENT, currency, amount)
+            }
             viewModel.clearPopUpTopUpHistory()
             showTopUpSuccessfully()
         })

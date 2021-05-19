@@ -14,8 +14,11 @@ import network.mysterium.service.core.MysteriumAndroidCoreService
 import network.mysterium.service.core.MysteriumCoreService
 import network.mysterium.ui.Countries
 import network.mysterium.vpn.BuildConfig
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import updated.mysterium.vpn.analitics.AnalyticEvent
+import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.di.Modules
 
 class App : Application() {
@@ -27,6 +30,7 @@ class App : Application() {
     }
 
     val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
+    private val analyticWrapper: AnalyticWrapper by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +42,7 @@ class App : Application() {
         }
         setUpBugfender()
         bindMysteriumService()
+        analyticWrapper.track(AnalyticEvent.LOGIN)
     }
 
     private fun setupIntercom() {

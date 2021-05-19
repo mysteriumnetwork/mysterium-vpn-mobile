@@ -7,25 +7,26 @@ import network.mysterium.service.core.NodeRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.database.AppDatabase
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseViewModel
+import updated.mysterium.vpn.ui.connection.ConnectionViewModel
 import updated.mysterium.vpn.ui.create.account.CreateAccountViewModel
 import updated.mysterium.vpn.ui.favourites.FavouritesViewModel
-import updated.mysterium.vpn.ui.nodes.list.FilterViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
-import updated.mysterium.vpn.ui.connection.ConnectionViewModel
-import updated.mysterium.vpn.ui.search.SearchViewModel
-import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.menu.MenuViewModel
 import updated.mysterium.vpn.ui.monitoring.MonitoringViewModel
+import updated.mysterium.vpn.ui.nodes.list.FilterViewModel
 import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpViewModel
 import updated.mysterium.vpn.ui.private.key.PrivateKeyViewModel
 import updated.mysterium.vpn.ui.profile.ProfileViewModel
 import updated.mysterium.vpn.ui.report.issue.ReportIssueViewModel
+import updated.mysterium.vpn.ui.search.SearchViewModel
 import updated.mysterium.vpn.ui.settings.SettingsViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
@@ -62,6 +63,9 @@ object Modules {
         }
         single {
             ConnectionViewModel(get())
+        }
+        single {
+            AnalyticWrapper(androidContext())
         }
 
         viewModel {
