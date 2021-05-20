@@ -90,6 +90,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
         val options = Mysterium.defaultNodeOptions()
+        // Testing payment, should be deleted after testing
+        options.pilvytisAddress = "http://testnet2-pilvytis-sandbox.mysterium.network/api/v1"
         mobileNode = Mysterium.newNode(filesPath, options)
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 
