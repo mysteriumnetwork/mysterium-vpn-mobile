@@ -1,8 +1,8 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.SendFeedbackRequest
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.NodeRepository
 
 class ReportUseCase(private val nodeRepository: NodeRepository) {
 

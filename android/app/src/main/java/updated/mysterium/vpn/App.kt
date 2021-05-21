@@ -10,9 +10,9 @@ import android.util.Log
 import com.bugfender.sdk.Bugfender
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
-import network.mysterium.service.core.MysteriumAndroidCoreService
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.ui.Countries
+import updated.mysterium.vpn.core.MysteriumAndroidCoreService
+import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.common.countries.Countries
 import network.mysterium.vpn.BuildConfig
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext

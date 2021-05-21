@@ -1,7 +1,5 @@
 package updated.mysterium.vpn.common.data
 
-import network.mysterium.ui.UnitFormatter
-
 object DataUtil {
 
     private const val ETHER_VALUE = 1_000_000_000_000_000_000.0 // 1 MYST in wei(token)

@@ -1,7 +1,7 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.ResidentCountryUpdateRequest
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager

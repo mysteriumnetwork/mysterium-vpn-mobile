@@ -7,7 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.intercom.android.sdk.Intercom
-import network.mysterium.ui.onItemSelected
+import updated.mysterium.vpn.common.extensions.onItemSelected
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding

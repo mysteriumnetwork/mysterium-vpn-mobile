@@ -1,7 +1,7 @@
 package updated.mysterium.vpn.network.usecase
 
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.NodeRepository
 
 class LocationUseCase(private val nodeRepository: NodeRepository) {
 

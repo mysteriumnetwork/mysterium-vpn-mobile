@@ -8,7 +8,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.ListPopupWindow
-import network.mysterium.ui.onItemSelected
+import updated.mysterium.vpn.common.extensions.onItemSelected
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import org.koin.android.ext.android.inject

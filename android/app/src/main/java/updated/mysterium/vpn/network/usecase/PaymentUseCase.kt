@@ -2,8 +2,8 @@ package updated.mysterium.vpn.network.usecase
 
 import mysterium.CreateOrderRequest
 import mysterium.OrderUpdatedCallbackPayload
-import network.mysterium.payment.Order
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.core.NodeRepository
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
 

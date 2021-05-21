@@ -3,8 +3,8 @@ package updated.mysterium.vpn.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import network.mysterium.service.core.ProposalItem
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.model.nodes.ProposalItem
 
 @Entity
 data class NodeEntity(

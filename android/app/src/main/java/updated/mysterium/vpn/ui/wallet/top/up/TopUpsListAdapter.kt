@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import network.mysterium.payment.Order
+import updated.mysterium.vpn.model.payment.Order
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemTopUpBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter

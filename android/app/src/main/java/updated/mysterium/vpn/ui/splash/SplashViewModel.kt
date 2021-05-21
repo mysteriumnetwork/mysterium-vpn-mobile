@@ -6,12 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.wallet.IdentityModel
-import network.mysterium.wallet.IdentityRegistrationStatus
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {

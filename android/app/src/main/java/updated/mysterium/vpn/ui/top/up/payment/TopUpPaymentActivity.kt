@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import network.mysterium.payment.Order
+import updated.mysterium.vpn.model.payment.Order
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject

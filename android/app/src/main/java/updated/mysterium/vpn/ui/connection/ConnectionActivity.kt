@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import network.mysterium.AppNotificationManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
@@ -18,6 +17,7 @@ import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
@@ -143,7 +143,7 @@ class ConnectionActivity : BaseActivity() {
         viewModel.init(
             deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService,
             notificationManager = AppNotificationManager(
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             ).apply { init(this@ConnectionActivity) },
             proposal = proposal
         )
