@@ -250,8 +250,8 @@ data class ProposalItem(val ctx: Context, val item: ProposalViewItem) : BaseItem
             NodeType.HOSTING -> "(${ctx.getString(R.string.node_type_hosting)})"
             NodeType.RESIDENTIAL -> "(${ctx.getString(R.string.node_type_residential)})"
         }
-        val pricePerMinute = PriceUtils.displayMoney(PriceUtils.pricePerHour(item.payment))
-        val pricePerGiB = PriceUtils.displayMoney(PriceUtils.pricePerGiB(item.payment))
+        val pricePerMinute = item.payment.perHour.toString()
+        val pricePerGiB = item.payment.perGib.toString()
         price.text = ctx.resources.getString(R.string.proposals_price_combined, pricePerMinute, pricePerGiB)
     }
 }

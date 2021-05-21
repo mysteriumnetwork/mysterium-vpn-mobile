@@ -17,6 +17,7 @@ import network.mysterium.ui.StatisticsModel
 import network.mysterium.wallet.IdentityModel
 import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.inline.safeValueOf
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
@@ -53,7 +54,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private lateinit var appNotificationManager: AppNotificationManager
     private var coreService: MysteriumCoreService? = null
     private val _connectionException = SingleLiveEvent<Exception>()
-    private val _manualDisconnect = MutableLiveData<Unit>()
+    private val _manualDisconnect = SingleLiveEvent<Unit>()
     private val _pushDisconnect = SingleLiveEvent<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
@@ -133,8 +134,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun updateCurrentConnectionStatus() = liveDataResult {
         val status = connectionUseCase.status()
-        val connectionModel = ConnectionState.valueOf(status.state.toUpperCase(Locale.ROOT))
-        _connectionState.postValue(connectionModel)
+        val connectionModel = safeValueOf<ConnectionState>(status.state.toUpperCase(Locale.ROOT))
+        connectionModel?.let {
+            _connectionState.postValue(it)
+        }
         connectionModel
     }
 
@@ -171,13 +174,14 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             updateStatistic(it)
         }
         connectionUseCase.connectionStatusCallback {
-            val connectionStateModel = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
-            if (connectionStateModel == ConnectionState.NOTCONNECTED) {
-                coreService?.setDeferredNode(null)
-                coreService?.setActiveProposal(null)
-                coreService?.stopForeground()
+            safeValueOf<ConnectionState>(it.toUpperCase(Locale.ROOT))?.let { connectionStateModel ->
+                if (connectionStateModel == ConnectionState.NOTCONNECTED) {
+                    coreService?.setDeferredNode(null)
+                    coreService?.setActiveProposal(null)
+                    coreService?.stopForeground()
+                }
+                _connectionState.postValue(connectionStateModel)
             }
-            _connectionState.postValue(connectionStateModel)
         }
     }
 
@@ -240,7 +244,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun disconnectNode() {
         proposal = null
         coreService?.manualDisconnect()
-        _manualDisconnect.postValue(Unit)
+        _manualDisconnect.call()
         connectionUseCase.disconnect()
         coreService?.setActiveProposal(null)
         coreService?.setDeferredNode(null)

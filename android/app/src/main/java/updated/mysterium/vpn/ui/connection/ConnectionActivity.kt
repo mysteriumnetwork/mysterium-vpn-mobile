@@ -27,10 +27,8 @@ class ConnectionActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PROPOSAL_MODEL = "PROPOSAL_MODEL"
-        private const val TAG = "HomeActivity"
+        private const val TAG = "ConnectionActivity"
         private const val CURRENCY = "MYSTT"
-        private const val SECONDS_PER_HOUR = 3600.0
-        private const val BYTES_PER_GIGABYTE = 1024.0 * 1024.0 * 1024.0
         private const val MIN_BALANCE = 0.0001
     }
 
@@ -225,12 +223,23 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun checkProposalArgument() {
-        intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let {
+        intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposalExtra ->
+            if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+                initViewModel(proposalExtra)
+            }
             manualDisconnecting()
-            proposal = it
-            initViewModel(it)
+            proposal = proposalExtra
             inflateNodeInfo()
             inflateConnectingCardView()
+            if (
+                viewModel.connectionState.value == ConnectionState.CONNECTED ||
+                viewModel.connectionState.value == ConnectionState.CONNECTING
+            ) {
+                manualDisconnecting()
+                viewModel.disconnect().observe(this, {
+                    viewModel.connectNode(proposalExtra)
+                })
+            }
         }
     }
 
@@ -327,12 +336,12 @@ class ConnectionActivity : BaseActivity() {
             // convert seconds to hours
             binding.pricePerHour.text = getString(
                 R.string.manual_connect_price_per_hour,
-                it.payment.rate.perSeconds / SECONDS_PER_HOUR
+                it.payment.perHour
             )
             // convert price by bytes to price by gigabytes
             binding.pricePerGigabyte.text = getString(
                 R.string.manual_connect_price_per_gigabyte,
-                it.payment.rate.perBytes / BYTES_PER_GIGABYTE
+                it.payment.perGib
             )
         }
     }

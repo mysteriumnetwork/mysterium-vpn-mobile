@@ -312,7 +312,6 @@ class ProposalsViewModel(
         try {
             val req = GetProposalsRequest().apply {
                 this.refresh = refresh
-                includeFailed = true
                 serviceType = "wireguard"
             }
 
@@ -348,13 +347,6 @@ class ProposalsViewModel(
                         else -> filter.quality.level <= it.qualityLevel || it.qualityLevel == QualityLevel.UNKNOWN
                     }
                 }
-                // Filter by unreachable nodes.
-                .filter {
-                    when (filter.quality.qualityIncludeUnreachable) {
-                        true -> true
-                        else -> !it.monitoringFailed
-                    }
-                }
                 // Filter by country code.
                 .filter {
                     when (filter.country.code) {
@@ -365,18 +357,18 @@ class ProposalsViewModel(
                 // Filter by price per minute.
                 .filter {
                     fun filterPricePerMinute(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
-                        val price = PriceUtils.pricePerMinute(v.payment)
+                        val price = v.payment.perHour / 60 // price per minute
                         val maxPrice = (filter.pricePerHour / 60)
-                        return price.amount <= maxPrice
+                        return price <= maxPrice
                     }
                     filterPricePerMinute(filter, it)
                 }
                 // Filter by price per GiB.
                 .filter {
                     fun filterPricePerGiB(filter: ProposalsFilter, v: ProposalViewItem): Boolean {
-                        val price = PriceUtils.pricePerGiB(v.payment)
+                        val price = v.payment.perGib
                         val maxPrice = filter.pricePerGiB
-                        return price.amount <= maxPrice
+                        return price <= maxPrice
                     }
                     filterPricePerGiB(filter, it)
                 }
