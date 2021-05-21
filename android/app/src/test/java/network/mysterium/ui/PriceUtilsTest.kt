@@ -1,13 +1,10 @@
 package network.mysterium.ui
 
-import network.mysterium.service.core.ProposalPaymentMethod
 import network.mysterium.service.core.ProposalPaymentMoney
-import network.mysterium.service.core.ProposalPaymentRate
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-
 
 @RunWith(Parameterized::class)
 class PriceUtilsDisplayMoneyTest(private val value: ProposalPaymentMoney, private val expected: String) {
@@ -26,119 +23,5 @@ class PriceUtilsDisplayMoneyTest(private val value: ProposalPaymentMoney, privat
     fun testDisplayValueFormatting() {
         val res = PriceUtils.displayMoney(value)
         assertEquals(expected, res)
-    }
-}
-
-@RunWith(Parameterized::class)
-class PriceUtilsPricePerMinute(private val value: ProposalPaymentMethod, private val expectedAmount: Double, private val expectedCurrency: String) {
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters
-        fun data(): Collection<Array<Any>> {
-            return listOf(
-                    arrayOf(
-                            ProposalPaymentMethod(
-                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
-                                    rate = ProposalPaymentRate(
-                                            perSeconds = 60.0,
-                                            perBytes = 7_669_584.0
-                                    ),
-                                    price = ProposalPaymentMoney(
-                                            amount = 50_000.0,
-                                            currency = "MYSTT"
-                                    )
-                            ),
-                            50000,
-                            "MYSTT"
-                    ),
-                    arrayOf(
-                            ProposalPaymentMethod(
-                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
-                                    rate = ProposalPaymentRate(
-                                            perSeconds = 60.0,
-                                            perBytes = 0.0
-                                    ),
-                                    price = ProposalPaymentMoney(
-                                            amount = 50_000.0,
-                                            currency = "MYSTT"
-                                    )
-                            ),
-                            50000,
-                            "MYSTT"
-                    ),
-                    arrayOf(
-                            ProposalPaymentMethod(
-                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
-                                    rate = ProposalPaymentRate(
-                                            perSeconds = 0.0,
-                                            perBytes = 0.0
-                                    ),
-                                    price = ProposalPaymentMoney(
-                                            amount = 50_000.0,
-                                            currency = "MYSTT"
-                                    )
-                            ),
-                            0,
-                            "MYSTT"
-                    )
-            )
-        }
-    }
-}
-
-@RunWith(Parameterized::class)
-class PriceUtilsPricePerGiB(private val value: ProposalPaymentMethod, private val expectedAmount: Double, private val expectedCurrency: String) {
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters
-        fun data(): Collection<Array<Any>> {
-            return listOf(
-                    arrayOf(
-                            ProposalPaymentMethod(
-                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
-                                    rate = ProposalPaymentRate(
-                                            perSeconds = 60_000_000_000.0,
-                                            perBytes = 7_669_584.0
-                                    ),
-                                    price = ProposalPaymentMoney(
-                                            amount = 50_000.0,
-                                            currency = "MYSTT"
-                                    )
-                            ),
-                            7000000.417232539,
-                            "MYSTT"
-                    ),
-                    arrayOf(
-                            ProposalPaymentMethod(
-                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
-                                    rate = ProposalPaymentRate(
-                                            perSeconds = 0.0,
-                                            perBytes = 7_669_584.0
-                                    ),
-                                    price = ProposalPaymentMoney(
-                                            amount = 50_000.0,
-                                            currency = "MYSTT"
-                                    )
-                            ),
-                            7000000.417232539,
-                            "MYSTT"
-                    ),
-                    arrayOf(
-                            ProposalPaymentMethod(
-                                    currency = "BYTES_TRANSFERRED_WITH_TIME",
-                                    rate = ProposalPaymentRate(
-                                            perSeconds = 0.0,
-                                            perBytes = 0.0
-                                    ),
-                                    price = ProposalPaymentMoney(
-                                            amount = 50_000.0,
-                                            currency = "MYSTT"
-                                    )
-                            ),
-                            0,
-                            "MYSTT"
-                    )
-            )
-        }
     }
 }
