@@ -12,6 +12,8 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.analitics.AnalyticEvent
+import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
@@ -25,6 +27,7 @@ class PrepareTopUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPrepareTopUpBinding
     private val viewModel: PrepareTopUpViewModel by inject()
+    private val analyticWrapper: AnalyticWrapper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,8 +90,8 @@ class PrepareTopUpActivity : BaseActivity() {
         bindingPopUp.applyButton.setOnClickListener {
             val token = bindingPopUp.registrationTokenEditText.text.toString()
             viewModel.getRegistrationTokenReward(token).observe(this, {
-                it.onSuccess {
-                    applyToken(token) {
+                it.onSuccess { rewardAmount ->
+                    applyToken(token, rewardAmount) {
                         dialog.dismiss()
                     }
                 }
@@ -140,9 +143,10 @@ class PrepareTopUpActivity : BaseActivity() {
         editText.hint = ""
     }
 
-    private fun applyToken(token: String, onSuccess: () -> Unit) {
+    private fun applyToken(token: String, amount: Double, onSuccess: () -> Unit) {
         viewModel.registerIdentity(token).observe(this, {
             it.onSuccess {
+                analyticWrapper.track(AnalyticEvent.REFERRAL_TOKEN, token, amount.toFloat())
                 onSuccess.invoke()
             }
         })

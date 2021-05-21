@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import updated.mysterium.vpn.model.filter.NodeType
 
 data class Spending(
-    @SerializedName("node_type") val nodeType: String,
+    @SerializedName("ip_type") val nodeType: String,
     @SerializedName("provider_country") val countryName: String,
     @SerializedName("duration") val duration: Long,
     @SerializedName("tokens") val tokenSpend: Long,

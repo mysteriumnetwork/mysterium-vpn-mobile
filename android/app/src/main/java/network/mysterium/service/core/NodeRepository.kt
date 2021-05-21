@@ -14,38 +14,35 @@ import java.math.BigDecimal
 import java.math.RoundingMode.*
 
 class ProposalItem(
-    @Json(name = "providerId")
+    @Json(name = "provider_id")
     val providerID: String,
 
-    @Json(name = "serviceType")
+    @Json(name = "service_type")
     val serviceType: String,
 
-    @Json(name = "countryCode")
+    @Json(name = "country")
     val countryCode: String,
 
-    @Json(name = "qualityLevel")
-    val qualityLevel: Int,
-
-    @Json(name = "nodeType")
+    @Json(name = "ip_type")
     val nodeType: String = "",
 
-    @Json(name = "monitoringFailed")
-    val monitoringFailed: Boolean,
+    @Json(name = "quality_level")
+    val qualityLevel: Int,
 
-    @Json(name = "payment")
+    @Json(name = "price")
     val payment: ProposalPaymentMethod
 )
 
 @Parcelize
 class ProposalPaymentMethod(
-    @Json(name = "type")
-    val type: String,
+    @Json(name = "currency")
+    val currency: String,
 
-    @Json(name = "price")
-    val price: ProposalPaymentMoney,
+    @Json(name = "per_gib")
+    val perGib: Double,
 
-    @Json(name = "rate")
-    val rate: ProposalPaymentRate
+    @Json(name = "per_hour")
+    val perHour: Double
 ) : Parcelable
 
 @Parcelize
@@ -117,20 +114,22 @@ class PriceSettings(config: ConsumerPaymentConfig) {
     val defaultHour: BigDecimal
 
     init {
-        val perGibDecimal = config.pricePerGIBMax
+        val perGibDecimal = config.priceGiBMax
             .toBigDecimal()
             .divide(DECIMAL_PART.toBigDecimal())
         perGibMax = perGibDecimal
         defaultPerGib = perGibDecimal.divide(2.toBigDecimal())
-        val perMinuteDecimal = config.pricePerMinuteMax
+        val perMinuteDecimal = config.priceHourMax
             .toBigDecimal()
             .divide(DECIMAL_PART.toBigDecimal())
+            .divide(60.toBigDecimal()) // convert hours to minutes
         perMinuteMax = perMinuteDecimal
         defaultMinute = perMinuteDecimal.divide(2.toBigDecimal())
 
         perHourMax = perMinuteMax.multiply(60.toBigDecimal())
         defaultHour = defaultMinute.multiply(60.toBigDecimal())
     }
+
     companion object {
         const val DECIMAL_PART = 1_000_000_000_000_000_000
     }

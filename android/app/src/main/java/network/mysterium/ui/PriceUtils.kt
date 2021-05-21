@@ -1,50 +1,9 @@
 package network.mysterium.ui
 
-import network.mysterium.service.core.ProposalPaymentMethod
 import network.mysterium.service.core.ProposalPaymentMoney
 import java.text.DecimalFormat
 
 object PriceUtils {
-    fun pricePerMinute(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
-        val currency = pm?.price?.currency ?: ""
-
-        if (pm == null || pm.rate.perSeconds == 0.0) {
-            return ProposalPaymentMoney(amount = 0.0, currency = currency)
-        }
-
-        return ProposalPaymentMoney(
-                amount = (60.0 / pm.rate.perSeconds) * pm.price.amount,
-                currency = currency
-        )
-    }
-
-    fun pricePerHour(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
-        val currency = pm?.price?.currency ?: ""
-
-        if (pm == null || pm.rate.perSeconds == 0.0) {
-            return ProposalPaymentMoney(amount = 0.0, currency = currency)
-        }
-
-        return ProposalPaymentMoney(
-                amount = (60.0 / pm.rate.perSeconds) * pm.price.amount * 60,
-                currency = currency
-        )
-    }
-
-    private const val bytesInGiB = 1024 * 1024 * 1024
-
-    fun pricePerGiB(pm: ProposalPaymentMethod?): ProposalPaymentMoney {
-        val currency = pm?.price?.currency ?: ""
-
-        if (pm == null || pm.rate.perBytes == 0.0) {
-            return ProposalPaymentMoney(amount = 0.0, currency = currency)
-        }
-
-        return ProposalPaymentMoney(
-                amount = (bytesInGiB / pm.rate.perBytes) * pm.price.amount,
-                currency = currency
-        )
-    }
 
     fun displayMoney(m: ProposalPaymentMoney, opts: DisplayMoneyOptions = DisplayMoneyOptions()): String {
         var currency = ""
@@ -62,6 +21,6 @@ object PriceUtils {
 }
 
 class DisplayMoneyOptions(
-        val showCurrency: Boolean = false,
-        val fractionDigits: Int = 6
+    val showCurrency: Boolean = false,
+    val fractionDigits: Int = 6
 )

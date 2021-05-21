@@ -5,5 +5,6 @@ enum class AnalyticEvent(val eventName: String) {
     VPN_TIME("VPN_TIME"),
     NEW_SESSION("NEW_SESSION"),
     COUNTRY_SELECTED("COUNTRY_SELECTED"),
-    PAYMENT("PAYMENT")
+    PAYMENT("PAYMENT"),
+    REFERRAL_TOKEN("REFERRAL_TOKEN")
 }

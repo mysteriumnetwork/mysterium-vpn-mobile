@@ -5,12 +5,18 @@ import android.app.Activity
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import network.mysterium.notification.Notifications
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
@@ -27,11 +33,33 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 
 class SplashActivity : BaseActivity() {
 
+    private companion object {
+        const val UPDATES_REQUEST_CODE = 1
+        const val TAG = "SplashActivity"
+    }
+
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val pushyNotifications = Notifications(this)
     private var isVpnPermissionGranted = false
+    private val appUpdateManager: AppUpdateManager by lazy {
+        AppUpdateManagerFactory.create(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATES_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Log.e(TAG, "Update flow failed! Result code: $resultCode")
+                // TODO("Error handling")
+                finish()
+            } else {
+                Log.e(TAG, "Updated successfully")
+                startLoading()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +114,27 @@ class SplashActivity : BaseActivity() {
         }
     }
 
+    private fun checkForGoogleMarketUpdates(afterAction: () -> Unit) {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                startUpdating(appUpdateInfo)
+            } else {
+                afterAction.invoke()
+            }
+        }
+    }
+
+    private fun startUpdating(appUpdateInfo: AppUpdateInfo) {
+        appUpdateManager.startUpdateFlowForResult(
+            appUpdateInfo,
+            AppUpdateType.IMMEDIATE,
+            this,
+            UPDATES_REQUEST_CODE
+        )
+    }
+
     private fun setUpPushyNotifications() {
         pushyNotifications.register()
         pushyNotifications.listen()
@@ -119,12 +168,16 @@ class SplashActivity : BaseActivity() {
         val vpnServiceIntent = VpnService.prepare(this)
         if (vpnServiceIntent == null) {
             isVpnPermissionGranted = true
-            startLoading()
+            checkForGoogleMarketUpdates {
+                startLoading()
+            }
         } else {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     isVpnPermissionGranted = true
-                    startLoading()
+                    checkForGoogleMarketUpdates {
+                        startLoading()
+                    }
                 } else {
                     showPermissionErrorToast()
                     finish()

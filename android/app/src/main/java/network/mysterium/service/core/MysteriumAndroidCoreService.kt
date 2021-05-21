@@ -43,6 +43,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.common.inline.safeValueOf
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
@@ -89,6 +90,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
         val wireguardBridge = WireguardAndroidTunnelSetup(this)
         val options = Mysterium.defaultNodeOptions()
+        // Testing payment, should be deleted after testing
+        options.pilvytisAddress = "http://testnet2-pilvytis-sandbox.mysterium.network/api/v1"
         mobileNode = Mysterium.newNode(filesPath, options)
         mobileNode?.overrideWireguardConnection(wireguardBridge)
 
@@ -136,28 +139,30 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private fun initConnectionListener() {
         GlobalScope.launch {
             connectionUseCase.connectionStatusCallback {
-                currentState = ConnectionState.valueOf(it.toUpperCase(Locale.ROOT))
-                when (currentState) {
-                    ConnectionState.ON_HOLD -> {
-                        makeConnectionPushNotification()
-                    }
-                    ConnectionState.DISCONNECTING -> {
-                        if (!isDisconnectManual) {
+                safeValueOf<ConnectionState>(it.toUpperCase(Locale.ROOT))?.let { state ->
+                    currentState = state
+                    when (currentState) {
+                        ConnectionState.ON_HOLD -> {
                             makeConnectionPushNotification()
                         }
-                        vpnTimeSpent?.let { time ->
-                            analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
+                        ConnectionState.DISCONNECTING -> {
+                            if (!isDisconnectManual) {
+                                makeConnectionPushNotification()
+                            }
+                            vpnTimeSpent?.let { time ->
+                                analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
+                            }
+                            vpnTimeSpent = null
                         }
-                        vpnTimeSpent = null
-                    }
-                    ConnectionState.CONNECTED -> {
-                        analyticWrapper.track(AnalyticEvent.NEW_SESSION)
-                        isDisconnectManual = false
-                        initStatisticListener()
-                    }
-                    ConnectionState.NOTCONNECTED -> {
-                        appNotificationManager.hideStatisticsNotification()
-                        isDisconnectManual = false
+                        ConnectionState.CONNECTED -> {
+                            analyticWrapper.track(AnalyticEvent.NEW_SESSION)
+                            isDisconnectManual = false
+                            initStatisticListener()
+                        }
+                        ConnectionState.NOTCONNECTED -> {
+                            appNotificationManager.hideStatisticsNotification()
+                            isDisconnectManual = false
+                        }
                     }
                 }
             }
@@ -206,7 +211,9 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             val status = connectionUseCase.status()
             connectionUseCase.registerStatisticsChangeCallback {
                 vpnTimeSpent = it.duration.toFloat() / 60
-                val connectionModel = ConnectionState.valueOf(status.state.toUpperCase(Locale.ROOT))
+                val connectionModel = safeValueOf<ConnectionState>(
+                    status.state.toUpperCase(Locale.ROOT)
+                )
                 if (connectionModel == ConnectionState.CONNECTED) {
                     updateStatistic(it)
                 } else {

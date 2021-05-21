@@ -58,6 +58,8 @@ class AnalyticWrapper(private val context: Context) {
     fun track(event: AnalyticEvent, stringValue: String, floatValue: Float) {
         if (event == AnalyticEvent.PAYMENT) {
             paymentEvent(stringValue, floatValue)
+        } else if (event == AnalyticEvent.REFERRAL_TOKEN) {
+            referralTokenEvent(stringValue, floatValue)
         }
     }
 
@@ -96,6 +98,14 @@ class AnalyticWrapper(private val context: Context) {
         TrackHelper.track()
             .event("Payment amount", currency)
             .name("$currency payment $amount")
+            .value(amount)
+            .with(tracker)
+    }
+
+    private fun referralTokenEvent(token: String, amount: Float) {
+        TrackHelper.track()
+            .event("Referral token", token)
+            .name("$token costs $amount")
             .value(amount)
             .with(tracker)
     }
