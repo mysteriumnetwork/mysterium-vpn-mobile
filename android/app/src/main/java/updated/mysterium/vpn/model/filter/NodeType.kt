@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.model.filter
 
-typealias FullNodeType = network.mysterium.proposal.NodeType
+typealias FullNodeType = updated.mysterium.vpn.model.proposal.parameters.NodeType
 
 enum class NodeType {
     ALL,

@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
-import network.mysterium.proposal.NodeType
-import network.mysterium.service.core.ProposalPaymentMoney
-import network.mysterium.ui.DisplayMoneyOptions
-import network.mysterium.ui.PriceUtils
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ConnectionStateLayoutBinding
+import updated.mysterium.vpn.common.data.DisplayMoneyOptions
+import updated.mysterium.vpn.common.data.PriceUtils
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.model.nodes.ProposalPaymentMoney
+import updated.mysterium.vpn.model.proposal.parameters.NodeType
 
 class ConnectionState @JvmOverloads constructor(
     context: Context,

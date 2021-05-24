@@ -3,8 +3,8 @@ package updated.mysterium.vpn.common.extensions
 import android.graphics.RectF
 import android.view.View
 import androidx.annotation.StringRes
-import network.mysterium.proposal.NodeType
 import network.mysterium.vpn.R
+import updated.mysterium.vpn.model.proposal.parameters.NodeType
 
 
 @StringRes

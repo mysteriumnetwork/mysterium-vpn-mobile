@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!-- https://pushy.me/docs/android/modify-androidmanifest -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -111,18 +110,8 @@
             android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name="network.mysterium.MainActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustResize" />
-
         <receiver
-            android:name="network.mysterium.AppBroadcastReceiver"
+            android:name="updated.mysterium.vpn.notification.AppBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -131,7 +120,7 @@
         </receiver>
 
         <service
-            android:name="network.mysterium.service.core.MysteriumAndroidCoreService"
+            android:name="updated.mysterium.vpn.core.MysteriumAndroidCoreService"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
@@ -143,7 +132,7 @@
         <!-- Pushy Notification Receiver -->
         <!-- Incoming push notifications will invoke the following BroadcastReceiver -->
         <receiver
-            android:name="network.mysterium.notification.PushReceiver"
+            android:name="updated.mysterium.vpn.notification.PushReceiver"
             android:exported="false">
             <intent-filter>
                 <!-- Do not modify this -->
@@ -192,6 +181,7 @@
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
+
     </application>
 
 </manifest>

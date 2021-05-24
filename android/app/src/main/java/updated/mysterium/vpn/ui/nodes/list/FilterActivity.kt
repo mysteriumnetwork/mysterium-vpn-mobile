@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import network.mysterium.ui.Countries
+import updated.mysterium.vpn.common.countries.Countries
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject

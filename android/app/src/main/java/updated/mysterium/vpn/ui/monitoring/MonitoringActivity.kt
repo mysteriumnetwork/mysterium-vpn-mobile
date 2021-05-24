@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import network.mysterium.ui.UnitFormatter
+import updated.mysterium.vpn.common.data.UnitFormatter
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMonitoringBinding
 import org.koin.android.ext.android.inject

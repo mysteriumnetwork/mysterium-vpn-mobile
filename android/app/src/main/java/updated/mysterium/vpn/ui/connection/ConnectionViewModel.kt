@@ -8,21 +8,21 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import mysterium.GetBalanceRequest
-import network.mysterium.AppNotificationManager
-import network.mysterium.proposal.ProposalViewItem
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.service.core.Statistics
-import network.mysterium.ui.StatisticsModel
-import network.mysterium.wallet.IdentityModel
-import network.mysterium.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.inline.safeValueOf
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.model.proposal.parameters.ProposalViewItem
+import updated.mysterium.vpn.model.statistics.Statistics
+import updated.mysterium.vpn.model.statistics.StatisticsModel
+import updated.mysterium.vpn.model.wallet.IdentityModel
+import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.notification.AppNotificationManager
 import java.util.*
 
 class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -229,7 +229,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             setDeferredNode(deferredNode)
             startForegroundWithNotification(
-                appNotificationManager.statisticsNotification,
+                AppNotificationManager.STATISTIC_NOTIFICATION,
                 appNotificationManager.createConnectedToVPNNotification()
             )
         }

@@ -3,12 +3,12 @@ package updated.mysterium.vpn.network.usecase
 import mysterium.ConnectRequest
 import mysterium.GetIdentityRequest
 import mysterium.RegisterIdentityRequest
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.Identity
-import network.mysterium.service.core.NodeRepository
-import network.mysterium.service.core.Statistics
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
+import updated.mysterium.vpn.model.statistics.Statistics
+import updated.mysterium.vpn.model.wallet.Identity
 
 class ConnectionUseCase(
     private val nodeRepository: NodeRepository,

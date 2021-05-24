@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.network.usecase
 
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.NodeRepository
 
 class TokenUseCase(private val nodeRepository: NodeRepository) {
 

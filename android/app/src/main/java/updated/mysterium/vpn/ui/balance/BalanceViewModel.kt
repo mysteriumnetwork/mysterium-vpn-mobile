@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import mysterium.GetBalanceRequest
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.MysteriumCoreService
-import network.mysterium.wallet.IdentityModel
-import network.mysterium.wallet.IdentityRegistrationStatus
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.model.wallet.IdentityModel
+import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {

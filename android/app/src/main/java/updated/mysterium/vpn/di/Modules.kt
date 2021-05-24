@@ -2,8 +2,8 @@ package updated.mysterium.vpn.di
 
 import android.content.Context
 import androidx.room.Room
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.NodeRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

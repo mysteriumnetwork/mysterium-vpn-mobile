@@ -4,6 +4,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import updated.mysterium.vpn.common.data.UnitFormatter
 
 
 @RunWith(Parameterized::class)

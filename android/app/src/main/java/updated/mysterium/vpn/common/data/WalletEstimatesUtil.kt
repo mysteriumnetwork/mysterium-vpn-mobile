@@ -1,7 +1,6 @@
 package updated.mysterium.vpn.common.data
 
 import mysterium.Estimates
-import network.mysterium.ui.UnitFormatter
 import kotlin.math.roundToInt
 
 object WalletEstimatesUtil {

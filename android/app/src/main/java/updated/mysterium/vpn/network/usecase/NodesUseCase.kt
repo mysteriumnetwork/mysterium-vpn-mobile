@@ -1,8 +1,8 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.GetProposalsRequest
-import network.mysterium.service.core.DeferredNode
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.NodeRepository
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity

@@ -1,10 +1,11 @@
 package network.mysterium.ui
 
-import network.mysterium.service.core.ProposalPaymentMoney
+import updated.mysterium.vpn.core.ProposalPaymentMoney
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import updated.mysterium.vpn.common.data.PriceUtils
 
 @RunWith(Parameterized::class)
 class PriceUtilsDisplayMoneyTest(private val value: ProposalPaymentMoney, private val expected: String) {

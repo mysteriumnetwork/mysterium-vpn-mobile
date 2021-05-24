@@ -2,20 +2,16 @@ package updated.mysterium.vpn.network.usecase
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import mysterium.GetProposalsRequest
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.core.NodeRepository
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.database.entity.NodeEntity
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
-import updated.mysterium.vpn.model.manual.connect.PriceLevel
-import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.manual.connect.SystemPreset
 
 class FilterUseCase(private val nodeRepository: NodeRepository) {
 
     private companion object {
         const val ALL_NODES_FILTER_ID = 0
-        const val SERVICE_TYPE = "wireguard"
         val selectedResources = listOf(
             R.drawable.all_filters_selected,
             R.drawable.media_filters_selected,

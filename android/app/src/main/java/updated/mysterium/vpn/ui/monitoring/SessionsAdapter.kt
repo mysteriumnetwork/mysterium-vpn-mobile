@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import network.mysterium.ui.Countries
-import network.mysterium.ui.UnitFormatter
+import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.common.data.UnitFormatter
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemSessionBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter

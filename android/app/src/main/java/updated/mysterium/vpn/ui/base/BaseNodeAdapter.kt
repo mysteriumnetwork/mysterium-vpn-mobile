@@ -5,11 +5,11 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import network.mysterium.proposal.NodeType
-import network.mysterium.proposal.QualityLevel
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
+import updated.mysterium.vpn.model.proposal.parameters.NodeType
+import updated.mysterium.vpn.model.proposal.parameters.QualityLevel
 
 abstract class BaseNodeAdapter<T, V : BaseNodeAdapter<T, V>.BaseNodeViewHolder> : ContentListAdapter<T, V>() {
 

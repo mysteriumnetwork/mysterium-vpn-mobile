@@ -11,8 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import network.mysterium.AppNotificationManager
-import network.mysterium.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
+import updated.mysterium.vpn.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPrivateKeyBinding
 import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
@@ -20,6 +19,7 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.common.extensions.isValidPassword
+import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 

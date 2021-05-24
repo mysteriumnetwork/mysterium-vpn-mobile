@@ -4,8 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import mysterium.ListOrdersRequest
 import mysterium.SessionFilter
-import network.mysterium.payment.Order
-import network.mysterium.service.core.NodeRepository
+import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.common.date.DateUtil
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager

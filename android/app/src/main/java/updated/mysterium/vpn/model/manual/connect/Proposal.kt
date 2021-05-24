@@ -3,13 +3,13 @@ package updated.mysterium.vpn.model.manual.connect
 import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import network.mysterium.proposal.NodeType
-import network.mysterium.proposal.ProposalViewItem
-import network.mysterium.proposal.QualityLevel
-import network.mysterium.proposal.ServiceType
-import network.mysterium.service.core.ProposalPaymentMethod
-import network.mysterium.ui.Countries
+import updated.mysterium.vpn.model.proposal.parameters.ProposalViewItem
+import updated.mysterium.vpn.common.countries.Countries
 import updated.mysterium.vpn.database.entity.NodeEntity
+import updated.mysterium.vpn.model.nodes.ProposalPaymentMethod
+import updated.mysterium.vpn.model.proposal.parameters.NodeType
+import updated.mysterium.vpn.model.proposal.parameters.QualityLevel
+import updated.mysterium.vpn.model.proposal.parameters.ServiceType
 import java.util.*
 
 @Parcelize

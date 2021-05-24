@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.model.filter
 
-import network.mysterium.proposal.QualityLevel
+import updated.mysterium.vpn.model.proposal.parameters.QualityLevel
 
 enum class NodeQuality {
     LOW,

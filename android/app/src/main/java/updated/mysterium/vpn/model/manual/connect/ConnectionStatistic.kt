@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.model.manual.connect
 
-import network.mysterium.ui.FormattedBytesViewItem
+import updated.mysterium.vpn.common.data.FormattedBytesViewItem
 
 data class ConnectionStatistic(
     val duration: String,
