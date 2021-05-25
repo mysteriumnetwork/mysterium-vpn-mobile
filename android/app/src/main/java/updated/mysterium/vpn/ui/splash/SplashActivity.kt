@@ -22,6 +22,8 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
+import updated.mysterium.vpn.analitics.AnalyticEvent
+import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -41,6 +43,7 @@ class SplashActivity : BaseActivity() {
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
+    private val analyticWrapper: AnalyticWrapper by inject()
     private val pushyNotifications = Notifications(this)
     private var isVpnPermissionGranted = false
     private val appUpdateManager: AppUpdateManager by lazy {
@@ -136,7 +139,9 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun setUpPushyNotifications() {
-        pushyNotifications.register()
+        pushyNotifications.register {
+            analyticWrapper.track(AnalyticEvent.NEW_PUSHY_DEVICE, it)
+        }
         pushyNotifications.listen()
     }
 

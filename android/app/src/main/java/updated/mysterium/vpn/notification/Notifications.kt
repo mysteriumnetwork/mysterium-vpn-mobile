@@ -21,13 +21,17 @@ class Notifications(private val activity: Activity) {
         }
     }
 
-    fun register() {
+    fun register(afterRegistrationAction: (String) -> Unit) {
         if (!Pushy.isRegistered(activity.applicationContext)) {
             val handler = CoroutineExceptionHandler { _, exception ->
                 Log.e(TAG, "Failed to register to pushy.me", exception)
             }
             CoroutineScope(Dispatchers.IO).launch(handler) {
                 Pushy.register(activity.applicationContext)
+                afterRegistrationAction.invoke(
+                    Pushy.getDeviceCredentials(activity.applicationContext).token
+                )
+                Log.i(TAG, Pushy.getDeviceCredentials(activity.applicationContext).token)
             }
         } else {
             Pushy.getDeviceCredentials(activity.applicationContext).token

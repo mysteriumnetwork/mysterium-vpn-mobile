@@ -235,6 +235,7 @@ class TopUpPaymentActivity : BaseActivity() {
     }
 
     private fun navigateToHome() {
+        topUpViewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
