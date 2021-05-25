@@ -52,6 +52,8 @@ class AnalyticWrapper(private val context: Context) {
     fun track(event: AnalyticEvent, stringValue: String) {
         if (event == AnalyticEvent.COUNTRY_SELECTED) {
             vpnCountrySelected(stringValue)
+        } else if (event == AnalyticEvent.NEW_PUSHY_DEVICE) {
+            newPushyDeviceEvent(stringValue)
         }
     }
 
@@ -107,6 +109,13 @@ class AnalyticWrapper(private val context: Context) {
             .event("Referral token", token)
             .name("$token costs $amount")
             .value(amount)
+            .with(tracker)
+    }
+
+    private fun newPushyDeviceEvent(pushyId: String) {
+        TrackHelper.track()
+            .event("New Pushy ID", pushyId)
+            .name("User registered with $pushyId ID")
             .with(tracker)
     }
 }

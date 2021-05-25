@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import network.mysterium.vpn.R
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 
 typealias NotificationFactory = (Context) -> Notification
@@ -31,7 +32,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
     fun init(ctx: Context) {
         context = ctx
-        val intent = Intent(ctx, HomeSelectionActivity::class.java).apply {
+        val intent = Intent(ctx, ConnectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         pendingAppIntent = PendingIntent.getActivity(ctx, 0, intent, 0)
