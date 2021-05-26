@@ -83,17 +83,15 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun firstWarningBalanceShown() {
+    fun initUserLocaleLanguage() = settingsUseCase.getUserSelectedLanguage()
+
+    private fun firstWarningBalanceShown() {
         balanceUseCase.balancePopUpShown()
     }
 
-    fun secondWarningBalanceShown() {
+    private fun secondWarningBalanceShown() {
         balanceUseCase.minBalancePopUpShown()
     }
-
-    fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
-        countryCode = LanguagesUtil.convertUserLanguage(countryCode)
-    )
 
     private fun balanceListener() {
         viewModelScope.launch {
