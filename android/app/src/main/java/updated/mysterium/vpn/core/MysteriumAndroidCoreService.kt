@@ -142,28 +142,31 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         GlobalScope.launch {
             connectionUseCase.connectionStatusCallback {
                 safeValueOf<ConnectionState>(it.toUpperCase(Locale.ROOT))?.let { state ->
+                    val previousState = currentState
                     currentState = state
-                    when (currentState) {
-                        ConnectionState.ON_HOLD -> {
-                            makeConnectionPushNotification()
-                        }
-                        ConnectionState.DISCONNECTING -> {
-                            if (!isDisconnectManual) {
+                    if (previousState != currentState) {
+                        when (currentState) {
+                            ConnectionState.ON_HOLD -> {
                                 makeConnectionPushNotification()
                             }
-                            vpnTimeSpent?.let { time ->
-                                analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
+                            ConnectionState.DISCONNECTING -> {
+                                if (!isDisconnectManual) {
+                                    makeConnectionPushNotification()
+                                }
+                                vpnTimeSpent?.let { time ->
+                                    analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
+                                }
+                                vpnTimeSpent = null
                             }
-                            vpnTimeSpent = null
-                        }
-                        ConnectionState.CONNECTED -> {
-                            analyticWrapper.track(AnalyticEvent.NEW_SESSION)
-                            isDisconnectManual = false
-                            initStatisticListener()
-                        }
-                        ConnectionState.NOTCONNECTED -> {
-                            appNotificationManager.hideStatisticsNotification()
-                            isDisconnectManual = false
+                            ConnectionState.CONNECTED -> {
+                                analyticWrapper.track(AnalyticEvent.NEW_SESSION)
+                                isDisconnectManual = false
+                                initStatisticListener()
+                            }
+                            ConnectionState.NOTCONNECTED -> {
+                                appNotificationManager.hideStatisticsNotification()
+                                isDisconnectManual = false
+                            }
                         }
                     }
                 }
