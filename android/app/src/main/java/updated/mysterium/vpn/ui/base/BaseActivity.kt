@@ -13,7 +13,6 @@ import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
@@ -123,7 +122,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun subscribeViewModel() {
         baseViewModel.balanceRunningOut.observe(this, {
-            balanceRunningOutPopUp(it)
+            balanceRunningOutPopUp()
         })
         baseViewModel.connectionState.observe(this, {
             connectionState = it
@@ -153,7 +152,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private fun balanceRunningOutPopUp(isFirstWarning: Boolean) {
+    private fun balanceRunningOutPopUp() {
         if (insufficientFoundsDialog == null) {
             val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
             insufficientFoundsDialog = createPopUp(bindingPopUp.root, true)
@@ -163,11 +162,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 startActivity(Intent(this, TopUpAmountActivity::class.java))
             }
             bindingPopUp.continueButton.setOnClickListener {
-                if (isFirstWarning) {
-                    baseViewModel.firstWarningBalanceShown()
-                } else {
-                    baseViewModel.secondWarningBalanceShown()
-                }
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
             }
@@ -176,11 +170,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun checkUserLocale() {
-        val languageForApply = baseViewModel.initUserLocaleLanguage(
-            countryCode = LanguagesUtil.getUserDefaultLanguage()
-        )
-        Locale.setDefault(Locale(languageForApply))
-        resources.configuration.setLocale(Locale(languageForApply))
-        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
+        baseViewModel.initUserLocaleLanguage()?.let { languageForApply ->
+            Locale.setDefault(Locale(languageForApply))
+            resources.configuration.setLocale(Locale(languageForApply))
+            resources.updateConfiguration(resources.configuration, resources.displayMetrics)
+        }
     }
 }

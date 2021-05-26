@@ -83,25 +83,25 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun firstWarningBalanceShown() {
+    fun initUserLocaleLanguage() = settingsUseCase.getUserSelectedLanguage()
+
+    private fun firstWarningBalanceShown() {
         balanceUseCase.balancePopUpShown()
     }
 
-    fun secondWarningBalanceShown() {
+    private fun secondWarningBalanceShown() {
         balanceUseCase.minBalancePopUpShown()
     }
-
-    fun initUserLocaleLanguage(countryCode: String) = settingsUseCase.userInitialCountryLanguage(
-        countryCode = LanguagesUtil.convertUserLanguage(countryCode)
-    )
 
     private fun balanceListener() {
         viewModelScope.launch {
             balanceUseCase.initBalanceListener {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePopUpShown()) {
+                    firstWarningBalanceShown()
                     _balanceRunningOut.postValue(true)
                 }
                 if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
+                    secondWarningBalanceShown()
                     _balanceRunningOut.postValue(false)
                 }
                 if (it == 0.0 && balanceUseCase.isMinBalancePushShown()) {
