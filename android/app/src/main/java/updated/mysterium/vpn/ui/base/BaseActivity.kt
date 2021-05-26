@@ -123,7 +123,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun subscribeViewModel() {
         baseViewModel.balanceRunningOut.observe(this, {
-            balanceRunningOutPopUp(it)
+            balanceRunningOutPopUp()
         })
         baseViewModel.connectionState.observe(this, {
             connectionState = it
@@ -153,7 +153,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private fun balanceRunningOutPopUp(isFirstWarning: Boolean) {
+    private fun balanceRunningOutPopUp() {
         if (insufficientFoundsDialog == null) {
             val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
             insufficientFoundsDialog = createPopUp(bindingPopUp.root, true)
@@ -163,11 +163,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 startActivity(Intent(this, TopUpAmountActivity::class.java))
             }
             bindingPopUp.continueButton.setOnClickListener {
-                if (isFirstWarning) {
-                    baseViewModel.firstWarningBalanceShown()
-                } else {
-                    baseViewModel.secondWarningBalanceShown()
-                }
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
             }

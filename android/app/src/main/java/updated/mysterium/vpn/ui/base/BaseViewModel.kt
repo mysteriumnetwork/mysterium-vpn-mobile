@@ -99,9 +99,11 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         viewModelScope.launch {
             balanceUseCase.initBalanceListener {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePopUpShown()) {
+                    firstWarningBalanceShown()
                     _balanceRunningOut.postValue(true)
                 }
                 if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
+                    secondWarningBalanceShown()
                     _balanceRunningOut.postValue(false)
                 }
                 if (it == 0.0 && balanceUseCase.isMinBalancePushShown()) {
