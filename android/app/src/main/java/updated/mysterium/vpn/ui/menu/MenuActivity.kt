@@ -7,12 +7,12 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.intercom.android.sdk.Intercom
-import updated.mysterium.vpn.common.extensions.onItemSelected
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
 import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.menu.MenuItem
@@ -77,6 +77,17 @@ class MenuActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.isFirstLanguageChanging()) {
+            viewModel.getUserLanguageCode()?.let {
+                setLocale(it)
+            }
+            viewModel.userManualSelect()
+            recreate()
+        }
+    }
+
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
@@ -127,6 +138,7 @@ class MenuActivity : BaseActivity() {
                 spinnerAdapter.selectedPosition = it
                 if (isLanguageSelected) {
                     isLanguageSelected = false
+                    viewModel.userManualSelect()
                     recreate()
                 }
             }

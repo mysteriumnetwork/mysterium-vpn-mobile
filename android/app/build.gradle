@@ -68,6 +68,12 @@ android {
         experimental = true
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     defaultConfig {
         applicationId "network.mysterium.vpn"
         minSdkVersion rootProject.ext.minSdkVersion

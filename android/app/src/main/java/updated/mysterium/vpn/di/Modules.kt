@@ -67,6 +67,9 @@ object Modules {
         single {
             AnalyticWrapper(androidContext())
         }
+        single {
+            MenuViewModel(get())
+        }
 
         viewModel {
             SplashViewModel(get())
@@ -124,9 +127,6 @@ object Modules {
         }
         viewModel {
             PrepareTopUpViewModel(get())
-        }
-        viewModel {
-            MenuViewModel(get())
         }
         viewModel {
             FavouritesViewModel(get())

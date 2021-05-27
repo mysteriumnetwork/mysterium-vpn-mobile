@@ -14,12 +14,6 @@ object LanguagesUtil {
         "ZH"
     )
 
-    fun convertUserLanguage(countryCode: String) = if (languagesList.contains(countryCode)) {
-        countryCode
-    } else {
-        DEFAULT_LANGUAGE
-    }
-
     fun getUserDefaultLanguage() = Locale.getDefault().language.toUpperCase(Locale.ROOT)
 
     fun getCountryCodeByIndex(index: Int) = languagesList[index]
