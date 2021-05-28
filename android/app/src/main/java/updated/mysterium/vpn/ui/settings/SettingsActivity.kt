@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.settings
 
-import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
@@ -8,18 +7,15 @@ import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.ListPopupWindow
-import updated.mysterium.vpn.common.extensions.onItemSelected
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.isDarkThemeOn
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
 
 class SettingsActivity : BaseActivity() {
@@ -75,15 +71,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = if (connectionState == ConnectionState.CONNECTED) {
-                Intent(this, ConnectionActivity::class.java)
-            } else {
-                Intent(this, HomeSelectionActivity::class.java)
-            }
-            intent.apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToConnectionOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

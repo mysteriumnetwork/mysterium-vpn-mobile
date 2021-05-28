@@ -1,7 +1,6 @@
 package updated.mysterium.vpn.ui.connection
 
 import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +14,7 @@ import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
+import updated.mysterium.vpn.exceptions.ConnectAlreadyExists
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.notification.AppNotificationManager
@@ -61,30 +61,32 @@ class ConnectionActivity : BaseActivity() {
         if (isInternetAvailable) {
             setIntent(intent)
             intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposal ->
-                this.proposal = proposal
-                if (
-                    viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                    viewModel.connectionState.value == ConnectionState.CONNECTING
-                ) {
-                    manualDisconnecting()
-                    viewModel.disconnect().observe(this, { result ->
-                        result.onSuccess {
-                            Log.i(TAG, "onSuccess")
-                            inflateNodeInfo()
-                            inflateConnectingCardView()
-                            viewModel.connectNode(proposal)
-                        }
-                        result.onFailure {
-                            Log.i(TAG, "onFailure ${it.localizedMessage}")
-                            inflateNodeInfo()
-                            inflateConnectingCardView()
-                            viewModel.connectNode(proposal)
-                        }
-                    })
-                } else {
-                    inflateNodeInfo()
-                    inflateConnectingCardView()
-                    viewModel.connectNode(proposal)
+                if (this.proposal?.providerID != proposal.providerID) {
+                    this.proposal = proposal
+                    if (
+                        viewModel.connectionState.value == ConnectionState.CONNECTED ||
+                        viewModel.connectionState.value == ConnectionState.CONNECTING
+                    ) {
+                        manualDisconnecting()
+                        viewModel.disconnect().observe(this, { result ->
+                            result.onSuccess {
+                                Log.i(TAG, "onSuccess")
+                                inflateNodeInfo()
+                                inflateConnectingCardView()
+                                viewModel.connectNode(proposal)
+                            }
+                            result.onFailure {
+                                Log.i(TAG, "onFailure ${it.localizedMessage}")
+                                inflateNodeInfo()
+                                inflateConnectingCardView()
+                                viewModel.connectNode(proposal)
+                            }
+                        })
+                    } else {
+                        inflateNodeInfo()
+                        inflateConnectingCardView()
+                        viewModel.connectNode(proposal)
+                    }
                 }
             }
         } else {
@@ -113,8 +115,10 @@ class ConnectionActivity : BaseActivity() {
         viewModel.connectionException.observe(this, {
             if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
                 Log.e(TAG, it.localizedMessage ?: it.toString())
-                disconnect()
-                failedToConnect()
+                if (it !is ConnectAlreadyExists) {
+                    disconnect()
+                    failedToConnect()
+                }
             }
         })
         viewModel.manualDisconnect.observe(this, {
@@ -169,7 +173,8 @@ class ConnectionActivity : BaseActivity() {
                 checkDisconnectingReason()
             }
             ConnectionState.ON_HOLD -> {
-                showLostConnectionPopUp()
+                loadIpAddress()
+                inflateConnectedCardView()
             }
         }
     }
@@ -252,7 +257,7 @@ class ConnectionActivity : BaseActivity() {
             result.onFailure {
                 Log.e(TAG, "Data loading failed")
                 binding.ipTextView.text = getString(R.string.manual_connect_unknown)
-                // TODO("Implement error handling")
+                wifiNetworkErrorPopUp()
             }
         })
     }

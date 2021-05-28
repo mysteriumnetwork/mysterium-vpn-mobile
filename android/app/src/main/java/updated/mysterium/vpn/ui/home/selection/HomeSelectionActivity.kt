@@ -49,9 +49,7 @@ class HomeSelectionActivity : BaseActivity() {
     private fun checkCurrentState() {
         viewModel.getCurrentState().observe(this, { result ->
             result.onSuccess { state ->
-                state?.let {
-                    handleConnectionState(it)
-                }
+                handleConnectionState(state)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())

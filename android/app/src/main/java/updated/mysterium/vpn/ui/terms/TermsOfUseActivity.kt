@@ -82,10 +82,7 @@ class TermsOfUseActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToConnectionOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

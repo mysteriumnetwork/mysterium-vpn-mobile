@@ -5,5 +5,12 @@ enum class ConnectionState(val state: String) {
     CONNECTING("Connecting"),
     CONNECTED("Connected"),
     DISCONNECTING("Disconnecting"),
-    ON_HOLD("OnHold")
+    ON_HOLD("OnHold");
+
+    companion object {
+
+        fun from(value: String) = values().find {
+            it.state == value
+        } ?: NOTCONNECTED
+    }
 }

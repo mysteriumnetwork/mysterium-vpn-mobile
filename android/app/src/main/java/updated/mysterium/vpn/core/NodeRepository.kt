@@ -5,6 +5,7 @@ import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
+import updated.mysterium.vpn.exceptions.ConnectAlreadyExists
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.exceptions.ConnectInvalidProposalException
 import updated.mysterium.vpn.exceptions.ConnectUnknownException
@@ -70,10 +71,33 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
 
+        Log.e(TAG, res.errorMessage)
         when (res.errorCode) {
             "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
             "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
-            "Unknown" -> throw ConnectUnknownException(res.errorMessage)
+            "Unknown" -> {
+                if (res.errorMessage == "connection already exists") {
+                    throw ConnectAlreadyExists(res.errorMessage)
+                } else {
+                    throw ConnectUnknownException(res.errorMessage)
+                }
+            }
+        }
+    }
+
+    suspend fun reconnect(req: ConnectRequest) = withContext(Dispatchers.IO) {
+        val res = deferredNode.await().reconnect(req) ?: return@withContext
+
+        when (res.errorCode) {
+            "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
+            "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
+            "Unknown" -> {
+                if (res.errorMessage == "connection already exists") {
+                    throw ConnectAlreadyExists(res.errorMessage)
+                } else {
+                    throw ConnectUnknownException(res.errorMessage)
+                }
+            }
         }
     }
 
