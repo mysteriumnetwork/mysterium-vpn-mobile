@@ -22,6 +22,7 @@ import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.nodes.list.FilterActivity
 
 class ConnectionActivity : BaseActivity() {
 
@@ -423,7 +424,7 @@ class ConnectionActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.chooseAnother.setOnClickListener {
             dialog.dismiss()
-            navigateToSelectNode()
+            backToFilter()
         }
         dialog.show()
     }
@@ -445,6 +446,10 @@ class ConnectionActivity : BaseActivity() {
             }
         }
         startActivity(intent)
+    }
+
+    private fun backToFilter() {
+        startActivity(Intent(this, FilterActivity::class.java))
     }
 
     private fun navigateToMenu() {
