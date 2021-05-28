@@ -40,10 +40,10 @@ class TopUpCryptoActivity : BaseActivity() {
         topUpAdapter.replaceAll(getCryptoList())
         topUpAdapter.onItemSelected = {
             binding.cryptoAnimation.changeAnimation(it.value)
-            if (it.value == CryptoAnimationView.MYST) {
-                binding.switchFrame.visibility = View.INVISIBLE
-            } else {
+            if (it.isLightingAvailable) {
                 binding.switchFrame.visibility = View.VISIBLE
+            } else {
+                binding.switchFrame.visibility = View.INVISIBLE
             }
         }
         binding.cryptoAnimation.changeAnimation(getCryptoList().first().value)
@@ -99,12 +99,12 @@ class TopUpCryptoActivity : BaseActivity() {
     }
 
     private fun getCryptoList() = listOf(
-        CryptoCardItem(CryptoAnimationView.MYST, R.raw.myst_animation, true),
-        CryptoCardItem(CryptoAnimationView.BTC, R.raw.btc_animation),
-        CryptoCardItem(CryptoAnimationView.ETH, R.raw.eth_animation),
-        CryptoCardItem(CryptoAnimationView.LTC, R.raw.ltc_animation),
-        CryptoCardItem(CryptoAnimationView.DAI, R.raw.dai_animation),
-        CryptoCardItem(CryptoAnimationView.T, R.raw.t_animation),
-        CryptoCardItem(CryptoAnimationView.DOGE, R.raw.doge_animation)
+        CryptoCardItem(CryptoAnimationView.MYST, false, R.raw.myst_animation, true),
+        CryptoCardItem(CryptoAnimationView.BTC, true, R.raw.btc_animation),
+        CryptoCardItem(CryptoAnimationView.ETH, false, R.raw.eth_animation),
+        CryptoCardItem(CryptoAnimationView.LTC, true, R.raw.ltc_animation),
+        CryptoCardItem(CryptoAnimationView.DAI, false, R.raw.dai_animation),
+        CryptoCardItem(CryptoAnimationView.T, false, R.raw.t_animation),
+        CryptoCardItem(CryptoAnimationView.DOGE, false, R.raw.doge_animation)
     )
 }

@@ -48,8 +48,10 @@ class FilterActivity : BaseActivity() {
 
     private fun getBundleArguments() {
         binding.countryName.text = getString(R.string.manual_connect_all_countries)
-        intent.extras?.let {
-            val countryCode = it.getString(COUNTRY_CODE_KEY)
+        val bundle = intent.extras
+        if (bundle != null) {
+            val countryCode = bundle.getString(COUNTRY_CODE_KEY)
+            viewModel.countryCode = countryCode
             Countries.values[countryCode]?.image?.let { flagUrl ->
                 Glide.with(this)
                     .load(flagUrl)
@@ -59,11 +61,30 @@ class FilterActivity : BaseActivity() {
             Countries.values[countryCode]?.name?.let { countryName ->
                 binding.countryName.text = countryName
             }
-            it.getParcelable<PresetFilter>(FILTER_KEY)?.let { filter ->
-                filterNodes(filter.filterId, countryCode ?: ALL_COUNTRY_CODE)
-                filter.title?.let { filterTitle ->
+            bundle.getParcelable<PresetFilter>(FILTER_KEY)?.let { presetFilter ->
+                viewModel.filter = presetFilter
+                filterNodes(presetFilter.filterId, countryCode ?: ALL_COUNTRY_CODE)
+                presetFilter.title?.let { filterTitle ->
                     binding.nodesTitle.text = filterTitle
                 }
+            }
+        } else {
+            val countryCode = viewModel.countryCode
+            Countries.values[countryCode]?.image?.let { flagUrl ->
+                Glide.with(this)
+                    .load(flagUrl)
+                    .circleCrop()
+                    .into(binding.countryFlag)
+            }
+            Countries.values[countryCode]?.name?.let { countryName ->
+                binding.countryName.text = countryName
+            }
+            val filter = viewModel.filter
+            filter?.title?.let { filterTitle ->
+                binding.nodesTitle.text = filterTitle
+            }
+            viewModel.cacheProposals?.let { proposals ->
+                nodeListAdapter.replaceAll(proposals)
             }
         }
     }

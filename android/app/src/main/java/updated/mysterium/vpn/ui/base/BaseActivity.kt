@@ -172,7 +172,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun balanceRunningOutPopUp() {
         if (insufficientFoundsDialog == null) {
             val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
-            insufficientFoundsDialog = createPopUp(bindingPopUp.root, true)
+            insufficientFoundsDialog = createPopUp(bindingPopUp.root, false)
             bindingPopUp.topUpButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null

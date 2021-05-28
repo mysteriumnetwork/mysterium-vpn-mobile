@@ -70,12 +70,12 @@ object Modules {
         single {
             MenuViewModel(get())
         }
+        single {
+            FilterViewModel(get())
+        }
 
         viewModel {
             SplashViewModel(get())
-        }
-        viewModel {
-            FilterViewModel(get())
         }
         viewModel {
             SearchViewModel()
