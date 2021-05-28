@@ -117,7 +117,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val intent = if (
             connectionState == ConnectionState.CONNECTED ||
             connectionState == ConnectionState.CONNECTING ||
-            connectionState == ConnectionState.ONHOLD
+            connectionState == ConnectionState.ON_HOLD
         ) {
             Intent(this, ConnectionActivity::class.java)
         } else {
@@ -143,7 +143,7 @@ abstract class BaseActivity : AppCompatActivity() {
         })
         baseViewModel.connectionState.observe(this, {
             connectionState = it
-            if (it == ConnectionState.CONNECTED || it == ConnectionState.ONHOLD) {
+            if (it == ConnectionState.CONNECTED || it == ConnectionState.ON_HOLD) {
                 isHintAlreadyShown()
                 protectedConnection()
             } else {

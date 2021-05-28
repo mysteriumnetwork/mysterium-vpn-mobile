@@ -8,10 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.common.inline.safeValueOf
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.util.*
 
 class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -37,7 +35,7 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getCurrentState() = liveDataResult {
         val status = connectionUseCase.status()
-        safeValueOf<ConnectionState>(status.state.toUpperCase(Locale.ROOT))
+        ConnectionState.from(status.state)
     }
 
     fun initConnectionListener() {
@@ -46,9 +44,8 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         viewModelScope.launch(handler) {
             connectionUseCase.connectionStatusCallback {
-                safeValueOf<ConnectionState>(it.toUpperCase(Locale.ROOT))?.let { state ->
-                    _connectionState.postValue(state)
-                }
+                val state = ConnectionState.from(it)
+                _connectionState.postValue(state)
             }
         }
     }

@@ -8,8 +8,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import updated.mysterium.vpn.common.inline.safeValueOf
-import updated.mysterium.vpn.common.languages.LanguagesUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import java.util.*
@@ -51,9 +49,8 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun checkCurrentConnection() {
         viewModelScope.launch {
             val status = connectionUseCase.status()
-            safeValueOf<ConnectionState>(status.state.toUpperCase(Locale.ROOT))?.let { state ->
-                _connectionState.postValue(state)
-            }
+            val state = ConnectionState.from(status.state)
+            _connectionState.postValue(state)
         }
     }
 
@@ -112,9 +109,8 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private fun connectionListener() {
         viewModelScope.launch {
             connectionUseCase.connectionStatusCallback {
-                safeValueOf<ConnectionState>(it.toUpperCase(Locale.ROOT))?.let { state ->
-                    _connectionState.postValue(state)
-                }
+                val state = ConnectionState.from(it)
+                _connectionState.postValue(state)
             }
         }
     }

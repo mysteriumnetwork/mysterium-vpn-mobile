@@ -172,7 +172,7 @@ class ConnectionActivity : BaseActivity() {
                 binding.connectionState.showDisconnectingState()
                 checkDisconnectingReason()
             }
-            ConnectionState.ONHOLD -> {
+            ConnectionState.ON_HOLD -> {
                 loadIpAddress()
                 inflateConnectedCardView()
             }

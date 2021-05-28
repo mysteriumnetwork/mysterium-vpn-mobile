@@ -9,7 +9,6 @@ import kotlinx.coroutines.*
 import mysterium.ConnectRequest
 import mysterium.GetBalanceRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.common.inline.safeValueOf
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
@@ -135,10 +134,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun updateCurrentConnectionStatus() = liveDataResult {
         val status = connectionUseCase.status()
-        val connectionModel = safeValueOf<ConnectionState>(status.state.toUpperCase(Locale.ROOT))
-        connectionModel?.let {
-            _connectionState.postValue(it)
-        }
+        val connectionModel = ConnectionState.from(status.state)
+        _connectionState.postValue(connectionModel)
         connectionModel
     }
 
@@ -175,14 +172,13 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             updateStatistic(it)
         }
         connectionUseCase.connectionStatusCallback {
-            safeValueOf<ConnectionState>(it.toUpperCase(Locale.ROOT))?.let { connectionStateModel ->
-                if (connectionStateModel == ConnectionState.NOTCONNECTED) {
-                    coreService?.setDeferredNode(null)
-                    coreService?.setActiveProposal(null)
-                    coreService?.stopForeground()
-                }
-                _connectionState.postValue(connectionStateModel)
+            val connectionStateModel = ConnectionState.from(it)
+            if (connectionStateModel == ConnectionState.NOTCONNECTED) {
+                coreService?.setDeferredNode(null)
+                coreService?.setActiveProposal(null)
+                coreService?.stopForeground()
             }
+            _connectionState.postValue(connectionStateModel)
         }
     }
 
@@ -237,7 +233,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectIfConnectedNode() {
-        if (_connectionState.value == ConnectionState.CONNECTED) {
+        if (
+            _connectionState.value == ConnectionState.CONNECTED ||
+            _connectionState.value == ConnectionState.ON_HOLD
+        ) {
             disconnectNode()
         }
     }
