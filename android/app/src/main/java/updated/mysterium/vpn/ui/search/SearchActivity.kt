@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterAdapter
 
 class SearchActivity : BaseActivity() {
@@ -50,15 +48,7 @@ class SearchActivity : BaseActivity() {
             finish()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = if (connectionState == ConnectionState.CONNECTED) {
-                Intent(this, ConnectionActivity::class.java)
-            } else {
-                Intent(this, HomeSelectionActivity::class.java)
-            }
-            intent.apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToConnectionOrHome()
         }
         binding.editText.addTextChangedListener {
             viewModel.search(it.toString())

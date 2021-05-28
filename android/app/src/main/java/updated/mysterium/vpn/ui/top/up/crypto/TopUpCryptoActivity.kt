@@ -7,12 +7,9 @@ import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpCryptoBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
 
@@ -59,16 +56,7 @@ class TopUpCryptoActivity : BaseActivity() {
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
-            val intent = if (connectionState == ConnectionState.CONNECTED) {
-                Intent(this, ConnectionActivity::class.java)
-            } else {
-                Intent(this, HomeSelectionActivity::class.java)
-            }
-            intent.apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
-            finish()
+            navigateToConnectionOrHome()
         }
         binding.confirmButton.setOnClickListener {
             val cryptoName = topUpAdapter.getSelectedValue()

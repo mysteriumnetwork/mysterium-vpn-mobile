@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.monitoring
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -12,18 +11,15 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import updated.mysterium.vpn.common.data.UnitFormatter
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMonitoringBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.DataUtil
+import updated.mysterium.vpn.common.data.UnitFormatter
 import updated.mysterium.vpn.common.date.DateUtil
 import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.session.Session
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import java.util.*
 
 class MonitoringActivity : BaseActivity() {
@@ -66,15 +62,7 @@ class MonitoringActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = if (connectionState == ConnectionState.CONNECTED) {
-                Intent(this, ConnectionActivity::class.java)
-            } else {
-                Intent(this, HomeSelectionActivity::class.java)
-            }
-            intent.apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToConnectionOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

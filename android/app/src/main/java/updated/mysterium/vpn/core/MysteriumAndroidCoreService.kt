@@ -146,17 +146,13 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                     currentState = state
                     if (previousState != currentState) {
                         when (currentState) {
-                            ConnectionState.ON_HOLD -> {
+                            ConnectionState.ONHOLD -> {
                                 makeConnectionPushNotification()
                             }
                             ConnectionState.DISCONNECTING -> {
                                 if (!isDisconnectManual) {
                                     makeConnectionPushNotification()
                                 }
-                                vpnTimeSpent?.let { time ->
-                                    analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
-                                }
-                                vpnTimeSpent = null
                             }
                             ConnectionState.CONNECTED -> {
                                 analyticWrapper.track(AnalyticEvent.NEW_SESSION)
@@ -165,6 +161,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                             }
                             ConnectionState.NOTCONNECTED -> {
                                 appNotificationManager.hideStatisticsNotification()
+                                vpnTimeSpent?.let { time ->
+                                    analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
+                                }
+                                vpnTimeSpent = null
                                 isDisconnectManual = false
                             }
                         }

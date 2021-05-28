@@ -99,12 +99,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePopUpShown()) {
                     firstWarningBalanceShown()
                     _balanceRunningOut.postValue(true)
-                }
-                if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
+                } else if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePopUpShown()) {
                     secondWarningBalanceShown()
                     _balanceRunningOut.postValue(false)
-                }
-                if (it == 0.0 && balanceUseCase.isMinBalancePushShown()) {
+                } else if (it == 0.0 && balanceUseCase.isMinBalancePushShown()) {
                     _insufficientFunds.postValue(Unit)
                 }
             }

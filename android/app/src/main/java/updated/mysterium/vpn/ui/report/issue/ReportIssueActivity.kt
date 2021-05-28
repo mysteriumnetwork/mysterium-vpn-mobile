@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.report.issue
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -11,10 +10,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityReportIssueBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.isEmail
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 
 class ReportIssueActivity : BaseActivity() {
 
@@ -49,15 +45,7 @@ class ReportIssueActivity : BaseActivity() {
             checkCorrectInputData()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            val intent = if (connectionState == ConnectionState.CONNECTED) {
-                Intent(this, ConnectionActivity::class.java)
-            } else {
-                Intent(this, HomeSelectionActivity::class.java)
-            }
-            intent.apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToConnectionOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

@@ -34,7 +34,9 @@ class Notifications(private val activity: Activity) {
                 Log.i(TAG, Pushy.getDeviceCredentials(activity.applicationContext).token)
             }
         } else {
-            Pushy.getDeviceCredentials(activity.applicationContext).token
+            afterRegistrationAction.invoke(
+                Pushy.getDeviceCredentials(activity.applicationContext).token
+            )
         }
     }
 }

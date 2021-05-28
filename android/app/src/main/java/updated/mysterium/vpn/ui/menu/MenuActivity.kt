@@ -14,12 +14,9 @@ import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.common.languages.LanguagesUtil
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.monitoring.MonitoringActivity
 import updated.mysterium.vpn.ui.profile.ProfileActivity
 import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
@@ -168,10 +165,10 @@ class MenuActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            navigateToHome()
+            navigateToConnectionOrHome()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToHome()
+            navigateToConnectionOrHome()
         }
         binding.helpButton.setOnClickListener {
             Intercom.client().displayMessenger()
@@ -185,7 +182,7 @@ class MenuActivity : BaseActivity() {
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
                 0 -> menuItem.onItemClickListener = {
-                    navigateToHome()
+                    navigateToConnectionOrHome()
                 }
                 1 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, WalletActivity::class.java))
@@ -204,20 +201,5 @@ class MenuActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    private fun navigateToHome() {
-        val intent = if (
-            connectionState == ConnectionState.CONNECTED ||
-            connectionState == ConnectionState.CONNECTING
-        ) {
-            Intent(this, ConnectionActivity::class.java)
-        } else {
-            Intent(this, HomeSelectionActivity::class.java)
-        }
-        intent.apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
     }
 }

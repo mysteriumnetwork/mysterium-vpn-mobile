@@ -51,6 +51,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         private set
     var identity: IdentityModel? = null
         private set
+
     private lateinit var appNotificationManager: AppNotificationManager
     private var coreService: MysteriumCoreService? = null
     private val _connectionException = SingleLiveEvent<Exception>()
