@@ -83,6 +83,16 @@
         app:layout_constraintTop_toTopOf="@+id/countryName"
         tools:ignore="ContentDescription" />
 
+    <include
+        android:id="@+id/filtersLayout"
+        layout="@layout/filters_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countryFlag" />
+
     <TextView
         android:id="@+id/nodeTextView"
         style="@style/TextAppearance.BodyMedium"
@@ -93,7 +103,7 @@
         android:text="@string/manual_connect_node"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintStart_toStartOf="@+id/nodesRecyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/countryName" />
+        app:layout_constraintTop_toBottomOf="@+id/filtersLayout" />
 
     <TextView
         android:id="@+id/priceTextView"
@@ -105,7 +115,7 @@
         android:text="@string/manual_connect_price"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintEnd_toStartOf="@+id/qualityTextView"
-        app:layout_constraintTop_toBottomOf="@+id/countryName" />
+        app:layout_constraintTop_toBottomOf="@+id/filtersLayout" />
 
     <TextView
         android:id="@+id/qualityTextView"
@@ -117,7 +127,7 @@
         android:text="@string/manual_connect_quality"
         android:textColor="@color/manual_connect_value_white"
         app:layout_constraintEnd_toEndOf="@id/nodesRecyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/countryName" />
+        app:layout_constraintTop_toBottomOf="@+id/filtersLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nodesRecyclerView"

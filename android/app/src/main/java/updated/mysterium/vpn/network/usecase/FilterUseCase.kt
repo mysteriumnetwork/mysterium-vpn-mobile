@@ -10,15 +10,15 @@ import updated.mysterium.vpn.model.manual.connect.SystemPreset
 
 class FilterUseCase(private val nodeRepository: NodeRepository) {
 
-    private companion object {
+    companion object {
         const val ALL_NODES_FILTER_ID = 0
-        val selectedResources = listOf(
+        private val selectedResources = listOf(
             R.drawable.all_filters_selected,
             R.drawable.media_filters_selected,
             R.drawable.browsing_filters_selected,
             R.drawable.torrenting_filters_selected
         )
-        val unselectedResources = listOf(
+        private val unselectedResources = listOf(
             R.drawable.all_filters_unselected,
             R.drawable.media_filters_unselected,
             R.drawable.browsing_filters_unselected,
