@@ -10,6 +10,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -67,11 +68,19 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        allNodesViewModel.proposals.observe(this, {
+        allNodesViewModel.proposals.observe(this, { countries ->
             binding.loader.visibility = View.INVISIBLE
             binding.filterCardView.visibility = View.VISIBLE
             binding.countriesCardView.visibility = View.VISIBLE
-            allNodesAdapter.replaceAll(it)
+            val selectedItem = countries.firstOrNull { country ->
+                country.isSelected
+            }
+            selectedItem?.changeSelectionState()
+            val savedCountry = countries?.firstOrNull { country ->
+                country.countryCode == viewModel.countryCode
+            }
+            savedCountry?.changeSelectionState()
+            allNodesAdapter.replaceAll(countries)
         })
         viewModel.connectionState.observe(this, {
             handleConnectionState(it)
@@ -89,12 +98,15 @@ class HomeSelectionActivity : BaseActivity() {
             val intent = Intent(this, FilterActivity::class.java).apply {
                 val countryCode = if (allNodesAdapter.selectedItem?.countryCode != ALL_COUNTRY_CODE) {
                     allNodesAdapter.selectedItem?.countryCode?.toLowerCase(Locale.ROOT)
+                        ?: ALL_COUNTRY_CODE
                 } else {
                     ALL_COUNTRY_CODE
                 }
                 putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
                 val filter = filtersAdapter.selectedItem
                 putExtra(FilterActivity.FILTER_KEY, filter)
+                viewModel.countryCode = countryCode
+                viewModel.filterId = filter?.filterId
             }
             startActivity(intent)
         }
@@ -138,12 +150,26 @@ class HomeSelectionActivity : BaseActivity() {
         }
         viewModel.getSystemPresets().observe(this, {
             it.onSuccess { filters ->
+                viewModel.filterId?.let { savedFilterId ->
+                    applySavedFilter(savedFilterId, filters)
+                }
                 filtersAdapter.replaceAll(filters)
             }
             it.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         })
+    }
+
+    private fun applySavedFilter(filterId: Int, filters: List<PresetFilter>) {
+        filters.forEach { presetFilter ->
+            if (presetFilter.isSelected) {
+                presetFilter.changeSelectionState()
+            }
+            if (presetFilter.filterId == filterId) {
+                presetFilter.changeSelectionState()
+            }
+        }
     }
 
     private fun initCountriesList() {

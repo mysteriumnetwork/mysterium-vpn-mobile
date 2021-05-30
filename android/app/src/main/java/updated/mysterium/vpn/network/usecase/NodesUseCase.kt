@@ -15,9 +15,9 @@ class NodesUseCase(
     private val nodeDao: NodeDao
 ) {
 
-    private companion object {
-        const val SERVICE_TYPE = "wireguard"
+    companion object {
         const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
+        private const val SERVICE_TYPE = "wireguard"
     }
 
     fun initDeferredNode(deferredNode: DeferredNode) {
