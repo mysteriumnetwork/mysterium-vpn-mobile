@@ -15,6 +15,7 @@ import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.search.SearchActivity
 import java.util.*
 
@@ -39,6 +40,10 @@ class FilterActivity : BaseActivity() {
         getBundleArguments()
         configure()
         bindsActions()
+    }
+
+    override fun onBackPressed() {
+        navigateToHomeSelection()
     }
 
     override fun showConnectionHint() {
@@ -96,7 +101,11 @@ class FilterActivity : BaseActivity() {
 
     private fun bindsActions() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            finish()
+            if (isTaskRoot) {
+                navigateToHomeSelection()
+            } else {
+                finish()
+            }
         }
         binding.manualConnectToolbar.onRightButtonClicked {
             navigateToSearch()
@@ -108,7 +117,7 @@ class FilterActivity : BaseActivity() {
 
     private fun initProposalListRecycler() {
         nodeListAdapter.onNodeClickedListener = {
-            navigateToHome(it)
+            navigateToHomeConnection(it)
         }
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@FilterActivity)
@@ -139,10 +148,18 @@ class FilterActivity : BaseActivity() {
         )
     }
 
-    private fun navigateToHome(proposal: Proposal) {
-        val intent = Intent(this, ConnectionActivity::class.java)
-        intent.putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun navigateToHomeSelection() {
+        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToHomeConnection(proposal: Proposal) {
+        val intent = Intent(this, ConnectionActivity::class.java).apply {
+            putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         startActivity(intent)
     }
 
