@@ -73,6 +73,9 @@ object Modules {
         single {
             FilterViewModel(get())
         }
+        single {
+            HomeSelectionViewModel(get())
+        }
 
         viewModel {
             SplashViewModel(get())
@@ -130,9 +133,6 @@ object Modules {
         }
         viewModel {
             FavouritesViewModel(get())
-        }
-        viewModel {
-            HomeSelectionViewModel(get())
         }
     }
 

@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.network.usecase.NodesUseCase
 
 class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -20,6 +21,8 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
+    var countryCode: String = NodesUseCase.ALL_COUNTRY_CODE
+    var filterId: Int? = null
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val connectionUseCase = useCaseProvider.connection()
     private val locationUseCase = useCaseProvider.location()
