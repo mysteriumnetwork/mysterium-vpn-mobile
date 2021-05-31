@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.base
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,12 +14,12 @@ import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -37,9 +38,17 @@ abstract class BaseActivity : AppCompatActivity() {
         subscribeViewModel()
     }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleHelper.onAttach(
+                context = newBase,
+                currentLanguage = baseViewModel.getUserCurrentLanguageCode()
+            )
+        )
+    }
+
     override fun onResume() {
         super.onResume()
-        checkUserLocale()
         baseViewModel.checkCurrentConnection()
     }
 
@@ -183,14 +192,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 insufficientFoundsDialog = null
             }
             insufficientFoundsDialog?.show()
-        }
-    }
-
-    private fun checkUserLocale() {
-        baseViewModel.initUserLocaleLanguage()?.let { languageForApply ->
-            Locale.setDefault(Locale(languageForApply))
-            resources.configuration.setLocale(Locale(languageForApply))
-            resources.updateConfiguration(resources.configuration, resources.displayMetrics)
         }
     }
 }

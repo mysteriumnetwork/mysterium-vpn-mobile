@@ -68,9 +68,6 @@ object Modules {
             AnalyticWrapper(androidContext())
         }
         single {
-            MenuViewModel(get())
-        }
-        single {
             FilterViewModel(get())
         }
         single {
@@ -133,6 +130,9 @@ object Modules {
         }
         viewModel {
             FavouritesViewModel(get())
+        }
+        viewModel {
+            MenuViewModel(get())
         }
     }
 

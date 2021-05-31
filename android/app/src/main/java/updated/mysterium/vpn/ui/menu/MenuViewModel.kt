@@ -7,19 +7,11 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 class MenuViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val settingsUseCase = useCaseProvider.settings()
-    private var isFirstLanguageChanging: Boolean? = null
+    private var isFirstLanguageChanging: Boolean = false
 
-    fun isFirstLanguageChanging() = isFirstLanguageChanging == true
-
-    fun userManualSelect() {
-        if (isFirstLanguageChanging == null) {
-            isFirstLanguageChanging = true
-        } else if (isFirstLanguageChanging == true) {
-            isFirstLanguageChanging = false
-        }
+    fun userManualSelect(isApplied: Boolean) {
+        isFirstLanguageChanging = !isApplied
     }
-
-    fun getUserLanguageCode() = settingsUseCase.getUserSelectedLanguage()
 
     fun getUserLanguageIndex(): Int {
         val language = settingsUseCase.getUserSelectedLanguage()

@@ -1,8 +1,8 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.ResidentCountryUpdateRequest
-import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.common.languages.LanguagesUtil
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
@@ -22,16 +22,6 @@ class SettingsUseCase(
         )
     }
 
-    fun userInitialCountryLanguage(countryCode: String) = if (getUserSelectedLanguage() == null) {
-        sharedPreferencesManager.setPreferenceValue(
-            key = SharedPreferencesList.LANGUAGE,
-            value = countryCode
-        )
-        countryCode
-    } else {
-        getUserSelectedLanguage() ?: LanguagesUtil.getUserDefaultLanguage()
-    }
-
     fun userNewCountryLanguage(countryCode: String) {
         sharedPreferencesManager.setPreferenceValue(
             key = SharedPreferencesList.LANGUAGE,
@@ -41,7 +31,7 @@ class SettingsUseCase(
 
     fun getUserSelectedLanguage() = sharedPreferencesManager.getStringPreferenceValue(
         SharedPreferencesList.LANGUAGE
-    )
+    ) ?: LanguagesUtil.DEFAULT_LANGUAGE
 
     fun getSavedDns() = sharedPreferencesManager.getStringPreferenceValue(SharedPreferencesList.DNS)
 

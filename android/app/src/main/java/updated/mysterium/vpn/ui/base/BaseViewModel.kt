@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.util.*
 
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -80,7 +79,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun initUserLocaleLanguage() = settingsUseCase.getUserSelectedLanguage()
+    fun getUserCurrentLanguageCode() = settingsUseCase.getUserSelectedLanguage()
 
     private fun firstWarningBalanceShown() {
         balanceUseCase.balancePopUpShown()
