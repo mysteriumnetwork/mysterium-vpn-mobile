@@ -30,7 +30,7 @@ class SharedPreferencesManager(private val context: Context) {
 
     fun getBoolPreferenceValue(key: SharedPreferencesList) = context
         .getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
-        .getBoolean(key.prefName, true)
+        .getBoolean(key.prefName, false)
 
     fun removePreferenceValue(key: SharedPreferencesList) {
         context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)

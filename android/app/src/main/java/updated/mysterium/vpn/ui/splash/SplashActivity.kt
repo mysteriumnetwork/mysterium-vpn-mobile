@@ -96,6 +96,7 @@ class SplashActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
+            establishConnectionListeners()
             navigateForward()
         })
     }
