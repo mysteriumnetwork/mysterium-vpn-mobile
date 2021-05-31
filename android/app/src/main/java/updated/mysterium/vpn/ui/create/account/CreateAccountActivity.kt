@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCreateAccountBinding
 import network.mysterium.vpn.databinding.PopUpAccountPasswordBinding
@@ -121,11 +122,11 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun showPasswordWrongState() {
+        bindingPasswordPopUp.passwordEditText.text?.clear()
+        bindingPasswordPopUp.passwordEditText.clearFocus()
         bindingPasswordPopUp.passwordEditText.background = ContextCompat.getDrawable(
             this, R.drawable.shape_wrong_password
         )
-        bindingPasswordPopUp.passwordEditText.text?.clear()
-        bindingPasswordPopUp.passwordEditText.clearFocus()
         bindingPasswordPopUp.passwordEditText.hint = ""
         bindingPasswordPopUp.errorText.visibility = View.VISIBLE
     }
@@ -172,14 +173,20 @@ class CreateAccountActivity : BaseActivity() {
         }
         bindingPasswordPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                bindingPasswordPopUp.passwordEditText.background = ContextCompat.getDrawable(
-                    this, R.drawable.shape_password_field
-                )
-                bindingPasswordPopUp.passwordEditText.text?.clear()
-                bindingPasswordPopUp.errorText.visibility = View.GONE
                 bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
+                clearErrorState(bindingPasswordPopUp)
             }
         }
+        bindingPasswordPopUp.passwordEditText.doOnTextChanged { _, _, _, _ ->
+            clearErrorState(bindingPasswordPopUp)
+        }
         dialogPasswordPopup.show()
+    }
+
+    private fun clearErrorState(bindingPopUp: PopUpAccountPasswordBinding) {
+        bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
+            this, R.drawable.shape_password_field
+        )
+        bindingPopUp.errorText.visibility = View.GONE
     }
 }
