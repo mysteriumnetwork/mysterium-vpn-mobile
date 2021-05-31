@@ -270,7 +270,7 @@ class ConnectionActivity : BaseActivity() {
                 result.onFailure {
                     Log.e(TAG, it.localizedMessage ?: it.toString())
                 }
-                navigateToSelectNode(clearTasks = true)
+                backToFilter()
             })
         }
         binding.selectAnotherNodeButton.setOnClickListener {
@@ -449,7 +449,11 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun backToFilter() {
-        startActivity(Intent(this, FilterActivity::class.java))
+        val intent = Intent(this, FilterActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 
     private fun navigateToMenu() {
