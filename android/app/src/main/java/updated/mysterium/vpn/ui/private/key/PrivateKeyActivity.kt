@@ -11,7 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import updated.mysterium.vpn.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
+import androidx.core.widget.doOnTextChanged
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPrivateKeyBinding
 import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
@@ -20,6 +20,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.notification.AppNotificationManager
+import updated.mysterium.vpn.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 
@@ -82,29 +83,35 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
                 downloadKey(passphrase)
                 dialog.dismiss()
             } else {
+                bindingPopUp.passwordEditText.text?.clear()
+                bindingPopUp.passwordEditText.clearFocus()
                 bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
                     this, R.drawable.shape_wrong_password
                 )
-                bindingPopUp.passwordEditText.text?.clear()
-                bindingPopUp.passwordEditText.clearFocus()
                 bindingPopUp.errorText.visibility = View.VISIBLE
                 bindingPopUp.passwordEditText.hint = ""
             }
         }
         bindingPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
-                    this, R.drawable.shape_password_field
-                )
-                bindingPopUp.passwordEditText.text?.clear()
                 bindingPopUp.passwordEditText.hint = getString(R.string.pop_up_private_key_hint)
-                bindingPopUp.errorText.visibility = View.GONE
+                clearErrorState(bindingPopUp)
             }
+        }
+        bindingPopUp.passwordEditText.doOnTextChanged { _, _, _, _ ->
+            clearErrorState(bindingPopUp)
         }
         bindingPopUp.closeButton.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun clearErrorState(bindingPopUp: PopUpDownloadKeyBinding) {
+        bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
+            this, R.drawable.shape_password_field
+        )
+        bindingPopUp.errorText.visibility = View.GONE
     }
 
     private fun downloadKey(passphrase: String) {
