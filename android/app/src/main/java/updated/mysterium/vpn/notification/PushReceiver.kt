@@ -14,6 +14,7 @@ import me.pushy.sdk.Pushy
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
@@ -29,9 +30,6 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         const val PUSHY_CONNECTION_ACTION = "android.intent.action.PUSHY_CONNECTION_ACTION"
         const val NOTIFICATION_TITLE = "title"
         const val NOTIFICATION_MESSAGE = "message"
-        private const val PUSHY_NOTIFICATION_ID = 1
-        private const val BALANCE_NOTIFICATION_ID = 2
-        private const val CONNECTION_NOTIFICATION_ID = 3
     }
 
     private val useCaseProvider: UseCaseProvider by inject()
@@ -62,7 +60,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         builder.setContentIntent(resultPendingIntent)
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
-        notificationManager.notify(BALANCE_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NotificationChannels.BALANCE_NOTIFICATION_ID, builder.build())
     }
 
     private fun showConnectionPush(context: Context, intent: Intent) {
@@ -75,7 +73,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         builder.setContentIntent(resultPendingIntent)
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
-        notificationManager.notify(CONNECTION_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NotificationChannels.CONNECTION_NOTIFICATION_ID, builder.build())
     }
 
     private fun showMarketingPush(context: Context, intent: Intent) {
@@ -88,7 +86,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         builder.setContentIntent(resultPendingIntent)
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
-        notificationManager.notify(PUSHY_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NotificationChannels.PUSHY_NOTIFICATION_ID, builder.build())
     }
 
     private fun createNotification(intent: Intent, context: Context): NotificationCompat.Builder {

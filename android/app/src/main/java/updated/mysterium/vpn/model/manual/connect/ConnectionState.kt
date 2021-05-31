@@ -5,7 +5,8 @@ enum class ConnectionState(val state: String) {
     CONNECTING("Connecting"),
     CONNECTED("Connected"),
     DISCONNECTING("Disconnecting"),
-    ON_HOLD("OnHold");
+    ON_HOLD("OnHold"),
+    IP_NOT_CHANGED("IPNotChanged");
 
     companion object {
 
