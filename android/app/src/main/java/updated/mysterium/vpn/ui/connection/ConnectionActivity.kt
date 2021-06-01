@@ -178,6 +178,7 @@ class ConnectionActivity : BaseActivity() {
                 inflateConnectedCardView()
             }
         }
+        updateStatusTitle(connectionState)
     }
 
     private fun checkAbilityToConnect() {
@@ -199,6 +200,7 @@ class ConnectionActivity : BaseActivity() {
     private fun checkCurrentStatus() {
         viewModel.updateCurrentConnectionStatus().observe(this, { result ->
             result.onSuccess {
+                updateStatusTitle(it)
                 if (it == ConnectionState.CONNECTED || it == ConnectionState.CONNECTING) {
                     getProposal()
                 }
@@ -209,6 +211,26 @@ class ConnectionActivity : BaseActivity() {
                 // TODO("Implement error handling")
             }
         })
+    }
+
+    private fun updateStatusTitle(connectionState: ConnectionState) {
+        when (connectionState) {
+            ConnectionState.NOTCONNECTED -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_disconnect)
+            }
+            ConnectionState.CONNECTING -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_connecting)
+            }
+            ConnectionState.CONNECTED -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_connected)
+            }
+            ConnectionState.ON_HOLD -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_on_hold)
+            }
+            else -> {
+                binding.titleTextView.text = connectionState.state
+            }
+        }
     }
 
     private fun checkDisconnectingReason() {

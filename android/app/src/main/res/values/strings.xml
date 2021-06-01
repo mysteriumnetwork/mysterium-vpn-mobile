@@ -35,6 +35,7 @@
     <string name="manual_connect_cancel">Cancel and choose another node</string>
     <string name="manual_connect_connecting">Connecting…</string>
     <string name="manual_connect_connected">Connected</string>
+    <string name="manual_connect_on_hold">On Hold</string>
     <string name="manual_connect_disconnect">Disconnect</string>
     <string name="manual_connect_disconnecting">Disconnecting</string>
     <string name="manual_connect_connecting_title">Manual connect</string>
