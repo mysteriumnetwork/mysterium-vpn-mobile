@@ -145,9 +145,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 currentState = state
                 if (previousState != currentState) {
                     when (currentState) {
-                        ConnectionState.ON_HOLD -> {
-                            makeConnectionPushNotification()
-                        }
                         ConnectionState.DISCONNECTING -> {
                             if (!isDisconnectManual) {
                                 makeConnectionPushNotification()

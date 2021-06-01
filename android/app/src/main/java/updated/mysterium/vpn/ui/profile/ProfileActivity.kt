@@ -8,6 +8,8 @@ import android.content.ClipboardManager
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -19,6 +21,7 @@ import network.mysterium.vpn.databinding.ActivityProfileBinding
 import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
+import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -80,32 +83,62 @@ class ProfileActivity : BaseActivity() {
     private fun showDownloadKeyPopUp() {
         val bindingPopUp = PopUpDownloadKeyBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, true)
-        bindingPopUp.downloadButton.setOnClickListener {
-            val passphrase = bindingPopUp.passwordEditText.text.toString()
-            if (passphrase.isValidPassword()) {
-                downloadKey(passphrase)
-                dialog.dismiss()
-            } else {
-                bindingPopUp.passwordEditText.text?.clear()
-                bindingPopUp.passwordEditText.clearFocus()
-                bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
-                    this, R.drawable.shape_wrong_password
-                )
-                bindingPopUp.errorText.visibility = View.VISIBLE
-                bindingPopUp.passwordEditText.hint = ""
+        var isPasswordVisible = false
+        bindingPopUp.apply {
+            downloadButton.setOnClickListener {
+                val passphrase = bindingPopUp.passwordEditText.text.toString()
+                if (passphrase.isValidPassword()) {
+                    downloadKey(passphrase)
+                    dialog.dismiss()
+                } else {
+                    bindingPopUp.passwordEditText.text?.clear()
+                    passwordEditText.clearFocus()
+                    passwordEditText.hideKeyboard()
+                    bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
+                        this@ProfileActivity, R.drawable.shape_wrong_password
+                    )
+                    bindingPopUp.errorText.visibility = View.VISIBLE
+                    bindingPopUp.passwordEditText.hint = ""
+                }
             }
-        }
-        bindingPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bindingPopUp.passwordEditText.hint = getString(R.string.pop_up_private_key_hint)
+            passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    bindingPopUp.passwordEditText.hint = getString(R.string.pop_up_private_key_hint)
+                    clearErrorState(bindingPopUp)
+                }
+            }
+            passwordEditText.doOnTextChanged { text, _, _, _ ->
+                when {
+                    text.isNullOrEmpty() -> {
+                        bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
+                        bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
+                    }
+                    isPasswordVisible -> {
+                        bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
+                        bindingPopUp.hidePasswordImageView.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        bindingPopUp.showPasswordImageView.visibility = View.VISIBLE
+                        bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
+                    }
+                }
                 clearErrorState(bindingPopUp)
             }
-        }
-        bindingPopUp.passwordEditText.doOnTextChanged { _, _, _, _ ->
-            clearErrorState(bindingPopUp)
-        }
-        bindingPopUp.closeButton.setOnClickListener {
-            dialog.dismiss()
+            closeButton.setOnClickListener {
+                dialog.dismiss()
+            }
+            showPasswordImageView.setOnClickListener {
+                isPasswordVisible = true
+                bindingPopUp.passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
+                bindingPopUp.hidePasswordImageView.visibility = View.VISIBLE
+            }
+            hidePasswordImageView.setOnClickListener {
+                isPasswordVisible = false
+                bindingPopUp.passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                bindingPopUp.showPasswordImageView.visibility = View.VISIBLE
+                bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
+            }
         }
         dialog.show()
     }
