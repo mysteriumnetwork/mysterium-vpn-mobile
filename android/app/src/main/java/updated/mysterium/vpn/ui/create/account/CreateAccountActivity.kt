@@ -3,6 +3,8 @@ package updated.mysterium.vpn.ui.create.account
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -15,6 +17,7 @@ import network.mysterium.vpn.databinding.PopUpImportAccountBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
+import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
@@ -163,22 +166,37 @@ class CreateAccountActivity : BaseActivity() {
     private fun showPasswordPopUp() {
         bindingPasswordPopUp = PopUpAccountPasswordBinding.inflate(layoutInflater)
         dialogPasswordPopup = createPopUp(bindingPasswordPopUp.root, true)
-        bindingPasswordPopUp.applyButton.setOnClickListener {
-            privateKeyJson?.let {
-                importAccount(it, bindingPasswordPopUp.passwordEditText.text.toString())
+        bindingPasswordPopUp.apply {
+            applyButton.setOnClickListener {
+                passwordEditText.clearFocus()
+                passwordEditText.hideKeyboard()
+                privateKeyJson?.let {
+                    importAccount(it, bindingPasswordPopUp.passwordEditText.text.toString())
+                }
             }
-        }
-        bindingPasswordPopUp.closeButton.setOnClickListener {
-            dialogPasswordPopup.dismiss()
-        }
-        bindingPasswordPopUp.passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
+            closeButton.setOnClickListener {
+                dialogPasswordPopup.dismiss()
+            }
+            passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
+                    clearErrorState(bindingPasswordPopUp)
+                }
+            }
+            passwordEditText.doOnTextChanged { _, _, _, _ ->
                 clearErrorState(bindingPasswordPopUp)
             }
-        }
-        bindingPasswordPopUp.passwordEditText.doOnTextChanged { _, _, _, _ ->
-            clearErrorState(bindingPasswordPopUp)
+            showPasswordImageView.setOnClickListener {
+                bindingPasswordPopUp.passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                bindingPasswordPopUp.showPasswordImageView.visibility = View.INVISIBLE
+                bindingPasswordPopUp.hidePasswordImageView.visibility = View.VISIBLE
+
+            }
+            hidePasswordImageView.setOnClickListener {
+                bindingPasswordPopUp.passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                bindingPasswordPopUp.showPasswordImageView.visibility = View.VISIBLE
+                bindingPasswordPopUp.hidePasswordImageView.visibility = View.INVISIBLE
+            }
         }
         dialogPasswordPopup.show()
     }
