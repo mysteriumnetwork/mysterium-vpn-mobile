@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import java.util.*
 
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -40,11 +39,6 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()
     private var isInternetChecking = false
-
-    init {
-        balanceListener()
-        connectionListener()
-    }
 
     fun checkCurrentConnection() {
         viewModelScope.launch {
@@ -80,7 +74,12 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun initUserLocaleLanguage() = settingsUseCase.getUserSelectedLanguage()
+    fun getUserCurrentLanguageCode() = settingsUseCase.getUserSelectedLanguage()
+
+    fun establishListeners() {
+        balanceListener()
+        connectionListener()
+    }
 
     private fun firstWarningBalanceShown() {
         balanceUseCase.balancePopUpShown()

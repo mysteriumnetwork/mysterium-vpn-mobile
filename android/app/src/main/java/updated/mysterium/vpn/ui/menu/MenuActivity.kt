@@ -14,6 +14,7 @@ import network.mysterium.vpn.databinding.SpinnerLanguageSelectorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.common.languages.LanguagesUtil
+import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.menu.MenuItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -74,17 +75,6 @@ class MenuActivity : BaseActivity() {
         bindsAction()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (viewModel.isFirstLanguageChanging()) {
-            viewModel.getUserLanguageCode()?.let {
-                setLocale(it)
-            }
-            viewModel.userManualSelect()
-            recreate()
-        }
-    }
-
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
@@ -135,7 +125,7 @@ class MenuActivity : BaseActivity() {
                 spinnerAdapter.selectedPosition = it
                 if (isLanguageSelected) {
                     isLanguageSelected = false
-                    viewModel.userManualSelect()
+                    viewModel.userManualSelect(false)
                     recreate()
                 }
             }
@@ -158,9 +148,7 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun setLocale(languageCode: String) {
-        Locale.setDefault(Locale(languageCode))
-        resources.configuration.setLocale(Locale(languageCode))
-        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
+        LocaleHelper.setLocale(this, languageCode)
     }
 
     private fun bindsAction() {

@@ -4,7 +4,7 @@ import java.util.*
 
 object LanguagesUtil {
 
-    private const val DEFAULT_LANGUAGE = "EN"
+    const val DEFAULT_LANGUAGE = "EN"
     private val languagesList = listOf(
         "EN",
         "AR",

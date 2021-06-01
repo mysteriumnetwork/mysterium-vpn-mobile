@@ -5,20 +5,22 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
 import com.bugfender.sdk.Bugfender
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
-import updated.mysterium.vpn.core.MysteriumAndroidCoreService
-import updated.mysterium.vpn.core.MysteriumCoreService
-import updated.mysterium.vpn.common.countries.Countries
 import network.mysterium.vpn.BuildConfig
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
+import updated.mysterium.vpn.core.MysteriumAndroidCoreService
+import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.di.Modules
 
 class App : Application() {
@@ -43,6 +45,17 @@ class App : Application() {
         setUpBugfender()
         bindMysteriumService()
         analyticWrapper.track(AnalyticEvent.LOGIN)
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(onAttach(base ?: applicationContext))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        newConfig?.let {
+            onAttach(this)
+            super.onConfigurationChanged(newConfig)
+        }
     }
 
     private fun setupIntercom() {

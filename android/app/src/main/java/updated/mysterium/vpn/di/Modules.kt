@@ -68,13 +68,13 @@ object Modules {
             AnalyticWrapper(androidContext())
         }
         single {
-            MenuViewModel(get())
-        }
-        single {
             FilterViewModel(get())
         }
         single {
             HomeSelectionViewModel(get())
+        }
+        single {
+            BaseViewModel(get())
         }
 
         viewModel {
@@ -111,9 +111,6 @@ object Modules {
             TopUpPaymentViewModel(get())
         }
         viewModel {
-            BaseViewModel(get())
-        }
-        viewModel {
             SettingsViewModel(get())
         }
         viewModel {
@@ -133,6 +130,9 @@ object Modules {
         }
         viewModel {
             FavouritesViewModel(get())
+        }
+        viewModel {
+            MenuViewModel(get())
         }
     }
 

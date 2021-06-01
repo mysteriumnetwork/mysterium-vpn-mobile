@@ -72,8 +72,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var vpnTimeSpent: Float? = null // time spent for last session in minutes
 
     override fun onDestroy() {
-        super.onDestroy()
         stopMobileNode()
+        super.onDestroy()
     }
 
     override fun onRevoke() {
@@ -152,6 +152,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                             if (!isDisconnectManual) {
                                 makeConnectionPushNotification()
                             }
+                            vpnTimeSpent?.let { time ->
+                                analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
+                                vpnTimeSpent = null
+                            }
                         }
                         ConnectionState.CONNECTED -> {
                             analyticWrapper.track(AnalyticEvent.NEW_SESSION)
@@ -160,9 +164,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                         }
                         ConnectionState.NOTCONNECTED -> {
                             appNotificationManager.hideStatisticsNotification()
-                            vpnTimeSpent?.let { time ->
-                                analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
-                            }
                             vpnTimeSpent = null
                             isDisconnectManual = false
                         }

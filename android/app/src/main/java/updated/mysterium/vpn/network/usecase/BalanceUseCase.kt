@@ -31,7 +31,7 @@ class BalanceUseCase(
 
     suspend fun getWalletEquivalent(balance: Double) = nodeRepository.getWalletEquivalent(balance)
 
-    fun isBalancePopUpShown() = sharedPreferencesManager.containsPreferenceValue(
+    fun isBalancePopUpShown() = sharedPreferencesManager.getBoolPreferenceValue(
         SharedPreferencesList.BALANCE
     )
 

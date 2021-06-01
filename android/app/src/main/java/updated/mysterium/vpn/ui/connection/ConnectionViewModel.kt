@@ -15,6 +15,7 @@ import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.model.proposal.parameters.ProposalViewItem
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.statistics.StatisticsModel
@@ -226,7 +227,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             setDeferredNode(deferredNode)
             startForegroundWithNotification(
-                AppNotificationManager.STATISTIC_NOTIFICATION,
+                NotificationChannels.STATISTIC_NOTIFICATION,
                 appNotificationManager.createConnectedToVPNNotification()
             )
         }
