@@ -138,6 +138,10 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun establishConnectionListeners() {
+        baseViewModel.establishListeners()
+    }
+
     protected open fun protectedConnection() {
         connectionStateToolbar?.protectedState(true)
     }

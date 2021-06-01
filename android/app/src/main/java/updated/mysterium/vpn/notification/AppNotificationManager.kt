@@ -6,8 +6,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import network.mysterium.vpn.R
+import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 
 typealias NotificationFactory = (Context) -> Notification
 
@@ -15,10 +15,6 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
     companion object {
         const val ACTION_DISCONNECT = "DISCONNECT"
-        const val DEFAULT_NOTIFICATION_ID = 1
-        const val TOP_UP_BALANCE_NOTIFICATION_ID = 2
-        const val PRIVATE_KEY_NOTIFICATION_ID = 3
-        const val STATISTIC_NOTIFICATION = 4
     }
 
     private val statisticsChannel = "statistics"
@@ -82,41 +78,15 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .addAction(R.drawable.ic_close_black_24dp, "Disconnect", disconnectPendingIntent)
             .build()
         val statisticNotification = notificationManager.activeNotifications.find {
-            it.id == STATISTIC_NOTIFICATION
+            it.id == NotificationChannels.STATISTIC_NOTIFICATION
         }
         if (statisticNotification != null) {
-            notificationManager.notify(STATISTIC_NOTIFICATION, notification)
+            notificationManager.notify(NotificationChannels.STATISTIC_NOTIFICATION, notification)
         }
     }
 
     fun hideStatisticsNotification() {
-        notificationManager.cancel(STATISTIC_NOTIFICATION)
-    }
-
-    fun showConnectionLostNotification() {
-        val notification = NotificationCompat.Builder(context, connLostChannel)
-            .setSmallIcon(R.drawable.notification_logo)
-            .setContentTitle("Connection lost")
-            .setContentText("VPN connection was closed.")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVibrate(LongArray(0))
-            .setContentIntent(pendingAppIntent)
-            .setOnlyAlertOnce(true)
-            .build()
-        notificationManager.notify(DEFAULT_NOTIFICATION_ID, notification)
-    }
-
-    fun showTopUpBalanceNotification() {
-        val notification = NotificationCompat.Builder(context, topUpBalanceChannel)
-            .setSmallIcon(R.drawable.notification_logo)
-            .setContentTitle("Top-up balance")
-            .setContentText("You need to top-up your balance to continue using VPN service.")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVibrate(LongArray(0))
-            .setContentIntent(pendingAppIntent)
-            .setOnlyAlertOnce(true)
-            .build()
-        notificationManager.notify(TOP_UP_BALANCE_NOTIFICATION_ID, notification)
+        notificationManager.cancel(NotificationChannels.STATISTIC_NOTIFICATION)
     }
 
     fun showDownloadedNotification() {
@@ -137,6 +107,6 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setOnlyAlertOnce(true)
             .setAutoCancel(true)
             .build()
-        notificationManager.notify(PRIVATE_KEY_NOTIFICATION_ID, notification)
+        notificationManager.notify(NotificationChannels.PRIVATE_KEY_NOTIFICATION_ID, notification)
     }
 }

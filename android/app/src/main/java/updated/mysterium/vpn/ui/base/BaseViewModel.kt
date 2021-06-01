@@ -40,11 +40,6 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val settingsUseCase = useCaseProvider.settings()
     private var isInternetChecking = false
 
-    init {
-        balanceListener()
-        connectionListener()
-    }
-
     fun checkCurrentConnection() {
         viewModelScope.launch {
             val status = connectionUseCase.status()
@@ -80,6 +75,11 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getUserCurrentLanguageCode() = settingsUseCase.getUserSelectedLanguage()
+
+    fun establishListeners() {
+        balanceListener()
+        connectionListener()
+    }
 
     private fun firstWarningBalanceShown() {
         balanceUseCase.balancePopUpShown()

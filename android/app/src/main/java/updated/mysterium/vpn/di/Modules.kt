@@ -73,6 +73,9 @@ object Modules {
         single {
             HomeSelectionViewModel(get())
         }
+        single {
+            BaseViewModel(get())
+        }
 
         viewModel {
             SplashViewModel(get())
@@ -106,9 +109,6 @@ object Modules {
         }
         viewModel {
             TopUpPaymentViewModel(get())
-        }
-        viewModel {
-            BaseViewModel(get())
         }
         viewModel {
             SettingsViewModel(get())
