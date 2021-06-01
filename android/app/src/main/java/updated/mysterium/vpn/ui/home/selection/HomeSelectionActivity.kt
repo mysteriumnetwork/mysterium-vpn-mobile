@@ -77,7 +77,7 @@ class HomeSelectionActivity : BaseActivity() {
             }
             selectedItem?.changeSelectionState()
             val savedCountry = countries?.firstOrNull { country ->
-                country.countryCode == viewModel.countryCode
+                country.countryCode == viewModel.getPreviousCountryCode()
             }
             savedCountry?.changeSelectionState()
             allNodesAdapter.replaceAll(countries)
@@ -107,8 +107,8 @@ class HomeSelectionActivity : BaseActivity() {
                 putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
                 val filter = filtersAdapter.selectedItem
                 putExtra(FilterActivity.FILTER_KEY, filter)
-                viewModel.countryCode = countryCode
-                viewModel.filterId = filter?.filterId
+                viewModel.saveNewCountryCode(countryCode)
+                viewModel.saveNewFilterId(filter?.filterId)
             }
             startActivity(intent)
         }
@@ -175,9 +175,7 @@ class HomeSelectionActivity : BaseActivity() {
         }
         viewModel.getSystemPresets().observe(this, {
             it.onSuccess { filters ->
-                viewModel.filterId?.let { savedFilterId ->
-                    applySavedFilter(savedFilterId, filters)
-                }
+                applySavedFilter(viewModel.getPreviousFilterId(), filters)
                 filtersAdapter.replaceAll(filters)
             }
             it.onFailure { throwable ->

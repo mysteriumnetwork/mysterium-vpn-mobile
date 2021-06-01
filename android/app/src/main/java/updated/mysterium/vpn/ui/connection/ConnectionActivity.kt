@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
