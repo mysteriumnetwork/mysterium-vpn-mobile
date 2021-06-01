@@ -25,8 +25,11 @@ import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
+import updated.mysterium.vpn.common.network.NetworkUtil
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
@@ -155,7 +158,7 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this, TermsOfUseActivity::class.java))
             }
             viewModel.isTopUpFlowShown() -> {
-                startActivity(Intent(this, HomeSelectionActivity::class.java))
+                navigateToConnectionOrHome()
             }
             viewModel.isAccountCreated() -> {
                 val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
@@ -203,7 +206,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun startLoading() {
-        if (isInternetAvailable) {
+        if (NetworkUtil.isNetworkAvailable(this)) {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->

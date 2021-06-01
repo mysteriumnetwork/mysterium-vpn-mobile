@@ -25,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
-    protected var isInternetAvailable = false
+    protected var isInternetAvailable = true
     protected var connectionState = ConnectionState.NOTCONNECTED
     private val dialogs = emptyList<Dialog>().toMutableList()
     private var insufficientFoundsDialog: AlertDialog? = null
@@ -156,7 +156,11 @@ abstract class BaseActivity : AppCompatActivity() {
         })
         baseViewModel.connectionState.observe(this, {
             connectionState = it
-            if (it == ConnectionState.CONNECTED || it == ConnectionState.ON_HOLD) {
+            if (
+                it == ConnectionState.CONNECTED ||
+                it == ConnectionState.ON_HOLD ||
+                it == ConnectionState.IP_NOT_CHANGED
+            ) {
                 isHintAlreadyShown()
                 protectedConnection()
             } else {

@@ -230,6 +230,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 NotificationChannels.STATISTIC_NOTIFICATION,
                 appNotificationManager.createConnectedToVPNNotification()
             )
+            _connectionState.postValue(ConnectionState.CONNECTED)
         }
     }
 

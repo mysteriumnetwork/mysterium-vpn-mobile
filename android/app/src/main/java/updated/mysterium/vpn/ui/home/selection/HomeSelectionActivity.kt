@@ -120,7 +120,7 @@ class HomeSelectionActivity : BaseActivity() {
     private fun handleConnectionState(connection: ConnectionState) {
         when (connection) {
             ConnectionState.NOTCONNECTED -> {
-                binding.titleTextView.text = getString(R.string.manual_connect_disconnect)
+                binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
                 leftMenu()
             }
             ConnectionState.CONNECTING -> {
