@@ -2,13 +2,18 @@ package updated.mysterium.vpn.network.usecase
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import updated.mysterium.vpn.core.NodeRepository
 import network.mysterium.vpn.R
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.entity.NodeEntity
+import updated.mysterium.vpn.database.preferences.SharedPreferencesList
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.model.manual.connect.SystemPreset
 
-class FilterUseCase(private val nodeRepository: NodeRepository) {
+class FilterUseCase(
+    private val nodeRepository: NodeRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
+) {
 
     companion object {
         const val ALL_NODES_FILTER_ID = 0
@@ -56,4 +61,28 @@ class FilterUseCase(private val nodeRepository: NodeRepository) {
             null
         }
     }
+
+    fun saveNewCountryCode(countryCode: String) {
+        sharedPreferencesManager.setPreferenceValue(
+            key = SharedPreferencesList.PREVIOUS_COUNTRY_CODE,
+            value = countryCode
+        )
+    }
+
+    fun getPreviousCountryCode() = sharedPreferencesManager.getStringPreferenceValue(
+        key = SharedPreferencesList.PREVIOUS_COUNTRY_CODE,
+        defValue = NodesUseCase.ALL_COUNTRY_CODE
+    )
+
+    fun saveNewFilterId(filterId: Int) {
+        sharedPreferencesManager.setPreferenceValue(
+            key = SharedPreferencesList.PREVIOUS_FILTER_ID,
+            value = filterId
+        )
+    }
+
+    fun getPreviousFilterId() = sharedPreferencesManager.getIntPreferenceValue(
+        key = SharedPreferencesList.PREVIOUS_FILTER_ID,
+        defValue = ALL_NODES_FILTER_ID
+    )
 }

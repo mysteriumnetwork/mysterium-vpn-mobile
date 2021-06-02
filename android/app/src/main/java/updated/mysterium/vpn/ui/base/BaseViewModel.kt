@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
@@ -34,7 +35,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _balanceRunningOut = MutableLiveData<Boolean>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val _insufficientFunds = MutableLiveData<Unit>()
-    private val _isInternetNotAvailable = MutableLiveData<Boolean>()
+    private val _isInternetNotAvailable = SingleLiveEvent<Boolean>()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()

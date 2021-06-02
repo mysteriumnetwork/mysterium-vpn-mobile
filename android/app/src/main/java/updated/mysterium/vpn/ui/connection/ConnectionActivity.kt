@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
@@ -38,7 +37,6 @@ class ConnectionActivity : BaseActivity() {
     private val viewModel: ConnectionViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private var isDisconnectedByUser = false
-    private var lostConnectionPopUpDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +45,7 @@ class ConnectionActivity : BaseActivity() {
         configure()
         subscribeViewModel()
         bindsAction()
+        getSelectedNode()
     }
 
     override fun onResume() {
@@ -164,7 +163,6 @@ class ConnectionActivity : BaseActivity() {
             ConnectionState.NOTCONNECTED -> disconnect()
             ConnectionState.CONNECTING -> inflateConnectingCardView()
             ConnectionState.CONNECTED -> {
-                lostConnectionPopUpDialog?.dismiss()
                 isDisconnectedByUser = false
                 loadIpAddress()
                 inflateConnectedCardView()
@@ -215,9 +213,6 @@ class ConnectionActivity : BaseActivity() {
 
     private fun updateStatusTitle(connectionState: ConnectionState) {
         when (connectionState) {
-            ConnectionState.NOTCONNECTED -> {
-                binding.titleTextView.text = getString(R.string.manual_connect_disconnect)
-            }
             ConnectionState.CONNECTING -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_connecting)
             }
@@ -226,9 +221,6 @@ class ConnectionActivity : BaseActivity() {
             }
             ConnectionState.ON_HOLD -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_on_hold)
-            }
-            else -> {
-                binding.titleTextView.text = connectionState.state
             }
         }
     }
@@ -252,21 +244,23 @@ class ConnectionActivity : BaseActivity() {
 
     private fun checkProposalArgument() {
         intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposalExtra ->
-            if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
-                initViewModel(proposalExtra)
-            }
-            manualDisconnecting()
-            proposal = proposalExtra
-            inflateNodeInfo()
-            inflateConnectingCardView()
-            if (
-                viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                viewModel.connectionState.value == ConnectionState.CONNECTING
-            ) {
+            if (proposal?.providerID != proposalExtra.providerID) {
+                if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+                    initViewModel(proposalExtra)
+                }
                 manualDisconnecting()
-                viewModel.disconnect().observe(this, {
-                    viewModel.connectNode(proposalExtra)
-                })
+                proposal = proposalExtra
+                inflateNodeInfo()
+                inflateConnectingCardView()
+                if (
+                    viewModel.connectionState.value == ConnectionState.CONNECTED ||
+                    viewModel.connectionState.value == ConnectionState.CONNECTING
+                ) {
+                    manualDisconnecting()
+                    viewModel.disconnect().observe(this, {
+                        viewModel.connectNode(proposalExtra)
+                    })
+                }
             }
         }
     }
@@ -453,11 +447,11 @@ class ConnectionActivity : BaseActivity() {
 
     private fun showLostConnectionPopUp() {
         val bindingPopUp = PopUpLostConnectionBinding.inflate(layoutInflater)
-        lostConnectionPopUpDialog = createPopUp(bindingPopUp.root, true)
+        val lostConnectionPopUpDialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.closeButton.setOnClickListener {
-            lostConnectionPopUpDialog?.dismiss()
+            lostConnectionPopUpDialog.dismiss()
         }
-        lostConnectionPopUpDialog?.show()
+        lostConnectionPopUpDialog.show()
     }
 
     private fun navigateToSelectNode(clearTasks: Boolean = false) {
