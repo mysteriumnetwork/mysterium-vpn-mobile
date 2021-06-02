@@ -244,21 +244,23 @@ class ConnectionActivity : BaseActivity() {
 
     private fun checkProposalArgument() {
         intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposalExtra ->
-            if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
-                initViewModel(proposalExtra)
-            }
-            manualDisconnecting()
-            proposal = proposalExtra
-            inflateNodeInfo()
-            inflateConnectingCardView()
-            if (
-                viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                viewModel.connectionState.value == ConnectionState.CONNECTING
-            ) {
+            if (proposal?.providerID != proposalExtra.providerID) {
+                if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+                    initViewModel(proposalExtra)
+                }
                 manualDisconnecting()
-                viewModel.disconnect().observe(this, {
-                    viewModel.connectNode(proposalExtra)
-                })
+                proposal = proposalExtra
+                inflateNodeInfo()
+                inflateConnectingCardView()
+                if (
+                    viewModel.connectionState.value == ConnectionState.CONNECTED ||
+                    viewModel.connectionState.value == ConnectionState.CONNECTING
+                ) {
+                    manualDisconnecting()
+                    viewModel.disconnect().observe(this, {
+                        viewModel.connectNode(proposalExtra)
+                    })
+                }
             }
         }
     }
