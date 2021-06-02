@@ -21,8 +21,6 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
-    var countryCode: String = NodesUseCase.ALL_COUNTRY_CODE
-    var filterId: Int? = null
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val connectionUseCase = useCaseProvider.connection()
     private val locationUseCase = useCaseProvider.location()
@@ -52,4 +50,16 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
         }
     }
+
+    fun saveNewCountryCode(countryCode: String) {
+        filtersUseCase.saveNewCountryCode(countryCode)
+    }
+
+    fun getPreviousCountryCode() = filtersUseCase.getPreviousCountryCode()
+
+    fun saveNewFilterId(filterId: Int?) {
+        filtersUseCase.saveNewFilterId(filterId ?: 1)
+    }
+
+    fun getPreviousFilterId() = filtersUseCase.getPreviousFilterId()
 }

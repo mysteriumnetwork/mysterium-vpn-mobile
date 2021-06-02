@@ -77,10 +77,12 @@ class HomeSelectionActivity : BaseActivity() {
             }
             selectedItem?.changeSelectionState()
             val savedCountry = countries?.firstOrNull { country ->
-                country.countryCode == viewModel.countryCode
+                country.countryCode == viewModel.getPreviousCountryCode()
             }
             savedCountry?.changeSelectionState()
             allNodesAdapter.replaceAll(countries)
+            val countryIndex = allNodesAdapter.getAll().indexOf(savedCountry)
+            binding.nodesRecyclerView.layoutManager?.scrollToPosition(countryIndex)
         })
         viewModel.connectionState.observe(this, {
             handleConnectionState(it)
@@ -105,8 +107,8 @@ class HomeSelectionActivity : BaseActivity() {
                 putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
                 val filter = filtersAdapter.selectedItem
                 putExtra(FilterActivity.FILTER_KEY, filter)
-                viewModel.countryCode = countryCode
-                viewModel.filterId = filter?.filterId
+                viewModel.saveNewCountryCode(countryCode)
+                viewModel.saveNewFilterId(filter?.filterId)
             }
             startActivity(intent)
         }
@@ -116,22 +118,45 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun handleConnectionState(connection: ConnectionState) {
-        if (connection == ConnectionState.CONNECTED || connection == ConnectionState.CONNECTING) {
-            binding.manualConnectToolbar.setLeftIcon(
-                ContextCompat.getDrawable(this, R.drawable.icon_back)
-            )
-            binding.manualConnectToolbar.onLeftButtonClicked {
-                navigateToConnection()
+        when (connection) {
+            ConnectionState.NOTCONNECTED -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
+                leftMenu()
             }
-            binding.titleTextView.text = getString(R.string.manual_connect_connected)
-        } else {
-            binding.manualConnectToolbar.setLeftIcon(
-                ContextCompat.getDrawable(this, R.drawable.icon_menu)
-            )
-            binding.manualConnectToolbar.onLeftButtonClicked {
-                navigateToMenu()
+            ConnectionState.CONNECTING -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_connecting)
+                leftBack()
             }
-            binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
+            ConnectionState.CONNECTED -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_connected)
+                leftBack()
+            }
+            ConnectionState.ON_HOLD -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_on_hold)
+                leftBack()
+            }
+            else -> {
+                binding.titleTextView.text = connection.state
+                leftMenu()
+            }
+        }
+    }
+
+    private fun leftMenu() {
+        binding.manualConnectToolbar.setLeftIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_menu)
+        )
+        binding.manualConnectToolbar.onLeftButtonClicked {
+            navigateToMenu()
+        }
+    }
+
+    private fun leftBack() {
+        binding.manualConnectToolbar.setLeftIcon(
+            ContextCompat.getDrawable(this, R.drawable.icon_back)
+        )
+        binding.manualConnectToolbar.onLeftButtonClicked {
+            navigateToConnection()
         }
     }
 
@@ -150,9 +175,7 @@ class HomeSelectionActivity : BaseActivity() {
         }
         viewModel.getSystemPresets().observe(this, {
             it.onSuccess { filters ->
-                viewModel.filterId?.let { savedFilterId ->
-                    applySavedFilter(savedFilterId, filters)
-                }
+                applySavedFilter(viewModel.getPreviousFilterId(), filters)
                 filtersAdapter.replaceAll(filters)
             }
             it.onFailure { throwable ->
@@ -162,14 +185,17 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun applySavedFilter(filterId: Int, filters: List<PresetFilter>) {
+        var selectedItemIndex = 0
         filters.forEach { presetFilter ->
             if (presetFilter.isSelected) {
                 presetFilter.changeSelectionState()
             }
             if (presetFilter.filterId == filterId) {
+                selectedItemIndex = filtersAdapter.getAll().indexOf(presetFilter)
                 presetFilter.changeSelectionState()
             }
         }
+        binding.filtersRecyclerView.layoutManager?.scrollToPosition(selectedItemIndex)
     }
 
     private fun initCountriesList() {
