@@ -196,6 +196,7 @@
   <string name="pop_up_private_key_description">输入您的密码</string>
   <string name="pop_up_private_key_download">下载</string>
   <string name="pop_up_private_key_error">密码有误</string>
+  <string name="pop_up_import_wrong_password">密码有误</string>
   <string name="pop_up_private_key_hint">密码长度为 12–16 个字符</string>
   <string name="pop_up_import_account_title">导入账户</string>
   <string name="pop_up_import_account_upload">上传</string>
