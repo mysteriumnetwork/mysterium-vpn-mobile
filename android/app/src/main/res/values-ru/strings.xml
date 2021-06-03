@@ -199,6 +199,7 @@
     <string name="pop_up_private_key_description">Введите свой пароль</string>
     <string name="pop_up_private_key_download">Скачать</string>
     <string name="pop_up_private_key_error">Неверный пароль</string>
+    <string name="pop_up_import_wrong_password">Неверный пароль</string>
     <string name="pop_up_private_key_hint">Длина пароля 12–16 символов.</string>
     <string name="pop_up_import_account_title">Импортировать аккаунт</string>
     <string name="pop_up_import_account_upload">Загрузить</string>
