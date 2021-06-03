@@ -82,7 +82,9 @@ class HomeSelectionActivity : BaseActivity() {
             savedCountry?.changeSelectionState()
             allNodesAdapter.replaceAll(countries)
             val countryIndex = allNodesAdapter.getAll().indexOf(savedCountry)
-            binding.nodesRecyclerView.layoutManager?.scrollToPosition(countryIndex)
+            (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
+                scrollToPositionWithOffset(countryIndex, 0)
+            }
         })
         viewModel.connectionState.observe(this, {
             handleConnectionState(it)
@@ -175,8 +177,8 @@ class HomeSelectionActivity : BaseActivity() {
         }
         viewModel.getSystemPresets().observe(this, {
             it.onSuccess { filters ->
-                applySavedFilter(viewModel.getPreviousFilterId(), filters)
                 filtersAdapter.replaceAll(filters)
+                applySavedFilter(viewModel.getPreviousFilterId(), filters)
             }
             it.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
@@ -195,7 +197,9 @@ class HomeSelectionActivity : BaseActivity() {
                 presetFilter.changeSelectionState()
             }
         }
-        binding.filtersRecyclerView.layoutManager?.scrollToPosition(selectedItemIndex)
+        (binding.filtersRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
+            scrollToPositionWithOffset(selectedItemIndex, 0)
+        }
     }
 
     private fun initCountriesList() {
