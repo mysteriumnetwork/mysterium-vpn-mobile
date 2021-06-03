@@ -18,6 +18,7 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.hideKeyboard
+import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
@@ -186,16 +187,23 @@ class CreateAccountActivity : BaseActivity() {
             passwordEditText.doOnTextChanged { _, _, _, _ ->
                 clearErrorState(bindingPasswordPopUp)
             }
+            var position = 0
+            bindingPasswordPopUp.passwordEditText.setSelectionChangedListener {
+                position = it
+            }
             showPasswordImageView.setOnClickListener {
+                val oldPosition = position
                 bindingPasswordPopUp.passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 bindingPasswordPopUp.showPasswordImageView.visibility = View.INVISIBLE
                 bindingPasswordPopUp.hidePasswordImageView.visibility = View.VISIBLE
-
+                bindingPasswordPopUp.passwordEditText.setSelection(oldPosition)
             }
             hidePasswordImageView.setOnClickListener {
+                val oldPosition = position
                 bindingPasswordPopUp.passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
                 bindingPasswordPopUp.showPasswordImageView.visibility = View.VISIBLE
                 bindingPasswordPopUp.hidePasswordImageView.visibility = View.INVISIBLE
+                bindingPasswordPopUp.passwordEditText.setSelection(oldPosition)
             }
         }
         dialogPasswordPopup.show()

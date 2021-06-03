@@ -196,6 +196,7 @@
   <string name="pop_up_private_key_description">Digite a sua senha</string>
   <string name="pop_up_private_key_download">Fazer download</string>
   <string name="pop_up_private_key_error">Senha incorreta</string>
+  <string name="pop_up_import_wrong_password">Senha incorreta</string>
   <string name="pop_up_private_key_hint">A senha deve ter de 12 a 16 caracteres</string>
   <string name="pop_up_import_account_title">Importar conta</string>
   <string name="pop_up_import_account_upload">Carregar</string>

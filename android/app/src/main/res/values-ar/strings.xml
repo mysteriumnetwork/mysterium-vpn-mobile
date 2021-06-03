@@ -197,6 +197,7 @@ Wi-Fi</string>
   <string name="pop_up_private_key_description">اكتب كلمة مرورك</string>
   <string name="pop_up_private_key_download">تنزيل</string>
   <string name="pop_up_private_key_error">كلمة مرور غير صحيحة</string>
+  <string name="pop_up_import_wrong_password">كلمة مرور غير صحيحة</string>
   <string name="pop_up_private_key_hint">طول كلمة المرور 12–16 حرفًا</string>
   <string name="pop_up_import_account_title">استيراد الحساب</string>
   <string name="pop_up_import_account_upload">تحميل</string>
