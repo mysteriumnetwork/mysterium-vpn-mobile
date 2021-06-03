@@ -255,6 +255,7 @@
     <!--  Should be translated on other languages -->
     <string name="pop_up_private_key_error">Enter 12–16 characters</string>
 
+    <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length 12–16 characters</string>
     <string name="pop_up_import_account_title">Import account</string>
     <string name="pop_up_import_account_upload">Upload</string>
