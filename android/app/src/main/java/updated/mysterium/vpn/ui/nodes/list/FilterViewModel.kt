@@ -1,9 +1,9 @@
 package updated.mysterium.vpn.ui.nodes.list
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
@@ -29,7 +29,7 @@ class FilterViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         get() = _proposalsList
 
     private val filterUseCase = useCaseProvider.filters()
-    private val _proposalsList = MutableLiveData<List<Proposal>?>()
+    private val _proposalsList = SingleLiveEvent<List<Proposal>?>()
 
     fun getProposals(filterId: Int, proposals: List<Proposal>) = liveDataResult {
         if (filterId == ALL_NODES_FILTER_ID) {
