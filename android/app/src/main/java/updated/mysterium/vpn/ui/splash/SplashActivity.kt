@@ -143,13 +143,12 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun setUpPushyNotifications() {
-        pushyNotifications.register {
-            analyticWrapper.track(AnalyticEvent.NEW_PUSHY_DEVICE, it)
-        }
+        pushyNotifications.register()
         pushyNotifications.listen()
     }
 
     private fun navigateForward() {
+        trackDeviceToken()
         when {
             !viewModel.isUserAlreadyLogin() -> {
                 startActivity(Intent(this, OnboardingActivity::class.java))
@@ -171,6 +170,12 @@ class SplashActivity : BaseActivity() {
             }
         }
         finish()
+    }
+
+    private fun trackDeviceToken() {
+        pushyNotifications.deviceToken?.let {
+            analyticWrapper.track(AnalyticEvent.NEW_PUSHY_DEVICE, it)
+        }
     }
 
     private fun ensureVpnServicePermission() {

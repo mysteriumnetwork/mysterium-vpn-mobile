@@ -199,6 +199,7 @@
   <string name="pop_up_private_key_description">Parolanızı Girin</string>
   <string name="pop_up_private_key_download">İndir</string>
   <string name="pop_up_private_key_error">Hatalı Parola</string>
+  <string name="pop_up_import_wrong_password">Hatalı Parola</string>
   <string name="pop_up_private_key_hint">Parola uzunluğu 12–16 karakterdir</string>
   <string name="pop_up_import_account_title">Hesabı içe aktarın</string>
   <string name="pop_up_import_account_upload">Yükle</string>
