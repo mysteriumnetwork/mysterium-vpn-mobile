@@ -56,10 +56,6 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
             }
             passwordEditText.doOnTextChanged { text, _, _, _ ->
                 when {
-                    text.isNullOrEmpty() -> {
-                        bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
-                        bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
-                    }
                     isPasswordVisible -> {
                         bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
                         bindingPopUp.hidePasswordImageView.visibility = View.VISIBLE
