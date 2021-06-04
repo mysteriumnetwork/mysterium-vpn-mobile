@@ -29,6 +29,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var connectionState = ConnectionState.NOTCONNECTED
     private val dialogs = emptyList<Dialog>().toMutableList()
     private var insufficientFoundsDialog: AlertDialog? = null
+    private var wifiErrorDialog: AlertDialog? = null
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,13 +95,16 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun wifiNetworkErrorPopUp() {
-        val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.retryButton.setOnClickListener {
-            dialog.dismiss()
-            baseViewModel.checkInternetConnection()
+        if (wifiErrorDialog == null) {
+            val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
+            wifiErrorDialog = createPopUp(bindingPopUp.root, false)
+            bindingPopUp.retryButton.setOnClickListener {
+                wifiErrorDialog?.dismiss()
+                wifiErrorDialog = null
+                baseViewModel.checkInternetConnection()
+            }
+            wifiErrorDialog?.show()
         }
-        dialog.show()
     }
 
     fun insufficientFundsPopUp(onContinueAction: (() -> Unit)? = null) {
