@@ -199,7 +199,11 @@ class ConnectionActivity : BaseActivity() {
         viewModel.updateCurrentConnectionStatus().observe(this, { result ->
             result.onSuccess {
                 updateStatusTitle(it)
-                if (it == ConnectionState.CONNECTED || it == ConnectionState.CONNECTING) {
+                if (
+                    it == ConnectionState.CONNECTED ||
+                    it == ConnectionState.CONNECTING ||
+                    it == ConnectionState.ON_HOLD
+                ) {
                     getProposal()
                 }
             }
