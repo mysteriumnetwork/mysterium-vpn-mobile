@@ -44,7 +44,7 @@ class BalanceUseCase(
         sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.BALANCE)
     }
 
-    fun isMinBalancePopUpShown() = sharedPreferencesManager.containsPreferenceValue(
+    fun isMinBalancePopUpShown() = sharedPreferencesManager.getBoolPreferenceValue(
         SharedPreferencesList.MIN_BALANCE
     )
 

@@ -54,20 +54,13 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     clearErrorState()
                 }
             }
-            passwordEditText.doOnTextChanged { text, _, _, _ ->
-                when {
-                    text.isNullOrEmpty() -> {
-                        bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
-                        bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
-                    }
-                    isPasswordVisible -> {
-                        bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
-                        bindingPopUp.hidePasswordImageView.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        bindingPopUp.showPasswordImageView.visibility = View.VISIBLE
-                        bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
-                    }
+            passwordEditText.doOnTextChanged { _, _, _, _ ->
+                if (isPasswordVisible) {
+                    bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
+                    bindingPopUp.hidePasswordImageView.visibility = View.VISIBLE
+                } else {
+                    bindingPopUp.showPasswordImageView.visibility = View.VISIBLE
+                    bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
                 }
                 clearErrorState()
             }
