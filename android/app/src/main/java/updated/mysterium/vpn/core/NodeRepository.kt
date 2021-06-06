@@ -5,7 +5,7 @@ import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
-import updated.mysterium.vpn.exceptions.ConnectAlreadyExists
+import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.exceptions.ConnectInvalidProposalException
 import updated.mysterium.vpn.exceptions.ConnectUnknownException
@@ -77,7 +77,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
             "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
             "Unknown" -> {
                 if (res.errorMessage == "connection already exists") {
-                    throw ConnectAlreadyExists(res.errorMessage)
+                    throw ConnectAlreadyExistsException(res.errorMessage)
                 } else {
                     throw ConnectUnknownException(res.errorMessage)
                 }
@@ -93,7 +93,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
             "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
             "Unknown" -> {
                 if (res.errorMessage == "connection already exists") {
-                    throw ConnectAlreadyExists(res.errorMessage)
+                    throw ConnectAlreadyExistsException(res.errorMessage)
                 } else {
                     throw ConnectUnknownException(res.errorMessage)
                 }
