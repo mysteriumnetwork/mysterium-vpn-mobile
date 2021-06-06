@@ -32,7 +32,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val isInternetNotAvailable: LiveData<Boolean>
         get() = _isInternetNotAvailable
 
-    private val _balanceRunningOut = MutableLiveData<Boolean>()
+    private val _balanceRunningOut = SingleLiveEvent<Boolean>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val _insufficientFunds = MutableLiveData<Unit>()
     private val _isInternetNotAvailable = SingleLiveEvent<Boolean>()
