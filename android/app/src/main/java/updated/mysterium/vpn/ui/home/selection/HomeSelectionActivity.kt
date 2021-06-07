@@ -181,6 +181,7 @@ class HomeSelectionActivity : BaseActivity() {
                 applySavedFilter(viewModel.getPreviousFilterId(), filters)
             }
             it.onFailure { throwable ->
+                wifiNetworkErrorPopUp()
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         })

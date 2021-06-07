@@ -2,36 +2,35 @@ package updated.mysterium.vpn.ui.splash
 
 import android.animation.Animator
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import updated.mysterium.vpn.notification.Notifications
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
+import network.mysterium.vpn.databinding.PopUpNewVersionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
@@ -39,8 +38,8 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 class SplashActivity : BaseActivity() {
 
     private companion object {
-        const val UPDATES_REQUEST_CODE = 1
-        const val TAG = "SplashActivity"
+        const val PLAY_MARKET_INSTALLED = "market://details?id="
+        const val PLAY_MARKET_NOT_INSTALLED = "https://play.google.com/store/apps/details?id="
     }
 
     private lateinit var binding: ActivitySplashBinding
@@ -49,22 +48,9 @@ class SplashActivity : BaseActivity() {
     private val analyticWrapper: AnalyticWrapper by inject()
     private val pushyNotifications = Notifications(this)
     private var isVpnPermissionGranted = false
+    private var newVersionPopUpDialog: AlertDialog? = null
     private val appUpdateManager: AppUpdateManager by lazy {
         AppUpdateManagerFactory.create(this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UPDATES_REQUEST_CODE) {
-            if (resultCode != RESULT_OK) {
-                Log.e(TAG, "Update flow failed! Result code: $resultCode")
-                // TODO("Error handling")
-                finish()
-            } else {
-                Log.e(TAG, "Updated successfully")
-                startLoading()
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +66,15 @@ class SplashActivity : BaseActivity() {
 
     override fun retryLoading() {
         if (isVpnPermissionGranted) {
+            checkForGoogleMarketUpdates {
+                startLoading()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkForGoogleMarketUpdates {
             startLoading()
         }
     }
@@ -126,20 +121,11 @@ class SplashActivity : BaseActivity() {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
-                startUpdating(appUpdateInfo)
+                showNewVersionAvailablePopUp()
             } else {
                 afterAction.invoke()
             }
         }
-    }
-
-    private fun startUpdating(appUpdateInfo: AppUpdateInfo) {
-        appUpdateManager.startUpdateFlowForResult(
-            appUpdateInfo,
-            AppUpdateType.IMMEDIATE,
-            this,
-            UPDATES_REQUEST_CODE
-        )
     }
 
     private fun setUpPushyNotifications() {
@@ -200,6 +186,19 @@ class SplashActivity : BaseActivity() {
         }
     }
 
+    private fun showNewVersionAvailablePopUp() {
+        if (newVersionPopUpDialog == null) {
+            val bindingPopUp = PopUpNewVersionBinding.inflate(layoutInflater)
+            newVersionPopUpDialog = createPopUp(bindingPopUp.root, false)
+            bindingPopUp.updateButton.setOnClickListener {
+                newVersionPopUpDialog = null
+                newVersionPopUpDialog?.dismiss()
+                openPlayMarket()
+            }
+            newVersionPopUpDialog?.show()
+        }
+    }
+
     private fun showPermissionErrorToast() {
         Toast.makeText(
             this,
@@ -220,6 +219,15 @@ class SplashActivity : BaseActivity() {
                     viewModel.initRepository()
                 }
             }
+        }
+    }
+
+    private fun openPlayMarket() {
+        // Exception will be thrown if the Play Store is not installed on the target device.
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_MARKET_INSTALLED + packageName)))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)))
         }
     }
 }
