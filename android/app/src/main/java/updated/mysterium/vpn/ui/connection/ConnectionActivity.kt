@@ -66,7 +66,9 @@ class ConnectionActivity : BaseActivity() {
                     this.proposal = proposal
                     if (
                         viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                        viewModel.connectionState.value == ConnectionState.CONNECTING
+                        viewModel.connectionState.value == ConnectionState.CONNECTING ||
+                        viewModel.connectionState.value == ConnectionState.ON_HOLD ||
+                        viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
                     ) {
                         manualDisconnecting()
                         viewModel.disconnect().observe(this, { result ->
@@ -166,14 +168,14 @@ class ConnectionActivity : BaseActivity() {
 
     private fun handleConnectionChange(connection: ConnectionState) {
         when (connection) {
-            ConnectionState.NOTCONNECTED -> disconnect()
+            ConnectionState.NOTCONNECTED -> loadIpAddress()
             ConnectionState.CONNECTING -> inflateConnectingCardView()
             ConnectionState.CONNECTED -> {
-                isDisconnectedByUser = false
                 loadIpAddress()
                 inflateConnectedCardView()
             }
             ConnectionState.DISCONNECTING -> {
+                binding.connectedStatusImageView.visibility = View.INVISIBLE
                 binding.connectionState.showDisconnectingState()
                 checkDisconnectingReason()
             }
@@ -232,6 +234,9 @@ class ConnectionActivity : BaseActivity() {
             ConnectionState.ON_HOLD -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_on_hold)
             }
+            ConnectionState.DISCONNECTING -> {
+                binding.titleTextView.text = getString(R.string.manual_connect_disconnecting)
+            }
         }
     }
 
@@ -264,7 +269,9 @@ class ConnectionActivity : BaseActivity() {
                 inflateConnectingCardView()
                 if (
                     viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                    viewModel.connectionState.value == ConnectionState.CONNECTING
+                    viewModel.connectionState.value == ConnectionState.CONNECTING ||
+                    viewModel.connectionState.value == ConnectionState.ON_HOLD ||
+                    viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
                 ) {
                     manualDisconnecting()
                     viewModel.disconnect().observe(this, {
@@ -284,7 +291,6 @@ class ConnectionActivity : BaseActivity() {
             result.onFailure {
                 Log.e(TAG, "Data loading failed")
                 binding.ipTextView.text = getString(R.string.manual_connect_unknown)
-                wifiNetworkErrorPopUp()
             }
         })
     }

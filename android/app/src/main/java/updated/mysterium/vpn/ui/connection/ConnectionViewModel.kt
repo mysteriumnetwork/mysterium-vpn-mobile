@@ -237,7 +237,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun disconnectIfConnectedNode() {
         if (
             _connectionState.value == ConnectionState.CONNECTED ||
-            _connectionState.value == ConnectionState.ON_HOLD
+            _connectionState.value == ConnectionState.ON_HOLD ||
+            _connectionState.value == ConnectionState.IP_NOT_CHANGED
         ) {
             disconnectNode()
         }
