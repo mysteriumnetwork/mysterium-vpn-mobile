@@ -50,17 +50,19 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         if (!deferredNode.startedOrStarting()) {
             deferredNode.start(coreService.await())
         }
-        connectionUseCase.initDeferredNode(deferredNode)
-        balanceUseCase.initDeferredNode(deferredNode)
-        initBalanceListener()
-        val nodeIdentity = connectionUseCase.getIdentity()
-        val identity = IdentityModel(
-            address = nodeIdentity.address,
-            channelAddress = nodeIdentity.channelAddress,
-            status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
-        )
-        balanceRequest = GetBalanceRequest().apply {
-            identityAddress = identity.address
+        viewModelScope.launch(Dispatchers.IO) {
+            connectionUseCase.initDeferredNode(deferredNode)
+            balanceUseCase.initDeferredNode(deferredNode)
+            initBalanceListener()
+            val nodeIdentity = connectionUseCase.getIdentity()
+            val identity = IdentityModel(
+                address = nodeIdentity.address,
+                channelAddress = nodeIdentity.channelAddress,
+                status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
+            )
+            balanceRequest = GetBalanceRequest().apply {
+                identityAddress = identity.address
+            }
         }
     }
 
