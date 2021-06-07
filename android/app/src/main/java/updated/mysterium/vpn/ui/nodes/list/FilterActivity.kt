@@ -60,6 +60,9 @@ class FilterActivity : BaseActivity() {
         val bundle = intent.extras
         if (bundle != null) {
             val countryCode = bundle.getString(COUNTRY_CODE_KEY)
+            if (countryCode == ALL_COUNTRY_CODE) {
+                nodeListAdapter.isCountryNamedMode = true
+            }
             viewModel.countryCode = countryCode
             Countries.values[countryCode]?.image?.let { flagUrl ->
                 Glide.with(this)
