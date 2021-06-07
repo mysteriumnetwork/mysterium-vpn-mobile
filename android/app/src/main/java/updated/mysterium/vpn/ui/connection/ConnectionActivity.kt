@@ -13,7 +13,8 @@ import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
-import updated.mysterium.vpn.exceptions.ConnectAlreadyExists
+import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
+import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.notification.AppNotificationManager
@@ -115,7 +116,12 @@ class ConnectionActivity : BaseActivity() {
         viewModel.connectionException.observe(this, {
             if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
                 Log.e(TAG, it.localizedMessage ?: it.toString())
-                if (it !is ConnectAlreadyExists) {
+                if (it is ConnectInsufficientBalanceException) {
+                    disconnect()
+                    insufficientFundsPopUp {
+                        navigateToSelectNode(true)
+                    }
+                } else if (it !is ConnectAlreadyExistsException) {
                     disconnect()
                     failedToConnect()
                 }
