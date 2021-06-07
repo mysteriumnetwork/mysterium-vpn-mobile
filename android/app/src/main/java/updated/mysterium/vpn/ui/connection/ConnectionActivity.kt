@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.connection
 
-import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +36,7 @@ class ConnectionActivity : BaseActivity() {
     private var proposal: Proposal? = null
     private val viewModel: ConnectionViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
+    private val notificationManager: AppNotificationManager by inject()
     private var isDisconnectedByUser = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,9 +154,7 @@ class ConnectionActivity : BaseActivity() {
     private fun initViewModel(proposal: Proposal) {
         viewModel.init(
             deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService,
-            notificationManager = AppNotificationManager(
-                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            ).apply { init(this@ConnectionActivity) },
+            notificationManager = notificationManager,
             proposal = proposal
         )
     }

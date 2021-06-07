@@ -17,7 +17,6 @@
 
 package updated.mysterium.vpn.core
 
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -59,7 +58,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         const val CURRENCY = "MYSTT"
     }
 
-    private lateinit var appNotificationManager: AppNotificationManager
+    private val appNotificationManager: AppNotificationManager by inject()
     private val useCaseProvider: UseCaseProvider by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
     private val balanceUseCase = useCaseProvider.balance()
@@ -98,9 +97,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         Log.i(TAG, "Node started")
         initBalanceListener()
         initConnectionListener()
-        appNotificationManager = AppNotificationManager(
-            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        ).apply { init(this@MysteriumAndroidCoreService) }
         return mobileNode!!
     }
 

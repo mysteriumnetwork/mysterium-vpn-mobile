@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.profile
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.NotificationManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.media.MediaScannerConnection
@@ -29,6 +28,7 @@ class ProfileActivity : BaseActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by inject()
+    private val appNotificationManager: AppNotificationManager by inject()
     private var identityAddress = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,21 +105,14 @@ class ProfileActivity : BaseActivity() {
             }
         } else {
             DownloadsUtil.saveDirectlyToDownloads(bytesFileContent)
-            showDownloadedNotification()
+            appNotificationManager.showDownloadedNotification()
         }
     }
 
     private fun scanFile(path: String) {
         MediaScannerConnection.scanFile(this, arrayOf(path), null) { _, _ ->
-            showDownloadedNotification()
+            appNotificationManager.showDownloadedNotification()
         }
-    }
-
-    private fun showDownloadedNotification() {
-        val appNotificationManager = AppNotificationManager(
-            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        ).apply { init(this@ProfileActivity) }
-        appNotificationManager.showDownloadedNotification()
     }
 
     private fun copyToClipboard() {

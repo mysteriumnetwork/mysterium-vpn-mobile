@@ -1,7 +1,6 @@
 package updated.mysterium.vpn.ui.private.key
 
 import android.Manifest
-import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
@@ -31,6 +30,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private lateinit var binding: ActivityPrivateKeyBinding
     private val viewModel: PrivateKeyViewModel by inject()
+    private val appNotificationManager: AppNotificationManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,21 +112,14 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
             }
         } else {
             DownloadsUtil.saveDirectlyToDownloads(bytesFileContent)
-            showDownloadedNotification()
+            appNotificationManager.showDownloadedNotification()
         }
     }
 
     private fun scanFile(path: String) {
         MediaScannerConnection.scanFile(this, arrayOf(path), null) { _, _ ->
-            showDownloadedNotification()
+            appNotificationManager.showDownloadedNotification()
         }
-    }
-
-    private fun showDownloadedNotification() {
-        val appNotificationManager = AppNotificationManager(
-            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        ).apply { init(this@PrivateKeyActivity) }
-        appNotificationManager.showDownloadedNotification()
     }
 
     private fun exportIdentity(passphrase: String) {

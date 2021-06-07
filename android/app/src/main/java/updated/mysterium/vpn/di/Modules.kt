@@ -1,16 +1,19 @@
 package updated.mysterium.vpn.di
 
+import android.app.NotificationManager
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import androidx.room.Room
-import updated.mysterium.vpn.core.DeferredNode
-import updated.mysterium.vpn.core.NodeRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.core.DeferredNode
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.AppDatabase
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseViewModel
@@ -75,6 +78,11 @@ object Modules {
         }
         single {
             BaseViewModel(get())
+        }
+        single {
+            AppNotificationManager(
+                androidContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            ).apply { init(androidContext()) }
         }
 
         viewModel {
