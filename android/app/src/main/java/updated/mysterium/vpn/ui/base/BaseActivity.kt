@@ -179,6 +179,8 @@ abstract class BaseActivity : AppCompatActivity() {
             if (!isAvailable) {
                 wifiNetworkErrorPopUp()
             } else {
+                wifiErrorDialog?.dismiss()
+                wifiErrorDialog = null
                 retryLoading()
             }
         })
