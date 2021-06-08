@@ -14,10 +14,10 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private companion object {
+    companion object {
         const val BALANCE_LIMIT = 0.5
-        const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.2
-        const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
+        private const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.2
+        private const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
     }
 
     val balanceRunningOut: LiveData<Boolean>
@@ -32,6 +32,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val isInternetNotAvailable: LiveData<Boolean>
         get() = _isInternetNotAvailable
 
+    val balance: LiveData<Double>
+        get() = _balance
+
+    private val _balance = MutableLiveData<Double>()
     private val _balanceRunningOut = SingleLiveEvent<Boolean>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val _insufficientFunds = MutableLiveData<Unit>()
@@ -106,6 +110,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private fun balanceListener() {
         viewModelScope.launch {
             balanceUseCase.initBalanceListener {
+                _balance.postValue(it)
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePopUpShown()) {
                     firstWarningBalanceShown()
                     _balanceRunningOut.postValue(true)

@@ -31,6 +31,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val paymentUseCase = useCaseProvider.payment()
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
+    private val pushyUseCase = useCaseProvider.pushy()
     private val _paymentSuccessfully = MutableLiveData<Unit>()
     private val _paymentExpired = MutableLiveData<Unit>()
     private val _paymentFailed = MutableLiveData<Unit>()
@@ -58,6 +59,10 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         balanceUseCase.clearMinBalancePopUpHistory()
         balanceUseCase.clearBalancePushHistory()
         balanceUseCase.clearMinBalancePushHistory()
+    }
+
+    fun updateLastCurrency(currency: String) {
+        pushyUseCase.updateCryptoCurrency(currency)
     }
 
     private suspend fun registerOrderCallback() {

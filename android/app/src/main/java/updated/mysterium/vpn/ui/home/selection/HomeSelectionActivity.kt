@@ -65,6 +65,7 @@ class HomeSelectionActivity : BaseActivity() {
         initFiltersList()
         initCountriesList()
         viewModel.initConnectionListener()
+        subscribeToResidentCountry()
     }
 
     private fun subscribeViewModel() {
@@ -117,6 +118,14 @@ class HomeSelectionActivity : BaseActivity() {
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnection()
         }
+    }
+
+    private fun subscribeToResidentCountry() {
+        viewModel.getResidentCountry().observe(this, {
+            it.onSuccess { country ->
+                pushyNotifications.subscribe(country)
+            }
+        })
     }
 
     private fun handleConnectionState(connection: ConnectionState) {

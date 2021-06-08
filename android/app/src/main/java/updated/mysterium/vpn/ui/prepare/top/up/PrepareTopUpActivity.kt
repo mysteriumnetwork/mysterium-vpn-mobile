@@ -14,6 +14,7 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
@@ -28,6 +29,7 @@ class PrepareTopUpActivity : BaseActivity() {
     private lateinit var binding: ActivityPrepareTopUpBinding
     private val viewModel: PrepareTopUpViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
+    private var isReferralTokenUsed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +64,9 @@ class PrepareTopUpActivity : BaseActivity() {
     }
 
     private fun registerIdentityWithoutToken(topUpNow: Boolean) {
+        if (!isReferralTokenUsed) {
+            pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_NOT_USED)
+        }
         viewModel.registerIdentityWithoutToken().observe(this, {
             it.onSuccess {
                 if (topUpNow) {
@@ -92,6 +97,7 @@ class PrepareTopUpActivity : BaseActivity() {
             viewModel.getRegistrationTokenReward(token).observe(this, {
                 it.onSuccess { rewardAmount ->
                     applyToken(token, rewardAmount) {
+                        binding.referralProgram.visibility = View.GONE
                         dialog.dismiss()
                     }
                 }
@@ -147,6 +153,8 @@ class PrepareTopUpActivity : BaseActivity() {
         viewModel.registerIdentity(token).observe(this, {
             it.onSuccess {
                 analyticWrapper.track(AnalyticEvent.REFERRAL_TOKEN, token, amount.toFloat())
+                pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_USED)
+                isReferralTokenUsed = true
                 onSuccess.invoke()
             }
         })

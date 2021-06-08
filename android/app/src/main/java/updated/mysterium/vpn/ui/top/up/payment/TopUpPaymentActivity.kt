@@ -11,13 +11,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import updated.mysterium.vpn.model.payment.Order
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
+import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
@@ -56,7 +57,11 @@ class TopUpPaymentActivity : BaseActivity() {
             val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
             val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.toFloat()
             if (currency != null && amount != null) {
+                pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
+                pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
+                pushyNotifications.subscribe(currency)
                 analyticWrapper.track(AnalyticEvent.PAYMENT, currency, amount)
+                viewModel.updateLastCurrency(currency)
             }
             viewModel.clearPopUpTopUpHistory()
             showTopUpSuccessfully()

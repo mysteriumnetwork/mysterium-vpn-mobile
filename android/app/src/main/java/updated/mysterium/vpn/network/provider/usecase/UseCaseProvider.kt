@@ -36,4 +36,6 @@ class UseCaseProvider(
     fun filters() = FilterUseCase(nodeRepository, sharedPreferencesManager)
 
     fun token() = TokenUseCase(nodeRepository)
+
+    fun pushy() = PushyUseCase(sharedPreferencesManager)
 }
