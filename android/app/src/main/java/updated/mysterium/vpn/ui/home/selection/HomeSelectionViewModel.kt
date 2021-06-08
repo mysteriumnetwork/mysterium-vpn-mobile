@@ -25,6 +25,7 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val locationUseCase = useCaseProvider.location()
     private val filtersUseCase = useCaseProvider.filters()
+    private val settingsUseCase = useCaseProvider.settings()
 
     fun getLocation() = liveDataResult {
         locationUseCase.getLocation()
@@ -62,4 +63,8 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getPreviousFilterId() = filtersUseCase.getPreviousFilterId()
+
+    fun getResidentCountry() = liveDataResult {
+        settingsUseCase.getResidentCountry()
+    }
 }

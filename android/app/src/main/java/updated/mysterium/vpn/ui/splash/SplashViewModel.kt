@@ -22,6 +22,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val loginUseCase = useCaseProvider.login()
     private val termsUseCase = useCaseProvider.terms()
     private val settingsUseCase = useCaseProvider.settings()
+    private val pushyUseCase = useCaseProvider.pushy()
     private var isAnimationLoaded = false
     private var isDataLoaded = false
     private var deferredNode = DeferredNode()
@@ -73,4 +74,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
+
+    fun getLastCryptoCurrency() = pushyUseCase.getCryptoCurrency()
 }

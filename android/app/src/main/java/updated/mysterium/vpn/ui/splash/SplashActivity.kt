@@ -27,7 +27,8 @@ import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
-import updated.mysterium.vpn.notification.Notifications
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
@@ -46,7 +47,6 @@ class SplashActivity : BaseActivity() {
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
-    private val pushyNotifications = Notifications(this)
     private var isVpnPermissionGranted = false
     private var newVersionPopUpDialog: AlertDialog? = null
     private val appUpdateManager: AppUpdateManager by lazy {
@@ -74,8 +74,10 @@ class SplashActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        checkForGoogleMarketUpdates {
-            startLoading()
+        if (isVpnPermissionGranted) {
+            checkForGoogleMarketUpdates {
+                startLoading()
+            }
         }
     }
 
@@ -129,7 +131,16 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun setUpPushyNotifications() {
-        pushyNotifications.register()
+        pushyNotifications.register {
+            val lastCurrency = viewModel.getLastCryptoCurrency()
+            if (lastCurrency == null) {
+                pushyNotifications.subscribe(PushyTopic.PAYMENT_FALSE)
+            } else {
+                pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
+                pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
+                pushyNotifications.subscribe(lastCurrency)
+            }
+        }
         pushyNotifications.listen()
     }
 
@@ -211,13 +222,28 @@ class SplashActivity : BaseActivity() {
 
     private fun startLoading() {
         if (NetworkUtil.isNetworkAvailable(this)) {
-            val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
-            balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-            viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
-                result.onSuccess {
-                    binding.onceAnimationView.playAnimation()
-                    viewModel.initRepository()
-                }
+            init()
+        } else {
+            if (
+                connectionState == ConnectionState.CONNECTED ||
+                connectionState == ConnectionState.ON_HOLD ||
+                connectionState == ConnectionState.CONNECTING ||
+                connectionState == ConnectionState.IP_NOT_CHANGED
+            ) {
+                init()
+            } else {
+                wifiNetworkErrorPopUp()
+            }
+        }
+    }
+
+    private fun init() {
+        val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
+        balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+        viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
+            result.onSuccess {
+                binding.onceAnimationView.playAnimation()
+                viewModel.initRepository()
             }
         }
     }
