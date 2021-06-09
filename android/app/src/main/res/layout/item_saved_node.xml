@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/proposalLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/itemContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="24dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/verticalGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.45" />
+
+            <ImageView
+                android:id="@+id/nodeTypeImage"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/item_residential" />
+
+            <TextView
+                android:id="@+id/nodeCodeTextView"
+                style="@style/TextAppearance.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/margin_padding_size_medium"
+                android:layout_weight="2.3"
+                android:lines="1"
+                android:maxLines="1"
+                android:textColor="@color/onboarding_title_dark_blue"
+                app:layout_constraintBottom_toTopOf="@+id/nodeCountryTextView"
+                app:layout_constraintEnd_toStartOf="@+id/verticalGuideline"
+                app:layout_constraintStart_toEndOf="@+id/nodeTypeImage"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="0x28358e2a89d028358e" />
+
+            <TextView
+                android:id="@+id/nodeCountryTextView"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/margin_padding_size_medium"
+                android:layout_marginEnd="@dimen/margin_padding_size_xxlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small"
+                android:layout_weight="2.3"
+                android:textColor="@color/manual_connect_favourite_country"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/priceImageView"
+                app:layout_constraintStart_toEndOf="@+id/nodeTypeImage"
+                tools:text="China" />
+
+            <ImageView
+                android:id="@+id/priceImageView"
+                style="@style/TextAppearance.Headline"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/margin_padding_size_xxlarge"
+                android:layout_weight="0.35"
+                android:orientation="horizontal"
+                android:src="@drawable/item_price_medium"
+                android:textColor="@color/onboarding_title_dark_blue"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/qualityImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:text="2568" />
+
+            <ImageView
+                android:id="@+id/qualityImageView"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="@dimen/margin_padding_size_xxlarge"
+                android:src="@drawable/item_quality_low"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/deleteImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
+                android:src="@drawable/icon_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/divider_country_group"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/lastItemMargin"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/itemContent" />
+
+</LinearLayout>

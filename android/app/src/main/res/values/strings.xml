@@ -1,118 +1,287 @@
 <resources>
     <string name="app_name" translatable="false">MysteriumVPN</string>
-    <string name="myst_currency" translatable="false">MYSTT</string>
-    <string name="connect_button_cancel">Cancel</string>
-    <string name="connect_button_connect">Connect</string>
-    <string name="connect_button_disconnect">Disconnect</string>
-    <string name="connect_button_disconnecting">Disconnecting</string>
-    <string name="conn_state_connected">Connected</string>
-    <string name="conn_state_on_hold">On Hold</string>
-    <string name="conn_state_connecting">Connecting</string>
-    <string name="conn_state_reconnecting">Reconnecting</string>
-    <string name="conn_state_not_connected">Disconnected</string>
-    <string name="conn_state_disconnecting">Disconnecting</string>
-    <string name="vpn_stats_paid">PAID</string>
-    <string name="vpn_stats_bytes">B</string>
-    <string name="vpn_stats_send_received">RECEIVED / SENT</string>
-    <string name="vpn_stats_duration">DURATION</string>
-    <string name="vpn_select_proposal">Select node</string>
-    <string name="vpn_ip_updating_label">IP: Updating</string>
-    <string name="proposals_search_hint">Search by node or country</string>
-    <string name="terms_accept">Accept</string>
-    <string name="proposals_close">CLOSE</string>
-    <string name="feedback_submit_success">Thanks for your feedback! Your feedback submitted successfully.</string>
-    <string name="feedback_submit_failed">Whoops! Looks like something went wrong. Try submitting your feedback again.</string>
-    <string name="disconnect_to_select_proposal">Disconnect to select new a proposal.</string>
-    <string name="connect_button_loading">Loading</string>
-    <string name="vpn_status_loading">Loading</string>
-    <string name="feedback_message_label">Message</string>
-    <string name="feedback_message_required">Message is required.</string>
-    <string name="vpn_select_proposal_warning">Please select node to connect.</string>
-    <string name="vpn_failed_to_connect">We couldn’t connect you. Please try again.</string>
-    <string name="vpn_failed_to_disconnect">We couldn’t disconnect you. Please try again.</string>
-    <string name="feedback_email_label">Your contact email (optional)</string>
-    <string name="connect_err_invalid_proposal">Proposal is not valid</string>
-    <string name="connect_err_insufficient_balance">Yikes. Looks like you need to top up your account.</string>
-    <string name="menu_wallet">Wallet</string>
-    <string name="menu_report_issue">Report an issue</string>
-    <string name="menu_get_help">Get help</string>
-    <string name="feedback_page_title">Report issue</string>
-    <string name="feedback_logs_notice">By submitting this form, You agree to send to Mysterium Network some account information like your IP, country and system information. This data will be used to improve our service and help investigate this issue.</string>
-    <string name="feedback_message_hint">Tell us what went wrong</string>
-    <string name="wallet_title">Wallet</string>
-    <string name="wallet_registration_please_wait">Please wait</string>
-    <string name="wallet_identity_registration_progress">We are registering your Mysterium Identity on blockchain. This could take up to a few minutes.</string>
-    <string name="wallet_registration_failed">Registration failed</string>
-    <string name="wallet_registration_try_again">Something went wrong while registering your identity. Please try again.</string>
-    <string name="wallet_registration_retry">RETRY</string>
-    <string name="wallet_topup_title">Topup</string>
-    <string name="wallet_topup_hint">Topup your wallet by sending ${myst_currency} to the address bellow.</string>
-    <string name="wallet_topup_free_tokens">GET FREE TOKENS</string>
-    <string name="wallet_identity_channel_address_copy">COPY TOPUP ADDRESS</string>
-    <string name="wallet_topup_address_copied">Copied</string>
-    <string name="wallet_topup_qr_hint">You can also scan this QR code which contains your topup address.</string>
-    <string name="force_update_title">Time to update MysteriumVPN!</string>
-    <string name="proposals_country_title">Country filter</string>
-    <string name="proposals_filter_country_value_all">All</string>
-    <string name="proposals_filter_reset_btn">RESET</string>
-    <string name="proposals_filter_quality_value_any">Any</string>
-    <string name="proposals_quality_filter_include_unreachable">Include unreachable nodes</string>
-    <string name="proposals_price_filter_title">Price filter</string>
-    <string name="proposals_quality_filter_title">Quality filter</string>
-    <string name="proposals_node_type_filter_title">Node IP type filter</string>
-    <string name="proposals_price_filter_apply_btn">APPLY</string>
-    <string name="feedback_app_version">App version: %1$s</string>
-    <string name="feedback_node_version">Node version: %1$s</string>
-    <string name="node_type_all">All</string>
-    <string name="node_type_business">Business</string>
-    <string name="node_type_cellular">Cellular</string>
-    <string name="node_type_hosting">Data center</string>
-    <string name="node_type_residential">Residential</string>
-    <string name="quality_level_any">Any</string>
-    <string name="quality_level_high">High</string>
-    <string name="quality_level_medium">Medium+</string>
-    <string name="quality_level_low">Low</string>
-    <string name="force_update_btn_text">Update</string>
-    <string name="force_update_description">This app version is not compatible with the latest Mysterium Network protocol and must be updated.</string>
-    <string name="force_update_current_version">Current version: <b>%1$s</b></string>
-    <string name="force_update_minimum_required_version">Minimum required version: <b>%1$s</b></string>
-    <string name="notification_title_connected">Connected to %1$s</string>
-    <string name="notification_content">Received %1$s | Send %2$s | Paid %3$s</string>
-    <string name="location_status_updating">Updating</string>
-    <string name="proposals_filter_country">Country</string>
-    <string name="proposals_filter_price">Price</string>
-    <string name="proposals_filter_quality">Quality</string>
-    <string name="proposals_filter_ip_type">IP type</string>
-    <string name="proposals_filter_price_per_hour">Price/hour:</string>
-    <string name="proposals_filter_price_per_gib">Price/GiB:</string>
-    <string name="proposals_price_combined">%1$s/h %2$s/GiB</string>
-    <string name="feedback_send_feedback_button">Send feedback</string>
-    <string name="wallet_myst_test_explanation">${myst_currency} is a test token which you get for free while we are in the Testnet environment.</string>
-    <string name="wallet_balance">Balance</string>
-    <string name="wallet_identity_address">Identity Address</string>
-    <string name="wallet_identity_address_explanation">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
-    <string name="no_internet_connection">No internet connection</string>
-    <string name="vpn_ip">IP: %1$s</string>
-    <string name="registration_description">MysteriumVPN requires account activation to prevent spam and network attacks.</string>
-    <string name="registration_have_a_referral_code">Have a referral code</string>
-    <string name="myst_display">%1$s ${myst_currency}</string>
-    <string name="registration_topup_payment_hint">Transfer %1$s ${myst_currency} to your wallet (Görli Testnet blockchain) to proceed.</string>
-    <string name="registration_successful">Registration successful!</string>
-    <string name="have_a_referral_code">Have a referral code?</string>
-    <string name="get_started">Get started</string>
-    <string name="how_much_would_you_like_to_topup">How much would you like to topup?</string>
-    <string name="topup_amount">Topup amount</string>
-    <string name="registration_fee">Registration fee</string>
-    <string name="total_amount">Total amount</string>
-    <string name="waiting_for_payment">Waiting for payment</string>
-    <string name="button_continue">Continue</string>
-    <string name="button_register">Register</string>
-    <string name="enter_referral_code">Enter referral code:</string>
-    <string name="mysterium_network_logo">Mysterium Network logo</string>
-    <string name="wallet_topup_select_lightning_network">Lightning Network</string>
-    <string name="wallet_topup_action">Topup</string>
-    <string name="wallet_topup_currency_title">Select currency</string>
-    <string name="wallet_topup_amount_title">Topup amount</string>
-    <string name="wallet_topup_payment_successful">Payment successful!</string>
-    <string name="wallet_topup_payment_failed">Payment failed… Please try again later!</string>
+
+    <!--  Onboarding  -->
+    <string name="onboarding_main_title_1">Decentralized global node network</string>
+    <string name="onboarding_description_title_1">Run by people, for people</string>
+    <string name="onboarding_description_content_1">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
+    <string name="onboarding_description_title_2">No lock in subscriptions</string>
+    <string name="onboarding_description_content_2">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
+    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
+    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+
+    <!--  ManualConnection  -->
+    <string name="manual_connect_country_select_title">Select node</string>
+    <string name="manual_connect_all_nodes">All nodes</string>
+    <string name="manual_connect_saved_nodes">Saved</string>
+    <string name="manual_connect_all_countries">All countries</string>
+    <string name="manual_connect_nodes_label">Nodes</string>
+    <string name="manual_connect_country_label">Countries</string>
+    <string name="manual_connect_disconnected">Disconnected</string>
+    <string name="manual_connect_select_node">Select node</string>
+    <string name="manual_connect_smart_unavailable">Smart Connect isn’t available in a test mode\nPlease select node manually</string>
+    <string name="manual_connect_country_status">Unprotected</string>
+    <string name="manual_connect_protected">Protected</string>
+    <string name="manual_connect_price">Price</string>
+    <string name="manual_connect_type">Type</string>
+    <string name="manual_connect_quality">Quality</string>
+    <string name="manual_connect_type_filter_title">Select the node type</string>
+    <string name="manual_connect_node">Node</string>
+    <string name="manual_connect_another_node">Select another node </string>
+    <string name="manual_connect_cancel">Cancel and choose another node</string>
+    <string name="manual_connect_connecting">Connecting…</string>
+    <string name="manual_connect_connected">Connected</string>
+    <string name="manual_connect_on_hold">On Hold</string>
+    <string name="manual_connect_disconnect">Disconnect</string>
+    <string name="manual_connect_disconnecting">Disconnecting</string>
+    <string name="manual_connect_connecting_title">Manual connect</string>
+    <string name="manual_connect_connecting_description">Creating an encrypted tunnel to your node</string>
+    <string name="manual_connect_duration">Duration</string>
+    <string name="manual_connect_data_received_hint">Receive/Send</string>
+    <string name="manual_connect_paid_hint">Paid</string>
+    <string name="manual_connect_time_format">HH MM SS</string>
+    <string name="manual_connect_data_type" translatable="false">MiB</string>
+    <string name="manual_connect_paid_types">MYSTT / USD</string>
+    <string name="manual_connect_loading">Loading</string>
+    <string name="manual_connect_unknown">Unknown</string>
+    <string name="manual_connect_data_received" translatable="false">%1$s/</string>
+    <string name="manual_connect_price_per_hour">%.4f/h</string>
+    <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
+    <string name="manual_connect_saved_to_favourite">Successfully saved</string>
+    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
+    <string name="manual_connect_search">Search</string>
+    <string name="manual_connect_node_id">Node id or Country</string>
+    <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
+    <string name="manual_connect_residential">Residential</string>
+    <string name="manual_connect_non_residential">Non residential</string>
+
+    <!--  Filters  -->
+    <string name="filter_type_all">All types</string>
+    <string name="filter_type_residential">Residential</string>
+    <string name="filter_type_non_residential">Non-Resid.</string>
+    <string name="filter_price_high">Any</string>
+    <string name="filter_price_medium">Medium</string>
+    <string name="filter_price_low">Low</string>
+    <string name="filter_quality_high">Hight</string>
+    <string name="filter_quality_medium">Medium +</string>
+    <string name="filter_quality_low">Any</string>
+
+    <!--  Menu  -->
+    <string name="menu_current_balance">"%.3f" MYST</string>
+    <string name="menu_title">Mysterium Network</string>
+    <string name="menu_item_home_title">Home</string>
+    <string name="menu_item_profile_title">Profile</string>
+    <string name="menu_item_wallet_title">Account</string>
+    <string name="menu_item_monitoring_title">History</string>
+    <string name="menu_item_referral_title">Referral program</string>
+    <string name="menu_item_referral_subtitle">Earn VPN Credits</string>
+    <string name="menu_item_wallet_subtitle">Top up your account</string>
+    <string name="menu_item_monitoring_subtitle">Connection history</string>
+    <string name="menu_list_item_settings">Settings</string>
+    <string name="menu_list_item_report">Report an issue</string>
+    <string name="menu_list_item_help">Get help</string>
+    <string name="menu_terms">Terms of Use</string>
+    <string name="menu_app_version">App version %s</string>
+    <string-array name="menu_languages">
+        <item>EN</item>
+        <item>AR</item>
+        <item>RU</item>
+        <item>TR</item>
+        <item>PT</item>
+        <item>ZH</item>
+    </string-array>
+
+    <!--  Wallet  -->
+    <string name="wallet_main_title">Account balance</string>
+    <string name="wallet_currency" translatable="false">MYSTT</string>
+    <string name="wallet_balance_currency" translatable="false">MYST</string>
+    <string name="wallet_start_balance">0,000</string>
+    <string name="wallet_usd_equivalent">USD equivalent ≈ $%.3f</string>
+    <string name="wallet_buys_for_you">This buys you:</string>
+    <string name="wallet_current_balance" translatable="false">"%.3f"</string>
+    <string name="wallet_top_up">Top up</string>
+    <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain</string>
+    <string name="wallet_top_up_label">Top up events</string>
+    <string name="wallet_spedings_label">Spendings</string>
+    <string name="wallet_spendings_country">Country</string>
+    <string name="wallet_spendings_duration">Duration</string>
+    <string name="wallet_spendings_currency">MYST / USD</string>
+    <string name="wallet_spendings_quality">Quality</string>
+    <string name="wallet_spendings_size">Size</string>
+    <string name="wallet_spendings_connected">Connected</string>
+    <string name="wallet_spendings_connected_value">%d days ago</string>
+    <string name="wallet_top_ups_time">Time</string>Paid
+    <string name="wallet_top_ups_paid">Paid</string>
+    <string name="wallet_top_ups_myst">Myst</string>
+    <string name="wallet_top_ups_currency" translatable="false">%.6f %2$s</string>
+    <string name="wallet_video">Online\n video</string>
+    <string name="wallet_web">Web\n browsing</string>
+    <string name="wallet_download">of data\n download</string>
+    <string name="wallet_music">Music\n Songs</string>
+
+    <!--  Profile  -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_identity">Mysterium Identity Address</string>
+    <string name="profile_identity_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
+    <string name="profile_change_keys">Change Private keys</string>
+    <string name="profile_copy_to_clipboard">Copied to clipboard</string>
+    <string name="profile_private_keys">Private keys</string>
+    <string name="profile_keys_description">On Mysterium your account is not stored in centralised servers. Private keys which holds your tokens are stored only in your application. </string>
+    <string name="profile_backup">Please make its backup, so you could recover your account later.</string>
+    <string name="profile_download_keys">Download</string>
+
+    <!--  Report issue  -->
+    <string name="report_issue_app_version_template" translatable="false">%1$s</string>
+    <string name="report_issue_title">Get help</string>
+    <string name="report_issue_description">Please let us know about the problem you are\n facing within the app. We will get back to you\n shortly via email.</string>
+    <string name="report_issue_email_subtitle">Email (optional)</string>
+    <string name="report_issue_problem_subtitle">Problem description</string>
+    <string name="report_issue_send">Send</string>
+    <string name="report_issue_app_version">App version</string>
+    <string name="report_issue_node_version">Node version</string>
+    <string name="report_issue_error_empty_issue">Can’t be empty</string>
+    <string name="report_issue_error_incorrect_email">Incorrect email</string>
+    <string name="report_issue_error_request">Something went wrong, please try again later</string>
+    <string name="report_issue_success">Report sent successfully. Thank you!</string>
+
+    <!--  Monitoring  -->
+    <string name="monitoring_title">History Statistics</string>
+    <string name="monitoring_last_sessions">Last Sessions</string>
+    <string name="monitoring_empty_line_chart">You don\'t have any sessions yet</string>
+
+    <!--  Terms of Use  -->
+    <string name="terms_title">Terms of use</string>
+    <string name="terms_short">Short version</string>
+    <string name="terms_full">Full version</string>
+    <string name="terms_accept_button">Accept</string>
+    <string name="terms_onboarding_description">Please accept our terms of use so that you can begin surfing the open internet with Mysterium Network.</string>
+
+    <!--  Top up  -->
+    <string name="top_up_amount_title">Top up your account</string>
+    <string name="top_up_amount_video">Online video</string>
+    <string name="top_up_amount_music">Music</string>
+    <string name="top_up_amount_pages">Web pages</string>
+    <string name="top_up_amount_traffic">Traffic</string>
+    <string name="top_up_amount_description">Select how much MYST credits \n you would like to add into your account</string>
+    <string name="top_up_amount_confirm">Confirm</string>
+    <string name="top_up_crypto_description">Select the crypto currency \n in which the topup will be done</string>
+    <string name="top_up_payment_title">Waiting for a payment</string>
+    <string name="top_up_payment_description">Scan this QR code which contains your topup address</string>
+    <string name="top_up_payment_link">Or use a payment link</string>
+    <string name="top_up_crypto_lighting">Lightning Network</string>
+    <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
+    <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
+    <string name="top_up_free_trial">Free Trial</string>
+
+    <!--  Settings  -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
+    <string name="settings_dns_title">DNS</string>
+    <string name="settings_resident_title">Resident country</string>
+    <string name="settings_dns_system">System</string>
+    <string name="settings_dns_provider">Provider</string>
+    <string name="settings_dns_cloudflare">Cloudflare</string>
+    <string name="settings_dns_default">Default</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+
+    <!--  Create account  -->
+    <string name="create_account_title">Your account</string>Create New Account
+    <string name="create_account_new">Create New\n Account</string>
+    <string name="create_account_import">Import\n Account</string>
+    <string name="create_account_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
+
+    <!--  Private key  -->
+    <string name="private_key_back_up">Back up\n Private Key</string>
+    <string name="private_key_back_up_later">Back up\n Later</string>
+
+    <!--  Prepare top up  -->
+    <string name="prepare_top_up_referral">Use referral code</string>
+    <string name="prepare_top_up_now">Top up now</string>
+    <string name="prepare_top_up_later">Top up later</string>
+
+    <!--  Search  -->
+    <string name="search_hint_first_part">Use </string>
+    <string name="search_hint_highlighted">Search Bar</string>
+    <string name="search_hint_second_part">at the top\n to find right node</string>
+
+    <!--  Favourites  -->
+    <string name="favourites_title">Favourites</string>
+
+    <!--  Toolbar  -->
+    <string name="toolbar_hint">Back to Connection Screen</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_top_up_title">Top up Your\n Account</string>
+    <string name="pop_up_top_up_description">Credits is running out</string>
+    <string name="pop_up_top_up_positive">Top up now</string>
+    <string name="pop_up_top_up_negative">Continue</string>
+    <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
+    <string name="pop_up_payment_canceled_description">You canceled the\n payment process</string>
+    <string name="pop_up_insufficient_funds_title">Insufficient\n Funds</string>
+    <string name="pop_up_insufficient_funds_description">Please top up your account</string>
+    <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
+    <string name="pop_up_payment_successfully_done">Well done</string>
+    <string name="pop_up_payment_successfully_close">Close</string>
+    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn’t Work</string>
+    <string name="pop_up_payment_not_work_try_again">Please try again later</string>
+    <string name="pop_up_payment_not_work_okay">Okay, got it</string>
+    <string name="pop_up_payment_expired_title">Payment is not\n Successful</string>
+    <string name="pop_up_payment_expired_description">Time is over</string>
+    <string name="pop_up_payment_expired_try_again">Try again</string>Top up later
+    <string name="pop_up_payment_expired_later">Top up later</string>
+    <string name="pop_up_node_failed_title">Failed to Connect</string>
+    <string name="pop_up_node_failed_description">Check your network</string>
+    <string name="pop_up_node_failed_another">Choose another node</string>
+    <string name="pop_up_registration_failed_title">Connection\n Troubles</string>
+    <string name="pop_up_registration_failed_description">Check your network</string>
+    <string name="pop_up_registration_failed_cancel">Cancel</string>
+    <string name="pop_up_registration_failed_retry">Retry Registration</string>
+    <string name="pop_up_lost_connection_title">Lost\n Connection</string>
+    <string name="pop_up_lost_connection_description">Finding new node</string>
+    <string name="pop_up_wi_fi_error_title">Wi-fi Network\n Error</string>
+    <string name="pop_up_wi_fi_error_description">Please check your\n network connection</string>
+    <string name="pop_up_wi_fi_error_retry">Retry</string>
+    <string name="pop_up_terms_title">Term of Use\n Changed</string>
+    <string name="pop_up_terms_description">Check out the updated\n version here</string>
+    <string name="pop_up_terms_confirm">Confirm</string>
+    <string name="pop_up_private_key_title">Download key</string>
+    <string name="pop_up_private_key_description">Type Your Password</string>
+    <string name="pop_up_private_key_download">Download</string>
+
+    <!--  Should be translated on other languages -->
+    <string name="pop_up_private_key_error">Enter at least 12 characters</string>
+
+    <string name="pop_up_import_wrong_password">Wrong password</string>
+    <string name="pop_up_private_key_hint">Password length at least 12 characters</string>
+    <string name="pop_up_import_account_title">Import account</string>
+    <string name="pop_up_import_account_upload">Upload</string>
+    <string name="pop_up_password_account_title">Account password</string>
+    <string name="pop_up_password_account_apply">Apply</string>
+    <string name="pop_up_password_account_hint">Enter password here</string>
+    <string name="pop_up_referral_hint">Enter code here</string>
+    <string name="pop_up_referral_title">Referral code</string>
+    <string name="pop_up_referral_description">You will get</string>
+    <string name="pop_up_referral_error">Incorrect token</string>
+    <string name="pop_up_new_version_title">New Version\n Available</string>
+    <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
+    <string name="pop_up_new_version_update">Update</string>
+
+    <!--  Push notifications  -->
+    <string name="push_notification_balance_title">Mysterium balance</string>
+    <string name="push_notification_balance_message">Your balance is running out!</string>
+    <string name="push_notification_connection_title">Mysterium connection</string>
+    <string name="push_notification_connection_message">Connection to node is lost!</string>
+    <string name="push_notification_connected_title">Connected to %1$s</string>
+    <string name="push_notification_content">Received %1$s | Send %2$s | Paid %3$s</string>
+
+    <!--  Error  -->
+    <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
+
+    <!--  HomeSelection  -->
+    <string name="home_selection_smart_connect">Smart Connect is coming soon</string>
+    <string name="home_selection_all_nodes">All nodes</string>
 </resources>

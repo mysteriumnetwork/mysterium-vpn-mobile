@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/Widget.SemiTransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:src="@drawable/icon_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/top_up_amount_title"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backButton" />
+
+    <LinearLayout
+        android:id="@+id/switchFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:background="@drawable/shape_lighting"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <TextView
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+            android:text="@string/top_up_crypto_lighting"
+            android:textColor="@android:color/white" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/lightingSwitch"
+            style="@style/SwitchStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+            android:checked="false"
+            app:track="@drawable/switch_track_selector" />
+
+    </LinearLayout>
+
+    <updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
+        android:id="@+id/cryptoAnimation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchFrame"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/btc_animation" />
+
+    <ImageView
+        android:id="@+id/horizontalDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padding_size_small"
+        android:src="@drawable/divider_top_up"
+        app:layout_constraintBottom_toTopOf="@+id/topUpDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/topUpDescription"
+        style="@style/TextAppearance.Headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+        android:text="@string/top_up_crypto_description"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        style="@style/Widget.PrimaryCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_padding_size_small_medium"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/horizontalGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.4" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/amountRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_card_element" />
+
+            <TextView
+                android:id="@+id/usdEquivalentTextView"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                android:text="@string/top_up_usd_equivalent"
+                android:textColor="@color/manual_connect_divider_grey_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/confirmButtonFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="4dp"
+                    android:src="@drawable/shadow_primary_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/confirmButton"
+                    style="@style/Widget.PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"
+                    android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+                    android:text="@string/top_up_amount_confirm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/freeTrialButtonButton"
+                    style="@style/Widget.TrialButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                    android:layout_marginVertical="@dimen/margin_padding_size_small_medium"
+                    android:text="@string/top_up_free_trial"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/confirmButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_back" />
+
+    <FrameLayout
+        android:id="@+id/connectionHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_micro"
+        android:background="@drawable/shape_connected_hint"
+        android:elevation="1dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+        <TextView
+            style="@style/TextAppearance.BodyRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:text="@string/toolbar_hint"
+            android:textColor="@color/manual_connect_connection_state" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:text="@string/settings_title"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/walletInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:background="@drawable/shape_gradient_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+
+        <TextView
+            android:id="@+id/dnsTitle"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:text="@string/settings_dns_title"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dnsDescription"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="@string/settings_description"
+            android:textAlignment="center"
+            android:textColor="@color/manual_connect_value_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dnsTitle" />
+
+        <FrameLayout
+            android:id="@+id/dnsSpinnerFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dnsDescription">
+
+            <Spinner
+                android:id="@+id/dnsSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/spinner_settings_selected"
+                android:dropDownWidth="match_parent"
+                android:dropDownVerticalOffset="@dimen/margin_padding_size_xsmall"
+                android:gravity="center"
+                android:overlapAnchor="false"
+                android:popupBackground="@drawable/spinner_settings_menu"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
+                android:src="@drawable/icon_drop_down_png"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/privateKeys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:background="@drawable/shape_gradient_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walletInfo">
+
+        <TextView
+            android:id="@+id/residentTitle"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:text="@string/settings_resident_title"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/residentDescription"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="@string/settings_description"
+            android:textAlignment="center"
+            android:textColor="@color/manual_connect_value_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/residentTitle" />
+
+        <FrameLayout
+            android:id="@+id/residentSpinnerFrame"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_medium"
+            android:background="@drawable/shape_edit_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/residentDescription">
+
+            <TextView
+                android:id="@+id/selectedCountry"
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/onboarding_skip_white"
+                tools:text="Ukraine" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
+                android:src="@drawable/icon_drop_down_png"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/switchFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padding_size_xlarge"
+        android:background="@drawable/shape_lighting"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+            android:text="@string/settings_dark_mode"
+            android:textColor="@android:color/white" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/darkModeSwitch"
+            style="@style/SwitchStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+            android:checked="false"
+            app:track="@drawable/switch_track_selector" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

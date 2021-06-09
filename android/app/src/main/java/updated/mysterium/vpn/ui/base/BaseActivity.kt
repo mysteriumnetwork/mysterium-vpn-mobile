@@ -1,0 +1,221 @@
+package updated.mysterium.vpn.ui.base
+
+import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
+import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
+import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
+import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.localisation.LocaleHelper
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.pushy.PushyTopic
+import updated.mysterium.vpn.notification.Notifications
+import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+
+abstract class BaseActivity : AppCompatActivity() {
+
+    protected var connectionStateToolbar: ConnectionToolbar? = null
+    protected val baseViewModel: BaseViewModel by inject()
+    protected var isInternetAvailable = true
+    protected var connectionState = ConnectionState.NOTCONNECTED
+    protected val pushyNotifications = Notifications(this)
+    private val dialogs = emptyList<Dialog>().toMutableList()
+    private var insufficientFoundsDialog: AlertDialog? = null
+    private var wifiErrorDialog: AlertDialog? = null
+    private lateinit var alertDialogBuilder: AlertDialog.Builder
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        baseViewModel.checkInternetConnection()
+        alertDialogBuilder = AlertDialog.Builder(this)
+        subscribeViewModel()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleHelper.onAttach(
+                context = newBase,
+                currentLanguage = baseViewModel.getUserCurrentLanguageCode()
+            )
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        baseViewModel.checkCurrentConnection()
+    }
+
+    override fun onPause() {
+        closeAllPopUps()
+        super.onPause()
+    }
+
+    open fun retryLoading() {
+        // Override in activity for handle retry loading click
+    }
+
+    open fun showConnectionHint() {
+        // Override in activity for show connection hint
+    }
+
+    fun initToolbar(connectionToolbar: ConnectionToolbar) {
+        connectionStateToolbar = connectionToolbar
+    }
+
+    fun createPopUp(popUpView: View, cancelable: Boolean): AlertDialog {
+        alertDialogBuilder.apply {
+            setView(popUpView)
+            setCancelable(cancelable)
+            create().apply {
+                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                window?.setLayout(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+        }
+        val dialog = alertDialogBuilder.create()
+        dialog.apply {
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setLayout(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+        dialogs.add(dialog)
+        return dialog
+    }
+
+    fun wifiNetworkErrorPopUp() {
+        if (wifiErrorDialog == null) {
+            val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
+            wifiErrorDialog = createPopUp(bindingPopUp.root, false)
+            bindingPopUp.retryButton.setOnClickListener {
+                wifiErrorDialog?.dismiss()
+                wifiErrorDialog = null
+                baseViewModel.checkInternetConnection()
+            }
+            wifiErrorDialog?.show()
+        }
+    }
+
+    fun insufficientFundsPopUp(onContinueAction: (() -> Unit)? = null) {
+        val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.topUpButton.setOnClickListener {
+            startActivity(Intent(this, TopUpAmountActivity::class.java))
+        }
+        bindingPopUp.continueButton.setOnClickListener {
+            dialog.dismiss()
+            onContinueAction?.invoke()
+        }
+        dialog.show()
+    }
+
+    fun closeAllPopUps() {
+        dialogs.forEach {
+            it.dismiss()
+        }
+    }
+
+    fun navigateToConnectionOrHome() {
+        val intent = if (
+            connectionState == ConnectionState.CONNECTED ||
+            connectionState == ConnectionState.CONNECTING ||
+            connectionState == ConnectionState.ON_HOLD
+        ) {
+            Intent(this, ConnectionActivity::class.java)
+        } else {
+            Intent(this, HomeSelectionActivity::class.java)
+        }
+        intent.apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    fun establishConnectionListeners() {
+        baseViewModel.establishListeners()
+    }
+
+    protected open fun protectedConnection() {
+        connectionStateToolbar?.protectedState(true)
+    }
+
+    private fun unprotectedConnection() {
+        connectionStateToolbar?.unprotectedState()
+    }
+
+    private fun subscribeViewModel() {
+        baseViewModel.balance.observe(this, {
+            if (it < BaseViewModel.BALANCE_LIMIT) {
+                pushyNotifications.subscribe(PushyTopic.LESS_THEN_HALF_MYST)
+            } else {
+                pushyNotifications.unsubscribe(PushyTopic.LESS_THEN_HALF_MYST)
+            }
+        })
+        baseViewModel.balanceRunningOut.observe(this, {
+            balanceRunningOutPopUp()
+        })
+        baseViewModel.connectionState.observe(this, {
+            connectionState = it
+            if (
+                it == ConnectionState.CONNECTED ||
+                it == ConnectionState.ON_HOLD ||
+                it == ConnectionState.IP_NOT_CHANGED
+            ) {
+                isHintAlreadyShown()
+                protectedConnection()
+            } else {
+                unprotectedConnection()
+            }
+        })
+        baseViewModel.insufficientFunds.observe(this, {
+            insufficientFundsPopUp()
+        })
+        baseViewModel.isInternetNotAvailable.observe(this, { isAvailable ->
+            isInternetAvailable = isAvailable
+            if (!isAvailable) {
+                wifiNetworkErrorPopUp()
+            } else {
+                wifiErrorDialog?.dismiss()
+                wifiErrorDialog = null
+                retryLoading()
+            }
+        })
+    }
+
+    private fun isHintAlreadyShown() {
+        if (!baseViewModel.isHintAlreadyShown()) {
+            showConnectionHint()
+        }
+    }
+
+    private fun balanceRunningOutPopUp() {
+        if (insufficientFoundsDialog == null) {
+            val bindingPopUp = PopUpTopUpAccountBinding.inflate(layoutInflater)
+            insufficientFoundsDialog = createPopUp(bindingPopUp.root, false)
+            bindingPopUp.topUpButton.setOnClickListener {
+                insufficientFoundsDialog?.dismiss()
+                insufficientFoundsDialog = null
+                startActivity(Intent(this, TopUpAmountActivity::class.java))
+            }
+            bindingPopUp.continueButton.setOnClickListener {
+                insufficientFoundsDialog?.dismiss()
+                insufficientFoundsDialog = null
+            }
+            insufficientFoundsDialog?.show()
+        }
+    }
+}

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/closeGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_padding_size_medium"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/popUpCard" />
+
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_close_pop_up"
+        app:layout_constraintBottom_toTopOf="@+id/popUpCard"
+        app:layout_constraintEnd_toEndOf="@+id/closeGuideline"
+        app:layout_constraintStart_toStartOf="@+id/closeGuideline"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/popUpCard"
+        style="@style/Widget.PrimaryCardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/pop_up_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.HeadTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:paddingBottom="@dimen/margin_padding_size_xsmall"
+                android:text="@string/pop_up_import_account_title"
+                android:textAlignment="center"
+                android:textColor="@color/pop_up_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:paddingVertical="@dimen/margin_padding_size_large"
+                android:src="@drawable/icon_upload_account"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:ignore="ContentDescription" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uploadButton"
+                style="@style/Widget.RoundedUnfocusedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:paddingHorizontal="@dimen/margin_padding_size_small"
+                android:text="@string/pop_up_import_account_upload"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelButton"
+                style="@style/Widget.NegativeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                android:layout_marginBottom="@dimen/margin_padding_size_large"
+                android:text="@string/pop_up_registration_failed_cancel"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uploadButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

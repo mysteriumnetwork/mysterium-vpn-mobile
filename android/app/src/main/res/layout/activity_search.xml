@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
+        android:id="@+id/manualConnectToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftIcon="@drawable/icon_back" />
+
+    <FrameLayout
+        android:id="@+id/connectionHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_micro"
+        android:background="@drawable/shape_connected_hint"
+        android:elevation="1dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+        <TextView
+            style="@style/TextAppearance.BodyRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:text="@string/toolbar_hint"
+            android:textColor="@color/manual_connect_connection_state" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/searchTitle"
+        style="@style/TextAppearance.HeadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        android:text="@string/manual_connect_search"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
+
+    <TextView
+        android:id="@+id/searchTypeTitle"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:text="@string/manual_connect_node_id"
+        android:textColor="@color/manual_connect_value_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTitle" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:background="@drawable/shape_edit_text"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingHorizontal="@dimen/margin_padding_size_small"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/searchTypeTitle"
+        tools:ignore="LabelFor" />
+
+    <ImageView
+        android:id="@+id/horizontalDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+        android:src="@drawable/divider_horizontal_search"
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/searchLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/search_hint_logo"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTypeTitle"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/searchHint"
+        style="@style/TextAppearance.Headline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+        android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+        android:paddingHorizontal="@dimen/margin_padding_size_xlarge"
+        android:textAlignment="center"
+        android:textColor="@color/search_text"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchLogo" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nodesRecyclerView"
+        style="@style/ScrollbarRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_padding_size_small_medium"
+        android:layout_marginTop="@dimen/margin_padding_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_saved_node" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loaderAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loader_animation" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

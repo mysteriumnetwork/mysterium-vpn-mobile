@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
+            android:id="@+id/manualConnectToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:leftIcon="@drawable/icon_back" />
+
+        <FrameLayout
+            android:id="@+id/connectionHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:background="@drawable/shape_connected_hint"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar">
+
+            <TextView
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_micro"
+                android:text="@string/toolbar_hint"
+                android:textColor="@color/manual_connect_connection_state" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/titletextView"
+            style="@style/TextAppearance.HeadTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:text="@string/monitoring_title"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manualConnectToolbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/chartFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+            android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+            android:background="@drawable/shape_line_chart"
+            android:paddingVertical="@dimen/margin_padding_size_small_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titletextView">
+
+            <TextView
+                android:id="@+id/dataTypeTextView"
+                style="@style/TextAppearance.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_size_small"
+                android:textColor="@color/manual_connect_subtitle_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="MiB" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/sessionChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
+                android:background="@drawable/shape_line_chart_transparent_form"
+                app:layout_constraintTop_toBottomOf="@+id/dataTypeTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/sessionsTitle"
+            style="@style/TextAppearance.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_padding_size_xxlarge"
+            android:text="@string/monitoring_last_sessions"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chartFrame" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lastSessionsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+            android:layout_marginVertical="@dimen/margin_padding_size_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sessionsTitle"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_session" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

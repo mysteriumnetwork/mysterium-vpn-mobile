@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/languageSelector"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layoutDirection="ltr">
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@style/SpinnerStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:overlapAnchor="false"
+        android:paddingHorizontal="@dimen/margin_padding_size_small_medium"
+        android:popupBackground="@drawable/shape_spinner_language_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_size_small_medium"
+        android:src="@drawable/icon_language"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintTop_toTopOf="@+id/spinner"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

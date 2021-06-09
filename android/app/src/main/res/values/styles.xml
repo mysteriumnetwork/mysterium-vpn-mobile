@@ -1,18 +1,11 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="android:textColor">#000000</item>
         <item name="android:colorControlActivated">@color/ColorMain</item>
-        <item name="colorPrimary">#622461</item>
-        <item name="colorPrimaryDark">#501d4f</item>
-    </style>
-
-    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">#622461</item>
-        <item name="colorPrimaryDark">#501d4f</item>
-        <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:windowBackground">@drawable/background_light_theme</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
 
     <color name="ColorMain">#622461</color>
@@ -70,6 +63,368 @@
     <style name="BlockchainAddressText">
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--  Primary Button  -->
+    <style name="Widget.PrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.PrimaryButton</item>
+        <item name="android:background">@drawable/primary_button_background</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_medium</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_medium</item>
+    </style>
+
+    <style name="TextAppearance.PrimaryButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  GreySecondaryButton  -->
+    <style name="Widget.GreySecondaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.GreySecondaryButton</item>
+        <item name="android:background">@drawable/secondary_grey_button_background</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xxlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xxlarge</item>
+    </style>
+
+    <style name="TextAppearance.GreySecondaryButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--  TrialButton  -->
+    <style name="Widget.TrialButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.TrialButton</item>
+        <item name="android:background">@drawable/trial_button_background</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/trial_text_color</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xxlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xxlarge</item>
+    </style>
+
+    <style name="TextAppearance.TrialButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  NegativeButton  -->
+    <style name="Widget.NegativeButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.NegativeButton</item>
+        <item name="android:background">@drawable/shape_rounded_light_blue</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/pop_up_negative_button_text</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.NegativeButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  RoundedSemiTransparentButton  -->
+    <style name="Widget.RoundedSemiTransparentButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:background">@drawable/shape_rounded_semi_transparent</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/manual_connect_subtitle_white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.RoundedSemiTransparentButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  RoundedUnfocusedButton  -->
+    <style name="Widget.RoundedUnfocusedButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:background">@drawable/shape_rounded_grey_blue</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.RoundedUnfocusedButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  SecondaryButton  -->
+    <style name="Widget.SecondaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:background">@drawable/secondary_button_background</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.SecondaryButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  GradientButton  -->
+    <style name="Widget.GradientButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:background">@drawable/shape_menu_button</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.GradientButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  ReportButton  -->
+    <style name="Widget.ReportButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:background">@drawable/shape_report_button</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.ReportButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  TextButton -->
+    <style name="Widget.TextButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.PrimaryButton</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">112dp</item>
+    </style>
+
+    <style name="TextAppearance.TextButton" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--  Rounded SemiTransparent ImageButton -->
+    <style name="Widget.SemiTransparentButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@drawable/circle_icon_background</item>
+    </style>
+
+    <!--  Transparent TextButton  -->
+    <style name="Widget.TransparentTextButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textAppearance">@style/TextAppearance.TransparentTextButton</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="TextAppearance.TransparentTextButton" parent="TextAppearance.AppCompat.Button">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  TextStyles  -->
+    <style name="TextAppearance.HeadNumbers" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textSize">38sp</item>
+    </style>
+
+    <style name="TextAppearance.HeadTitle" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.HeadChar" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.Headline" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.HeadSubNumbers" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.BodyBold" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.BodyMedium" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.BodyBlack" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.BodyRegular" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.BoldCaption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.MediumCaption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.BoldInfo" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="TextAppearance.Info" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <!--  CardViewStyle  -->
+    <style name="Widget.PrimaryCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/primary_card_view</item>
+    </style>
+
+    <!--  PopUpCardView  -->
+    <style name="Widget.PopUpCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/pop_up_background</item>
+    </style>
+
+    <style name="Widget.SmallRoundedCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/manual_connect_card_view_light_blue</item>
+    </style>
+
+    <style name="Widget.SemiTransparentCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/common_icon_background_white</item>
+    </style>
+
+    <style name="Widget.BordersCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/manual_connect_filter_borders_white</item>
+        <item name="cardBackgroundColor">@color/manual_connect_filter_background_white</item>
+    </style>
+
+    <!--  TabLayoutStyle -->
+    <style name="FloatTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="tabGravity">center</item>
+        <item name="tabIndicator">@null</item>
+    </style>
+
+    <style name="CustomShapeTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="tabRippleColor">@null</item>
+        <item name="tabGravity">center</item>
+        <item name="tabIndicator">@null</item>
+        <item name="tabPaddingStart">0dp</item>
+        <item name="tabPaddingEnd">0dp</item>
+        <item name="tabPaddingTop">0dp</item>
+        <item name="tabPaddingBottom">0dp</item>
+    </style>
+
+    <!--  RecyclerViewStyle  -->
+    <style name="ScrollbarRecyclerView">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarSize">0dp</item>
+        <item name="android:scrollbarStyle">outsideInset</item>
+        <item name="android:scrollbarThumbVertical">@drawable/thumb_drawable</item>
+        <item name="android:scrollbarTrackVertical">@drawable/track_drawable</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <!--  SpinnerStyle  -->
+    <style name="SpinnerStyle">
+        <item name="android:background">@drawable/background_spinner</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <!--  SwitchStyle  -->
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="trackTint">@color/switch_track_selector</item>
+        <item name="thumbTint">@android:color/white</item>
     </style>
 
 </resources>

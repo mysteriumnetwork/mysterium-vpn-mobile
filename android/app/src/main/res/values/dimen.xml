@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="margin_padding_size_micro">2dp</dimen>
+    <dimen name="margin_padding_size_xxsmall">4dp</dimen>
+    <dimen name="margin_padding_size_xsmall">6dp</dimen>
     <dimen name="margin_padding_size_small">8dp</dimen>
+    <dimen name="margin_padding_size_small_plus">10dp</dimen>
+    <dimen name="margin_padding_size_small_medium">12dp</dimen>
     <dimen name="margin_padding_size_medium">16dp</dimen>
+    <dimen name="margin_padding_size_medium_large">20dp</dimen>
     <dimen name="margin_padding_size_large">24dp</dimen>
     <dimen name="margin_padding_size_xlarge">32dp</dimen>
     <dimen name="margin_padding_size_xxlarge">40dp</dimen>
+
+    <dimen name="viewpager_next_item_visible">40dp</dimen>
+    <dimen name="viewpager_current_item_margin">16dp</dimen>
 
     <dimen name="standard_touch_size">48dp</dimen>
 
