@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.google.android.play.core.review.ReviewManagerFactory
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
@@ -171,6 +172,7 @@ class ConnectionActivity : BaseActivity() {
             ConnectionState.CONNECTED -> {
                 loadIpAddress()
                 inflateConnectedCardView()
+                checkForReview()
             }
             ConnectionState.DISCONNECTING -> {
                 binding.connectedStatusImageView.visibility = View.INVISIBLE
@@ -183,6 +185,28 @@ class ConnectionActivity : BaseActivity() {
             }
         }
         updateStatusTitle(connectionState)
+    }
+
+    private fun checkForReview() {
+        viewModel.isReviewAvailable().observe(this, {
+            it.onSuccess { isReviewAvailable ->
+                if (isReviewAvailable) {
+                    showReview()
+                }
+            }
+        })
+    }
+
+    private fun showReview() {
+        val manager = ReviewManagerFactory.create(this)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                manager.launchReviewFlow(this, task.result)
+            } else {
+                Log.e(TAG, task.exception?.localizedMessage ?: task.exception.toString())
+            }
+        }
     }
 
     private fun checkAbilityToConnect() {

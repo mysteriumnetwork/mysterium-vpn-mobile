@@ -18,6 +18,7 @@ enum class SharedPreferencesList(val prefName: String) {
     DARK_MODE("DARK_MODE"),
     PREVIOUS_COUNTRY_CODE("PREVIOUS_COUNTRY_CODE"),
     PREVIOUS_FILTER_ID("PREVIOUS_FILTER_ID"),
+    IS_REVIEW_SHOWN("IS_REVIEW_SHOWN"),
 
     //Pushy parameters
     CRYPTO_PAYMENT("CRYPTO_PAYMENT"),
