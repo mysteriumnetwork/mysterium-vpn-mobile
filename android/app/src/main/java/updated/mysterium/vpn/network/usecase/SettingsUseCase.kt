@@ -59,6 +59,14 @@ class SettingsUseCase(
         )
     }
 
+    fun isReviewShown() = sharedPreferencesManager.getBoolPreferenceValue(
+        SharedPreferencesList.IS_REVIEW_SHOWN, false
+    )
+
+    fun reviewShown() = sharedPreferencesManager.setPreferenceValue(
+        SharedPreferencesList.IS_REVIEW_SHOWN, true
+    )
+
     suspend fun getResidentCountry() = nodeRepository.getResidentCountry()
 
     suspend fun saveResidentCountry(identityAddress: String, countryCode: String) {
