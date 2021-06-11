@@ -23,6 +23,7 @@ import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.notification.AppNotificationManager
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import java.util.*
 
 class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {

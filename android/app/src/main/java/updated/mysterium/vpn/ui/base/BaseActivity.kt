@@ -98,7 +98,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun wifiNetworkErrorPopUp() {
-        if (wifiErrorDialog == null) {
+        if (wifiErrorDialog == null && !isFinishing) {
             val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
             wifiErrorDialog = createPopUp(bindingPopUp.root, false)
             bindingPopUp.retryButton.setOnClickListener {
