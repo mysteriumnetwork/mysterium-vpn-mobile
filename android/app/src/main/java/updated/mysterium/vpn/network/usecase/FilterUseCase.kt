@@ -2,6 +2,7 @@ package updated.mysterium.vpn.network.usecase
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import mysterium.GetProposalsRequest
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.entity.NodeEntity
@@ -55,8 +56,13 @@ class FilterUseCase(
 
     suspend fun getProposalsByFilterId(filterId: Int): List<NodeEntity>? {
         return if (filterId != ALL_NODES_FILTER_ID) {
-            nodeRepository.getProposalsByFilterId(filterId.toLong())
-                .map { NodeEntity(it) }
+            val proposalRequest = GetProposalsRequest().apply {
+                presetID = filterId.toLong()
+                refresh = true
+            }
+            nodeRepository.getProposalsByFilterId(proposalRequest).map {
+                NodeEntity(it)
+            }
         } else {
             null
         }

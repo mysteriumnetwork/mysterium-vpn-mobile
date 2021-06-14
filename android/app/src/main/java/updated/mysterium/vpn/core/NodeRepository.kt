@@ -219,8 +219,8 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().listProposalFilterPresets()
     }
 
-    suspend fun getProposalsByFilterId(filterId: Long) = withContext(Dispatchers.IO) {
-        val bytesProposals = deferredNode.await().getProposalsByPreset(filterId)
+    suspend fun getProposalsByFilterId(getProposalRequest: GetProposalsRequest) = withContext(Dispatchers.IO) {
+        val bytesProposals = deferredNode.await().getProposals(getProposalRequest)
         val proposalsResponse = parseProposals(bytesProposals)
         if (proposalsResponse?.proposals == null) {
             listOf()
