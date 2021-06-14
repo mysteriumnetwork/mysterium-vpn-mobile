@@ -55,7 +55,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     deferredNode.start(service)
                 }
             }
-            _preloadFinished.call()
+            _preloadFinished.postValue(Unit)
         }
     }
 
