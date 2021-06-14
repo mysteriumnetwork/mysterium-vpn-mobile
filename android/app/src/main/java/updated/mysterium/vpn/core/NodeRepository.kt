@@ -46,25 +46,33 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     // Register connection status callback.
     suspend fun registerConnectionStatusChangeCallback(cb: (status: String) -> Unit) {
-        deferredNode.await().registerConnectionStatusChangeCallback { status -> cb(status) }
+        withContext(Dispatchers.IO) {
+            deferredNode.await().registerConnectionStatusChangeCallback { status -> cb(status) }
+        }
     }
 
     // Register statistics callback.
     suspend fun registerStatisticsChangeCallback(cb: (stats: Statistics) -> Unit) {
-        deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
-            cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
+        withContext(Dispatchers.IO) {
+            deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
+                cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
+            }
         }
     }
 
     // Register statistics callback.
     suspend fun registerBalanceChangeCallback(cb: (balance: Double) -> Unit) {
-        deferredNode.await().registerBalanceChangeCallback { _, balance ->
-            cb(balance)
+        withContext(Dispatchers.IO) {
+            deferredNode.await().registerBalanceChangeCallback { _, balance ->
+                cb(balance)
+            }
         }
     }
 
     suspend fun registerOrderUpdatedCallback(cb: (payload: OrderUpdatedCallbackPayload) -> Unit) {
-        deferredNode.await().registerOrderUpdatedCallback(cb)
+        withContext(Dispatchers.IO) {
+            deferredNode.await().registerOrderUpdatedCallback(cb)
+        }
     }
 
     // Connect to VPN service.
@@ -211,8 +219,8 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().listProposalFilterPresets()
     }
 
-    suspend fun getProposalsByFilterId(filterId: Long) = withContext(Dispatchers.IO) {
-        val bytesProposals = deferredNode.await().getProposalsByPreset(filterId)
+    suspend fun getProposalsByFilterId(getProposalRequest: GetProposalsRequest) = withContext(Dispatchers.IO) {
+        val bytesProposals = deferredNode.await().getProposals(getProposalRequest)
         val proposalsResponse = parseProposals(bytesProposals)
         if (proposalsResponse?.proposals == null) {
             listOf()

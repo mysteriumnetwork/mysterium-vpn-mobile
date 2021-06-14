@@ -26,6 +26,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mysterium.MobileNode
@@ -84,20 +85,17 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun startMobileNode(filesPath: String): MobileNode {
-        if (mobileNode != null) {
-            return mobileNode!!
+        mobileNode?.let {
+            return it
         }
 
-        val wireguardBridge = WireguardAndroidTunnelSetup(this)
-        val options = Mysterium.defaultNodeOptions()
-        // Testing payment, should be deleted after testing
-        mobileNode = Mysterium.newNode(filesPath, options)
-        mobileNode?.overrideWireguardConnection(wireguardBridge)
+        mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultNodeOptions())
+        mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this))
 
         Log.i(TAG, "Node started")
         initBalanceListener()
         initConnectionListener()
-        return mobileNode!!
+        return mobileNode ?: MobileNode()
     }
 
     private fun stopMobileNode() {
@@ -118,7 +116,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun initBalanceListener() {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             balanceUseCase.initBalanceListener {
                 if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePushShown()) {
                     makeBalancePushNotification()
@@ -133,7 +131,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun initConnectionListener() {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             connectionUseCase.connectionStatusCallback {
                 val state = ConnectionState.from(it)
                 val previousState = currentState

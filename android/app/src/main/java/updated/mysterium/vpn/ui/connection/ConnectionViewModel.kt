@@ -23,6 +23,7 @@ import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.notification.AppNotificationManager
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import java.util.*
 
 class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -30,6 +31,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private companion object {
         const val DEFAULT_DNS_OPTION = "auto"
         const val TAG = "HomeViewModel"
+        const val SESSION_NUMBER_BEFORE_REVIEW = 3
     }
 
     val connectionState: LiveData<ConnectionState>
@@ -64,6 +66,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
     private val settingsUseCase = useCaseProvider.settings()
+    private val statisticUseCase = useCaseProvider.statistic()
     private val deferredNode = DeferredNode()
     private var exchangeRate: Double? = null
     private var isConnectionStopped = false
@@ -97,6 +100,20 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             disconnectIfConnectedNode()
             connect()
             getExchangeRate()
+        }
+    }
+
+    fun isReviewAvailable() = liveDataResult {
+        val sessionsCount = statisticUseCase.getLastSessions().size
+        if (sessionsCount == SESSION_NUMBER_BEFORE_REVIEW) {
+            if (!settingsUseCase.isReviewShown()) {
+                settingsUseCase.reviewShown()
+                true
+            } else {
+                false
+            }
+        } else {
+            false
         }
     }
 

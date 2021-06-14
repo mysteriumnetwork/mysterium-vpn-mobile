@@ -1,10 +1,7 @@
 package updated.mysterium.vpn.core
 
 import android.util.Log
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import mysterium.MobileNode
 
@@ -30,15 +27,14 @@ class DeferredNode {
         if (!lock.tryAcquire()) {
             Log.i(TAG, "Node is already started or starting, skipping")
         } else {
-            val startJob = CoroutineScope(Dispatchers.Main).launch {
-                try {
-                    val node = service.startNode()
-                    deferredNode.complete(node)
-                    done?.invoke(null)
-                } catch (err: Exception) {
-                    Log.e(TAG, "Failed to start node", err)
-                    done?.invoke(err)
-                }
+            val handler = CoroutineExceptionHandler { _, exception ->
+                Log.e(TAG, exception.localizedMessage ?: exception.toString())
+                done?.invoke(exception as Exception)
+            }
+            val startJob = CoroutineScope(Dispatchers.Main + handler).launch {
+                val node = service.startNode()
+                deferredNode.complete(node)
+                done?.invoke(null)
             }
             startJob.invokeOnCompletion {
                 lock.release()

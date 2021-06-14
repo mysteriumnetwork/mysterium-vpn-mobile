@@ -12,6 +12,7 @@ import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.connection.ConnectionViewModel
 
 class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -50,7 +51,10 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         if (!deferredNode.startedOrStarting()) {
             deferredNode.start(coreService.await())
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(handler) {
             connectionUseCase.initDeferredNode(deferredNode)
             balanceUseCase.initDeferredNode(deferredNode)
             initBalanceListener()

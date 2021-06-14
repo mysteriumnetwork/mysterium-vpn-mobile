@@ -99,6 +99,10 @@ class SplashActivity : BaseActivity() {
             establishConnectionListeners()
             navigateForward()
         })
+        viewModel.preloadFinished.observe(this, {
+            binding.onceAnimationView.playAnimation()
+            viewModel.initRepository()
+        })
     }
 
     private fun applyDarkMode() {
@@ -240,12 +244,7 @@ class SplashActivity : BaseActivity() {
     private fun init() {
         val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
         balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-        viewModel.startLoading(deferredMysteriumCoreService).observe(this) { result ->
-            result.onSuccess {
-                binding.onceAnimationView.playAnimation()
-                viewModel.initRepository()
-            }
-        }
+        viewModel.startLoading(deferredMysteriumCoreService)
     }
 
     private fun openPlayMarket() {
