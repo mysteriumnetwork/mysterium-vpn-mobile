@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.splash
 
-import android.animation.Animator
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -18,6 +17,7 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import network.mysterium.vpn.databinding.PopUpNewVersionBinding
@@ -25,7 +25,6 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
-import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -56,10 +55,9 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
-        applyDarkMode()
         setContentView(binding.root)
+        applyDarkMode()
         ensureVpnServicePermission()
-        configure()
         subscribeViewModel()
         setUpPushyNotifications()
     }
@@ -81,26 +79,12 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun configure() {
-        binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
-
-            override fun onAnimationEnd(animation: Animator?) {
-                viewModel.animationLoaded()
-                binding.onceAnimationView.visibility = View.GONE
-                binding.onceAnimationView.cancelAnimation()
-                binding.loopAnimationView.visibility = View.VISIBLE
-                binding.loopAnimationView.playAnimation()
-            }
-        })
-    }
-
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
             establishConnectionListeners()
             navigateForward()
         })
         viewModel.preloadFinished.observe(this, {
-            binding.onceAnimationView.playAnimation()
             viewModel.initRepository()
         })
     }
@@ -123,13 +107,21 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun checkForGoogleMarketUpdates(afterAction: () -> Unit) {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                showNewVersionAvailablePopUp()
-            } else {
-                afterAction.invoke()
+        if (BuildConfig.DEBUG) {
+            afterAction.invoke()
+        } else {
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                ) {
+                    showNewVersionAvailablePopUp()
+                } else {
+                    afterAction.invoke()
+                }
+            }
+            appUpdateManager.appUpdateInfo.addOnFailureListener {
+                showPlayMarketErrorToast()
+                finish()
             }
         }
     }
@@ -212,6 +204,16 @@ class SplashActivity : BaseActivity() {
             }
             newVersionPopUpDialog?.show()
         }
+    }
+
+    private fun showPlayMarketErrorToast() {
+        Toast.makeText(
+            this,
+            getString(R.string.error_play_account),
+            Toast.LENGTH_LONG
+        ).apply {
+            (view.findViewById<View>(android.R.id.message) as TextView).gravity = Gravity.CENTER
+        }.show()
     }
 
     private fun showPermissionErrorToast() {

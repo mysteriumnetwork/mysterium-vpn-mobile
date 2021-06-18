@@ -34,8 +34,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val termsUseCase = useCaseProvider.terms()
     private val settingsUseCase = useCaseProvider.settings()
     private val pushyUseCase = useCaseProvider.pushy()
-    private var isAnimationLoaded = false
-    private var isDataLoaded = false
     private var deferredNode = DeferredNode()
 
     fun startLoading(
@@ -69,14 +67,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun isNewUser() = loginUseCase.isNewUser()
 
-    fun animationLoaded() {
-        if (isDataLoaded) {
-            _navigateForward.postValue(Unit)
-        } else {
-            isAnimationLoaded = true
-        }
-    }
-
     fun initRepository() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
@@ -84,11 +74,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO + handler) {
             balanceUseCase.initDeferredNode(deferredNode)
             connectionUseCase.initDeferredNode(deferredNode)
-            if (isAnimationLoaded) {
-                _navigateForward.postValue(Unit)
-            } else {
-                isDataLoaded = true
-            }
+            _navigateForward.postValue(Unit)
         }
     }
 

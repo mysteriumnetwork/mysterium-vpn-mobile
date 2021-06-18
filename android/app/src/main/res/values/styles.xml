@@ -138,7 +138,8 @@
 
     <!--  RoundedSemiTransparentButton  -->
     <style name="Widget.RoundedSemiTransparentButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
+        </item>
         <item name="android:background">@drawable/shape_rounded_semi_transparent</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@color/manual_connect_subtitle_white</item>
@@ -156,7 +157,8 @@
 
     <!--  RoundedUnfocusedButton  -->
     <style name="Widget.RoundedUnfocusedButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
+        </item>
         <item name="android:background">@drawable/shape_rounded_grey_blue</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@android:color/white</item>
@@ -174,7 +176,8 @@
 
     <!--  SecondaryButton  -->
     <style name="Widget.SecondaryButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
+        </item>
         <item name="android:background">@drawable/secondary_button_background</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@color/primary_text_color</item>
@@ -192,7 +195,8 @@
 
     <!--  GradientButton  -->
     <style name="Widget.GradientButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
+        </item>
         <item name="android:background">@drawable/shape_menu_button</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@android:color/white</item>
@@ -210,7 +214,8 @@
 
     <!--  ReportButton  -->
     <style name="Widget.ReportButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
+        </item>
         <item name="android:background">@drawable/shape_report_button</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@android:color/white</item>
