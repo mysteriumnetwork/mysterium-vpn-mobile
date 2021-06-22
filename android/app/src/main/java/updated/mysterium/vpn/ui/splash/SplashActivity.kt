@@ -47,6 +47,7 @@ class SplashActivity : BaseActivity() {
     private val viewModel: SplashViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
     private var isVpnPermissionGranted = false
+    private var isLoadingStarted = false
     private var newVersionPopUpDialog: AlertDialog? = null
     private val appUpdateManager: AppUpdateManager by lazy {
         AppUpdateManagerFactory.create(this)
@@ -244,9 +245,12 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun init() {
-        val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
-        balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-        viewModel.startLoading(deferredMysteriumCoreService)
+        if (!isLoadingStarted) {
+            isLoadingStarted = true
+            val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
+            balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+            viewModel.startLoading(deferredMysteriumCoreService)
+        }
     }
 
     private fun openPlayMarket() {

@@ -42,6 +42,11 @@ class HomeSelectionActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onResume() {
+        super.onResume()
+        allNodesViewModel.getProposals()
+    }
+
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
@@ -60,7 +65,6 @@ class HomeSelectionActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        allNodesViewModel.getProposals()
         getCurrentIpAddress()
         initFiltersList()
         initCountriesList()

@@ -31,12 +31,15 @@ class DeferredNode {
                 Log.e(TAG, exception.localizedMessage ?: exception.toString())
                 done?.invoke(exception as Exception)
             }
+            var node: MobileNode? = null
             val startJob = CoroutineScope(Dispatchers.Main + handler).launch {
-                val node = service.startNode()
-                deferredNode.complete(node)
-                done?.invoke(null)
+                node = service.startNode()
             }
             startJob.invokeOnCompletion {
+                node?.let {
+                    deferredNode.complete(it)
+                }
+                done?.invoke(null)
                 lock.release()
             }
         }
