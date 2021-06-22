@@ -25,10 +25,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.vpn.R

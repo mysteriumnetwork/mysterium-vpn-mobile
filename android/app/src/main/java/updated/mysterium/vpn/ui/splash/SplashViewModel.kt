@@ -47,13 +47,15 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             if (service.getDeferredNode() != null) {
                 service.getDeferredNode()?.let {
                     deferredNode = it
+                    _preloadFinished.postValue(Unit)
                 }
             } else {
                 if (!deferredNode.startedOrStarting()) {
-                    deferredNode.start(service)
+                    deferredNode.start(service) {
+                        _preloadFinished.postValue(Unit)
+                    }
                 }
             }
-            _preloadFinished.postValue(Unit)
         }
     }
 
