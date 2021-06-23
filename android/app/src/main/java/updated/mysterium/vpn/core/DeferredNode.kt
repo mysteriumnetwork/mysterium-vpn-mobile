@@ -32,7 +32,7 @@ class DeferredNode {
                 done?.invoke(exception as Exception)
             }
             var node: MobileNode? = null
-            val startJob = CoroutineScope(Dispatchers.Main + handler).launch {
+            val startJob = CoroutineScope(Dispatchers.IO + handler).launch {
                 node = service.startNode()
             }
             startJob.invokeOnCompletion {

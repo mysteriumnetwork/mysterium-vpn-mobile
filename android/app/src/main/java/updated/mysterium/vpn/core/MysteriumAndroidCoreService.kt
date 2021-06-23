@@ -81,17 +81,18 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         return MysteriumCoreServiceBridge()
     }
 
-    private fun startMobileNode(filesPath: String): MobileNode {
+    private suspend fun startMobileNode(filesPath: String): MobileNode {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
         mobileNode?.let {
             return it
         }
-
-        mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultNodeOptions())
-        mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this))
-
-        Log.i(TAG, "Node started")
-        initBalanceListener()
-        initConnectionListener()
+        val mobileNodeAsync = GlobalScope.async(Dispatchers.Main + handler) {
+            Mysterium.newNode(filesPath, Mysterium.defaultNodeOptions())
+        }
+        mobileNode = mobileNodeAsync.await()
+        mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
         return mobileNode ?: MobileNode()
     }
 
@@ -276,7 +277,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             return activeProposal
         }
 
-        override fun startNode(): MobileNode {
+        override suspend fun startNode(): MobileNode {
             return startMobileNode(filesDir.canonicalPath)
         }
 
