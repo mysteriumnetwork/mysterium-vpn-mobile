@@ -27,7 +27,6 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
-    private val deferredNode = DeferredNode()
     private val _balanceLiveData = MutableLiveData<Double>()
     private var balanceRequest: GetBalanceRequest? = null
 
@@ -50,15 +49,10 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun startDeferredNode(coreService: CompletableDeferred<MysteriumCoreService>) {
         coreService.await().subscribeToListeners()
-        if (!deferredNode.startedOrStarting()) {
-            deferredNode.start(coreService.await())
-        }
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(handler) {
-            connectionUseCase.initDeferredNode(deferredNode)
-            balanceUseCase.initDeferredNode(deferredNode)
             initBalanceListener()
             val nodeIdentity = connectionUseCase.getIdentity()
             val identity = IdentityModel(

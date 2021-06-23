@@ -67,7 +67,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val settingsUseCase = useCaseProvider.settings()
     private val statisticUseCase = useCaseProvider.statistic()
-    private val deferredNode = DeferredNode()
+    private var deferredNode = DeferredNode()
     private var exchangeRate: Double? = null
     private var isConnectionStopped = false
 
@@ -173,6 +173,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun startDeferredNode() {
+        deferredNode = coreService?.getDeferredNode() ?: DeferredNode()
         if (!deferredNode.startedOrStarting()) {
             coreService?.let {
                 deferredNode.start(it)
