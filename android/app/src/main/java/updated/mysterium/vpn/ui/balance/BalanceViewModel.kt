@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mysterium.GetBalanceRequest
-import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
@@ -27,7 +26,6 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
-    private val deferredNode = DeferredNode()
     private val _balanceLiveData = MutableLiveData<Double>()
     private var balanceRequest: GetBalanceRequest? = null
 
@@ -42,6 +40,14 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getCurrentBalance() {
         viewModelScope.launch(Dispatchers.IO) {
+            if (balanceRequest == null) {
+                val handler = CoroutineExceptionHandler { _, exception ->
+                    Log.e(TAG, exception.localizedMessage ?: exception.toString())
+                }
+                viewModelScope.launch(Dispatchers.IO + handler) {
+                    initBalanceRequest()
+                }
+            }
             balanceRequest?.let {
                 _balanceLiveData.postValue(balanceUseCase.getBalance(it))
             }
@@ -50,25 +56,24 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun startDeferredNode(coreService: CompletableDeferred<MysteriumCoreService>) {
         coreService.await().subscribeToListeners()
-        if (!deferredNode.startedOrStarting()) {
-            deferredNode.start(coreService.await())
-        }
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
-        viewModelScope.launch(handler) {
-            connectionUseCase.initDeferredNode(deferredNode)
-            balanceUseCase.initDeferredNode(deferredNode)
+        viewModelScope.launch(Dispatchers.IO + handler) {
             initBalanceListener()
-            val nodeIdentity = connectionUseCase.getIdentity()
-            val identity = IdentityModel(
-                address = nodeIdentity.address,
-                channelAddress = nodeIdentity.channelAddress,
-                status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
-            )
-            balanceRequest = GetBalanceRequest().apply {
-                identityAddress = identity.address
-            }
+            initBalanceRequest()
+        }
+    }
+
+    private suspend fun initBalanceRequest() {
+        val nodeIdentity = connectionUseCase.getIdentity()
+        val identity = IdentityModel(
+            address = nodeIdentity.address,
+            channelAddress = nodeIdentity.channelAddress,
+            status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
+        )
+        balanceRequest = GetBalanceRequest().apply {
+            identityAddress = identity.address
         }
     }
 
