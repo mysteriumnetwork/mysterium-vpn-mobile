@@ -248,8 +248,8 @@ class SplashActivity : BaseActivity() {
         if (!isLoadingStarted) {
             isLoadingStarted = true
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
-            viewModel.startLoading(deferredMysteriumCoreService)
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+            viewModel.startLoading(deferredMysteriumCoreService)
         }
     }
 

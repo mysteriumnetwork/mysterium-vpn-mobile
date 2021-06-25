@@ -20,7 +20,7 @@ class DeferredNode {
 
     fun startedOrStarting() = deferredNode.isCompleted || lock.availablePermits < 1
 
-    fun start(
+    suspend fun start(
         service: MysteriumCoreService,
         done: ((err: Exception?) -> Unit)? = null
     ) {

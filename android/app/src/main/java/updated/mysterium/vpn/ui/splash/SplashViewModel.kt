@@ -9,6 +9,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
@@ -35,6 +36,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val settingsUseCase = useCaseProvider.settings()
     private val pushyUseCase = useCaseProvider.pushy()
     private var deferredNode = DeferredNode()
+    private var service: MysteriumCoreService? = null
 
     fun startLoading(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>
@@ -43,16 +45,18 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
-            val service = deferredMysteriumCoreService.await()
-            if (service.getDeferredNode() != null) {
-                service.getDeferredNode()?.let {
+            service = deferredMysteriumCoreService.await()
+            if (service?.getDeferredNode() != null) {
+                service?.getDeferredNode()?.let {
                     deferredNode = it
                     _preloadFinished.postValue(Unit)
                 }
             } else {
                 if (!deferredNode.startedOrStarting()) {
-                    deferredNode.start(service) {
-                        _preloadFinished.postValue(Unit)
+                    service?.let {
+                        deferredNode.start(it) {
+                            _preloadFinished.postValue(Unit)
+                        }
                     }
                 }
             }
@@ -74,6 +78,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
+            service?.subscribeToListeners()
             balanceUseCase.initDeferredNode(deferredNode)
             connectionUseCase.initDeferredNode(deferredNode)
             _navigateForward.postValue(Unit)
