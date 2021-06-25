@@ -25,10 +25,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.vpn.R
@@ -88,13 +85,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         mobileNode?.let {
             return it
         }
-
         mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultNodeOptions())
-        mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this))
-
-        Log.i(TAG, "Node started")
-        initBalanceListener()
-        initConnectionListener()
+        mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
         return mobileNode ?: MobileNode()
     }
 
@@ -279,7 +271,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             return activeProposal
         }
 
-        override fun startNode(): MobileNode {
+        override suspend fun startNode(): MobileNode {
             return startMobileNode(filesDir.canonicalPath)
         }
 

@@ -20,7 +20,7 @@ class DeferredNode {
 
     fun startedOrStarting() = deferredNode.isCompleted || lock.availablePermits < 1
 
-    fun start(
+    suspend fun start(
         service: MysteriumCoreService,
         done: ((err: Exception?) -> Unit)? = null
     ) {
@@ -31,12 +31,15 @@ class DeferredNode {
                 Log.e(TAG, exception.localizedMessage ?: exception.toString())
                 done?.invoke(exception as Exception)
             }
-            val startJob = CoroutineScope(Dispatchers.Main + handler).launch {
-                val node = service.startNode()
-                deferredNode.complete(node)
-                done?.invoke(null)
+            var node: MobileNode? = null
+            val startJob = CoroutineScope(Dispatchers.IO + handler).launch {
+                node = service.startNode()
             }
             startJob.invokeOnCompletion {
+                node?.let {
+                    deferredNode.complete(it)
+                }
+                done?.invoke(null)
                 lock.release()
             }
         }
