@@ -235,6 +235,7 @@ class ConnectionActivity : BaseActivity() {
                     it == ConnectionState.ON_HOLD
                 ) {
                     getProposal()
+                    toolbarSaveIcon()
                 }
             }
             result.onFailure { throwable ->

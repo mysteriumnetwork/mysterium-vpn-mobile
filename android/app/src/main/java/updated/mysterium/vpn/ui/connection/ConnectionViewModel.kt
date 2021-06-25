@@ -173,7 +173,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun startDeferredNode() {
-        deferredNode = coreService?.getDeferredNode() ?: DeferredNode()
         if (!deferredNode.startedOrStarting()) {
             coreService?.let {
                 deferredNode.start(it)

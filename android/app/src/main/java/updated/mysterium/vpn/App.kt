@@ -82,8 +82,10 @@ class App : Application() {
                     }
 
                     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                        Log.i(TAG, "Service connected")
-                        deferredMysteriumCoreService.complete(service as MysteriumCoreService)
+                        (service as? MysteriumCoreService?)?.let {
+                            Log.i(TAG, "Service connected")
+                            deferredMysteriumCoreService.complete(it)
+                        }
                     }
                 },
                 Context.BIND_AUTO_CREATE
