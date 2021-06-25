@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.splash
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -25,6 +26,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -59,6 +61,7 @@ class SplashActivity : BaseActivity() {
         setContentView(binding.root)
         applyDarkMode()
         ensureVpnServicePermission()
+        configure()
         subscribeViewModel()
         setUpPushyNotifications()
     }
@@ -78,6 +81,19 @@ class SplashActivity : BaseActivity() {
                 startLoading()
             }
         }
+    }
+
+    private fun configure() {
+        binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
+
+            override fun onAnimationEnd(animation: Animator?) {
+                viewModel.animationLoaded()
+                binding.onceAnimationView.visibility = View.GONE
+                binding.onceAnimationView.cancelAnimation()
+                binding.loopAnimationView.visibility = View.VISIBLE
+                binding.loopAnimationView.playAnimation()
+            }
+        })
     }
 
     private fun subscribeViewModel() {
