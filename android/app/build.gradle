@@ -48,6 +48,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    ndkVersion rootProject.ext.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -81,6 +82,9 @@ android {
         versionCode getVersionCode()
         versionName getVersionName()
         multiDexEnabled true
+        ndk {
+            debugSymbolLevel 'FULL'
+        }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
         buildConfigField "String", "INTERCOM_API_KEY", "\"android_sdk-e480f3fce4f2572742b13c282c453171c1715516\""
