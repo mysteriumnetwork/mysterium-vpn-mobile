@@ -1,32 +1,37 @@
 FROM openjdk:8-jdk-buster
 
-# Just matched `app/build.gradle`
-ENV ANDROID_COMPILE_SDK "28"
-# Just matched `app/build.gradle`
-ENV ANDROID_BUILD_TOOLS "28.0.3"
-# Version from https://developer.android.com/studio/releases/sdk-tools
-ENV ANDROID_SDK_TOOLS "4333796"
+ENV ANDROID_COMPILE_SDK "29"
+ENV NDK_VERSION "21.4.7075529"
+ENV ANDROID_BUILD_TOOLS "30.0.3"
 
-ENV ANDROID_HOME /android-sdk-linux
-ENV PATH="${PATH}:/android-sdk-linux/platform-tools/"
+ENV ANDROID_HOME /android-sdk
+ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/cmdline-tools/tools/bin
+ENV PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Install OS packages
 RUN apt-get --quiet update --yes
 RUN apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 build-essential ruby ruby-dev
 # We use this for xxd hex->binary
 RUN apt-get --quiet install --yes vim-common
-# Install Android SDK
-RUN wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
-RUN unzip -q android-sdk.zip -d "$ANDROID_HOME/"
-# Accept Android SDK licenses
-RUN yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
 
-RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter android-${ANDROID_COMPILE_SDK}
-RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools
-RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-${ANDROID_BUILD_TOOLS}
-RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-m2repository
-RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-google_play_services
-RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-m2repository
+# Install Android CLI tools
+RUN wget --quiet --output-document=android-commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
+RUN mkdir -p $ANDROID_HOME/cmdline-tools
+RUN unzip -q android-commandlinetools.zip -d "$ANDROID_HOME/cmdline-tools"
+RUN mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/tools
+
+# Accept Android SDK licenses
+RUN yes | sdkmanager --licenses
+
+# Install SDK packages for the build
+RUN yes | sdkmanager --install "platforms;android-${ANDROID_COMPILE_SDK}"
+RUN yes | sdkmanager --install "platform-tools"
+RUN yes | sdkmanager --install "build-tools;${ANDROID_BUILD_TOOLS}"
+RUN yes | sdkmanager --install "extras;android;m2repository"
+RUN yes | sdkmanager --install "extras;google;m2repository"
+RUN yes | sdkmanager --install "extras;google;google_play_services"
+RUN yes | sdkmanager --install "ndk;${NDK_VERSION}"
+
 # install Fastlane
 COPY Gemfile.lock .
 COPY Gemfile .
