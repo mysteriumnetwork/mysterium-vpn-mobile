@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-buster
+FROM openjdk:11-jdk-buster
 
 ENV ANDROID_COMPILE_SDK "29"
 ENV NDK_VERSION "21.4.7075529"
