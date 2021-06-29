@@ -5,7 +5,7 @@ stages:
   - release
 
 buildDebug:
-  image: mysteriumnetwork/mobile-ci:1.0.1
+  image: mysteriumnetwork/mobile-ci:1.2.0
   stage: build
   tags: [docker]
   except:
@@ -20,7 +20,7 @@ buildDebug:
     - bundle exec fastlane buildDebug
 
 testDebug:
-  image: mysteriumnetwork/mobile-ci:1.0.1
+  image: mysteriumnetwork/mobile-ci:1.2.0
   stage: test
   tags: [docker]
   except:
@@ -37,7 +37,7 @@ testDebug:
     - bundle exec fastlane test
 
 publishInternal:
-  image: mysteriumnetwork/mobile-ci:1.0.1
+  image: mysteriumnetwork/mobile-ci:1.2.0
   stage: release
   only: [tags]
   tags: [docker]
