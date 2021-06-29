@@ -68,18 +68,17 @@ class SplashActivity : BaseActivity() {
 
     override fun retryLoading() {
         if (isVpnPermissionGranted) {
-            checkForGoogleMarketUpdates {
-                startLoading()
-            }
+            checkForGoogleMarketUpdates()
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (isVpnPermissionGranted) {
-            checkForGoogleMarketUpdates {
-                startLoading()
-            }
+            checkForGoogleMarketUpdates()
+        } else {
+            showPermissionErrorToast()
+            finish()
         }
     }
 
@@ -126,22 +125,20 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun checkForGoogleMarketUpdates(afterAction: () -> Unit) {
+    private fun checkForGoogleMarketUpdates() {
         if (BuildConfig.DEBUG) {
-            afterAction.invoke()
+            startLoading()
         } else {
-            appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                ) {
-                    showNewVersionAvailablePopUp()
-                } else {
-                    afterAction.invoke()
+            appUpdateManager.appUpdateInfo.addOnCompleteListener {
+                val appUpdateInfo = it.result
+                if (it.isSuccessful) {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                    ) {
+                        showNewVersionAvailablePopUp()
+                    }
                 }
-            }
-            appUpdateManager.appUpdateInfo.addOnFailureListener {
-                showPlayMarketErrorToast()
-                finish()
+                startLoading()
             }
         }
     }
@@ -195,16 +192,12 @@ class SplashActivity : BaseActivity() {
         val vpnServiceIntent = VpnService.prepare(this)
         if (vpnServiceIntent == null) {
             isVpnPermissionGranted = true
-            checkForGoogleMarketUpdates {
-                startLoading()
-            }
+            checkForGoogleMarketUpdates()
         } else {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     isVpnPermissionGranted = true
-                    checkForGoogleMarketUpdates {
-                        startLoading()
-                    }
+                    checkForGoogleMarketUpdates()
                 } else {
                     showPermissionErrorToast()
                     finish()

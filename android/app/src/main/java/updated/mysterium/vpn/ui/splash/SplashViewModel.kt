@@ -72,6 +72,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                             }
                         }
                     }
+                } else {
+
                 }
             }
         }
