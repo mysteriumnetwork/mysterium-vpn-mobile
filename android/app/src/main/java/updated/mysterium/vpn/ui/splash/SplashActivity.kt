@@ -104,6 +104,9 @@ class SplashActivity : BaseActivity() {
         viewModel.preloadFinished.observe(this, {
             viewModel.initRepository()
         })
+        viewModel.nodeStartingError.observe(this, {
+            wifiNetworkErrorPopUp()
+        })
     }
 
     private fun applyDarkMode() {

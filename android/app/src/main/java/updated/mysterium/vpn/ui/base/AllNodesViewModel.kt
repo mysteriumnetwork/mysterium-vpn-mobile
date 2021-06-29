@@ -28,16 +28,19 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
         }
-        viewModelScope.launch(handler) {
+        viewModelScope.launch(Dispatchers.IO + handler) {
             cachedNodesList = nodesUseCase.getAllCountries()
         }
     }
 
-    fun getProposals() {
+    fun getProposals(isReload: Boolean = false) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
+            if (!isReload) { // try to re load list only one time
+                getProposals(isReload = true)
+            }
         }
-        viewModelScope.launch(handler) {
+        viewModelScope.launch(Dispatchers.IO + handler) {
             updateLiveData()
             cachedNodesList = nodesUseCase.getAllCountries()
             updateLiveData()

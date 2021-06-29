@@ -9,7 +9,6 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
@@ -27,6 +26,10 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val preloadFinished: LiveData<Unit>
         get() = _preloadFinished
 
+    val nodeStartingError: LiveData<Exception>
+        get() = _nodeStartingError
+
+    private val _nodeStartingError = MutableLiveData<Exception>()
     private val _preloadFinished = SingleLiveEvent<Unit>()
     private val _navigateForward = MutableLiveData<Unit>()
     private val balanceUseCase = useCaseProvider.balance()
@@ -46,10 +49,14 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
+            _nodeStartingError.postValue(exception as Exception?)
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
             service = deferredMysteriumCoreService.await()
-            if (service?.getDeferredNode() != null) {
+            if (
+                service?.getDeferredNode() != null &&
+                service?.getDeferredNode()?.startedOrStarting() == true
+            ) {
                 service?.getDeferredNode()?.let {
                     deferredNode = it
                     _preloadFinished.postValue(Unit)
@@ -57,8 +64,12 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             } else {
                 if (!deferredNode.startedOrStarting()) {
                     service?.let {
-                        deferredNode.start(it) {
-                            _preloadFinished.postValue(Unit)
+                        deferredNode.start(it) { exception ->
+                            if (exception != null) {
+                                _nodeStartingError.postValue(exception)
+                            } else {
+                                _preloadFinished.postValue(Unit)
+                            }
                         }
                     }
                 }
@@ -90,6 +101,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun initRepository() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
+            _nodeStartingError.postValue(exception as Exception?)
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
             service?.subscribeToListeners()
