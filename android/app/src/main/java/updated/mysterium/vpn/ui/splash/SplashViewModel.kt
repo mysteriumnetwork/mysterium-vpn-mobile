@@ -73,7 +73,7 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                         }
                     }
                 } else {
-
+                    _preloadFinished.postValue(Unit)
                 }
             }
         }
