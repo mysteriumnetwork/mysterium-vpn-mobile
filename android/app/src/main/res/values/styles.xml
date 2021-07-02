@@ -149,6 +149,19 @@
         <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
     </style>
 
+    <!--  RoundedSemiTransparentButton  -->
+    <style name="Widget.RoundedWideSemiTransparentButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
+        </item>
+        <item name="android:background">@drawable/shape_rounded_semi_transparent</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/manual_connect_subtitle_white</item>
+        <item name="elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_medium_large</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_medium_large</item>
+    </style>
+
     <style name="TextAppearance.RoundedSemiTransparentButton" parent="TextAppearance.AppCompat.Title">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
