@@ -18,7 +18,6 @@ import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.notification.AppNotificationManager
-import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
@@ -36,7 +35,6 @@ class ConnectionActivity : BaseActivity() {
     private lateinit var binding: ActivityHomeBinding
     private var proposal: Proposal? = null
     private val viewModel: ConnectionViewModel by inject()
-    private val allNodesViewModel: AllNodesViewModel by inject()
     private val notificationManager: AppNotificationManager by inject()
     private var isDisconnectedByUser = false
 
@@ -55,7 +53,6 @@ class ConnectionActivity : BaseActivity() {
         subscribeConnectionListener()
         checkCurrentStatus()
         checkAbilityToConnect()
-        allNodesViewModel.initProposals()
     }
 
     override fun onNewIntent(intent: Intent?) {
