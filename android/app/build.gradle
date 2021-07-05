@@ -89,7 +89,7 @@ android {
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
         buildConfigField "String", "INTERCOM_API_KEY", "\"android_sdk-e480f3fce4f2572742b13c282c453171c1715516\""
         buildConfigField "String", "INTERCOM_APP_ID", "\"h7hlm9on\""
-        buildConfigField "String", "NODE_VERSION", "\"0.48.0\""
+        buildConfigField "String", "NODE_VERSION", "\"0.51.0\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

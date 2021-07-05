@@ -107,7 +107,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
             android:layout_marginTop="@dimen/margin_padding_size_large"
-            app:layout_constraintTop_toBottomOf="@+id/textViewIdentityDescription">
+            android:layout_marginBottom="@dimen/margin_padding_size_large"
+            app:layout_constraintTop_toBottomOf="@+id/textViewIdentityDescription"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -121,7 +123,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textAlignment="center"
@@ -147,18 +149,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
-
-        <TextView
-            style="@style/TextAppearance.BodyRegular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_padding_size_large"
-            android:text="@string/profile_change_keys"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/identityValueContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
