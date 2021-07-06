@@ -77,8 +77,7 @@ class SplashActivity : BaseActivity() {
         if (isVpnPermissionGranted) {
             checkForGoogleMarketUpdates()
         } else {
-            showPermissionErrorToast()
-            finish()
+            ensureVpnServicePermission()
         }
     }
 
@@ -132,8 +131,11 @@ class SplashActivity : BaseActivity() {
             appUpdateManager.appUpdateInfo.addOnCompleteListener {
                 val appUpdateInfo = it.result
                 if (it.isSuccessful) {
+                    val currentVersionCode = BuildConfig.VERSION_CODE
+                    val playStoreVersionCode = appUpdateInfo.availableVersionCode()
                     if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) &&
+                        playStoreVersionCode > currentVersionCode
                     ) {
                         showNewVersionAvailablePopUp()
                     }
@@ -217,16 +219,6 @@ class SplashActivity : BaseActivity() {
             }
             newVersionPopUpDialog?.show()
         }
-    }
-
-    private fun showPlayMarketErrorToast() {
-        Toast.makeText(
-            this,
-            getString(R.string.error_play_account),
-            Toast.LENGTH_LONG
-        ).apply {
-            (view.findViewById<View>(android.R.id.message) as TextView).gravity = Gravity.CENTER
-        }.show()
     }
 
     private fun showPermissionErrorToast() {
