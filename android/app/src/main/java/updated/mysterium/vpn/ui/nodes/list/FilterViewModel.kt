@@ -42,7 +42,12 @@ class FilterViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 proposals.find { proposal ->
                     proposal.providerID == nodeEntity.providerID
                 }?.let { commonProposal ->
-                    commonProposals.add(commonProposal)
+                    val elementWithSameId = commonProposals.find { proposal ->
+                        proposal.providerID == commonProposal.providerID
+                    }
+                    if (elementWithSameId == null) {
+                        commonProposals.add(commonProposal)
+                    }
                 }
             }
             cacheProposals = commonProposals
