@@ -1,9 +1,9 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.GetProposalsRequest
+import network.mysterium.vpn.R
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
-import network.mysterium.vpn.R
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
@@ -113,17 +113,23 @@ class NodesUseCase(
         val sortedByPriceNodes = ArrayList(proposals)
         sortedByPriceNodes.sortedBy {
             it.pricePerByte
-        }.forEachIndexed { index, _ ->
+        }.forEachIndexed { index, node ->
             if (index < parsedProposals.size) {
                 when {
                     index <= (sortedByPriceNodes.size * 0.33) -> {
-                        parsedProposals[index].priceLevel = PriceLevel.LOW
+                        parsedProposals.find {
+                            it.providerID == node.providerID
+                        }?.priceLevel = PriceLevel.LOW
                     }
                     index <= (sortedByPriceNodes.size * 0.66) -> {
-                        parsedProposals[index].priceLevel = PriceLevel.MEDIUM
+                        parsedProposals.find {
+                            it.providerID == node.providerID
+                        }?.priceLevel = PriceLevel.MEDIUM
                     }
                     else -> {
-                        parsedProposals[index].priceLevel = PriceLevel.HIGH
+                        parsedProposals.find {
+                            it.providerID == node.providerID
+                        }?.priceLevel = PriceLevel.HIGH
                     }
                 }
             }

@@ -24,15 +24,6 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val nodesUseCase = useCaseProvider.nodes()
     private var cachedNodesList: List<CountryNodes> = emptyList()
 
-    fun initProposals() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.i(TAG, exception.localizedMessage ?: exception.toString())
-        }
-        viewModelScope.launch(Dispatchers.IO + handler) {
-            cachedNodesList = nodesUseCase.getAllCountries()
-        }
-    }
-
     fun getProposals(isReload: Boolean = false) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
