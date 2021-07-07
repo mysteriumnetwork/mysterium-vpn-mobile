@@ -238,7 +238,6 @@ class ConnectionActivity : BaseActivity() {
             result.onFailure { throwable ->
                 navigateToSelectNode(true)
                 Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
-                // TODO("Implement error handling")
             }
         })
     }
@@ -311,6 +310,7 @@ class ConnectionActivity : BaseActivity() {
             result.onFailure {
                 Log.e(TAG, "Data loading failed")
                 binding.ipTextView.text = getString(R.string.manual_connect_unknown)
+                loadIpAddress()
             }
         })
     }
