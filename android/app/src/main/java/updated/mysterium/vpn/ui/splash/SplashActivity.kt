@@ -76,8 +76,6 @@ class SplashActivity : BaseActivity() {
         super.onResume()
         if (isVpnPermissionGranted) {
             checkForGoogleMarketUpdates()
-        } else {
-            ensureVpnServicePermission()
         }
     }
 
