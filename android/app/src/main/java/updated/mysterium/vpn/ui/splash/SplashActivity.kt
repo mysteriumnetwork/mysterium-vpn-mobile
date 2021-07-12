@@ -126,18 +126,15 @@ class SplashActivity : BaseActivity() {
         if (BuildConfig.DEBUG) {
             startLoading()
         } else {
-            appUpdateManager.appUpdateInfo.addOnCompleteListener {
-                val appUpdateInfo = it.result
-                if (it.isSuccessful) {
-                    val currentVersionCode = BuildConfig.VERSION_CODE
-                    val playStoreVersionCode = appUpdateInfo.availableVersionCode()
-                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) &&
-                        playStoreVersionCode > currentVersionCode
-                    ) {
-                        showNewVersionAvailablePopUp()
-                    }
+            appUpdateManager.appUpdateInfo.addOnSuccessListener {
+                if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                    showNewVersionAvailablePopUp()
+                } else {
+                    startLoading()
                 }
+            }
+            appUpdateManager.appUpdateInfo.addOnFailureListener {
+                // user does not has Google pPlay Store
                 startLoading()
             }
         }
@@ -258,9 +255,19 @@ class SplashActivity : BaseActivity() {
     private fun openPlayMarket() {
         // Exception will be thrown if the Play Store is not installed on the target device.
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_MARKET_INSTALLED + packageName)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(PLAY_MARKET_INSTALLED + packageName)
+                )
+            )
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)
+                )
+            )
         }
     }
 }
