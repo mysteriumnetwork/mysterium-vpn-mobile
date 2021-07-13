@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -16,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
@@ -42,6 +42,7 @@ class SplashActivity : BaseActivity() {
     private companion object {
         const val PLAY_MARKET_INSTALLED = "market://details?id="
         const val PLAY_MARKET_NOT_INSTALLED = "https://play.google.com/store/apps/details?id="
+        const val TAG = "SplashActivity"
     }
 
     private lateinit var binding: ActivitySplashBinding
@@ -123,23 +124,28 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun checkForGoogleMarketUpdates() {
-        if (BuildConfig.DEBUG) {
-            startLoading()
-        } else {
-            appUpdateManager.appUpdateInfo.addOnCompleteListener {
-                val appUpdateInfo = it.result
-                if (it.isSuccessful) {
-                    val currentVersionCode = BuildConfig.VERSION_CODE
-                    val playStoreVersionCode = appUpdateInfo.availableVersionCode()
-                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) &&
-                        playStoreVersionCode > currentVersionCode
-                    ) {
+        try {
+            if (BuildConfig.DEBUG) {
+                startLoading()
+            } else {
+                appUpdateManager.appUpdateInfo.addOnSuccessListener {
+                    if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                         showNewVersionAvailablePopUp()
+                    } else {
+                        startLoading()
                     }
                 }
-                startLoading()
+                appUpdateManager.appUpdateInfo.addOnFailureListener {
+                    // User does not has Google Play Store
+                    startLoading()
+                }
             }
+        } catch (exception: Exception) {
+            // Some kind of exception may occur due to the lack of a Play Store
+            // or for some other similar reason. Since this is not critical for
+            // the app flow, just let the user go further
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+            startLoading()
         }
     }
 
@@ -258,9 +264,19 @@ class SplashActivity : BaseActivity() {
     private fun openPlayMarket() {
         // Exception will be thrown if the Play Store is not installed on the target device.
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_MARKET_INSTALLED + packageName)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(PLAY_MARKET_INSTALLED + packageName)
+                )
+            )
         } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)
+                )
+            )
         }
     }
 }
