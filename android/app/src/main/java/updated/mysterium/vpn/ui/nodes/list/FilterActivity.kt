@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.nodes.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,7 +74,6 @@ class FilterActivity : BaseActivity() {
             }
             bundle.getParcelable<PresetFilter>(FILTER_KEY)?.let { presetFilter ->
                 viewModel.filter = presetFilter
-                filterNodes(presetFilter.filterId, countryCode ?: ALL_COUNTRY_CODE)
                 presetFilter.title?.let { filterTitle ->
                     binding.nodesTitle.text = filterTitle
                 }
@@ -112,11 +110,19 @@ class FilterActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.proposalsList.observe(this, { proposals ->
+        viewModel.proposalsList.observe(this) { proposals ->
             proposals?.let {
                 nodeListAdapter.replaceAll(it)
             }
-        })
+        }
+        allNodesViewModel.filteredProposal.observe(this) {
+            val countryList = it.filter { proposal ->
+                proposal.countryCode == intent.extras?.getString(COUNTRY_CODE_KEY)
+            }
+            nodeListAdapter.replaceAll(countryList)
+            binding.loader.cancelAnimation()
+            binding.loader.visibility = View.INVISIBLE
+        }
     }
 
     private fun bindsActions() {
@@ -158,15 +164,6 @@ class FilterActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@FilterActivity)
             adapter = nodeListAdapter
         }
-    }
-
-    private fun filterNodes(filterId: Int, countryCode: String) {
-        allNodesViewModel.proposals.observe(this, {
-            val allCountryNodes = it.find { countryNodes ->
-                countryNodes.countryCode == countryCode
-            }?.proposalList ?: emptyList()
-            mapNodesByFilterAndCountry(filterId, allCountryNodes)
-        })
     }
 
     private fun changeNodeQualityView(nodeQuality: NodeQuality) {
@@ -247,20 +244,6 @@ class FilterActivity : BaseActivity() {
             nonResidentialTypeUnselectedImageView.visibility = View.INVISIBLE
             typeFilterTextView.setText(R.string.filter_type_non_residential)
         }
-    }
-
-    private fun mapNodesByFilterAndCountry(filterId: Int, proposals: List<Proposal>) {
-        viewModel.getProposals(filterId, proposals).observe(this, { result ->
-            result.onSuccess {
-                nodeListAdapter.replaceAll(it)
-            }
-            result.onFailure { throwable ->
-                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-            }
-            binding.loader.cancelAnimation()
-            binding.loader.visibility = View.INVISIBLE
-        }
-        )
     }
 
     private fun navigateToHomeSelection() {

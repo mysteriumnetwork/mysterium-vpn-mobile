@@ -14,6 +14,8 @@ import updated.mysterium.vpn.model.manual.connect.PresetFilter
 
 class FiltersAdapter : ContentListAdapter<PresetFilter, FiltersAdapter.FiltersHolder>() {
 
+    var isItemsClickable = true
+    var onNewFilterSelected: (() -> Unit)? = null
     var selectedItem: PresetFilter? = null
         private set
 
@@ -38,12 +40,19 @@ class FiltersAdapter : ContentListAdapter<PresetFilter, FiltersAdapter.FiltersHo
             } else {
                 unselectedState(item)
             }
-            itemView.setOnClickListener {
-                if (item != selectedItem) {
-                    item.changeSelectionState()
-                    selectedItem?.changeSelectionState()
-                    selectedItem = item
-                    notifyDataSetChanged()
+            if (isItemsClickable) {
+                itemView.setOnClickListener {
+                    if (item != selectedItem) {
+                        item.changeSelectionState()
+                        selectedItem?.changeSelectionState()
+                        selectedItem = item
+                        notifyDataSetChanged()
+                        onNewFilterSelected?.invoke()
+                    }
+                }
+            } else {
+                itemView.setOnClickListener {
+                    // list is loading, not change UI
                 }
             }
         }

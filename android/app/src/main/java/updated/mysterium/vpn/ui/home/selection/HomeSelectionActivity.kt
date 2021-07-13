@@ -11,6 +11,7 @@ import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
+import updated.mysterium.vpn.network.usecase.NodesUseCase
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -31,6 +32,7 @@ class HomeSelectionActivity : BaseActivity() {
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val allNodesAdapter = AllNodesAdapter()
     private val filtersAdapter = FiltersAdapter()
+    private var isInitialListLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +44,14 @@ class HomeSelectionActivity : BaseActivity() {
         bindsAction()
     }
 
-    override fun onResume() {
-        super.onResume()
-        allNodesViewModel.launchProposalsPeriodically()
-    }
-
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
+    }
+
+    override fun onStop() {
+        isInitialListLoaded = false
+        super.onStop()
     }
 
     private fun checkCurrentState() {
@@ -74,21 +76,28 @@ class HomeSelectionActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         allNodesViewModel.proposals.observe(this, { countries ->
-            binding.loader.visibility = View.INVISIBLE
-            binding.filterCardView.visibility = View.VISIBLE
-            binding.countriesCardView.visibility = View.VISIBLE
-            val selectedItem = countries.firstOrNull { country ->
-                country.isSelected
-            }
-            selectedItem?.changeSelectionState()
-            val savedCountry = countries?.firstOrNull { country ->
-                country.countryCode == viewModel.getPreviousCountryCode()
-            }
-            savedCountry?.changeSelectionState()
-            allNodesAdapter.replaceAll(countries)
-            val countryIndex = allNodesAdapter.getAll().indexOf(savedCountry)
-            (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
-                scrollToPositionWithOffset(countryIndex, 0)
+            if (!isInitialListLoaded) {
+                binding.loader.visibility = View.INVISIBLE
+                binding.filterCardView.visibility = View.VISIBLE
+                binding.countriesCardView.visibility = View.VISIBLE
+                val selectedItem = countries.firstOrNull { country ->
+                    country.isSelected
+                }
+                selectedItem?.changeSelectionState()
+                val savedCountry = countries?.firstOrNull { country ->
+                    country.countryCode == viewModel.getPreviousCountryCode()
+                }
+                savedCountry?.changeSelectionState()
+                showProposalsLoadingState()
+                showFilteredList(
+                    filtersAdapter.selectedItem?.filterId ?: 0,
+                    NodesUseCase.ALL_COUNTRY_CODE
+                )
+                val countryIndex = allNodesAdapter.getAll().indexOf(savedCountry)
+                (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
+                    scrollToPositionWithOffset(countryIndex, 0)
+                }
+                isInitialListLoaded = true
             }
         })
         viewModel.connectionState.observe(this, {
@@ -105,12 +114,13 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.selectNodeButton.setOnClickListener {
             val intent = Intent(this, FilterActivity::class.java).apply {
-                val countryCode = if (allNodesAdapter.selectedItem?.countryCode != ALL_COUNTRY_CODE) {
-                    allNodesAdapter.selectedItem?.countryCode?.toLowerCase(Locale.ROOT)
-                        ?: ALL_COUNTRY_CODE
-                } else {
-                    ALL_COUNTRY_CODE
-                }
+                val countryCode =
+                    if (allNodesAdapter.selectedItem?.countryCode != ALL_COUNTRY_CODE) {
+                        allNodesAdapter.selectedItem?.countryCode?.toLowerCase(Locale.ROOT)
+                            ?: ALL_COUNTRY_CODE
+                    } else {
+                        ALL_COUNTRY_CODE
+                    }
                 putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
                 val filter = filtersAdapter.selectedItem
                 putExtra(FilterActivity.FILTER_KEY, filter)
@@ -184,6 +194,11 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun initFiltersList() {
+        filtersAdapter.onNewFilterSelected = {
+            showProposalsLoadingState()
+            val filter = filtersAdapter.selectedItem
+            showFilteredList(filter?.filterId ?: 0, NodesUseCase.ALL_COUNTRY_CODE)
+        }
         binding.filtersRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
             adapter = filtersAdapter
@@ -198,6 +213,32 @@ class HomeSelectionActivity : BaseActivity() {
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         })
+    }
+
+    private fun showProposalsLoadingState() {
+        binding.proposalsLoader.visibility = View.VISIBLE
+        binding.nodesRecyclerView.visibility = View.INVISIBLE
+        filtersAdapter.isItemsClickable = false
+    }
+
+    private fun showProposalsLoadedState() {
+        binding.proposalsLoader.visibility = View.INVISIBLE
+        binding.nodesRecyclerView.visibility = View.VISIBLE
+        filtersAdapter.isItemsClickable = true
+        filtersAdapter.notifyDataSetChanged()
+    }
+
+    private fun showFilteredList(filterId: Int, countryCode: String) {
+        allNodesViewModel.filterNodes(filterId, countryCode).observe(this) {
+            showProposalsLoadedState()
+            it.onSuccess { countries ->
+                allNodesAdapter.replaceAll(countries)
+            }
+            it.onFailure { throwable ->
+                wifiNetworkErrorPopUp()
+                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
+            }
+        }
     }
 
     private fun applySavedFilter(filterId: Int, filters: List<PresetFilter>) {

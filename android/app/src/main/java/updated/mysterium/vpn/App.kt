@@ -26,6 +26,7 @@ import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
 import updated.mysterium.vpn.core.MysteriumAndroidCoreService
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.di.Modules
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 
 class App : Application(), LifecycleObserver {
 
@@ -37,6 +38,7 @@ class App : Application(), LifecycleObserver {
 
     val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private val analyticWrapper: AnalyticWrapper by inject()
+    private val allNodesViewModel: AllNodesViewModel by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -54,12 +56,14 @@ class App : Application(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onMoveToForeground() {
-        Log.e(TAG, "onMoveToForeground")
+        // App goes to foregraund, start fetching proposals
+        allNodesViewModel.launchProposalsPeriodically()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onMoveToBackgroung() {
-        Log.e(TAG, "onMoveToBackgroung")
+        // App goes to background, stop fetching proposals
+        allNodesViewModel.stopPeriodicalProposalFetch()
     }
 
     override fun attachBaseContext(base: Context?) {
