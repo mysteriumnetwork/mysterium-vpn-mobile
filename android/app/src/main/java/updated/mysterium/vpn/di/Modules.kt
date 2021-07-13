@@ -71,7 +71,7 @@ object Modules {
             AnalyticWrapper(androidContext())
         }
         single {
-            FilterViewModel(get())
+            FilterViewModel()
         }
         single {
             HomeSelectionViewModel(get())

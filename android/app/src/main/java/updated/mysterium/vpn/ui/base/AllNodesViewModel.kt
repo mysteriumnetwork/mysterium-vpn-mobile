@@ -48,6 +48,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun launchProposalsPeriodically() {
+        // fetch new proposals list every 60 sec
         handler.post(runnable)
     }
 

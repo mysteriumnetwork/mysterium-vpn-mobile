@@ -50,6 +50,7 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     override fun onStop() {
+        // Update list again when user will back to this screen
         isInitialListLoaded = false
         super.onStop()
     }
@@ -114,13 +115,12 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.selectNodeButton.setOnClickListener {
             val intent = Intent(this, FilterActivity::class.java).apply {
-                val countryCode =
-                    if (allNodesAdapter.selectedItem?.countryCode != ALL_COUNTRY_CODE) {
-                        allNodesAdapter.selectedItem?.countryCode?.toLowerCase(Locale.ROOT)
-                            ?: ALL_COUNTRY_CODE
-                    } else {
-                        ALL_COUNTRY_CODE
-                    }
+                val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
+                val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
+                    selectedCountryCode?.toLowerCase(Locale.ROOT) ?: ALL_COUNTRY_CODE
+                } else {
+                    ALL_COUNTRY_CODE
+                }
                 putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
                 val filter = filtersAdapter.selectedItem
                 putExtra(FilterActivity.FILTER_KEY, filter)

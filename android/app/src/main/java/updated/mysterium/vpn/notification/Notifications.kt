@@ -71,7 +71,7 @@ class Notifications(private val activity: Activity) {
             Log.e(TAG, "Failed to unsubscribe", exception)
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
-//             Unsubscribe from topic with and without subcategory
+            // Unsubscribe from topic with and without subcategory
             Pushy.unsubscribe(pushyTopic.getSubcategoryName(), activity.applicationContext)
             Pushy.unsubscribe(pushyTopic.topic, activity.applicationContext)
         }

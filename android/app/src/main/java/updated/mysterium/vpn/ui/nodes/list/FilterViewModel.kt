@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.nodes.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
@@ -11,13 +10,8 @@ import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
-import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class FilterViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
-
-    private companion object {
-
-    }
+class FilterViewModel : ViewModel() {
 
     var countryCode: String? = null
     var filter: PresetFilter? = null
