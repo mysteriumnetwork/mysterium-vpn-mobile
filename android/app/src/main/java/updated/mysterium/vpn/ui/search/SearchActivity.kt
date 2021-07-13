@@ -40,7 +40,6 @@ class SearchActivity : BaseActivity() {
         initToolbar(binding.manualConnectToolbar)
         initProposalListRecycler()
         initHintText()
-        allNodesViewModel.getProposals()
     }
 
     private fun bindsAction() {

@@ -8,6 +8,10 @@ import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.bugfender.sdk.Bugfender
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
@@ -23,7 +27,7 @@ import updated.mysterium.vpn.core.MysteriumAndroidCoreService
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.di.Modules
 
-class App : Application() {
+class App : Application(), LifecycleObserver {
 
     companion object {
         private const val TAG = "App"
@@ -36,6 +40,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         Countries.loadBitmaps()
         setupIntercom()
         startKoin {
@@ -45,6 +50,16 @@ class App : Application() {
         setUpBugfender()
         bindMysteriumService()
         analyticWrapper.track(AnalyticEvent.LOGIN)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onMoveToForeground() {
+        Log.e(TAG, "onMoveToForeground")
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onMoveToBackgroung() {
+        Log.e(TAG, "onMoveToBackgroung")
     }
 
     override fun attachBaseContext(base: Context?) {

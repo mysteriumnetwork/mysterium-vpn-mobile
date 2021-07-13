@@ -7,6 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.pushy.sdk.Pushy
+import updated.mysterium.vpn.common.extensions.getPushySubcategoryName
+import updated.mysterium.vpn.common.extensions.getSubcategoryName
 import updated.mysterium.vpn.model.pushy.PushyTopic
 
 class Notifications(private val activity: Activity) {
@@ -47,7 +49,9 @@ class Notifications(private val activity: Activity) {
             Log.e(TAG, "Failed to subscribe", exception)
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            Pushy.subscribe(pushyTopic, activity.applicationContext)
+            Pushy.subscribe(pushyTopic.getPushySubcategoryName(), activity.applicationContext)
+            // Unsubscribe from same topic without subcategory
+            Pushy.unsubscribe(pushyTopic, activity.applicationContext)
         }
     }
 
@@ -56,7 +60,9 @@ class Notifications(private val activity: Activity) {
             Log.e(TAG, "Failed to subscribe", exception)
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            Pushy.subscribe(pushyTopic.topic, activity.applicationContext)
+            Pushy.subscribe(pushyTopic.getSubcategoryName(), activity.applicationContext)
+            // Unsubscribe from same topic without subcategory
+            Pushy.unsubscribe(pushyTopic.topic, activity.applicationContext)
         }
     }
 
@@ -65,6 +71,8 @@ class Notifications(private val activity: Activity) {
             Log.e(TAG, "Failed to unsubscribe", exception)
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
+//             Unsubscribe from topic with and without subcategory
+            Pushy.unsubscribe(pushyTopic.getSubcategoryName(), activity.applicationContext)
             Pushy.unsubscribe(pushyTopic.topic, activity.applicationContext)
         }
     }

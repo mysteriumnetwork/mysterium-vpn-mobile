@@ -44,7 +44,7 @@ class HomeSelectionActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        allNodesViewModel.getProposals()
+        allNodesViewModel.launchProposalsPeriodically()
     }
 
     override fun showConnectionHint() {

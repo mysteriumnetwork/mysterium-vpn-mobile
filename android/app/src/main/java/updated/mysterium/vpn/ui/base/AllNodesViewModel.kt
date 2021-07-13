@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.base
 
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +16,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
         const val TAG = "AllNodesViewModel"
+        const val REQUEST_INTERVAL = 1000 * 60L // 1 minute
     }
 
     val proposals: LiveData<List<CountryNodes>>
@@ -24,7 +26,25 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val nodesUseCase = useCaseProvider.nodes()
     private var cachedNodesList: List<CountryNodes> = emptyList()
 
+    fun launchProposalsPeriodically() {
+        val handler = Handler()
+        val runnable = object : Runnable {
+
+            override fun run() {
+                try {
+                    getProposals()
+                } catch (exception: Exception) {
+                    Log.e(TAG, exception.localizedMessage ?: exception.toString())
+                } finally {
+                    handler.postDelayed(this, REQUEST_INTERVAL)
+                }
+            }
+        }
+        handler.postDelayed(runnable, REQUEST_INTERVAL)
+    }
+
     fun getProposals(isReload: Boolean = false) {
+        Log.e(TAG, "getProposals")
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
             if (!isReload) { // try to re load list only one time
