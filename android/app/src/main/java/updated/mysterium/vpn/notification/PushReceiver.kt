@@ -8,12 +8,14 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.media.RingtoneManager.TYPE_NOTIFICATION
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import me.pushy.sdk.Pushy
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import updated.mysterium.vpn.common.extensions.guaranteeCorrectLink
 import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
@@ -30,6 +32,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         const val PUSHY_CONNECTION_ACTION = "android.intent.action.PUSHY_CONNECTION_ACTION"
         const val NOTIFICATION_TITLE = "title"
         const val NOTIFICATION_MESSAGE = "message"
+        const val NOTIFICATION_URL = "url"
     }
 
     private val useCaseProvider: UseCaseProvider by inject()
@@ -78,7 +81,8 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun showMarketingPush(context: Context, intent: Intent) {
         val builder = createNotification(intent, context)
-        val resultIntent = getMarketingPushResultIntent(context)
+        val url = intent.getStringExtra(NOTIFICATION_URL)
+        val resultIntent = getMarketingPushResultIntent(context, url)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
             getPendingIntent(0, FLAG_UPDATE_CURRENT)
@@ -105,7 +109,10 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         return builder
     }
 
-    private fun getMarketingPushResultIntent(context: Context) = when {
+    private fun getMarketingPushResultIntent(context: Context, url: String?) = when {
+        url != null -> {
+            Intent(Intent.ACTION_VIEW, Uri.parse(url.guaranteeCorrectLink()))
+        }
         !loginUseCase.isAlreadyLogin() -> {
             Intent(context, OnboardingActivity::class.java)
         }
