@@ -31,6 +31,7 @@ import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
@@ -48,6 +49,7 @@ class SplashActivity : BaseActivity() {
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
+    private val allNodesViewModel: AllNodesViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
@@ -95,6 +97,7 @@ class SplashActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
+            allNodesViewModel.launchProposalsPeriodically()
             establishConnectionListeners()
             navigateForward()
         })

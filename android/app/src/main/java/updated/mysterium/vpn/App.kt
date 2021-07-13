@@ -8,6 +8,10 @@ import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.bugfender.sdk.Bugfender
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
@@ -22,8 +26,9 @@ import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
 import updated.mysterium.vpn.core.MysteriumAndroidCoreService
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.di.Modules
+import updated.mysterium.vpn.ui.base.AllNodesViewModel
 
-class App : Application() {
+class App : Application(), LifecycleObserver {
 
     companion object {
         private const val TAG = "App"
@@ -33,9 +38,11 @@ class App : Application() {
 
     val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private val analyticWrapper: AnalyticWrapper by inject()
+    private val allNodesViewModel: AllNodesViewModel by inject()
 
     override fun onCreate() {
         super.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         Countries.loadBitmaps()
         setupIntercom()
         startKoin {
@@ -45,6 +52,18 @@ class App : Application() {
         setUpBugfender()
         bindMysteriumService()
         analyticWrapper.track(AnalyticEvent.LOGIN)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onMoveToForeground() {
+        // App goes to foregraund, start fetching proposals
+        allNodesViewModel.launchProposalsPeriodically()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onMoveToBackgroung() {
+        // App goes to background, stop fetching proposals
+        allNodesViewModel.stopPeriodicalProposalFetch()
     }
 
     override fun attachBaseContext(base: Context?) {

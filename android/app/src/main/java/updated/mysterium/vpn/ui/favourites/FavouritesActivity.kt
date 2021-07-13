@@ -71,7 +71,6 @@ class FavouritesActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@FavouritesActivity)
             adapter = favouritesAdapter
         }
-        allNodesViewModel.getProposals()
     }
 
     private fun getFavouritesList(proposals: List<Proposal>? = null) {

@@ -41,23 +41,7 @@ class NodesUseCase(
 
     suspend fun isFavourite(nodeId: String): NodeEntity? = nodeDao.getById(nodeId)
 
-    private suspend fun getAllNodes(): List<NodeEntity> {
-        val proposalsRequest = GetProposalsRequest().apply {
-            this.refresh = true
-            serviceType = SERVICE_TYPE
-        }
-        return nodeRepository.proposals(proposalsRequest)
-            .map { NodeEntity(it) }
-    }
-
-    private fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodes> {
-        val proposalList = createProposalList(allNodesList)
-        return groupListByCountries(proposalList).sortedByDescending { it.proposalList.size }
-    }
-
-    private fun createProposalList(allNodesList: List<NodeEntity>) = parsePriceLevel(allNodesList)
-
-    private fun groupListByCountries(proposalList: List<Proposal>): List<CountryNodes> {
+    suspend fun groupListByCountries(proposalList: List<Proposal>): List<CountryNodes> {
         val countryNodesList = mutableListOf<CountryNodes>()
         countryNodesList.add(
             index = 0,
@@ -90,6 +74,22 @@ class NodesUseCase(
             }
         return countryNodesList.toList()
     }
+
+    private suspend fun getAllNodes(): List<NodeEntity> {
+        val proposalsRequest = GetProposalsRequest().apply {
+            this.refresh = true
+            serviceType = SERVICE_TYPE
+        }
+        return nodeRepository.proposals(proposalsRequest)
+            .map { NodeEntity(it) }
+    }
+
+    private suspend fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodes> {
+        val proposalList = createProposalList(allNodesList)
+        return groupListByCountries(proposalList).sortedByDescending { it.proposalList.size }
+    }
+
+    private fun createProposalList(allNodesList: List<NodeEntity>) = parsePriceLevel(allNodesList)
 
     private fun checkFavouriteRelevance(
         allAvailableNodes: List<Proposal>,

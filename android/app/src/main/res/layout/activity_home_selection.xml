@@ -32,6 +32,22 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loader_animation" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/proposalsLoader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_padding_size_xlarge"
+        android:elevation="2dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/countriesCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/countriesCardView"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loader_animation" />
+
     <updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
         android:id="@+id/manualConnectToolbar"
         android:layout_width="match_parent"
@@ -134,8 +150,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_padding_size_small_medium"
             android:layout_marginTop="@dimen/margin_padding_size_small"
-            android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
             android:layout_marginEnd="@dimen/margin_padding_size_medium_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="20"
             tools:listitem="@layout/item_country_nodes" />

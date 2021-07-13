@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import updated.mysterium.vpn.network.usecase.NodesUseCase
 
 class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
