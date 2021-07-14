@@ -81,20 +81,8 @@ class HomeSelectionActivity : BaseActivity() {
                 binding.loader.visibility = View.INVISIBLE
                 binding.filterCardView.visibility = View.VISIBLE
                 binding.countriesCardView.visibility = View.VISIBLE
-                val selectedItem = countries.firstOrNull { country ->
-                    country.isSelected
-                }
-                selectedItem?.changeSelectionState()
-                val savedCountry = countries?.firstOrNull { country ->
-                    country.countryCode == viewModel.getPreviousCountryCode()
-                }
-                savedCountry?.changeSelectionState()
                 showProposalsLoadingState()
                 showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0)
-                val countryIndex = allNodesAdapter.getAll().indexOf(savedCountry)
-                (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
-                    scrollToPositionWithOffset(countryIndex, 0)
-                }
                 isInitialListLoaded = true
             }
         })
@@ -231,7 +219,30 @@ class HomeSelectionActivity : BaseActivity() {
         allNodesViewModel.filterNodes(filterId, NodesUseCase.ALL_COUNTRY_CODE).observe(this) {
             showProposalsLoadedState()
             it.onSuccess { countries ->
-                allNodesAdapter.replaceAll(countries)
+                val sortedCountries = countries.sortedBy { countryNodes ->
+                    countryNodes.countryName
+                }
+                // remove previous or default selection
+                sortedCountries.filter { country ->
+                    country.isSelected
+                }.forEach { country ->
+                    country.changeSelectionState()
+                }
+
+                // mark saved country
+                val selectedItem = sortedCountries.firstOrNull { country ->
+                    country.countryCode == viewModel.getPreviousCountryCode()
+                }
+                selectedItem?.changeSelectionState()
+                val countryIndex = sortedCountries.indexOf(selectedItem)
+                (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
+                    scrollToPositionWithOffset(countryIndex, 0)
+                }
+                allNodesAdapter.replaceAll(
+                    sortedCountries.sortedBy { countryNodes ->
+                        countryNodes.countryName
+                    }
+                )
             }
             it.onFailure { throwable ->
                 wifiNetworkErrorPopUp()
