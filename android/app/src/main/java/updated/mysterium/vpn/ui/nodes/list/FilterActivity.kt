@@ -14,7 +14,6 @@ import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
-import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
 import updated.mysterium.vpn.network.usecase.NodesUseCase
@@ -30,7 +29,6 @@ class FilterActivity : BaseActivity() {
     companion object {
         const val FILTER_KEY = "FILTER"
         const val COUNTRY_CODE_KEY = "COUNTRY_CODE"
-        private const val TAG = "FilterActivity"
         private const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
     }
 
@@ -44,7 +42,7 @@ class FilterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getBundleArguments()
+        getUserFilterAndCountry()
         configure()
         subscribeViewModel()
         bindsActions()
@@ -55,53 +53,47 @@ class FilterActivity : BaseActivity() {
         baseViewModel.hintShown()
     }
 
-    private fun getBundleArguments() {
+    private fun getUserFilterAndCountry() {
         binding.countryName.text = getString(R.string.manual_connect_all_countries)
-        val bundle = intent.extras
-        if (bundle != null) {
-            val countryCode = bundle.getString(COUNTRY_CODE_KEY)
-            if (countryCode == ALL_COUNTRY_CODE) {
-                nodeListAdapter.isCountryNamedMode = true
-            }
-            viewModel.countryCode = countryCode
-            Countries.values[countryCode]?.image?.let { flagUrl ->
-                Glide.with(this)
-                    .load(flagUrl)
-                    .circleCrop()
-                    .into(binding.countryFlag)
-            }
-            Countries.values[countryCode]?.name?.let { countryName ->
-                binding.countryName.text = countryName
-            }
-            bundle.getParcelable<PresetFilter>(FILTER_KEY)?.let { presetFilter ->
-                viewModel.filter = presetFilter
-                presetFilter.title?.let { filterTitle ->
+        val countryCode = viewModel.getPreviousCountryCode()
+        if (countryCode == ALL_COUNTRY_CODE) {
+            nodeListAdapter.isCountryNamedMode = true
+        }
+        Countries.values[countryCode]?.image?.let { flagUrl ->
+            Glide.with(this)
+                .load(flagUrl)
+                .circleCrop()
+                .into(binding.countryFlag)
+        }
+        Countries.values[countryCode]?.name?.let { countryName ->
+            binding.countryName.text = countryName
+        }
+        viewModel.getPreviousFilter().observe(this) {
+            it.onSuccess { presetFilter ->
+                presetFilter?.title?.let { filterTitle ->
                     binding.nodesTitle.text = filterTitle
                 }
-                if (presetFilter.filterId == FilterUseCase.ALL_NODES_FILTER_ID) {
+                if (presetFilter?.filterId == FilterUseCase.ALL_NODES_FILTER_ID) {
                     binding.filtersLayout.filtersLinear.visibility = View.VISIBLE
                 } else {
                     binding.filtersLayout.filtersLinear.visibility = View.GONE
                 }
             }
-        } else {
-            val countryCode = viewModel.countryCode
-            Countries.values[countryCode]?.image?.let { flagUrl ->
-                Glide.with(this)
-                    .load(flagUrl)
-                    .circleCrop()
-                    .into(binding.countryFlag)
+        }
+        allNodesViewModel.filteredProposal.value?.let { proposals ->
+            val userCountryCode = viewModel.getPreviousCountryCode()
+            val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
+                // return all filtered nodes
+                proposals
+            } else {
+                // filter by user selected country
+                proposals.filter { proposal ->
+                    proposal.countryCode == userCountryCode
+                }
             }
-            Countries.values[countryCode]?.name?.let { countryName ->
-                binding.countryName.text = countryName
-            }
-            val filter = viewModel.filter
-            filter?.title?.let { filterTitle ->
-                binding.nodesTitle.text = filterTitle
-            }
-            viewModel.cacheProposals?.let { proposals ->
-                nodeListAdapter.replaceAll(proposals)
-            }
+            nodeListAdapter.replaceAll(countryList)
+            binding.loader.cancelAnimation()
+            binding.loader.visibility = View.INVISIBLE
         }
     }
 
@@ -117,14 +109,14 @@ class FilterActivity : BaseActivity() {
             }
         }
         allNodesViewModel.filteredProposal.observe(this) { proposals ->
-            val userCountryCode = intent.extras?.getString(COUNTRY_CODE_KEY)
+            val userCountryCode = viewModel.getPreviousCountryCode()
             val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
                 // return all filtered nodes
                 proposals
             } else {
                 // filter by user selected country
                 proposals.filter { proposal ->
-                    proposal.countryCode == intent.extras?.getString(COUNTRY_CODE_KEY)
+                    proposal.countryCode == userCountryCode
                 }
             }
             nodeListAdapter.replaceAll(countryList)
