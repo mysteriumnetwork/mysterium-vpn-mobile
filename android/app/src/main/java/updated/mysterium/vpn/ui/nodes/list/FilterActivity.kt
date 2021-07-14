@@ -17,6 +17,7 @@ import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
+import updated.mysterium.vpn.network.usecase.NodesUseCase
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -115,9 +116,16 @@ class FilterActivity : BaseActivity() {
                 nodeListAdapter.replaceAll(it)
             }
         }
-        allNodesViewModel.filteredProposal.observe(this) {
-            val countryList = it.filter { proposal ->
-                proposal.countryCode == intent.extras?.getString(COUNTRY_CODE_KEY)
+        allNodesViewModel.filteredProposal.observe(this) { proposals ->
+            val userCountryCode = intent.extras?.getString(COUNTRY_CODE_KEY)
+            val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
+                // return all filtered nodes
+                proposals
+            } else {
+                // filter by user selected country
+                proposals.filter { proposal ->
+                    proposal.countryCode == intent.extras?.getString(COUNTRY_CODE_KEY)
+                }
             }
             nodeListAdapter.replaceAll(countryList)
             binding.loader.cancelAnimation()

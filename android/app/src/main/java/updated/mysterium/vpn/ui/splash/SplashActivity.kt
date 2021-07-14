@@ -98,6 +98,7 @@ class SplashActivity : BaseActivity() {
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
             allNodesViewModel.launchProposalsPeriodically()
+            balanceViewModel.getCurrentBalance()
             establishConnectionListeners()
             navigateForward()
         })

@@ -90,10 +90,7 @@ class HomeSelectionActivity : BaseActivity() {
                 }
                 savedCountry?.changeSelectionState()
                 showProposalsLoadingState()
-                showFilteredList(
-                    filtersAdapter.selectedItem?.filterId ?: 0,
-                    NodesUseCase.ALL_COUNTRY_CODE
-                )
+                showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0)
                 val countryIndex = allNodesAdapter.getAll().indexOf(savedCountry)
                 (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
                     scrollToPositionWithOffset(countryIndex, 0)
@@ -197,7 +194,7 @@ class HomeSelectionActivity : BaseActivity() {
         filtersAdapter.onNewFilterSelected = {
             showProposalsLoadingState()
             val filter = filtersAdapter.selectedItem
-            showFilteredList(filter?.filterId ?: 0, NodesUseCase.ALL_COUNTRY_CODE)
+            showFilteredList(filter?.filterId ?: 0)
         }
         binding.filtersRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
@@ -218,18 +215,20 @@ class HomeSelectionActivity : BaseActivity() {
     private fun showProposalsLoadingState() {
         binding.proposalsLoader.visibility = View.VISIBLE
         binding.nodesRecyclerView.visibility = View.INVISIBLE
+        binding.selectNodeButton.isClickable = false
         filtersAdapter.isItemsClickable = false
     }
 
     private fun showProposalsLoadedState() {
         binding.proposalsLoader.visibility = View.INVISIBLE
         binding.nodesRecyclerView.visibility = View.VISIBLE
+        binding.selectNodeButton.isClickable = true
         filtersAdapter.isItemsClickable = true
         filtersAdapter.notifyDataSetChanged()
     }
 
-    private fun showFilteredList(filterId: Int, countryCode: String) {
-        allNodesViewModel.filterNodes(filterId, countryCode).observe(this) {
+    private fun showFilteredList(filterId: Int) {
+        allNodesViewModel.filterNodes(filterId, NodesUseCase.ALL_COUNTRY_CODE).observe(this) {
             showProposalsLoadedState()
             it.onSuccess { countries ->
                 allNodesAdapter.replaceAll(countries)
