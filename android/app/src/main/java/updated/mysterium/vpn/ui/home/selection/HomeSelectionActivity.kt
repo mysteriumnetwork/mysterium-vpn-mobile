@@ -80,7 +80,8 @@ class HomeSelectionActivity : BaseActivity() {
                 binding.loader.visibility = View.INVISIBLE
                 binding.filterCardView.visibility = View.VISIBLE
                 binding.countriesCardView.visibility = View.VISIBLE
-                showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0)
+                val savedFilterId = viewModel.getPreviousFilterId()
+                showFilteredList(savedFilterId)
             }
         }
         viewModel.connectionState.observe(this, {
