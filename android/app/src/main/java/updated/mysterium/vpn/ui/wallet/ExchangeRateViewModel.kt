@@ -34,12 +34,12 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun launchPeriodicallyExcnangeRate() {
+    fun launchPeriodicallyExchangeRate() {
         // fetch new rate every 15 min
         handler.post(runnable)
     }
 
-    fun stopPeriodicallyExcnangeRate() {
+    fun stopPeriodicallyExchangeRate() {
         handler.removeCallbacks(runnable)
     }
 

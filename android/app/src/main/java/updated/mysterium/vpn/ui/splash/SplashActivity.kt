@@ -100,7 +100,7 @@ class SplashActivity : BaseActivity() {
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
             allNodesViewModel.launchProposalsPeriodically()
-            exhangeRateViewModel.launchPeriodicallyExcnangeRate()
+            exhangeRateViewModel.launchPeriodicallyExchangeRate()
             balanceViewModel.getCurrentBalance()
             establishConnectionListeners()
             navigateForward()

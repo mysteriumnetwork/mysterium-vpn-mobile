@@ -60,14 +60,14 @@ class App : Application(), LifecycleObserver {
     fun onMoveToForeground() {
         // App goes to foreground, start fetching periodical works
         allNodesViewModel.launchProposalsPeriodically()
-        exchangeRateViewModel.launchPeriodicallyExcnangeRate()
+        exchangeRateViewModel.launchPeriodicallyExchangeRate()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onMoveToBackgroung() {
         // App goes to background, stop fetching periodical works
         allNodesViewModel.stopPeriodicalProposalFetch()
-        exchangeRateViewModel.stopPeriodicallyExcnangeRate()
+        exchangeRateViewModel.stopPeriodicallyExchangeRate()
     }
 
     override fun attachBaseContext(base: Context?) {
