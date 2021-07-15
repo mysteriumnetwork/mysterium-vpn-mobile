@@ -76,11 +76,11 @@ class HomeSelectionActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         allNodesViewModel.filterLoaded.observe(this) {
-            allNodesViewModel.proposals.value?.let {
+            if (!isInitialListLoaded) {
                 binding.loader.visibility = View.INVISIBLE
                 binding.filterCardView.visibility = View.VISIBLE
                 binding.countriesCardView.visibility = View.VISIBLE
-                showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0, true)
+                showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0)
             }
         }
         viewModel.connectionState.observe(this, {
@@ -178,7 +178,7 @@ class HomeSelectionActivity : BaseActivity() {
     private fun initFiltersList() {
         filtersAdapter.onNewFilterSelected = {
             val filter = filtersAdapter.selectedItem
-            showFilteredList(filter?.filterId ?: 0, false)
+            showFilteredList(filter?.filterId ?: 0)
         }
         binding.filtersRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
@@ -196,7 +196,7 @@ class HomeSelectionActivity : BaseActivity() {
         })
     }
 
-    private fun showFilteredList(filterId: Int, isFirstLoad: Boolean) {
+    private fun showFilteredList(filterId: Int) {
         allNodesViewModel.getFilteredListById(filterId).observe(this) {
             it.onSuccess { countries ->
                 val sortedCountries = countries.sortedBy { countryNodes ->
@@ -216,7 +216,7 @@ class HomeSelectionActivity : BaseActivity() {
                 selectedItem?.changeSelectionState()
                 val countryIndex = sortedCountries.indexOf(selectedItem)
                 (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
-                    if (isFirstLoad) {
+                    if (countryIndex != -1) {
                         // scroll to previous country
                         scrollToPositionWithOffset(countryIndex, 0)
                     } else {

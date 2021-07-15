@@ -22,6 +22,7 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.math.BigDecimal
 import kotlin.math.abs
 
@@ -39,6 +40,7 @@ class TopUpPaymentActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTopUpPaymentBinding
     private val topUpViewModel: TopUpViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val viewModel: TopUpPaymentViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
     private var link: String? = null
@@ -96,17 +98,9 @@ class TopUpPaymentActivity : BaseActivity() {
         val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
         val isLighting = intent.extras?.getBoolean(CRYPTO_IS_LIGHTING_EXTRA_KEY)
         amount?.let {
-            topUpViewModel.getUsdEquivalent(it).observe(this, { result ->
-                result.onSuccess { equivalent ->
-                    binding.usdEquivalentTextView.text = getString(
-                        R.string.top_up_usd_equivalent, equivalent
-                    )
-                }
-                result.onFailure { throwable ->
-                    Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                    // TODO("Add UI error, failed to load equivalent")
-                }
-            })
+            binding.usdEquivalentTextView.text = getString(
+                R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it
+            )
         }
         viewModel.createPaymentOrder(
             currency,

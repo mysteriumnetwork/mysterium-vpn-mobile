@@ -22,6 +22,7 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterActivity
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class ConnectionActivity : BaseActivity() {
 
@@ -35,6 +36,7 @@ class ConnectionActivity : BaseActivity() {
     private lateinit var binding: ActivityHomeBinding
     private var proposal: Proposal? = null
     private val viewModel: ConnectionViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val notificationManager: AppNotificationManager by inject()
     private var isDisconnectedByUser = false
 
@@ -74,19 +76,19 @@ class ConnectionActivity : BaseActivity() {
                                 Log.i(TAG, "onSuccess")
                                 inflateNodeInfo()
                                 inflateConnectingCardView()
-                                viewModel.connectNode(proposal)
+                                viewModel.connectNode(proposal, exchangeRateViewModel.usdEquivalent)
                             }
                             result.onFailure {
                                 Log.i(TAG, "onFailure ${it.localizedMessage}")
                                 inflateNodeInfo()
                                 inflateConnectingCardView()
-                                viewModel.connectNode(proposal)
+                                viewModel.connectNode(proposal, exchangeRateViewModel.usdEquivalent)
                             }
                         })
                     } else {
                         inflateNodeInfo()
                         inflateConnectingCardView()
-                        viewModel.connectNode(proposal)
+                        viewModel.connectNode(proposal, exchangeRateViewModel.usdEquivalent)
                     }
                 }
             }
@@ -153,7 +155,8 @@ class ConnectionActivity : BaseActivity() {
         viewModel.init(
             deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService,
             notificationManager = notificationManager,
-            proposal = proposal
+            proposal = proposal,
+            rate = exchangeRateViewModel.usdEquivalent
         )
     }
 
@@ -294,7 +297,7 @@ class ConnectionActivity : BaseActivity() {
                 ) {
                     manualDisconnecting()
                     viewModel.disconnect().observe(this, {
-                        viewModel.connectNode(proposalExtra)
+                        viewModel.connectNode(proposalExtra, exchangeRateViewModel.usdEquivalent)
                     })
                 }
             }
@@ -344,18 +347,19 @@ class ConnectionActivity : BaseActivity() {
     private fun toolbarSaveIcon() {
         binding.manualConnectToolbar.onRightButtonClicked {
             proposal?.let { proposal ->
-                viewModel.isFavourite(proposal.providerID + proposal.serviceType).observe(this, { result ->
-                    result.onSuccess {
-                        if (it != null) {
-                            deleteFromFavourite(proposal)
-                        } else {
-                            addToFavourite(proposal)
+                viewModel.isFavourite(proposal.providerID + proposal.serviceType)
+                    .observe(this, { result ->
+                        result.onSuccess {
+                            if (it != null) {
+                                deleteFromFavourite(proposal)
+                            } else {
+                                addToFavourite(proposal)
+                            }
                         }
-                    }
-                    result.onFailure {
-                        Log.i(TAG, it.localizedMessage ?: it.toString())
-                    }
-                })
+                        result.onFailure {
+                            Log.i(TAG, it.localizedMessage ?: it.toString())
+                        }
+                    })
             }
         }
         isFavourite()

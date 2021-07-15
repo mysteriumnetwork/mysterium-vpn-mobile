@@ -192,13 +192,15 @@
     <string name="create_account_title">Your account</string>Create New Account
     <string name="create_account_new">Create New\n Account</string>
     <string name="create_account_import">Import\n Account</string>
-    <string name="create_account_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
+    <string name="create_account_description">Create an account to start or import your existing account using your private key.</string>
 
     <!--  Private key  -->
+    <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
     <string name="private_key_back_up">Back up\n Private Key</string>
     <string name="private_key_back_up_later">Back up\n Later</string>
 
     <!--  Prepare top up  -->
+    <string name="prepare_top_up_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
     <string name="prepare_top_up_referral">Use referral code</string>
     <string name="prepare_top_up_now">Top up now</string>
     <string name="prepare_top_up_later">Top up later</string>

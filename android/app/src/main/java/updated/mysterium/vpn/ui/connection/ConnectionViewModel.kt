@@ -68,13 +68,14 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val settingsUseCase = useCaseProvider.settings()
     private val statisticUseCase = useCaseProvider.statistic()
     private var deferredNode = DeferredNode()
-    private var exchangeRate: Double? = null
+    private var exchangeRate = 0.0
     private var isConnectionStopped = false
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager,
-        proposal: Proposal
+        proposal: Proposal,
+        rate: Double
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
@@ -83,11 +84,11 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
-            connectNode(proposal)
+            connectNode(proposal, rate)
         }
     }
 
-    fun connectNode(proposal: Proposal) {
+    fun connectNode(proposal: Proposal, rate: Double) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
             if (!isConnectionStopped && _connectionState.value != ConnectionState.CONNECTED) {
@@ -95,11 +96,11 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             isConnectionStopped = false
         }
+        exchangeRate = rate
         viewModelScope.launch(handler) {
             this@ConnectionViewModel.proposal = proposal
             disconnectIfConnectedNode()
             connect()
-            getExchangeRate()
         }
     }
 
@@ -231,10 +232,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.connect(req)
         updateService()
-    }
-
-    private suspend fun getExchangeRate() {
-        exchangeRate = balanceUseCase.getUsdEquivalent()
     }
 
     private fun updateService() {

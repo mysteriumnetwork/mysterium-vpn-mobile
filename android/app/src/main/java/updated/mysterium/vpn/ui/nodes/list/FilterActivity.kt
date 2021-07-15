@@ -86,6 +86,7 @@ class FilterActivity : BaseActivity() {
                                 proposal.countryCode == userCountryCode
                             }?.proposalList ?: emptyList()
                         }
+                        viewModel.cacheProposals = countryList
                         nodeListAdapter.replaceAll(countryList)
                         binding.loader.cancelAnimation()
                         binding.loader.visibility = View.INVISIBLE

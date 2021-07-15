@@ -36,6 +36,7 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentViewModel
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 import updated.mysterium.vpn.ui.wallet.spendings.SpendingsViewModel
 import updated.mysterium.vpn.ui.wallet.top.up.TopUpsListViewModel
@@ -83,6 +84,9 @@ object Modules {
             AppNotificationManager(
                 androidContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             ).apply { init(androidContext()) }
+        }
+        single {
+            ExchangeRateViewModel(get())
         }
 
         viewModel {

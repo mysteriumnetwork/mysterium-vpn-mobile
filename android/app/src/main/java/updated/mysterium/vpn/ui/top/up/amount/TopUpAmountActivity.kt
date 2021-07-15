@@ -12,6 +12,7 @@ import updated.mysterium.vpn.model.top.up.TopUpCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 
 class TopUpAmountActivity : BaseActivity() {
@@ -31,6 +32,7 @@ class TopUpAmountActivity : BaseActivity() {
     private lateinit var binding: ActivityTopUpAmountBinding
     private val viewModel: TopUpViewModel by inject()
     private val walletViewModel: TopUpAmountViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val topUpAdapter = TopUpAmountAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,15 +85,9 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun updateEquivalent(value: Int) {
-        viewModel.getUsdEquivalent(value).observe(this, { result ->
-            result.onSuccess {
-                binding.usdEquivalentTextView.text = getString(R.string.top_up_usd_equivalent, it)
-            }
-            result.onFailure { throwable ->
-                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                // TODO("Add UI error, failed to load equivalent")
-            }
-        })
+        binding.usdEquivalentTextView.text = getString(
+            R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * value
+        )
     }
 
     private fun updateWalletEstimates(balance: Double) {
