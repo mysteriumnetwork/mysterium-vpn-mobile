@@ -178,6 +178,7 @@ class HomeSelectionActivity : BaseActivity() {
     private fun initFiltersList() {
         filtersAdapter.onNewFilterSelected = {
             val filter = filtersAdapter.selectedItem
+            viewModel.saveNewFilterId(filter?.filterId)
             showFilteredList(filter?.filterId ?: 0)
         }
         binding.filtersRecyclerView.apply {
@@ -221,6 +222,7 @@ class HomeSelectionActivity : BaseActivity() {
                         scrollToPositionWithOffset(countryIndex, 0)
                     } else {
                         // scroll to top
+                        sortedCountries.first().changeSelectionState()
                         scrollToPositionWithOffset(0, 0)
                     }
                 }
@@ -250,6 +252,9 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun initCountriesList() {
+        allNodesAdapter.onCountrySelected = {
+            viewModel.saveNewCountryCode(it)
+        }
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
             adapter = allNodesAdapter
