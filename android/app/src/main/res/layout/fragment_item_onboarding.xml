@@ -19,6 +19,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
     <TextView
         android:id="@+id/topTitleTextView"
         style="@style/TextAppearance.HeadTitle"
@@ -54,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginVertical="@dimen/margin_padding_size_small"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/additionalTitleTextView"
@@ -69,7 +76,8 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
         app:cardBackgroundColor="@color/onboarding_faded_screen_white"
-        app:layout_constraintBottom_toTopOf="@id/skipButton">
+        app:layout_constraintBottom_toTopOf="@id/skipButton"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

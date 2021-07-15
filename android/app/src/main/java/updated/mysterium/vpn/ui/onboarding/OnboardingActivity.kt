@@ -18,6 +18,7 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var viewPager: ViewPager2
     private val viewModel: OnboardingViewModel by inject()
+    private var isMarginCalculated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +40,12 @@ class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener, OnChild
     }
 
     override fun onMarginCalculated(margin: Int) {
-        val layoutParams = tabLayoutDots.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.bottomMargin = margin
-        tabLayoutDots.requestLayout()
+        if (!isMarginCalculated) {
+            isMarginCalculated = true
+            val layoutParams = tabLayoutDots.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.bottomMargin = margin
+            tabLayoutDots.requestLayout()
+        }
     }
 
     private fun initCustomViewPagerBehaviour() {

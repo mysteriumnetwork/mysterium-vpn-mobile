@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_item_onboarding.*
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.FragmentItemOnboardingBinding
+import updated.mysterium.vpn.common.extensions.toPx
 import updated.mysterium.vpn.model.onboarding.OnboardingScreen
 import updated.mysterium.vpn.ui.onboarding.viewpager.ViewPagerActionListener
 
@@ -23,6 +24,8 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
         }
 
         private const val SCREEN_TAG = "ONBOARDING_SCREEN_TAG"
+        private const val MARGIN_BOTTOM = 12
+        private const val MARGIN_TOP = 16
     }
 
     private lateinit var binding: FragmentItemOnboardingBinding
@@ -69,7 +72,9 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
             contentDescription.text = resources.getString(onboardingScreen.contentDescriptionRes)
             animationView.setAnimation(onboardingScreen.animationRes)
             if (onboardingScreen.additionalTopTitleRes != null) {
-                additionalTitleTextView.text = resources.getString(onboardingScreen.additionalTopTitleRes)
+                additionalTitleTextView.text = resources.getString(
+                    onboardingScreen.additionalTopTitleRes
+                )
             } else {
                 additionalTitleTextView.visibility = View.INVISIBLE
             }
@@ -77,11 +82,20 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
     }
 
     private fun calculateTabLayoutMargin() {
-        cardView.measure(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-        skipButton.measure(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        cardView.measure(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        )
+        skipButton.measure(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        )
         val cardViewHeight = cardView.measuredHeight
         val skipButtonHeight = skipButton.measuredHeight
-        val totalMargin = cardViewHeight + skipButtonHeight
+        val totalMargin = cardViewHeight +
+            skipButtonHeight +
+            MARGIN_BOTTOM.toPx() +
+            MARGIN_TOP.toPx()
         (activity as? OnChildViewMeasured?)?.onMarginCalculated(totalMargin)
     }
 }

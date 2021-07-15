@@ -4,10 +4,10 @@
     <!--  Onboarding  -->
     <string name="onboarding_main_title_1">Decentralized global node network</string>
     <string name="onboarding_description_title_1">Run by people, for people</string>
-    <string name="onboarding_description_content_1">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_description_content_1">Our network is blind to borders. Select any IP you like from our global list and get unlimited access to worldwide content.</string>
     <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
-    <string name="onboarding_description_content_2">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
     <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
     <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
     <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
@@ -192,13 +192,15 @@
     <string name="create_account_title">Your account</string>Create New Account
     <string name="create_account_new">Create New\n Account</string>
     <string name="create_account_import">Import\n Account</string>
-    <string name="create_account_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
+    <string name="create_account_description">Create an account to start or import your existing account using your private key.</string>
 
     <!--  Private key  -->
+    <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
     <string name="private_key_back_up">Back up\n Private Key</string>
     <string name="private_key_back_up_later">Back up\n Later</string>
 
     <!--  Prepare top up  -->
+    <string name="prepare_top_up_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
     <string name="prepare_top_up_referral">Use referral code</string>
     <string name="prepare_top_up_now">Top up now</string>
     <string name="prepare_top_up_later">Top up later</string>
@@ -280,7 +282,6 @@
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
-    <string name="error_play_account">You have to have Google Play account</string>
 
     <!--  HomeSelection  -->
     <string name="home_selection_smart_connect">Smart Connect is coming soon</string>

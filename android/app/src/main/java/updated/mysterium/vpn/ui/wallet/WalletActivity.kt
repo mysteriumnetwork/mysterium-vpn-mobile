@@ -48,6 +48,7 @@ class WalletActivity : BaseActivity() {
     private lateinit var binding: ActivityWalletBinding
     private lateinit var viewPager: ViewPager2
     private val balanceViewModel: BalanceViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val viewModel: WalletViewModel by inject()
     private var firstTabBinding: ItemTabBinding? = null
     private var secondTabBinding: ItemTabBinding? = null
@@ -108,7 +109,8 @@ class WalletActivity : BaseActivity() {
         for (index in 0 until binding.chooseListTabLayout.tabCount) {
             val tab = LayoutInflater.from(this).inflate(R.layout.item_tab, null)
             val tabBinding = ItemTabBinding.bind(tab)
-            tabBinding.allNodesImageButton.text = resources.getString(TAB_ITEMS_CONTENT[index].textResId)
+            tabBinding.allNodesImageButton.text =
+                resources.getString(TAB_ITEMS_CONTENT[index].textResId)
             if (index == 0) {
                 if (isRTL) {
                     tabBinding.allNodesImageButton.background = ContextCompat.getDrawable(
@@ -194,15 +196,9 @@ class WalletActivity : BaseActivity() {
     }
 
     private fun getUsdEquivalent(balance: Double) {
-        viewModel.getUsdEquivalent(balance).observe(this, { result ->
-            result.onSuccess {
-                binding.usdEquivalentTextView.text = getString(R.string.wallet_usd_equivalent, it)
-            }
-            result.onFailure {
-                Log.e(TAG, "Getting exchange rate failed $it")
-                // TODO("Implement error handling")
-            }
-        })
+        binding.usdEquivalentTextView.text = getString(
+            R.string.wallet_usd_equivalent, exchangeRateViewModel.usdEquivalent * balance
+        )
     }
 
     private fun getWalletEquivalent(balance: Double) {

@@ -37,6 +37,7 @@ import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
 
@@ -50,6 +51,7 @@ class SplashActivity : BaseActivity() {
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
+    private val exhangeRateViewModel: ExchangeRateViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
@@ -98,6 +100,7 @@ class SplashActivity : BaseActivity() {
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
             allNodesViewModel.launchProposalsPeriodically()
+            exhangeRateViewModel.launchPeriodicallyExchangeRate()
             balanceViewModel.getCurrentBalance()
             establishConnectionListeners()
             navigateForward()

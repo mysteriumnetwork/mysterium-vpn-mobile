@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.FragmentSpendingsBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SpendingsFragment : Fragment() {
 
@@ -17,6 +18,7 @@ class SpendingsFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentSpendingsBinding
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val viewModel: SpendingsViewModel by inject()
     private val spendingsAdapter = SpendingsAdapter()
 
@@ -43,15 +45,8 @@ class SpendingsFragment : Fragment() {
     }
 
     private fun getExchangeRate() {
-        viewModel.getExchangeRate().observe(viewLifecycleOwner, { result ->
-            result.onSuccess { rate ->
-                spendingsAdapter.setExchangeRate(rate)
-                getSpendings()
-            }
-            result.onFailure { throwable ->
-                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-            }
-        })
+        spendingsAdapter.setExchangeRate(exchangeRateViewModel.usdEquivalent)
+        getSpendings()
     }
 
     private fun getSpendings() {

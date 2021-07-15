@@ -27,6 +27,7 @@ import updated.mysterium.vpn.core.MysteriumAndroidCoreService
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.di.Modules
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class App : Application(), LifecycleObserver {
 
@@ -39,6 +40,7 @@ class App : Application(), LifecycleObserver {
     val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
     private val analyticWrapper: AnalyticWrapper by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -56,14 +58,16 @@ class App : Application(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onMoveToForeground() {
-        // App goes to foregraund, start fetching proposals
+        // App goes to foreground, start fetching periodical works
         allNodesViewModel.launchProposalsPeriodically()
+        exchangeRateViewModel.launchPeriodicallyExchangeRate()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onMoveToBackgroung() {
-        // App goes to background, stop fetching proposals
+        // App goes to background, stop fetching periodical works
         allNodesViewModel.stopPeriodicalProposalFetch()
+        exchangeRateViewModel.stopPeriodicallyExchangeRate()
     }
 
     override fun attachBaseContext(base: Context?) {

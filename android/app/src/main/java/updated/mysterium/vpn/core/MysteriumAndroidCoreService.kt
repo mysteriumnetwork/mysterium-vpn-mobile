@@ -45,6 +45,7 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.notification.NotificationFactory
 import updated.mysterium.vpn.notification.PushReceiver
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 
 class MysteriumAndroidCoreService : VpnService(), KoinComponent {
@@ -59,6 +60,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private val appNotificationManager: AppNotificationManager by inject()
     private val useCaseProvider: UseCaseProvider by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private var mobileNode: MobileNode? = null
@@ -212,7 +214,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         GlobalScope.launch(handler) {
-            val exchangeRate = balanceUseCase.getUsdEquivalent()
+            val exchangeRate = exchangeRateViewModel.usdEquivalent
             val statistics = StatisticsModel.from(statisticsCallback)
             val connectionStatistic = ConnectionStatistic(
                 duration = statistics.duration,

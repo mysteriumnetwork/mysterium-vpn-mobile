@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        android:text="@string/create_account_description"
+        android:text="@string/prepare_top_up_description"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/cardView"

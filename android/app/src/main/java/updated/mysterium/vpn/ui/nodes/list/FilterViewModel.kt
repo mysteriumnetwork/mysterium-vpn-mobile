@@ -18,7 +18,6 @@ class FilterViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     var filter: PresetFilter? = null
 
     var cacheProposals: List<Proposal>? = null
-        private set
 
     val proposalsList: LiveData<List<Proposal>?>
         get() = _proposalsList

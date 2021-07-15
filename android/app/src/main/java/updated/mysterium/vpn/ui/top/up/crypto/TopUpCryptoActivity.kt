@@ -12,6 +12,7 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class TopUpCryptoActivity : BaseActivity() {
 
@@ -23,6 +24,7 @@ class TopUpCryptoActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTopUpCryptoBinding
     private val viewModel: TopUpViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val topUpAdapter = TopUpCryptoAdapter()
     private var cryptoAmount: Int? = null
 
@@ -78,15 +80,9 @@ class TopUpCryptoActivity : BaseActivity() {
     private fun getCryptoValue() {
         cryptoAmount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
         cryptoAmount?.let {
-            viewModel.getUsdEquivalent(it).observe(this, { result ->
-                result.onSuccess {
-                    binding.usdEquivalentTextView.text = getString(R.string.top_up_usd_equivalent, it)
-                }
-                result.onFailure { throwable ->
-                    Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                    // TODO("Add UI error, failed to load equivalent")
-                }
-            })
+            binding.usdEquivalentTextView.text = getString(
+                R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it
+            )
         }
     }
 
