@@ -1,6 +1,8 @@
 package updated.mysterium.vpn.common.extensions
 
+import android.content.res.Resources
 import android.graphics.RectF
+import android.util.TypedValue
 import android.view.View
 import androidx.annotation.StringRes
 import network.mysterium.vpn.R
@@ -24,3 +26,9 @@ fun View.calculateRectOnScreen(): RectF {
         location[1].toFloat() + this.measuredHeight
     )
 }
+
+fun Number.toPx() = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    this.toFloat(),
+    Resources.getSystem().displayMetrics
+).toInt()

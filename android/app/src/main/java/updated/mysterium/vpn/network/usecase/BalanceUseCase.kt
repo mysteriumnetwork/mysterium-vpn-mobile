@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.network.usecase
 
+import android.util.Log
 import mysterium.GetBalanceRequest
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository

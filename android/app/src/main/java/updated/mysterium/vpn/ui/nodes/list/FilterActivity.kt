@@ -73,27 +73,25 @@ class FilterActivity : BaseActivity() {
                 presetFilter?.title?.let { filterTitle ->
                     binding.nodesTitle.text = filterTitle
                 }
-                if (presetFilter?.filterId == FilterUseCase.ALL_NODES_FILTER_ID) {
-                    binding.filtersLayout.filtersLinear.visibility = View.VISIBLE
-                } else {
-                    binding.filtersLayout.filtersLinear.visibility = View.GONE
+                val filterId = presetFilter?.filterId ?: FilterUseCase.ALL_NODES_FILTER_ID
+                allNodesViewModel.getFilteredListById(filterId).observe(this) { result ->
+                    result.onSuccess { proposals ->
+                        val userCountryCode = viewModel.getPreviousCountryCode()
+                        val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
+                            // return all filtered nodes
+                            proposals.first().proposalList
+                        } else {
+                            // filter by user selected country
+                            proposals.find { proposal ->
+                                proposal.countryCode == userCountryCode
+                            }?.proposalList ?: emptyList()
+                        }
+                        nodeListAdapter.replaceAll(countryList)
+                        binding.loader.cancelAnimation()
+                        binding.loader.visibility = View.INVISIBLE
+                    }
                 }
             }
-        }
-        allNodesViewModel.filteredProposal.value?.let { proposals ->
-            val userCountryCode = viewModel.getPreviousCountryCode()
-            val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
-                // return all filtered nodes
-                proposals
-            } else {
-                // filter by user selected country
-                proposals.filter { proposal ->
-                    proposal.countryCode == userCountryCode
-                }
-            }
-            nodeListAdapter.replaceAll(countryList)
-            binding.loader.cancelAnimation()
-            binding.loader.visibility = View.INVISIBLE
         }
     }
 
@@ -107,21 +105,6 @@ class FilterActivity : BaseActivity() {
             proposals?.let {
                 nodeListAdapter.replaceAll(it)
             }
-        }
-        allNodesViewModel.filteredProposal.observe(this) { proposals ->
-            val userCountryCode = viewModel.getPreviousCountryCode()
-            val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
-                // return all filtered nodes
-                proposals
-            } else {
-                // filter by user selected country
-                proposals.filter { proposal ->
-                    proposal.countryCode == userCountryCode
-                }
-            }
-            nodeListAdapter.replaceAll(countryList)
-            binding.loader.cancelAnimation()
-            binding.loader.visibility = View.INVISIBLE
         }
     }
 

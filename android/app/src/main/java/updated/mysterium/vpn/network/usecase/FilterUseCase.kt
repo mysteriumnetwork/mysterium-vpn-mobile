@@ -18,6 +18,7 @@ class FilterUseCase(
 
     companion object {
         const val ALL_NODES_FILTER_ID = 0
+        private const val SERVICE_TYPE = "wireguard"
         private val selectedResources = listOf(
             R.drawable.all_filters_selected,
             R.drawable.media_filters_selected,
@@ -35,23 +36,31 @@ class FilterUseCase(
     suspend fun getSystemPresets(): List<PresetFilter> {
         val filterBytesArray = nodeRepository.getFilterPresets()
         val collectionType = object : TypeToken<Collection<SystemPreset?>?>() {}.type
-        val systemFilters: List<SystemPreset> = Gson().fromJson(String(filterBytesArray), collectionType)
+        val systemFilters: List<SystemPreset> = Gson().fromJson(
+            String(filterBytesArray), collectionType
+        )
         val filters = emptyList<PresetFilter>().toMutableList()
-        filters.add(PresetFilter(
-            filterId = ALL_NODES_FILTER_ID,
-            selectedResId = selectedResources[ALL_NODES_FILTER_ID],
-            unselectedResId = unselectedResources[ALL_NODES_FILTER_ID],
-            isSelected = true
-        ))
+        filters.add(
+            PresetFilter(
+                filterId = ALL_NODES_FILTER_ID,
+                selectedResId = selectedResources[ALL_NODES_FILTER_ID],
+                unselectedResId = unselectedResources[ALL_NODES_FILTER_ID],
+                isSelected = true
+            )
+        )
         systemFilters.forEach { systemPreset ->
-            filters.add(PresetFilter(
-                filterId = systemPreset.filterId,
-                selectedResId = selectedResources[systemPreset.filterId],
-                unselectedResId = unselectedResources[systemPreset.filterId],
-                title = systemPreset.title
-            ))
+            filters.add(
+                PresetFilter(
+                    filterId = systemPreset.filterId,
+                    selectedResId = selectedResources[systemPreset.filterId],
+                    unselectedResId = unselectedResources[systemPreset.filterId],
+                    title = systemPreset.title
+                )
+            )
         }
-        return filters
+        return filters.sortedBy {
+            it.filterId
+        }
     }
 
     suspend fun getProposalsByFilterId(filterId: Int): List<NodeEntity>? {
@@ -59,6 +68,7 @@ class FilterUseCase(
             val proposalRequest = GetProposalsRequest().apply {
                 presetID = filterId.toLong()
                 refresh = true
+                serviceType = SERVICE_TYPE
             }
             nodeRepository.getProposalsByFilterId(proposalRequest).map {
                 NodeEntity(it)

@@ -11,7 +11,6 @@ import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
-import updated.mysterium.vpn.network.usecase.NodesUseCase
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -76,16 +75,14 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        allNodesViewModel.proposals.observe(this, { countries ->
-            if (!isInitialListLoaded) {
+        allNodesViewModel.filterLoaded.observe(this) {
+            allNodesViewModel.proposals.value?.let {
                 binding.loader.visibility = View.INVISIBLE
                 binding.filterCardView.visibility = View.VISIBLE
                 binding.countriesCardView.visibility = View.VISIBLE
-                showProposalsLoadingState()
-                showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0)
-                isInitialListLoaded = true
+                showFilteredList(filtersAdapter.selectedItem?.filterId ?: 0, true)
             }
-        })
+        }
         viewModel.connectionState.observe(this, {
             handleConnectionState(it)
         })
@@ -180,9 +177,8 @@ class HomeSelectionActivity : BaseActivity() {
 
     private fun initFiltersList() {
         filtersAdapter.onNewFilterSelected = {
-            showProposalsLoadingState()
             val filter = filtersAdapter.selectedItem
-            showFilteredList(filter?.filterId ?: 0)
+            showFilteredList(filter?.filterId ?: 0, false)
         }
         binding.filtersRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
@@ -200,24 +196,8 @@ class HomeSelectionActivity : BaseActivity() {
         })
     }
 
-    private fun showProposalsLoadingState() {
-        binding.proposalsLoader.visibility = View.VISIBLE
-        binding.nodesRecyclerView.visibility = View.INVISIBLE
-        binding.selectNodeButton.isClickable = false
-        filtersAdapter.isItemsClickable = false
-    }
-
-    private fun showProposalsLoadedState() {
-        binding.proposalsLoader.visibility = View.INVISIBLE
-        binding.nodesRecyclerView.visibility = View.VISIBLE
-        binding.selectNodeButton.isClickable = true
-        filtersAdapter.isItemsClickable = true
-        filtersAdapter.notifyDataSetChanged()
-    }
-
-    private fun showFilteredList(filterId: Int) {
-        allNodesViewModel.filterNodes(filterId, NodesUseCase.ALL_COUNTRY_CODE).observe(this) {
-            showProposalsLoadedState()
+    private fun showFilteredList(filterId: Int, isFirstLoad: Boolean) {
+        allNodesViewModel.getFilteredListById(filterId).observe(this) {
             it.onSuccess { countries ->
                 val sortedCountries = countries.sortedBy { countryNodes ->
                     countryNodes.countryName
@@ -236,17 +216,19 @@ class HomeSelectionActivity : BaseActivity() {
                 selectedItem?.changeSelectionState()
                 val countryIndex = sortedCountries.indexOf(selectedItem)
                 (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
-                    scrollToPositionWithOffset(countryIndex, 0)
+                    if (isFirstLoad) {
+                        // scroll to previous country
+                        scrollToPositionWithOffset(countryIndex, 0)
+                    } else {
+                        // scroll to top
+                        scrollToPositionWithOffset(0, 0)
+                    }
                 }
                 allNodesAdapter.replaceAll(
                     sortedCountries.sortedBy { countryNodes ->
                         countryNodes.countryName
                     }
                 )
-            }
-            it.onFailure { throwable ->
-                wifiNetworkErrorPopUp()
-                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         }
     }
