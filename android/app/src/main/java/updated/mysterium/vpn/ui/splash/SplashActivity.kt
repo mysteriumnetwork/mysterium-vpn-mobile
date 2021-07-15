@@ -51,7 +51,7 @@ class SplashActivity : BaseActivity() {
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
-    private val exhangeRateViewModel: ExchangeRateViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val analyticWrapper: AnalyticWrapper by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
@@ -100,7 +100,7 @@ class SplashActivity : BaseActivity() {
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
             allNodesViewModel.launchProposalsPeriodically()
-            exhangeRateViewModel.launchPeriodicallyExchangeRate()
+            exchangeRateViewModel.launchPeriodicallyExchangeRate()
             balanceViewModel.getCurrentBalance()
             establishConnectionListeners()
             navigateForward()
