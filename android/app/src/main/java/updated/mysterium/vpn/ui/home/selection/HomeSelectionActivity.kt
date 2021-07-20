@@ -183,8 +183,11 @@ class HomeSelectionActivity : BaseActivity() {
             showFilteredList(filter?.filterId ?: 0)
         }
         binding.filtersRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
             adapter = filtersAdapter
+            layoutManager = object : LinearLayoutManager(this@HomeSelectionActivity) {
+
+                override fun canScrollVertically() = false
+            }
         }
         viewModel.getSystemPresets().observe(this, {
             it.onSuccess { filters ->
