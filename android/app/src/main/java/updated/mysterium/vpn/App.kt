@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.bugfender.sdk.Bugfender
 import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
 import network.mysterium.vpn.BuildConfig
@@ -51,7 +50,6 @@ class App : Application(), LifecycleObserver {
             androidContext(this@App)
             modules(Modules.main)
         }
-        setUpBugfender()
         bindMysteriumService()
         analyticWrapper.track(AnalyticEvent.LOGIN)
     }
@@ -87,11 +85,6 @@ class App : Application(), LifecycleObserver {
             BuildConfig.INTERCOM_API_KEY,
             BuildConfig.INTERCOM_APP_ID
         )
-    }
-
-    private fun setUpBugfender() {
-        Bugfender.init(this, BuildConfig.BUGFENDER_KEY, BuildConfig.DEBUG)
-        Bugfender.enableCrashReporting()
     }
 
     private fun bindMysteriumService() {

@@ -213,9 +213,6 @@ dependencies {
     //Pushy
     implementation "me.pushy:sdk:1.0.68"
 
-    //Bugfender
-    implementation "com.bugfender.sdk:android:3.0.8"
-
     //Matomo - user tracking
     implementation "org.matomo.sdk:tracker:4.1.2"
 
