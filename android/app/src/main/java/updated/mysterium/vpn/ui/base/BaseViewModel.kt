@@ -44,7 +44,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()
     private var isInternetChecking = false
-    private var isDoubleCheck = false
+    private var numberOfInternetCheck = 0
 
     fun checkCurrentConnection() {
         viewModelScope.launch {
@@ -59,15 +59,15 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun hintShown() = settingsUseCase.connectionHintShown()
 
     fun checkInternetConnection() {
+        numberOfInternetCheck++
         if (!isInternetChecking) {
             isInternetChecking = true
             val handler = CoroutineExceptionHandler { _, _ ->
                 isInternetChecking = false
-                if (!isDoubleCheck) {
-                    isDoubleCheck = true
+                if (numberOfInternetCheck <= 3) {
                     checkInternetConnection()
                 } else {
-                    isDoubleCheck = false
+                    numberOfInternetCheck = 0
                     _isInternetNotAvailable.postValue(false)
                 }
             }
@@ -80,11 +80,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (exitValue == 0) {
                     _isInternetNotAvailable.postValue(true)
                 } else {
-                    if (!isDoubleCheck) {
-                        isDoubleCheck = true
+                    if (numberOfInternetCheck <= 3) {
                         checkInternetConnection()
                     } else {
-                        isDoubleCheck = false
+                        numberOfInternetCheck = 0
                         _isInternetNotAvailable.postValue(false)
                     }
                 }
