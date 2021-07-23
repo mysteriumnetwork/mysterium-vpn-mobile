@@ -10,15 +10,19 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.network.usecase.FilterUseCase
+import updated.mysterium.vpn.network.usecase.NodesUseCase
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterAdapter
+import updated.mysterium.vpn.ui.nodes.list.FilterViewModel
 
 class SearchActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private val viewModel: SearchViewModel by inject()
+    private val filterViewModel: FilterViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val nodeListAdapter = FilterAdapter()
 
@@ -68,10 +72,17 @@ class SearchActivity : BaseActivity() {
                 }
             }
         })
-        allNodesViewModel.proposals.observe(this, { allNodes ->
-            initialDataLoaded()
-            viewModel.setAllNodes(allNodes.first().proposalList)
-        })
+        filterViewModel.getPreviousFilter().observe(this) {
+            it.onSuccess { presetFilter ->
+                val filterId = presetFilter?.filterId ?: FilterUseCase.ALL_NODES_FILTER_ID
+                allNodesViewModel.getFilteredListById(filterId).observe(this) { result ->
+                    result.onSuccess { proposalList ->
+                        initialDataLoaded()
+                        viewModel.setAllNodes(proposalList.first().proposalList)
+                    }
+                }
+            }
+        }
     }
 
     private fun initialDataLoaded() {
