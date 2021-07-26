@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.wallet
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +27,6 @@ import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 class WalletActivity : BaseActivity() {
 
     private companion object {
-        const val TAG = "WalletActivity"
         val TAB_ITEMS_CONTENT = listOf(
             OnboardingTabItem(
                 textResId = R.string.wallet_top_up_label,
@@ -88,7 +88,12 @@ class WalletActivity : BaseActivity() {
             val intent = Intent(this, MenuActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            startActivity(intent)
+            val transitionAnimation = ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).toBundle()
+            startActivity(intent, transitionAnimation)
         }
         binding.topUpButton.setOnClickListener {
             startActivity(Intent(this, TopUpAmountActivity::class.java))

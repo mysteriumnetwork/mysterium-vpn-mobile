@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.base
 
+import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
@@ -22,6 +24,7 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -129,7 +132,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun navigateToConnectionOrHome() {
+    fun navigateToConnectionOrHome(isBackTransition: Boolean = true) {
         val intent = if (
             connectionState == ConnectionState.CONNECTED ||
             connectionState == ConnectionState.CONNECTING ||
@@ -142,7 +145,20 @@ abstract class BaseActivity : AppCompatActivity() {
         intent.apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
-        startActivity(intent)
+        val transitionAnimation = if (isBackTransition) {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).toBundle()
+        } else {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            ).toBundle()
+        }
+        startActivity(intent, transitionAnimation)
     }
 
     fun establishConnectionListeners() {
