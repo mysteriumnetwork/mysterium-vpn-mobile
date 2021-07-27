@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#D61F85</color>
+    <color name="primary_ripple_efect">#20ED5BAC</color>
     <color name="primary_item_selected">#D61F85</color>
     <color name="primary_icon">#20D61F85</color>
     <color name="primary_dark">#501d4f</color>

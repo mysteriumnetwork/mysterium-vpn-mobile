@@ -77,6 +77,7 @@
     <style name="Widget.PrimaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.PrimaryButton</item>
         <item name="android:background">@drawable/primary_button_background</item>
+        <item name="android:foreground">@drawable/ripple_rounded_effect</item>
         <item name="backgroundTint">@color/primary</item>
         <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:textAllCaps">false</item>
@@ -219,6 +220,7 @@
         <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
         </item>
         <item name="android:background">@drawable/shape_menu_button</item>
+        <item name="android:foreground">@drawable/ripple_effect</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="elevation">0dp</item>
@@ -235,12 +237,10 @@
 
     <!--  ReportButton  -->
     <style name="Widget.ReportButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.RoundedSemiTransparentButton
-        </item>
-        <item name="android:background">@drawable/shape_report_button</item>
+        <item name="android:textAppearance">@style/TextAppearance.ReportButton</item>
+        <item name="android:background">@drawable/report_button_background</item>
         <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="elevation">0dp</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
         <item name="android:paddingEnd">@dimen/margin_padding_size_xlarge</item>
@@ -273,6 +273,7 @@
     <!--  Rounded SemiTransparent ImageButton -->
     <style name="Widget.SemiTransparentButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@drawable/circle_icon_background</item>
+        <item name="android:foreground">@drawable/ripple_circle_effect</item>
     </style>
 
     <!--  Transparent TextButton  -->
@@ -451,6 +452,23 @@
     <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="trackTint">@color/switch_track_selector</item>
         <item name="thumbTint">@android:color/white</item>
+    </style>
+
+    <!--  Ripple Effects Styles  -->
+    <style name="RippleEffect">
+        <item name="android:foreground">@drawable/ripple_effect</item>
+    </style>
+
+    <style name="RippleEffectPrimaryColor">
+        <item name="android:foreground">@drawable/ripple_effect_primary_color</item>
+    </style>
+
+    <style name="RippleEffectSecondaryColor">
+        <item name="android:foreground">@drawable/ripple_effect_secondary_color</item>
+    </style>
+
+    <style name="RippleRoundedEffect">
+        <item name="android:foreground">@drawable/ripple_rounded_effect</item>
     </style>
 
 </resources>
