@@ -66,12 +66,16 @@
 
             <LinearLayout
                 android:id="@+id/createNewAccountFrame"
+                style="@style/RippleEffectPrimaryColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginStart="@dimen/margin_padding_size_large"
                 android:layout_marginEnd="@dimen/margin_padding_size_small"
                 android:background="@drawable/shape_create_new_account"
+                android:clickable="true"
+                android:clipToPadding="false"
+                android:focusable="true"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
@@ -100,6 +104,7 @@
 
             <LinearLayout
                 android:id="@+id/importAccountFrame"
+                style="@style/RippleEffectSecondaryColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"

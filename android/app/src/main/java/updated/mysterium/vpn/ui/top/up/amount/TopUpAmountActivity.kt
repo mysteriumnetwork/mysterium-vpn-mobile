@@ -71,7 +71,7 @@ class TopUpAmountActivity : BaseActivity() {
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
-            navigateToConnectionOrHome()
+            navigateToConnectionOrHome(isBackTransition = false)
         }
     }
 

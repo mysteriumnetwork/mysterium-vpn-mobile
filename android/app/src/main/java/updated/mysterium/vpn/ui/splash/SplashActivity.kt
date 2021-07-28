@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.splash
 
 import android.animation.Animator
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -134,24 +135,29 @@ class SplashActivity : BaseActivity() {
 
     private fun navigateForward() {
         trackDeviceToken()
+        val transitionAnimation = ActivityOptions.makeCustomAnimation(
+            applicationContext,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        ).toBundle()
         when {
             !viewModel.isUserAlreadyLogin() -> {
-                startActivity(Intent(this, OnboardingActivity::class.java))
+                startActivity(Intent(this, OnboardingActivity::class.java), transitionAnimation)
             }
             !viewModel.isTermsAccepted() -> {
-                startActivity(Intent(this, TermsOfUseActivity::class.java))
+                startActivity(Intent(this, TermsOfUseActivity::class.java), transitionAnimation)
             }
             viewModel.isTopUpFlowShown() -> {
-                navigateToConnectionOrHome()
+                navigateToConnectionOrHome(isBackTransition = false)
             }
             viewModel.isAccountCreated() -> {
                 val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
                     putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
                 }
-                startActivity(intent)
+                startActivity(intent, transitionAnimation)
             }
             viewModel.isTermsAccepted() -> {
-                startActivity(Intent(this, CreateAccountActivity::class.java))
+                startActivity(Intent(this, CreateAccountActivity::class.java), transitionAnimation)
             }
         }
         finish()
