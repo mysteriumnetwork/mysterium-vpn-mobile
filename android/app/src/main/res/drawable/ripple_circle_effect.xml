@@ -1,4 +1,3 @@
-<ripple
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#20FFFFFF"
-    android:radius="20dp"/>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/manual_connect_icon_white"
+    android:radius="@dimen/margin_padding_size_medium_large" />
