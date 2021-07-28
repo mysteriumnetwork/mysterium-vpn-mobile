@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_padding_size_medium_large"
         android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

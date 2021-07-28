@@ -66,12 +66,15 @@
 
             <LinearLayout
                 android:id="@+id/topUpNow"
+                style="@style/RippleEffectPrimaryColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginStart="@dimen/margin_padding_size_large"
                 android:layout_marginEnd="@dimen/margin_padding_size_small"
                 android:background="@drawable/shape_create_new_account"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/referralProgram"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
@@ -100,6 +103,7 @@
 
             <LinearLayout
                 android:id="@+id/topUpLater"
+                style="@style/RippleEffectSecondaryColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
