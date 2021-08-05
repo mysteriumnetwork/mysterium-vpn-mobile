@@ -69,5 +69,5 @@ publishNightly:
   script:
     - bundle exec fastlane build
     - apt update; apt install -y jq
-    - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/nightly/releases/tags/nightly-$(date +%d%m%Y) | jq -r .id)
+    - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/nightly/releases/tags/nightly-$(date +%Y%m%d) | jq -r .id)
     - curl --data-binary @android/app/build/outputs/apk/release/app-release.apk -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/nightly/releases/$RELEASE_ID/assets?name=myst.apk
