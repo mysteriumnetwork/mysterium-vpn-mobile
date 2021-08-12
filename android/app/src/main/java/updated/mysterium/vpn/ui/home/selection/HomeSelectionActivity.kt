@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.home.selection
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -113,7 +114,7 @@ class HomeSelectionActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnection()
+            navigateToConnection(isBackTransition = false)
         }
     }
 
@@ -164,7 +165,7 @@ class HomeSelectionActivity : BaseActivity() {
             ContextCompat.getDrawable(this, R.drawable.icon_back)
         )
         binding.manualConnectToolbar.onLeftButtonClicked {
-            navigateToConnection()
+            navigateToConnection(isBackTransition = true)
         }
     }
 
@@ -265,12 +266,25 @@ class HomeSelectionActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToConnection() {
+    private fun navigateToConnection(isBackTransition: Boolean) {
         if (connectionState == ConnectionState.CONNECTED) {
             val intent = Intent(this, ConnectionActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            startActivity(intent)
+            val transitionAnimation = if (isBackTransition) {
+                ActivityOptions.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                ).toBundle()
+            } else {
+                ActivityOptions.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                ).toBundle()
+            }
+            startActivity(intent, transitionAnimation)
         }
     }
 
