@@ -25,6 +25,12 @@ data class Proposal(
     val countryName: String
 ) : Parcelable {
 
+    private companion object {
+        const val ETHER_VALUE = 1_000_000_000_000_000_000 // 1e18
+        const val BYTE_IN_GIB = 1024 * 1024 * 1024
+        const val SECOND_IN_HOUR = 60 * 60
+    }
+
     constructor(nodeEntity: NodeEntity) : this(
         id = nodeEntity.id,
         providerID = nodeEntity.providerID,
@@ -33,8 +39,8 @@ data class Proposal(
         nodeType = NodeType.parse(nodeEntity.nodeType),
         payment = ProposalPaymentMethod(
             currency = nodeEntity.currency,
-            perGib = nodeEntity.pricePerByte * 1024 * 1024 * 1024,
-            perHour = nodeEntity.pricePerSecond * 60 * 60
+            perGib = nodeEntity.pricePerByte / ETHER_VALUE * BYTE_IN_GIB,
+            perHour = nodeEntity.pricePerSecond / ETHER_VALUE * SECOND_IN_HOUR
         ),
         countryFlagImage = Countries.bitmaps.getOrDefault(
             nodeEntity.countryCode.toLowerCase(Locale.ROOT),
