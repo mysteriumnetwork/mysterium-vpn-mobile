@@ -63,6 +63,11 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+    }
+
     open fun retryLoading() {
         // Override in activity for handle retry loading click
     }
