@@ -4,6 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/descriptionsViewPager"
         android:layout_width="match_parent"
@@ -14,7 +21,7 @@
         style="@style/FloatTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
         app:tabBackground="@drawable/tab_selector" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
