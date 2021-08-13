@@ -8,27 +8,19 @@ import android.content.Intent
 import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.UpdateAvailability
-import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
-import network.mysterium.vpn.databinding.PopUpNewVersionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analitics.AnalyticEvent
 import updated.mysterium.vpn.analitics.AnalyticWrapper
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
-import updated.mysterium.vpn.common.extensions.isGooglePlayAvailable
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -46,7 +38,6 @@ class SplashActivity : BaseActivity() {
     private companion object {
         const val PLAY_MARKET_INSTALLED = "market://details?id="
         const val PLAY_MARKET_NOT_INSTALLED = "https://play.google.com/store/apps/details?id="
-        const val TAG = "SplashActivity"
     }
 
     private lateinit var binding: ActivitySplashBinding
@@ -57,10 +48,6 @@ class SplashActivity : BaseActivity() {
     private val analyticWrapper: AnalyticWrapper by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
-    private var newVersionPopUpDialog: AlertDialog? = null
-    private val appUpdateManager: AppUpdateManager by lazy {
-        AppUpdateManagerFactory.create(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,14 +62,14 @@ class SplashActivity : BaseActivity() {
 
     override fun retryLoading() {
         if (isVpnPermissionGranted) {
-            checkForGoogleMarketUpdates()
+            startLoading()
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (isVpnPermissionGranted) {
-            checkForGoogleMarketUpdates()
+            startLoading()
         }
     }
 
@@ -129,36 +116,6 @@ class SplashActivity : BaseActivity() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 delegate.applyDayNight()
             }
-        }
-    }
-
-    private fun checkForGoogleMarketUpdates() {
-        if (this.isGooglePlayAvailable()) {
-            try {
-                if (BuildConfig.DEBUG) {
-                    startLoading()
-                } else {
-                    appUpdateManager.appUpdateInfo.addOnSuccessListener {
-                        if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                            showNewVersionAvailablePopUp()
-                        } else {
-                            startLoading()
-                        }
-                    }
-                    appUpdateManager.appUpdateInfo.addOnFailureListener {
-                        // User does not has Google Play Store
-                        startLoading()
-                    }
-                }
-            } catch (exception: Exception) {
-                // Some kind of exception may occur due to the lack of a Play Store
-                // or for some other similar reason. Since this is not critical for
-                // the app flow, just let the user go further
-                Log.e(TAG, exception.localizedMessage ?: exception.toString())
-                startLoading()
-            }
-        } else {
-            startLoading()
         }
     }
 
@@ -216,30 +173,17 @@ class SplashActivity : BaseActivity() {
         val vpnServiceIntent = VpnService.prepare(this)
         if (vpnServiceIntent == null) {
             isVpnPermissionGranted = true
-            checkForGoogleMarketUpdates()
+            startLoading()
         } else {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     isVpnPermissionGranted = true
-                    checkForGoogleMarketUpdates()
+                    startLoading()
                 } else {
                     showPermissionErrorToast()
                     finish()
                 }
             }.launch(vpnServiceIntent)
-        }
-    }
-
-    private fun showNewVersionAvailablePopUp() {
-        if (newVersionPopUpDialog == null) {
-            val bindingPopUp = PopUpNewVersionBinding.inflate(layoutInflater)
-            newVersionPopUpDialog = createPopUp(bindingPopUp.root, false)
-            bindingPopUp.updateButton.setOnClickListener {
-                newVersionPopUpDialog = null
-                newVersionPopUpDialog?.dismiss()
-                openPlayMarket()
-            }
-            newVersionPopUpDialog?.show()
         }
     }
 
