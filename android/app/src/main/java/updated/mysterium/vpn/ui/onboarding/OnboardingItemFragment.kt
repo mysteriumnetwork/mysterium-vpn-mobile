@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_item_onboarding.*
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.FragmentItemOnboardingBinding
-import updated.mysterium.vpn.common.extensions.toPx
 import updated.mysterium.vpn.model.onboarding.OnboardingScreen
 import updated.mysterium.vpn.ui.onboarding.viewpager.ViewPagerActionListener
 
@@ -24,8 +22,6 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
         }
 
         private const val SCREEN_TAG = "ONBOARDING_SCREEN_TAG"
-        private const val MARGIN_BOTTOM = 12
-        private const val MARGIN_TOP = 16
     }
 
     private lateinit var binding: FragmentItemOnboardingBinding
@@ -43,7 +39,6 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<OnboardingScreen>(SCREEN_TAG)?.let { configure(it) }
         bindsAction()
-        calculateTabLayoutMargin()
     }
 
     override fun onScreenBecomeVisible() {
@@ -79,23 +74,5 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
                 additionalTitleTextView.visibility = View.INVISIBLE
             }
         }
-    }
-
-    private fun calculateTabLayoutMargin() {
-        cardView.measure(
-            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-        )
-        skipButton.measure(
-            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-        )
-        val cardViewHeight = cardView.measuredHeight
-        val skipButtonHeight = skipButton.measuredHeight
-        val totalMargin = cardViewHeight +
-            skipButtonHeight +
-            MARGIN_BOTTOM.toPx() +
-            MARGIN_TOP.toPx()
-        (activity as? OnChildViewMeasured?)?.onMarginCalculated(totalMargin)
     }
 }
