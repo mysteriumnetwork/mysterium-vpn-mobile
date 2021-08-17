@@ -31,7 +31,7 @@ class CreateAccountActivity : BaseActivity() {
 
     private companion object {
     	const val MIME_TYPE_JSON = "application/json"
-	const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
+	    const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
         const val KEY_REQUEST_CODE = 0
         const val TAG = "CreateAccountActivity"
     }
