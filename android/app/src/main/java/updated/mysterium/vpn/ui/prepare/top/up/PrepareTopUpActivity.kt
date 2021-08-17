@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import network.mysterium.vpn.R
@@ -156,6 +157,14 @@ class PrepareTopUpActivity : BaseActivity() {
                 pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_USED)
                 isReferralTokenUsed = true
                 onSuccess.invoke()
+            }
+            it.onFailure { throwable ->
+                Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
+                Toast.makeText(
+                    this,
+                    getString(R.string.intercom_something_went_wrong_try_again),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }
