@@ -100,6 +100,7 @@ class MonitoringActivity : BaseActivity() {
         inflateAxisLeft(binding.sessionChart.axisLeft)
         inflateAxisRight(binding.sessionChart.axisRight)
         binding.sessionChart.data = LineData(getDataSet(entries))
+        binding.sessionChart.invalidate()
     }
 
     private fun initSessionsRecycler() {
