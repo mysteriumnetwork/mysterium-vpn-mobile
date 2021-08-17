@@ -159,7 +159,7 @@ class PrepareTopUpActivity : BaseActivity() {
                 onSuccess.invoke()
             }
             it.onFailure { throwable ->
-                Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
+                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
                 Toast.makeText(
                     this,
                     getString(R.string.intercom_something_went_wrong_try_again),
