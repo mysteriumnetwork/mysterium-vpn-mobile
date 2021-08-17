@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.create.account
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -29,7 +30,8 @@ import java.io.InputStreamReader
 class CreateAccountActivity : BaseActivity() {
 
     private companion object {
-        const val MIME_TYPE_JSON = "application/json"
+    	const val MIME_TYPE_JSON = "application/json"
+	const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
         const val KEY_REQUEST_CODE = 0
         const val TAG = "CreateAccountActivity"
     }
@@ -87,8 +89,11 @@ class CreateAccountActivity : BaseActivity() {
     private fun uploadKey() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
-        val mimeTypes = arrayOf(MIME_TYPE_JSON)
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(MIME_TYPE_BINARY_FILE))
+        } else {
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(MIME_TYPE_JSON))
+        }
         startActivityForResult(intent, KEY_REQUEST_CODE)
     }
 
