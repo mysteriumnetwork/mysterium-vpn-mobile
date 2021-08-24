@@ -18,6 +18,7 @@ class NodesUseCase(
     companion object {
         const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
         private const val SERVICE_TYPE = "wireguard"
+        private const val NAT_COMPATIBILITY = "auto"
     }
 
     fun initDeferredNode(deferredNode: DeferredNode) {
@@ -84,6 +85,7 @@ class NodesUseCase(
         val proposalsRequest = GetProposalsRequest().apply {
             this.refresh = true
             serviceType = SERVICE_TYPE
+            natCompatibility = NAT_COMPATIBILITY
         }
         return nodeRepository.proposals(proposalsRequest)
             .map { NodeEntity(it) }

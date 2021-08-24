@@ -19,6 +19,7 @@ class FilterUseCase(
     companion object {
         const val ALL_NODES_FILTER_ID = 0
         private const val SERVICE_TYPE = "wireguard"
+        private const val NAT_COMPATIBILITY = "auto"
         private val selectedResources = listOf(
             R.drawable.all_filters_selected,
             R.drawable.media_filters_selected,
@@ -69,6 +70,7 @@ class FilterUseCase(
                 presetID = filterId.toLong()
                 refresh = true
                 serviceType = SERVICE_TYPE
+                natCompatibility = "auto"
             }
             nodeRepository.getProposalsByFilterId(proposalRequest).map {
                 NodeEntity(it)
