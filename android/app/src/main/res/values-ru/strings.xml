@@ -42,7 +42,7 @@
     <string name="manual_connect_paid_types">MYSTT / USD</string>
     <string name="manual_connect_loading">Загрузка</string>
     <string name="manual_connect_unknown">Неизвестный</string>
-    <string name="manual_connect_price_per_hour">%.4f/ч</string>
+    <string name="manual_connect_price_per_hour">%.5f/ч</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/ГБ</string>
     <string name="manual_connect_saved_to_favourite">Успешно сохранено</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH и другие</string>

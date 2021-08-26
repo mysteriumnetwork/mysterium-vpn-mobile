@@ -49,7 +49,7 @@
     <string name="manual_connect_loading">Loading</string>
     <string name="manual_connect_unknown">Unknown</string>
     <string name="manual_connect_data_received" translatable="false">%1$s/</string>
-    <string name="manual_connect_price_per_hour">%.4f/h</string>
+    <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>

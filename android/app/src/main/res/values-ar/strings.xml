@@ -42,7 +42,7 @@
   <string name="manual_connect_paid_types">MYSTT / يورو</string>
   <string name="manual_connect_loading">جارٍ التحميل</string>
   <string name="manual_connect_unknown">غير معروف</string>
-  <string name="manual_connect_price_per_hour">%.4f/س</string>
+  <string name="manual_connect_price_per_hour">%.5f/س</string>
   <string name="manual_connect_price_per_gigabyte">%.4f/جيجابايت</string>
   <string name="manual_connect_saved_to_favourite">تم الحفظ بنجاح</string>
   <string name="manual_connect_currency_hint">BTC وETH وLTC وBСH والمزيد</string>
