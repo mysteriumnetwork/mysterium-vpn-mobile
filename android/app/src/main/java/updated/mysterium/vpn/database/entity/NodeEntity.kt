@@ -20,6 +20,10 @@ data class NodeEntity(
     @ColumnInfo(name = "is_saved") var isSaved: Boolean,
 ) {
 
+    private companion object {
+        const val ETHER_VALUE = 1_000_000_000_000_000_000 // 1e18
+    }
+
     constructor(proposalItem: ProposalItem, isFavourite: Boolean = false) : this(
         id = proposalItem.providerID + proposalItem.serviceType,
         providerID = proposalItem.providerID,
@@ -40,8 +44,8 @@ data class NodeEntity(
         countryCode = proposal.countryCode,
         nodeType = proposal.nodeType.nodeType,
         currency = proposal.payment.currency,
-        pricePerSecond = proposal.payment.perHour / 60 / 60,
-        pricePerByte = proposal.payment.perGib / 1024 / 1024 / 1024,
+        pricePerSecond = proposal.payment.perHour / 60 / 60 * ETHER_VALUE,
+        pricePerByte = proposal.payment.perGib / 1024 / 1024 / 1024 * ETHER_VALUE,
         qualityLevel = proposal.qualityLevel.level,
         isSaved = isFavourite
     )
