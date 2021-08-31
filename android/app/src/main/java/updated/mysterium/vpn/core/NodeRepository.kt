@@ -36,7 +36,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // does not support passing complex slices via it's bridge.
     suspend fun proposals(req: GetProposalsRequest): List<ProposalItem> = withContext(Dispatchers.IO) {
         val bytes = getProposals(req)
-        Log.i("NodeRepository", String(bytes))
         val proposalsResponse = parseProposals(bytes)
         if (proposalsResponse?.proposals == null) {
             listOf()
