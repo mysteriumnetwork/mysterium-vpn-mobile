@@ -42,7 +42,7 @@
   <string name="manual_connect_paid_types">MYSTT / USD</string>
   <string name="manual_connect_loading">Carregando</string>
   <string name="manual_connect_unknown">Desconhecido</string>
-  <string name="manual_connect_price_per_hour">%.4f/h</string>
+  <string name="manual_connect_price_per_hour">%.5f/h</string>
   <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
   <string name="manual_connect_saved_to_favourite">Salvo com sucesso</string>
   <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH e mais</string>

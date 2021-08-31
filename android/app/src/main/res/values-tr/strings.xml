@@ -42,7 +42,7 @@
   <string name="manual_connect_paid_types">MYSTT / USD</string>
   <string name="manual_connect_loading">Yükleniyor</string>
   <string name="manual_connect_unknown">Bilinmiyor</string>
-  <string name="manual_connect_price_per_hour">%.4f/sa</string>
+  <string name="manual_connect_price_per_hour">%.5f/sa</string>
   <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
   <string name="manual_connect_saved_to_favourite">Başarıyla kaydedildi</string>
   <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH ve daha fazlası</string>

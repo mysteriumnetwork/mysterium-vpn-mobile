@@ -42,7 +42,7 @@
   <string name="manual_connect_paid_types">MYSTT / 欧元</string>
   <string name="manual_connect_loading">加载中</string>
   <string name="manual_connect_unknown">未知</string>
-  <string name="manual_connect_price_per_hour">%.4f/小时</string>
+  <string name="manual_connect_price_per_hour">%.5f/小时</string>
   <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
   <string name="manual_connect_saved_to_favourite">保存成功</string>
   <string name="manual_connect_currency_hint">比特币、以太币、莱特币、比特币现金和其他代币</string>
