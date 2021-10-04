@@ -19,7 +19,7 @@ class FilterUseCase(
     companion object {
         const val ALL_NODES_FILTER_ID = 0
         private const val SERVICE_TYPE = "wireguard"
-        private const val NAT_COMPATIBILITY_ENABLE = "auto"
+        private const val NAT_COMPATIBILITY = "auto"
         private val selectedResources = listOf(
             R.drawable.all_filters_selected,
             R.drawable.media_filters_selected,
@@ -109,7 +109,7 @@ class FilterUseCase(
             SharedPreferencesList.IS_NAT_AVAILABLE, false
         )
         return if (isNatAvailable) {
-            NAT_COMPATIBILITY_ENABLE
+            NAT_COMPATIBILITY
         } else {
             ""
         }

@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.network.usecase
 
-import android.util.Log
 import mysterium.CreateOrderRequest
 import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.model.payment.Order
@@ -14,7 +13,6 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
         mystAmount: Double,
         isLighting: Boolean
     ): Order {
-        Log.d("NodeRepository", "createPaymentOrder PaymentUseCase")
         val req = CreateOrderRequest().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress

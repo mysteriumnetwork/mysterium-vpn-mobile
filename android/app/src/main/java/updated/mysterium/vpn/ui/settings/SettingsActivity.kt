@@ -103,7 +103,7 @@ class SettingsActivity : BaseActivity() {
             }
         }
         binding.isNatAvailableCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setNetOption(isChecked)
+            viewModel.setNatOption(isChecked)
         }
         binding.natHelperFrameButton.setOnClickListener {
             // Show hint or close if it's already exist
@@ -121,7 +121,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun checkNatCompatibility() {
-        binding.isNatAvailableCheckBox.isChecked = viewModel.isNetCompatibilityAvailable()
+        binding.isNatAvailableCheckBox.isChecked = viewModel.isNatCompatibilityAvailable()
     }
 
     private fun applyDarkTheme() {
