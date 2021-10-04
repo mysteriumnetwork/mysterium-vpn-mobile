@@ -41,4 +41,10 @@ class SettingsViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun changeLightMode(isDark: Boolean) {
         settingsUseCase.setUserDarkMode(isDark)
     }
+
+    fun setNetOption(isNetAvailable: Boolean) {
+        settingsUseCase.setNatCompatibility(isNetAvailable)
+    }
+
+    fun isNetCompatibilityAvailable() = settingsUseCase.isNatAvailable()
 }

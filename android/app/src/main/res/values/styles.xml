@@ -292,6 +292,11 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <!--  Check Box  -->
+    <style name="CheckBoxStyle">
+        <item name="android:button">@drawable/checkbox_selector</item>
+    </style>
+
     <!--  TextStyles  -->
     <style name="TextAppearance.HeadNumbers" parent="TextAppearance.AppCompat.Headline">
         <item name="fontFamily">@font/roboto_black</item>

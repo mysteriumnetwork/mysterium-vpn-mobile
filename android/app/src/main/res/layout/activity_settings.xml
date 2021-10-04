@@ -95,7 +95,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dnsDescription">
@@ -120,6 +119,55 @@
                 android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
                 android:src="@drawable/icon_drop_down_png"
                 tools:ignore="ContentDescription" />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/isNatAvailableCheckBox"
+            style="@style/CheckBoxStyle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            app:layout_constraintBottom_toBottomOf="@+id/natDescriptionTextView"
+            app:layout_constraintEnd_toStartOf="@+id/natDescriptionTextView"
+            app:layout_constraintTop_toTopOf="@+id/natDescriptionTextView" />
+
+        <TextView
+            android:id="@+id/natDescriptionTextView"
+            style="@style/TextAppearance.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
+            android:text="@string/settings_nat_description"
+            android:textColor="@color/wallet_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dnsSpinnerFrame" />
+
+        <FrameLayout
+            android:id="@+id/natHelperFrameButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:background="@drawable/circle_helper_item"
+            android:gravity="center"
+            android:text="@string/settings_helper_mark"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/natDescriptionTextView"
+            app:layout_constraintStart_toEndOf="@+id/natDescriptionTextView"
+            app:layout_constraintTop_toTopOf="@+id/natDescriptionTextView">
+
+            <TextView
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/settings_helper_mark"
+                android:textAlignment="center"
+                android:textColor="@color/search_text" />
 
         </FrameLayout>
 

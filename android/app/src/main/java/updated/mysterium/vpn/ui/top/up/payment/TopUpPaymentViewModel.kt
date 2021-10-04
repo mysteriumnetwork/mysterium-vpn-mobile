@@ -1,9 +1,11 @@
 package updated.mysterium.vpn.ui.top.up.payment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -43,13 +45,16 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         mystAmount: Double,
         isLighting: Boolean
     ) = liveDataResult {
+        Log.d("NodeRepository", "createPaymentOrder VM request")
         registerOrderCallback()
+        Log.d("NodeRepository", "registerOrderCallback successfully")
         val order = paymentUseCase.createPaymentOrder(
             currency,
             connectionUseCase.getIdentityAddress(),
             mystAmount,
             isLighting
         )
+        Log.d("NodeRepository", "createPaymentOrder successfully")
         orderId = order.id
         order
     }
@@ -67,7 +72,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun registerOrderCallback() {
         paymentUseCase.paymentOrderCallback {
-            if (orderId == it.orderID) {
+            if (orderId.toString() == it.orderID) {
                 when (it.status) {
                     STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
                     STATUS_EXPIRED -> _paymentExpired.postValue(Unit)

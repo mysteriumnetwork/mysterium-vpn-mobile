@@ -1,26 +1,39 @@
 package updated.mysterium.vpn.ui.settings
 
+import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
+import network.mysterium.vpn.databinding.ViewItemNatCompatibilityDescriptionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
+import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.isDarkThemeOn
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.common.extensions.px
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
+import kotlin.math.abs
 
 class SettingsActivity : BaseActivity() {
 
     private companion object {
+        const val POPUP_WINDOW_TOP_OFFSET_DP = 30
+        const val POPUP_WINDOW_END_OFFSET_DP = 30
+        const val POPUP_WINDOW_WIDTH_DP = 226
         const val TAG = "SettingsActivity"
         val DNS_OPTIONS = listOf(
             DnsOption(
@@ -41,6 +54,7 @@ class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsViewModel by inject()
     private lateinit var listPopupWindow: ListPopupWindow
+    private var natCompatibilityPopUpWindow: PopupWindow? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +81,7 @@ class SettingsActivity : BaseActivity() {
         checkPreviousDnsOption()
         checkPreviousResidentCountry()
         checkCurrentLightMode()
+        checkNatCompatibility()
     }
 
     private fun bindsAction() {
@@ -87,10 +102,26 @@ class SettingsActivity : BaseActivity() {
                 applyLightTheme()
             }
         }
+        binding.isNatAvailableCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setNetOption(isChecked)
+        }
+        binding.natHelperFrameButton.setOnClickListener {
+            // Show hint or close if it's already exist
+            natCompatibilityPopUpWindow?.let {
+                natCompatibilityPopUpWindow?.dismiss()
+                natCompatibilityPopUpWindow = null
+            } ?: kotlin.run {
+                showNatCompatibilityPopUpWindow()
+            }
+        }
     }
 
     private fun checkCurrentLightMode() {
         binding.darkModeSwitch.isChecked = isDarkThemeOn()
+    }
+
+    private fun checkNatCompatibility() {
+        binding.isNatAvailableCheckBox.isChecked = viewModel.isNetCompatibilityAvailable()
     }
 
     private fun applyDarkTheme() {
@@ -175,5 +206,31 @@ class SettingsActivity : BaseActivity() {
             resources.displayMetrics
         ).toInt()
         listPopupWindow.height = popUpHeight - margin // add margin from bottom
+    }
+
+    private fun showNatCompatibilityPopUpWindow() {
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val bindingPopUpView = ViewItemNatCompatibilityDescriptionBinding.inflate(inflater)
+
+        natCompatibilityPopUpWindow = PopupWindow(
+            bindingPopUpView.root,
+            POPUP_WINDOW_WIDTH_DP.px,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        TransitionManager.beginDelayedTransition(bindingPopUpView.root)
+        natCompatibilityPopUpWindow?.showAtLocation(
+            binding.root,
+            Gravity.TOP,
+            POPUP_WINDOW_END_OFFSET_DP.px,
+            getPopUpWindowVerticalOffset()
+        )
+    }
+
+    private fun getPopUpWindowVerticalOffset(): Int {
+        val baseViewRectangle = binding.root.calculateRectOnScreen()
+        val hintButtonViewRectangle = binding.natHelperFrameButton.calculateRectOnScreen()
+        val distance = abs(baseViewRectangle.top - hintButtonViewRectangle.bottom).toInt()
+        return distance + POPUP_WINDOW_TOP_OFFSET_DP.px
     }
 }

@@ -130,9 +130,28 @@ class NodeRepository(var deferredNode: DeferredNode) {
     }
 
     suspend fun createPaymentOrder(req: CreateOrderRequest) = withContext(Dispatchers.IO) {
-        val order = deferredNode.await().createOrder(req).decodeToString()
-        Log.d(TAG, "createPaymentOrder response: $order")
-        Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+        Log.d(TAG, "createPaymentOrder before repository request")
+        var finalOrder = Order(
+            1,
+            "",
+            "",
+            1,
+            "",
+            null,
+            "",
+            "",
+            null,
+            null
+        )
+        try {
+            val order = deferredNode.await().createOrder(req).decodeToString()
+            Log.d(TAG, "createPaymentOrder response: $order")
+            finalOrder = Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+        Log.e(TAG, "Return final order $finalOrder")
+        finalOrder
     }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
