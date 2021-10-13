@@ -16,6 +16,7 @@ class AnalyticWrapper(private val context: Context) {
         private const val MATOMO_INSTANCE = "https://analytics.mysterium.network/matomo.php"
         private const val MATOMO_INSTANCE_BASE = "https://analytics.mysterium.network/"
         private const val MATOMO_SITE_ID = 4
+        private const val URL = "https://consumetrics.mysterium.network/api/v1"
     }
 
     private val tracker: Tracker? by lazy {
