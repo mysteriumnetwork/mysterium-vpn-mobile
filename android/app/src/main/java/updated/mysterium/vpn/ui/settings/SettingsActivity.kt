@@ -1,16 +1,12 @@
 package updated.mysterium.vpn.ui.settings
 
-import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.vpn.R
@@ -21,7 +17,8 @@ import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.isDarkThemeOn
 import updated.mysterium.vpn.common.extensions.onItemSelected
-import updated.mysterium.vpn.common.extensions.px
+import updated.mysterium.vpn.common.ui.DimenUtils
+import updated.mysterium.vpn.common.ui.FlowablePopupWindow
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
@@ -54,7 +51,6 @@ class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsViewModel by inject()
     private lateinit var listPopupWindow: ListPopupWindow
-    private var natCompatibilityPopUpWindow: PopupWindow? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,13 +102,7 @@ class SettingsActivity : BaseActivity() {
             viewModel.setNatOption(isChecked)
         }
         binding.natHelperFrameButton.setOnClickListener {
-            // Show hint or close if it's already exist
-            natCompatibilityPopUpWindow?.let {
-                natCompatibilityPopUpWindow?.dismiss()
-                natCompatibilityPopUpWindow = null
-            } ?: kotlin.run {
-                showNatCompatibilityPopUpWindow()
-            }
+            showNatCompatibilityPopUpWindow()
         }
     }
 
@@ -209,28 +199,24 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun showNatCompatibilityPopUpWindow() {
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val bindingPopUpView = ViewItemNatCompatibilityDescriptionBinding.inflate(inflater)
-
-        natCompatibilityPopUpWindow = PopupWindow(
-            bindingPopUpView.root,
-            POPUP_WINDOW_WIDTH_DP.px,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+        val bindingPopUpView = ViewItemNatCompatibilityDescriptionBinding.inflate(
+            LayoutInflater.from(this)
         )
 
-        TransitionManager.beginDelayedTransition(bindingPopUpView.root)
-        natCompatibilityPopUpWindow?.showAtLocation(
-            binding.root,
-            Gravity.TOP,
-            POPUP_WINDOW_END_OFFSET_DP.px,
-            getPopUpWindowVerticalOffset()
-        )
+        FlowablePopupWindow(
+            contentView = bindingPopUpView.root,
+            width = DimenUtils.dpToPx(POPUP_WINDOW_WIDTH_DP)
+        ).apply {
+            gravity = Gravity.TOP
+            xOffset = DimenUtils.dpToPx(POPUP_WINDOW_END_OFFSET_DP)
+            yOffset = getPopUpWindowVerticalOffset()
+        }.show()
     }
 
     private fun getPopUpWindowVerticalOffset(): Int {
         val baseViewRectangle = binding.root.calculateRectOnScreen()
         val hintButtonViewRectangle = binding.natHelperFrameButton.calculateRectOnScreen()
         val distance = abs(baseViewRectangle.top - hintButtonViewRectangle.bottom).toInt()
-        return distance + POPUP_WINDOW_TOP_OFFSET_DP.px
+        return distance + DimenUtils.dpToPx(POPUP_WINDOW_TOP_OFFSET_DP)
     }
 }
