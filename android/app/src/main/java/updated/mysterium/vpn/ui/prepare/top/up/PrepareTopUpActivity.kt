@@ -13,8 +13,8 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.analitics.AnalyticEvent
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticEvent
+import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity

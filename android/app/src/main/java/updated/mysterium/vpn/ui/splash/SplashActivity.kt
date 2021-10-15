@@ -18,8 +18,8 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
-import updated.mysterium.vpn.analitics.AnalyticEvent
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticEvent
+import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState

@@ -18,8 +18,8 @@ import network.mysterium.vpn.BuildConfig
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import updated.mysterium.vpn.analitics.AnalyticEvent
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticEvent
+import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.common.countries.Countries
 import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
 import updated.mysterium.vpn.core.MysteriumAndroidCoreService

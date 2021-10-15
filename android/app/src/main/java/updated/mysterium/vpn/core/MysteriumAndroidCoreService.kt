@@ -31,8 +31,8 @@ import mysterium.Mysterium
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import updated.mysterium.vpn.analitics.AnalyticEvent
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticEvent
+import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.common.data.DisplayMoneyOptions
 import updated.mysterium.vpn.common.data.PriceUtils
 import updated.mysterium.vpn.model.manual.connect.ConnectionState

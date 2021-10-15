@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.analitics
+package updated.mysterium.vpn.analytics
 
 enum class AnalyticEvent(val eventName: String) {
     LOGIN("LOGIN"),
@@ -7,5 +7,6 @@ enum class AnalyticEvent(val eventName: String) {
     NEW_SESSION("NEW_SESSION"),
     COUNTRY_SELECTED("COUNTRY_SELECTED"),
     PAYMENT("PAYMENT"),
-    REFERRAL_TOKEN("REFERRAL_TOKEN")
+    REFERRAL_TOKEN("REFERRAL_TOKEN"),
+    PAGE_VIEW("PAGE_VIEW")
 }
