@@ -18,8 +18,6 @@ import network.mysterium.vpn.BuildConfig
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.common.countries.Countries
 import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
 import updated.mysterium.vpn.core.MysteriumAndroidCoreService
@@ -37,7 +35,6 @@ class App : Application(), LifecycleObserver {
     }
 
     val deferredMysteriumCoreService = CompletableDeferred<MysteriumCoreService>()
-    private val analyticWrapper: AnalyticWrapper by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
 
@@ -51,7 +48,6 @@ class App : Application(), LifecycleObserver {
             modules(Modules.main)
         }
         bindMysteriumService()
-        analyticWrapper.track(AnalyticEvent.LOGIN)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

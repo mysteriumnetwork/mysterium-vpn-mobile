@@ -153,7 +153,8 @@ class PrepareTopUpActivity : BaseActivity() {
     private fun applyToken(token: String, amount: Double, onSuccess: () -> Unit) {
         viewModel.registerIdentity(token).observe(this, {
             it.onSuccess {
-                analyticWrapper.track(AnalyticEvent.REFERRAL_TOKEN, token, amount.toFloat())
+                // TODO("REFERRAL_TOKEN")
+//                analyticWrapper.track(AnalyticEvent.REFERRAL_TOKEN, token, amount.toFloat())
                 pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_USED)
                 isReferralTokenUsed = true
                 onSuccess.invoke()

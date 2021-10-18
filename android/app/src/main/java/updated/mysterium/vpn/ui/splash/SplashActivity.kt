@@ -3,9 +3,7 @@ package updated.mysterium.vpn.ui.splash
 import android.animation.Animator
 import android.app.Activity
 import android.app.ActivityOptions
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
 import android.view.Gravity
@@ -20,6 +18,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
 import updated.mysterium.vpn.analytics.AnalyticWrapper
+import updated.mysterium.vpn.model.analytics.ClientInfo
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -34,11 +33,6 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
-
-    private companion object {
-        const val PLAY_MARKET_INSTALLED = "market://details?id="
-        const val PLAY_MARKET_NOT_INSTALLED = "https://play.google.com/store/apps/details?id="
-    }
 
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
@@ -90,7 +84,7 @@ class SplashActivity : BaseActivity() {
         viewModel.navigateForward.observe(this, {
             allNodesViewModel.launchProposalsPeriodically()
             exchangeRateViewModel.launchPeriodicallyExchangeRate()
-            balanceViewModel.getCurrentBalance()
+            balanceViewModel.requestBalanceChange()
             establishConnectionListeners()
             navigateForward()
         })
@@ -134,7 +128,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateForward() {
-        trackDeviceToken()
+        analyticWrapper.trackClient(AnalyticEvent.STARTUP)
         val transitionAnimation = ActivityOptions.makeCustomAnimation(
             applicationContext,
             R.anim.slide_in_right,
@@ -161,12 +155,6 @@ class SplashActivity : BaseActivity() {
             }
         }
         finish()
-    }
-
-    private fun trackDeviceToken() {
-        pushyNotifications.deviceToken?.let {
-            analyticWrapper.track(AnalyticEvent.NEW_PUSHY_DEVICE, it)
-        }
     }
 
     private fun ensureVpnServicePermission() {
@@ -220,25 +208,6 @@ class SplashActivity : BaseActivity() {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.startLoading(deferredMysteriumCoreService)
-        }
-    }
-
-    private fun openPlayMarket() {
-        // Exception will be thrown if the Play Store is not installed on the target device.
-        try {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(PLAY_MARKET_INSTALLED + packageName)
-                )
-            )
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)
-                )
-            )
         }
     }
 }

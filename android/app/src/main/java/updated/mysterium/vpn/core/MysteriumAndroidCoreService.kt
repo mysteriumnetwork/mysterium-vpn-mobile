@@ -136,29 +136,27 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                             if (!isDisconnectManual) {
                                 makeConnectionPushNotification()
                             }
-                            vpnTimeSpent?.let { time ->
-                                analyticWrapper.track(AnalyticEvent.VPN_TIME, time)
-                                vpnTimeSpent = null
-                            }
+                            analyticWrapper.trackEvent(AnalyticEvent.DISCONNECT_ATTEMPT)
+                            vpnTimeSpent = null
                         }
                         ConnectionState.CONNECTED -> {
-                            analyticWrapper.track(AnalyticEvent.NEW_SESSION)
+                            analyticWrapper.trackEvent(AnalyticEvent.CONNECT_SUCCESS)
                             isDisconnectManual = false
                             initStatisticListener()
                         }
                         ConnectionState.NOTCONNECTED -> {
+                            analyticWrapper.trackEvent(AnalyticEvent.DISCONNECT_SUCCESS)
                             appNotificationManager.hideStatisticsNotification()
                             vpnTimeSpent = null
                             isDisconnectManual = false
+                        }
+                        ConnectionState.CONNECTING -> {
+                            analyticWrapper.trackEvent(AnalyticEvent.CONNECT_ATTEMPT)
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun trackConnectedCountry(countryName: String) {
-        analyticWrapper.track(AnalyticEvent.COUNTRY_SELECTED, countryName)
     }
 
     private fun makeConnectionPushNotification() {
@@ -264,9 +262,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
         override fun setActiveProposal(proposal: ProposalViewItem?) {
             activeProposal = proposal
-            activeProposal?.let {
-                trackConnectedCountry(it.countryName)
-            }
         }
 
         override fun getActiveProposal(): ProposalViewItem? {

@@ -19,6 +19,10 @@ class ConnectionUseCase(
         nodeRepository.deferredNode = deferredNode
     }
 
+    fun getSavedIdentityAddress() = sharedPreferencesManager.getStringPreferenceValue(
+        SharedPreferencesList.IDENTITY_ADDRESS
+    )
+
     suspend fun connect(connectRequest: ConnectRequest) = nodeRepository.connect(connectRequest)
 
     suspend fun getIdentity(): Identity {
@@ -43,10 +47,7 @@ class ConnectionUseCase(
     }
 
     suspend fun getIdentityAddress(): String {
-        val savedAddress = sharedPreferencesManager.getStringPreferenceValue(
-            SharedPreferencesList.IDENTITY_ADDRESS
-        )
-        return savedAddress ?: nodeRepository.getIdentity().address
+        return getSavedIdentityAddress() ?: nodeRepository.getIdentity().address
     }
 
     suspend fun registerIdentity(

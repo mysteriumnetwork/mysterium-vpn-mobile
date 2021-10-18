@@ -10,13 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import updated.mysterium.vpn.analytics.ClientBody
-import updated.mysterium.vpn.analytics.MysteriumAnalyticBody
-import updated.mysterium.vpn.analytics.MysteriumAnalyticService
-import updated.mysterium.vpn.common.data.DeviceUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
@@ -49,36 +42,6 @@ class HomeSelectionActivity : BaseActivity() {
         configure()
         subscribeViewModel()
         bindsAction()
-
-        val service = MysteriumAnalyticService.retrofit.create(MysteriumAnalyticService::class.java)
-        val mysteriumAnalyticBody = MysteriumAnalyticBody(
-            eventName = "startup",
-            client = ClientBody(
-                machineID = DeviceUtil.getDeviceID(contentResolver),
-                appVersion = "107109",
-                osVersion = "11",
-                country = "Ukraine",
-                consumerID = null
-            )
-        )
-        val call = service.trackEvent(
-            "events",
-            mysteriumAnalyticBody
-        )
-        call?.enqueue(
-            object : Callback<Unit?> {
-
-                override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                    Log.i(TAG, "onResponse")
-                    Log.i(TAG, response.code().toString())
-                }
-
-                override fun onFailure(call: Call<Unit?>, t: Throwable) {
-                    Log.i(TAG, "onFailure")
-                    Log.i(TAG, t.localizedMessage ?: t.toString())
-                }
-            }
-        )
     }
 
     override fun showConnectionHint() {

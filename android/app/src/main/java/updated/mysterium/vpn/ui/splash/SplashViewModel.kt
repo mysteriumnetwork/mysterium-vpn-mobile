@@ -9,6 +9,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
@@ -121,4 +122,8 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 
     fun getLastCryptoCurrency() = pushyUseCase.getCryptoCurrency()
+
+    fun getIdentityAddress() = liveDataResult {
+        connectionUseCase.getIdentityAddress()
+    }
 }

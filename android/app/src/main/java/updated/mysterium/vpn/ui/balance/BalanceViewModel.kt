@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mysterium.GetBalanceRequest
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
@@ -38,7 +39,7 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun getCurrentBalance() {
+    fun requestBalanceChange() {
         viewModelScope.launch(Dispatchers.IO) {
             if (balanceRequest == null) {
                 val handler = CoroutineExceptionHandler { _, exception ->
@@ -52,6 +53,22 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 _balanceLiveData.postValue(balanceUseCase.getBalance(it))
             }
         }
+    }
+
+    fun getCurrentBalance() = liveDataResult {
+        if (balanceRequest == null) {
+            val handler = CoroutineExceptionHandler { _, exception ->
+                Log.e(TAG, exception.localizedMessage ?: exception.toString())
+            }
+            viewModelScope.launch(Dispatchers.IO + handler) {
+                initBalanceRequest()
+            }
+        }
+        var balance = 0.0
+        balanceRequest?.let {
+            balance = balanceUseCase.getBalance(it)
+        }
+        balance
     }
 
     private suspend fun startDeferredNode(coreService: CompletableDeferred<MysteriumCoreService>) {

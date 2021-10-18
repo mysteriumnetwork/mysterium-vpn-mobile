@@ -1,12 +1,15 @@
 package updated.mysterium.vpn.analytics
 
 enum class AnalyticEvent(val eventName: String) {
-    LOGIN("LOGIN"),
-    NEW_PUSHY_DEVICE("NEW_PUSHY_DEVICE"),
-    VPN_TIME("VPN_TIME"),
-    NEW_SESSION("NEW_SESSION"),
-    COUNTRY_SELECTED("COUNTRY_SELECTED"),
-    PAYMENT("PAYMENT"),
-    REFERRAL_TOKEN("REFERRAL_TOKEN"),
-    PAGE_VIEW("PAGE_VIEW")
+    STARTUP("startup"), // DONE
+    CONNECT_ATTEMPT("connect_attempt"),
+    CONNECT_SUCCESS("connect_success"),
+    CONNECT_FAILURE("connect_failure"),
+    MANUAL_CONNECT("manual_connect"),
+    QUICK_CONNECT("quick_connect"),
+    DISCONNECT_ATTEMPT("disconnect_attempt"),
+    DISCONNECT_SUCCESS("disconnect_success"),
+    DISCONNECT_FAILURE("disconnect_failure"),
+    PAGE_VIEW("page_view"),
+    BALANCE_UPDATE("balance_update")
 }

@@ -1,6 +1,7 @@
-package updated.mysterium.vpn.analytics
+package updated.mysterium.vpn.model.analytics
 
-data class ClientBody(
+data class ClientInfo(
+    val eventName: String,
     val machineID: String?,
     val appVersion: String?,
     val os: String = "android",
