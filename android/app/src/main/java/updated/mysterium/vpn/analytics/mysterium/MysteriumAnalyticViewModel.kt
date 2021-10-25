@@ -125,7 +125,6 @@ class MysteriumAnalyticViewModel(
             pageTitle = pageTitle,
             clientInfo = clientInfo
         )
-
     }
 
     private suspend fun initBalanceRequest() {

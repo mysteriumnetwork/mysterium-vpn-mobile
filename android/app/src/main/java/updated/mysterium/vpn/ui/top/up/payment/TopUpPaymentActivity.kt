@@ -61,8 +61,6 @@ class TopUpPaymentActivity : BaseActivity() {
                 pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
                 pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
                 pushyNotifications.subscribe(currency)
-                // TODO("PAYMENT")
-//                analyticWrapper.track(AnalyticEvent.PAYMENT, currency, amount)
                 viewModel.updateLastCurrency(currency)
             }
             viewModel.clearPopUpTopUpHistory()
