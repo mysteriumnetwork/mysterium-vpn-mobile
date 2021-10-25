@@ -70,7 +70,7 @@ class FilterUseCase(
                 presetID = filterId.toLong()
                 refresh = true
                 serviceType = SERVICE_TYPE
-                natCompatibility = "auto"
+                natCompatibility = getNatCompatibility()
             }
             nodeRepository.getProposalsByFilterId(proposalRequest).map {
                 NodeEntity(it)
@@ -103,4 +103,15 @@ class FilterUseCase(
         key = SharedPreferencesList.PREVIOUS_FILTER_ID,
         defValue = ALL_NODES_FILTER_ID
     )
+
+    private fun getNatCompatibility(): String {
+        val isNatAvailable = sharedPreferencesManager.getBoolPreferenceValue(
+            SharedPreferencesList.IS_NAT_AVAILABLE, false
+        )
+        return if (isNatAvailable) {
+            NAT_COMPATIBILITY
+        } else {
+            ""
+        }
+    }
 }

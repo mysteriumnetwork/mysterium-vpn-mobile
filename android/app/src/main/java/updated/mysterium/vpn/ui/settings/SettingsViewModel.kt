@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import updated.mysterium.vpn.ui.connection.ConnectionViewModel
 
 class SettingsViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -41,4 +40,10 @@ class SettingsViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun changeLightMode(isDark: Boolean) {
         settingsUseCase.setUserDarkMode(isDark)
     }
+
+    fun setNatOption(isNatAvailable: Boolean) {
+        settingsUseCase.setNatCompatibility(isNatAvailable)
+    }
+
+    fun isNatCompatibilityAvailable() = settingsUseCase.isNatAvailable()
 }

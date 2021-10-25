@@ -67,7 +67,7 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private suspend fun registerOrderCallback() {
         paymentUseCase.paymentOrderCallback {
-            if (orderId == it.orderID) {
+            if (orderId.toString() == it.orderID) {
                 when (it.status) {
                     STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
                     STATUS_EXPIRED -> _paymentExpired.postValue(Unit)

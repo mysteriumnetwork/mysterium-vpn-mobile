@@ -4,23 +4,33 @@ import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
+import network.mysterium.vpn.databinding.ViewItemNatCompatibilityDescriptionBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
+import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.isDarkThemeOn
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.common.ui.DimenUtils
+import updated.mysterium.vpn.common.ui.FlowablePopupWindow
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
+import kotlin.math.abs
 
 class SettingsActivity : BaseActivity() {
 
     private companion object {
+        const val POPUP_WINDOW_TOP_OFFSET_DP = 30
+        const val POPUP_WINDOW_END_OFFSET_DP = 30
+        const val POPUP_WINDOW_WIDTH_DP = 226
         const val TAG = "SettingsActivity"
         val DNS_OPTIONS = listOf(
             DnsOption(
@@ -67,6 +77,7 @@ class SettingsActivity : BaseActivity() {
         checkPreviousDnsOption()
         checkPreviousResidentCountry()
         checkCurrentLightMode()
+        checkNatCompatibility()
     }
 
     private fun bindsAction() {
@@ -87,10 +98,20 @@ class SettingsActivity : BaseActivity() {
                 applyLightTheme()
             }
         }
+        binding.isNatAvailableCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setNatOption(isChecked)
+        }
+        binding.natHelperFrameButton.setOnClickListener {
+            showNatCompatibilityPopUpWindow()
+        }
     }
 
     private fun checkCurrentLightMode() {
         binding.darkModeSwitch.isChecked = isDarkThemeOn()
+    }
+
+    private fun checkNatCompatibility() {
+        binding.isNatAvailableCheckBox.isChecked = viewModel.isNatCompatibilityAvailable()
     }
 
     private fun applyDarkTheme() {
@@ -175,5 +196,27 @@ class SettingsActivity : BaseActivity() {
             resources.displayMetrics
         ).toInt()
         listPopupWindow.height = popUpHeight - margin // add margin from bottom
+    }
+
+    private fun showNatCompatibilityPopUpWindow() {
+        val bindingPopUpView = ViewItemNatCompatibilityDescriptionBinding.inflate(
+            LayoutInflater.from(this)
+        )
+
+        FlowablePopupWindow(
+            contentView = bindingPopUpView.root,
+            width = DimenUtils.dpToPx(POPUP_WINDOW_WIDTH_DP)
+        ).apply {
+            gravity = Gravity.TOP
+            xOffset = DimenUtils.dpToPx(POPUP_WINDOW_END_OFFSET_DP)
+            yOffset = getPopUpWindowVerticalOffset()
+        }.show()
+    }
+
+    private fun getPopUpWindowVerticalOffset(): Int {
+        val baseViewRectangle = binding.root.calculateRectOnScreen()
+        val hintButtonViewRectangle = binding.natHelperFrameButton.calculateRectOnScreen()
+        val distance = abs(baseViewRectangle.top - hintButtonViewRectangle.bottom).toInt()
+        return distance + DimenUtils.dpToPx(POPUP_WINDOW_TOP_OFFSET_DP)
     }
 }
