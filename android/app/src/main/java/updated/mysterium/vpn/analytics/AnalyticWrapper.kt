@@ -4,11 +4,11 @@ import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import updated.mysterium.vpn.analytics.mysterium.*
-import updated.mysterium.vpn.model.analytics.ClientInfo
-import updated.mysterium.vpn.model.analytics.EventInfo
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticService
+import updated.mysterium.vpn.model.analytics.ClientAnalyticRequest
+import updated.mysterium.vpn.model.analytics.EventAnalyticRequest
 
-class AnalyticWrapper(private val mysteriumAnalyticBuilder: MysteriumAnalyticBuilder) {
+class AnalyticWrapper {
 
     private companion object {
         const val SUCCESS_TRACK_CODE = 202
@@ -17,19 +17,7 @@ class AnalyticWrapper(private val mysteriumAnalyticBuilder: MysteriumAnalyticBui
 
     private var apiInterface: MysteriumAnalyticService? = null
 
-    fun trackClient(analyticEvent: AnalyticEvent) {
-        val clientInfo = mysteriumAnalyticBuilder.getClientInfo(analyticEvent.eventName)
-        handleTracking(clientInfo)
-    }
-
-    fun trackEvent(analyticEvent: ClientInfo, pageTitle: String? = null) {
-        val eventInfo = mysteriumAnalyticBuilder.getEventInfo(
-            analyticEvent.eventName, pageTitle
-        )
-        handleTracking(eventInfo)
-    }
-
-    private fun handleTracking(event: ClientInfo, retry: Boolean = false) {
+    fun trackEvent(event: ClientAnalyticRequest, retry: Boolean = false) {
         createApiInstance()
         Log.i(TAG, event.toString())
         val call = apiInterface?.trackEvent(event)
@@ -37,39 +25,38 @@ class AnalyticWrapper(private val mysteriumAnalyticBuilder: MysteriumAnalyticBui
             object : Callback<Unit?> {
 
                 override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                    Log.i(TAG, response.code().toString())
                     if (response.code() != SUCCESS_TRACK_CODE && retry.not()) {
-                        handleTracking(event, true)
+                        trackEvent(event, true)
                     }
                 }
 
                 override fun onFailure(call: Call<Unit?>, throwable: Throwable) {
                     Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
                     if (retry.not()) {
-                        handleTracking(event, true)
+                        trackEvent(event, true)
                     }
                 }
             }
         )
     }
 
-    private fun handleTracking(event: EventInfo, retry: Boolean = false) {
+    fun trackEvent(event: EventAnalyticRequest, retry: Boolean = false) {
         createApiInstance()
+        Log.i(TAG, event.toString())
         val call = apiInterface?.trackEvent(event)
         call?.enqueue(
             object : Callback<Unit?> {
 
                 override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
-                    Log.i(TAG, response.code().toString())
                     if (response.code() != SUCCESS_TRACK_CODE && retry.not()) {
-                        handleTracking(event, true)
+                        trackEvent(event, true)
                     }
                 }
 
                 override fun onFailure(call: Call<Unit?>, throwable: Throwable) {
                     Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
                     if (retry.not()) {
-                        handleTracking(event, true)
+                        trackEvent(event, true)
                     }
                 }
             }

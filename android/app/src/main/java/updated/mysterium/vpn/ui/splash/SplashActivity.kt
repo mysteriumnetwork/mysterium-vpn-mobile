@@ -17,8 +17,7 @@ import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.AnalyticWrapper
-import updated.mysterium.vpn.model.analytics.ClientInfo
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticViewModel
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -39,7 +38,7 @@ class SplashActivity : BaseActivity() {
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
-    private val analyticWrapper: AnalyticWrapper by inject()
+    private val analyticViewModel: MysteriumAnalyticViewModel by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
 
@@ -86,7 +85,7 @@ class SplashActivity : BaseActivity() {
             exchangeRateViewModel.launchPeriodicallyExchangeRate()
             balanceViewModel.requestBalanceChange()
             establishConnectionListeners()
-            navigateForward()
+            analyticViewModel.trackEvent(AnalyticEvent.STARTUP.eventName)
         })
         viewModel.preloadFinished.observe(this, {
             viewModel.initRepository()
@@ -94,6 +93,9 @@ class SplashActivity : BaseActivity() {
         viewModel.nodeStartingError.observe(this, {
             wifiNetworkErrorPopUp()
         })
+        analyticViewModel.eventTracked.observe(this) {
+            navigateForward()
+        }
     }
 
     private fun applyDarkMode() {
@@ -128,7 +130,6 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateForward() {
-        analyticWrapper.trackClient(AnalyticEvent.STARTUP)
         val transitionAnimation = ActivityOptions.makeCustomAnimation(
             applicationContext,
             R.anim.slide_in_right,

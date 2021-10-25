@@ -23,6 +23,21 @@ class ConnectionUseCase(
         SharedPreferencesList.IDENTITY_ADDRESS
     )
 
+    fun setDuration(duration: Long) {
+        sharedPreferencesManager.setPreferenceValue(
+            SharedPreferencesList.DURATION,
+            duration
+        )
+    }
+
+    fun getDuration() = sharedPreferencesManager.getLongPreferenceValue(
+        SharedPreferencesList.DURATION
+    )
+
+    fun clearDuration() {
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.DURATION)
+    }
+
     suspend fun connect(connectRequest: ConnectRequest) = nodeRepository.connect(connectRequest)
 
     suspend fun getIdentity(): Identity {

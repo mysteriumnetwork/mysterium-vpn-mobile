@@ -34,6 +34,9 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val SESSION_NUMBER_BEFORE_REVIEW = 3
     }
 
+    val successConnectEvent: LiveData<Proposal>
+        get() = _successConnectEvent
+
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
@@ -61,6 +64,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _pushDisconnect = SingleLiveEvent<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
     private val _connectionState = MutableLiveData<ConnectionState>()
+    private val _successConnectEvent = MutableLiveData<Proposal>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
     private val connectionUseCase = useCaseProvider.connection()
@@ -173,6 +177,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         balanceUseCase.getBalance(balanceRequest)
     }
 
+    fun clearDuration() {
+        connectionUseCase.clearDuration()
+    }
+
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {
             coreService?.let {
@@ -189,6 +197,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun initListeners() {
         connectionUseCase.registerStatisticsChangeCallback {
             updateStatistic(it)
+            connectionUseCase.setDuration(it.duration * 1000)
         }
         connectionUseCase.connectionStatusCallback {
             val connectionStateModel = ConnectionState.from(it)
@@ -208,7 +217,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             bytesReceived = statistics.bytesReceived,
             bytesSent = statistics.bytesSent,
             tokensSpent = statistics.tokensSpent,
-            currencySpent = (exchangeRate ?: 0.0) * statistics.tokensSpent
+            currencySpent = exchangeRate * statistics.tokensSpent
         )
         _statisticsUpdate.postValue(connectionStatistic)
     }
@@ -232,6 +241,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.connect(req)
         updateService()
+        _successConnectEvent.postValue(proposal)
     }
 
     private fun updateService() {

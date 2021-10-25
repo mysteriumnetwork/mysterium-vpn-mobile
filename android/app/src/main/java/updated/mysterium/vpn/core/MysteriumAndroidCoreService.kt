@@ -32,11 +32,12 @@ import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticViewModel
 import updated.mysterium.vpn.common.data.DisplayMoneyOptions
 import updated.mysterium.vpn.common.data.PriceUtils
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.nodes.ProposalPaymentMoney
 import updated.mysterium.vpn.model.proposal.parameters.ProposalViewItem
 import updated.mysterium.vpn.model.statistics.Statistics
@@ -59,7 +60,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
     private val appNotificationManager: AppNotificationManager by inject()
     private val useCaseProvider: UseCaseProvider by inject()
-    private val analyticWrapper: AnalyticWrapper by inject()
+    private val analyticViewModel: MysteriumAnalyticViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
@@ -69,6 +70,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var isDisconnectManual = false
     private var currentState = ConnectionState.NOTCONNECTED
     private var vpnTimeSpent: Float? = null // time spent for last session in minutes
+    private var secondsBetweenAnalyticEvent = 0
 
     override fun onDestroy() {
         stopMobileNode()
@@ -136,22 +138,23 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                             if (!isDisconnectManual) {
                                 makeConnectionPushNotification()
                             }
-                            analyticWrapper.trackEvent(AnalyticEvent.DISCONNECT_ATTEMPT)
                             vpnTimeSpent = null
                         }
                         ConnectionState.CONNECTED -> {
-                            analyticWrapper.trackEvent(AnalyticEvent.CONNECT_SUCCESS)
                             isDisconnectManual = false
                             initStatisticListener()
                         }
                         ConnectionState.NOTCONNECTED -> {
-                            analyticWrapper.trackEvent(AnalyticEvent.DISCONNECT_SUCCESS)
+                            connectionUseCase.clearDuration()
+                            analyticViewModel.trackEvent(
+                                eventName = AnalyticEvent.DISCONNECT_SUCCESS.eventName,
+                                proposal = activeProposal?.let { proposal ->
+                                    Proposal(proposal)
+                                }
+                            )
                             appNotificationManager.hideStatisticsNotification()
                             vpnTimeSpent = null
                             isDisconnectManual = false
-                        }
-                        ConnectionState.CONNECTING -> {
-                            analyticWrapper.trackEvent(AnalyticEvent.CONNECT_ATTEMPT)
                         }
                     }
                 }
@@ -203,6 +206,19 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 } else {
                     appNotificationManager.hideStatisticsNotification()
                 }
+
+                // Statistic updates every 5 sec.
+                // BALANCE_UPDATE event sending every 60 sec.
+                secondsBetweenAnalyticEvent += 5
+                if (secondsBetweenAnalyticEvent >= 60) {
+                    secondsBetweenAnalyticEvent = 0
+                    analyticViewModel.trackEvent(
+                        eventName = AnalyticEvent.BALANCE_UPDATE.eventName,
+                        proposal = activeProposal?.let { proposal ->
+                            Proposal(proposal)
+                        }
+                    )
+                }
             }
         }
     }
@@ -212,6 +228,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         GlobalScope.launch(handler) {
+            connectionUseCase.setDuration(statisticsCallback.duration * 1000)
             val exchangeRate = exchangeRateViewModel.usdEquivalent
             val statistics = StatisticsModel.from(statisticsCallback)
             val connectionStatistic = ConnectionStatistic(

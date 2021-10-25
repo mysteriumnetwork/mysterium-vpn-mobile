@@ -5,8 +5,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
-import updated.mysterium.vpn.model.analytics.ClientInfo
-import updated.mysterium.vpn.model.analytics.EventInfo
+import updated.mysterium.vpn.model.analytics.ClientAnalyticRequest
+import updated.mysterium.vpn.model.analytics.EventAnalyticRequest
 
 interface MysteriumAnalyticService {
 
@@ -24,8 +24,8 @@ interface MysteriumAnalyticService {
     }
 
     @POST("events")
-    fun trackEvent(@Body event: ClientInfo): Call<Unit?>?
+    fun trackEvent(@Body event: EventAnalyticRequest): Call<Unit?>?
 
     @POST("events")
-    fun trackEvent(@Body eventInfo: EventInfo): Call<Unit?>?
+    fun trackEvent(@Body event: ClientAnalyticRequest): Call<Unit?>?
 }

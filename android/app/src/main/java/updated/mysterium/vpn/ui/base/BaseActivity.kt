@@ -16,6 +16,7 @@ import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticViewModel
 import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.pushy.PushyTopic

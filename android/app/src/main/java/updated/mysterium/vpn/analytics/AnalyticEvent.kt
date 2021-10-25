@@ -1,7 +1,7 @@
 package updated.mysterium.vpn.analytics
 
 enum class AnalyticEvent(val eventName: String) {
-    STARTUP("startup"), // DONE
+    STARTUP("startup"),
     CONNECT_ATTEMPT("connect_attempt"),
     CONNECT_SUCCESS("connect_success"),
     CONNECT_FAILURE("connect_failure"),

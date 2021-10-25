@@ -19,6 +19,7 @@ enum class SharedPreferencesList(val prefName: String) {
     PREVIOUS_COUNTRY_CODE("PREVIOUS_COUNTRY_CODE"),
     PREVIOUS_FILTER_ID("PREVIOUS_FILTER_ID"),
     IS_REVIEW_SHOWN("IS_REVIEW_SHOWN"),
+    DURATION("DURATION"),
 
     //Pushy parameters
     CRYPTO_PAYMENT("CRYPTO_PAYMENT"),
