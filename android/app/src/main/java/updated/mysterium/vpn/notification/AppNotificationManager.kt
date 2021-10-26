@@ -75,7 +75,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setVibrate(LongArray(0))
             .setContentIntent(pendingAppIntent)
             .setOnlyAlertOnce(true)
-            .addAction(R.drawable.ic_close_black_24dp, "Disconnect", disconnectPendingIntent)
+            .addAction(R.drawable.icon_close_black, "Disconnect", disconnectPendingIntent)
             .build()
         val statisticNotification = notificationManager.activeNotifications.find {
             it.id == NotificationChannels.STATISTIC_NOTIFICATION

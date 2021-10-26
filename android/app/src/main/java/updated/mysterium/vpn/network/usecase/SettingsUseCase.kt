@@ -67,6 +67,14 @@ class SettingsUseCase(
         SharedPreferencesList.IS_REVIEW_SHOWN, true
     )
 
+    fun isNatAvailable() = sharedPreferencesManager.getBoolPreferenceValue(
+        SharedPreferencesList.IS_NAT_AVAILABLE, false
+    )
+
+    fun setNatCompatibility(isAvailable: Boolean) = sharedPreferencesManager.setPreferenceValue(
+        SharedPreferencesList.IS_NAT_AVAILABLE, isAvailable
+    )
+
     suspend fun getResidentCountry() = nodeRepository.getResidentCountry()
 
     suspend fun saveResidentCountry(identityAddress: String, countryCode: String) {
