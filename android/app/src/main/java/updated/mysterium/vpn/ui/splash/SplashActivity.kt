@@ -96,8 +96,8 @@ class SplashActivity : BaseActivity() {
             wifiNetworkErrorPopUp()
         })
 
-        lifecycleScope.launchWhenStarted { // 1
-            analytic.eventTracked.collect { // 2
+        lifecycleScope.launchWhenStarted {
+            analytic.eventTracked.collect {
                 navigateForward()
             }
         }
