@@ -15,12 +15,11 @@ class AnalyticWrapper {
         const val TAG = "AnalyticWrapper"
     }
 
-    private var apiInterface: MysteriumAnalyticService? = null
+    private var apiInterface = MysteriumAnalyticService.analyticService
 
     fun trackEvent(event: ClientAnalyticRequest, retry: Boolean = false) {
-        createApiInstance()
         Log.i(TAG, event.toString())
-        val call = apiInterface?.trackEvent(event)
+        val call = apiInterface.trackEvent(event)
         call?.enqueue(
             object : Callback<Unit?> {
 
@@ -41,9 +40,8 @@ class AnalyticWrapper {
     }
 
     fun trackEvent(event: EventAnalyticRequest, retry: Boolean = false) {
-        createApiInstance()
         Log.i(TAG, event.toString())
-        val call = apiInterface?.trackEvent(event)
+        val call = apiInterface.trackEvent(event)
         call?.enqueue(
             object : Callback<Unit?> {
 
@@ -61,13 +59,5 @@ class AnalyticWrapper {
                 }
             }
         )
-    }
-
-    private fun createApiInstance(): MysteriumAnalyticService? {
-        if (apiInterface != null) {
-            return apiInterface
-        }
-        apiInterface = MysteriumAnalyticService.create()
-        return apiInterface
     }
 }

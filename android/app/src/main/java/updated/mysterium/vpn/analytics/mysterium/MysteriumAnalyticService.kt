@@ -11,16 +11,17 @@ import updated.mysterium.vpn.model.analytics.EventAnalyticRequest
 interface MysteriumAnalyticService {
 
     companion object {
-        private const val BASE_URL = "https://consumetrics.mysterium.network/api/v1/"
 
-        fun create(): MysteriumAnalyticService {
-            val retrofit = Retrofit
+        val analyticService: MysteriumAnalyticService by lazy {
+            Retrofit
                 .Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-            return retrofit.create(MysteriumAnalyticService::class.java)
+                .create(MysteriumAnalyticService::class.java)
         }
+
+        private const val BASE_URL = "https://consumetrics.mysterium.network/api/v1/"
     }
 
     @POST("events")

@@ -13,7 +13,7 @@ import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticViewModel
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
@@ -39,7 +39,7 @@ class ConnectionActivity : BaseActivity() {
     private var proposal: Proposal? = null
     private val viewModel: ConnectionViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
-    private val analyticViewModel: MysteriumAnalyticViewModel by inject()
+    private val analytic: MysteriumAnalytic by inject()
     private val notificationManager: AppNotificationManager by inject()
     private var isDisconnectedByUser = false
 
@@ -74,7 +74,7 @@ class ConnectionActivity : BaseActivity() {
                         viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
                     ) {
                         manualDisconnecting()
-                        analyticViewModel.trackEvent(
+                        analytic.trackEvent(
                             eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
                             proposal = proposal
                         )
@@ -83,7 +83,7 @@ class ConnectionActivity : BaseActivity() {
                                 Log.i(TAG, "onSuccess")
                                 inflateNodeInfo()
                                 inflateConnectingCardView()
-                                analyticViewModel.trackEvent(
+                                analytic.trackEvent(
                                     eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
                                     proposal = proposal
                                 )
@@ -93,11 +93,11 @@ class ConnectionActivity : BaseActivity() {
                                 Log.i(TAG, "onFailure ${it.localizedMessage}")
                                 inflateNodeInfo()
                                 inflateConnectingCardView()
-                                analyticViewModel.trackEvent(
+                                analytic.trackEvent(
                                     eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
                                     proposal = proposal
                                 )
-                                analyticViewModel.trackEvent(
+                                analytic.trackEvent(
                                     eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
                                     proposal = proposal
                                 )
@@ -107,7 +107,7 @@ class ConnectionActivity : BaseActivity() {
                     } else {
                         inflateNodeInfo()
                         inflateConnectingCardView()
-                        analyticViewModel.trackEvent(
+                        analytic.trackEvent(
                             eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
                             proposal = proposal
                         )
@@ -140,7 +140,7 @@ class ConnectionActivity : BaseActivity() {
         })
         viewModel.connectionException.observe(this, {
             if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
-                analyticViewModel.trackEvent(
+                analytic.trackEvent(
                     eventName = AnalyticEvent.CONNECT_FAILURE.eventName,
                     proposal = proposal
                 )
@@ -163,7 +163,7 @@ class ConnectionActivity : BaseActivity() {
             navigateToSelectNode(true)
         })
         viewModel.successConnectEvent.observe(this) {
-            analyticViewModel.trackEvent(
+            analytic.trackEvent(
                 eventName = AnalyticEvent.CONNECT_SUCCESS.eventName,
                 proposal = proposal
             )
@@ -185,7 +185,7 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun initViewModel(proposal: Proposal) {
-        analyticViewModel.trackEvent(
+        analytic.trackEvent(
             eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
             proposal = proposal
         )
@@ -338,13 +338,13 @@ class ConnectionActivity : BaseActivity() {
                     viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
                 ) {
                     manualDisconnecting()
-                    analyticViewModel.trackEvent(
+                    analytic.trackEvent(
                         eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
                         proposal = proposal
                     )
                     viewModel.disconnect().observe(this, {
                         it.onSuccess {
-                            analyticViewModel.trackEvent(
+                            analytic.trackEvent(
                                 eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
                                 proposal = proposal
                             )
@@ -354,7 +354,7 @@ class ConnectionActivity : BaseActivity() {
                             )
                         }
                         it.onFailure {
-                            analyticViewModel.trackEvent(
+                            analytic.trackEvent(
                                 eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
                                 proposal = proposal
                             )
@@ -398,7 +398,7 @@ class ConnectionActivity : BaseActivity() {
         binding.connectionState.initListeners(
             disconnect = {
                 manualDisconnecting()
-                analyticViewModel.trackEvent(
+                analytic.trackEvent(
                     eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
                     proposal = proposal
                 )
@@ -407,7 +407,7 @@ class ConnectionActivity : BaseActivity() {
                         navigateToSelectNode(true)
                     }
                     it.onFailure {
-                        analyticViewModel.trackEvent(
+                        analytic.trackEvent(
                             eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
                             proposal = proposal
                         )

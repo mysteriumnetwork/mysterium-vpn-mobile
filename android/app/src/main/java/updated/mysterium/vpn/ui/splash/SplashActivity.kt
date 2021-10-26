@@ -12,12 +12,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticViewModel
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -38,7 +40,7 @@ class SplashActivity : BaseActivity() {
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
-    private val analyticViewModel: MysteriumAnalyticViewModel by inject()
+    private val analytic: MysteriumAnalytic by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
 
@@ -85,7 +87,7 @@ class SplashActivity : BaseActivity() {
             exchangeRateViewModel.launchPeriodicallyExchangeRate()
             balanceViewModel.requestBalanceChange()
             establishConnectionListeners()
-            analyticViewModel.trackEvent(AnalyticEvent.STARTUP.eventName)
+            analytic.trackEvent(AnalyticEvent.STARTUP.eventName)
         })
         viewModel.preloadFinished.observe(this, {
             viewModel.initRepository()
@@ -93,8 +95,11 @@ class SplashActivity : BaseActivity() {
         viewModel.nodeStartingError.observe(this, {
             wifiNetworkErrorPopUp()
         })
-        analyticViewModel.eventTracked.observe(this) {
-            navigateForward()
+
+        lifecycleScope.launchWhenStarted { // 1
+            analytic.eventTracked.collect { // 2
+                navigateForward()
+            }
         }
     }
 

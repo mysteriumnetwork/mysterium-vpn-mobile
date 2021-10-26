@@ -2,11 +2,11 @@ package updated.mysterium.vpn.analytics.mysterium
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import mysterium.GetBalanceRequest
 import updated.mysterium.vpn.analytics.AnalyticEvent
@@ -20,19 +20,19 @@ import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class MysteriumAnalyticViewModel(
+class MysteriumAnalytic(
     context: Context,
     private val analyticWrapper: AnalyticWrapper,
     useCaseProvider: UseCaseProvider
-) : ViewModel() {
+) {
 
     private companion object {
-        const val TAG = "MysteriumAnalyticViewModel"
+        const val TAG = "MysteriumAnalytic"
     }
 
-    val eventTracked: LiveData<Unit>
+    val eventTracked: SharedFlow<String>
         get() = _eventTracked
-    private val _eventTracked = MutableLiveData<Unit>()
+    private val _eventTracked = MutableSharedFlow<String>()
 
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
@@ -42,6 +42,7 @@ class MysteriumAnalyticViewModel(
     private val appVersion = DeviceUtil.getAppVersion(context)
     private val osVersion = DeviceUtil.getAndroidVersion()
     private val country = DeviceUtil.getConfiguredCountry(context)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     fun trackEvent(
         eventName: String,
@@ -50,9 +51,10 @@ class MysteriumAnalyticViewModel(
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
-            _eventTracked.postValue(Unit)
+            _eventTracked.tryEmit(eventName)
         }
-        viewModelScope.launch(handler) {
+
+        scope.launch(handler) {
             requestEventTracking(eventName, pageTitle, proposal)
         }
     }
@@ -69,13 +71,13 @@ class MysteriumAnalyticViewModel(
                 clientInfo
             )
             analyticWrapper.trackEvent(clientAnalyticRequest)
-            _eventTracked.postValue(Unit)
+            _eventTracked.emit(eventName)
         } else {
             val analyticRequest = getAnalyticRequest(
                 eventName, proposal, pageTitle
             )
             analyticWrapper.trackEvent(analyticRequest)
-            _eventTracked.postValue(Unit)
+            _eventTracked.emit(eventName)
         }
     }
 

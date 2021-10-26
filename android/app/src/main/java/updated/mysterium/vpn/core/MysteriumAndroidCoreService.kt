@@ -32,7 +32,7 @@ import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalyticViewModel
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.data.DisplayMoneyOptions
 import updated.mysterium.vpn.common.data.PriceUtils
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -60,7 +60,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
     private val appNotificationManager: AppNotificationManager by inject()
     private val useCaseProvider: UseCaseProvider by inject()
-    private val analyticViewModel: MysteriumAnalyticViewModel by inject()
+    private val analytic: MysteriumAnalytic by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
@@ -146,7 +146,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                         }
                         ConnectionState.NOTCONNECTED -> {
                             connectionUseCase.clearDuration()
-                            analyticViewModel.trackEvent(
+                            analytic.trackEvent(
                                 eventName = AnalyticEvent.DISCONNECT_SUCCESS.eventName,
                                 proposal = activeProposal?.let { proposal ->
                                     Proposal(proposal)
@@ -212,7 +212,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 secondsBetweenAnalyticEvent += 5
                 if (secondsBetweenAnalyticEvent >= 60) {
                     secondsBetweenAnalyticEvent = 0
-                    analyticViewModel.trackEvent(
+                    analytic.trackEvent(
                         eventName = AnalyticEvent.BALANCE_UPDATE.eventName,
                         proposal = activeProposal?.let { proposal ->
                             Proposal(proposal)
