@@ -19,6 +19,25 @@ class ConnectionUseCase(
         nodeRepository.deferredNode = deferredNode
     }
 
+    fun getSavedIdentityAddress() = sharedPreferencesManager.getStringPreferenceValue(
+        SharedPreferencesList.IDENTITY_ADDRESS
+    )
+
+    fun setDuration(duration: Long) {
+        sharedPreferencesManager.setPreferenceValue(
+            SharedPreferencesList.DURATION,
+            duration
+        )
+    }
+
+    fun getDuration() = sharedPreferencesManager.getLongPreferenceValue(
+        SharedPreferencesList.DURATION
+    )
+
+    fun clearDuration() {
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.DURATION)
+    }
+
     suspend fun connect(connectRequest: ConnectRequest) = nodeRepository.connect(connectRequest)
 
     suspend fun getIdentity(): Identity {
@@ -43,10 +62,7 @@ class ConnectionUseCase(
     }
 
     suspend fun getIdentityAddress(): String {
-        val savedAddress = sharedPreferencesManager.getStringPreferenceValue(
-            SharedPreferencesList.IDENTITY_ADDRESS
-        )
-        return savedAddress ?: nodeRepository.getIdentity().address
+        return getSavedIdentityAddress() ?: nodeRepository.getIdentity().address
     }
 
     suspend fun registerIdentity(

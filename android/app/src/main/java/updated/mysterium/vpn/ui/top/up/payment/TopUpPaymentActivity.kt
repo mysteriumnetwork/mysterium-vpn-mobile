@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -14,8 +13,8 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.analitics.AnalyticEvent
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticEvent
+import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -62,7 +61,6 @@ class TopUpPaymentActivity : BaseActivity() {
                 pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
                 pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
                 pushyNotifications.subscribe(currency)
-                analyticWrapper.track(AnalyticEvent.PAYMENT, currency, amount)
                 viewModel.updateLastCurrency(currency)
             }
             viewModel.clearPopUpTopUpHistory()

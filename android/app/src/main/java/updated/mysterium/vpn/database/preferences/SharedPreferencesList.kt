@@ -20,6 +20,7 @@ enum class SharedPreferencesList(val prefName: String) {
     PREVIOUS_FILTER_ID("PREVIOUS_FILTER_ID"),
     IS_REVIEW_SHOWN("IS_REVIEW_SHOWN"),
     IS_NAT_AVAILABLE("IS_NAT_AVAILABLE"),
+    DURATION("DURATION"),
 
     //Pushy parameters
     CRYPTO_PAYMENT("CRYPTO_PAYMENT"),

@@ -60,7 +60,7 @@ class WalletActivity : BaseActivity() {
         configure()
         subscribeViewModel()
         bindsAction()
-        balanceViewModel.getCurrentBalance()
+        balanceViewModel.requestBalanceChange()
     }
 
     override fun showConnectionHint() {

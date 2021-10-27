@@ -3,9 +3,7 @@ package updated.mysterium.vpn.ui.splash
 import android.animation.Animator
 import android.app.Activity
 import android.app.ActivityOptions
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
 import android.view.Gravity
@@ -14,12 +12,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
-import updated.mysterium.vpn.analitics.AnalyticEvent
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticEvent
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -35,17 +35,12 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
 
-    private companion object {
-        const val PLAY_MARKET_INSTALLED = "market://details?id="
-        const val PLAY_MARKET_NOT_INSTALLED = "https://play.google.com/store/apps/details?id="
-    }
-
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
-    private val analyticWrapper: AnalyticWrapper by inject()
+    private val analytic: MysteriumAnalytic by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
 
@@ -90,9 +85,9 @@ class SplashActivity : BaseActivity() {
         viewModel.navigateForward.observe(this, {
             allNodesViewModel.launchProposalsPeriodically()
             exchangeRateViewModel.launchPeriodicallyExchangeRate()
-            balanceViewModel.getCurrentBalance()
+            balanceViewModel.requestBalanceChange()
             establishConnectionListeners()
-            navigateForward()
+            analytic.trackEvent(AnalyticEvent.STARTUP.eventName)
         })
         viewModel.preloadFinished.observe(this, {
             viewModel.initRepository()
@@ -100,6 +95,12 @@ class SplashActivity : BaseActivity() {
         viewModel.nodeStartingError.observe(this, {
             wifiNetworkErrorPopUp()
         })
+
+        lifecycleScope.launchWhenStarted {
+            analytic.eventTracked.collect {
+                navigateForward()
+            }
+        }
     }
 
     private fun applyDarkMode() {
@@ -134,7 +135,6 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateForward() {
-        trackDeviceToken()
         val transitionAnimation = ActivityOptions.makeCustomAnimation(
             applicationContext,
             R.anim.slide_in_right,
@@ -161,12 +161,6 @@ class SplashActivity : BaseActivity() {
             }
         }
         finish()
-    }
-
-    private fun trackDeviceToken() {
-        pushyNotifications.deviceToken?.let {
-            analyticWrapper.track(AnalyticEvent.NEW_PUSHY_DEVICE, it)
-        }
     }
 
     private fun ensureVpnServicePermission() {
@@ -220,25 +214,6 @@ class SplashActivity : BaseActivity() {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.startLoading(deferredMysteriumCoreService)
-        }
-    }
-
-    private fun openPlayMarket() {
-        // Exception will be thrown if the Play Store is not installed on the target device.
-        try {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(PLAY_MARKET_INSTALLED + packageName)
-                )
-            )
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(PLAY_MARKET_NOT_INSTALLED + packageName)
-                )
-            )
         }
     }
 }

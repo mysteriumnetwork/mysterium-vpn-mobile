@@ -87,7 +87,7 @@ class MenuActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        balanceViewModel.getCurrentBalance()
+        balanceViewModel.requestBalanceChange()
         inflateCustomToolbarView()
         inflateGridLayout()
         inflateAppVersion()

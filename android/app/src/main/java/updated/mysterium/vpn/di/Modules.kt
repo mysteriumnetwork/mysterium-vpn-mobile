@@ -7,7 +7,8 @@ import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import updated.mysterium.vpn.analitics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.AnalyticWrapper
+import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.AppDatabase
@@ -69,7 +70,7 @@ object Modules {
             ConnectionViewModel(get())
         }
         single {
-            AnalyticWrapper(androidContext())
+            AnalyticWrapper()
         }
         single {
             FilterViewModel(get())
@@ -87,6 +88,13 @@ object Modules {
         }
         single {
             ExchangeRateViewModel(get())
+        }
+        single {
+            MysteriumAnalytic(
+                androidContext(),
+                get(),
+                get()
+            )
         }
 
         viewModel {
