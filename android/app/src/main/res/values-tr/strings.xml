@@ -39,7 +39,7 @@
   <string name="manual_connect_data_received_hint">Al/Gönder</string>
   <string name="manual_connect_paid_hint">Ödendi</string>
   <string name="manual_connect_time_format">SS DD ss</string>
-  <string name="manual_connect_paid_types">MYSTT / USD</string>
+  <string name="manual_connect_paid_types">MYST / USD</string>
   <string name="manual_connect_loading">Yükleniyor</string>
   <string name="manual_connect_unknown">Bilinmiyor</string>
   <string name="manual_connect_price_per_hour">%.5f/sa</string>
@@ -78,7 +78,7 @@
   <string name="wallet_usd_equivalent">USD eş değeri ≈ %.3f $</string>
   <string name="wallet_buys_for_you">Şunu satın alırsınız:</string>
   <string name="wallet_top_up">Para ekle</string>
-  <string name="wallet_mystt_about">MYSTT, Ethereum Goerli blok zincirinde yer alan bir test token\'ıdır</string>
+  <string name="wallet_myst_about">MYST, Ethereum Goerli blok zincirinde yer alan bir test token\'ıdır</string>
   <string name="wallet_top_up_label">Para ekleme hareketleri</string>
   <string name="wallet_spedings_label">Harcama</string>
   <string name="wallet_spendings_country">Ülke</string>
