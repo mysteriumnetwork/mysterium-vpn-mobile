@@ -45,7 +45,7 @@
     <string name="manual_connect_paid_hint">Paid</string>
     <string name="manual_connect_time_format">HH MM SS</string>
     <string name="manual_connect_data_type" translatable="false">MiB</string>
-    <string name="manual_connect_paid_types">MYSTT / USD</string>
+    <string name="manual_connect_paid_types">MYST / USD</string>
     <string name="manual_connect_loading">Loading</string>
     <string name="manual_connect_unknown">Unknown</string>
     <string name="manual_connect_data_received" translatable="false">%1$s/</string>
@@ -97,14 +97,14 @@
 
     <!--  Wallet  -->
     <string name="wallet_main_title">Account balance</string>
-    <string name="wallet_currency" translatable="false">MYSTT</string>
+    <string name="wallet_currency" translatable="false">MYST</string>
     <string name="wallet_balance_currency" translatable="false">MYST</string>
     <string name="wallet_start_balance">0,000</string>
     <string name="wallet_usd_equivalent">USD equivalent ≈ $%.3f</string>
     <string name="wallet_buys_for_you">This buys you:</string>
     <string name="wallet_current_balance" translatable="false">"%.3f"</string>
     <string name="wallet_top_up">Top up</string>
-    <string name="wallet_mystt_about">MYSTT is a test token on Ethereum Goerli blockchain</string>
+    <string name="wallet_myst_about">MYST is a test token on Ethereum Goerli blockchain</string>
     <string name="wallet_top_up_label">Top up events</string>
     <string name="wallet_spedings_label">Spendings</string>
     <string name="wallet_spendings_country">Country</string>

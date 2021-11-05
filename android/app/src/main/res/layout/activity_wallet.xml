@@ -183,7 +183,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_large"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:text="@string/wallet_mystt_about"
+                android:text="@string/wallet_myst_about"
                 android:textAlignment="center"
                 android:textColor="@color/manual_connect_value_white" />
 

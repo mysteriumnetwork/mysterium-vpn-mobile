@@ -26,11 +26,13 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         get() = _proposals
 
 
-    val filterLoaded: LiveData<Boolean>
-        get() = _filterLoaded
+    val initialDataLoaded: LiveData<Boolean>
+        get() = _initialDataLoaded
 
+    private var allProposalsLoaded = false
+    private var filtersLoaded = false
     private val _proposals = MutableLiveData<List<CountryNodes>>()
-    private val _filterLoaded = MutableLiveData<Boolean>()
+    private val _initialDataLoaded = MutableLiveData<Boolean>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val filterUseCase = useCaseProvider.filters()
     private var cachedNodesList: List<CountryNodes> = emptyList()
@@ -84,6 +86,10 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             if (cachedNodesList.isNotEmpty()) {
                 _proposals.postValue(cachedNodesList)
             }
+            allProposalsLoaded = true
+            if (filtersLoaded) {
+                _initialDataLoaded.postValue(true)
+            }
         }
     }
 
@@ -92,6 +98,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
+            nodesUseCase.getAllCountries()
             val allFilters = filterUseCase.getSystemPresets()
             allFilters.forEachIndexed { index, presetFilter ->
                 if (allFiltersLists.size > index) {
@@ -110,7 +117,10 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     )
                 }
                 if (index + 1 == allFilters.size) {
-                    _filterLoaded.postValue(true)
+                    filtersLoaded = true
+                    if (allProposalsLoaded) {
+                        _initialDataLoaded.postValue(true)
+                    }
                 }
             }
         }

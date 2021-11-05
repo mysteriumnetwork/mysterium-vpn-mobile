@@ -76,7 +76,7 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        allNodesViewModel.filterLoaded.observe(this) {
+        allNodesViewModel.initialDataLoaded.observe(this) {
             if (!isInitialListLoaded) {
                 binding.loader.visibility = View.INVISIBLE
                 binding.filterCardView.visibility = View.VISIBLE
