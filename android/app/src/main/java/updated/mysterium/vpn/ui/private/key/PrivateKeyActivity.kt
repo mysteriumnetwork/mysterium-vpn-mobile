@@ -149,10 +149,21 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private fun navigateToPrepareTopUp() {
         viewModel.accountCreated()
-        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
+
+        viewModel.isFreeRegistrationAvailable().observe(this) {
+            it.onSuccess { result ->
+                Log.i("FREE", result.toString())
+
+                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
+                }
+                startActivity(intent)
+            }
+
+            it.onFailure { error ->
+                Log.i("FREE", error.localizedMessage ?: error.toString())
+            }
         }
-        startActivity(intent)
     }
 }

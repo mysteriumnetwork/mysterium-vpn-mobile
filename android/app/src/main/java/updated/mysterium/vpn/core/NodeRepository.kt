@@ -233,6 +233,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().registrationTokenReward(registrationToken)
     }
 
+    suspend fun isFreeRegistrationEligible(address: String) = withContext(Dispatchers.IO) {
+        deferredNode.await().isFreeRegistrationEligible(address)
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

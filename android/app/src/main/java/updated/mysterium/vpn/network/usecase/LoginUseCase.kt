@@ -1,9 +1,17 @@
 package updated.mysterium.vpn.network.usecase
 
+import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 
-class LoginUseCase(private val sharedPreferencesManager: SharedPreferencesManager) {
+class LoginUseCase(
+    private val nodeRepository: NodeRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
+) {
+
+    suspend fun isFreeRegistrationAvailable(
+        address: String
+    ) = nodeRepository.isFreeRegistrationEligible(address)
 
     fun isAlreadyLogin() = sharedPreferencesManager.containsPreferenceValue(
         SharedPreferencesList.LOGIN
