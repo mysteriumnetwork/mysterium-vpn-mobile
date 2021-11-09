@@ -68,11 +68,9 @@ class App : Application(), LifecycleObserver {
         super.attachBaseContext(onAttach(base ?: applicationContext))
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        newConfig?.let {
-            onAttach(this)
-            super.onConfigurationChanged(newConfig)
-        }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        onAttach(this)
+        super.onConfigurationChanged(newConfig)
     }
 
     private fun setupIntercom() {
