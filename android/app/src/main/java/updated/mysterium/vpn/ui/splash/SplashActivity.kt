@@ -8,7 +8,6 @@ import android.net.VpnService
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
@@ -187,7 +186,7 @@ class SplashActivity : BaseActivity() {
             getString(R.string.error_vpn_permission),
             Toast.LENGTH_LONG
         ).apply {
-            (view.findViewById<View>(android.R.id.message) as TextView).gravity = Gravity.CENTER
+            setGravity(Gravity.CENTER, 0, 0)
         }.show()
     }
 
