@@ -35,10 +35,22 @@ class LoginUseCase(
         SharedPreferencesList.ACCOUNT_CREATED
     )
 
+    fun isFreeRegistrationAvailable() = sharedPreferencesManager.getBoolPreferenceValue(
+        SharedPreferencesList.ACCOUNT_CREATED,
+        false
+    )
+
     fun accountCreated() = sharedPreferencesManager.setPreferenceValue(
         key = SharedPreferencesList.ACCOUNT_CREATED,
         value = true
     )
+
+    fun setRegistrationAbility(isAvailable: Boolean) {
+        sharedPreferencesManager.setPreferenceValue(
+            key = SharedPreferencesList.FREE_REGISTRATION,
+            value = isAvailable
+        )
+    }
 
     fun userCreateOrImportAccount(isNewUser: Boolean) = sharedPreferencesManager.setPreferenceValue(
         key = SharedPreferencesList.IS_NEW_USER,

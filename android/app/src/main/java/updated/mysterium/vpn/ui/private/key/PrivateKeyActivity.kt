@@ -19,8 +19,10 @@ import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.pop.up.PopUpDownloadKey
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
+import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
 
 class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -151,18 +153,30 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         viewModel.accountCreated()
 
         viewModel.isFreeRegistrationAvailable().observe(this) {
-            it.onSuccess { result ->
-                Log.i("FREE", result.toString())
-
-                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
+            it.onSuccess { isFreeRegistrationAvailable ->
+                val intent = if (isFreeRegistrationAvailable) {
+                    Intent(this, HomeSelectionActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
+                    }
+                } else {
+                    Intent(this, PrepareTopUpActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
+                    }
                 }
+                viewModel.setRegistrationAbility(isFreeRegistrationAvailable)
                 startActivity(intent)
             }
 
             it.onFailure { error ->
-                Log.i("FREE", error.localizedMessage ?: error.toString())
+                Log.i(TAG, error.localizedMessage ?: error.toString())
+                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
+                }
+                viewModel.setRegistrationAbility(false)
+                startActivity(intent)
             }
         }
     }

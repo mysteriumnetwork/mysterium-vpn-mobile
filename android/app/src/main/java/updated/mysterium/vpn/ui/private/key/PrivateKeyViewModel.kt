@@ -24,6 +24,13 @@ class PrivateKeyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun accountCreated() = loginUseCase.accountCreated()
 
+    fun setRegistrationAbility(isAvailable: Boolean) {
+        if (isAvailable) {
+            loginUseCase.accountFlowShown()
+        }
+        loginUseCase.setRegistrationAbility(isAvailable)
+    }
+
     fun isFreeRegistrationAvailable() = liveDataResult {
         val address = connectionUseCase.getIdentityAddress()
         loginUseCase.isFreeRegistrationAvailable(address)

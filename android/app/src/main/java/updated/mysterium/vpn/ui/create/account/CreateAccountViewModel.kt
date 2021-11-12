@@ -59,6 +59,11 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         loginUseCase.userCreateOrImportAccount(isNewUser)
     }
 
+    fun isFreeRegistrationAvailable() = liveDataResult {
+        val address = connectionUseCase.getIdentityAddress()
+        loginUseCase.isFreeRegistrationAvailable(address)
+    }
+
     private fun registerIntercomClient(address: String) {
         Intercom.client().apply {
             registerUnidentifiedUser()
