@@ -9,7 +9,6 @@ enum class SharedPreferencesList(val prefName: String) {
     LOGIN("LOGIN"),
     TOP_UP_FLOW("TOP_UP_FLOW"),
     ACCOUNT_CREATED("ACCOUNT_CREATED"),
-    FREE_REGISTRATION("FREE_REGISTRATION"),
     TERMS("TERMS"),
     DNS("DNS"),
     IDENTITY_ADDRESS("IDENTITY_ADDRESS"),

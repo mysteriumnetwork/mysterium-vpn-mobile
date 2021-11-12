@@ -165,7 +165,11 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
                         putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
                     }
                 }
-                viewModel.setRegistrationAbility(isFreeRegistrationAvailable)
+                if (isFreeRegistrationAvailable) {
+                    viewModel.accountFlowShown()
+                } else {
+                    viewModel.accountCreated()
+                }
                 startActivity(intent)
             }
 
@@ -175,7 +179,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
                 }
-                viewModel.setRegistrationAbility(false)
+                viewModel.accountCreated()
                 startActivity(intent)
             }
         }
