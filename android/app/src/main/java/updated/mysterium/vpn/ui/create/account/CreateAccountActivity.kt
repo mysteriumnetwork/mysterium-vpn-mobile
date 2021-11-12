@@ -254,7 +254,6 @@ class CreateAccountActivity : BaseActivity() {
     private fun navigateToHome() {
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, false)
         }
         startActivity(intent)
     }
