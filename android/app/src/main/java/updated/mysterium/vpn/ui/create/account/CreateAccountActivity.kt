@@ -20,6 +20,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
+import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
@@ -75,10 +76,7 @@ class CreateAccountActivity : BaseActivity() {
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this, {
             viewModel.accountCreated(true)
-            val intent = Intent(this, PrivateKeyActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+            navigateToPrivateKey()
         })
         viewModel.registrationError.observe(this, {
             binding.createNewAccountFrame.isClickable = true
@@ -123,18 +121,34 @@ class CreateAccountActivity : BaseActivity() {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.accountCreated(false)
-            checkFreeRegistration()
+            checkRegistrationStatus()
         })
     }
 
-    private fun checkFreeRegistration() {
-        viewModel.accountCreated(false)
+    private fun checkRegistrationStatus() {
+        viewModel.getIdentity().observe(this) {
+            it.onSuccess { identity ->
+                if (identity.registered) {
+                    navigateToHome()
+                } else {
+                    checkFreeRegistration(identity)
+                }
+            }
+
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                navigateToTopUp()
+            }
+        }
+    }
+
+    private fun checkFreeRegistration(identityModel: IdentityModel) {
         viewModel.isFreeRegistrationAvailable().observe(this) {
             it.onSuccess { isAvailable ->
                 if (isAvailable) {
-                    navigateToHome()
+                    registerAccount(identityModel)
                 } else {
-                    checkBalance()
+                    navigateToTopUp()
                 }
             }
 
@@ -144,18 +158,14 @@ class CreateAccountActivity : BaseActivity() {
         }
     }
 
-    private fun checkBalance() {
-        balanceViewModel.getCurrentBalance().observe(this) {
-            it.onSuccess { balance ->
-                if (balance > 0.0) {
-                    navigateToHome()
-                } else {
-                    navigateToTopUp()
-                }
+    private fun registerAccount(identityModel: IdentityModel) {
+        viewModel.registerAccount(identityModel).observe(this) {
+            it.onSuccess {
+                navigateToHome()
             }
 
             it.onFailure {
-                navigateToTopUp()
+                showRegistrationErrorPopUp()
             }
         }
     }
@@ -251,7 +261,15 @@ class CreateAccountActivity : BaseActivity() {
         bindingPopUp.errorText.visibility = View.GONE
     }
 
+    private fun navigateToPrivateKey() {
+        val intent = Intent(this, PrivateKeyActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
     private fun navigateToHome() {
+        viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }

@@ -10,6 +10,13 @@ class IdentityModel(
     val channelAddress: String,
     var status: IdentityRegistrationStatus
 ) {
+
+    constructor(identity: Identity) : this(
+        identity.address,
+        identity.channelAddress,
+        IdentityRegistrationStatus.parse(identity.registrationStatus)
+    )
+
     // Identity is considered as registered if it's status RegisteredConsumer or InProgress since we support fast
     // identity registration flow which means there is no need to wait for actual registration.
     val registered: Boolean
