@@ -17,9 +17,7 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 class TopUpCryptoActivity : BaseActivity() {
 
     companion object {
-        const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
-        private const val TAG = "TopUpAmountActivity"
     }
 
     private lateinit var binding: ActivityTopUpCryptoBinding
@@ -49,7 +47,6 @@ class TopUpCryptoActivity : BaseActivity() {
             }
         }
         binding.cryptoAnimation.changeAnimation(getCryptoList().first().value)
-        checkTrialState()
     }
 
     private fun bindsAction() {
@@ -65,9 +62,6 @@ class TopUpCryptoActivity : BaseActivity() {
             val intent = Intent(this, TopUpPaymentActivity::class.java).apply {
                 putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
                 putExtra(TopUpPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
-                if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) == true) {
-                    putExtra(TRIAL_MODE_EXTRA_KEY, true)
-                }
                 putExtra(
                     TopUpPaymentActivity.CRYPTO_IS_LIGHTING_EXTRA_KEY,
                     binding.lightingSwitch.isChecked
@@ -83,14 +77,6 @@ class TopUpCryptoActivity : BaseActivity() {
             binding.usdEquivalentTextView.text = getString(
                 R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it
             )
-        }
-    }
-
-    private fun checkTrialState() {
-        if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) == true) {
-            binding.freeTrialButtonButton.visibility = View.VISIBLE
-        } else {
-            binding.freeTrialButtonButton.visibility = View.GONE
         }
     }
 

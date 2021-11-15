@@ -17,7 +17,7 @@ class UseCaseProvider(
 
     fun connection() = ConnectionUseCase(nodeRepository, sharedPreferencesManager)
 
-    fun login() = LoginUseCase(sharedPreferencesManager)
+    fun login() = LoginUseCase(nodeRepository, sharedPreferencesManager)
 
     fun balance() = BalanceUseCase(nodeRepository, sharedPreferencesManager)
 

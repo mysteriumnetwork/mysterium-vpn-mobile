@@ -13,7 +13,6 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.analytics.AnalyticEvent
 import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -52,36 +51,21 @@ class PrepareTopUpActivity : BaseActivity() {
     }
 
     private fun bindsAction() {
-        binding.topUpLater.setOnClickListener {
-            registerIdentityWithoutToken(false)
-            viewModel.accountFlowShown()
-        }
         binding.topUpNow.setOnClickListener {
-            registerIdentityWithoutToken(true)
+            registerIdentityWithoutToken()
         }
         binding.referralProgram.setOnClickListener {
             showReferralPopUp()
         }
     }
 
-    private fun registerIdentityWithoutToken(topUpNow: Boolean) {
+    private fun registerIdentityWithoutToken() {
         if (!isReferralTokenUsed) {
             pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_NOT_USED)
         }
         viewModel.registerIdentityWithoutToken().observe(this, {
             it.onSuccess {
-                if (topUpNow) {
-                    val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-                        putExtra(TopUpAmountActivity.TRIAL_MODE_EXTRA_KEY, true)
-                    }
-                    startActivity(intent)
-                } else {
-                    val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    }
-                    startActivity(intent)
-                    finish()
-                }
+                startActivity(Intent(this, TopUpAmountActivity::class.java))
             }
             it.onFailure {
                 Log.e(TAG, it.localizedMessage ?: it.toString())
@@ -100,6 +84,7 @@ class PrepareTopUpActivity : BaseActivity() {
                     applyToken(token, rewardAmount) {
                         binding.referralProgram.visibility = View.GONE
                         dialog.dismiss()
+                        navigateToHomeSelection()
                     }
                 }
                 it.onFailure {
@@ -117,7 +102,7 @@ class PrepareTopUpActivity : BaseActivity() {
                 viewModel.getRegistrationTokenReward(registrationToken).observe(this, {
                     it.onSuccess { amount ->
                         bindingPopUp.rewardAmount.visibility = View.VISIBLE
-                        bindingPopUp.rewardAmount.text = amount.toInt().toString()
+                        bindingPopUp.rewardAmount.text = amount.toString()
                         bindingPopUp.tokenNotWorkingImageView.visibility = View.INVISIBLE
                     }
                     it.onFailure { throwable ->
@@ -179,5 +164,13 @@ class PrepareTopUpActivity : BaseActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun navigateToHomeSelection() {
+        viewModel.accountFlowShown()
+        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
     }
 }

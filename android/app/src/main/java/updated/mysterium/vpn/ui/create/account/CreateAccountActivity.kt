@@ -22,6 +22,7 @@ import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import java.io.BufferedReader
@@ -122,12 +123,41 @@ class CreateAccountActivity : BaseActivity() {
             val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.accountCreated(false)
-            val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, false)
-            }
-            startActivity(intent)
+            checkFreeRegistration()
         })
+    }
+
+    private fun checkFreeRegistration() {
+        viewModel.accountCreated(false)
+        viewModel.isFreeRegistrationAvailable().observe(this) {
+            it.onSuccess { isAvailable ->
+                if (isAvailable) {
+                    navigateToHome()
+                } else {
+                    checkBalance()
+                }
+            }
+
+            it.onFailure {
+                navigateToTopUp()
+            }
+        }
+    }
+
+    private fun checkBalance() {
+        balanceViewModel.getCurrentBalance().observe(this) {
+            it.onSuccess { balance ->
+                if (balance > 0.0) {
+                    navigateToHome()
+                } else {
+                    navigateToTopUp()
+                }
+            }
+
+            it.onFailure {
+                navigateToTopUp()
+            }
+        }
     }
 
     private fun showPasswordWrongState() {
@@ -219,5 +249,20 @@ class CreateAccountActivity : BaseActivity() {
             this, R.drawable.shape_password_field
         )
         bindingPopUp.errorText.visibility = View.GONE
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToTopUp() {
+        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, false)
+        }
+        startActivity(intent)
     }
 }

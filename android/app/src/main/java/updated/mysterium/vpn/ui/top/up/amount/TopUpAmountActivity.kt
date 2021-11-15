@@ -18,8 +18,6 @@ import java.util.*
 class TopUpAmountActivity : BaseActivity() {
 
     companion object {
-        const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
-        private const val TAG = "TopUpAmountActivity"
         private val AMOUNT_VALUES = listOf(
             TopUpCardItem("20", true),
             TopUpCardItem("40"),
@@ -41,7 +39,6 @@ class TopUpAmountActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
-        checkTrialState()
     }
 
     private fun configure() {
@@ -63,24 +60,12 @@ class TopUpAmountActivity : BaseActivity() {
             val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
             val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
                 putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
-                if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) != null) {
-                    putExtra(TopUpCryptoActivity.TRIAL_MODE_EXTRA_KEY, true)
-                }
             }
             startActivity(intent)
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
             navigateToConnectionOrHome(isBackTransition = false)
-        }
-    }
-
-    private fun checkTrialState() {
-        val isFreeTrialAvailable = intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY)
-        if (isFreeTrialAvailable != null) {
-            binding.freeTrialButtonButton.visibility = View.VISIBLE
-        } else {
-            binding.freeTrialButtonButton.visibility = View.GONE
         }
     }
 

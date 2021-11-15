@@ -203,7 +203,7 @@
     <string name="private_key_back_up_later">Back up\n Later</string>
 
     <!--  Prepare top up  -->
-    <string name="prepare_top_up_description">Top up your account now or do it later and\n use limited functionality and free nodes</string>
+    <string name="prepare_top_up_description">Top up your account or use the referral code to start using Mysterium dVPN</string>
     <string name="prepare_top_up_referral">Use referral code</string>
     <string name="prepare_top_up_now">Top up now</string>
     <string name="prepare_top_up_later">Top up later</string>

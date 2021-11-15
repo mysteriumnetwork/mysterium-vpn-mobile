@@ -23,4 +23,11 @@ class PrivateKeyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun accountCreated() = loginUseCase.accountCreated()
+
+    fun accountFlowShown() = loginUseCase.accountFlowShown()
+
+    fun isFreeRegistrationAvailable() = liveDataResult {
+        val address = connectionUseCase.getIdentityAddress()
+        loginUseCase.isFreeRegistrationAvailable(address)
+    }
 }

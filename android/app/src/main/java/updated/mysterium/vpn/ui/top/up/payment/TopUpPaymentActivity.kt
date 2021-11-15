@@ -13,8 +13,6 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.analytics.AnalyticEvent
-import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -28,11 +26,9 @@ import kotlin.math.abs
 class TopUpPaymentActivity : BaseActivity() {
 
     companion object {
-        const val TRIAL_MODE_EXTRA_KEY = "TRIAL_MODE_EXTRA_KEY"
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
-        private const val TAG = "TopUpPaymentActivity"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
     }
@@ -41,7 +37,6 @@ class TopUpPaymentActivity : BaseActivity() {
     private val topUpViewModel: TopUpViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val viewModel: TopUpPaymentViewModel by inject()
-    private val analyticWrapper: AnalyticWrapper by inject()
     private var link: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +86,10 @@ class TopUpPaymentActivity : BaseActivity() {
     }
 
     private fun getExtra() {
-        checkTrialState()
+        val param = binding.paymentAnimation.layoutParams as ViewGroup.MarginLayoutParams
+        param.setMargins(0, ANIMATION_MARGIN, 0, ANIMATION_MARGIN)
+        binding.paymentAnimation.layoutParams = param
+
         val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY) ?: ""
         val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
         val isLighting = intent.extras?.getBoolean(CRYPTO_IS_LIGHTING_EXTRA_KEY)
@@ -127,17 +125,6 @@ class TopUpPaymentActivity : BaseActivity() {
         binding.qrShadow.visibility = View.VISIBLE
         binding.qrCodeFrame.visibility = View.VISIBLE
         binding.currencyEquivalentFrame.visibility = View.VISIBLE
-    }
-
-    private fun checkTrialState() {
-        if (intent.extras?.getBoolean(TRIAL_MODE_EXTRA_KEY) == true) {
-            binding.freeTrialButtonButton.visibility = View.VISIBLE
-        } else {
-            val param = binding.paymentAnimation.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0, ANIMATION_MARGIN, 0, ANIMATION_MARGIN)
-            binding.paymentAnimation.layoutParams = param
-            binding.freeTrialButtonButton.visibility = View.GONE
-        }
     }
 
     private fun showQrCode(link: String) {
