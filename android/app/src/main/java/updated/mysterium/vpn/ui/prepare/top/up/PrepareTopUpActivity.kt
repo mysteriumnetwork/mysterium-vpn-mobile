@@ -28,7 +28,6 @@ class PrepareTopUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPrepareTopUpBinding
     private val viewModel: PrepareTopUpViewModel by inject()
-    private val analyticWrapper: AnalyticWrapper by inject()
     private var isReferralTokenUsed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,26 +51,11 @@ class PrepareTopUpActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.topUpNow.setOnClickListener {
-            registerIdentityWithoutToken()
+            startActivity(Intent(this, TopUpAmountActivity::class.java))
         }
         binding.referralProgram.setOnClickListener {
             showReferralPopUp()
         }
-    }
-
-    private fun registerIdentityWithoutToken() {
-        if (!isReferralTokenUsed) {
-            pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_NOT_USED)
-        }
-        viewModel.registerIdentityWithoutToken().observe(this, {
-            it.onSuccess {
-                startActivity(Intent(this, TopUpAmountActivity::class.java))
-            }
-            it.onFailure {
-                Log.e(TAG, it.localizedMessage ?: it.toString())
-                showRegistrationErrorPopUp()
-            }
-        })
     }
 
     private fun showReferralPopUp() {
@@ -144,11 +128,7 @@ class PrepareTopUpActivity : BaseActivity() {
             }
             it.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                Toast.makeText(
-                    this,
-                    getString(R.string.intercom_something_went_wrong_try_again),
-                    Toast.LENGTH_LONG
-                ).show()
+                showRegistrationErrorPopUp()
             }
         })
     }

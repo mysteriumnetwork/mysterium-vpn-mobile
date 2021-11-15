@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -29,8 +30,10 @@ class TopUpPaymentActivity : BaseActivity() {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
+        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
+        private const val TAG = "TopUpPaymentActivity"
     }
 
     private lateinit var binding: ActivityTopUpPaymentBinding
@@ -59,7 +62,7 @@ class TopUpPaymentActivity : BaseActivity() {
                 viewModel.updateLastCurrency(currency)
             }
             viewModel.clearPopUpTopUpHistory()
-            showTopUpSuccessfully()
+            registerAccount()
         })
         viewModel.paymentExpired.observe(this, {
             showTopUpExpired()
@@ -70,6 +73,19 @@ class TopUpPaymentActivity : BaseActivity() {
         viewModel.paymentCanceled.observe(this, {
             showTopUpCanceled()
         })
+    }
+
+    private fun registerAccount() {
+        viewModel.registerAccount().observe(this) {
+            it.onSuccess {
+                showTopUpSuccessfully()
+            }
+
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                showRegistrationErrorPopUp()
+            }
+        }
     }
 
     private fun bindsAction() {
@@ -203,6 +219,19 @@ class TopUpPaymentActivity : BaseActivity() {
         }
         bindingPopUp.topUpLaterButton.setOnClickListener {
             navigateToHome()
+        }
+        dialog.show()
+    }
+
+    private fun showRegistrationErrorPopUp() {
+        val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.tryAgainButton.setOnClickListener {
+            dialog.dismiss()
+            viewModel.registerAccount()
+        }
+        bindingPopUp.cancelButton.setOnClickListener {
+            dialog.dismiss()
         }
         dialog.show()
     }
