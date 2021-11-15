@@ -18,6 +18,7 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 
 class PrepareTopUpActivity : BaseActivity() {
 
@@ -51,7 +52,10 @@ class PrepareTopUpActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.topUpNow.setOnClickListener {
-            startActivity(Intent(this, TopUpAmountActivity::class.java))
+            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
+                putExtra(TopUpAmountActivity.REGISTRATION_MODE_EXTRA_KEY, true)
+            }
+            startActivity(intent)
         }
         binding.referralProgram.setOnClickListener {
             showReferralPopUp()
