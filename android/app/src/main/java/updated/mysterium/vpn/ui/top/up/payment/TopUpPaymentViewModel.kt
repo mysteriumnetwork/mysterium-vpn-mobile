@@ -3,7 +3,10 @@ package updated.mysterium.vpn.ui.top.up.payment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.model.wallet.IdentityModel
+import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -63,6 +66,19 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun updateLastCurrency(currency: String) {
         pushyUseCase.updateCryptoCurrency(currency)
+    }
+
+    fun registerAccount() = liveDataResult {
+        val identity = connectionUseCase.getIdentity()
+        val identityModel = IdentityModel(identity)
+        val req = RegisterIdentityRequest().apply {
+            identityAddress = identityModel.address
+            token?.let {
+                this.token = it
+            }
+        }
+        connectionUseCase.registerIdentity(req)
+        connectionUseCase.registrationFees()
     }
 
     private suspend fun registerOrderCallback() {

@@ -16,6 +16,7 @@ import java.util.*
 class TopUpAmountActivity : BaseActivity() {
 
     companion object {
+        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         private val AMOUNT_VALUES = listOf(
             TopUpCardItem("20", true),
             TopUpCardItem("40"),
@@ -96,6 +97,9 @@ class TopUpAmountActivity : BaseActivity() {
     private fun navigateToPaymentMethod(cryptoAmount: Int?) {
         val intent = Intent(this, PaymentMethodActivity::class.java).apply {
             putExtra(PaymentMethodActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
+                putExtra(PaymentMethodActivity.REGISTRATION_MODE_EXTRA_KEY, true)
+            }
         }
         startActivity(intent)
     }

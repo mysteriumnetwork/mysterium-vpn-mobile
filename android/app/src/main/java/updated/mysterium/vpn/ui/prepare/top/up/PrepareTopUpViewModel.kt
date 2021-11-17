@@ -21,10 +21,6 @@ class PrepareTopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         tokenUseCase.getRegistrationTokenReward(token)
     }
 
-    fun registerIdentityWithoutToken() = liveDataResult {
-        identityRegistration()
-    }
-
     fun registerIdentity(token: String) = liveDataResult {
         identityRegistration(token)
     }

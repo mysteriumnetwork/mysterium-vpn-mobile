@@ -12,6 +12,7 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 class PaymentMethodActivity : BaseActivity() {
 
     companion object {
+        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
     }
 
@@ -48,6 +49,9 @@ class PaymentMethodActivity : BaseActivity() {
     private fun navigateToCryptoPaymentFlow() {
         val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
             putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
+                putExtra(TopUpCryptoActivity.REGISTRATION_MODE_EXTRA_KEY, true)
+            }
         }
         startActivity(intent)
     }
