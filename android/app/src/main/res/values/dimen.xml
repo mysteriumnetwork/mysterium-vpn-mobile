@@ -11,6 +11,7 @@
     <dimen name="margin_padding_size_large">24dp</dimen>
     <dimen name="margin_padding_size_xlarge">32dp</dimen>
     <dimen name="margin_padding_size_xxlarge">40dp</dimen>
+    <dimen name="margin_padding_size_biggest">50dp</dimen>
 
     <dimen name="viewpager_next_item_visible">40dp</dimen>
     <dimen name="viewpager_current_item_margin">16dp</dimen>

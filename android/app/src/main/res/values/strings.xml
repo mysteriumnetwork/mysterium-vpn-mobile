@@ -210,6 +210,8 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Choose a payment method to continue</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="crypto">Crypto</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Use </string>

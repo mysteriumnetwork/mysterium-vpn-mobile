@@ -77,7 +77,7 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <LinearLayout
-                android:id="@+id/topUpNow"
+                android:id="@+id/creditCardPayment"
                 style="@style/RippleEffectPrimaryColor"
                 android:layout_width="138dp"
                 android:layout_height="149dp"
@@ -89,7 +89,7 @@
                 android:focusable="true"
                 android:orientation="vertical"
                 android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/referralProgram"
+                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -109,14 +109,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="@string/prepare_top_up_now"
+                    android:text="@string/credit_card"
                     android:textAlignment="center"
                     android:textColor="@color/create_account_import_text" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/topUpLater"
+                android:id="@+id/cryptoPayment"
                 style="@style/RippleEffectSecondaryColor"
                 android:layout_width="138dp"
                 android:layout_height="149dp"
@@ -126,7 +126,7 @@
                 android:background="@drawable/shape_rectangle_gray_rounded_10"
                 android:orientation="vertical"
                 android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/referralProgram"
+                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/centerGuideline"
                 app:layout_constraintTop_toTopOf="parent">
@@ -137,7 +137,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_padding_size_medium"
                     android:layout_weight="1"
-                    android:src="@drawable/icon_back_up_later"
+                    android:src="@drawable/icon_crypto"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -146,22 +146,23 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="@string/prepare_top_up_later"
+                    android:text="@string/crypto"
                     android:textAlignment="center"
                     android:textColor="@color/manual_connect_connecting_title_grey_blue" />
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/referralProgram"
-                style="@style/Widget.TrialButton"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/usdEquivalentTextView"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
-                android:text="@string/prepare_top_up_referral"
+                android:layout_marginBottom="@dimen/margin_padding_size_biggest"
+                android:textColor="@color/manual_connect_divider_grey_blue"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/topUpLater"
-                app:layout_constraintStart_toStartOf="@+id/topUpNow" />
+                app:layout_constraintEnd_toEndOf="@+id/cryptoPayment"
+                app:layout_constraintStart_toStartOf="@+id/creditCardPayment"
+                tools:text="USD Equivalant = $12.26 " />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
