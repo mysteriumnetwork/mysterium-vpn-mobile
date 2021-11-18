@@ -129,7 +129,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getIdentity() = liveDataResult {
-        val identity = connectionUseCase.getIdentity()
-        IdentityModel(identity)
+        IdentityModel(connectionUseCase.getIdentity())
     }
 }

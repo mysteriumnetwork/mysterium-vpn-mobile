@@ -139,19 +139,12 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateForward() {
-        val transitionAnimation = ActivityOptions.makeCustomAnimation(
-            applicationContext,
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        ).toBundle()
         when {
             !viewModel.isUserAlreadyLogin() -> {
-                startActivity(Intent(this, OnboardingActivity::class.java), transitionAnimation)
-                finish()
+                navigateToOnboarding()
             }
             !viewModel.isTermsAccepted() -> {
-                startActivity(Intent(this, TermsOfUseActivity::class.java), transitionAnimation)
-                finish()
+                navigateToTerms()
             }
             viewModel.isTopUpFlowShown() -> {
                 checkRegistrationStatus()
@@ -160,8 +153,7 @@ class SplashActivity : BaseActivity() {
                 navigateToTopUp()
             }
             viewModel.isTermsAccepted() -> {
-                startActivity(Intent(this, CreateAccountActivity::class.java), transitionAnimation)
-                finish()
+                navigateToCreateAccount()
             }
         }
     }
@@ -178,6 +170,7 @@ class SplashActivity : BaseActivity() {
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
                 navigateToConnectionOrHome(isBackTransition = false)
+                navigateToTopUp()
             }
         }
     }
@@ -247,5 +240,26 @@ class SplashActivity : BaseActivity() {
         }
         startActivity(intent, transitionAnimation)
         finish()
+    }
+
+    private fun navigateToOnboarding() {
+        val intent = Intent(this, OnboardingActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToTerms() {
+        val intent = Intent(this, TermsOfUseActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToCreateAccount() {
+        val intent = Intent(this, CreateAccountActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
     }
 }
