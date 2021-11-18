@@ -169,7 +169,6 @@ class SplashActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToConnectionOrHome(isBackTransition = false)
                 navigateToTopUp()
             }
         }
@@ -230,15 +229,11 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateToTopUp() {
-        val transitionAnimation = ActivityOptions.makeCustomAnimation(
-            applicationContext,
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        ).toBundle()
         val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
             putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
-        startActivity(intent, transitionAnimation)
+        startActivity(intent)
         finish()
     }
 
