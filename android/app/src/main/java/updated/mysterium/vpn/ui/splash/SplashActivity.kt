@@ -6,6 +6,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -33,6 +34,10 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
+
+    private companion object {
+        const val TAG = "SplashActivity"
+    }
 
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
@@ -142,24 +147,39 @@ class SplashActivity : BaseActivity() {
         when {
             !viewModel.isUserAlreadyLogin() -> {
                 startActivity(Intent(this, OnboardingActivity::class.java), transitionAnimation)
+                finish()
             }
             !viewModel.isTermsAccepted() -> {
                 startActivity(Intent(this, TermsOfUseActivity::class.java), transitionAnimation)
+                finish()
             }
             viewModel.isTopUpFlowShown() -> {
-                navigateToConnectionOrHome(isBackTransition = false)
+                checkRegistrationStatus()
             }
             viewModel.isAccountCreated() -> {
-                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
-                }
-                startActivity(intent, transitionAnimation)
+                navigateToTopUp()
             }
             viewModel.isTermsAccepted() -> {
                 startActivity(Intent(this, CreateAccountActivity::class.java), transitionAnimation)
+                finish()
             }
         }
-        finish()
+    }
+
+    private fun checkRegistrationStatus() {
+        viewModel.getIdentity().observe(this) {
+            it.onSuccess { identity ->
+                if (identity.registered) {
+                    navigateToConnectionOrHome(isBackTransition = false)
+                } else {
+                    navigateToTopUp()
+                }
+            }
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                navigateToConnectionOrHome(isBackTransition = false)
+            }
+        }
     }
 
     private fun ensureVpnServicePermission() {
@@ -214,5 +234,18 @@ class SplashActivity : BaseActivity() {
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.startLoading(deferredMysteriumCoreService)
         }
+    }
+
+    private fun navigateToTopUp() {
+        val transitionAnimation = ActivityOptions.makeCustomAnimation(
+            applicationContext,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        ).toBundle()
+        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
+        }
+        startActivity(intent, transitionAnimation)
+        finish()
     }
 }
