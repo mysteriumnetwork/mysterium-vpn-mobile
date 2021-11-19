@@ -101,8 +101,10 @@ class SplashActivity : BaseActivity() {
         })
 
         lifecycleScope.launchWhenStarted {
-            analytic.eventTracked.collect {
-                navigateForward()
+            analytic.eventTracked.collect { event ->
+                if (event == AnalyticEvent.STARTUP.eventName) {
+                    navigateForward()
+                }
             }
         }
     }
