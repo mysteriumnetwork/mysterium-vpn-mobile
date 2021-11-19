@@ -160,7 +160,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun checkRegistrationStatus(isReload: Boolean = false) {
+    private fun checkRegistrationStatus() {
         viewModel.getIdentity().observe(this) {
             it.onSuccess { identity ->
                 if (identity.registered) {
@@ -171,10 +171,7 @@ class SplashActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                // Second try
-                if (isReload.not()) {
-                    checkRegistrationStatus(isReload = true)
-                }
+                navigateToTopUp()
             }
         }
     }
