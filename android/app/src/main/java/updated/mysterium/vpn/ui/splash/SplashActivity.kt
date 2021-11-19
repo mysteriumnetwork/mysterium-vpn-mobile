@@ -101,8 +101,10 @@ class SplashActivity : BaseActivity() {
         })
 
         lifecycleScope.launchWhenStarted {
-            analytic.eventTracked.collect {
-                navigateForward()
+            analytic.eventTracked.collect { event ->
+                if (event == AnalyticEvent.STARTUP.eventName) {
+                    navigateForward()
+                }
             }
         }
     }
@@ -158,7 +160,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun checkRegistrationStatus() {
+    private fun checkRegistrationStatus(isReload: Boolean = false) {
         viewModel.getIdentity().observe(this) {
             it.onSuccess { identity ->
                 if (identity.registered) {
@@ -169,7 +171,10 @@ class SplashActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToTopUp()
+                // Second try
+                if (isReload.not()) {
+                    checkRegistrationStatus(isReload = true)
+                }
             }
         }
     }

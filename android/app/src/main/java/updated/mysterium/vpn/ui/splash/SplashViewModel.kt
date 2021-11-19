@@ -65,8 +65,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 }
             } else {
                 service?.let {
-                    it.stopNode()
-                    deferredNode
                     deferredNode.start(it) { exception ->
                         if (exception != null) {
                             _nodeStartingError.postValue(exception)
