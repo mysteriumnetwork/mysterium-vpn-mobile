@@ -13,6 +13,7 @@ import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -125,5 +126,9 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getIdentityAddress() = liveDataResult {
         connectionUseCase.getIdentityAddress()
+    }
+
+    fun getIdentity() = liveDataResult {
+        IdentityModel(connectionUseCase.getIdentity())
     }
 }
