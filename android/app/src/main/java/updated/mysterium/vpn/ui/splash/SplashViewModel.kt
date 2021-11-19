@@ -9,6 +9,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
@@ -128,5 +129,23 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getIdentity() = liveDataResult {
         IdentityModel(connectionUseCase.getIdentity())
+    }
+
+    fun checkFreeRegistration() = liveDataResult {
+        val address = connectionUseCase.getIdentity().address
+        loginUseCase.isFreeRegistrationAvailable(address)
+    }
+
+    fun registerAccount() = liveDataResult {
+        val identity = connectionUseCase.getIdentity()
+        val identityModel = IdentityModel(identity)
+        val req = RegisterIdentityRequest().apply {
+            identityAddress = identityModel.address
+            token?.let {
+                this.token = it
+            }
+        }
+        connectionUseCase.registerIdentity(req)
+        connectionUseCase.registrationFees()
     }
 }

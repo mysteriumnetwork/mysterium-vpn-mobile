@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
+import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
@@ -166,6 +167,22 @@ class SplashActivity : BaseActivity() {
                 if (identity.registered) {
                     navigateToConnectionOrHome(isBackTransition = false)
                 } else {
+                    checkFreeRegistration()
+                }
+            }
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                checkFreeRegistration()
+            }
+        }
+    }
+
+    private fun checkFreeRegistration() {
+        viewModel.checkFreeRegistration().observe(this) {
+            it.onSuccess { freeRegistration ->
+                if (freeRegistration) {
+                    registerAccount()
+                } else {
                     navigateToTopUp()
                 }
             }
@@ -174,6 +191,32 @@ class SplashActivity : BaseActivity() {
                 navigateToTopUp()
             }
         }
+    }
+
+    private fun registerAccount() {
+        viewModel.registerAccount().observe(this) {
+            it.onSuccess {
+                navigateToConnectionOrHome(isBackTransition = false)
+            }
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                showRegistrationErrorPopUp()
+            }
+        }
+    }
+
+    private fun showRegistrationErrorPopUp() {
+        val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, true)
+        bindingPopUp.tryAgainButton.setOnClickListener {
+            dialog.dismiss()
+            viewModel.registerAccount()
+        }
+        bindingPopUp.cancelButton.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+        dialog.show()
     }
 
     private fun ensureVpnServicePermission() {
