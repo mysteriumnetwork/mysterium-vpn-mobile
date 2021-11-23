@@ -2,8 +2,6 @@ package updated.mysterium.vpn.ui.top.up.amount
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
@@ -18,12 +16,12 @@ import java.util.*
 class TopUpAmountActivity : BaseActivity() {
 
     companion object {
-        val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
+        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         private val AMOUNT_VALUES = listOf(
-            TopUpCardItem("20", true),
-            TopUpCardItem("40"),
-            TopUpCardItem("60"),
-            TopUpCardItem("80"),
+            TopUpCardItem("5", true),
+            TopUpCardItem("10"),
+            TopUpCardItem("20"),
+            TopUpCardItem("50"),
             TopUpCardItem("100")
         )
     }
