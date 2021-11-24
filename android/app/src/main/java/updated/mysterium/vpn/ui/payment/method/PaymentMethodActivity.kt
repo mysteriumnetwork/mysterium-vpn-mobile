@@ -6,6 +6,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPaymentMethodBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.top.up.card.CardPaymentActivity
 import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
@@ -32,6 +33,9 @@ class PaymentMethodActivity : BaseActivity() {
         binding.cryptoPayment.setOnClickListener {
             navigateToCryptoPaymentFlow()
         }
+        binding.creditCardPayment.setOnClickListener {
+            navigateToCardPaymentFlow()
+        }
         binding.backButton.setOnClickListener {
             finish()
         }
@@ -51,6 +55,16 @@ class PaymentMethodActivity : BaseActivity() {
             putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
             if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
                 putExtra(TopUpCryptoActivity.REGISTRATION_MODE_EXTRA_KEY, true)
+            }
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToCardPaymentFlow() {
+        val intent = Intent(this, CardPaymentActivity::class.java).apply {
+            putExtra(CardPaymentActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
+                putExtra(CardPaymentActivity.REGISTRATION_MODE_EXTRA_KEY, true)
             }
         }
         startActivity(intent)

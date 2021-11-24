@@ -197,6 +197,9 @@
     <string name="create_account_import">Import\n Account</string>
     <string name="create_account_description">Create an account to start or import your existing account using your private key.</string>
 
+    <!--  Card payment  -->
+    <string name="card_payment_title">Select your Country</string>
+
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
     <string name="private_key_back_up">Back up\n Private Key</string>
