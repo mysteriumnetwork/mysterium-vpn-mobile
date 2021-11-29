@@ -61,7 +61,7 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun isFreeRegistrationAvailable() = liveDataResult {
-        val address = connectionUseCase.getIdentity().address
+        val address = connectionUseCase.getIdentityAddress()
         loginUseCase.isFreeRegistrationAvailable(address)
     }
 

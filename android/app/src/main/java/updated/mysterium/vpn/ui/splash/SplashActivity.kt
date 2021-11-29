@@ -223,13 +223,8 @@ class SplashActivity : BaseActivity() {
                 navigateToConnectionOrHome(isBackTransition = false)
             }
             it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    registerAccount()
-                }
-//                Log.e(TAG, error.localizedMessage ?: error.toString())
-//                showRegistrationErrorPopUp()
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                showRegistrationErrorPopUp()
             }
         }
     }
