@@ -199,6 +199,11 @@
 
     <!--  Card payment  -->
     <string name="card_payment_title">Select your Country</string>
+    <string name="card_payment_description">Select your country for the VAT calculation</string>
+    <string name="card_payment_pay">Continue to Pay</string>
+    <string name="card_payment_cardinity">You will be taken to Cardinity payment page to pay.</string>
+    <string name="card_payment_total">Total Due</string>
+    <string name="card_payment_vat">VAT</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>

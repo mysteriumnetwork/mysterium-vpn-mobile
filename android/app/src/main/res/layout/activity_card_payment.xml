@@ -46,9 +46,10 @@
         style="@style/TextAppearance.Headline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        android:text="@string/payment_method_title"
+        android:paddingHorizontal="@dimen/margin_padding_size_biggest"
+        android:text="@string/card_payment_description"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
@@ -67,102 +68,151 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/centerGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
-
-            <LinearLayout
-                android:id="@+id/creditCardPayment"
-                style="@style/RippleEffectPrimaryColor"
-                android:layout_width="138dp"
-                android:layout_height="149dp"
-                android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:layout_marginStart="@dimen/margin_padding_size_large"
-                android:layout_marginEnd="@dimen/margin_padding_size_small"
-                android:background="@drawable/shape_rectangle_pink_rounded_10"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical"
-                android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
-                app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_medium"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon_top_up_now"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/TextAppearance.HeadSubNumbers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:text="@string/credit_card"
-                    android:textAlignment="center"
-                    android:textColor="@color/create_account_import_text" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/cryptoPayment"
-                style="@style/RippleEffectSecondaryColor"
-                android:layout_width="138dp"
-                android:layout_height="149dp"
-                android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:layout_marginStart="@dimen/margin_padding_size_small"
-                android:layout_marginEnd="@dimen/margin_padding_size_large"
-                android:background="@drawable/shape_rectangle_gray_rounded_10"
-                android:orientation="vertical"
-                android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_medium"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon_crypto"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/TextAppearance.HeadSubNumbers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:text="@string/crypto"
-                    android:textAlignment="center"
-                    android:textColor="@color/manual_connect_connecting_title_grey_blue" />
-
-            </LinearLayout>
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/margin_padding_size_medium_large">
 
             <TextView
-                android:id="@+id/usdEquivalentTextView"
-                style="@style/TextAppearance.BodyMedium"
+                android:id="@+id/mystValueTextView"
+                style="@style/TextAppearance.BodyRegular"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
+                android:textColor="@color/pop_up_title"
+                app:layout_constraintBottom_toBottomOf="@+id/mystTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/mystTextView"
+                tools:ignore="HardcodedText"
+                android:text="$10.00" />
+
+            <TextView
+                android:id="@+id/mystTextView"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+                android:textColor="@color/home_country_amount"
+                app:layout_constraintBottom_toTopOf="@+id/divider3"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="10 MYST Top-up" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
+                android:background="@drawable/divider_country_group"
+                app:layout_constraintBottom_toTopOf="@+id/vatValueTextView" />
+
+            <TextView
+                android:id="@+id/vatValueTextView"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
+                android:text="-"
+                android:textColor="@color/pop_up_title"
+                app:layout_constraintBottom_toBottomOf="@+id/vatTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/vatTextView"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/vatTextView"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+                android:text="@string/card_payment_vat"
+                android:textColor="@color/home_country_amount"
+                app:layout_constraintBottom_toTopOf="@+id/divider2"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
+                android:background="@drawable/divider_country_group"
+                app:layout_constraintBottom_toTopOf="@+id/totalValueTextView" />
+
+            <TextView
+                android:id="@+id/totalValueTextView"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
+                android:text="-"
+                android:textColor="@color/primary"
+                app:layout_constraintBottom_toBottomOf="@+id/totalTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/totalTextView"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/totalTextView"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+                android:text="@string/card_payment_total"
+                android:textColor="@color/primary"
+                app:layout_constraintBottom_toTopOf="@+id/divider1"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_large"
+                android:background="@drawable/divider_country_group"
+                app:layout_constraintBottom_toTopOf="@+id/cardinityPaymentDescription" />
+
+            <TextView
+                android:id="@+id/cardinityPaymentDescription"
+                style="@style/TextAppearance.Caption"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_biggest"
+                android:layout_marginBottom="@dimen/margin_padding_size_large"
+                android:paddingHorizontal="@dimen/margin_padding_size_medium"
+                android:text="@string/card_payment_cardinity"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+                app:layout_constraintEnd_toEndOf="@+id/confirmButton"
+                app:layout_constraintStart_toStartOf="@+id/confirmButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirmButton"
+                style="@style/Widget.PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_biggest"
-                android:textColor="@color/manual_connect_divider_grey_blue"
+                android:enabled="false"
+                android:text="@string/card_payment_pay"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/cryptoPayment"
-                app:layout_constraintStart_toStartOf="@+id/creditCardPayment"
-                tools:text="USD Equivalant = $12.26 " />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/confirmButtonShadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="4dp"
+                android:src="@drawable/shadow_primary_button"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

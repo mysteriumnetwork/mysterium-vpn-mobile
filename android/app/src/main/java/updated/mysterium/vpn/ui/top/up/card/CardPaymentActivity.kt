@@ -17,5 +17,6 @@ class CardPaymentActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCardPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//        binding.confirmButton.isEnabled = false
     }
 }
