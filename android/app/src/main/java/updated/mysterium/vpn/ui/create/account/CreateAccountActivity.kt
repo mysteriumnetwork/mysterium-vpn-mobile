@@ -32,8 +32,8 @@ import java.io.InputStreamReader
 class CreateAccountActivity : BaseActivity() {
 
     private companion object {
-    	const val MIME_TYPE_JSON = "application/json"
-	    const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
+        const val MIME_TYPE_JSON = "application/json"
+        const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
         const val KEY_REQUEST_CODE = 0
         const val TAG = "CreateAccountActivity"
     }
@@ -129,31 +129,56 @@ class CreateAccountActivity : BaseActivity() {
         viewModel.getIdentity().observe(this) {
             it.onSuccess { identity ->
                 if (identity.registered) {
-                    navigateToHome()
+                    navigateToConnectionOrHome(isBackTransition = false)
+                    finish()
                 } else {
-                    checkFreeRegistration(identity)
+                    checkUpdatedBalance(identity)
                 }
             }
-
             it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToTopUp()
+                val errorMessage = error.localizedMessage ?: error.toString()
+                Log.e(TAG, errorMessage)
+                detailedErrorPopUp(errorMessage) {
+                    checkRegistrationStatus()
+                }
             }
         }
     }
 
-    private fun checkFreeRegistration(identityModel: IdentityModel) {
+    private fun checkUpdatedBalance(identity: IdentityModel) {
+        viewModel.forceBalanceUpdate(identity).observe(this) {
+            it.onSuccess { balanceResponse ->
+                if (balanceResponse.balance > 0) {
+                    //registerAccount(identity)
+                } else {
+                    checkFreeRegistration(identity)
+                }
+            }
+            it.onFailure { error ->
+                val errorMessage = error.localizedMessage ?: error.toString()
+                Log.e(TAG, errorMessage)
+                detailedErrorPopUp(errorMessage) {
+                    checkUpdatedBalance(identity)
+                }
+            }
+        }
+    }
+
+    private fun checkFreeRegistration(identity: IdentityModel) {
         viewModel.isFreeRegistrationAvailable().observe(this) {
-            it.onSuccess { isAvailable ->
-                if (isAvailable) {
-                    registerAccount(identityModel)
+            it.onSuccess { freeRegistration ->
+                if (freeRegistration) {
+                    //registerAccount(identity)
                 } else {
                     navigateToTopUp()
                 }
             }
-
-            it.onFailure {
-                navigateToTopUp()
+            it.onFailure { error ->
+                val errorMessage = error.localizedMessage ?: error.toString()
+                Log.e(TAG, errorMessage)
+                detailedErrorPopUp(errorMessage) {
+                    checkFreeRegistration(identity)
+                }
             }
         }
     }
@@ -225,7 +250,9 @@ class CreateAccountActivity : BaseActivity() {
             }
             passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
+                    bindingPasswordPopUp.passwordEditText.hint = getString(
+                        R.string.pop_up_password_account_hint
+                    )
                     clearErrorState(bindingPasswordPopUp)
                 }
             }
@@ -238,14 +265,16 @@ class CreateAccountActivity : BaseActivity() {
             }
             showPasswordImageView.setOnClickListener {
                 val oldPosition = position
-                bindingPasswordPopUp.passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                bindingPasswordPopUp.passwordEditText.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
                 bindingPasswordPopUp.showPasswordImageView.visibility = View.INVISIBLE
                 bindingPasswordPopUp.hidePasswordImageView.visibility = View.VISIBLE
                 bindingPasswordPopUp.passwordEditText.setSelection(oldPosition)
             }
             hidePasswordImageView.setOnClickListener {
                 val oldPosition = position
-                bindingPasswordPopUp.passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                bindingPasswordPopUp.passwordEditText.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
                 bindingPasswordPopUp.showPasswordImageView.visibility = View.VISIBLE
                 bindingPasswordPopUp.hidePasswordImageView.visibility = View.INVISIBLE
                 bindingPasswordPopUp.passwordEditText.setSelection(oldPosition)
