@@ -165,6 +165,7 @@ class SplashActivity : BaseActivity() {
             it.onSuccess { identity ->
                 if (identity.registered) {
                     navigateToConnectionOrHome(isBackTransition = false)
+                    finish()
                 } else {
                     checkUpdatedBalance()
                 }
