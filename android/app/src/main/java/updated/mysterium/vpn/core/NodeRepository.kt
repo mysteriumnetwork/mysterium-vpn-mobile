@@ -237,6 +237,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().isFreeRegistrationEligible(address)
     }
 
+    suspend fun forceBalanceUpdate(req: GetBalanceRequest) = withContext(Dispatchers.IO) {
+        deferredNode.await().forceBalanceUpdate(req)
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }

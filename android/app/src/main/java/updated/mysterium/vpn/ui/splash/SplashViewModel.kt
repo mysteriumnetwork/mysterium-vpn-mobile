@@ -9,6 +9,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mysterium.GetBalanceRequest
 import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
@@ -147,5 +148,13 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.registerIdentity(req)
         connectionUseCase.registrationFees()
+    }
+
+    fun forceBalanceUpdate() = liveDataResult {
+        val address = connectionUseCase.getIdentityAddress()
+        val balanceRequest = GetBalanceRequest().apply {
+            identityAddress = address
+        }
+        balanceUseCase.forceBalanceUpdate(balanceRequest)
     }
 }

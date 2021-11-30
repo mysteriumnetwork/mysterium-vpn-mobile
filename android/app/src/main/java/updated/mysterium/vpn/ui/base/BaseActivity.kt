@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
+import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
@@ -102,6 +103,25 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         dialogs.add(dialog)
         return dialog
+    }
+
+    fun detailedErrorPopUp(
+        errorMessage: String,
+        retryAction: () -> Unit
+    ) {
+        val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.description.text = errorMessage
+        bindingPopUp.title.setText(R.string.pop_up_details_title)
+        bindingPopUp.tryAgainButton.setOnClickListener {
+            retryAction.invoke()
+            dialog.dismiss()
+        }
+        bindingPopUp.cancelButton.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+        dialog.show()
     }
 
     fun wifiNetworkErrorPopUp() {

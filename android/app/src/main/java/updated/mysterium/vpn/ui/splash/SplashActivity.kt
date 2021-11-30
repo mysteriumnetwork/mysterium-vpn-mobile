@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.splash
 
 import android.animation.Animator
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
@@ -167,12 +166,34 @@ class SplashActivity : BaseActivity() {
                 if (identity.registered) {
                     navigateToConnectionOrHome(isBackTransition = false)
                 } else {
+                    checkUpdatedBalance()
+                }
+            }
+            it.onFailure { error ->
+                val errorMessage = error.localizedMessage ?: error.toString()
+                Log.e(TAG, errorMessage)
+                detailedErrorPopUp(errorMessage) {
+                    checkRegistrationStatus()
+                }
+            }
+        }
+    }
+
+    private fun checkUpdatedBalance() {
+        viewModel.forceBalanceUpdate().observe(this) {
+            it.onSuccess { balanceResponse ->
+                if (balanceResponse.balance > 0) {
+                    registerAccount()
+                } else {
                     checkFreeRegistration()
                 }
             }
             it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
-                checkFreeRegistration()
+                val errorMessage = error.localizedMessage ?: error.toString()
+                Log.e(TAG, errorMessage)
+                detailedErrorPopUp(errorMessage) {
+                    checkUpdatedBalance()
+                }
             }
         }
     }
@@ -187,8 +208,11 @@ class SplashActivity : BaseActivity() {
                 }
             }
             it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToTopUp()
+                val errorMessage = error.localizedMessage ?: error.toString()
+                Log.e(TAG, errorMessage)
+                detailedErrorPopUp(errorMessage) {
+                    checkFreeRegistration()
+                }
             }
         }
     }
