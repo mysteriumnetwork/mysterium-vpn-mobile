@@ -21,7 +21,7 @@ class CryptoAnimationView @JvmOverloads constructor(
         const val ETH = "ETH"
         const val LTC = "LTC"
         const val DAI = "DAI"
-        const val T = "T"
+        const val USDT = "USDT"
         const val DOGE = "DOGE"
     }
 
@@ -43,7 +43,7 @@ class CryptoAnimationView @JvmOverloads constructor(
             ETH -> playAnimation(binding.ethAnimation)
             LTC -> playAnimation(binding.ltcAnimation)
             DAI -> playAnimation(binding.daiAnimation)
-            T -> playAnimation(binding.tAnimation)
+            USDT -> playAnimation(binding.tAnimation)
             DOGE -> playAnimation(binding.dogeAnimation)
         }
     }
