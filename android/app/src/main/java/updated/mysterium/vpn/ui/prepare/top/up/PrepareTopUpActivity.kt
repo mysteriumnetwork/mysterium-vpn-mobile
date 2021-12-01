@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import network.mysterium.vpn.R
@@ -13,39 +12,42 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 
 class PrepareTopUpActivity : BaseActivity() {
 
     companion object {
-        const val IS_NEW_USER_KEY = "IS_NEW_USER"
         private const val TAG = "PrepareTopUpActivity"
     }
 
     private lateinit var binding: ActivityPrepareTopUpBinding
     private val viewModel: PrepareTopUpViewModel by inject()
+    private val registrationViewModel: RegistrationViewModel by inject()
     private var isReferralTokenUsed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPrepareTopUpBinding.inflate(layoutInflater)
-        checkUserRegistrationStatus()
         setContentView(binding.root)
+        registrationViewModel.tryRegisterAccount()
+        subscribeViewModel()
         bindsAction()
     }
 
-    private fun checkUserRegistrationStatus() {
-        intent.extras?.let {
-            val isNewUser = it.getBoolean(IS_NEW_USER_KEY, true)
-            if (isNewUser) {
-                binding.referralProgram.visibility = View.VISIBLE
-            } else {
-                binding.referralProgram.visibility = View.GONE
+    private fun subscribeViewModel() {
+        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+            if (isRegistered) {
+                navigateToConnectionOrHome(isBackTransition = false)
+                finish()
+            }
+        }
+        registrationViewModel.accountRegistrationError.observe(this) {
+            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+                registrationViewModel.tryRegisterAccount()
             }
         }
     }
@@ -101,16 +103,18 @@ class PrepareTopUpActivity : BaseActivity() {
                 })
             }
         }
-        bindingPopUp.registrationTokenEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bindingPopUp.registrationTokenEditText.background = ContextCompat.getDrawable(
-                    this, R.drawable.shape_password_field
-                )
-                bindingPopUp.registrationTokenEditText.text?.clear()
-                bindingPopUp.registrationTokenEditText.hint = getString(R.string.pop_up_referral_hint)
-                bindingPopUp.errorText.visibility = View.INVISIBLE
+        bindingPopUp.registrationTokenEditText.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    bindingPopUp.registrationTokenEditText.background = ContextCompat.getDrawable(
+                        this, R.drawable.shape_password_field
+                    )
+                    bindingPopUp.registrationTokenEditText.text?.clear()
+                    bindingPopUp.registrationTokenEditText.hint =
+                        getString(R.string.pop_up_referral_hint)
+                    bindingPopUp.errorText.visibility = View.INVISIBLE
+                }
             }
-        }
         dialog.show()
     }
 

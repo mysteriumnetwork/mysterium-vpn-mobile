@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -15,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
-import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
@@ -27,6 +25,7 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
@@ -35,15 +34,12 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
 
-    private companion object {
-        const val TAG = "SplashActivity"
-    }
-
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
+    private val registrationViewModel: RegistrationViewModel by inject()
     private val analytic: MysteriumAnalytic by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
@@ -100,10 +96,24 @@ class SplashActivity : BaseActivity() {
             wifiNetworkErrorPopUp()
         })
 
+        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+            if (isRegistered) {
+                navigateToConnectionOrHome(isBackTransition = false)
+                finish()
+            } else {
+                navigateForward()
+            }
+        }
+        registrationViewModel.accountRegistrationError.observe(this) {
+            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+                registrationViewModel.tryRegisterAccount()
+            }
+        }
+
         lifecycleScope.launchWhenStarted {
             analytic.eventTracked.collect { event ->
                 if (event == AnalyticEvent.STARTUP.eventName) {
-                    navigateForward()
+                    registrationViewModel.tryRegisterAccount()
                 }
             }
         }
@@ -149,7 +159,7 @@ class SplashActivity : BaseActivity() {
                 navigateToTerms()
             }
             viewModel.isTopUpFlowShown() -> {
-                checkRegistrationStatus()
+                navigateToConnectionOrHome(isBackTransition = false)
             }
             viewModel.isAccountCreated() -> {
                 navigateToTopUp()
@@ -158,90 +168,6 @@ class SplashActivity : BaseActivity() {
                 navigateToCreateAccount()
             }
         }
-    }
-
-    private fun checkRegistrationStatus() {
-        viewModel.getIdentity().observe(this) {
-            it.onSuccess { identity ->
-                if (identity.registered) {
-                    navigateToConnectionOrHome(isBackTransition = false)
-                    finish()
-                } else {
-                    checkUpdatedBalance()
-                }
-            }
-            it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    checkRegistrationStatus()
-                }
-            }
-        }
-    }
-
-    private fun checkUpdatedBalance() {
-        viewModel.forceBalanceUpdate().observe(this) {
-            it.onSuccess { balanceResponse ->
-                if (balanceResponse.balance > 0) {
-                    registerAccount()
-                } else {
-                    checkFreeRegistration()
-                }
-            }
-            it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    checkUpdatedBalance()
-                }
-            }
-        }
-    }
-
-    private fun checkFreeRegistration() {
-        viewModel.checkFreeRegistration().observe(this) {
-            it.onSuccess { freeRegistration ->
-                if (freeRegistration) {
-                    registerAccount()
-                } else {
-                    navigateToTopUp()
-                }
-            }
-            it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    checkFreeRegistration()
-                }
-            }
-        }
-    }
-
-    private fun registerAccount() {
-        viewModel.registerAccount().observe(this) {
-            it.onSuccess {
-                navigateToConnectionOrHome(isBackTransition = false)
-            }
-            it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
-                showRegistrationErrorPopUp()
-            }
-        }
-    }
-
-    private fun showRegistrationErrorPopUp() {
-        val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
-        bindingPopUp.tryAgainButton.setOnClickListener {
-            dialog.dismiss()
-            viewModel.registerAccount()
-        }
-        bindingPopUp.cancelButton.setOnClickListener {
-            dialog.dismiss()
-            finish()
-        }
-        dialog.show()
     }
 
     private fun ensureVpnServicePermission() {
@@ -300,7 +226,6 @@ class SplashActivity : BaseActivity() {
 
     private fun navigateToTopUp() {
         val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)

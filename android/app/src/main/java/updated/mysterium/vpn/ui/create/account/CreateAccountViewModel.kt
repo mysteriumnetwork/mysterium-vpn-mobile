@@ -8,7 +8,6 @@ import io.intercom.android.sdk.Intercom
 import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
@@ -60,25 +59,9 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         loginUseCase.userCreateOrImportAccount(isNewUser)
     }
 
-    fun isFreeRegistrationAvailable() = liveDataResult {
-        val address = connectionUseCase.getIdentityAddress()
-        loginUseCase.isFreeRegistrationAvailable(address)
-    }
-
     fun getIdentity() = liveDataResult {
         val identity = connectionUseCase.getIdentity()
         IdentityModel(identity)
-    }
-
-    fun registerAccount(identity: IdentityModel) = liveDataResult {
-        val req = RegisterIdentityRequest().apply {
-            identityAddress = identity.address
-            token?.let {
-                this.token = it
-            }
-        }
-        connectionUseCase.registerIdentity(req)
-        connectionUseCase.registrationFees()
     }
 
     fun accountFlowShown() = loginUseCase.accountFlowShown()
