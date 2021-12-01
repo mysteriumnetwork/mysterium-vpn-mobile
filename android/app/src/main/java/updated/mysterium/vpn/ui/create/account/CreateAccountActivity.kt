@@ -86,7 +86,7 @@ class CreateAccountActivity : BaseActivity() {
         })
 
         registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
-            binding.proposalsLoader.visibility = View.INVISIBLE
+            binding.loader.visibility = View.INVISIBLE
             if (isRegistered) {
                 navigateToConnectionOrHome(isBackTransition = false)
                 finish()
@@ -95,7 +95,7 @@ class CreateAccountActivity : BaseActivity() {
             }
         }
         registrationViewModel.accountRegistrationError.observe(this) {
-            binding.proposalsLoader.visibility = View.INVISIBLE
+            binding.loader.visibility = View.INVISIBLE
             detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
                 registrationViewModel.tryRegisterAccount()
             }
@@ -134,7 +134,7 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun applyNewIdentity(newIdentityAddress: String) {
-        binding.proposalsLoader.visibility = View.VISIBLE
+        binding.loader.visibility = View.VISIBLE
 
         viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
             it.onSuccess { identity ->
@@ -146,7 +146,7 @@ class CreateAccountActivity : BaseActivity() {
             }
 
             it.onFailure { error ->
-                binding.proposalsLoader.visibility = View.GONE
+                binding.loader.visibility = View.GONE
                 detailedErrorPopUp(error.localizedMessage ?: error.toString()) {
                     applyNewIdentity(newIdentityAddress)
                 }
