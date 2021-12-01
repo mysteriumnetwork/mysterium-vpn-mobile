@@ -18,6 +18,7 @@ import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseViewModel
+import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.connection.ConnectionViewModel
 import updated.mysterium.vpn.ui.create.account.CreateAccountViewModel
 import updated.mysterium.vpn.ui.favourites.FavouritesViewModel
@@ -153,6 +154,9 @@ object Modules {
         }
         viewModel {
             MenuViewModel(get())
+        }
+        viewModel {
+            RegistrationViewModel(get())
         }
     }
 

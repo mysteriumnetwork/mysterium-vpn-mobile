@@ -20,9 +20,9 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
-import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
@@ -40,6 +40,7 @@ class CreateAccountActivity : BaseActivity() {
 
     private val viewModel: CreateAccountViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
+    private val registrationViewModel: RegistrationViewModel by inject()
     private var privateKeyJson: String? = null
     private lateinit var binding: ActivityCreateAccountBinding
     private lateinit var bindingPasswordPopUp: PopUpAccountPasswordBinding
@@ -83,6 +84,22 @@ class CreateAccountActivity : BaseActivity() {
             binding.importAccountFrame.isClickable = true
             showRegistrationErrorPopUp()
         })
+
+        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+            binding.proposalsLoader.visibility = View.INVISIBLE
+            if (isRegistered) {
+                navigateToConnectionOrHome(isBackTransition = false)
+                finish()
+            } else {
+                navigateToTopUp()
+            }
+        }
+        registrationViewModel.accountRegistrationError.observe(this) {
+            binding.proposalsLoader.visibility = View.INVISIBLE
+            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+                registrationViewModel.tryRegisterAccount()
+            }
+        }
     }
 
     private fun uploadKey() {
@@ -117,82 +134,24 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun applyNewIdentity(newIdentityAddress: String) {
+        binding.proposalsLoader.visibility = View.VISIBLE
+
         viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
-            val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
-            balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-            viewModel.accountCreated(false)
-            checkRegistrationStatus()
-        })
-    }
-
-    private fun checkRegistrationStatus() {
-        viewModel.getIdentity().observe(this) {
             it.onSuccess { identity ->
-                if (identity.registered) {
-                    navigateToConnectionOrHome(isBackTransition = false)
-                    finish()
-                } else {
-                    checkUpdatedBalance(identity)
-                }
+                val deferredMysteriumCoreService =
+                    App.getInstance(this).deferredMysteriumCoreService
+                balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+                viewModel.accountCreated(false)
+                registrationViewModel.tryRegisterAccount(identity)
             }
+
             it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    checkRegistrationStatus()
+                binding.proposalsLoader.visibility = View.GONE
+                detailedErrorPopUp(error.localizedMessage ?: error.toString()) {
+                    applyNewIdentity(newIdentityAddress)
                 }
             }
-        }
-    }
-
-    private fun checkUpdatedBalance(identity: IdentityModel) {
-        viewModel.forceBalanceUpdate(identity).observe(this) {
-            it.onSuccess { balanceResponse ->
-                if (balanceResponse.balance > 0) {
-                    //registerAccount(identity)
-                } else {
-                    checkFreeRegistration(identity)
-                }
-            }
-            it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    checkUpdatedBalance(identity)
-                }
-            }
-        }
-    }
-
-    private fun checkFreeRegistration(identity: IdentityModel) {
-        viewModel.isFreeRegistrationAvailable().observe(this) {
-            it.onSuccess { freeRegistration ->
-                if (freeRegistration) {
-                    //registerAccount(identity)
-                } else {
-                    navigateToTopUp()
-                }
-            }
-            it.onFailure { error ->
-                val errorMessage = error.localizedMessage ?: error.toString()
-                Log.e(TAG, errorMessage)
-                detailedErrorPopUp(errorMessage) {
-                    checkFreeRegistration(identity)
-                }
-            }
-        }
-    }
-
-    private fun registerAccount(identityModel: IdentityModel) {
-        viewModel.registerAccount(identityModel).observe(this) {
-            it.onSuccess {
-                navigateToHome()
-            }
-
-            it.onFailure {
-                showRegistrationErrorPopUp()
-            }
-        }
+        })
     }
 
     private fun showPasswordWrongState() {
@@ -308,7 +267,6 @@ class CreateAccountActivity : BaseActivity() {
     private fun navigateToTopUp() {
         val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, false)
         }
         startActivity(intent)
     }
