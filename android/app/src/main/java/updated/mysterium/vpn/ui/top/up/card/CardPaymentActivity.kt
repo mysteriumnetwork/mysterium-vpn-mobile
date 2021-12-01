@@ -19,4 +19,6 @@ class CardPaymentActivity : BaseActivity() {
         setContentView(binding.root)
 //        binding.confirmButton.isEnabled = false
     }
+
+
 }

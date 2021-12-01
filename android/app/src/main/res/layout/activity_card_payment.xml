@@ -71,6 +71,47 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/margin_padding_size_medium_large">
 
+            <FrameLayout
+                android:id="@+id/dnsSpinnerFrame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_size_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/divider4">
+
+                <Spinner
+                    android:id="@+id/dnsSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/spinner_settings_selected"
+                    android:dropDownWidth="match_parent"
+                    android:dropDownVerticalOffset="@dimen/margin_padding_size_xsmall"
+                    android:gravity="center"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@drawable/spinner_settings_menu"
+                    android:textAlignment="center" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
+                    android:src="@drawable/icon_drop_down_png"
+                    tools:ignore="ContentDescription" />
+
+            </FrameLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
+                android:background="@drawable/divider_country_group"
+                app:layout_constraintBottom_toTopOf="@+id/mystValueTextView" />
+
             <TextView
                 android:id="@+id/mystValueTextView"
                 style="@style/TextAppearance.BodyRegular"

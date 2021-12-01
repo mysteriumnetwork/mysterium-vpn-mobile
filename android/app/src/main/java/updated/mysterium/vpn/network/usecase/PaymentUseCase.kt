@@ -27,4 +27,8 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     ) = nodeRepository.registerOrderUpdatedCallback {
         action.invoke(it)
     }
+
+    fun getAllPaymentCountries() {
+        
+    }
 }
