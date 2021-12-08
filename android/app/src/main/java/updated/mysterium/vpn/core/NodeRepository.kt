@@ -135,6 +135,12 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
+    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) = withContext(Dispatchers.IO) {
+        val order = deferredNode.await().createPaymentGatewayOrder(req)
+        Log.d(TAG, "createPaymentGatewayOrder response: ${String(order)}")
+        Order.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+    }
+
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listOrders(req)
         Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
@@ -235,6 +241,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     suspend fun isFreeRegistrationEligible(address: String) = withContext(Dispatchers.IO) {
         deferredNode.await().isFreeRegistrationEligible(address)
+    }
+
+    suspend fun getGateways() = withContext(Dispatchers.IO) {
+        deferredNode.await().gateways
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {

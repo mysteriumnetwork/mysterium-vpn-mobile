@@ -152,7 +152,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun checkPreviousResidentCountry() {
         viewModel.getResidentCountry().observe(this, { result ->
-            val countriesList = CountriesUtil().getAllResidentCountries()
+            val countriesList = CountriesUtil.getAllResidentCountries()
             result.onSuccess { residentDigitCode ->
                 val residentCountry = countriesList.find { it.code == residentDigitCode }
                 binding.selectedCountry.text = residentCountry?.fullName
@@ -166,7 +166,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun setUpResidentCountryList() {
-        val countriesList = CountriesUtil().getAllResidentCountries()
+        val countriesList = CountriesUtil.getAllResidentCountries()
         val countriesListName = countriesList.map { it.fullName }
         binding.selectedCountry.text = countriesListName.first()
         val spinnerAdapter = SpinnerArrayAdapter(
