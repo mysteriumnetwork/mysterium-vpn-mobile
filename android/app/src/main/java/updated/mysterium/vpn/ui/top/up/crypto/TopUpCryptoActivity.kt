@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.top.up.crypto
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpCryptoBinding
@@ -91,7 +90,7 @@ class TopUpCryptoActivity : BaseActivity() {
         CryptoCardItem(CryptoAnimationView.ETH, false, R.raw.eth_animation),
         CryptoCardItem(CryptoAnimationView.LTC, true, R.raw.ltc_animation),
         CryptoCardItem(CryptoAnimationView.DAI, false, R.raw.dai_animation),
-        CryptoCardItem(CryptoAnimationView.T, false, R.raw.t_animation),
+        CryptoCardItem(CryptoAnimationView.USDT, false, R.raw.t_animation),
         CryptoCardItem(CryptoAnimationView.DOGE, false, R.raw.doge_animation)
     )
 }

@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.splash
 
 import android.animation.Animator
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
@@ -26,6 +25,7 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
@@ -39,6 +39,7 @@ class SplashActivity : BaseActivity() {
     private val viewModel: SplashViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
+    private val registrationViewModel: RegistrationViewModel by inject()
     private val analytic: MysteriumAnalytic by inject()
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
@@ -95,9 +96,25 @@ class SplashActivity : BaseActivity() {
             wifiNetworkErrorPopUp()
         })
 
-        lifecycleScope.launchWhenStarted {
-            analytic.eventTracked.collect {
+        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+            if (isRegistered) {
+                navigateToConnectionOrHome(isBackTransition = false)
+                finish()
+            } else {
                 navigateForward()
+            }
+        }
+        registrationViewModel.accountRegistrationError.observe(this) {
+            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+                registrationViewModel.tryRegisterAccount()
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            analytic.eventTracked.collect { event ->
+                if (event == AnalyticEvent.STARTUP.eventName) {
+                    registrationViewModel.tryRegisterAccount()
+                }
             }
         }
     }
@@ -134,32 +151,23 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateForward() {
-        val transitionAnimation = ActivityOptions.makeCustomAnimation(
-            applicationContext,
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        ).toBundle()
         when {
             !viewModel.isUserAlreadyLogin() -> {
-                startActivity(Intent(this, OnboardingActivity::class.java), transitionAnimation)
+                navigateToOnboarding()
             }
             !viewModel.isTermsAccepted() -> {
-                startActivity(Intent(this, TermsOfUseActivity::class.java), transitionAnimation)
+                navigateToTerms()
             }
             viewModel.isTopUpFlowShown() -> {
                 navigateToConnectionOrHome(isBackTransition = false)
             }
             viewModel.isAccountCreated() -> {
-                val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-                    putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, viewModel.isNewUser())
-                }
-                startActivity(intent, transitionAnimation)
+                navigateToTopUp()
             }
             viewModel.isTermsAccepted() -> {
-                startActivity(Intent(this, CreateAccountActivity::class.java), transitionAnimation)
+                navigateToCreateAccount()
             }
         }
-        finish()
     }
 
     private fun ensureVpnServicePermission() {
@@ -214,5 +222,34 @@ class SplashActivity : BaseActivity() {
             balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
             viewModel.startLoading(deferredMysteriumCoreService)
         }
+    }
+
+    private fun navigateToTopUp() {
+        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToOnboarding() {
+        val intent = Intent(this, OnboardingActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToTerms() {
+        val intent = Intent(this, TermsOfUseActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToCreateAccount() {
+        val intent = Intent(this, CreateAccountActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
     }
 }

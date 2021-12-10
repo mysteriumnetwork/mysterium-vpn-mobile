@@ -31,6 +31,10 @@ class BalanceUseCase(
 
     suspend fun getWalletEquivalent(balance: Double) = nodeRepository.getWalletEquivalent(balance)
 
+    suspend fun forceBalanceUpdate(
+        getBalanceRequest: GetBalanceRequest
+    ) = nodeRepository.forceBalanceUpdate(getBalanceRequest)
+
     fun isBalancePopUpShown() = sharedPreferencesManager.getBoolPreferenceValue(
         SharedPreferencesList.BALANCE
     )

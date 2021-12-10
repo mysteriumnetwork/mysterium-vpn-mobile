@@ -65,7 +65,10 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
                 PERMISSION_REQUEST_EXT_STORAGE
             )
         } else {
@@ -141,9 +144,10 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
             dialog.dismiss()
             exportIdentity(passphrase)
         }
-        bindingPopUp.cancelButton.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            dialog.dismiss()
-        }
+        bindingPopUp.cancelButton.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                dialog.dismiss()
+            }
         dialog.show()
     }
 
@@ -151,7 +155,6 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         viewModel.accountCreated()
         val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, true)
         }
         startActivity(intent)
     }

@@ -20,9 +20,9 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
-import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
@@ -32,14 +32,15 @@ import java.io.InputStreamReader
 class CreateAccountActivity : BaseActivity() {
 
     private companion object {
-    	const val MIME_TYPE_JSON = "application/json"
-	    const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
+        const val MIME_TYPE_JSON = "application/json"
+        const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
         const val KEY_REQUEST_CODE = 0
         const val TAG = "CreateAccountActivity"
     }
 
     private val viewModel: CreateAccountViewModel by inject()
     private val balanceViewModel: BalanceViewModel by inject()
+    private val registrationViewModel: RegistrationViewModel by inject()
     private var privateKeyJson: String? = null
     private lateinit var binding: ActivityCreateAccountBinding
     private lateinit var bindingPasswordPopUp: PopUpAccountPasswordBinding
@@ -83,6 +84,22 @@ class CreateAccountActivity : BaseActivity() {
             binding.importAccountFrame.isClickable = true
             showRegistrationErrorPopUp()
         })
+
+        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+            binding.loader.visibility = View.INVISIBLE
+            if (isRegistered) {
+                navigateToConnectionOrHome(isBackTransition = false)
+                finish()
+            } else {
+                navigateToTopUp()
+            }
+        }
+        registrationViewModel.accountRegistrationError.observe(this) {
+            binding.loader.visibility = View.INVISIBLE
+            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+                registrationViewModel.tryRegisterAccount()
+            }
+        }
     }
 
     private fun uploadKey() {
@@ -117,57 +134,24 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun applyNewIdentity(newIdentityAddress: String) {
-        viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
-            val deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService
-            balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
-            viewModel.accountCreated(false)
-            checkRegistrationStatus()
-        })
-    }
+        binding.loader.visibility = View.VISIBLE
 
-    private fun checkRegistrationStatus() {
-        viewModel.getIdentity().observe(this) {
+        viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
             it.onSuccess { identity ->
-                if (identity.registered) {
-                    navigateToHome()
-                } else {
-                    checkFreeRegistration(identity)
-                }
+                val deferredMysteriumCoreService =
+                    App.getInstance(this).deferredMysteriumCoreService
+                balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
+                viewModel.accountCreated(false)
+                registrationViewModel.tryRegisterAccount(identity)
             }
 
             it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToTopUp()
-            }
-        }
-    }
-
-    private fun checkFreeRegistration(identityModel: IdentityModel) {
-        viewModel.isFreeRegistrationAvailable().observe(this) {
-            it.onSuccess { isAvailable ->
-                if (isAvailable) {
-                    registerAccount(identityModel)
-                } else {
-                    navigateToTopUp()
+                binding.loader.visibility = View.GONE
+                detailedErrorPopUp(error.localizedMessage ?: error.toString()) {
+                    applyNewIdentity(newIdentityAddress)
                 }
             }
-
-            it.onFailure {
-                navigateToTopUp()
-            }
-        }
-    }
-
-    private fun registerAccount(identityModel: IdentityModel) {
-        viewModel.registerAccount(identityModel).observe(this) {
-            it.onSuccess {
-                navigateToHome()
-            }
-
-            it.onFailure {
-                showRegistrationErrorPopUp()
-            }
-        }
+        })
     }
 
     private fun showPasswordWrongState() {
@@ -225,7 +209,9 @@ class CreateAccountActivity : BaseActivity() {
             }
             passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    bindingPasswordPopUp.passwordEditText.hint = getString(R.string.pop_up_password_account_hint)
+                    bindingPasswordPopUp.passwordEditText.hint = getString(
+                        R.string.pop_up_password_account_hint
+                    )
                     clearErrorState(bindingPasswordPopUp)
                 }
             }
@@ -238,14 +224,16 @@ class CreateAccountActivity : BaseActivity() {
             }
             showPasswordImageView.setOnClickListener {
                 val oldPosition = position
-                bindingPasswordPopUp.passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                bindingPasswordPopUp.passwordEditText.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
                 bindingPasswordPopUp.showPasswordImageView.visibility = View.INVISIBLE
                 bindingPasswordPopUp.hidePasswordImageView.visibility = View.VISIBLE
                 bindingPasswordPopUp.passwordEditText.setSelection(oldPosition)
             }
             hidePasswordImageView.setOnClickListener {
                 val oldPosition = position
-                bindingPasswordPopUp.passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                bindingPasswordPopUp.passwordEditText.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
                 bindingPasswordPopUp.showPasswordImageView.visibility = View.VISIBLE
                 bindingPasswordPopUp.hidePasswordImageView.visibility = View.INVISIBLE
                 bindingPasswordPopUp.passwordEditText.setSelection(oldPosition)
@@ -279,7 +267,6 @@ class CreateAccountActivity : BaseActivity() {
     private fun navigateToTopUp() {
         val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra(PrepareTopUpActivity.IS_NEW_USER_KEY, false)
         }
         startActivity(intent)
     }

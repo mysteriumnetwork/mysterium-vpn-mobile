@@ -18,10 +18,10 @@ class TopUpAmountActivity : BaseActivity() {
     companion object {
         const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         private val AMOUNT_VALUES = listOf(
-            TopUpCardItem("20", true),
-            TopUpCardItem("40"),
-            TopUpCardItem("60"),
-            TopUpCardItem("80"),
+            TopUpCardItem("5", true),
+            TopUpCardItem("10"),
+            TopUpCardItem("20"),
+            TopUpCardItem("50"),
             TopUpCardItem("100")
         )
     }
