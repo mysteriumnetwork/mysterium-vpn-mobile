@@ -80,7 +80,7 @@
   <string name="wallet_top_up">Recarregar</string>
   <string name="wallet_myst_about">MYST é um token de teste no blockchain Ethereum Goerli</string>
   <string name="wallet_top_up_label">Eventos de recarga</string>
-  <string name="wallet_spedings_label">Gastos</string>
+  <string name="wallet_spendings_label">Gastos</string>
   <string name="wallet_spendings_country">País</string>
   <string name="wallet_spendings_duration">Duração</string>
   <string name="wallet_spendings_currency">MYST / USD</string>

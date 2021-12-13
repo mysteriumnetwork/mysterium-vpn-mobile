@@ -80,7 +80,7 @@
   <string name="wallet_top_up">تعبئة</string>
   <string name="wallet_myst_about">MYST هو رمز اختبار في سلسلة سجلات Ethereum Goerli</string>
   <string name="wallet_top_up_label">أحداث التعبئة</string>
-  <string name="wallet_spedings_label">الإنفاق</string>
+  <string name="wallet_spendings_label">الإنفاق</string>
   <string name="wallet_spendings_country">البلد</string>
   <string name="wallet_spendings_duration">المدة</string>
   <string name="wallet_spendings_currency">MYST / دولار أمريكي</string>

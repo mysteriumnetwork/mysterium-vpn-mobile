@@ -106,7 +106,7 @@
     <string name="wallet_top_up">Top up</string>
     <string name="wallet_myst_about">MYST is a test token on Ethereum Goerli blockchain</string>
     <string name="wallet_top_up_label">Top up events</string>
-    <string name="wallet_spedings_label">Spendings</string>
+    <string name="wallet_spendings_label">Spendings</string>
     <string name="wallet_spendings_country">Country</string>
     <string name="wallet_spendings_duration">Duration</string>
     <string name="wallet_spendings_currency">MYST / USD</string>
