@@ -78,7 +78,7 @@
   <string name="wallet_usd_equivalent">美元等值金额 ≈ $%.3f</string>
   <string name="wallet_buys_for_you">此操作可购买：</string>
   <string name="wallet_top_up">充值</string>
-  <string name="wallet_myst_about">MYST 是以太坊 Goerli 区块链的测试代币</string>
+  <string name="wallet_myst_about">MYST 是以太坊 区块链的代币</string>
   <string name="wallet_top_up_label">充值事件</string>
   <string name="wallet_spedings_label">开销</string>
   <string name="wallet_spendings_country">国家</string>

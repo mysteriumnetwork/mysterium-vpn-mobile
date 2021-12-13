@@ -78,7 +78,7 @@
   <string name="wallet_usd_equivalent">ما يعادل دولار أمريكي ≈ %.3f دولار</string>
   <string name="wallet_buys_for_you">هذا يشتري لك:</string>
   <string name="wallet_top_up">تعبئة</string>
-  <string name="wallet_myst_about">MYST هو رمز اختبار في سلسلة سجلات Ethereum Goerli</string>
+  <string name="wallet_myst_about">MYST هو رمز في سلسلة سجلات Ethereum</string>
   <string name="wallet_top_up_label">أحداث التعبئة</string>
   <string name="wallet_spedings_label">الإنفاق</string>
   <string name="wallet_spendings_country">البلد</string>
