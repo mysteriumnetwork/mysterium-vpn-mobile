@@ -189,7 +189,7 @@
     <string name="settings_dark_mode">Dark Mode</string>
     <string name="settings_nat_description">NAT Type Detection</string>
     <string name="settings_helper_mark" translatable="false">\?</string>
-    <string name="settings_helper_description">Use automatic NAT type detection to filter out incompatible providers. It increases your changes of successfully connecting to provider nodes. </string>
+    <string name="settings_helper_description">Use automatic NAT type detection to filter out incompatible providers. It increases your chances of successfully connecting to provider nodes. </string>
 
     <!--  Create account  -->
     <string name="create_account_title">Your account</string>Create New Account
