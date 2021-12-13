@@ -41,7 +41,7 @@
     <string name="manual_connect_connecting_title">Manual connect</string>
     <string name="manual_connect_connecting_description">Creating an encrypted tunnel to the node</string>
     <string name="manual_connect_duration">Duration</string>
-    <string name="manual_connect_data_received_hint">Receive/Send</string>
+    <string name="manual_connect_data_received_hint">Received/Sent</string>
     <string name="manual_connect_paid_hint">Paid</string>
     <string name="manual_connect_time_format">HH MM SS</string>
     <string name="manual_connect_data_type" translatable="false">MiB</string>
@@ -282,7 +282,7 @@
     <string name="push_notification_connection_title">Mysterium connection</string>
     <string name="push_notification_connection_message">Connection to node is lost!</string>
     <string name="push_notification_connected_title">Connected to %1$s</string>
-    <string name="push_notification_content">Received %1$s | Send %2$s | Paid %3$s</string>
+    <string name="push_notification_content">Received %1$s | Sent %2$s | Paid %3$s</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
