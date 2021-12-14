@@ -8,6 +8,7 @@ import network.mysterium.vpn.databinding.ActivityCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.ui.base.BaseActivity
 
 class CardPaymentActivity : BaseActivity() {
@@ -50,9 +51,9 @@ class CardPaymentActivity : BaseActivity() {
             adapter = spinnerAdapter
             onItemSelected { position ->
                 spinnerAdapter.selectedPosition = position
-                binding.confirmButton.isEnabled = true
-                binding.confirmButtonShadow.visibility = View.VISIBLE
                 if (position != 0) {
+                    binding.confirmButton.isEnabled = true
+                    binding.confirmButtonShadow.visibility = View.VISIBLE
                     val countryFullName = countriesAdapterItems[position]
                     countriesList.find {
                         it.fullName == countryFullName
@@ -66,9 +67,6 @@ class CardPaymentActivity : BaseActivity() {
 
     private fun getMystAmount() {
         val mystAmount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
-        binding.mystValueTextView.text = getString(
-            R.string.card_payment_myst_amount, mystAmount?.toFloat()
-        )
         binding.mystTextView.text = getString(
             R.string.card_payment_myst_description, mystAmount
         )
@@ -77,13 +75,25 @@ class CardPaymentActivity : BaseActivity() {
     private fun updatePayment(countryCode: String) {
         intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.let { mystAmount ->
             viewModel.getPayment(mystAmount, countryCode).observe(this) {
-                it.onSuccess {
-
+                it.onSuccess { order ->
+                    inflateOrderData(order)
                 }
-                it.onFailure {
-                    Log.e("TAG", it.localizedMessage)
+                it.onFailure { error ->
+                    Log.e("TAG", error.localizedMessage ?: error.toString())
                 }
             }
         }
+    }
+
+    private fun inflateOrderData(cardOrder: CardOrder) {
+        binding.mystValueTextView.text = getString(
+            R.string.card_payment_myst_amount, cardOrder.payAmount.toFloat()
+        )
+        binding.vatValueTextView.text = getString(
+            R.string.card_payment_myst_amount, cardOrder.taxes.toFloat()
+        )
+        binding.totalValueTextView.text = getString(
+            R.string.card_payment_myst_amount, cardOrder.orderTotalAmount.toFloat()
+        )
     }
 }

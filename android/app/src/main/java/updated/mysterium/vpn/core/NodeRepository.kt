@@ -12,6 +12,7 @@ import updated.mysterium.vpn.exceptions.ConnectUnknownException
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
+import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
@@ -138,7 +139,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) = withContext(Dispatchers.IO) {
         val order = deferredNode.await().createPaymentGatewayOrder(req)
         Log.d(TAG, "createPaymentGatewayOrder response: ${String(order)}")
-        Order.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+        CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
     }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
