@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.amount
+package updated.mysterium.vpn.ui.top.up.coingate.amount
 
 import android.graphics.Color
 import android.view.LayoutInflater

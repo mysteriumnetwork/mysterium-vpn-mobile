@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.payment
+package updated.mysterium.vpn.ui.top.up.coingate.payment
 
 import android.content.ClipData
 import android.content.ClipboardManager

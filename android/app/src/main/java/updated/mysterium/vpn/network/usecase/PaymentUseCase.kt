@@ -6,7 +6,8 @@ import mysterium.CreatePaymentGatewayOrderReq
 import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.model.payment.CardOrder
-import updated.mysterium.vpn.model.payment.CardinityGateway
+import updated.mysterium.vpn.model.payment.CardinityGatewayLocalisation
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.Order
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
@@ -37,9 +38,9 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
             this.payCurrency = currency
             this.identityAddress = identityAddress
             this.mystAmount = mystAmount.toString()
-            this.gateway = "cardinity"
+            this.gateway = Gateway.CARDINITY.gateway
             this.gatewayCallerData = Gson()
-                .toJson(CardinityGateway("US"))
+                .toJson(CardinityGatewayLocalisation("US"))
                 .toString()
                 .toByteArray()
         }

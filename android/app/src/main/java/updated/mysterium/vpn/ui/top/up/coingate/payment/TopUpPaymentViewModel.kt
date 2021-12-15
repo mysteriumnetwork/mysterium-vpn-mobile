@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.payment
+package updated.mysterium.vpn.ui.top.up.coingate.payment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.wallet.IdentityModel
-import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {

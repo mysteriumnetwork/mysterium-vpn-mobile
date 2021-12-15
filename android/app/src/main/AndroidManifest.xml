@@ -78,15 +78,15 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -118,7 +118,11 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.card.CardPaymentActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity"
             android:screenOrientation="portrait" />
 
         <receiver

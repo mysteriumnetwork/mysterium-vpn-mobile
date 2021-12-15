@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card
+package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.content.Context
 import android.view.View

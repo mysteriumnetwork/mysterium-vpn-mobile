@@ -14,6 +14,7 @@ import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.payment.PaymentGateway
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
@@ -244,12 +245,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().isFreeRegistrationEligible(address)
     }
 
-    suspend fun forceBalanceUpdate(req: GetBalanceRequest) = withContext(Dispatchers.IO) {
+    suspend fun forceBalanceUpdate(req: GetBalanceRequest): GetBalanceResponse = withContext(Dispatchers.IO) {
         deferredNode.await().forceBalanceUpdate(req)
     }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        deferredNode.await().gateways
+        val gateways = deferredNode.await().gateways
+        PaymentGateway.listFromJSON(
+            gateways.decodeToString()) ?: error("Could not parse JSON: $gateways"
+        )
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
