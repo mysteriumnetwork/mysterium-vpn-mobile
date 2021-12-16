@@ -12,7 +12,9 @@ import updated.mysterium.vpn.exceptions.ConnectUnknownException
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
+import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.payment.PaymentGateway
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
@@ -135,6 +137,12 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
+    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) = withContext(Dispatchers.IO) {
+        val order = deferredNode.await().createPaymentGatewayOrder(req)
+        Log.d(TAG, "createPaymentGatewayOrder response: ${String(order)}")
+        CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+    }
+
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listOrders(req)
         Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
@@ -237,8 +245,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().isFreeRegistrationEligible(address)
     }
 
-    suspend fun forceBalanceUpdate(req: GetBalanceRequest) = withContext(Dispatchers.IO) {
+    suspend fun forceBalanceUpdate(req: GetBalanceRequest): GetBalanceResponse = withContext(Dispatchers.IO) {
         deferredNode.await().forceBalanceUpdate(req)
+    }
+
+    suspend fun getGateways() = withContext(Dispatchers.IO) {
+        val gateways = deferredNode.await().gateways
+        PaymentGateway.listFromJSON(
+            gateways.decodeToString()) ?: error("Could not parse JSON: $gateways"
+        )
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {

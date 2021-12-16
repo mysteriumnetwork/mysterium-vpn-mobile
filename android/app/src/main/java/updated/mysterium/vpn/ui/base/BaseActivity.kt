@@ -24,7 +24,7 @@ import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 

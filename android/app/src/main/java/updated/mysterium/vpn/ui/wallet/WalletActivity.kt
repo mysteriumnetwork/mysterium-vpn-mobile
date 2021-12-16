@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -22,7 +21,7 @@ import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 class WalletActivity : BaseActivity() {
 

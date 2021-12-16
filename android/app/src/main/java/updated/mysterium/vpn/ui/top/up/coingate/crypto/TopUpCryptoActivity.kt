@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.crypto
+package updated.mysterium.vpn.ui.top.up.coingate.crypto
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,8 @@ import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.amount.TopUpAmountActivity
-import updated.mysterium.vpn.ui.top.up.payment.TopUpPaymentActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class TopUpCryptoActivity : BaseActivity() {

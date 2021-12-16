@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.model.settings
 
-data class ResidentCountry(
+data class CountryISO(
     val fullName: String,
-    val digitCode: String
+    val code: String
 )

@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.amount
+package updated.mysterium.vpn.ui.top.up.coingate.amount
 
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
