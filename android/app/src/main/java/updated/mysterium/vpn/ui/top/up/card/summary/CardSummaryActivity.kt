@@ -27,8 +27,15 @@ class CardSummaryActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCardSummaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        bind()
         getMystAmount()
         loadPayment()
+    }
+
+    private fun bind() {
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun getMystAmount() {
