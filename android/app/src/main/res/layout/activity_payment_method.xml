@@ -5,27 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loader"
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/Widget.SemiTransparentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:elevation="2dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:src="@drawable/icon_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loader_animation" />
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/titleTextView"
         style="@style/TextAppearance.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+        android:layout_marginTop="@dimen/margin_padding_size_large"
         android:text="@string/create_account_title"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/new_account_animation" />
+        app:lottie_rawRes="@raw/prepare_top_up_animation" />
 
     <TextView
         android:id="@+id/descriptionTextView"
@@ -50,8 +47,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
-        android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
-        android:text="@string/create_account_description"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:text="@string/payment_method_title"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
@@ -64,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-        android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,7 +77,7 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <LinearLayout
-                android:id="@+id/createNewAccountFrame"
+                android:id="@+id/creditCardPayment"
                 style="@style/RippleEffectPrimaryColor"
                 android:layout_width="138dp"
                 android:layout_height="149dp"
@@ -89,11 +86,10 @@
                 android:layout_marginEnd="@dimen/margin_padding_size_small"
                 android:background="@drawable/shape_rectangle_pink_rounded_10"
                 android:clickable="true"
-                android:clipToPadding="false"
                 android:focusable="true"
                 android:orientation="vertical"
                 android:weightSum="2"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -104,7 +100,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_padding_size_medium"
                     android:layout_weight="1"
-                    android:src="@drawable/icon_create_account"
+                    android:src="@drawable/icon_top_up_now"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -113,14 +109,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="@string/create_account_new"
+                    android:text="@string/credit_card"
                     android:textAlignment="center"
                     android:textColor="@color/create_account_import_text" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/importAccountFrame"
+                android:id="@+id/cryptoPayment"
                 style="@style/RippleEffectSecondaryColor"
                 android:layout_width="138dp"
                 android:layout_height="149dp"
@@ -130,7 +126,7 @@
                 android:background="@drawable/shape_rectangle_gray_rounded_10"
                 android:orientation="vertical"
                 android:weightSum="2"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/centerGuideline"
                 app:layout_constraintTop_toTopOf="parent">
@@ -141,7 +137,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_padding_size_medium"
                     android:layout_weight="1"
-                    android:src="@drawable/icon_import_account"
+                    android:src="@drawable/icon_crypto"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -150,11 +146,23 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="@string/create_account_import"
+                    android:text="@string/crypto"
                     android:textAlignment="center"
                     android:textColor="@color/manual_connect_connecting_title_grey_blue" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/usdEquivalentTextView"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_size_biggest"
+                android:textColor="@color/manual_connect_divider_grey_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cryptoPayment"
+                app:layout_constraintStart_toStartOf="@+id/creditCardPayment"
+                tools:text="USD Equivalant = $12.26 " />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

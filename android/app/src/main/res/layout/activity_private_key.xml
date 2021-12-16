@@ -67,15 +67,16 @@
             <LinearLayout
                 android:id="@+id/backUpKeyFrame"
                 style="@style/RippleEffectPrimaryColor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="138dp"
+                android:layout_height="149dp"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginStart="@dimen/margin_padding_size_large"
                 android:layout_marginEnd="@dimen/margin_padding_size_small"
-                android:background="@drawable/shape_create_new_account"
+                android:background="@drawable/shape_rectangle_pink_rounded_10"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
+                android:weightSum="2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"
+                    android:layout_weight="1"
                     android:src="@drawable/icon_back_up"
                     tools:ignore="ContentDescription" />
 
@@ -94,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                    android:layout_weight="1"
                     android:text="@string/private_key_back_up"
                     android:textAlignment="center"
                     android:textColor="@color/create_account_import_text" />
@@ -104,12 +106,12 @@
             <LinearLayout
                 android:id="@+id/backUpLaterFrame"
                 style="@style/RippleEffectSecondaryColor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="138dp"
+                android:layout_height="149dp"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginStart="@dimen/margin_padding_size_small"
                 android:layout_marginEnd="@dimen/margin_padding_size_large"
-                android:background="@drawable/shape_import_account"
+                android:background="@drawable/shape_rectangle_gray_rounded_10"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"
                     android:src="@drawable/icon_back_up_later"
                     tools:ignore="ContentDescription" />
 
@@ -129,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_small_medium"
                     android:text="@string/private_key_back_up_later"
                     android:textAlignment="center"
                     android:textColor="@color/manual_connect_connecting_title_grey_blue" />

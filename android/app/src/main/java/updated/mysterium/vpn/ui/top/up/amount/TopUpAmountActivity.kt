@@ -8,8 +8,8 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 
@@ -57,13 +57,7 @@ class TopUpAmountActivity : BaseActivity() {
         }
         binding.confirmButton.setOnClickListener {
             val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
-            val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
-                putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
-                if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
-                    putExtra(TopUpCryptoActivity.REGISTRATION_MODE_EXTRA_KEY, true)
-                }
-            }
-            startActivity(intent)
+            navigateToPaymentMethod(cryptoAmount)
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
@@ -98,5 +92,15 @@ class TopUpAmountActivity : BaseActivity() {
                 )
             }
         })
+    }
+
+    private fun navigateToPaymentMethod(cryptoAmount: Int?) {
+        val intent = Intent(this, PaymentMethodActivity::class.java).apply {
+            putExtra(PaymentMethodActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
+                putExtra(PaymentMethodActivity.REGISTRATION_MODE_EXTRA_KEY, true)
+            }
+        }
+        startActivity(intent)
     }
 }

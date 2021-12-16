@@ -113,6 +113,10 @@
             android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name="updated.mysterium.vpn.notification.AppBroadcastReceiver"
             android:exported="true">
