@@ -104,7 +104,7 @@
     <string name="wallet_buys_for_you">This buys you:</string>
     <string name="wallet_current_balance" translatable="false">"%.3f"</string>
     <string name="wallet_top_up">Top up</string>
-    <string name="wallet_myst_about">MYST is a test token on Ethereum Goerli blockchain</string>
+    <string name="wallet_myst_about">MYST is a token on the Ethereum blockchain</string>
     <string name="wallet_top_up_label">Top up events</string>
     <string name="wallet_spendings_label">Spendings</string>
     <string name="wallet_spendings_country">Country</string>
