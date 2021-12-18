@@ -80,7 +80,7 @@
   <string name="wallet_top_up">充值</string>
   <string name="wallet_myst_about">MYST 是以太坊 Goerli 区块链的测试代币</string>
   <string name="wallet_top_up_label">充值事件</string>
-  <string name="wallet_spedings_label">开销</string>
+  <string name="wallet_spendings_label">开销</string>
   <string name="wallet_spendings_country">国家</string>
   <string name="wallet_spendings_duration">持续时间</string>
   <string name="wallet_spendings_currency">MYST / 美元</string>

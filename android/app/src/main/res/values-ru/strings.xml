@@ -80,7 +80,7 @@
     <string name="wallet_top_up">Пополнить</string>
     <string name="wallet_myst_about">MYST – это тестовый токен на блокчейне Ethereum Goerli</string>
     <string name="wallet_top_up_label">Пополнения</string>
-    <string name="wallet_spedings_label">Вложения</string>
+    <string name="wallet_spendings_label">Вложения</string>
     <string name="wallet_spendings_country">Страна</string>
     <string name="wallet_spendings_duration">Длительность</string>
     <string name="wallet_spendings_currency">MYST / USD</string>

@@ -35,7 +35,7 @@ class WalletActivity : BaseActivity() {
                 rtlUnselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected
             ),
             OnboardingTabItem(
-                textResId = R.string.wallet_spedings_label,
+                textResId = R.string.wallet_spendings_label,
                 selectedBackgroundResId = R.drawable.shape_saved_nodes_selected,
                 unselectedBackgroundResId = R.drawable.shape_saved_nodes_unselected,
                 rtlSelectedBackgroundResId = R.drawable.shape_all_nodes_selected,
