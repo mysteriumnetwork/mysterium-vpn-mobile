@@ -11,7 +11,7 @@ data class CardOrder(
     @SerializedName("order_total")
     val orderTotalAmount: Double,
     @SerializedName("public_gateway_data")
-    var html: String
+    var pageHtml: PageHtml
 ) {
 
     companion object {
