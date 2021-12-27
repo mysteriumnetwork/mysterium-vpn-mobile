@@ -125,7 +125,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
-                android:text="@string/card_payment_vat"
+                android:text="@string/card_payment_vat_title"
                 android:textColor="@color/home_country_amount"
                 app:layout_constraintBottom_toTopOf="@+id/divider2"
                 app:layout_constraintStart_toStartOf="parent" />
