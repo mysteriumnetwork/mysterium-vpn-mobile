@@ -125,6 +125,7 @@ class TopUpPaymentActivity : BaseActivity() {
                 paymentLoaded(currency, it)
             }
             result.onFailure {
+                Log.e(TAG, it.toString())
                 showTopUpServerFailed()
             }
         })
@@ -205,7 +206,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
-            navigateToHome()
+            //navigateToHome()
         }
         dialog.show()
     }
