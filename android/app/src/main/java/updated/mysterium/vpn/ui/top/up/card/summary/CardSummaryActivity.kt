@@ -2,12 +2,9 @@ package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.countries.CountriesUtil
-import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.ui.base.BaseActivity
 
@@ -22,6 +19,7 @@ class CardSummaryActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCardSummaryBinding
     private val viewModel: CardSummaryViewModel by inject()
+    private var paymentHtml: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +33,9 @@ class CardSummaryActivity : BaseActivity() {
     private fun bind() {
         binding.backButton.setOnClickListener {
             finish()
+        }
+        binding.confirmButton.setOnClickListener {
+            launchCardinityPayment()
         }
     }
 
@@ -52,6 +53,7 @@ class CardSummaryActivity : BaseActivity() {
         viewModel.getPayment(amount, country, currency).observe(this) {
             it.onSuccess { order ->
                 inflateOrderData(order)
+                paymentHtml = order.html
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
@@ -69,5 +71,9 @@ class CardSummaryActivity : BaseActivity() {
         binding.totalValueTextView.text = getString(
             R.string.card_payment_myst_amount, cardOrder.orderTotalAmount.toFloat()
         )
+    }
+
+    private fun launchCardinityPayment() {
+        Log.d(TAG, paymentHtml.toString())
     }
 }

@@ -11,7 +11,6 @@ import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.HintSpinnerArrayAdapter
 
