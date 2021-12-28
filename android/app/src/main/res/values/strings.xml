@@ -205,9 +205,10 @@
     <string name="card_payment_total">Total Due</string>
     <string name="card_payment_vat">VAT</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
-    <string name="card_payment_myst_amount">$%1$.2f</string>
+    <string name="card_payment_myst_amount">%1$s$%2$.2f</string>
     <string name="card_payment_myst_description">%d MYST Top-up</string>
     <string name="card_payment_confirm">Confirm payment</string>
+    <string name="card_payment_currency">%1$s%2$s</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>

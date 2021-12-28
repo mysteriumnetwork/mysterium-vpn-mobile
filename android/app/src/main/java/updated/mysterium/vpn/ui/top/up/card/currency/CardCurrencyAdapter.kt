@@ -32,7 +32,13 @@ class CardCurrencyAdapter :
         val binding = ItemCardCurrencyBinding.bind(itemView)
 
         fun bind(cardItem: CurrencyCardItem) {
-            binding.cardItemValue.text = cardItem.currency
+            cardItem.currency?.currency?.let { currency ->
+                binding.root.context.getString(
+                    R.string.card_payment_currency,
+                    cardItem.currency.symbol,
+                    currency
+                )
+            }
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
                 selectedState()

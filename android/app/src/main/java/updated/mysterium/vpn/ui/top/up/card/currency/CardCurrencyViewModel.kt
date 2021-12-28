@@ -14,7 +14,8 @@ class CardCurrencyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         paymentUseCase.getGateways()
             .find {
                 it.name == Gateway.CARDINITY.gateway
-            }?.currencies
+            }?.getCurrencies()
+            ?.filterNotNull()
             ?.map {
                 CurrencyCardItem(it)
             }

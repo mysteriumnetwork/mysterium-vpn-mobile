@@ -9,6 +9,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.model.payment.CardOrder
+import updated.mysterium.vpn.model.payment.PaymentCurrency
 import updated.mysterium.vpn.ui.base.BaseActivity
 
 class CardSummaryActivity : BaseActivity() {
@@ -47,11 +48,11 @@ class CardSummaryActivity : BaseActivity() {
 
     private fun loadPayment() {
         val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY) ?: return
-        val currency = intent.extras?.getString(CRYPTO_CURRENCY_EXTRA_KEY) ?: return
+        val paymentCurrency = intent.getSerializableExtra(CRYPTO_CURRENCY_EXTRA_KEY) as PaymentCurrency
         val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
-        viewModel.getPayment(amount, country, currency).observe(this) {
+        viewModel.getPayment(amount, country, paymentCurrency.currency).observe(this) {
             it.onSuccess { order ->
-                inflateOrderData(order)
+                inflateOrderData(order, paymentCurrency)
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
@@ -59,15 +60,21 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun inflateOrderData(cardOrder: CardOrder) {
+    private fun inflateOrderData(cardOrder: CardOrder, paymentCurrency: PaymentCurrency) {
         binding.mystValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.payAmount.toFloat()
+            R.string.card_payment_myst_amount,
+            paymentCurrency.symbol,
+            cardOrder.payAmount.toFloat()
         )
         binding.vatValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.taxes.toFloat()
+            R.string.card_payment_myst_amount,
+            paymentCurrency.symbol,
+            cardOrder.taxes.toFloat()
         )
         binding.totalValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.orderTotalAmount.toFloat()
+            R.string.card_payment_myst_amount,
+            paymentCurrency.symbol,
+            cardOrder.orderTotalAmount.toFloat()
         )
     }
 }
