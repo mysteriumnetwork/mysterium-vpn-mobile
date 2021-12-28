@@ -47,8 +47,12 @@ class TopUpAmountActivity : BaseActivity() {
             updateEquivalent(it.value.toInt())
             updateWalletEstimates(it.value.toDouble())
         }
-        updateEquivalent(AMOUNT_VALUES.first().value.toInt())
-        updateWalletEstimates(AMOUNT_VALUES.first().value.toDouble())
+        AMOUNT_VALUES.find {
+            it.isSelected
+        }?.value?.let { amount ->
+            updateEquivalent(amount.toInt())
+            updateWalletEstimates(amount.toDouble())
+        }
     }
 
     private fun bindsAction() {
