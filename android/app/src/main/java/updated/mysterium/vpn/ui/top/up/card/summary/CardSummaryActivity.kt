@@ -69,5 +69,8 @@ class CardSummaryActivity : BaseActivity() {
         binding.totalValueTextView.text = getString(
             R.string.card_payment_myst_amount, cardOrder.orderTotalAmount.toFloat()
         )
+        binding.vatTextView.text = getString(
+            R.string.card_payment_vat_value, cardOrder.taxes
+        )
     }
 }
