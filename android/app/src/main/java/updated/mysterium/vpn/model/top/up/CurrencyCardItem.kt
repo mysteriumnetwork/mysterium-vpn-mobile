@@ -1,9 +1,7 @@
 package updated.mysterium.vpn.model.top.up
 
-import updated.mysterium.vpn.model.payment.PaymentCurrency
-
 data class CurrencyCardItem(
-    val currency: PaymentCurrency?,
+    val currency: String,
     var isSelected: Boolean = false
 ) {
 

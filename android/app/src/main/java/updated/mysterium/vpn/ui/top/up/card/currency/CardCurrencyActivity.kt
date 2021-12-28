@@ -9,10 +9,8 @@ import network.mysterium.vpn.databinding.ActivityCardCurrencyBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.onItemSelected
-import updated.mysterium.vpn.model.payment.PaymentCurrency
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.HintSpinnerArrayAdapter
 
@@ -31,7 +29,7 @@ class CardCurrencyActivity : BaseActivity() {
             field = value
             checkValidData()
         }
-    private var selectedCurrency: PaymentCurrency? = null
+    private var selectedCurrency: String? = null
         set(value) {
             field = value
             checkValidData()
