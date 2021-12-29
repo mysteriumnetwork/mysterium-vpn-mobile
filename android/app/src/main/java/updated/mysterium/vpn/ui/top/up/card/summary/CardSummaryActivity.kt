@@ -1,13 +1,17 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.ui.base.BaseActivity
+
 
 class CardSummaryActivity : BaseActivity() {
 
@@ -76,6 +80,7 @@ class CardSummaryActivity : BaseActivity() {
         )
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun launchCardinityPayment() {
         val htmlBody = "<html lang=\"en\">\n" +
                 "    <head>\n" +
@@ -123,8 +128,15 @@ class CardSummaryActivity : BaseActivity() {
                 "    </body>\n" +
                 "    </html>"
         paymentHtml?.let { htmlData ->
-            Log.d(TAG, htmlData)
             binding.webView.visibility = View.VISIBLE
+            binding.webView.settings.javaScriptEnabled = true
+            binding.webView.webViewClient = object : WebViewClient() {
+
+                override fun onLoadResource(view: WebView?, url: String?) {
+                    super.onLoadResource(view, url)
+                    Log.i(TAG, url.toString())
+                }
+            }
             binding.webView.loadDataWithBaseURL(null, htmlData, HTML_MIME_TYPE, ENCODING, null)
         }
     }
