@@ -2,12 +2,9 @@ package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.countries.CountriesUtil
-import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.ui.base.BaseActivity
 
@@ -60,17 +57,13 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun inflateOrderData(cardOrder: CardOrder) {
-        binding.mystValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.payAmount.toFloat()
-        )
-        binding.vatValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.taxes.toFloat()
-        )
-        binding.totalValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.orderTotalAmount.toFloat()
-        )
+        binding.mystValueTextView.text = cardOrder.payAmount.toString()
+        binding.vatValueTextView.text = cardOrder.taxes.toString()
+        binding.totalValueTextView.text = cardOrder.orderTotalAmount.toString()
+
+        val taxesPercent = cardOrder.orderTotalAmount / cardOrder.payAmount
         binding.vatTextView.text = getString(
-            R.string.card_payment_vat_value, cardOrder.taxes
+            R.string.card_payment_vat_value, taxesPercent
         )
     }
 }

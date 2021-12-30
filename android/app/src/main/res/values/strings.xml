@@ -207,7 +207,6 @@
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
-    <string name="card_payment_myst_amount">$%1$.2f</string>
     <string name="card_payment_myst_description">%d MYST Top-up</string>
     <string name="card_payment_confirm">Confirm payment</string>
 
