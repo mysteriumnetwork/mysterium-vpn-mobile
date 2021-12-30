@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
-                android:textColor="@color/pop_up_title"
+                android:textColor="@color/card_payment_value"
                 app:layout_constraintBottom_toBottomOf="@+id/mystTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/mystTextView"
@@ -114,7 +114,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
-                android:textColor="@color/home_country_amount"
+                android:textColor="@color/card_payment_title"
                 app:layout_constraintBottom_toTopOf="@+id/divider3"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="10 MYST Top-up" />
@@ -135,7 +135,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:text="-"
-                android:textColor="@color/pop_up_title"
+                android:textColor="@color/card_payment_value"
                 app:layout_constraintBottom_toBottomOf="@+id/vatTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/vatTextView"
@@ -149,7 +149,7 @@
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                 android:text="@string/card_payment_vat_title"
-                android:textColor="@color/home_country_amount"
+                android:textColor="@color/card_payment_title"
                 app:layout_constraintBottom_toTopOf="@+id/divider2"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -206,6 +206,7 @@
                 android:paddingHorizontal="@dimen/margin_padding_size_medium"
                 android:text="@string/card_payment_cardinity"
                 android:textAlignment="center"
+                android:textColor="@color/card_payment_description"
                 app:layout_constraintBottom_toTopOf="@+id/confirmButton"
                 app:layout_constraintEnd_toEndOf="@+id/confirmButton"
                 app:layout_constraintStart_toStartOf="@+id/confirmButton" />

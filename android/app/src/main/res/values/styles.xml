@@ -126,6 +126,17 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <!--  Payment Button  -->
+    <style name="Widget.Payment" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.PrimaryButton</item>
+        <item name="android:background">@drawable/payment_button_background</item>
+        <item name="android:foreground">@drawable/ripple_rounded_effect</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/margin_padding_size_medium</item>
+        <item name="android:paddingEnd">@dimen/margin_padding_size_medium</item>
+    </style>
+
     <!--  NegativeButton  -->
     <style name="Widget.NegativeButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.NegativeButton</item>
