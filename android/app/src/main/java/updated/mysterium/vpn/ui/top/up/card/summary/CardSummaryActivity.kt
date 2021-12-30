@@ -94,14 +94,13 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun inflateOrderData(cardOrder: CardOrder) {
-        binding.mystValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.payAmount.toFloat()
-        )
-        binding.vatValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.taxes.toFloat()
-        )
-        binding.totalValueTextView.text = getString(
-            R.string.card_payment_myst_amount, cardOrder.orderTotalAmount.toFloat()
+        binding.mystValueTextView.text = cardOrder.payAmount.toString()
+        binding.vatValueTextView.text = cardOrder.taxes.toString()
+        binding.totalValueTextView.text = cardOrder.orderTotalAmount.toString()
+
+        val taxesPercent = cardOrder.orderTotalAmount / cardOrder.payAmount
+        binding.vatTextView.text = getString(
+            R.string.card_payment_vat_value, taxesPercent
         )
     }
 
