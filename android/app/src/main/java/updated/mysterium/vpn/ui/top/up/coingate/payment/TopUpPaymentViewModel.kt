@@ -10,7 +10,7 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private companion object {
+    companion object {
         const val STATUS_PAID = "paid"
         const val STATUS_EXPIRED = "expired"
         const val STATUS_INVALID = "invalid"

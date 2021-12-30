@@ -9,7 +9,9 @@ data class CardOrder(
     @SerializedName("tax_sub_total")
     val taxes: Double,
     @SerializedName("order_total")
-    val orderTotalAmount: Double
+    val orderTotalAmount: Double,
+    @SerializedName("public_gateway_data")
+    var pageHtml: PageHtml
 ) {
 
     companion object {
