@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,7 +11,10 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.payment.CardOrder
+import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 
 
 class CardSummaryActivity : BaseActivity() {
@@ -26,15 +30,32 @@ class CardSummaryActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCardSummaryBinding
     private val viewModel: CardSummaryViewModel by inject()
+    private val paymentViewModel: TopUpPaymentViewModel by inject()
     private var paymentHtml: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCardSummaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        subscribeViewModel()
         bind()
         getMystAmount()
         loadPayment()
+    }
+
+    private fun subscribeViewModel() {
+        viewModel.paymentSuccessfully.observe(this, {
+            val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
+            val currency = intent.extras?.getString(CRYPTO_CURRENCY_EXTRA_KEY)
+            if (currency != null && amount != null) {
+                pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
+                pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
+                pushyNotifications.subscribe(currency)
+                paymentViewModel.updateLastCurrency(currency)
+            }
+            paymentViewModel.clearPopUpTopUpHistory()
+            registerAccount()
+        })
     }
 
     private fun bind() {
@@ -43,6 +64,10 @@ class CardSummaryActivity : BaseActivity() {
         }
         binding.confirmButton.setOnClickListener {
             launchCardinityPayment()
+        }
+        binding.closeButton.setOnClickListener {
+            binding.closeButton.visibility = View.GONE
+            binding.webView.visibility = View.GONE
         }
     }
 
@@ -82,52 +107,8 @@ class CardSummaryActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun launchCardinityPayment() {
-        val htmlBody = "<html lang=\"en\">\n" +
-                "    <head>\n" +
-                "        <title>Redirect</title>\n" +
-                "        <style>\n" +
-                "            body {\n" +
-                "                background: linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%);\n" +
-                "                width: 100%;\n" +
-                "                height: 100%;\n" +
-                "                margin: 0;\n" +
-                "                font-family: \"Segoe UI\", -apple-system, BlinkMacSystemFont, Ubuntu, sans-serif;\n" +
-                "                line-height: 1.4;\n" +
-                "                color: #ffffffc8;\n" +
-                "            }\n" +
-                "            div {\n" +
-                "                position: relative;\n" +
-                "                top: 50%;\n" +
-                "                transform: translateY(-50%);\n" +
-                "                text-align: center;\n" +
-                "            }\n" +
-                "            button {\n" +
-                "                padding: 10px;\n" +
-                "                font-size: 16px;\n" +
-                "                line-height: 16px;\n" +
-                "                border: 0;\n" +
-                "                border-radius: 10px;\n" +
-                "            }\n" +
-                "        </style>\n" +
-                "    </head>\n" +
-                "    <body onload=\"document.forms['checkout'].submit()\">\n" +
-                "    <div>\n" +
-                "        <h2>Redirecting...</h2>\n" +
-                "        <p>Taking you to the payment provider automatically.<br>If it does not work, click the button below.</p>\n" +
-                "        <form name=\"checkout\" method=\"POST\" action=\"https://checkout.cardinity.com\">\n" +
-                "            <button type=submit>Continue</button>\n" +
-                "            <input type=\"hidden\" name=\"amount\" value=\"4.77\" />\n" +
-                "            <input type=\"hidden\" name=\"country\" value=\"US\" />\n" +
-                "            <input type=\"hidden\" name=\"currency\" value=\"USD\" />\n" +
-                "            <input type=\"hidden\" name=\"order_id\" value=\"5a13ecca-e4d3-479f-9f79-30652fe6f5b1\" />\n" +
-                "            <input type=\"hidden\" name=\"project_id\" value=\"pr_hbbivyxfnl4ehvhohs8dkavpfoueci\" />\n" +
-                "            <input type=\"hidden\" name=\"return_url\" value=\"https://pilvytis.mysterium.network/api/v2/payment/cardinity/redirect\" />\n" +
-                "            <input type=\"hidden\" name=\"signature\" value=\"82d9a9d4064eb6afd0496f9360ec3f9e22af95a5e870a526265a61b6811f2a02\" />\n" +
-                "        </form>\n" +
-                "    </div>\n" +
-                "    </body>\n" +
-                "    </html>"
         paymentHtml?.let { htmlData ->
+            binding.closeButton.visibility = View.VISIBLE
             binding.webView.visibility = View.VISIBLE
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.webViewClient = object : WebViewClient() {
@@ -139,5 +120,26 @@ class CardSummaryActivity : BaseActivity() {
             }
             binding.webView.loadDataWithBaseURL(null, htmlData, HTML_MIME_TYPE, ENCODING, null)
         }
+    }
+
+    private fun registerAccount() {
+        paymentViewModel.registerAccount().observe(this) {
+            it.onSuccess {
+                navigateToHome()
+            }
+
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                navigateToHome()
+            }
+        }
+    }
+
+    private fun navigateToHome() {
+        viewModel.accountFlowShown()
+        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        startActivity(intent)
     }
 }
