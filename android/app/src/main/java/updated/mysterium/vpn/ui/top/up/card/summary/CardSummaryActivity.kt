@@ -98,7 +98,7 @@ class CardSummaryActivity : BaseActivity() {
         binding.vatValueTextView.text = cardOrder.taxes.toString()
         binding.totalValueTextView.text = cardOrder.orderTotalAmount.toString()
 
-        val taxesPercent = cardOrder.orderTotalAmount / cardOrder.payAmount
+        val taxesPercent = cardOrder.taxes / cardOrder.orderTotalAmount * 100
         binding.vatTextView.text = getString(
             R.string.card_payment_vat_value, taxesPercent
         )

@@ -100,7 +100,6 @@
                     android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                     android:background="@drawable/spinner_countries_background"
                     android:dropDownWidth="match_parent"
-                    android:dropDownVerticalOffset="@dimen/margin_padding_size_xsmall"
                     android:gravity="center"
                     android:overlapAnchor="false"
                     android:popupBackground="@drawable/spinner_countries_background"
@@ -110,15 +109,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center"
-                    android:layout_marginEnd="@dimen/margin_padding_size_small_medium"
-                    android:src="@drawable/icon_drop_down_png"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_biggest"
+                    android:src="@drawable/icon_currency_dropdown"
                     tools:ignore="ContentDescription" />
 
             </FrameLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/confirmButton"
-                style="@style/Widget.PrimaryButton"
+                style="@style/Widget.Payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
