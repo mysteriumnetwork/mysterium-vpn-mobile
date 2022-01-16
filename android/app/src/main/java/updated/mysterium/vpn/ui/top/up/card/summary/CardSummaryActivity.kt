@@ -9,11 +9,14 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
+import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
+import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 
 
@@ -68,7 +71,18 @@ class CardSummaryActivity : BaseActivity() {
         binding.closeButton.setOnClickListener {
             binding.closeButton.visibility = View.GONE
             binding.webView.visibility = View.GONE
+
+            showPaymentPopUp()
         }
+    }
+
+    private fun showPaymentPopUp() {
+        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.okayButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun getMystAmount() {

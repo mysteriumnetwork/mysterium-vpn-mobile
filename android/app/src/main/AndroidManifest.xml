@@ -142,6 +142,9 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="updated.mysterium.vpn.notification.PaymentStatusService" />
+
         <!-- Pushy Declarations -->
 
         <!-- Pushy Notification Receiver -->
