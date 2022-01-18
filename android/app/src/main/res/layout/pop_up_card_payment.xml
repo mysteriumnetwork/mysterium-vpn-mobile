@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.PrimaryCardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pop_up_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.HeadTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:text="@string/pop_up_card_payment_button"
+                android:textAlignment="center"
+                android:textColor="@color/pop_up_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+                android:src="@drawable/icon_pop_up_successful_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/TextAppearance.HeadSubNumbers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+                android:paddingHorizontal="@dimen/margin_padding_size_large"
+                android:text="@string/pop_up_card_payment_description"
+                android:textAlignment="center"
+                android:textColor="@color/pop_up_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/okayButton"
+                style="@style/Widget.NegativeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/margin_padding_size_large"
+                android:text="@string/pop_up_payment_not_work_okay"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

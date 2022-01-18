@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.splash.SplashActivity
 
 typealias NotificationFactory = (Context) -> Notification
 
@@ -20,6 +21,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     private val statisticsChannel = "statistics"
     private val connLostChannel = "connectionlost"
     private val topUpBalanceChannel = "topupbalance"
+    private val paymentStatusChannel = "paymentstatus"
     private lateinit var context: Context
 
     // pendingAppIntent is used to navigate back to MainActivity
@@ -36,13 +38,16 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         createChannel(statisticsChannel)
         createChannel(connLostChannel)
         createChannel(topUpBalanceChannel)
+        createChannel(paymentStatusChannel)
     }
 
     private fun createChannel(channelId: String) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-        val channel = NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT)
+        val channel = NotificationChannel(
+            channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT
+        )
         channel.enableVibration(false)
         notificationManager.createNotificationChannel(channel)
     }
@@ -64,7 +69,9 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         val disconnectIntent = Intent(context, AppBroadcastReceiver::class.java).apply {
             action = ACTION_DISCONNECT
         }
-        val disconnectPendingIntent: PendingIntent = PendingIntent.getBroadcast(context, 0, disconnectIntent, 0)
+        val disconnectPendingIntent = PendingIntent.getBroadcast(
+            context, 0, disconnectIntent, 0
+        )
 
         val notification = NotificationCompat.Builder(context, statisticsChannel)
             .setSmallIcon(R.drawable.notification_logo)
@@ -108,5 +115,49 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setAutoCancel(true)
             .build()
         notificationManager.notify(NotificationChannels.PRIVATE_KEY_NOTIFICATION_ID, notification)
+    }
+
+    fun showSuccessPaymentNotification(amount: String, currency: String) {
+        val intent = Intent(context, SplashActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        val appIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+        val notification = NotificationCompat.Builder(context, paymentStatusChannel)
+            .setSmallIcon(R.drawable.notification_logo)
+            .setContentTitle(context.getString(R.string.push_notification_payment_success_title))
+            .setContentText(
+                context.getString(
+                    R.string.push_notification_payment_success_message,
+                    amount,
+                    currency
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVibrate(LongArray(0))
+            .setContentIntent(appIntent)
+            .setOnlyAlertOnce(true)
+            .build()
+
+        notificationManager.notify(NotificationChannels.STATISTIC_NOTIFICATION, notification)
+    }
+
+    fun showFailedPaymentNotification() {
+        val intent = Intent(context, SplashActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        val appIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+        val notification = NotificationCompat.Builder(context, paymentStatusChannel)
+            .setSmallIcon(R.drawable.notification_logo)
+            .setContentTitle(context.getString(R.string.push_notification_payment_failed_title))
+            .setContentText(context.getString(R.string.push_notification_payment_failed_message))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVibrate(LongArray(0))
+            .setContentIntent(appIntent)
+            .setOnlyAlertOnce(true)
+            .build()
+
+        notificationManager.notify(NotificationChannels.STATISTIC_NOTIFICATION, notification)
     }
 }

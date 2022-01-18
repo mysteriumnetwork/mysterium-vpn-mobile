@@ -30,6 +30,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
     companion object {
         const val PUSHY_BALANCE_ACTION = "android.intent.action.BALANCE_RUNNING_OUT"
         const val PUSHY_CONNECTION_ACTION = "android.intent.action.PUSHY_CONNECTION_ACTION"
+        const val PAYMENT_STATUS_UPDATE = "android.intent.action.PAYMENT_STATUS_UPDATE"
         const val NOTIFICATION_TITLE = "title"
         const val NOTIFICATION_MESSAGE = "message"
         const val NOTIFICATION_URL = "url"
@@ -46,6 +47,9 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
             }
             PUSHY_CONNECTION_ACTION -> {
                 showConnectionPush(context, intent)
+            }
+            PAYMENT_STATUS_UPDATE -> {
+                showPaymentStatusPush(context, intent)
             }
             else -> {
                 showMarketingPush(context, intent)
@@ -77,6 +81,19 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
         notificationManager.notify(NotificationChannels.CONNECTION_NOTIFICATION_ID, builder.build())
+    }
+
+    private fun showPaymentStatusPush(context: Context, intent: Intent) {
+        val builder = createNotification(intent, context)
+        val resultIntent = Intent(context, HomeSelectionActivity::class.java)
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(resultIntent)
+            getPendingIntent(0, FLAG_UPDATE_CURRENT)
+        }
+        builder.setContentIntent(resultPendingIntent)
+
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        notificationManager.notify(NotificationChannels.PAYMENT_STATUS_ID, builder.build())
     }
 
     private fun showMarketingPush(context: Context, intent: Intent) {
