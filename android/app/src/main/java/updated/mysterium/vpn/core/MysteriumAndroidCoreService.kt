@@ -89,7 +89,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         mobileNode?.let {
             return it
         }
-
         mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultNodeOptions())
         mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
         return mobileNode ?: MobileNode()
