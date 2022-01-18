@@ -45,8 +45,9 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-        val channel =
-            NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT)
+        val channel = NotificationChannel(
+            channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT
+        )
         channel.enableVibration(false)
         notificationManager.createNotificationChannel(channel)
     }
@@ -68,8 +69,9 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         val disconnectIntent = Intent(context, AppBroadcastReceiver::class.java).apply {
             action = ACTION_DISCONNECT
         }
-        val disconnectPendingIntent: PendingIntent =
-            PendingIntent.getBroadcast(context, 0, disconnectIntent, 0)
+        val disconnectPendingIntent = PendingIntent.getBroadcast(
+            context, 0, disconnectIntent, 0
+        )
 
         val notification = NotificationCompat.Builder(context, statisticsChannel)
             .setSmallIcon(R.drawable.notification_logo)
