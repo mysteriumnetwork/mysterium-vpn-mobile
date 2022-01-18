@@ -275,8 +275,9 @@
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
     <string name="pop_up_details_title">Some error occurred</string>
-    <string name="pop_up_card_payment_title">Payment</string>
-    <string name="pop_up_card_payment_description">Thanks for the purchase! It may take some time to process your payment and we\'ll send you a notification once it\'s completed.</string>
+    <string name="pop_up_card_payment_button">Continue</string>
+    <string name="pop_up_card_payment_title">Thanks for the purchase! </string>
+    <string name="pop_up_card_payment_description">It may take some time to process your payment \n We\'ll send you a notification once it\'s completed</string>
 
     <!--  Should be translated on other languages -->
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
@@ -303,6 +304,10 @@
     <string name="push_notification_connection_message">Connection to node is lost!</string>
     <string name="push_notification_connected_title">Connected to %1$s</string>
     <string name="push_notification_content">Received %1$s | Sent %2$s | Paid %3$s</string>
+    <string name="push_notification_payment_success_title">Payment success!</string>
+    <string name="push_notification_payment_success_message"> Success! Your payment for %1s %2s is successful. Visit the app to see your balance.</string>
+    <string name="push_notification_payment_failed_title">Payment failed</string>
+    <string name="push_notification_payment_failed_message">Your payment failed. Please visit the application to try to top up or contact support.</string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
