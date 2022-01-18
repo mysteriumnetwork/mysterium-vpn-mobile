@@ -338,6 +338,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TextAppearance.TitleRegular" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="TextAppearance.BodyBold" parent="TextAppearance.AppCompat.Headline">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
