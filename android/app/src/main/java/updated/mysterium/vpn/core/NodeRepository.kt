@@ -36,16 +36,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
     //
     // Note that this method need to deserialize JSON byte array since Go Mobile
     // does not support passing complex slices via it's bridge.
-    suspend fun proposals(req: GetProposalsRequest): List<ProposalItem> =
-        withContext(Dispatchers.IO) {
-            val bytes = getProposals(req)
-            val proposalsResponse = parseProposals(bytes)
-            if (proposalsResponse?.proposals == null) {
-                listOf()
-            } else {
-                proposalsResponse.proposals
-            }
+    suspend fun proposals(req: GetProposalsRequest): List<ProposalItem> = withContext(Dispatchers.IO) {
+        val bytes = getProposals(req)
+        val proposalsResponse = parseProposals(bytes)
+        if (proposalsResponse?.proposals == null) {
+            listOf()
+        } else {
+            proposalsResponse.proposals
         }
+    }
 
     // Register connection status callback.
     suspend fun registerConnectionStatusChangeCallback(cb: (status: String) -> Unit) {
@@ -57,10 +56,9 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // Register statistics callback.
     suspend fun registerStatisticsChangeCallback(cb: (stats: Statistics) -> Unit) {
         withContext(Dispatchers.IO) {
-            deferredNode.await()
-                .registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
-                    cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
-                }
+            deferredNode.await().registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
+                cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
+            }
         }
     }
 
@@ -124,11 +122,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
     ): Identity = withContext(Dispatchers.IO) {
         val res = deferredNode.await().getIdentity(getIdentityRequest)
-        Identity(
-            address = res.identityAddress,
-            channelAddress = res.channelAddress,
-            registrationStatus = res.registrationStatus
-        )
+        Identity(address = res.identityAddress, channelAddress = res.channelAddress, registrationStatus = res.registrationStatus)
     }
 
     // Get registration fees.
@@ -143,12 +137,11 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
-    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
-        withContext(Dispatchers.IO) {
-            val order = deferredNode.await().createPaymentGatewayOrder(req)
-            Log.d(TAG, "createPaymentGatewayOrder response: ${String(order)}")
-            CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
-        }
+    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) = withContext(Dispatchers.IO) {
+        val order = deferredNode.await().createPaymentGatewayOrder(req)
+        Log.d(TAG, "createPaymentGatewayOrder response: ${String(order)}")
+        CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+    }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listOrders(req)
@@ -235,30 +228,27 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().listProposalFilterPresets()
     }
 
-    suspend fun getProposalsByFilterId(getProposalRequest: GetProposalsRequest) =
-        withContext(Dispatchers.IO) {
-            val bytesProposals = deferredNode.await().getProposals(getProposalRequest)
-            val proposalsResponse = parseProposals(bytesProposals)
-            if (proposalsResponse?.proposals == null) {
-                listOf()
-            } else {
-                proposalsResponse.proposals
-            }
+    suspend fun getProposalsByFilterId(getProposalRequest: GetProposalsRequest) = withContext(Dispatchers.IO) {
+        val bytesProposals = deferredNode.await().getProposals(getProposalRequest)
+        val proposalsResponse = parseProposals(bytesProposals)
+        if (proposalsResponse?.proposals == null) {
+            listOf()
+        } else {
+            proposalsResponse.proposals
         }
+    }
 
-    suspend fun getRegistrationTokenReward(registrationToken: String) =
-        withContext(Dispatchers.IO) {
-            deferredNode.await().registrationTokenReward(registrationToken)
-        }
+    suspend fun getRegistrationTokenReward(registrationToken: String) = withContext(Dispatchers.IO) {
+        deferredNode.await().registrationTokenReward(registrationToken)
+    }
 
     suspend fun isFreeRegistrationEligible(address: String) = withContext(Dispatchers.IO) {
         deferredNode.await().isFreeRegistrationEligible(address)
     }
 
-    suspend fun forceBalanceUpdate(req: GetBalanceRequest): GetBalanceResponse =
-        withContext(Dispatchers.IO) {
-            deferredNode.await().forceBalanceUpdate(req)
-        }
+    suspend fun forceBalanceUpdate(req: GetBalanceRequest): GetBalanceResponse = withContext(Dispatchers.IO) {
+        deferredNode.await().forceBalanceUpdate(req)
+    }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
         val gateways = deferredNode.await().gateways
