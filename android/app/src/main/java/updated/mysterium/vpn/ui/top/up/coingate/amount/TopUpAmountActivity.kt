@@ -6,24 +6,18 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
-import updated.mysterium.vpn.model.top.up.TopUpCardItem
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
+import updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 
 class TopUpAmountActivity : BaseActivity() {
 
     companion object {
-        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
-        private val AMOUNT_VALUES = listOf(
-            TopUpCardItem("5", true),
-            TopUpCardItem("10"),
-            TopUpCardItem("20"),
-            TopUpCardItem("50"),
-            TopUpCardItem("100")
-        )
+        const val PAYMENT_METHOD_EXTRA_KEY = "PAYMENT_METHOD_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityTopUpAmountBinding
@@ -38,20 +32,14 @@ class TopUpAmountActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        handlePaymentMethod()
     }
 
     private fun configure() {
         binding.amountRecycler.adapter = topUpAdapter
-        topUpAdapter.replaceAll(AMOUNT_VALUES)
         topUpAdapter.onItemSelected = {
             updateEquivalent(it.value.toInt())
             updateWalletEstimates(it.value.toDouble())
-        }
-        AMOUNT_VALUES.find {
-            it.isSelected
-        }?.value?.let { amount ->
-            updateEquivalent(amount.toInt())
-            updateWalletEstimates(amount.toDouble())
         }
     }
 
@@ -60,12 +48,38 @@ class TopUpAmountActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
-            navigateToPaymentMethod(cryptoAmount)
+            val gateway = intent.extras?.getSerializable(PAYMENT_METHOD_EXTRA_KEY) as Gateway
+            if (gateway == Gateway.CARDINITY) {
+                navigateToCardPaymentFlow()
+            } else {
+                navigateToCryptoPaymentFlow()
+            }
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
             navigateToConnectionOrHome(isBackTransition = false)
+        }
+    }
+
+    private fun handlePaymentMethod() {
+        val gateway = intent.extras?.getSerializable(PAYMENT_METHOD_EXTRA_KEY) as Gateway
+        viewModel.getAmounts(gateway).observe(this) {
+            it.onSuccess { amounts ->
+                amounts?.let {
+                    topUpAdapter.replaceAll(amounts)
+
+                    amounts.find { item ->
+                        item.isSelected
+                    }?.value?.let { amount ->
+                        updateEquivalent(amount.toInt())
+                        updateWalletEstimates(amount.toDouble())
+                    }
+                }
+            }
+
+            it.onFailure {
+                wifiNetworkErrorPopUp()
+            }
         }
     }
 
@@ -98,12 +112,18 @@ class TopUpAmountActivity : BaseActivity() {
         })
     }
 
-    private fun navigateToPaymentMethod(cryptoAmount: Int?) {
-        val intent = Intent(this, PaymentMethodActivity::class.java).apply {
-            putExtra(PaymentMethodActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
-            if (intent.extras?.getBoolean(REGISTRATION_MODE_EXTRA_KEY) == true) {
-                putExtra(PaymentMethodActivity.REGISTRATION_MODE_EXTRA_KEY, true)
-            }
+    private fun navigateToCryptoPaymentFlow() {
+        val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
+            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
+            putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToCardPaymentFlow() {
+        val intent = Intent(this, CardCurrencyActivity::class.java).apply {
+            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
+            putExtra(CardCurrencyActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
         }
         startActivity(intent)
     }
