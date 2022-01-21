@@ -89,7 +89,7 @@
                 android:focusable="true"
                 android:orientation="vertical"
                 android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -126,7 +126,7 @@
                 android:background="@drawable/shape_rectangle_gray_rounded_10"
                 android:orientation="vertical"
                 android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/usdEquivalentTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/centerGuideline"
                 app:layout_constraintTop_toTopOf="parent">
@@ -151,18 +151,6 @@
                     android:textColor="@color/manual_connect_connecting_title_grey_blue" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/usdEquivalentTextView"
-                style="@style/TextAppearance.BodyMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padding_size_biggest"
-                android:textColor="@color/manual_connect_divider_grey_blue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/cryptoPayment"
-                app:layout_constraintStart_toStartOf="@+id/creditCardPayment"
-                tools:text="USD Equivalant = $12.26 " />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

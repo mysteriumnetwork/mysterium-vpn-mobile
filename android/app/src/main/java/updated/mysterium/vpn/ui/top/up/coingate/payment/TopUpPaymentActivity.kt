@@ -31,7 +31,6 @@ class TopUpPaymentActivity : BaseActivity() {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
-        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
         private const val TAG = "TopUpPaymentActivity"

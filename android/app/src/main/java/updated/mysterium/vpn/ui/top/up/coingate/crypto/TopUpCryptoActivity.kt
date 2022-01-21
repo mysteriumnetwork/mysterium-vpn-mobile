@@ -10,7 +10,6 @@ import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
@@ -18,7 +17,6 @@ class TopUpCryptoActivity : BaseActivity() {
 
     companion object {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
-        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityTopUpCryptoBinding
@@ -67,9 +65,6 @@ class TopUpCryptoActivity : BaseActivity() {
                     TopUpPaymentActivity.CRYPTO_IS_LIGHTING_EXTRA_KEY,
                     binding.lightingSwitch.isChecked
                 )
-                if (intent.extras?.getBoolean(TopUpAmountActivity.REGISTRATION_MODE_EXTRA_KEY) == true) {
-                    putExtra(TopUpPaymentActivity.REGISTRATION_MODE_EXTRA_KEY, true)
-                }
             }
             startActivity(intent)
         }
