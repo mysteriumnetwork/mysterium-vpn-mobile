@@ -187,9 +187,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
         deferredNode.await().exchangeRate(currency)
     }
 
-    suspend fun getLastSessions(sessionFilter: SessionFilter): ByteArray = withContext(Dispatchers.IO) {
-        deferredNode.await().listConsumerSessions(sessionFilter)
-    }
+    suspend fun getLastSessions(sessionFilter: SessionFilter): ByteArray =
+        withContext(Dispatchers.IO) {
+            deferredNode.await().listConsumerSessions(sessionFilter)
+        }
 
     suspend fun downloadPrivateKey(
         identityAddress: String, newPassphrase: String
@@ -252,8 +253,8 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun getGateways() = withContext(Dispatchers.IO) {
         val gateways = deferredNode.await().gateways
         PaymentGateway.listFromJSON(
-            gateways.decodeToString()) ?: error("Could not parse JSON: $gateways"
-        )
+            gateways.decodeToString()
+        ) ?: error("Could not parse JSON: $gateways")
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {

@@ -17,6 +17,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.pushy.PushyTopic
+import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
@@ -30,7 +31,6 @@ class TopUpPaymentActivity : BaseActivity() {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
-        const val REGISTRATION_MODE_EXTRA_KEY = "REGISTRATION_MODE_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
         private const val TAG = "TopUpPaymentActivity"
@@ -114,6 +114,9 @@ class TopUpPaymentActivity : BaseActivity() {
                 R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it
             )
         }
+
+        startService()
+
         viewModel.createPaymentOrder(
             currency,
             amount?.toDouble() ?: 0.0,
@@ -123,6 +126,7 @@ class TopUpPaymentActivity : BaseActivity() {
             binding.loader.cancelAnimation()
             result.onSuccess {
                 paymentLoaded(currency, it)
+                showPaymentPopUp()
             }
             result.onFailure {
                 showTopUpServerFailed()
@@ -223,6 +227,15 @@ class TopUpPaymentActivity : BaseActivity() {
         dialog.show()
     }
 
+    private fun showPaymentPopUp() {
+        val bindingPopUp = PopUpCryptoPaymentBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.okayButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
     private fun showRegistrationErrorPopUp() {
         val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, true)
@@ -250,5 +263,9 @@ class TopUpPaymentActivity : BaseActivity() {
             getString(R.string.profile_copy_to_clipboard),
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun startService() {
+        startService(Intent(this, PaymentStatusService::class.java))
     }
 }

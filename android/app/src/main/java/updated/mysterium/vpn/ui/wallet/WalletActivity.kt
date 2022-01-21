@@ -21,7 +21,7 @@ import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 
 class WalletActivity : BaseActivity() {
 
@@ -95,7 +95,7 @@ class WalletActivity : BaseActivity() {
             startActivity(intent, transitionAnimation)
         }
         binding.topUpButton.setOnClickListener {
-            startActivity(Intent(this, TopUpAmountActivity::class.java))
+            startActivity(Intent(this, PaymentMethodActivity::class.java))
         }
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnectionOrHome()

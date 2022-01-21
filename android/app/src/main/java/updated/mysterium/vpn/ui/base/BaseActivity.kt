@@ -24,7 +24,7 @@ import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -141,7 +141,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.topUpButton.setOnClickListener {
-            startActivity(Intent(this, TopUpAmountActivity::class.java))
+            startActivity(Intent(this, PaymentMethodActivity::class.java))
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
@@ -249,7 +249,7 @@ abstract class BaseActivity : AppCompatActivity() {
             bindingPopUp.topUpButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
-                startActivity(Intent(this, TopUpAmountActivity::class.java))
+                startActivity(Intent(this, PaymentMethodActivity::class.java))
             }
             bindingPopUp.continueButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()

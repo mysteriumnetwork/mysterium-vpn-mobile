@@ -43,7 +43,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_large"
                 android:layout_marginTop="@dimen/margin_padding_size_large"
-                android:text="@string/pop_up_card_payment_title"
+                android:text="@string/pop_up_crypto_payment_title"
                 android:textAlignment="center"
                 android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginTop="@dimen/margin_padding_size_xlarge"
-                android:src="@drawable/icon_pop_up_successful_green"
+                android:src="@drawable/icon_pop_up_crypto_warning"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
@@ -70,7 +70,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginTop="@dimen/margin_padding_size_xlarge"
                 android:paddingHorizontal="@dimen/margin_padding_size_large"
-                android:text="@string/pop_up_card_payment_description"
+                android:text="@string/pop_up_crypto_payment_description"
                 android:textAlignment="center"
                 android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:text="@string/pop_up_payment_not_work_okay"
+                android:text="@string/pop_up_crypto_payment_button"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </com.google.android.material.card.MaterialCardView>
 
