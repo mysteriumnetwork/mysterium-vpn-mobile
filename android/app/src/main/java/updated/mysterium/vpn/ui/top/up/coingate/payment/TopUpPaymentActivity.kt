@@ -189,7 +189,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentSuccessfullyBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
-            dialog.hide()
+            dialog.dismiss()
             navigateToHome()
         }
         dialog.show()
@@ -199,8 +199,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentCanceledBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
-            dialog.hide()
-            navigateToHome()
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -209,7 +208,7 @@ class TopUpPaymentActivity : BaseActivity() {
         val bindingPopUp = PopUpPaymentNotWorkBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.closeButton.setOnClickListener {
-            navigateToHome()
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -222,7 +221,7 @@ class TopUpPaymentActivity : BaseActivity() {
             getExtra()
         }
         bindingPopUp.topUpLaterButton.setOnClickListener {
-            navigateToHome()
+            dialog.dismiss()
         }
         dialog.show()
     }

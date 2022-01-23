@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:text="@string/pop_up_payment_not_work_okay"
+                android:text="@string/pop_up_top_up_negative"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
