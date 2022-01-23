@@ -277,7 +277,7 @@
     <string name="pop_up_details_title">Some error occurred</string>
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
-    <string name="pop_up_card_payment_description">It may take some time to process your payment \n We\'ll send you a notification once it\'s completed</string>
+    <string name="pop_up_card_payment_description">It may take some time to process your payment. \n We\'ll send you a notification once it\'s completed</string>
     <string name="pop_up_crypto_payment_button">Continue</string>
     <string name="pop_up_crypto_payment_title">Warning!</string>
     <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step. \n You’ll receive a notification once your payment is successfully processed.</string>

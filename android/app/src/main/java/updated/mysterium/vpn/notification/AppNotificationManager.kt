@@ -133,10 +133,20 @@ class AppNotificationManager(private val notificationManager: NotificationManage
                     currency
                 )
             )
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    context.getString(
+                        R.string.push_notification_payment_success_message,
+                        amount,
+                        currency
+                    )
+                )
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVibrate(LongArray(0))
             .setContentIntent(appIntent)
             .setOnlyAlertOnce(true)
+            .setAutoCancel(true)
             .build()
 
         notificationManager.notify(NotificationChannels.STATISTIC_NOTIFICATION, notification)
@@ -152,10 +162,16 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setSmallIcon(R.drawable.notification_logo)
             .setContentTitle(context.getString(R.string.push_notification_payment_failed_title))
             .setContentText(context.getString(R.string.push_notification_payment_failed_message))
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    context.getString(R.string.push_notification_payment_failed_message)
+                )
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVibrate(LongArray(0))
             .setContentIntent(appIntent)
             .setOnlyAlertOnce(true)
+            .setAutoCancel(true)
             .build()
 
         notificationManager.notify(NotificationChannels.STATISTIC_NOTIFICATION, notification)
