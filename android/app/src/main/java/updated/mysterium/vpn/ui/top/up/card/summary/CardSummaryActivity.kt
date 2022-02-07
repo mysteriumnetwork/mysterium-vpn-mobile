@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -30,6 +31,7 @@ class CardSummaryActivity : BaseActivity() {
         private const val TAG = "CardSummaryActivity"
         private const val HTML_MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
+        private const val paymentCallbackUrl = "https://checkout.cardinity.com/callback/"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -37,6 +39,7 @@ class CardSummaryActivity : BaseActivity() {
     private val paymentViewModel: TopUpPaymentViewModel by inject()
     private val paymentStatusViewModel: PaymentStatusViewModel by inject()
     private var paymentHtml: String? = null
+    private var paymentProcessed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +52,11 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        paymentStatusViewModel.paymentSuccessfully.observe(this, { paymentStatus ->
+        paymentStatusViewModel.paymentSuccessfully.observe(this) { paymentStatus ->
             if (paymentStatus == PaymentStatus.STATUS_PAID) {
                 paymentConfirmed()
             }
-        })
+        }
     }
 
     private fun bind() {
@@ -66,7 +69,13 @@ class CardSummaryActivity : BaseActivity() {
         binding.closeButton.setOnClickListener {
             binding.closeButton.visibility = View.GONE
             binding.webView.visibility = View.GONE
-            showPaymentPopUp()
+            if (paymentProcessed) {
+                showPaymentPopUp()
+                paymentProcessed = false
+            }
+        }
+        binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
+            binding.paymentProcessingLayout.root.visibility = View.GONE
         }
     }
 
@@ -75,8 +84,23 @@ class CardSummaryActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.okayButton.setOnClickListener {
             dialog.dismiss()
+            showPaymentProcessingBanner()
         }
         dialog.show()
+    }
+
+    private fun showPaymentProcessingBanner() {
+        binding.paymentProcessingLayout.root.visibility = View.VISIBLE
+        val animationX =
+            (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
+        ObjectAnimator.ofFloat(
+            binding.paymentProcessingLayout.root,
+            "translationY",
+            animationX
+        ).apply {
+            duration = 2000
+            start()
+        }
     }
 
     private fun getMystAmount() {
@@ -125,7 +149,9 @@ class CardSummaryActivity : BaseActivity() {
 
                 override fun onLoadResource(view: WebView?, url: String?) {
                     super.onLoadResource(view, url)
-                    Log.i(TAG, url.toString())
+                    if (url?.contains(paymentCallbackUrl) == true) {
+                        paymentProcessed = true
+                    }
                 }
             }
             binding.webView.loadDataWithBaseURL(null, htmlData, HTML_MIME_TYPE, ENCODING, null)

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">MysteriumVPN</string>
 
+    <!--   Common   -->
+    <string name="close">Close</string>
+
     <!--  Onboarding  -->
     <string name="onboarding_main_title_1">Decentralized global node network</string>
     <string name="onboarding_description_title_1">Run by people, for people</string>
@@ -176,6 +179,7 @@
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
     <string name="top_up_free_trial">Free Trial</string>
+    <string name="payment_processing_text">FYI: It takes a few minutes to process payments if you’ve topped up</string>
 
     <!--  Settings  -->
     <string name="settings_title">Settings</string>

@@ -80,4 +80,7 @@
     <color name="pop_up_password_text">#3C3857</color>
     <color name="pop_up_password_hint">#503C3857</color>
     <color name="pop_up_negative_button_text">#703C3857</color>
+
+    <color name="payment_processing_card_shadow">#1A704C60</color>
+    <color name="payment_processing_card_color">#33ED5BAC</color>
 </resources>
