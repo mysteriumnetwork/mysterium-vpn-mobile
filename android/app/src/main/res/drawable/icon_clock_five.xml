@@ -4,13 +4,13 @@
     android:viewportWidth="84"
     android:viewportHeight="84">
     <path
-        android:fillColor="@color/primary_light_terms"
+        android:fillColor="@color/payment_processing_icon_color"
         android:pathData="M42,2C19.9444,2 2,19.9444 2,42C2,64.0556 19.9444,82 42,82C64.0556,82 82,64.0556 82,42C82,19.9444 64.0556,2 42,2ZM42,77C22.7007,77 7,61.2993 7,42C7,22.7007 22.7007,7 42,7C61.2993,7 77,22.7007 77,42C77,61.2993 61.2993,77 42,77Z"
         android:strokeWidth="3"
-        android:strokeColor="@color/primary_light_terms" />
+        android:strokeColor="@color/payment_processing_icon_color" />
     <path
-        android:fillColor="@color/primary_light_terms"
+        android:fillColor="@color/payment_processing_icon_color"
         android:pathData="M44.4087,17.1111H39.334V43.1526L55.3015,58.8889L58.8895,55.3528L44.4087,41.0818V17.1111Z"
         android:strokeWidth="3"
-        android:strokeColor="@color/primary_light_terms" />
+        android:strokeColor="@color/payment_processing_icon_color" />
 </vector>

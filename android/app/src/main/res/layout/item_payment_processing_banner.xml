@@ -47,7 +47,7 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:contentDescription="@string/close"
-        android:src="@drawable/icon_close_top_up"
+        android:src="@drawable/icon_close_payment_processing"
         app:layout_constraintBottom_toTopOf="@+id/paymentProcessingCard"
         app:layout_constraintEnd_toEndOf="@+id/paymentProcessingCard"
         app:layout_constraintStart_toEndOf="@+id/paymentProcessingCard"
