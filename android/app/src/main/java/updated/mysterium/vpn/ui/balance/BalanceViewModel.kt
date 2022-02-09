@@ -55,20 +55,18 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun getCurrentBalance() = liveDataResult {
-        if (balanceRequest == null) {
-            val handler = CoroutineExceptionHandler { _, exception ->
-                Log.e(TAG, exception.localizedMessage ?: exception.toString())
-            }
-            viewModelScope.launch(Dispatchers.IO + handler) {
+    fun forceBalanceUpdate() {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        viewModelScope.launch(Dispatchers.IO + handler) {
+            if (balanceRequest == null) {
                 initBalanceRequest()
             }
+            balanceRequest?.let {
+                _balanceLiveData.postValue(balanceUseCase.forceBalanceUpdate(it).balance)
+            }
         }
-        var balance = 0.0
-        balanceRequest?.let {
-            balance = balanceUseCase.getBalance(it)
-        }
-        balance
     }
 
     private suspend fun startDeferredNode(coreService: CompletableDeferred<MysteriumCoreService>) {
