@@ -12,6 +12,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 
 class PaymentStatusService : Service(), KoinComponent {
 
@@ -22,6 +23,7 @@ class PaymentStatusService : Service(), KoinComponent {
     private val useCaseProvider: UseCaseProvider by inject()
     private val notificationManager: AppNotificationManager by inject()
     private val paymentUseCase = useCaseProvider.payment()
+    private val balanceViewModel: BalanceViewModel by inject()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         bindPaymentCallback()
@@ -48,6 +50,7 @@ class PaymentStatusService : Service(), KoinComponent {
     ) {
         if (paymentStatus == PaymentStatus.STATUS_PAID) {
             notificationManager.showSuccessPaymentNotification(amount, currency)
+            balanceViewModel.forceBalanceUpdate()
         } else {
             notificationManager.showFailedPaymentNotification()
         }
