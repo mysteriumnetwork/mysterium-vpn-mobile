@@ -1,0 +1,40 @@
+<b>Anonymity you can rent by the minute</b>
+Mysterium VPN is peer-to-peer, so there’s no email, no contracts and no locked-in costs. Switch on and off whenever you need, and only pay for what you actually use.
+
+<b>Use untraceable internet money</b>
+Don’t want to involve credit cards, banks or cash? Use cryptocurrency and pay for your privacy the fast and anonymous way.
+
+<b>Open source from day one</b>
+It’s privacy, powered by transparent technology. We’re designed to keep you hidden, but our source-code is open for anyone to see.
+
+<b>Distributed logs, decentralised power</b>
+Mysterium Network is powered by a global community. There’s no central point of control or failure, and nowhere to store your logs. We can’t track or keep logs of your traffic, even if we're asked to.
+
+<b>Earn while you sleep</b>
+Don’t need a VPN 24/7? Rent your spare bandwidth to help power the network and earn while you work, rest or play.
+
+<b>Uncrackable security</b>
+WireGuard®️ protocol matched with the highest-grade ChaCha20 and Poly1305 encryption with BLAKE2 cryptographic hashing. No agency, hacker or supercomputer could ever crack this.
+
+Legal:
+Terms & Conditions - https://mysterium.network/terms-conditions/
+
+About Mysterium Network:
+Website - https://mysterium.network/
+GitHub - https://github.com/MysteriumNetwork
+Node runners - https://my.mysteriun.network
+
+Join the conversation:
+Discord - https://discord.com/invite/n3vtSwc
+Twitter - https://twitter.com/MysteriumNet
+Announcement Telegram Channel -  https://t.me/Mysterium_Network
+Reddit - https://www.reddit.com/r/MysteriumNetwork
+Facebook - https://www.facebook.com/MysteriumNet
+
+<b>What is Mysterium Network? </b>
+
+Mysterium Network is an open-source project fighting censorship, surveillance and cybercrime through decentralized technology.
+
+We believe that to decentralize the internet is to democratize it; an internet powered by people is the next stage of its technological and social evolution.
+
+Our P2P node network can power all sorts of exciting apps, including the world's first decentralized VPN. Powerful encryption and layered protection protocols guarantee your privacy and anonymity while you freely explore content from around the world. Our global network lays the groundwork for all kinds of world-first distributed services to be built on top of it, so plug in and help us build the open-source future.
