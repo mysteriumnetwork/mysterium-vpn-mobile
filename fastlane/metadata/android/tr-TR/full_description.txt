@@ -1,0 +1,41 @@
+Mysterium, blok zincir tabanında merkezi olmayan VPN ile başlayarak gizliliği yeniden keşfediyor. 
+
+Eski merkezi sistem ve teknolojiler, son kullanıcı güvenliği ve gizliliği göz önünde bulundurulmadan oluşturulmuştur. Kim olursanız olun, hayatınızın her günü veri tabanında sadece bir kayıttır - takip edilmeye, görülmeye ve sömürülmeye hazır bir kayıt.
+
+Biz merkezi olmayan bir VPN'iz, yani mimarimiz aslında trafiğinizin kayıtlarını tutamaz. Bunun yerine, trafik verileriniz, kim olduğunuz ve ne yaptığınız ile ilgili bilgilere tam erişimi olmayan tek bir düğüm olmadan ağ çapında dağıtılır.
+
+<b>Mysterium Ağı:</b>
+Güçlü AES-256 şifreleme, itibar mekanizmaları ve katmanlı koruma protokolleri kullanılarak en yüksek gizliliğe ve anonimliğe odaklanmış P2P mimarisi ile oluşturulan, merkezi olmayan VPN altyapısı
+
+<b>Son Teknoloji Veri Şifreleme</b>
+MysteriumVPN, SHA384 kriptografik karma ile en yüksek dereceli AES-256 şifreleme kullanılarak veri iletişim kanalınızı güvence altına alır.
+
+<b>Merkezi Olmayan Gizlilik:</b>
+İnternet gizliliğini yeni bir seviyeye taşıyoruz. Sizi meraklı gözlerden nasıl koruduğumuzu anlamak için gizlilik politikamıza göz atın.
+
+<b>MacOS/Win üzerinde kullanılabilir</b>
+MysteriumVPN masaüstünde de kullanılabilir. macOS ve Windows uygulama sürümlerini indirmek için web sitemizi ziyaret edin.
+
+<b>Ücretsiz ve Açık Kaynak:</b>
+İlk günden beri hep açık kaynak olduk. Her şeyimiz şeffaftır. Kaynak kodumuzu kontrol edebilir, hatta katkıda bulunabilirsiniz. 
+
+<b>Yasal:</b>
+Şartlar ve Koşullar - https://mysterium.network/terms-conditions/
+
+<b>Hakkımızda daha fazla bilgi için:</b>
+Web sitesi - https://mysterium.network/
+Tanıtım - https://mysterium.network/whitepaper.pdf
+Medya - https://medium.com/mysterium-network
+
+<b>Katkıda bulunun:</b>
+Test edici olun - https://t.me/joinchat/GOCr00z_3SBIPl6DubxxIA
+Düğüm olun - https://mysterium.network/node-runners/run-test-node/
+GitHub - https://github.com/MysteriumNetwork 
+
+<b>Sohbete katılın:</b>
+Telgraf - https://t.me/Mysterium_Network
+Reddit - https://www.reddit.com/r/MysteriumNetwork
+
+<b>Bizi takip edin:</b>
+Twitter - https://twitter.com/MysteriumNet
+Facebook - https://www.facebook.com/MysteriumNet
