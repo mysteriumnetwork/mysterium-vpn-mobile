@@ -60,11 +60,6 @@ class SettingsActivity : BaseActivity() {
         bindsAction()
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        calculateSpinnerSize()
-    }
-
     override fun showConnectionHint() {
         binding.connectionHint.visibility = View.VISIBLE
         baseViewModel.hintShown()
@@ -88,6 +83,7 @@ class SettingsActivity : BaseActivity() {
             finish()
         }
         binding.residentSpinnerFrame.setOnClickListener {
+            calculateSpinnerSize()
             listPopupWindow.show()
         }
         binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -195,7 +191,9 @@ class SettingsActivity : BaseActivity() {
             resources.getDimension(R.dimen.margin_padding_size_large),
             resources.displayMetrics
         ).toInt()
-        listPopupWindow.height = popUpHeight - margin // add margin from bottom
+        if (popUpHeight > margin) {
+            listPopupWindow.height = popUpHeight - margin // add margin from bottom
+        }
     }
 
     private fun showNatCompatibilityPopUpWindow() {
