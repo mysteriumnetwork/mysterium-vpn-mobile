@@ -29,7 +29,6 @@
     <string name="manual_connect_country_label">Countries</string>
     <string name="manual_connect_disconnected">Disconnected</string>
     <string name="manual_connect_select_node">Manual Node Selection</string>
-    <string name="manual_connect_smart_unavailable">Smart Connect isn’t available in a test mode\nPlease select node manually</string>
     <string name="manual_connect_country_status">Unprotected</string>
     <string name="manual_connect_protected">Protected</string>
     <string name="manual_connect_price">Price</string>
