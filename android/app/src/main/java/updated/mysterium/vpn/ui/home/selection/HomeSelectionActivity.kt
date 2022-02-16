@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
@@ -97,7 +98,10 @@ class HomeSelectionActivity : BaseActivity() {
         binding.manualConnectToolbar.onRightButtonClicked {
             startActivity(Intent(this, FavouritesActivity::class.java))
         }
-        binding.selectNodeButton.setOnClickListener {
+        binding.smartConnectButton.setOnClickListener {
+            Toast.makeText(this, "It is not available yet", Toast.LENGTH_SHORT).show()
+        }
+        binding.manualNodeSelectionButton.setOnClickListener {
             val intent = Intent(this, FilterActivity::class.java).apply {
                 val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
                 val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {

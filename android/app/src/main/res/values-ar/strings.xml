@@ -18,7 +18,6 @@
   <string name="manual_connect_nodes_label">العقد</string>
   <string name="manual_connect_country_label">البلدان</string>
   <string name="manual_connect_disconnected">انقطع الاتصال</string>
-  <string name="manual_connect_select_node">تحديد العقدة</string>
   <string name="manual_connect_smart_unavailable">الاتصال الذكي غير متاح في وضع الاختبار\n يُرجى تحديد العقدة يدويًا</string>
   <string name="manual_connect_country_status">غير محمي</string>
   <string name="manual_connect_protected">محمي</string>

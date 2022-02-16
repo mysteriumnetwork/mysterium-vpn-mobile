@@ -18,7 +18,6 @@
   <string name="manual_connect_nodes_label">Düğümler</string>
   <string name="manual_connect_country_label">Ülkeler</string>
   <string name="manual_connect_disconnected">Bağlantı kesildi</string>
-  <string name="manual_connect_select_node">Düğüm seçin</string>
   <string name="manual_connect_smart_unavailable">Smart Connect, test modunda kullanılamaz\n Lütfen düğümü manuel olarak seçin</string>
   <string name="manual_connect_country_status">Korumasız</string>
   <string name="manual_connect_protected">Korumalı</string>

@@ -18,7 +18,6 @@
   <string name="manual_connect_nodes_label">节点</string>
   <string name="manual_connect_country_label">国家</string>
   <string name="manual_connect_disconnected">已断开连接</string>
-  <string name="manual_connect_select_node">选择节点</string>
   <string name="manual_connect_smart_unavailable">测试模式下无法使用智能连接\n 请手动选择节点</string>
   <string name="manual_connect_country_status">不受保护</string>
   <string name="manual_connect_protected">受保护</string>

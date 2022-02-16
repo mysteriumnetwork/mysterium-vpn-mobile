@@ -18,7 +18,6 @@
   <string name="manual_connect_nodes_label">Nós</string>
   <string name="manual_connect_country_label">Países</string>
   <string name="manual_connect_disconnected">Desconectado</string>
-  <string name="manual_connect_select_node">Selecionar nó</string>
   <string name="manual_connect_smart_unavailable">O Smart Connect não está disponível no modo de teste\n Selecione o nó manualmente</string>
   <string name="manual_connect_country_status">Desprotegido</string>
   <string name="manual_connect_protected">Protegido</string>

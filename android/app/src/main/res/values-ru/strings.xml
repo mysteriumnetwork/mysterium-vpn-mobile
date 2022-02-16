@@ -18,7 +18,6 @@
     <string name="manual_connect_nodes_label">Узлы</string>
     <string name="manual_connect_country_label">Страны</string>
     <string name="manual_connect_disconnected">Отключено</string>
-    <string name="manual_connect_select_node">Выбрать узел</string>
     <string name="manual_connect_smart_unavailable">Smart Connect в тестовом режиме недоступен\n Пожалуйста, выберите узел вручную</string>
     <string name="manual_connect_country_status">Не защищено</string>
     <string name="manual_connect_protected">Защищено</string>
