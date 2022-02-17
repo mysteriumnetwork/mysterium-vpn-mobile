@@ -1,9 +1,9 @@
 package updated.mysterium.vpn.ui.top.up
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
@@ -14,7 +14,7 @@ class PaymentStatusViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val paymentUseCase = useCaseProvider.payment()
     private val connectionUseCase = useCaseProvider.connection()
-    private val _paymentSuccessfully = MutableLiveData<PaymentStatus>()
+    private val _paymentSuccessfully = SingleLiveEvent<PaymentStatus>()
 
     fun getPayment(
         mystAmount: Int,
