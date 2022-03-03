@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.GetProposalsRequest
+import network.mysterium.vpn.R
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.dao.NodeDao
@@ -34,7 +35,18 @@ class NodesUseCase(
             serviceType = SERVICE_TYPE
             natCompatibility = NAT_COMPATIBILITY
         }
-        return nodeRepository.countries(request)
+        val countryInfoList = nodeRepository.countries(request)
+        val totalCountryInfo = CountryInfo(
+            countryFlagRes = R.drawable.icon_all_countries,
+            countryCode = ALL_COUNTRY_CODE,
+            countryName = "",
+            proposalsNumber = countryInfoList.size,
+            isSelected = true
+        )
+        return mutableListOf<CountryInfo>().apply {
+            add(0, totalCountryInfo)
+            addAll(countryInfoList)
+        }
     }
 
     suspend fun getFavourites(proposals: List<Proposal>) = checkFavouriteRelevance(

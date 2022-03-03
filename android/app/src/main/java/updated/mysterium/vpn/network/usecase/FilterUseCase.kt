@@ -101,7 +101,18 @@ class FilterUseCase(
                 serviceType = SERVICE_TYPE
                 natCompatibility = getNatCompatibility()
             }
-            nodeRepository.getCountryInfoListByFilterId(proposalRequest)
+            val countryInfoList = nodeRepository.getCountryInfoListByFilterId(proposalRequest)
+            val totalCountryInfo = CountryInfo(
+                countryFlagRes = R.drawable.icon_all_countries,
+                countryCode = NodesUseCase.ALL_COUNTRY_CODE,
+                countryName = "",
+                proposalsNumber = countryInfoList.size,
+                isSelected = true
+            )
+            return mutableListOf<CountryInfo>().apply {
+                add(0, totalCountryInfo)
+                addAll(countryInfoList)
+            }
         } else {
             null
         }
