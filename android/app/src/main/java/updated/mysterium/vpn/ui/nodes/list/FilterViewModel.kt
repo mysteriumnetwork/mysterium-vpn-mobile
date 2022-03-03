@@ -12,6 +12,7 @@ import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 
 class FilterViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -29,7 +30,7 @@ class FilterViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         _proposalsList.value = getFilteredProposalList(nodeFilter)
     }
 
-    fun getPreviousCountryCode() = filtersUseCase.getPreviousCountryCode()
+    fun getPreviousCountryCode() = filtersUseCase.getPreviousCountryCode() ?: ALL_COUNTRY_CODE
 
     fun getPreviousFilter() = liveDataResult {
         val allFilters = filtersUseCase.getSystemPresets()

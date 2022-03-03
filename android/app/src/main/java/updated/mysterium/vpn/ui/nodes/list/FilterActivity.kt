@@ -16,13 +16,11 @@ import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
-import updated.mysterium.vpn.network.usecase.NodesUseCase
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.search.SearchActivity
-import java.util.*
 
 class FilterActivity : BaseActivity() {
 
@@ -74,24 +72,15 @@ class FilterActivity : BaseActivity() {
                     binding.nodesTitle.text = filterTitle
                 }
                 val filterId = presetFilter?.filterId ?: FilterUseCase.ALL_NODES_FILTER_ID
-                allNodesViewModel.getFilteredListById(filterId).observe(this) { result ->
-                    result.onSuccess { proposals ->
-                        val userCountryCode = viewModel.getPreviousCountryCode()
-                        val countryList = if (userCountryCode == NodesUseCase.ALL_COUNTRY_CODE) {
-                            // return all filtered nodes
-                            proposals.first().proposalList
-                        } else {
-                            // filter by user selected country
-                            proposals.find { proposal ->
-                                proposal.info.countryCode == userCountryCode
-                            }?.proposalList ?: emptyList()
+                allNodesViewModel.getProposalsWithFilterAndCountry(filterId, countryCode)
+                    .observe(this) { result ->
+                        result.onSuccess { proposals ->
+                            viewModel.cacheProposals = proposals
+                            nodeListAdapter.replaceAll(proposals)
+                            binding.loader.cancelAnimation()
+                            binding.loader.visibility = View.INVISIBLE
                         }
-                        viewModel.cacheProposals = countryList
-                        nodeListAdapter.replaceAll(countryList)
-                        binding.loader.cancelAnimation()
-                        binding.loader.visibility = View.INVISIBLE
                     }
-                }
             }
         }
     }

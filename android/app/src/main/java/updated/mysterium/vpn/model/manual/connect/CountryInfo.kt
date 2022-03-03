@@ -14,7 +14,13 @@ data class CountryInfo(
     val countryName: String,
     val proposalsNumber: Int = 0,
     var isSelected: Boolean = false
-) : Parcelable
+) : Parcelable {
+
+    fun changeSelectionState() {
+        isSelected = !isSelected
+    }
+
+}
 
 fun Map<String, Int>.toCountryInfo(): List<CountryInfo> {
     val result = mutableListOf<CountryInfo>()

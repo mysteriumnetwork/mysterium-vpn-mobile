@@ -56,14 +56,14 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun checkCurrentState() {
-        viewModel.getCurrentState().observe(this, { result ->
+        viewModel.getCurrentState().observe(this) { result ->
             result.onSuccess { state ->
                 handleConnectionState(state)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
-        })
+        }
     }
 
     private fun configure() {
@@ -85,9 +85,9 @@ class HomeSelectionActivity : BaseActivity() {
                 showFilteredList(savedFilterId)
             }
         }
-        viewModel.connectionState.observe(this, {
+        viewModel.connectionState.observe(this) {
             handleConnectionState(it)
-        })
+        }
     }
 
     private fun bindsAction() {
@@ -99,7 +99,7 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.selectNodeButton.setOnClickListener {
             val intent = Intent(this, FilterActivity::class.java).apply {
-                val selectedCountryCode = allNodesAdapter.selectedItem?.info?.countryCode
+                val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
                 val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
                     selectedCountryCode?.toLowerCase(Locale.ROOT) ?: ALL_COUNTRY_CODE
                 } else {
@@ -119,11 +119,11 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun subscribeToResidentCountry() {
-        viewModel.getResidentCountry().observe(this, {
+        viewModel.getResidentCountry().observe(this) {
             it.onSuccess { country ->
                 pushyNotifications.subscribe(country)
             }
-        })
+        }
     }
 
     private fun handleConnectionState(connection: ConnectionState) {
@@ -170,11 +170,11 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun getCurrentIpAddress() {
-        viewModel.getLocation().observe(this, {
+        viewModel.getLocation().observe(this) {
             it.onSuccess { location ->
                 binding.ipTextView.text = location.ip
             }
-        })
+        }
     }
 
     private fun initFiltersList() {
@@ -190,7 +190,7 @@ class HomeSelectionActivity : BaseActivity() {
                 override fun canScrollVertically() = false
             }
         }
-        viewModel.getSystemPresets().observe(this, {
+        viewModel.getSystemPresets().observe(this) {
             it.onSuccess { filters ->
                 filtersAdapter.replaceAll(filters)
                 applySavedFilter(viewModel.getPreviousFilterId(), filters)
@@ -199,41 +199,40 @@ class HomeSelectionActivity : BaseActivity() {
                 wifiNetworkErrorPopUp()
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
-        })
+        }
     }
 
     private fun showFilteredList(filterId: Int) {
-        allNodesViewModel.getFilteredListById(filterId).observe(this) {
-            it.onSuccess { countries ->
-                val sortedCountries = countries.sortedBy { countryNodes ->
-                    countryNodes.info.countryName
+        allNodesViewModel.getCountryInfoListWithFilter(filterId).observe(this) {
+            it.onSuccess { countryInfoList ->
+                val sortedCountryInfoList = countryInfoList.sortedBy { countryInfo ->
+                    countryInfo.countryName
                 }
                 // remove previous or default selection
-                sortedCountries.filter { country ->
-                    country.info.isSelected
-                }.forEach { country ->
-                    country.changeSelectionState()
+                sortedCountryInfoList.filter { countryInfo ->
+                    countryInfo.isSelected
+                }.forEach { countryInfo ->
+                    countryInfo.changeSelectionState()
                 }
-
                 // mark saved country
-                val selectedItem = sortedCountries.firstOrNull { country ->
-                    country.info.countryCode == viewModel.getPreviousCountryCode()
+                val selectedItem = sortedCountryInfoList.firstOrNull { countryInfo ->
+                    countryInfo.countryCode == viewModel.getPreviousCountryCode()
                 }
                 selectedItem?.changeSelectionState()
-                val countryIndex = sortedCountries.indexOf(selectedItem)
+                val countryIndex = sortedCountryInfoList.indexOf(selectedItem)
                 (binding.nodesRecyclerView.layoutManager as? LinearLayoutManager)?.apply {
                     if (countryIndex != -1) {
                         // scroll to previous country
                         scrollToPositionWithOffset(countryIndex, 0)
                     } else {
                         // scroll to top
-                        sortedCountries.first().changeSelectionState()
+                        sortedCountryInfoList.first().changeSelectionState()
                         scrollToPositionWithOffset(0, 0)
                     }
                 }
                 allNodesAdapter.replaceAll(
-                    sortedCountries.sortedBy { countryNodes ->
-                        countryNodes.info.countryName
+                    sortedCountryInfoList.sortedBy { countryInfo ->
+                        countryInfo.countryName
                     }
                 )
             }
