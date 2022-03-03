@@ -5,14 +5,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CountryNodes(
-    val countryFlagRes: Int? = null,
-    val countryCode: String,
-    val countryName: String,
-    val proposalList: List<Proposal>,
-    var isSelected: Boolean = false
+    val info: CountryInfo,
+    val proposalList: List<Proposal>
 ) : Parcelable {
 
     fun changeSelectionState() {
-        isSelected = !isSelected
+        info.isSelected = !info.isSelected
     }
 }

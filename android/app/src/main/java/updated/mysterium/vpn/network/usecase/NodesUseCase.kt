@@ -6,6 +6,7 @@ import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
+import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.manual.connect.CountryNodes
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
@@ -47,16 +48,19 @@ class NodesUseCase(
         countryNodesList.add(
             index = 0,
             element = CountryNodes(
-                countryCode = ALL_COUNTRY_CODE,
-                countryName = "",
-                countryFlagRes = R.drawable.icon_all_countries,
-                proposalList = proposalList,
-                isSelected = true
+                info = CountryInfo(
+                    countryCode = ALL_COUNTRY_CODE,
+                    countryName = "",
+                    countryFlagRes = R.drawable.icon_all_countries,
+                    isSelected = true
+                ),
+                proposalList = proposalList
             )
         )
         proposalList.filter { it.countryCode != "" }
             .forEach { node ->
-                val currentCountry = countryNodesList.find { it.countryCode == node.countryCode }
+                val currentCountry =
+                    countryNodesList.find { it.info.countryCode == node.countryCode }
                 if (currentCountry == null) {
                     val allNodesByCountry = mutableListOf<Proposal>()
                     proposalList.forEach {
@@ -66,8 +70,10 @@ class NodesUseCase(
                     }
                     countryNodesList.add(
                         CountryNodes(
-                            countryCode = node.countryCode,
-                            countryName = node.countryName,
+                            info = CountryInfo(
+                                countryCode = node.countryCode,
+                                countryName = node.countryName
+                            ),
                             proposalList = allNodesByCountry.toList()
                         )
                     )

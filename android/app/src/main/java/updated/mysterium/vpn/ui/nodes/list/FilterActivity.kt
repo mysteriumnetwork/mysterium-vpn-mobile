@@ -83,7 +83,7 @@ class FilterActivity : BaseActivity() {
                         } else {
                             // filter by user selected country
                             proposals.find { proposal ->
-                                proposal.countryCode == userCountryCode
+                                proposal.info.countryCode == userCountryCode
                             }?.proposalList ?: emptyList()
                         }
                         viewModel.cacheProposals = countryList

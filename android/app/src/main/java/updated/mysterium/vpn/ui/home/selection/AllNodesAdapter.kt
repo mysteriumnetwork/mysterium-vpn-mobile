@@ -35,23 +35,23 @@ class AllNodesAdapter : ContentListAdapter<CountryNodes, AllNodesAdapter.Country
         val binding = ItemCountryNodesBinding.bind(itemView)
 
         fun bind(item: CountryNodes) {
-            if (item.countryCode == ALL_COUNTRY_CODE) {
+            if (item.info.countryCode == ALL_COUNTRY_CODE) {
                 binding.countryName.text = itemView.context.getString(
                     R.string.manual_connect_all_countries
                 )
                 Glide.with(itemView.context)
-                    .load(item.countryFlagRes)
+                    .load(item.info.countryFlagRes)
                     .circleCrop()
                     .into(binding.countryImage)
             } else {
-                binding.countryName.text = item.countryName
+                binding.countryName.text = item.info.countryName
                 Glide.with(itemView.context)
                     .load(item.proposalList.first().countryFlagImage)
                     .circleCrop()
                     .into(binding.countryImage)
             }
             binding.countryNodesCount.text = item.proposalList.size.toString()
-            if (item.isSelected) {
+            if (item.info.isSelected) {
                 selectedItem = item
                 selectedState()
             } else {
@@ -59,7 +59,7 @@ class AllNodesAdapter : ContentListAdapter<CountryNodes, AllNodesAdapter.Country
             }
             itemView.setOnClickListener {
                 if (item != selectedItem) {
-                    onCountrySelected?.invoke(item.countryCode)
+                    onCountrySelected?.invoke(item.info.countryCode)
                     item.changeSelectionState()
                     selectedItem?.changeSelectionState()
                     selectedItem = item

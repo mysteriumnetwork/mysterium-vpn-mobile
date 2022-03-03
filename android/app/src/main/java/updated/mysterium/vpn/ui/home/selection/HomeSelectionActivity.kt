@@ -99,7 +99,7 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.selectNodeButton.setOnClickListener {
             val intent = Intent(this, FilterActivity::class.java).apply {
-                val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
+                val selectedCountryCode = allNodesAdapter.selectedItem?.info?.countryCode
                 val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
                     selectedCountryCode?.toLowerCase(Locale.ROOT) ?: ALL_COUNTRY_CODE
                 } else {
@@ -206,18 +206,18 @@ class HomeSelectionActivity : BaseActivity() {
         allNodesViewModel.getFilteredListById(filterId).observe(this) {
             it.onSuccess { countries ->
                 val sortedCountries = countries.sortedBy { countryNodes ->
-                    countryNodes.countryName
+                    countryNodes.info.countryName
                 }
                 // remove previous or default selection
                 sortedCountries.filter { country ->
-                    country.isSelected
+                    country.info.isSelected
                 }.forEach { country ->
                     country.changeSelectionState()
                 }
 
                 // mark saved country
                 val selectedItem = sortedCountries.firstOrNull { country ->
-                    country.countryCode == viewModel.getPreviousCountryCode()
+                    country.info.countryCode == viewModel.getPreviousCountryCode()
                 }
                 selectedItem?.changeSelectionState()
                 val countryIndex = sortedCountries.indexOf(selectedItem)
@@ -233,7 +233,7 @@ class HomeSelectionActivity : BaseActivity() {
                 }
                 allNodesAdapter.replaceAll(
                     sortedCountries.sortedBy { countryNodes ->
-                        countryNodes.countryName
+                        countryNodes.info.countryName
                     }
                 )
             }
