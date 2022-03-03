@@ -76,7 +76,7 @@ class FilterUseCase(
             locationCountry = countryCode.toUpperCase(Locale.ROOT)
             refresh = true
             serviceType = SERVICE_TYPE
-            natCompatibility = NAT_COMPATIBILITY
+            natCompatibility = getNatCompatibility()
         }
         return nodeRepository.proposals(request).map { Proposal(NodeEntity(it)) }
     }
