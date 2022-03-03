@@ -8,8 +8,11 @@ import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.entity.NodeEntity
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
+import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.manual.connect.SystemPreset
+import java.util.*
 
 class FilterUseCase(
     private val nodeRepository: NodeRepository,
@@ -64,7 +67,33 @@ class FilterUseCase(
         }
     }
 
-    suspend fun getProposalsByFilterId(filterId: Int): List<NodeEntity>? {
+    suspend fun getProposalsWithFilterAndCountry(
+        filterId: Int,
+        countryCode: String
+    ): List<Proposal> {
+        val request = GetProposalsRequest().apply {
+            presetID = filterId.toLong()
+            locationCountry = countryCode.toUpperCase(Locale.ROOT)
+            refresh = true
+            serviceType = SERVICE_TYPE
+            natCompatibility = NAT_COMPATIBILITY
+        }
+        return nodeRepository.proposals(request).map { Proposal(NodeEntity(it)) }
+    }
+
+    suspend fun getProposalsByFilterId(filterId: Int): List<Proposal> {
+        val proposalRequest = GetProposalsRequest().apply {
+            presetID = filterId.toLong()
+            refresh = true
+            serviceType = SERVICE_TYPE
+            natCompatibility = getNatCompatibility()
+        }
+        return nodeRepository.getProposalsByFilterId(proposalRequest).map {
+            Proposal(NodeEntity(it))
+        }
+    }
+
+    suspend fun getCountryInfoListByFilterId(filterId: Int): List<CountryInfo>? {
         return if (filterId != ALL_NODES_FILTER_ID) {
             val proposalRequest = GetProposalsRequest().apply {
                 presetID = filterId.toLong()
@@ -72,9 +101,7 @@ class FilterUseCase(
                 serviceType = SERVICE_TYPE
                 natCompatibility = getNatCompatibility()
             }
-            nodeRepository.getProposalsByFilterId(proposalRequest).map {
-                NodeEntity(it)
-            }
+            nodeRepository.getCountryInfoListByFilterId(proposalRequest)
         } else {
             null
         }

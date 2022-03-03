@@ -26,7 +26,18 @@ class NodesUseCase(
         nodeRepository.deferredNode = deferredNode
     }
 
-    suspend fun getAllCountries() = mapNodesToCountriesGroups(getAllNodes())
+    suspend fun getAllProposals(): List<Proposal> {
+        return createProposalList(getAllNodes())
+    }
+
+    suspend fun getCountryInfoList(): List<CountryInfo> {
+        val request = GetProposalsRequest().apply {
+            this.refresh = true
+            serviceType = SERVICE_TYPE
+            natCompatibility = NAT_COMPATIBILITY
+        }
+        return nodeRepository.countries(request)
+    }
 
     suspend fun getFavourites(proposals: List<Proposal>) = checkFavouriteRelevance(
         allAvailableNodes = proposals,

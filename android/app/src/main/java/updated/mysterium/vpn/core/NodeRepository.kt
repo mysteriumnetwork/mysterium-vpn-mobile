@@ -21,7 +21,6 @@ import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
-import java.math.RoundingMode.*
 
 // Wrapper around Go mobile node library bindings. It should not change any result
 // returned from internal mobile node and instead all mappings should happen in
@@ -254,6 +253,13 @@ class NodeRepository(var deferredNode: DeferredNode) {
             } else {
                 proposalsResponse.proposals
             }
+        }
+
+    suspend fun getCountryInfoListByFilterId(request: GetProposalsRequest) =
+        withContext(Dispatchers.IO) {
+            val bytes = deferredNode.await().getCountries(request)
+            val response = parseCountries(bytes)
+            response ?: listOf()
         }
 
     suspend fun getRegistrationTokenReward(registrationToken: String) =
