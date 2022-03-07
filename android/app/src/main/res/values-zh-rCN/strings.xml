@@ -1,216 +1,307 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="onboarding_main_title_1">去中心化的全球节点网络</string>
-  <string name="onboarding_description_title_1">由人经营，为人经营</string>
-  <string name="onboarding_description_content_1">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
-  <string name="onboarding_main_title_2">上网，并在此过程中付款</string>
-  <string name="onboarding_description_title_2">订购后可解锁一切功能</string>
-  <string name="onboarding_description_content_2">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
-  <string name="onboarding_main_title_3">使用热门加密货币充值</string>
-  <string name="onboarding_description_title_3">比特币、以太币、莱特币、比特币现金和其他代币</string>
-  <string name="onboarding_description_content_3">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
-  <string name="onboarding_skip">跳过</string>
-  <string name="onboarding_next">下一个</string>
-  <string name="manual_connect_country_select_title">选择节点</string>
-  <string name="manual_connect_all_nodes">全部节点</string>
-  <string name="manual_connect_saved_nodes">已保存</string>
-  <string name="manual_connect_all_countries">全部国家</string>
-  <string name="manual_connect_nodes_label">节点</string>
-  <string name="manual_connect_country_label">国家</string>
-  <string name="manual_connect_disconnected">已断开连接</string>
-  <string name="manual_connect_select_node">选择节点</string>
-  <string name="manual_connect_smart_unavailable">测试模式下无法使用智能连接\n 请手动选择节点</string>
-  <string name="manual_connect_country_status">不受保护</string>
-  <string name="manual_connect_protected">受保护</string>
-  <string name="manual_connect_price">价格</string>
-  <string name="manual_connect_type">类型</string>
-  <string name="manual_connect_quality">质量</string>
-  <string name="manual_connect_type_filter_title">选择节点类型</string>
-  <string name="manual_connect_node">节点</string>
-  <string name="manual_connect_another_node">选择另一个节点</string>
-  <string name="manual_connect_cancel">取消和选择另一个节点</string>
-  <string name="manual_connect_connecting">正在连接…</string>
-  <string name="manual_connect_connected">已连接</string>
-  <string name="manual_connect_disconnect">断开连接</string>
-  <string name="manual_connect_disconnecting">正在断开连接</string>
-  <string name="manual_connect_connecting_title">手动连接</string>
-  <string name="manual_connect_connecting_description">正在创建连接您的节点的加密隧道</string>
-  <string name="manual_connect_duration">持续时间</string>
-  <string name="manual_connect_data_received_hint">接收/发送</string>
-  <string name="manual_connect_paid_hint">已付</string>
-  <string name="manual_connect_time_format">时 分 秒</string>
-  <string name="manual_connect_paid_types">MYST / 欧元</string>
-  <string name="manual_connect_loading">加载中</string>
-  <string name="manual_connect_unknown">未知</string>
-  <string name="manual_connect_price_per_hour">%.5f/小时</string>
-  <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
-  <string name="manual_connect_saved_to_favourite">保存成功</string>
-  <string name="manual_connect_currency_hint">比特币、以太币、莱特币、比特币现金和其他代币</string>
-  <string name="manual_connect_search">搜索</string>
-  <string name="manual_connect_node_id">节点 ID 或国家</string>
-  <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
-  <string name="filter_type_all">全部类型</string>
-  <string name="filter_type_residential">住宅</string>
-  <string name="filter_type_non_residential">非住宅</string>
-  <string name="filter_price_high">任何</string>
-  <string name="filter_price_medium">中</string>
-  <string name="filter_price_low">低</string>
-  <string name="filter_quality_high">高</string>
-  <string name="filter_quality_medium">中 +</string>
-  <string name="filter_quality_low">任何</string>
-  <string name="menu_current_balance">"%.3f" MYST</string>
-  <string name="menu_title">Mysterium Network</string>
-  <string name="menu_item_home_title">主页</string>
-  <string name="menu_item_profile_title">个人资料</string>
-  <string name="menu_item_wallet_title">账户</string>
-  <string name="menu_item_monitoring_title">记录</string>
-  <string name="menu_item_referral_title">推荐计划</string>
-  <string name="menu_item_referral_subtitle">赚取 VPN 点数</string>
-  <string name="menu_item_wallet_subtitle">为您的账户充值</string>
-  <string name="menu_item_monitoring_subtitle">连接记录</string>
-  <string name="menu_list_item_settings">设置</string>
-  <string name="menu_list_item_report">报告问题</string>
-  <string name="menu_list_item_help">获取帮助</string>
-  <string name="menu_terms">使用条款</string>
-  <string name="menu_app_version">应用版本 %s</string>
-  <string name="wallet_main_title">账户余额</string>
-  <string name="wallet_start_balance">0,000</string>
-  <string name="wallet_usd_equivalent">美元等值金额 ≈ $%.3f</string>
-  <string name="wallet_buys_for_you">此操作可购买：</string>
-  <string name="wallet_top_up">充值</string>
-  <string name="wallet_myst_about">MYST 是以太坊 区块链的代币</string>
-  <string name="wallet_top_up_label">充值事件</string>
-  <string name="wallet_spendings_label">开销</string>
-  <string name="wallet_spendings_country">国家</string>
-  <string name="wallet_spendings_duration">持续时间</string>
-  <string name="wallet_spendings_currency">MYST / 美元</string>
-  <string name="wallet_spendings_quality">质量</string>
-  <string name="wallet_spendings_size">大小</string>
-  <string name="wallet_spendings_connected">已连接</string>
-  <string name="wallet_spendings_connected_value">%d 天前</string>
-  <string name="wallet_top_ups_time">时间</string>
-  <string name="wallet_top_ups_paid">已付</string>
-  <string name="wallet_top_ups_myst">MYST</string>
-  <string name="wallet_video">在线\n 视频</string>
-  <string name="wallet_web">网页\n 浏览</string>
-  <string name="wallet_download">的数据\n 下载</string>
-  <string name="wallet_music">歌\n 曲</string>
-  <string name="profile_title">个人资料</string>
-  <string name="profile_identity">Mysterium 身份地址</string>
-  <string name="profile_identity_description">身份即您的 Mysterium 内部用户 ID。请勿在那里发送以太币或任何类型的 ERC20 代币。</string>
-  <string name="profile_change_keys">变更私钥</string>
-  <string name="profile_copy_to_clipboard">已复制到剪贴板</string>
-  <string name="profile_private_keys">私钥</string>
-  <string name="profile_keys_description">在 Mysterium 上，您的账户并非存储在中心化的服务器上。保管您的代币的私钥仅存储在您的应用上。</string>
-  <string name="profile_backup">请制作备份，以便以后恢复您的账户。</string>
-  <string name="profile_download_keys">下载</string>
-  <string name="report_issue_title">获取帮助</string>
-  <string name="report_issue_description">请告诉我们您在应用内遇到的问题。我们\n 会通过电邮立即回复您。</string>
-  <string name="report_issue_email_subtitle">电邮（选填）</string>
-  <string name="report_issue_problem_subtitle">问题描述</string>
-  <string name="report_issue_send">发送</string>
-  <string name="report_issue_app_version">应用版本</string>
-  <string name="report_issue_node_version">节点版本</string>
-  <string name="report_issue_error_empty_issue">不能为空</string>
-  <string name="report_issue_error_incorrect_email">电邮有误</string>
-  <string name="report_issue_error_request">出错了，请稍后重试</string>
-  <string name="report_issue_success">报告发送成功。谢谢！</string>
-  <string name="monitoring_title">记录统计数据</string>
-  <string name="monitoring_last_sessions">上次的对话</string>
-  <string name="monitoring_empty_line_chart">您还没有任何对话</string>
-  <string name="terms_title">使用条款</string>
-  <string name="terms_short">简洁版</string>
-  <string name="terms_full">完整版</string>
-  <string name="terms_accept_button">接受</string>
-  <string name="terms_onboarding_description">关于为何需要在使用应用前接受所有使用条款的描述</string>
-  <string name="top_up_amount_title">为您的账户充值</string>
-  <string name="top_up_amount_video">在线视频</string>
-  <string name="top_up_amount_music">音乐</string>
-  <string name="top_up_amount_pages">网页</string>
-  <string name="top_up_amount_traffic">流量</string>
-  <string name="top_up_amount_description">选择要向您的账户\n 添加的 MYST 点数</string>
-  <string name="top_up_amount_confirm">确认</string>
-  <string name="top_up_crypto_description">选择要进行充值\n 的加密货币</string>
-  <string name="top_up_payment_title">等待付款</string>
-  <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
-  <string name="top_up_payment_link">或使用付款链接</string>
-  <string name="top_up_crypto_lighting">快如闪电的网络</string>
-  <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
-  <string name="top_up_free_trial">免费试用</string>
-  <string name="settings_title">设置</string>
-  <string name="settings_description">身份即您的 Mysterium 内部用户 ID。请勿在那里发送以太币或任何类型的 ERC20 代币。</string>
-  <string name="settings_dns_title">DNS</string>
-  <string name="settings_resident_title">居住国</string>
-  <string name="settings_dns_system">系统</string>
-  <string name="settings_dns_provider">提供商</string>
-  <string name="settings_dns_cloudflare">Cloudflare</string>
-  <string name="settings_dns_default">默认</string>
-  <string name="create_account_title">您的账户</string>
-  <string name="create_account_new">创建新的\n 账户</string>
-  <string name="create_account_import">导入\n 账户</string>
-  <string name="create_account_description">立即为您的账户充值或稍后充值，并\n 使用有限的功能和免费节点</string>
-  <string name="private_key_back_up">备份\n 私钥</string>
-  <string name="private_key_back_up_later">稍后\n 备份</string>
-  <string name="prepare_top_up_referral">使用推荐人代码</string>
-  <string name="prepare_top_up_now">立即充值</string>
-  <string name="prepare_top_up_later">稍后充值</string>
-  <string name="search_hint_first_part">使用</string>
-  <string name="search_hint_highlighted">搜索栏</string>
-  <string name="search_hint_second_part">在顶部\n 寻找适合的节点</string>
-  <string name="favourites_title">收藏夹</string>
-  <string name="toolbar_hint">返回连接屏幕</string>
-  <string name="pop_up_top_up_title">为您的账户\n 充值</string>
-  <string name="pop_up_top_up_description">点数快用完</string>
-  <string name="pop_up_top_up_positive">立即充值</string>
-  <string name="pop_up_top_up_negative">继续</string>
-  <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
-  <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>
-  <string name="pop_up_insufficient_funds_title">资金\n 不足</string>
-  <string name="pop_up_insufficient_funds_description">请为您的账户 充值</string>
-  <string name="pop_up_payment_successfully_title">付款\n 成功</string>
-  <string name="pop_up_payment_successfully_done">做得好</string>
-  <string name="pop_up_payment_successfully_close">关闭</string>
-  <string name="pop_up_payment_not_work_title">付款服务器\n 故障</string>
-  <string name="pop_up_payment_not_work_try_again">请稍后重试</string>
-  <string name="pop_up_payment_not_work_okay">好，明白了</string>
-  <string name="pop_up_payment_expired_title">付款\n 失败</string>
-  <string name="pop_up_payment_expired_description">已超时</string>
-  <string name="pop_up_payment_expired_try_again">重试</string>
-  <string name="pop_up_payment_expired_later">稍后充值</string>
-  <string name="pop_up_node_failed_title">无法连接</string>
-  <string name="pop_up_node_failed_description">检查您的网络</string>
-  <string name="pop_up_node_failed_another">选择另一个节点</string>
-  <string name="pop_up_registration_failed_title">连线\n 问题</string>
-  <string name="pop_up_registration_failed_description">检查您的网络</string>
-  <string name="pop_up_registration_failed_cancel">取消</string>
-  <string name="pop_up_registration_failed_retry">再次尝试注册</string>
-  <string name="pop_up_lost_connection_title">连接\n 中断</string>
-  <string name="pop_up_lost_connection_description">正在寻找新节点</string>
-  <string name="pop_up_wi_fi_error_title">Wi-Fi 网络\n 错误</string>
-  <string name="pop_up_wi_fi_error_description">请检查您的\n 网络连接</string>
-  <string name="pop_up_wi_fi_error_retry">重试</string>
-  <string name="pop_up_terms_title">使用条款\n 已变动</string>
-  <string name="pop_up_terms_description">在此检查更新\n 的版本</string>
-  <string name="pop_up_terms_confirm">确认</string>
-  <string name="pop_up_private_key_title">下载密钥</string>
-  <string name="pop_up_private_key_description">输入您的密码</string>
-  <string name="pop_up_private_key_download">下载</string>
-  <string name="pop_up_private_key_error">密码有误</string>
-  <string name="pop_up_import_wrong_password">密码有误</string>
-  <string name="pop_up_private_key_hint">密码长度为 12–16 个字符</string>
-  <string name="pop_up_import_account_title">导入账户</string>
-  <string name="pop_up_import_account_upload">上传</string>
-  <string name="pop_up_password_account_title">账户密码</string>
-  <string name="pop_up_password_account_apply">应用</string>
-  <string name="pop_up_password_account_hint">在此输入密码</string>
-  <string name="pop_up_referral_hint">在此输入代码</string>
-  <string name="pop_up_referral_title">推荐人代码</string>
-  <string name="pop_up_referral_description">您将获得</string>
-  <string name="push_notification_balance_title">Mysterium 余额</string>
-  <string name="push_notification_balance_message">您的余额快用完！</string>
-  <string name="push_notification_connection_title">Mysterium 连接</string>
-  <string name="push_notification_connection_message">与节点的连接已断开！</string>
-  <string name="push_notification_connected_title">已连接至 %1$s</string>
-  <string name="push_notification_content">已收到 %1$s | 发送 %2$s | 已付 %3$s</string>
-  <string name="error_vpn_permission">须向 MysteriumVPN 授予 VPN 连接权限，才能使用</string>
+
+    <!--   Common   -->
+    <string name="close">关闭</string>
+
+    <!--  Onboarding  -->
+    <string name="onboarding_main_title_1">去中心化的全球节点网络</string>
+    <string name="onboarding_description_title_1">由人经营，为人经营</string>
+    <string name="onboarding_description_content_1">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
+    <string name="onboarding_main_title_2">上网，并在此过程中付款</string>
+    <string name="onboarding_description_title_2">订购后可解锁一切功能</string>
+    <string name="onboarding_description_content_2">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
+    <string name="onboarding_main_title_3">使用热门加密货币充值</string>
+    <string name="onboarding_description_title_3">比特币、以太币、莱特币、比特币现金和其他代币</string>
+    <string name="onboarding_description_content_3">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_next">下一个</string>
+
+    <!--  ManualConnection  -->
+    <string name="manual_connect_country_select_title">选择节点</string>
+    <string name="manual_connect_all_nodes">全部节点</string>
+    <string name="manual_connect_saved_nodes">已保存</string>
+    <string name="manual_connect_all_countries">全部国家</string>
+    <string name="manual_connect_nodes_label">节点</string>
+    <string name="manual_connect_country_label">国家</string>
+    <string name="manual_connect_disconnected">已断开连接</string>
+    <string name="manual_connect_select_node">选择节点</string>
+    <string name="manual_connect_smart_unavailable">测试模式下无法使用智能连接\n 请手动选择节点</string>
+    <string name="manual_connect_country_status">不受保护</string>
+    <string name="manual_connect_protected">受保护</string>
+    <string name="manual_connect_price">价格</string>
+    <string name="manual_connect_type">类型</string>
+    <string name="manual_connect_quality">质量</string>
+    <string name="manual_connect_type_filter_title">选择节点类型</string>
+    <string name="manual_connect_node">节点</string>
+    <string name="manual_connect_another_node">选择另一个节点</string>
+    <string name="manual_connect_cancel">取消和选择另一个节点</string>
+    <string name="manual_connect_connecting">正在连接…</string>
+    <string name="manual_connect_connected">已连接</string>
+    <string name="manual_connect_on_hold">保持</string>
+    <string name="manual_connect_disconnect">断开连接</string>
+    <string name="manual_connect_disconnecting">正在断开连接</string>
+    <string name="manual_connect_connecting_title">手动连接</string>
+    <string name="manual_connect_connecting_description">正在创建连接您的节点的加密隧道</string>
+    <string name="manual_connect_duration">持续时间</string>
+    <string name="manual_connect_data_received_hint">接收/发送</string>
+    <string name="manual_connect_paid_hint">已付</string>
+    <string name="manual_connect_time_format">时 分 秒</string>
+    <string name="manual_connect_paid_types">MYST / 欧元</string>
+    <string name="manual_connect_loading">加载中</string>
+    <string name="manual_connect_unknown">未知</string>
+    <string name="manual_connect_price_per_hour">%.5f/小时</string>
+    <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
+    <string name="manual_connect_saved_to_favourite">保存成功</string>
+    <string name="manual_connect_currency_hint">比特币、以太币、莱特币、比特币现金和其他代币</string>
+    <string name="manual_connect_search">搜索</string>
+    <string name="manual_connect_node_id">节点 ID 或国家</string>
+    <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
+    <string name="manual_connect_residential">住宅</string>
+    <string name="manual_connect_non_residential">非住宅</string>
+
+    <!--  Filters  -->
+    <string name="filter_type_all">全部类型</string>
+    <string name="filter_type_residential">住宅</string>
+    <string name="filter_type_non_residential">非住宅</string>
+    <string name="filter_price_high">任何</string>
+    <string name="filter_price_medium">中</string>
+    <string name="filter_price_low">低</string>
+    <string name="filter_quality_high">高</string>
+    <string name="filter_quality_medium">中 +</string>
+    <string name="filter_quality_low">任何</string>
+
+    <!--  Menu  -->
+    <string name="menu_current_balance">"%.3f" MYST</string>
+    <string name="menu_title">Mysterium Network</string>
+    <string name="menu_item_home_title">主页</string>
+    <string name="menu_item_profile_title">个人资料</string>
+    <string name="menu_item_wallet_title">账户</string>
+    <string name="menu_item_monitoring_title">记录</string>
+    <string name="menu_item_referral_title">推荐计划</string>
+    <string name="menu_item_referral_subtitle">赚取 VPN 点数</string>
+    <string name="menu_item_wallet_subtitle">为您的账户充值</string>
+    <string name="menu_item_monitoring_subtitle">连接记录</string>
+    <string name="menu_list_item_settings">设置</string>
+    <string name="menu_list_item_report">报告问题</string>
+    <string name="menu_list_item_help">获取帮助</string>
+    <string name="menu_terms">使用条款</string>
+    <string name="menu_app_version">应用版本 %s</string>
+
+    <!--  Wallet  -->
+    <string name="wallet_main_title">账户余额</string>
+    <string name="wallet_start_balance">0,000</string>
+    <string name="wallet_usd_equivalent">美元等值金额 ≈ $%.3f</string>
+    <string name="wallet_buys_for_you">此操作可购买：</string>
+    <string name="wallet_top_up">充值</string>
+    <string name="wallet_myst_about">MYST 是以太坊 区块链的代币</string>
+    <string name="wallet_top_up_label">充值事件</string>
+    <string name="wallet_spendings_label">开销</string>
+    <string name="wallet_spendings_country">国家</string>
+    <string name="wallet_spendings_duration">持续时间</string>
+    <string name="wallet_spendings_currency">MYST / 美元</string>
+    <string name="wallet_spendings_quality">质量</string>
+    <string name="wallet_spendings_size">大小</string>
+    <string name="wallet_spendings_connected">已连接</string>
+    <string name="wallet_spendings_connected_value">%d 天前</string>
+    <string name="wallet_top_ups_time">时间</string>
+    <string name="wallet_top_ups_paid">已付</string>
+    <string name="wallet_top_ups_myst">MYST</string>
+    <string name="wallet_video">在线\n 视频</string>
+    <string name="wallet_web">网页\n 浏览</string>
+    <string name="wallet_download">的数据\n 下载</string>
+    <string name="wallet_music">歌\n 曲</string>
+
+    <!--  Profile  -->
+    <string name="profile_title">个人资料</string>
+    <string name="profile_identity">Mysterium 身份地址</string>
+    <string name="profile_identity_description">身份即您的 Mysterium 内部用户 ID。请勿在那里发送以太币或任何类型的 ERC20 代币。</string>
+    <string name="profile_change_keys">变更私钥</string>
+    <string name="profile_copy_to_clipboard">已复制到剪贴板</string>
+    <string name="profile_private_keys">私钥</string>
+    <string name="profile_keys_description">在 Mysterium 上，您的账户并非存储在中心化的服务器上。保管您的代币的私钥仅存储在您的应用上。</string>
+    <string name="profile_backup">请制作备份，以便以后恢复您的账户。</string>
+    <string name="profile_download_keys">下载</string>
+
+    <!--  Report issue  -->
+    <string name="report_issue_title">获取帮助</string>
+    <string name="report_issue_description">请告诉我们您在应用内遇到的问题。我们\n 会通过电邮立即回复您。</string>
+    <string name="report_issue_email_subtitle">电邮（选填）</string>
+    <string name="report_issue_problem_subtitle">问题描述</string>
+    <string name="report_issue_send">发送</string>
+    <string name="report_issue_app_version">应用版本</string>
+    <string name="report_issue_node_version">节点版本</string>
+    <string name="report_issue_error_empty_issue">不能为空</string>
+    <string name="report_issue_error_incorrect_email">电邮有误</string>
+    <string name="report_issue_error_request">出错了，请稍后重试</string>
+    <string name="report_issue_success">报告发送成功。谢谢！</string>
+
+    <!--  Monitoring  -->
+    <string name="monitoring_title">记录统计数据</string>
+    <string name="monitoring_last_sessions">上次的对话</string>
+    <string name="monitoring_empty_line_chart">您还没有任何对话</string>
+
+    <!--  Terms of Use  -->
+    <string name="terms_title">使用条款</string>
+    <string name="terms_short">简洁版</string>
+    <string name="terms_full">完整版</string>
+    <string name="terms_accept_button">接受</string>
+    <string name="terms_onboarding_description">关于为何需要在使用应用前接受所有使用条款的描述</string>
+
+    <!--  Top up  -->
+    <string name="top_up_amount_title">为您的账户充值</string>
+    <string name="top_up_amount_video">在线视频</string>
+    <string name="top_up_amount_music">音乐</string>
+    <string name="top_up_amount_pages">网页</string>
+    <string name="top_up_amount_traffic">流量</string>
+    <string name="top_up_amount_description">选择要向您的账户\n 添加的 MYST 点数</string>
+    <string name="top_up_amount_confirm">确认</string>
+    <string name="top_up_crypto_description">选择要进行充值\n 的加密货币</string>
+    <string name="top_up_payment_title">等待付款</string>
+    <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
+    <string name="top_up_payment_link">或使用付款链接</string>
+    <string name="top_up_crypto_lighting">快如闪电的网络</string>
+    <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
+    <string name="top_up_free_trial">免费试用</string>
+    <string name="payment_processing_text">警告：可能需要几分钟来处理付款</string>
+
+    <!--  Settings  -->
+    <string name="settings_title">设置</string>
+    <string name="settings_description">身份即您的 Mysterium 内部用户 ID。请勿在那里发送以太币或任何类型的 ERC20 代币。</string>
+    <string name="settings_dns_title">DNS</string>
+    <string name="settings_resident_title">居住国</string>
+    <string name="settings_dns_system">系统</string>
+    <string name="settings_dns_provider">提供商</string>
+    <string name="settings_dns_cloudflare">Cloudflare</string>
+    <string name="settings_dns_default">默认</string>
+    <string name="settings_dark_mode">夜间模式</string>
+    <string name="settings_nat_description">NAT 类型检测</string>
+    <string name="settings_helper_description">使用自动 NAT 类型检测，筛选不兼容的提供商。这可以提高成功连接提供商的概率。</string>
+
+    <!--  Create account  -->
+    <string name="create_account_title">您的账户</string>
+    <string name="create_account_new">创建新的\n 账户</string>
+    <string name="create_account_import">导入\n 账户</string>
+    <string name="create_account_description">立即为您的账户充值或稍后充值，并\n 使用有限的功能和免费节点</string>
+
+    <!--  Card payment  -->
+    <string name="card_summary_title">订单摘要</string>
+    <string name="card_currency_title">货币和国家</string>
+    <string name="card_currency_description">选择所在国家来计算增值税</string>
+    <string name="card_payment_pay">继续付款</string>
+    <string name="card_payment_cardinity">您将前往 Cardinity 付款页面付款。</string>
+    <string name="card_payment_total">应付总额</string>
+    <string name="card_payment_vat_title">VAT</string>
+    <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
+    <string name="card_payment_country_hint">选择国家或地区</string>
+    <string name="card_payment_myst_description">%d MYST 充值</string>
+    <string name="card_payment_confirm">确认付款</string>
+
+    <!--  Private key  -->
+    <string name="private_key_description">重要提示！立即下载您的私人密钥，然后安全存储，以防无法访问您的账户。</string>
+    <string name="private_key_back_up">备份\n 私钥</string>
+    <string name="private_key_back_up_later">稍后\n 备份</string>
+
+    <!--  Prepare top up  -->
+    <string name="prepare_top_up_description">给账户充值或使用推荐码开始使用 Mysterium dVPN</string>
+    <string name="prepare_top_up_referral">使用推荐人代码</string>
+    <string name="prepare_top_up_now">立即充值</string>
+    <string name="prepare_top_up_later">稍后充值</string>
+
+    <!--  Payment method  -->
+    <string name="payment_method_title">选择一种付款方式继续</string>
+    <string name="credit_card">信用卡</string>
+    <string name="crypto">加密</string>
+
+    <!--  Search  -->
+    <string name="search_hint_first_part">使用</string>
+    <string name="search_hint_highlighted">搜索栏</string>
+    <string name="search_hint_second_part">在顶部\n 寻找适合的节点</string>
+
+    <!--  Favourites  -->
+    <string name="favourites_title">收藏夹</string>
+
+    <!--  Toolbar  -->
+    <string name="toolbar_hint">返回连接屏幕</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_top_up_title">为您的账户\n 充值</string>
+    <string name="pop_up_top_up_description">点数快用完</string>
+    <string name="pop_up_top_up_positive">立即充值</string>
+    <string name="pop_up_top_up_negative">继续</string>
+    <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
+    <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>
+    <string name="pop_up_insufficient_funds_title">资金\n 不足</string>
+    <string name="pop_up_insufficient_funds_description">请为您的账户 充值</string>
+    <string name="pop_up_payment_successfully_title">付款\n 成功</string>
+    <string name="pop_up_payment_successfully_done">做得好</string>
+    <string name="pop_up_payment_successfully_close">关闭</string>
+    <string name="pop_up_payment_not_work_title">付款服务器\n 故障</string>
+    <string name="pop_up_payment_not_work_try_again">请稍后重试</string>
+    <string name="pop_up_payment_not_work_okay">好，明白了</string>
+    <string name="pop_up_payment_expired_title">付款\n 失败</string>
+    <string name="pop_up_payment_expired_description">已超时</string>
+    <string name="pop_up_payment_expired_try_again">重试</string>
+    <string name="pop_up_payment_expired_later">稍后充值</string>
+    <string name="pop_up_node_failed_title">无法连接</string>
+    <string name="pop_up_node_failed_description">检查您的网络</string>
+    <string name="pop_up_node_failed_another">选择另一个节点</string>
+    <string name="pop_up_registration_failed_title">连线\n 问题</string>
+    <string name="pop_up_registration_failed_description">检查您的网络</string>
+    <string name="pop_up_registration_failed_cancel">取消</string>
+    <string name="pop_up_registration_failed_retry">再次尝试注册</string>
+    <string name="pop_up_lost_connection_title">连接\n 中断</string>
+    <string name="pop_up_lost_connection_description">正在寻找新节点</string>
+    <string name="pop_up_wi_fi_error_title">Wi-Fi 网络\n 错误</string>
+    <string name="pop_up_wi_fi_error_description">请检查您的\n 网络连接</string>
+    <string name="pop_up_wi_fi_error_retry">重试</string>
+    <string name="pop_up_terms_title">使用条款\n 已变动</string>
+    <string name="pop_up_terms_description">在此检查更新\n 的版本</string>
+    <string name="pop_up_terms_confirm">确认</string>
+    <string name="pop_up_private_key_title">下载密钥</string>
+    <string name="pop_up_private_key_description">输入您的密码</string>
+    <string name="pop_up_private_key_download">下载</string>
+    <string name="pop_up_details_title">发生了一些错误</string>
+    <string name="pop_up_card_payment_button">继续</string>
+    <string name="pop_up_card_payment_title">感谢购买！</string>
+    <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
+    <string name="pop_up_crypto_payment_button">继续</string>
+    <string name="pop_up_crypto_payment_title">警告！</string>
+    <string name="pop_up_crypto_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
+
+    <string name="pop_up_private_key_error">密码有误</string>
+
+    <string name="pop_up_import_wrong_password">密码有误</string>
+    <string name="pop_up_private_key_hint">密码长度为 12–16 个字符</string>
+    <string name="pop_up_import_account_title">导入账户</string>
+    <string name="pop_up_import_account_upload">上传</string>
+    <string name="pop_up_password_account_title">账户密码</string>
+    <string name="pop_up_password_account_apply">应用</string>
+    <string name="pop_up_password_account_hint">在此输入密码</string>
+    <string name="pop_up_referral_hint">在此输入代码</string>
+    <string name="pop_up_referral_title">推荐人代码</string>
+    <string name="pop_up_referral_description">您将获得</string>
+    <string name="pop_up_referral_error">令牌错误</string>
+    <string name="pop_up_new_version_title">有新版本</string>
+    <string name="pop_up_new_version_description">请在 Google Play 商店中更新应用程序</string>
+    <string name="pop_up_new_version_update">更新</string>
+
+    <!--  Push notifications  -->
+    <string name="push_notification_balance_title">Mysterium 余额</string>
+    <string name="push_notification_balance_message">您的余额快用完！</string>
+    <string name="push_notification_connection_title">Mysterium 连接</string>
+    <string name="push_notification_connection_message">与节点的连接已断开！</string>
+    <string name="push_notification_connected_title">已连接至 %1$s</string>
+    <string name="push_notification_content">已收到 %1$s | 发送 %2$s | 已付 %3$s</string>
+    <string name="push_notification_payment_success_title">付款成功！</string>
+    <string name="push_notification_payment_success_message" formatted="false">成功！%1s %2s 付款成功。请访问应用程序查看余额。</string>
+    <string name="push_notification_payment_failed_title">付款失败</string>
+    <string name="push_notification_payment_failed_message">付款失败。请访问应用程序尝试充值或联系支持人员。</string>
+
+    <!--  Error  -->
+    <string name="error_vpn_permission">须向 MysteriumVPN 授予 VPN 连接权限，才能使用</string>
+
+    <!--  HomeSelection  -->
+    <string name="home_selection_smart_connect">智能连接即将推出</string>
+    <string name="home_selection_all_nodes">所有节点</string>
 </resources>
