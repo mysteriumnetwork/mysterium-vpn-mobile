@@ -92,72 +92,91 @@
                 app:layout_constraintTop_toBottomOf="@+id/description"
                 tools:ignore="ContentDescription" />
 
-            <EditText
-                android:id="@+id/passwordEditText"
-                style="@style/TextAppearance.Caption"
-                android:layout_width="0dp"
+            <HorizontalScrollView
+                android:id="@+id/passwordScrollView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginVertical="@dimen/margin_padding_size_large"
                 android:layout_marginTop="@dimen/margin_padding_size_small"
-                android:background="@drawable/shape_password_field"
-                android:ellipsize="end"
-                android:hint="@string/pop_up_private_key_hint"
-                android:importantForAutofill="no"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:paddingStart="@dimen/margin_padding_size_xlarge"
-                android:paddingEnd="@dimen/margin_padding_size_small"
-                android:textAlignment="center"
-                android:textColor="@color/pop_up_password_text"
-                android:textColorHint="@color/pop_up_password_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon"
-                tools:ignore="LabelFor" />
+                android:background="@drawable/shape_password_field"
+                android:scrollbars="none">
 
-            <ImageView
-                android:id="@+id/hidePasswordImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_xsmall"
-                android:elevation="2dp"
-                android:padding="@dimen/margin_padding_size_xsmall"
-                android:src="@drawable/icon_hide_password"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@+id/passwordEditText"
-                app:layout_constraintTop_toTopOf="@+id/passwordEditText"
-                tools:ignore="ContentDescription" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/passwordContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/showPasswordImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_padding_size_xsmall"
-                android:padding="@dimen/margin_padding_size_xsmall"
-                android:src="@drawable/icon_show_password"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@+id/passwordEditText"
-                app:layout_constraintTop_toTopOf="@+id/passwordEditText"
-                tools:ignore="ContentDescription" />
+                    <EditText
+                        android:id="@+id/passwordEditText"
+                        style="@style/TextAppearance.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:ellipsize="end"
+                        android:hint="@string/pop_up_private_key_hint"
+                        android:importantForAutofill="no"
+                        android:inputType="textPassword"
+                        android:paddingStart="@dimen/margin_padding_size_xlarge"
+                        android:paddingEnd="@dimen/margin_padding_size_small"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/pop_up_password_text"
+                        android:textColorHint="@color/pop_up_password_hint"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="LabelFor" />
 
-            <TextView
-                android:id="@+id/errorText"
-                style="@style/TextAppearance.Caption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/pop_up_private_key_error"
-                android:textColor="@color/menu_subtitle_light_pink"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/passwordEditText"
-                app:layout_constraintEnd_toEndOf="@+id/passwordEditText"
-                app:layout_constraintStart_toEndOf="@+id/hidePasswordImageView"
-                app:layout_constraintTop_toTopOf="@+id/passwordEditText" />
+                    <ImageView
+                        android:id="@+id/hidePasswordImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_padding_size_xsmall"
+                        android:elevation="2dp"
+                        android:padding="@dimen/margin_padding_size_xsmall"
+                        android:src="@drawable/icon_hide_password"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/showPasswordImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_padding_size_xsmall"
+                        android:padding="@dimen/margin_padding_size_xsmall"
+                        android:src="@drawable/icon_show_password"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/errorText"
+                        style="@style/TextAppearance.Caption"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/pop_up_private_key_error"
+                        android:textColor="@color/menu_subtitle_light_pink"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/hidePasswordImageView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </HorizontalScrollView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/downloadButton"
@@ -172,7 +191,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/passwordScrollView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
