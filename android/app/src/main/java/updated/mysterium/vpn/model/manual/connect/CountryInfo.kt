@@ -16,33 +16,35 @@ data class CountryInfo(
     var isSelected: Boolean = false
 ) : Parcelable {
 
-    fun changeSelectionState() {
-        isSelected = !isSelected
-    }
+    companion object {
 
-}
+        fun from(countryCode: String, proposalsNumber: Int): CountryInfo? {
+            if (countryCode.isBlank() || countryCode.isEmpty() || proposalsNumber <= 0) {
+                return null
+            }
 
-fun Map<String, Int>.toCountryInfo(): List<CountryInfo> {
-    val result = mutableListOf<CountryInfo>()
-    this.mapKeys { item ->
-        if (item.key.isNotBlank() && item.key.isNotEmpty() && item.value > 0) {
             val countryName = Countries
-                .values.getOrDefault(item.key.toLowerCase(Locale.ROOT), null)?.name
-            countryName?.let {
-                result.add(
-                    CountryInfo(
-                        countryCode = item.key,
-                        countryName = countryName,
-                        countryFlagBitmap = Countries.bitmaps.getOrDefault(
-                            item.key.toLowerCase(Locale.ROOT),
-                            null
-                        ),
-                        proposalsNumber = item.value,
-                        isSelected = false
-                    )
+                .values
+                .getOrDefault(countryCode.toLowerCase(Locale.ROOT), null)
+                ?.name
+
+            return countryName?.let {
+                CountryInfo(
+                    countryCode = countryCode,
+                    countryName = countryName,
+                    countryFlagBitmap = Countries.bitmaps.getOrDefault(
+                        countryCode.toLowerCase(Locale.ROOT),
+                        null
+                    ),
+                    proposalsNumber = proposalsNumber,
+                    isSelected = false
                 )
             }
         }
     }
-    return result
+
+    fun changeSelectionState() {
+        isSelected = !isSelected
+    }
+
 }

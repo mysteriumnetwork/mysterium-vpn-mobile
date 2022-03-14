@@ -11,7 +11,6 @@ import updated.mysterium.vpn.exceptions.ConnectInvalidProposalException
 import updated.mysterium.vpn.exceptions.ConnectUnknownException
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
-import updated.mysterium.vpn.model.manual.connect.toCountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
 import updated.mysterium.vpn.model.payment.CardOrder
@@ -296,7 +295,13 @@ class NodeRepository(var deferredNode: DeferredNode) {
     }
 
     private suspend fun parseCountries(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<Map<String, Int>>(bytes.inputStream())?.toCountryInfo()
+        Klaxon().parse<Map<String, Int>>(bytes.inputStream())
+            ?.map { item ->
+                val countryCode = item.key
+                val proposalsNumber = item.value
+                CountryInfo.from(countryCode, proposalsNumber)
+            }
+            ?.filterNotNull()
     }
 
 }
