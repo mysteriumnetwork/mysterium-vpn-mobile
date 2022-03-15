@@ -29,26 +29,6 @@ class NodesUseCase(
         return createProposalList(getAllNodes())
     }
 
-    suspend fun getCountryInfoList(): List<CountryInfo> {
-        val request = GetProposalsRequest().apply {
-            this.refresh = true
-            serviceType = SERVICE_TYPE
-            natCompatibility = NAT_COMPATIBILITY
-        }
-        val countryInfoList = nodeRepository.countries(request)
-        val totalCountryInfo = CountryInfo(
-            countryFlagRes = R.drawable.icon_all_countries,
-            countryCode = ALL_COUNTRY_CODE,
-            countryName = "",
-            proposalsNumber = countryInfoList.size,
-            isSelected = true
-        )
-        return mutableListOf<CountryInfo>().apply {
-            add(0, totalCountryInfo)
-            addAll(countryInfoList)
-        }
-    }
-
     suspend fun getFavourites(proposals: List<Proposal>) = checkFavouriteRelevance(
         allAvailableNodes = proposals,
         favourites = createProposalList(nodeDao.getFavourites())
@@ -74,8 +54,6 @@ class NodesUseCase(
             .map { NodeEntity(it) }
     }
 
-    private fun createProposalList(allNodesList: List<NodeEntity>) = parsePriceLevel(allNodesList)
-
     private fun checkFavouriteRelevance(
         allAvailableNodes: List<Proposal>,
         favourites: List<Proposal>
@@ -91,11 +69,11 @@ class NodesUseCase(
         return favourites
     }
 
-    private fun parsePriceLevel(proposals: List<NodeEntity>): List<Proposal> {
-        val parsedProposals = proposals.map {
+    private fun createProposalList(allNodesList: List<NodeEntity>): List<Proposal> {
+        val parsedProposals = allNodesList.map {
             Proposal(it)
         }
-        val sortedByPriceNodes = ArrayList(proposals)
+        val sortedByPriceNodes = ArrayList(allNodesList)
         sortedByPriceNodes.sortedBy {
             it.pricePerByte
         }.forEachIndexed { index, node ->

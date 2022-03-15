@@ -72,7 +72,7 @@ class FilterActivity : BaseActivity() {
                     binding.nodesTitle.text = filterTitle
                 }
                 val filterId = presetFilter?.filterId ?: FilterUseCase.ALL_NODES_FILTER_ID
-                allNodesViewModel.getProposalsWithFilterAndCountry(filterId, countryCode)
+                allNodesViewModel.getProposals(filterId, countryCode)
                     .observe(this) { result ->
                         result.onSuccess { proposals ->
                             viewModel.cacheProposals = proposals

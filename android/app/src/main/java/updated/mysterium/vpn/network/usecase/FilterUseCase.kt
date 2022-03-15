@@ -67,46 +67,40 @@ class FilterUseCase(
         }
     }
 
-    suspend fun getProposalsWithFilterAndCountry(
-        filterId: Int,
-        countryCode: String
+    suspend fun getProposals(
+        filterId: Int? = null,
+        countryCode: String? = null
     ): List<Proposal> {
         val request = GetProposalsRequest().apply {
-            presetID = filterId.toLong()
-            locationCountry = countryCode.toUpperCase(Locale.ROOT)
             refresh = true
             serviceType = SERVICE_TYPE
             natCompatibility = getNatCompatibility()
+        }
+        filterId?.let {
+            request.presetID = filterId.toLong()
+        }
+        countryCode?.let {
+            request.locationCountry = countryCode.toUpperCase(Locale.ROOT)
         }
         return nodeRepository.proposals(request).map { Proposal(NodeEntity(it)) }
     }
 
-    suspend fun getProposalsByFilterId(filterId: Int): List<Proposal> {
-        val proposalRequest = GetProposalsRequest().apply {
-            presetID = filterId.toLong()
-            refresh = true
-            serviceType = SERVICE_TYPE
-            natCompatibility = getNatCompatibility()
-        }
-        return nodeRepository.getProposalsByFilterId(proposalRequest).map {
-            Proposal(NodeEntity(it))
-        }
-    }
-
-    suspend fun getCountryInfoListByFilterId(filterId: Int): List<CountryInfo>? {
+    suspend fun getCountryInfoList(filterId: Int? = null): List<CountryInfo> {
         return if (filterId != ALL_NODES_FILTER_ID) {
-            val proposalRequest = GetProposalsRequest().apply {
-                presetID = filterId.toLong()
+            val request = GetProposalsRequest().apply {
                 refresh = true
                 serviceType = SERVICE_TYPE
                 natCompatibility = getNatCompatibility()
             }
-            val countryInfoList = nodeRepository.getCountryInfoListByFilterId(proposalRequest)
+            filterId?.let {
+                request.presetID = filterId.toLong()
+            }
+            val countryInfoList = nodeRepository.countries(request)
             val totalCountryInfo = CountryInfo(
                 countryFlagRes = R.drawable.icon_all_countries,
                 countryCode = NodesUseCase.ALL_COUNTRY_CODE,
                 countryName = "",
-                proposalsNumber = countryInfoList.size,
+                proposalsNumber = countryInfoList.sumBy { it.proposalsNumber },
                 isSelected = true
             )
             return mutableListOf<CountryInfo>().apply {
@@ -114,7 +108,7 @@ class FilterUseCase(
                 addAll(countryInfoList)
             }
         } else {
-            null
+            emptyList()
         }
     }
 

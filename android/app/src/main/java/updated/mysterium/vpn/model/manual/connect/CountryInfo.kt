@@ -19,7 +19,7 @@ data class CountryInfo(
     companion object {
 
         fun from(countryCode: String, proposalsNumber: Int): CountryInfo? {
-            if (countryCode.isBlank() || countryCode.isEmpty() || proposalsNumber <= 0) {
+            if (countryCode.isBlank() || proposalsNumber <= 0) {
                 return null
             }
 

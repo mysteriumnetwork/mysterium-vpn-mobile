@@ -64,28 +64,24 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         handler.removeCallbacks(runnable)
     }
 
-    fun getCountryInfoListWithFilter(filterId: Int) = liveDataResult {
+    fun getCountryInfoList(filterId: Int) = liveDataResult {
         if (filterId == FilterUseCase.ALL_NODES_FILTER_ID) {
-            countryInfoList.value ?: emptyList()
+            filterUseCase.getCountryInfoList()
         } else {
-            filteredCountryInfoLists[filterId] ?: emptyList()
+            filterUseCase.getCountryInfoList(filterId)
         }
     }
 
-    fun getProposalsWithFilter(filterId: Int) = liveDataResult {
-        if (filterId == FilterUseCase.ALL_NODES_FILTER_ID) {
-            proposals.value
+    fun getProposals(filterId: Int, countryCode: String) = liveDataResult {
+        (if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
+            if (_proposals.value.isNullOrEmpty()) filterUseCase.getProposals() else _proposals.value
+        } else if (filterId != FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
+            filterUseCase.getProposals(filterId)
+        } else if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode != ALL_COUNTRY_CODE) {
+            filterUseCase.getProposals(countryCode = countryCode)
         } else {
-            filterUseCase.getProposalsByFilterId(filterId)
-        } ?: emptyList()
-    }
-
-    fun getProposalsWithFilterAndCountry(filterId: Int, countryCode: String) = liveDataResult {
-        if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
-            proposals.value
-        } else {
-            filterUseCase.getProposalsWithFilterAndCountry(filterId, countryCode)
-        } ?: emptyList()
+            filterUseCase.getProposals(filterId, countryCode)
+        }) ?: emptyList()
     }
 
     private fun loadCountryInfoList(isReload: Boolean = false) {
@@ -96,7 +92,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
-            cachedCountryInfoList = nodesUseCase.getCountryInfoList()
+            cachedCountryInfoList = filterUseCase.getCountryInfoList()
             if (cachedCountryInfoList.isNotEmpty()) {
                 countryInfoList.postValue(cachedCountryInfoList)
             }
@@ -116,10 +112,10 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             filters.forEachIndexed { index, filter ->
                 if (filteredCountryInfoLists.size > index) {
                     filteredCountryInfoLists[index] =
-                        filterUseCase.getCountryInfoListByFilterId(filter.filterId) ?: emptyList()
+                        filterUseCase.getCountryInfoList(filter.filterId)
                 } else {
                     filteredCountryInfoLists.add(
-                        filterUseCase.getCountryInfoListByFilterId(filter.filterId) ?: emptyList()
+                        filterUseCase.getCountryInfoList(filter.filterId)
                     )
                 }
                 if (index + 1 == filters.size) {

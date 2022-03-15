@@ -203,7 +203,7 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun showFilteredList(filterId: Int) {
-        allNodesViewModel.getCountryInfoListWithFilter(filterId).observe(this) {
+        allNodesViewModel.getCountryInfoList(filterId).observe(this) {
             it.onSuccess { countryInfoList ->
                 val sortedCountryInfoList = countryInfoList.sortedBy { countryInfo ->
                     countryInfo.countryName

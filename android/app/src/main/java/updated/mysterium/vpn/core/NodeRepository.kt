@@ -105,22 +105,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
     }
 
-    suspend fun reconnect(req: ConnectRequest) = withContext(Dispatchers.IO) {
-        val res = deferredNode.await().reconnect(req) ?: return@withContext
-
-        when (res.errorCode) {
-            "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
-            "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
-            "Unknown" -> {
-                if (res.errorMessage == "connection already exists") {
-                    throw ConnectAlreadyExistsException(res.errorMessage)
-                } else {
-                    throw ConnectUnknownException(res.errorMessage)
-                }
-            }
-        }
-    }
-
     // Disconnect from VPN service.
     suspend fun disconnect() = withContext(Dispatchers.IO) {
         deferredNode.await().disconnect()
@@ -242,24 +226,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun getFilterPresets(): ByteArray = withContext(Dispatchers.IO) {
         deferredNode.await().listProposalFilterPresets()
     }
-
-    suspend fun getProposalsByFilterId(getProposalRequest: GetProposalsRequest) =
-        withContext(Dispatchers.IO) {
-            val bytesProposals = deferredNode.await().getProposals(getProposalRequest)
-            val proposalsResponse = parseProposals(bytesProposals)
-            if (proposalsResponse?.proposals == null) {
-                listOf()
-            } else {
-                proposalsResponse.proposals
-            }
-        }
-
-    suspend fun getCountryInfoListByFilterId(request: GetProposalsRequest) =
-        withContext(Dispatchers.IO) {
-            val bytes = deferredNode.await().getCountries(request)
-            val response = parseCountries(bytes)
-            response ?: listOf()
-        }
 
     suspend fun getRegistrationTokenReward(registrationToken: String) =
         withContext(Dispatchers.IO) {

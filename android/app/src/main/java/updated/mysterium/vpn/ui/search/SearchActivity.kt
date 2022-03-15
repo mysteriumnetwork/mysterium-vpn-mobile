@@ -11,6 +11,7 @@ import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
+import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -74,7 +75,7 @@ class SearchActivity : BaseActivity() {
         filterViewModel.getPreviousFilter().observe(this) {
             it.onSuccess { presetFilter ->
                 val filterId = presetFilter?.filterId ?: FilterUseCase.ALL_NODES_FILTER_ID
-                allNodesViewModel.getProposalsWithFilter(filterId).observe(this) { result ->
+                allNodesViewModel.getProposals(filterId, ALL_COUNTRY_CODE).observe(this) { result ->
                     result.onSuccess { proposalList ->
                         initialDataLoaded()
                         viewModel.setAllNodes(proposalList)
