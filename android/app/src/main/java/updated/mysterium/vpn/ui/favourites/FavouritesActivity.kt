@@ -39,9 +39,9 @@ class FavouritesActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        allNodesViewModel.proposals.observe(this, {
-            getFavouritesList(it.first().proposalList)
-        })
+        allNodesViewModel.proposals.observe(this) {
+            getFavouritesList(it)
+        }
     }
 
     private fun bindsAction() {
@@ -61,11 +61,11 @@ class FavouritesActivity : BaseActivity() {
             navigateToConnection(it)
         }
         favouritesAdapter.onDeleteClicked = { proposal ->
-            viewModel.deleteNodeFromFavourite(proposal).observe(this, { result ->
+            viewModel.deleteNodeFromFavourite(proposal).observe(this) { result ->
                 result.onSuccess {
                     getFavouritesList()
                 }
-            })
+            }
         }
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@FavouritesActivity)
@@ -74,7 +74,7 @@ class FavouritesActivity : BaseActivity() {
     }
 
     private fun getFavouritesList(proposals: List<Proposal>? = null) {
-        viewModel.getSavedNodes(proposals).observe(this, { result ->
+        viewModel.getSavedNodes(proposals).observe(this) { result ->
             result.onSuccess {
                 favouritesAdapter.replaceAll(it)
             }
@@ -86,7 +86,7 @@ class FavouritesActivity : BaseActivity() {
             }
             binding.loaderAnimation.visibility = View.GONE
             binding.loaderAnimation.cancelAnimation()
-        })
+        }
     }
 
     private fun deleteListTitles() {

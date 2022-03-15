@@ -10,16 +10,16 @@ import com.bumptech.glide.Glide
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemCountryNodesBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
-import updated.mysterium.vpn.model.manual.connect.CountryNodes
+import updated.mysterium.vpn.model.manual.connect.CountryInfo
 
-class AllNodesAdapter : ContentListAdapter<CountryNodes, AllNodesAdapter.CountrySelectHolder>() {
+class AllNodesAdapter : ContentListAdapter<CountryInfo, AllNodesAdapter.CountrySelectHolder>() {
 
     companion object {
         private const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
     }
 
     var onCountrySelected: ((String) -> Unit)? = null
-    var selectedItem: CountryNodes? = null
+    var selectedItem: CountryInfo? = null
         private set
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CountrySelectHolder(
@@ -34,23 +34,19 @@ class AllNodesAdapter : ContentListAdapter<CountryNodes, AllNodesAdapter.Country
 
         val binding = ItemCountryNodesBinding.bind(itemView)
 
-        fun bind(item: CountryNodes) {
-            if (item.countryCode == ALL_COUNTRY_CODE) {
-                binding.countryName.text = itemView.context.getString(
+        fun bind(item: CountryInfo) {
+            binding.countryName.text = if (item.countryCode == ALL_COUNTRY_CODE) {
+                itemView.context.getString(
                     R.string.manual_connect_all_countries
                 )
-                Glide.with(itemView.context)
-                    .load(item.countryFlagRes)
-                    .circleCrop()
-                    .into(binding.countryImage)
             } else {
-                binding.countryName.text = item.countryName
-                Glide.with(itemView.context)
-                    .load(item.proposalList.first().countryFlagImage)
-                    .circleCrop()
-                    .into(binding.countryImage)
+                item.countryName
             }
-            binding.countryNodesCount.text = item.proposalList.size.toString()
+            Glide.with(itemView.context)
+                .load(item.countryFlagBitmap ?: item.countryFlagRes)
+                .circleCrop()
+                .into(binding.countryImage)
+            binding.countryNodesCount.text = item.proposalsNumber.toString()
             if (item.isSelected) {
                 selectedItem = item
                 selectedState()

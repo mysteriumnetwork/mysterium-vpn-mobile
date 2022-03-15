@@ -235,7 +235,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun connect() {
         val req = ConnectRequest().apply {
             identityAddress = identity?.address ?: ""
-            providerID = proposal?.providerID
+            providers = proposal?.providerID
             serviceType = proposal?.serviceType?.type
             dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
         }

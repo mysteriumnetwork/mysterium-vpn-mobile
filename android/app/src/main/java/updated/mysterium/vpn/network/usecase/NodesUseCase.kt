@@ -6,7 +6,7 @@ import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
-import updated.mysterium.vpn.model.manual.connect.CountryNodes
+import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
 
@@ -25,7 +25,9 @@ class NodesUseCase(
         nodeRepository.deferredNode = deferredNode
     }
 
-    suspend fun getAllCountries() = mapNodesToCountriesGroups(getAllNodes())
+    suspend fun getAllProposals(): List<Proposal> {
+        return createProposalList(getAllNodes())
+    }
 
     suspend fun getFavourites(proposals: List<Proposal>) = checkFavouriteRelevance(
         allAvailableNodes = proposals,
@@ -42,45 +44,6 @@ class NodesUseCase(
 
     suspend fun isFavourite(nodeId: String): NodeEntity? = nodeDao.getById(nodeId)
 
-    fun groupListByCountries(proposalList: List<Proposal>): List<CountryNodes> {
-        val countryNodesList = mutableListOf<CountryNodes>()
-        countryNodesList.add(
-            index = 0,
-            element = CountryNodes(
-                countryCode = ALL_COUNTRY_CODE,
-                countryName = "",
-                countryFlagRes = R.drawable.icon_all_countries,
-                proposalList = proposalList,
-                isSelected = true
-            )
-        )
-        proposalList.filter { it.countryCode != "" }
-            .forEach { node ->
-                val currentCountry = countryNodesList.find { it.countryCode == node.countryCode }
-                if (currentCountry == null) {
-                    val allNodesByCountry = mutableListOf<Proposal>()
-                    proposalList.forEach {
-                        if (it.countryCode == node.countryCode) {
-                            allNodesByCountry.add(it)
-                        }
-                    }
-                    countryNodesList.add(
-                        CountryNodes(
-                            countryCode = node.countryCode,
-                            countryName = node.countryName,
-                            proposalList = allNodesByCountry.toList()
-                        )
-                    )
-                }
-            }
-        return countryNodesList.toList()
-    }
-
-    fun mapNodesToCountriesGroups(allNodesList: List<NodeEntity>): List<CountryNodes> {
-        val proposalList = createProposalList(allNodesList)
-        return groupListByCountries(proposalList).sortedByDescending { it.proposalList.size }
-    }
-
     private suspend fun getAllNodes(): List<NodeEntity> {
         val proposalsRequest = GetProposalsRequest().apply {
             this.refresh = true
@@ -90,8 +53,6 @@ class NodesUseCase(
         return nodeRepository.proposals(proposalsRequest)
             .map { NodeEntity(it) }
     }
-
-    private fun createProposalList(allNodesList: List<NodeEntity>) = parsePriceLevel(allNodesList)
 
     private fun checkFavouriteRelevance(
         allAvailableNodes: List<Proposal>,
@@ -108,11 +69,11 @@ class NodesUseCase(
         return favourites
     }
 
-    private fun parsePriceLevel(proposals: List<NodeEntity>): List<Proposal> {
-        val parsedProposals = proposals.map {
+    private fun createProposalList(allNodesList: List<NodeEntity>): List<Proposal> {
+        val parsedProposals = allNodesList.map {
             Proposal(it)
         }
-        val sortedByPriceNodes = ArrayList(proposals)
+        val sortedByPriceNodes = ArrayList(allNodesList)
         sortedByPriceNodes.sortedBy {
             it.pricePerByte
         }.forEachIndexed { index, node ->
