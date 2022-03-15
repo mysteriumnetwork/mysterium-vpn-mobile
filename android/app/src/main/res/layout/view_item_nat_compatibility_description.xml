@@ -16,7 +16,6 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_padding_size_medium"
         android:gravity="center"
-        android:maxLines="5"
         android:text="@string/settings_helper_description"
         android:textColor="@color/search_text" />
 

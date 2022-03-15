@@ -10,10 +10,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.model.manual.connect.CountryNodes
+import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.network.usecase.FilterUseCase
+import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 
 class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
@@ -22,28 +23,30 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val REQUEST_INTERVAL = 1000 * 60L // 1 minute
     }
 
-    val proposals: LiveData<List<CountryNodes>>
+    val proposals: LiveData<List<Proposal>>
         get() = _proposals
-
 
     val initialDataLoaded: LiveData<Boolean>
         get() = _initialDataLoaded
 
-    private var allProposalsLoaded = false
-    private var filtersLoaded = false
-    private val _proposals = MutableLiveData<List<CountryNodes>>()
+    private var allCountryInfoLoaded = false
+    private var filteredCountryInfoLoaded = false
+    private val countryInfoList = MutableLiveData<List<CountryInfo>>()
+    private val _proposals = MutableLiveData<List<Proposal>>()
     private val _initialDataLoaded = MutableLiveData<Boolean>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val filterUseCase = useCaseProvider.filters()
-    private var cachedNodesList: List<CountryNodes> = emptyList()
+    private var cachedCountryInfoList: List<CountryInfo> = emptyList()
+    private var cachedProposalList: List<Proposal> = emptyList()
     private val handler = Handler()
-    private val allFiltersLists = emptyList<List<CountryNodes>?>().toMutableList()
+    private val filteredCountryInfoLists = emptyList<List<CountryInfo>?>().toMutableList()
     private val runnable = object : Runnable {
 
         override fun run() {
             try {
-                getProposals()
-                loadFilters()
+                loadCountryInfoList()
+                loadFilteredCountryInfo()
+                loadProposalList()
             } catch (exception: Exception) {
                 Log.e(TAG, exception.localizedMessage ?: exception.toString())
             } finally {
@@ -61,68 +64,83 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         handler.removeCallbacks(runnable)
     }
 
-    fun getFilteredListById(filterId: Int) = liveDataResult {
-        val allNodes = proposals.value?.first()?.proposalList ?: emptyList()
+    fun getCountryInfoList(filterId: Int) = liveDataResult {
         if (filterId == FilterUseCase.ALL_NODES_FILTER_ID) {
-            mapProposalsToCountryNodes(allNodes)
+            filterUseCase.getCountryInfoList()
         } else {
-            allFiltersLists[filterId] ?: emptyList()
+            filterUseCase.getCountryInfoList(filterId)
         }
     }
 
-    private fun mapProposalsToCountryNodes(
-        proposals: List<Proposal>
-    ) = nodesUseCase.groupListByCountries(proposals)
+    fun getProposals(filterId: Int, countryCode: String) = liveDataResult {
+        (if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
+            if (_proposals.value.isNullOrEmpty()) filterUseCase.getProposals() else _proposals.value
+        } else if (filterId != FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
+            filterUseCase.getProposals(filterId)
+        } else if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode != ALL_COUNTRY_CODE) {
+            filterUseCase.getProposals(countryCode = countryCode)
+        } else {
+            filterUseCase.getProposals(filterId, countryCode)
+        }) ?: emptyList()
+    }
 
-    private fun getProposals(isReload: Boolean = false) {
+    private fun loadCountryInfoList(isReload: Boolean = false) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
             if (!isReload) { // try to re load list only one time
-                getProposals(isReload = true)
+                loadCountryInfoList(isReload = true)
             }
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
-            cachedNodesList = nodesUseCase.getAllCountries()
-            if (cachedNodesList.isNotEmpty()) {
-                _proposals.postValue(cachedNodesList)
+            cachedCountryInfoList = filterUseCase.getCountryInfoList()
+            if (cachedCountryInfoList.isNotEmpty()) {
+                countryInfoList.postValue(cachedCountryInfoList)
             }
-            allProposalsLoaded = true
-            if (filtersLoaded) {
+            allCountryInfoLoaded = true
+            if (filteredCountryInfoLoaded) {
                 _initialDataLoaded.postValue(true)
             }
         }
     }
 
-    private fun loadFilters() {
+    private fun loadFilteredCountryInfo() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
-            nodesUseCase.getAllCountries()
-            val allFilters = filterUseCase.getSystemPresets()
-            allFilters.forEachIndexed { index, presetFilter ->
-                if (allFiltersLists.size > index) {
-                    val proposalsList = filterUseCase.getProposalsByFilterId(
-                        presetFilter.filterId
-                    )
-                    allFiltersLists[index] = nodesUseCase.mapNodesToCountriesGroups(
-                        proposalsList ?: emptyList()
-                    )
+            val filters = filterUseCase.getSystemPresets()
+            filters.forEachIndexed { index, filter ->
+                if (filteredCountryInfoLists.size > index) {
+                    filteredCountryInfoLists[index] =
+                        filterUseCase.getCountryInfoList(filter.filterId)
                 } else {
-                    val proposalsList = filterUseCase.getProposalsByFilterId(
-                        presetFilter.filterId
-                    )
-                    allFiltersLists.add(
-                        nodesUseCase.mapNodesToCountriesGroups(proposalsList ?: emptyList())
+                    filteredCountryInfoLists.add(
+                        filterUseCase.getCountryInfoList(filter.filterId)
                     )
                 }
-                if (index + 1 == allFilters.size) {
-                    filtersLoaded = true
-                    if (allProposalsLoaded) {
+                if (index + 1 == filters.size) {
+                    filteredCountryInfoLoaded = true
+                    if (allCountryInfoLoaded) {
                         _initialDataLoaded.postValue(true)
                     }
                 }
             }
         }
     }
+
+    private fun loadProposalList(isReload: Boolean = false) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
+            if (!isReload) { // try to re load list only one time
+                loadProposalList(isReload = true)
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO + handler) {
+            cachedProposalList = nodesUseCase.getAllProposals()
+            if (cachedProposalList.isNotEmpty()) {
+                _proposals.postValue(cachedProposalList)
+            }
+        }
+    }
+
 }

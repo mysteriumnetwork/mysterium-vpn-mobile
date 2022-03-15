@@ -11,7 +11,7 @@ import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
-import updated.mysterium.vpn.network.usecase.NodesUseCase
+import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
@@ -59,7 +59,7 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.searchResult.observe(this, {
+        viewModel.searchResult.observe(this) {
             if (binding.loaderAnimation.visibility == View.GONE) {
                 if (it.isNotEmpty()) {
                     binding.searchLogo.visibility = View.INVISIBLE
@@ -71,14 +71,14 @@ class SearchActivity : BaseActivity() {
                     nodeListAdapter.clear()
                 }
             }
-        })
+        }
         filterViewModel.getPreviousFilter().observe(this) {
             it.onSuccess { presetFilter ->
                 val filterId = presetFilter?.filterId ?: FilterUseCase.ALL_NODES_FILTER_ID
-                allNodesViewModel.getFilteredListById(filterId).observe(this) { result ->
+                allNodesViewModel.getProposals(filterId, ALL_COUNTRY_CODE).observe(this) { result ->
                     result.onSuccess { proposalList ->
                         initialDataLoaded()
-                        viewModel.setAllNodes(proposalList.first().proposalList)
+                        viewModel.setAllNodes(proposalList)
                     }
                 }
             }
@@ -108,7 +108,8 @@ class SearchActivity : BaseActivity() {
 
     private fun initHintText() {
         val firstPart = getString(R.string.search_hint_first_part)
-        val highlighted = "<font color='#FFFFFF'> " + getString(R.string.search_hint_highlighted) + " </font>"
+        val highlighted =
+            "<font color='#FFFFFF'> " + getString(R.string.search_hint_highlighted) + " </font>"
         val secondPart = getString(R.string.search_hint_second_part)
         binding.searchHint.text = Html.fromHtml(
             firstPart + highlighted + secondPart, Html.FROM_HTML_MODE_LEGACY

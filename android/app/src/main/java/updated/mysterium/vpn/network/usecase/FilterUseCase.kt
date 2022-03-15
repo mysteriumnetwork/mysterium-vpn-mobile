@@ -8,8 +8,11 @@ import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.entity.NodeEntity
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
+import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.manual.connect.SystemPreset
+import java.util.*
 
 class FilterUseCase(
     private val nodeRepository: NodeRepository,
@@ -64,19 +67,48 @@ class FilterUseCase(
         }
     }
 
-    suspend fun getProposalsByFilterId(filterId: Int): List<NodeEntity>? {
+    suspend fun getProposals(
+        filterId: Int? = null,
+        countryCode: String? = null
+    ): List<Proposal> {
+        val request = GetProposalsRequest().apply {
+            refresh = true
+            serviceType = SERVICE_TYPE
+            natCompatibility = getNatCompatibility()
+        }
+        filterId?.let {
+            request.presetID = filterId.toLong()
+        }
+        countryCode?.let {
+            request.locationCountry = countryCode.toUpperCase(Locale.ROOT)
+        }
+        return nodeRepository.proposals(request).map { Proposal(NodeEntity(it)) }
+    }
+
+    suspend fun getCountryInfoList(filterId: Int? = null): List<CountryInfo> {
         return if (filterId != ALL_NODES_FILTER_ID) {
-            val proposalRequest = GetProposalsRequest().apply {
-                presetID = filterId.toLong()
+            val request = GetProposalsRequest().apply {
                 refresh = true
                 serviceType = SERVICE_TYPE
                 natCompatibility = getNatCompatibility()
             }
-            nodeRepository.getProposalsByFilterId(proposalRequest).map {
-                NodeEntity(it)
+            filterId?.let {
+                request.presetID = filterId.toLong()
+            }
+            val countryInfoList = nodeRepository.countries(request)
+            val totalCountryInfo = CountryInfo(
+                countryFlagRes = R.drawable.icon_all_countries,
+                countryCode = NodesUseCase.ALL_COUNTRY_CODE,
+                countryName = "",
+                proposalsNumber = countryInfoList.sumBy { it.proposalsNumber },
+                isSelected = true
+            )
+            return mutableListOf<CountryInfo>().apply {
+                add(0, totalCountryInfo)
+                addAll(countryInfoList)
             }
         } else {
-            null
+            emptyList()
         }
     }
 
