@@ -10,6 +10,8 @@ import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.exceptions.ConnectInvalidProposalException
 import updated.mysterium.vpn.exceptions.ConnectUnknownException
 import updated.mysterium.vpn.model.connection.Status
+import updated.mysterium.vpn.model.connection.StatusResponse
+import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
@@ -161,14 +163,11 @@ class NodeRepository(var deferredNode: DeferredNode) {
         )
     }
 
-    // Get current  connection status.
+    // GetStatus returns current connection state and provider info if connected to VPN.
     suspend fun status() = withContext(Dispatchers.IO) {
-        val res = deferredNode.await().status
-        Status(
-            state = res.state,
-            providerID = res.providerID,
-            serviceType = res.serviceType
-        )
+        val bytes = getStatus()
+        val response = parseStatus(bytes)
+        response ?: Status(ConnectionState.NOTCONNECTED.state)
     }
 
     // Get current balance.
@@ -268,6 +267,16 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 CountryInfo.from(countryCode, proposalsNumber)
             }
             ?.filterNotNull()
+    }
+
+    private suspend fun getStatus() = withContext(Dispatchers.IO) {
+        deferredNode.await().status
+    }
+
+    private suspend fun parseStatus(bytes: ByteArray) = withContext(Dispatchers.Default) {
+        Klaxon().parse<StatusResponse>(bytes.inputStream())?.let {
+            Status(it)
+        }
     }
 
 }
