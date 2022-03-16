@@ -17,6 +17,7 @@ import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.notification.AppNotificationManager
@@ -30,6 +31,8 @@ class ConnectionActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PROPOSAL_MODEL = "PROPOSAL_MODEL"
+        const val CONNECTION_TYPE_KEY = "CONNECTION_TYPE"
+        const val COUNTRY_CODE_KEY = "COUNTRY_CODE"
         private const val TAG = "ConnectionActivity"
         private const val CURRENCY = "MYSTT"
         private const val MIN_BALANCE = 0.0001
@@ -37,6 +40,7 @@ class ConnectionActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private var proposal: Proposal? = null
+    private var connectionType: ConnectionType? = null
     private val viewModel: ConnectionViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val analytic: MysteriumAnalytic by inject()
@@ -60,66 +64,6 @@ class ConnectionActivity : BaseActivity() {
         checkAbilityToConnect()
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        if (isInternetAvailable) {
-            setIntent(intent)
-            intent?.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposal ->
-                if (this.proposal?.providerID != proposal.providerID) {
-                    this.proposal = proposal
-                    if (
-                        viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                        viewModel.connectionState.value == ConnectionState.CONNECTING ||
-                        viewModel.connectionState.value == ConnectionState.ON_HOLD ||
-                        viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
-                    ) {
-                        manualDisconnecting()
-                        analytic.trackEvent(
-                            eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
-                            proposal = proposal
-                        )
-                        viewModel.disconnect().observe(this, { result ->
-                            result.onSuccess {
-                                Log.i(TAG, "onSuccess")
-                                inflateNodeInfo()
-                                inflateConnectingCardView()
-                                analytic.trackEvent(
-                                    eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
-                                    proposal = proposal
-                                )
-                                viewModel.connectNode(proposal, exchangeRateViewModel.usdEquivalent)
-                            }
-                            result.onFailure {
-                                Log.i(TAG, "onFailure ${it.localizedMessage}")
-                                inflateNodeInfo()
-                                inflateConnectingCardView()
-                                analytic.trackEvent(
-                                    eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
-                                    proposal = proposal
-                                )
-                                analytic.trackEvent(
-                                    eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
-                                    proposal = proposal
-                                )
-                                viewModel.connectNode(proposal, exchangeRateViewModel.usdEquivalent)
-                            }
-                        })
-                    } else {
-                        inflateNodeInfo()
-                        inflateConnectingCardView()
-                        analytic.trackEvent(
-                            eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
-                            proposal = proposal
-                        )
-                        viewModel.connectNode(proposal, exchangeRateViewModel.usdEquivalent)
-                    }
-                }
-            }
-        } else {
-            wifiNetworkErrorPopUp()
-        }
-    }
-
     override fun retryLoading() {
         getSelectedNode()
     }
@@ -135,10 +79,10 @@ class ConnectionActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         subscribeConnectionListener()
-        viewModel.statisticsUpdate.observe(this, {
+        viewModel.statisticsUpdate.observe(this) {
             binding.connectionState.updateConnectedStatistics(it, CURRENCY)
-        })
-        viewModel.connectionException.observe(this, {
+        }
+        viewModel.connectionException.observe(this) {
             if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
                 analytic.trackEvent(
                     eventName = AnalyticEvent.CONNECT_FAILURE.eventName,
@@ -155,13 +99,13 @@ class ConnectionActivity : BaseActivity() {
                     failedToConnect()
                 }
             }
-        })
-        viewModel.manualDisconnect.observe(this, {
+        }
+        viewModel.manualDisconnect.observe(this) {
             manualDisconnecting()
-        })
-        viewModel.pushDisconnect.observe(this, {
+        }
+        viewModel.pushDisconnect.observe(this) {
             navigateToSelectNode(true)
-        })
+        }
         viewModel.successConnectEvent.observe(this) {
             analytic.trackEvent(
                 eventName = AnalyticEvent.CONNECT_SUCCESS.eventName,
@@ -171,9 +115,9 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun subscribeConnectionListener() {
-        viewModel.connectionState.observe(this, {
+        viewModel.connectionState.observe(this) {
             handleConnectionChange(it)
-        })
+        }
     }
 
     private fun getSelectedNode() {
@@ -184,7 +128,7 @@ class ConnectionActivity : BaseActivity() {
         }
     }
 
-    private fun initViewModel(proposal: Proposal) {
+    private fun initViewModel(proposal: Proposal?) {
         analytic.trackEvent(
             eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
             proposal = proposal
@@ -230,13 +174,13 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun checkForReview() {
-        viewModel.isReviewAvailable().observe(this, {
+        viewModel.isReviewAvailable().observe(this) {
             it.onSuccess { isReviewAvailable ->
                 if (isReviewAvailable) {
                     showReview()
                 }
             }
-        })
+        }
     }
 
     private fun showReview() {
@@ -253,7 +197,7 @@ class ConnectionActivity : BaseActivity() {
 
     private fun checkAbilityToConnect() {
         viewModel.identity?.let { identity ->
-            viewModel.getBalance(identity.address).observe(this, {
+            viewModel.getBalance(identity.address).observe(this) {
                 it.onSuccess { balance ->
                     if (balance == 0.0) {
                         insufficientFundsPopUp {
@@ -263,12 +207,12 @@ class ConnectionActivity : BaseActivity() {
                         }
                     }
                 }
-            })
+            }
         }
     }
 
     private fun checkCurrentStatus() {
-        viewModel.updateCurrentConnectionStatus().observe(this, { result ->
+        viewModel.updateCurrentConnectionStatus().observe(this) { result ->
             result.onSuccess {
                 updateStatusTitle(it)
                 if (
@@ -284,7 +228,7 @@ class ConnectionActivity : BaseActivity() {
                 navigateToSelectNode(true)
                 Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
             }
-        })
+        }
     }
 
     private fun updateStatusTitle(connectionState: ConnectionState) {
@@ -322,44 +266,49 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun checkProposalArgument() {
-        intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)?.let { proposalExtra ->
-            if (proposal?.providerID != proposalExtra.providerID) {
-                if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
-                    initViewModel(proposalExtra)
-                }
-                manualDisconnecting()
-                proposal = proposalExtra
-                inflateNodeInfo()
-                inflateConnectingCardView()
-                if (
-                    viewModel.connectionState.value == ConnectionState.CONNECTED ||
-                    viewModel.connectionState.value == ConnectionState.CONNECTING ||
-                    viewModel.connectionState.value == ConnectionState.ON_HOLD ||
-                    viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
-                ) {
-                    manualDisconnecting()
+        connectionType = ConnectionType.from(
+            intent?.extras?.getString(CONNECTION_TYPE_KEY) ?: ConnectionType.SMART_CONNECT.type
+        )
+        val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
+        val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
+        if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+            initViewModel(proposalExtra)
+        }
+        manualDisconnecting()
+        proposal = proposalExtra
+        inflateNodeInfo()
+        inflateConnectingCardView()
+        if (
+            viewModel.connectionState.value == ConnectionState.CONNECTED ||
+            viewModel.connectionState.value == ConnectionState.CONNECTING ||
+            viewModel.connectionState.value == ConnectionState.ON_HOLD ||
+            viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
+        ) {
+            manualDisconnecting()
+            analytic.trackEvent(
+                eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
+                proposal = proposal
+            )
+            viewModel.disconnect().observe(this) {
+                it.onSuccess {
                     analytic.trackEvent(
-                        eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
+                        eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
                         proposal = proposal
                     )
-                    viewModel.disconnect().observe(this, {
-                        it.onSuccess {
-                            analytic.trackEvent(
-                                eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
-                                proposal = proposal
-                            )
-                            viewModel.connectNode(
-                                proposalExtra,
-                                exchangeRateViewModel.usdEquivalent
-                            )
-                        }
-                        it.onFailure {
-                            analytic.trackEvent(
-                                eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
-                                proposal = proposal
-                            )
-                        }
-                    })
+                    if (connectionType == ConnectionType.MANUAL_CONNECT && proposalExtra != null) {
+                        viewModel.connectNode(
+                            proposalExtra,
+                            exchangeRateViewModel.usdEquivalent
+                        )
+                    } else {
+                        viewModel.smartConnect(countryCode)
+                    }
+                }
+                it.onFailure {
+                    analytic.trackEvent(
+                        eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
+                        proposal = proposal
+                    )
                 }
             }
         }
@@ -367,7 +316,7 @@ class ConnectionActivity : BaseActivity() {
 
     private fun loadIpAddress() {
         binding.ipTextView.text = getString(R.string.manual_connect_loading)
-        viewModel.getLocation().observe(this, { result ->
+        viewModel.getLocation().observe(this) { result ->
             result.onSuccess {
                 binding.ipTextView.text = it.ip
             }
@@ -376,18 +325,18 @@ class ConnectionActivity : BaseActivity() {
                 binding.ipTextView.text = getString(R.string.manual_connect_unknown)
                 loadIpAddress()
             }
-        })
+        }
     }
 
     private fun bindsAction() {
         binding.cancelConnectionButton.setOnClickListener {
             manualDisconnecting()
-            viewModel.stopConnecting().observe(this, { result ->
+            viewModel.stopConnecting().observe(this) { result ->
                 result.onFailure {
                     Log.e(TAG, it.localizedMessage ?: it.toString())
                 }
                 backToFilter()
-            })
+            }
         }
         binding.selectAnotherNodeButton.setOnClickListener {
             navigateToSelectNode()
@@ -402,7 +351,7 @@ class ConnectionActivity : BaseActivity() {
                     eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
                     proposal = proposal
                 )
-                viewModel.disconnect().observe(this, {
+                viewModel.disconnect().observe(this) {
                     it.onSuccess {
                         navigateToSelectNode(true)
                     }
@@ -412,7 +361,7 @@ class ConnectionActivity : BaseActivity() {
                             proposal = proposal
                         )
                     }
-                })
+                }
             }
         )
     }
@@ -421,7 +370,7 @@ class ConnectionActivity : BaseActivity() {
         binding.manualConnectToolbar.onRightButtonClicked {
             proposal?.let { proposal ->
                 viewModel.isFavourite(proposal.providerID + proposal.serviceType)
-                    .observe(this, { result ->
+                    .observe(this) { result ->
                         result.onSuccess {
                             if (it != null) {
                                 deleteFromFavourite(proposal)
@@ -432,7 +381,7 @@ class ConnectionActivity : BaseActivity() {
                         result.onFailure {
                             Log.i(TAG, it.localizedMessage ?: it.toString())
                         }
-                    })
+                    }
             }
         }
         isFavourite()
@@ -446,14 +395,14 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun addToFavourite(proposal: Proposal) {
-        viewModel.addToFavourite(proposal).observe(this, { result ->
+        viewModel.addToFavourite(proposal).observe(this) { result ->
             result.onSuccess {
                 Log.i(TAG, "onSuccess")
             }
             result.onFailure {
                 Log.i(TAG, it.localizedMessage ?: it.toString())
             }
-        })
+        }
         binding.manualConnectToolbar.setRightIcon(
             ContextCompat.getDrawable(this, R.drawable.icon_saved)
         )
@@ -516,7 +465,7 @@ class ConnectionActivity : BaseActivity() {
 
     private fun isFavourite() {
         proposal?.let {
-            viewModel.isFavourite(it.providerID + it.serviceType).observe(this, { result ->
+            viewModel.isFavourite(it.providerID + it.serviceType).observe(this) { result ->
                 result.onSuccess { nodeEntity ->
                     if (nodeEntity != null) {
                         binding.manualConnectToolbar.setRightIcon(
@@ -528,12 +477,12 @@ class ConnectionActivity : BaseActivity() {
                         )
                     }
                 }
-            })
+            }
         }
     }
 
     private fun failedToConnect() {
-        viewModel.getBalance().observe(this, {
+        viewModel.getBalance().observe(this) {
             it.onSuccess { balance ->
                 if (balance < MIN_BALANCE) {
                     insufficientFundsPopUp {
@@ -545,7 +494,7 @@ class ConnectionActivity : BaseActivity() {
                     showFailedToConnectPopUp()
                 }
             }
-        })
+        }
     }
 
     private fun showFailedToConnectPopUp() {

@@ -22,8 +22,9 @@ import updated.mysterium.vpn.model.statistics.StatisticsModel
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 import updated.mysterium.vpn.notification.AppNotificationManager
-import updated.mysterium.vpn.ui.balance.BalanceViewModel
+
 import java.util.*
 
 class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -74,11 +75,18 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var deferredNode = DeferredNode()
     private var exchangeRate = 0.0
     private var isConnectionStopped = false
+    val handler = CoroutineExceptionHandler { _, exception ->
+        Log.i(TAG, exception.localizedMessage ?: exception.toString())
+        if (!isConnectionStopped && _connectionState.value != ConnectionState.CONNECTED) {
+            _connectionException.postValue(exception as Exception)
+        }
+        isConnectionStopped = false
+    }
 
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager,
-        proposal: Proposal,
+        proposal: Proposal?,
         rate: Double
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
@@ -88,23 +96,48 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
-            connectNode(proposal, rate)
+            proposal?.let {
+                connectNode(it, rate)
+            } ?: smartConnect()
+        }
+    }
+
+    fun smartConnect(countryCode: String? = null) {
+        viewModelScope.launch(handler) {
+            disconnectIfConnectedNode()
+            val code =
+                if (countryCode == ALL_COUNTRY_CODE || countryCode == null) {
+                    ""
+                } else {
+                    countryCode.toUpperCase(Locale.ROOT)
+                }
+            val req = ConnectRequest().apply {
+                identityAddress = identity?.address ?: ""
+                this.countryCode = code
+                providers = String()
+                dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
+            }
+            connectionUseCase.connect(req)
+            this@ConnectionViewModel.proposal = connectionUseCase.status().proposal
+            updateService()
+            _successConnectEvent.postValue(proposal)
         }
     }
 
     fun connectNode(proposal: Proposal, rate: Double) {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.i(TAG, exception.localizedMessage ?: exception.toString())
-            if (!isConnectionStopped && _connectionState.value != ConnectionState.CONNECTED) {
-                _connectionException.postValue(exception as Exception)
-            }
-            isConnectionStopped = false
-        }
         exchangeRate = rate
         viewModelScope.launch(handler) {
             this@ConnectionViewModel.proposal = proposal
             disconnectIfConnectedNode()
-            connect()
+            val req = ConnectRequest().apply {
+                identityAddress = identity?.address ?: ""
+                providers = proposal.providerID
+                serviceType = proposal.serviceType.type
+                dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
+            }
+            connectionUseCase.connect(req)
+            updateService()
+            _successConnectEvent.postValue(proposal)
         }
     }
 
@@ -230,18 +263,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 IdentityRegistrationStatus.parse(it.registrationStatus)
             )
         }
-    }
-
-    private suspend fun connect() {
-        val req = ConnectRequest().apply {
-            identityAddress = identity?.address ?: ""
-            providers = proposal?.providerID
-            serviceType = proposal?.serviceType?.type
-            dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
-        }
-        connectionUseCase.connect(req)
-        updateService()
-        _successConnectEvent.postValue(proposal)
     }
 
     private fun updateService() {
