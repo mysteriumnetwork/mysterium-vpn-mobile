@@ -440,6 +440,7 @@ class ConnectionActivity : BaseActivity() {
         binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.connectionTypeTextView.visibility = View.INVISIBLE
         binding.manualConnectToolbar.setRightIcon(null)
+        binding.connectionState.showConnectionType(connectionType)
         proposal?.let {
             binding.connectionState.showConnectionState(it)
         }

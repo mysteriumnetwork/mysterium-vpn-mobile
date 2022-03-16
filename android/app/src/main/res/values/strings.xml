@@ -18,7 +18,8 @@
     <string name="onboarding_next">Next</string>
 
     <!--  SmartConnection  -->
-    <string name="smart_connect">Smart Connect</string>
+    <string name="smart_connect_button_title">Smart Connect</string>
+    <string name="smart_connect_connecting_title">Smart Connect</string>
 
     <!--  ManualConnection  -->
     <string name="manual_connect_country_select_title">Select node</string>

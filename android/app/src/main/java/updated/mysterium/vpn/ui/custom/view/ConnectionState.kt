@@ -10,6 +10,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ConnectionStateLayoutBinding
 import updated.mysterium.vpn.common.data.DisplayMoneyOptions
 import updated.mysterium.vpn.common.data.PriceUtils
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.nodes.ProposalPaymentMoney
@@ -68,6 +69,18 @@ class ConnectionState @JvmOverloads constructor(
         }
     }
 
+    fun showConnectionType(type: ConnectionType?) {
+        if (type == ConnectionType.SMART_CONNECT) {
+            binding.connectingLayout.connectionTypeTextView.text =
+                context.getString(R.string.smart_connect_connecting_title)
+            binding.connectingLayout.nodeInfoContainer.visibility = View.GONE
+        } else {
+            binding.connectingLayout.connectionTypeTextView.text =
+                context.getString(R.string.manual_connect_connecting_title)
+            binding.connectingLayout.nodeInfoContainer.visibility = View.VISIBLE
+        }
+    }
+
     fun showConnectedState() {
         binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
@@ -96,7 +109,8 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectedLayout.durationValueTextView.text = statistics.duration
         binding.connectedLayout.paidMystValueTextView.text = tokensSpent
         binding.connectedLayout.dataSendValueTextView.text = statistics.bytesSent.value
-        binding.connectedLayout.paidEurValueTextView.text = DOUBLE_FORMAT_TEMPLATE.format(statistics.currencySpent)
+        binding.connectedLayout.paidEurValueTextView.text =
+            DOUBLE_FORMAT_TEMPLATE.format(statistics.currencySpent)
         binding.connectedLayout.dataReceiveValueTextView.text = context.getString(
             R.string.manual_connect_data_received, statistics.bytesReceived.value
         )
