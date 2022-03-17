@@ -187,28 +187,29 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 android:src="@drawable/divider_country_group"
-                app:layout_constraintBottom_toTopOf="@+id/selectNodeButton"
+                app:layout_constraintBottom_toTopOf="@+id/smartConnectButton"
                 tools:ignore="ContentDescription" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/selectNodeButton"
+                android:id="@+id/smartConnectButton"
                 style="@style/Widget.PrimaryButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_large"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium"
-                android:text="@string/manual_connect_select_node"
-                app:layout_constraintBottom_toTopOf="@+id/smartConnectTextView" />
+                android:text="@string/smart_connect_button_title"
+                app:layout_constraintBottom_toTopOf="@+id/manualNodeSelectionButton" />
 
-            <TextView
-                android:id="@+id/smartConnectTextView"
-                style="@style/TextAppearance.Caption"
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/manualNodeSelectionButton"
+                style="@style/Widget.ManualNodeSelectionButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
-                android:text="@string/home_selection_smart_connect"
-                android:textColor="@color/manual_connect_attention_text_light_grey"
+                android:text="@string/manual_connect_select_node"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

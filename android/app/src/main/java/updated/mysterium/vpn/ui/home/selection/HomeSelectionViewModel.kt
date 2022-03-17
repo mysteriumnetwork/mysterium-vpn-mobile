@@ -35,8 +35,7 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getCurrentState() = liveDataResult {
-        val status = connectionUseCase.status()
-        ConnectionState.from(status.state)
+        connectionUseCase.status().state
     }
 
     fun initConnectionListener() {

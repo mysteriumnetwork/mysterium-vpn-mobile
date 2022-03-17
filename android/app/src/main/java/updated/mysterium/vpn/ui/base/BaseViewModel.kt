@@ -49,7 +49,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun checkCurrentConnection() {
         viewModelScope.launch {
             val status = connectionUseCase.status()
-            val state = ConnectionState.from(status.state)
+            val state = status.state
             _connectionState.postValue(state)
         }
     }

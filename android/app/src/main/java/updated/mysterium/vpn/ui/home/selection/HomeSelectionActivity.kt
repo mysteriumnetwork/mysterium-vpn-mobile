@@ -5,16 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.CONNECTION_TYPE_KEY
+import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.COUNTRY_CODE_KEY
 import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterActivity
@@ -97,21 +101,11 @@ class HomeSelectionActivity : BaseActivity() {
         binding.manualConnectToolbar.onRightButtonClicked {
             startActivity(Intent(this, FavouritesActivity::class.java))
         }
-        binding.selectNodeButton.setOnClickListener {
-            val intent = Intent(this, FilterActivity::class.java).apply {
-                val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
-                val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
-                    selectedCountryCode?.toLowerCase(Locale.ROOT) ?: ALL_COUNTRY_CODE
-                } else {
-                    ALL_COUNTRY_CODE
-                }
-                putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
-                val filter = filtersAdapter.selectedItem
-                putExtra(FilterActivity.FILTER_KEY, filter)
-                viewModel.saveNewCountryCode(countryCode)
-                viewModel.saveNewFilterId(filter?.filterId)
-            }
-            startActivity(intent)
+        binding.smartConnectButton.setOnClickListener {
+            navigateToConnection()
+        }
+        binding.manualNodeSelectionButton.setOnClickListener {
+            navigateToFilter()
         }
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnection(isBackTransition = false)
@@ -265,12 +259,12 @@ class HomeSelectionActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToConnection(isBackTransition: Boolean) {
+    private fun navigateToConnection(isBackTransition: Boolean? = null) {
         if (connectionState == ConnectionState.CONNECTED) {
             val intent = Intent(this, ConnectionActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            val transitionAnimation = if (isBackTransition) {
+            val transitionAnimation = if (isBackTransition == true) {
                 ActivityOptions.makeCustomAnimation(
                     applicationContext,
                     R.anim.slide_in_left,
@@ -284,10 +278,35 @@ class HomeSelectionActivity : BaseActivity() {
                 ).toBundle()
             }
             startActivity(intent, transitionAnimation)
+        } else {
+            val intent = Intent(this, ConnectionActivity::class.java).apply {
+                putExtra(CONNECTION_TYPE_KEY, ConnectionType.SMART_CONNECT.type)
+                putExtra(COUNTRY_CODE_KEY, viewModel.getPreviousCountryCode())
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
         }
     }
 
     private fun navigateToMenu() {
         startActivity(Intent(this, MenuActivity::class.java))
+    }
+
+    private fun navigateToFilter() {
+        val intent = Intent(this, FilterActivity::class.java).apply {
+            val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
+            val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
+                selectedCountryCode?.toLowerCase(Locale.ROOT) ?: ALL_COUNTRY_CODE
+            } else {
+                ALL_COUNTRY_CODE
+            }
+            putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
+            val filter = filtersAdapter.selectedItem
+            putExtra(FilterActivity.FILTER_KEY, filter)
+            putExtra(CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
+            viewModel.saveNewCountryCode(countryCode)
+            viewModel.saveNewFilterId(filter?.filterId)
+        }
+        startActivity(intent)
     }
 }
