@@ -129,7 +129,11 @@ class ConnectionActivity : BaseActivity() {
         }
     }
 
-    private fun initViewModel(proposal: Proposal?) {
+    private fun initViewModel(
+        connectionType: ConnectionType?,
+        countryCode: String?,
+        proposal: Proposal?
+    ) {
         analytic.trackEvent(
             eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
             proposal = proposal
@@ -137,6 +141,8 @@ class ConnectionActivity : BaseActivity() {
         viewModel.init(
             deferredMysteriumCoreService = App.getInstance(this).deferredMysteriumCoreService,
             notificationManager = notificationManager,
+            connectionType = connectionType,
+            countryCode = countryCode,
             proposal = proposal,
             rate = exchangeRateViewModel.usdEquivalent
         )
@@ -273,7 +279,7 @@ class ConnectionActivity : BaseActivity() {
         val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
         val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
         if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
-            initViewModel(proposalExtra)
+            initViewModel(connectionType, countryCode, proposalExtra)
         }
         manualDisconnecting()
         proposal = proposalExtra

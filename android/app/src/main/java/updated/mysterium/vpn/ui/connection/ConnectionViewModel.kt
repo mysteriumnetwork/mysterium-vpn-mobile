@@ -5,13 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mysterium.ConnectRequest
 import mysterium.GetBalanceRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ConnectionStatistic
@@ -25,7 +29,6 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 import updated.mysterium.vpn.notification.AppNotificationManager
-
 import java.util.*
 
 class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -85,6 +88,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager,
+        connectionType: ConnectionType?,
+        countryCode: String?,
         proposal: Proposal?,
         rate: Double
     ) {
@@ -95,9 +100,13 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
-            proposal?.let {
-                connectNode(it, rate)
-            } ?: smartConnect()
+            if (connectionType == ConnectionType.MANUAL_CONNECT) {
+                proposal?.let {
+                    connectNode(it, rate)
+                }
+            } else {
+                smartConnect(countryCode)
+            }
         }
     }
 
@@ -108,7 +117,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (countryCode == ALL_COUNTRY_CODE || countryCode == null) {
                     ""
                 } else {
-                    countryCode.toUpperCase(Locale.ROOT)
+                    countryCode.toLowerCase(Locale.ROOT)
                 }
             val req = ConnectRequest().apply {
                 identityAddress = identity?.address ?: ""
