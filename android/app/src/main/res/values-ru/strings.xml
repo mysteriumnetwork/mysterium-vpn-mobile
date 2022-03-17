@@ -156,7 +156,6 @@
     <string name="top_up_amount_traffic">Трафик</string>
     <string name="top_up_amount_description">Выберите, сколько кредитов MYST\n вы хотите добавить в свой аккаунт</string>
     <string name="top_up_amount_confirm">Подтвердить</string>
-    <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение</string>
     <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение.\n На данный момент MYST исключительно на блокчейне Ethereum!</string>
     <string name="top_up_payment_title">Ожидание оплаты</string>
     <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
@@ -169,7 +168,7 @@
 
     <!--  Settings  -->
     <string name="settings_title">Настройки</string>
-    <string name="settings_description">Идентификатор – это ваш внутренний идентификатор пользователя Mysterium. Никогда не отправляйте туда Ethereum или какие-либо токены ERC20.</string>
+    <string name="settings_description">Идентификатор - это ваш внутренний идентификатор пользователя Mysterium. Никогда не отправляйте туда Ethereum или какие-либо токены ERC20.</string>
     <string name="settings_dns_title">DNS</string>
     <string name="settings_resident_title">Страна проживания</string>
     <string name="settings_dns_system">Система</string>
