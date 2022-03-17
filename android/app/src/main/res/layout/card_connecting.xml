@@ -36,7 +36,16 @@
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:layout_weight="1.5">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/smartConnectLoadingAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/smart_connect_loading" />
+
         <androidx.cardview.widget.CardView
+            android:id="@+id/connectingNodeInfo"
             style="@style/Widget.SmallRoundedCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

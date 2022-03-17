@@ -73,11 +73,13 @@ class ConnectionState @JvmOverloads constructor(
         if (type == ConnectionType.SMART_CONNECT) {
             binding.connectingLayout.connectionTypeTextView.text =
                 context.getString(R.string.smart_connect_connecting_title)
-            binding.connectingLayout.nodeInfoContainer.visibility = View.GONE
+            binding.connectingLayout.connectingNodeInfo.visibility = View.GONE
+            binding.connectingLayout.smartConnectLoadingAnimation.visibility = View.VISIBLE
         } else {
             binding.connectingLayout.connectionTypeTextView.text =
                 context.getString(R.string.manual_connect_connecting_title)
-            binding.connectingLayout.nodeInfoContainer.visibility = View.VISIBLE
+            binding.connectingLayout.connectingNodeInfo.visibility = View.VISIBLE
+            binding.connectingLayout.smartConnectLoadingAnimation.visibility = View.GONE
         }
     }
 
