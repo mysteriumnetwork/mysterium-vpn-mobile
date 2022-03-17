@@ -200,7 +200,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             val status = connectionUseCase.status()
             connectionUseCase.registerStatisticsChangeCallback {
                 vpnTimeSpent = it.duration.toFloat() / 60
-                val connectionModel = ConnectionState.from(status.state)
+                val connectionModel = status.state
                 if (connectionModel == ConnectionState.CONNECTED) {
                     updateStatistic(it)
                 } else {

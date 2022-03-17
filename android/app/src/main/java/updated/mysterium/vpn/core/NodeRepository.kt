@@ -167,7 +167,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun status() = withContext(Dispatchers.IO) {
         val bytes = getStatus()
         val response = parseStatus(bytes)
-        response ?: Status(ConnectionState.NOTCONNECTED.state)
+        response ?: Status(ConnectionState.NOTCONNECTED)
     }
 
     // Get current balance.

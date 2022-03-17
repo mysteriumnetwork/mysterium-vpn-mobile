@@ -18,6 +18,7 @@ import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.model.connection.ConnectionType
+import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.notification.AppNotificationManager
@@ -83,7 +84,7 @@ class ConnectionActivity : BaseActivity() {
             binding.connectionState.updateConnectedStatistics(it, CURRENCY)
         }
         viewModel.connectionException.observe(this) {
-            if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+            if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
                 analytic.trackEvent(
                     eventName = AnalyticEvent.CONNECT_FAILURE.eventName,
                     proposal = proposal
@@ -115,7 +116,7 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun subscribeConnectionListener() {
-        viewModel.connectionState.observe(this) {
+        viewModel.connectionStatus.observe(this) {
             handleConnectionChange(it)
         }
     }
@@ -146,18 +147,18 @@ class ConnectionActivity : BaseActivity() {
         viewModel.manualDisconnect()
     }
 
-    private fun handleConnectionChange(connection: ConnectionState) {
-        when (connection) {
+    private fun handleConnectionChange(status: Status) {
+        when (status.state) {
             ConnectionState.NOTCONNECTED -> {
                 loadIpAddress()
                 viewModel.clearDuration()
             }
             ConnectionState.CONNECTING -> {
-                inflateConnectingCardView()
+                inflateConnectingCardView(status.proposal)
             }
             ConnectionState.CONNECTED -> {
                 loadIpAddress()
-                inflateConnectedCardView()
+                inflateConnectedCardView(status.proposal)
                 checkForReview()
             }
             ConnectionState.DISCONNECTING -> {
@@ -167,7 +168,7 @@ class ConnectionActivity : BaseActivity() {
             }
             ConnectionState.ON_HOLD -> {
                 loadIpAddress()
-                inflateConnectedCardView()
+                inflateConnectedCardView(status.proposal)
             }
         }
         updateStatusTitle(connectionState)
@@ -214,11 +215,11 @@ class ConnectionActivity : BaseActivity() {
     private fun checkCurrentStatus() {
         viewModel.updateCurrentConnectionStatus().observe(this) { result ->
             result.onSuccess {
-                updateStatusTitle(it)
+                updateStatusTitle(it.state)
                 if (
-                    it == ConnectionState.CONNECTED ||
-                    it == ConnectionState.CONNECTING ||
-                    it == ConnectionState.ON_HOLD
+                    it.state == ConnectionState.CONNECTED ||
+                    it.state == ConnectionState.CONNECTING ||
+                    it.state == ConnectionState.ON_HOLD
                 ) {
                     getProposal()
                     toolbarSaveIcon()
@@ -259,7 +260,7 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun getProposal() {
-        viewModel.proposal?.let {
+        viewModel.connectionStatus.value?.proposal?.let {
             this.proposal = it
             inflateNodeInfo()
         }
@@ -271,18 +272,18 @@ class ConnectionActivity : BaseActivity() {
         )
         val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
         val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
-        if (viewModel.connectionState.value != ConnectionState.CONNECTED) {
+        if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
             initViewModel(proposalExtra)
         }
         manualDisconnecting()
         proposal = proposalExtra
         inflateNodeInfo()
-        inflateConnectingCardView()
+        inflateConnectingCardView(proposalExtra)
         if (
-            viewModel.connectionState.value == ConnectionState.CONNECTED ||
-            viewModel.connectionState.value == ConnectionState.CONNECTING ||
-            viewModel.connectionState.value == ConnectionState.ON_HOLD ||
-            viewModel.connectionState.value == ConnectionState.IP_NOT_CHANGED
+            viewModel.connectionStatus.value?.state == ConnectionState.CONNECTED ||
+            viewModel.connectionStatus.value?.state == ConnectionState.CONNECTING ||
+            viewModel.connectionStatus.value?.state == ConnectionState.ON_HOLD ||
+            viewModel.connectionStatus.value?.state == ConnectionState.IP_NOT_CHANGED
         ) {
             manualDisconnecting()
             analytic.trackEvent(
@@ -430,7 +431,7 @@ class ConnectionActivity : BaseActivity() {
         }
     }
 
-    private fun inflateConnectingCardView() {
+    private fun inflateConnectingCardView(proposal: Proposal?) {
         toolbarSaveIcon()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         binding.cancelConnectionButton.visibility = View.VISIBLE
@@ -447,7 +448,7 @@ class ConnectionActivity : BaseActivity() {
         binding.multiAnimation.connectingState()
     }
 
-    private fun inflateConnectedCardView() {
+    private fun inflateConnectedCardView(proposal: Proposal?) {
         toolbarSaveIcon()
         binding.cancelConnectionButton.visibility = View.INVISIBLE
         binding.selectAnotherNodeButton.visibility = View.VISIBLE
