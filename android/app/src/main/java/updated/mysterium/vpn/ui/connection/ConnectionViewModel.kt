@@ -37,6 +37,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val DEFAULT_DNS_OPTION = "auto"
         const val TAG = "HomeViewModel"
         const val SESSION_NUMBER_BEFORE_REVIEW = 3
+        const val SORT_BY_TYPE = "quality"
     }
 
     val successConnectEvent: LiveData<Proposal>
@@ -115,13 +116,14 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             disconnectIfConnectedNode()
             val code =
                 if (countryCode == ALL_COUNTRY_CODE || countryCode == null) {
-                    ""
+                    String()
                 } else {
                     countryCode.toUpperCase(Locale.ROOT)
                 }
             val req = ConnectRequest().apply {
                 identityAddress = identity?.address ?: ""
                 this.countryCode = code
+                sortBy = SORT_BY_TYPE
                 providers = String()
                 dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
             }
