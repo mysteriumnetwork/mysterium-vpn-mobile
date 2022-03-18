@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
@@ -303,7 +302,6 @@ class HomeSelectionActivity : BaseActivity() {
             putExtra(FilterActivity.COUNTRY_CODE_KEY, countryCode)
             val filter = filtersAdapter.selectedItem
             putExtra(FilterActivity.FILTER_KEY, filter)
-            putExtra(CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
             viewModel.saveNewCountryCode(countryCode)
             viewModel.saveNewFilterId(filter?.filterId)
         }

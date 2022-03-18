@@ -93,7 +93,7 @@ class ConnectionActivity : BaseActivity() {
                 if (it is ConnectInsufficientBalanceException) {
                     disconnect()
                     insufficientFundsPopUp {
-                        navigateToSelectNode(true)
+                        navigateBack()
                     }
                 } else if (it !is ConnectAlreadyExistsException) {
                     disconnect()
@@ -105,7 +105,7 @@ class ConnectionActivity : BaseActivity() {
             manualDisconnecting()
         }
         viewModel.pushDisconnect.observe(this) {
-            navigateToSelectNode(true)
+            navigateBack()
         }
         viewModel.successConnectEvent.observe(this) {
             analytic.trackEvent(
@@ -117,6 +117,7 @@ class ConnectionActivity : BaseActivity() {
 
     private fun subscribeConnectionListener() {
         viewModel.connectionStatus.observe(this) {
+            proposal = it.proposal
             handleConnectionChange(it)
         }
     }
@@ -160,11 +161,11 @@ class ConnectionActivity : BaseActivity() {
                 viewModel.clearDuration()
             }
             ConnectionState.CONNECTING -> {
-                inflateConnectingCardView(status.proposal)
+                inflateConnectingCardView()
             }
             ConnectionState.CONNECTED -> {
                 loadIpAddress()
-                inflateConnectedCardView(status.proposal)
+                inflateConnectedCardView()
                 checkForReview()
             }
             ConnectionState.DISCONNECTING -> {
@@ -174,7 +175,7 @@ class ConnectionActivity : BaseActivity() {
             }
             ConnectionState.ON_HOLD -> {
                 loadIpAddress()
-                inflateConnectedCardView(status.proposal)
+                inflateConnectedCardView()
             }
         }
         updateStatusTitle(connectionState)
@@ -210,7 +211,7 @@ class ConnectionActivity : BaseActivity() {
                         insufficientFundsPopUp {
                             manualDisconnecting()
                             viewModel.disconnect()
-                            navigateToSelectNode(true)
+                            navigateBack()
                         }
                     }
                 }
@@ -232,7 +233,7 @@ class ConnectionActivity : BaseActivity() {
                 }
             }
             result.onFailure { throwable ->
-                navigateToSelectNode(true)
+                navigateBack()
                 Log.i(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         }
@@ -278,13 +279,15 @@ class ConnectionActivity : BaseActivity() {
         )
         val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
         val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
-        if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
-            initViewModel(connectionType, countryCode, proposalExtra)
+        if ((connectionType == ConnectionType.MANUAL_CONNECT && proposal?.providerID != proposalExtra?.providerID) || (connectionType == ConnectionType.SMART_CONNECT && proposal?.providerID == null && proposalExtra?.providerID == null)) {
+            if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
+                initViewModel(connectionType, countryCode, proposalExtra)
+            }
         }
         manualDisconnecting()
         proposal = proposalExtra
         inflateNodeInfo()
-        inflateConnectingCardView(proposalExtra)
+        inflateConnectingCardView()
         if (
             viewModel.connectionStatus.value?.state == ConnectionState.CONNECTED ||
             viewModel.connectionStatus.value?.state == ConnectionState.CONNECTING ||
@@ -342,7 +345,7 @@ class ConnectionActivity : BaseActivity() {
                 result.onFailure {
                     Log.e(TAG, it.localizedMessage ?: it.toString())
                 }
-                backToFilter()
+                navigateBack()
             }
         }
         binding.selectAnotherNodeButton.setOnClickListener {
@@ -360,7 +363,7 @@ class ConnectionActivity : BaseActivity() {
                 )
                 viewModel.disconnect().observe(this) {
                     it.onSuccess {
-                        navigateToSelectNode(true)
+                        navigateBack()
                     }
                     it.onFailure {
                         analytic.trackEvent(
@@ -437,7 +440,7 @@ class ConnectionActivity : BaseActivity() {
         }
     }
 
-    private fun inflateConnectingCardView(proposal: Proposal?) {
+    private fun inflateConnectingCardView() {
         toolbarSaveIcon()
         binding.selectAnotherNodeButton.visibility = View.INVISIBLE
         binding.cancelConnectionButton.visibility = View.VISIBLE
@@ -454,7 +457,7 @@ class ConnectionActivity : BaseActivity() {
         binding.multiAnimation.connectingState()
     }
 
-    private fun inflateConnectedCardView(proposal: Proposal?) {
+    private fun inflateConnectedCardView() {
         toolbarSaveIcon()
         binding.cancelConnectionButton.visibility = View.INVISIBLE
         binding.selectAnotherNodeButton.visibility = View.VISIBLE
@@ -496,7 +499,7 @@ class ConnectionActivity : BaseActivity() {
                     insufficientFundsPopUp {
                         manualDisconnecting()
                         viewModel.disconnect()
-                        navigateToSelectNode(true)
+                        navigateBack()
                     }
                 } else {
                     showFailedToConnectPopUp()
@@ -510,7 +513,7 @@ class ConnectionActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.chooseAnother.setOnClickListener {
             dialog.dismiss()
-            backToFilter()
+            navigateBack()
         }
         dialog.show()
     }
@@ -522,6 +525,14 @@ class ConnectionActivity : BaseActivity() {
             lostConnectionPopUpDialog.dismiss()
         }
         lostConnectionPopUpDialog.show()
+    }
+
+    private fun navigateBack() {
+         if (connectionType == ConnectionType.SMART_CONNECT) {
+            navigateToSelectNode(true)
+        } else {
+            backToFilter()
+        }
     }
 
     private fun navigateToSelectNode(clearTasks: Boolean = false) {
