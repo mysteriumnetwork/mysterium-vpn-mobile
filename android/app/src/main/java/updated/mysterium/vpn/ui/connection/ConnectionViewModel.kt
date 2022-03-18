@@ -66,7 +66,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _manualDisconnect = SingleLiveEvent<Unit>()
     private val _pushDisconnect = SingleLiveEvent<Unit>()
     private val _statisticsUpdate = MutableLiveData<ConnectionStatistic>()
-    private val _connectionStatus = MutableLiveData<Status>()
+    private val _connectionStatus = MutableLiveData(Status(ConnectionState.NOTCONNECTED))
     private val _successConnectEvent = MutableLiveData<Proposal>()
     private val nodesUseCase = useCaseProvider.nodes()
     private val locationUseCase = useCaseProvider.location()
@@ -117,7 +117,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (countryCode == ALL_COUNTRY_CODE || countryCode == null) {
                     ""
                 } else {
-                    countryCode.toLowerCase(Locale.ROOT)
+                    countryCode.toUpperCase(Locale.ROOT)
                 }
             val req = ConnectRequest().apply {
                 identityAddress = identity?.address ?: ""
@@ -125,10 +125,9 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 providers = String()
                 dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
             }
-            withContext(viewModelScope.coroutineContext) {
-                connectionUseCase.connect(req)
-                _connectionStatus.value = connectionUseCase.status()
-            }
+            connectionUseCase.connect(req)
+            val status = connectionUseCase.status()
+            _connectionStatus.value = status
             updateService()
             _connectionStatus.value?.proposal?.let {
                 _successConnectEvent.postValue(it)
@@ -147,14 +146,11 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 serviceType = proposal.serviceType.type
                 dnsOption = settingsUseCase.getSavedDns() ?: DEFAULT_DNS_OPTION
             }
-            withContext(viewModelScope.coroutineContext) {
-                connectionUseCase.connect(req)
-                _connectionStatus.value = connectionUseCase.status()
-            }
+            connectionUseCase.connect(req)
+            val status = connectionUseCase.status()
+            _connectionStatus.value = status
             updateService()
-            _connectionStatus.value?.proposal?.let {
-                _successConnectEvent.postValue(it)
-            }
+            _successConnectEvent.value = proposal
         }
     }
 
@@ -255,7 +251,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 coreService?.setActiveProposal(null)
                 coreService?.stopForeground()
             }
-            _connectionStatus.postValue(Status(connectionStateModel))
+            _connectionStatus.postValue(_connectionStatus.value?.copy(state = connectionStateModel))
         }
     }
 
@@ -306,7 +302,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
-        _connectionStatus.postValue(_connectionStatus.value?.copy(proposal = null))
+        _connectionStatus.postValue(Status(ConnectionState.DISCONNECTING, null))
         coreService?.manualDisconnect()
         _manualDisconnect.call()
         connectionUseCase.disconnect()

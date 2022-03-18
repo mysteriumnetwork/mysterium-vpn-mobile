@@ -10,6 +10,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
@@ -229,6 +230,7 @@ class FilterActivity : BaseActivity() {
     private fun navigateToHomeConnection(proposal: Proposal) {
         val intent = Intent(this, ConnectionActivity::class.java).apply {
             putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
+            putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
