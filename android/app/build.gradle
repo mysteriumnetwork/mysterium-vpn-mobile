@@ -214,9 +214,6 @@ dependencies {
     //Pushy
     implementation "me.pushy:sdk:1.0.68"
 
-    //Matomo - user tracking
-    implementation "org.matomo.sdk:tracker:4.1.2"
-
     //Rounded image
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
