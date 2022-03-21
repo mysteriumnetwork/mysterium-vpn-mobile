@@ -29,8 +29,8 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val insufficientFunds: LiveData<Unit>
         get() = _insufficientFunds
 
-    val isInternetNotAvailable: LiveData<Boolean>
-        get() = _isInternetNotAvailable
+    val isInternetAvailable: LiveData<Boolean>
+        get() = _isInternetAvailable
 
     val balance: LiveData<Double>
         get() = _balance
@@ -39,7 +39,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _balanceRunningOut = SingleLiveEvent<Boolean>()
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val _insufficientFunds = MutableLiveData<Unit>()
-    private val _isInternetNotAvailable = SingleLiveEvent<Boolean>()
+    private val _isInternetAvailable = SingleLiveEvent<Boolean>()
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()
@@ -68,7 +68,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     checkInternetConnection()
                 } else {
                     numberOfInternetCheck = 0
-                    _isInternetNotAvailable.postValue(false)
+                    _isInternetAvailable.postValue(false)
                 }
             }
             viewModelScope.launch(handler) {
@@ -78,13 +78,14 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 }
                 isInternetChecking = false
                 if (exitValue == 0) {
-                    _isInternetNotAvailable.postValue(true)
+                    numberOfInternetCheck = 0
+                    _isInternetAvailable.postValue(true)
                 } else {
                     if (numberOfInternetCheck <= 3) {
                         checkInternetConnection()
                     } else {
                         numberOfInternetCheck = 0
-                        _isInternetNotAvailable.postValue(false)
+                        _isInternetAvailable.postValue(false)
                     }
                 }
             }
