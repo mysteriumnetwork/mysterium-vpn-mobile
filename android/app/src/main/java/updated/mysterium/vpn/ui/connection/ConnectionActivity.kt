@@ -108,6 +108,7 @@ class ConnectionActivity : BaseActivity() {
             navigateBack()
         }
         viewModel.successConnectEvent.observe(this) {
+            proposal = it
             analytic.trackEvent(
                 eventName = AnalyticEvent.CONNECT_SUCCESS.eventName,
                 proposal = proposal
@@ -279,10 +280,8 @@ class ConnectionActivity : BaseActivity() {
         )
         val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
         val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
-        if ((connectionType == ConnectionType.MANUAL_CONNECT && proposal?.providerID != proposalExtra?.providerID) || (connectionType == ConnectionType.SMART_CONNECT && proposal?.providerID == null && proposalExtra?.providerID == null)) {
-            if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
-                initViewModel(connectionType, countryCode, proposalExtra)
-            }
+        if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
+            initViewModel(connectionType, countryCode, proposalExtra)
         }
         manualDisconnecting()
         proposal = proposalExtra
@@ -310,7 +309,7 @@ class ConnectionActivity : BaseActivity() {
                             proposalExtra,
                             exchangeRateViewModel.usdEquivalent
                         )
-                    } else {
+                    } else if (connectionType == ConnectionType.SMART_CONNECT) {
                         viewModel.smartConnect(countryCode)
                     }
                 }
@@ -528,7 +527,7 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun navigateBack() {
-         if (connectionType == ConnectionType.SMART_CONNECT) {
+        if (connectionType == ConnectionType.SMART_CONNECT) {
             navigateToSelectNode(true)
         } else {
             backToFilter()

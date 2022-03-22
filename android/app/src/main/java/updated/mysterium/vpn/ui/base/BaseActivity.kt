@@ -66,7 +66,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
     open fun retryLoading() {
@@ -225,10 +225,11 @@ abstract class BaseActivity : AppCompatActivity() {
             insufficientFundsPopUp()
         }
         baseViewModel.isInternetAvailable.observe(this) { isAvailable ->
-            isInternetAvailable = isAvailable
             if (!isAvailable) {
+                isInternetAvailable = isAvailable
                 wifiNetworkErrorPopUp()
-            } else {
+            } else if (!isInternetAvailable) {
+                isInternetAvailable = isAvailable
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
                 retryLoading()
