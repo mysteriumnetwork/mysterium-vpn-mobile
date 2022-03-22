@@ -226,14 +226,13 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         baseViewModel.isInternetAvailable.observe(this) { isAvailable ->
             if (!isAvailable) {
-                isInternetAvailable = isAvailable
                 wifiNetworkErrorPopUp()
             } else if (!isInternetAvailable) {
-                isInternetAvailable = isAvailable
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
                 retryLoading()
             }
+            isInternetAvailable = isAvailable
         }
     }
 
