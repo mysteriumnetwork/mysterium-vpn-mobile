@@ -198,17 +198,17 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun subscribeViewModel() {
-        baseViewModel.balance.observe(this, {
+        baseViewModel.balance.observe(this) {
             if (it < BaseViewModel.BALANCE_LIMIT) {
                 pushyNotifications.subscribe(PushyTopic.LESS_THEN_HALF_MYST)
             } else {
                 pushyNotifications.unsubscribe(PushyTopic.LESS_THEN_HALF_MYST)
             }
-        })
-        baseViewModel.balanceRunningOut.observe(this, {
+        }
+        baseViewModel.balanceRunningOut.observe(this) {
             balanceRunningOutPopUp()
-        })
-        baseViewModel.connectionState.observe(this, {
+        }
+        baseViewModel.connectionState.observe(this) {
             connectionState = it
             if (
                 it == ConnectionState.CONNECTED ||
@@ -220,11 +220,11 @@ abstract class BaseActivity : AppCompatActivity() {
             } else {
                 unprotectedConnection()
             }
-        })
-        baseViewModel.insufficientFunds.observe(this, {
+        }
+        baseViewModel.insufficientFunds.observe(this) {
             insufficientFundsPopUp()
-        })
-        baseViewModel.isInternetNotAvailable.observe(this, { isAvailable ->
+        }
+        baseViewModel.isInternetAvailable.observe(this) { isAvailable ->
             isInternetAvailable = isAvailable
             if (!isAvailable) {
                 wifiNetworkErrorPopUp()
@@ -233,7 +233,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 wifiErrorDialog = null
                 retryLoading()
             }
-        })
+        }
     }
 
     private fun isHintAlreadyShown() {
