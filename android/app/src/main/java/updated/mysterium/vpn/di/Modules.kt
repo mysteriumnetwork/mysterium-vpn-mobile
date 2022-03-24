@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.room.Room
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -38,8 +39,9 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountViewModel
+import updated.mysterium.vpn.ui.top.up.card.summary.BillingDataSource
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryViewModel
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountViewModel
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
@@ -103,6 +105,9 @@ object Modules {
                 get()
             )
         }
+        single {
+            BillingDataSource(androidApplication())
+        }
 
         viewModel {
             SplashViewModel(get())
@@ -162,7 +167,7 @@ object Modules {
             MenuViewModel(get())
         }
         viewModel {
-            CardSummaryViewModel(get())
+            CardSummaryViewModel(get(), get())
         }
         viewModel {
             RegistrationViewModel(get())

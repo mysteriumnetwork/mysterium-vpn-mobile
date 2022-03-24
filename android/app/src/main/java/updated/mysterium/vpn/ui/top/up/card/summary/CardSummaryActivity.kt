@@ -28,7 +28,6 @@ class CardSummaryActivity : BaseActivity() {
     private val viewModel: CardSummaryViewModel by inject()
     private val paymentViewModel: TopUpPaymentViewModel by inject()
     private val paymentStatusViewModel: PaymentStatusViewModel by inject()
-    private var paymentProcessed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +52,7 @@ class CardSummaryActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-
+            viewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "10_usd")
         }
         binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
             binding.paymentProcessingLayout.root.visibility = View.GONE
