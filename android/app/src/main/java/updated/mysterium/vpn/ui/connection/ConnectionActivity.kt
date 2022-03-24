@@ -280,11 +280,11 @@ class ConnectionActivity : BaseActivity() {
         )
         val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
         val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
+        proposal = proposalExtra
         if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
             initViewModel(connectionType, countryCode, proposalExtra)
         }
         manualDisconnecting()
-        proposal = proposalExtra
         inflateNodeInfo()
         inflateConnectingCardView()
         if (
@@ -449,9 +449,13 @@ class ConnectionActivity : BaseActivity() {
         binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.connectionTypeTextView.visibility = View.INVISIBLE
         binding.manualConnectToolbar.setRightIcon(null)
-        binding.connectionState.showConnectionType(connectionType)
-        proposal?.let {
-            binding.connectionState.showConnectionState(it)
+        if (connectionType == ConnectionType.SMART_CONNECT) {
+            binding.connectionState.showConnectionType(ConnectionType.SMART_CONNECT)
+        } else if (connectionType == ConnectionType.MANUAL_CONNECT) {
+            proposal?.let {
+                binding.connectionState.showConnectionType(ConnectionType.MANUAL_CONNECT)
+                binding.connectionState.showConnectionState(it)
+            }
         }
         binding.multiAnimation.connectingState()
     }

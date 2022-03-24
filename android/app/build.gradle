@@ -225,7 +225,7 @@ dependencies {
 
     //Mysterium
     implementation "network.mysterium:terms:0.0.34"
-    implementation "network.mysterium:mobile-node:1.4.7"
+    implementation "network.mysterium:mobile-node:1.4.13"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     //implementation files('/Users/macbook/AndroidStudioProjects/Mysterium.aar')

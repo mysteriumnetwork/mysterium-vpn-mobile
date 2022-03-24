@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import mysterium.ConnectRequest
 import mysterium.GetBalanceRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
@@ -129,9 +128,8 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             connectionUseCase.connect(req)
             val status = connectionUseCase.status()
-            _connectionStatus.value = status
-            updateService()
-            _connectionStatus.value?.proposal?.let {
+            updateService(status)
+            status.proposal?.let {
                 _successConnectEvent.postValue(it)
             }
         }
@@ -150,8 +148,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             connectionUseCase.connect(req)
             val status = connectionUseCase.status()
-            _connectionStatus.value = status
-            updateService()
+            updateService(status)
             _successConnectEvent.value = proposal
         }
     }
@@ -247,13 +244,15 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             connectionUseCase.setDuration(it.duration * 1000)
         }
         connectionUseCase.connectionStatusCallback {
-            val connectionStateModel = ConnectionState.from(it)
-            if (connectionStateModel == ConnectionState.NOTCONNECTED) {
-                coreService?.setDeferredNode(null)
-                coreService?.setActiveProposal(null)
-                coreService?.stopForeground()
+            viewModelScope.launch {
+                val status = connectionUseCase.status()
+                if (status.state == ConnectionState.NOTCONNECTED) {
+                    coreService?.setDeferredNode(null)
+                    coreService?.setActiveProposal(null)
+                    coreService?.stopForeground()
+                }
+                _connectionStatus.postValue(status)
             }
-            _connectionStatus.postValue(_connectionStatus.value?.copy(state = connectionStateModel))
         }
     }
 
@@ -279,9 +278,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    private fun updateService() {
+    private fun updateService(status: Status) {
         coreService?.apply {
-            _connectionStatus.value?.proposal?.let {
+            val proposal = status.proposal
+            proposal?.let {
                 setActiveProposal(ProposalViewItem.parse(it))
             }
             setDeferredNode(deferredNode)
@@ -289,7 +289,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 NotificationChannels.STATISTIC_NOTIFICATION,
                 appNotificationManager.createConnectedToVPNNotification()
             )
-            _connectionStatus.postValue(_connectionStatus.value?.copy(state = ConnectionState.CONNECTED))
+            _connectionStatus.postValue(Status(ConnectionState.CONNECTED, proposal))
         }
     }
 
