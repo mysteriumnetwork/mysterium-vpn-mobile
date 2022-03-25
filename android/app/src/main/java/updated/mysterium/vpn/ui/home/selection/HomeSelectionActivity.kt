@@ -101,7 +101,7 @@ class HomeSelectionActivity : BaseActivity() {
             startActivity(Intent(this, FavouritesActivity::class.java))
         }
         binding.smartConnectButton.setOnClickListener {
-            navigateToConnection()
+            navigateToConnection(isConnectIntent = true)
         }
         binding.manualNodeSelectionButton.setOnClickListener {
             navigateToFilter()
@@ -258,32 +258,33 @@ class HomeSelectionActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToConnection(isBackTransition: Boolean? = null) {
-        if (connectionState == ConnectionState.CONNECTED) {
+    private fun navigateToConnection(
+        isBackTransition: Boolean? = null,
+        isConnectIntent: Boolean = false
+    ) {
+        if (connectionState == ConnectionState.CONNECTED || isConnectIntent) {
+            val transitionAnimation: Bundle? =
+                if (isBackTransition == true) {
+                    ActivityOptions.makeCustomAnimation(
+                        applicationContext,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                    ).toBundle()
+                } else {
+                    ActivityOptions.makeCustomAnimation(
+                        applicationContext,
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    ).toBundle()
+                }
             val intent = Intent(this, ConnectionActivity::class.java).apply {
+                if (isConnectIntent) {
+                    putExtra(CONNECTION_TYPE_KEY, ConnectionType.SMART_CONNECT.type)
+                    putExtra(COUNTRY_CODE_KEY, viewModel.getPreviousCountryCode())
+                }
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            val transitionAnimation = if (isBackTransition == true) {
-                ActivityOptions.makeCustomAnimation(
-                    applicationContext,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-                ).toBundle()
-            } else {
-                ActivityOptions.makeCustomAnimation(
-                    applicationContext,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                ).toBundle()
             }
             startActivity(intent, transitionAnimation)
-        } else {
-            val intent = Intent(this, ConnectionActivity::class.java).apply {
-                putExtra(CONNECTION_TYPE_KEY, ConnectionType.SMART_CONNECT.type)
-                putExtra(COUNTRY_CODE_KEY, viewModel.getPreviousCountryCode())
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
         }
     }
 

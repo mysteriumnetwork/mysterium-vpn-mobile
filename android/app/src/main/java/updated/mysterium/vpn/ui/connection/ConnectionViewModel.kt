@@ -100,17 +100,29 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
-            if (connectionType == ConnectionType.MANUAL_CONNECT) {
+            connect(connectionType, countryCode, proposal, rate)
+        }
+    }
+
+    fun connect(
+        connectionType: ConnectionType?,
+        countryCode: String?,
+        proposal: Proposal?,
+        rate: Double
+    ) {
+        when (connectionType) {
+            ConnectionType.MANUAL_CONNECT -> {
                 proposal?.let {
                     connectNode(it, rate)
                 }
-            } else {
+            }
+            ConnectionType.SMART_CONNECT -> {
                 smartConnect(countryCode)
             }
         }
     }
 
-    fun smartConnect(countryCode: String? = null) {
+    private fun smartConnect(countryCode: String? = null) {
         viewModelScope.launch(handler) {
             disconnectIfConnectedNode()
             val code =
@@ -135,7 +147,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun connectNode(proposal: Proposal, rate: Double) {
+    private fun connectNode(proposal: Proposal, rate: Double) {
         exchangeRate = rate
         viewModelScope.launch(handler) {
             _connectionStatus.postValue(_connectionStatus.value?.copy(proposal = proposal))
@@ -304,7 +316,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
-        _connectionStatus.postValue(Status(ConnectionState.DISCONNECTING, null))
+        _connectionStatus.postValue(_connectionStatus.value?.copy(state = ConnectionState.DISCONNECTING))
         coreService?.manualDisconnect()
         _manualDisconnect.call()
         connectionUseCase.disconnect()
