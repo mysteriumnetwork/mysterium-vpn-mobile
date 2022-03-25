@@ -304,7 +304,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
-        _connectionStatus.postValue(Status(ConnectionState.DISCONNECTING, null))
+        _connectionStatus.postValue(_connectionStatus.value?.copy(state = ConnectionState.DISCONNECTING))
         coreService?.manualDisconnect()
         _manualDisconnect.call()
         connectionUseCase.disconnect()

@@ -170,8 +170,7 @@ class ConnectionActivity : BaseActivity() {
                 checkForReview()
             }
             ConnectionState.DISCONNECTING -> {
-                binding.connectedStatusImageView.visibility = View.INVISIBLE
-                binding.connectionState.showDisconnectingState()
+                showDisconnectingState()
                 checkDisconnectingReason()
             }
             ConnectionState.ON_HOLD -> {
@@ -447,7 +446,7 @@ class ConnectionActivity : BaseActivity() {
         binding.titleTextView.text = getString(R.string.manual_connect_connecting)
         binding.securityStatusImageView.visibility = View.VISIBLE
         binding.connectedStatusImageView.visibility = View.INVISIBLE
-        binding.connectionTypeTextView.visibility = View.INVISIBLE
+        binding.connectionCountryTextView.visibility = View.INVISIBLE
         binding.manualConnectToolbar.setRightIcon(null)
         binding.connectionState.showConnectionState(connectionType, proposal)
         binding.multiAnimation.connectingState()
@@ -460,14 +459,20 @@ class ConnectionActivity : BaseActivity() {
         binding.connectionState.showConnectedState()
         binding.connectedNodeInfo.visibility = View.VISIBLE
         binding.titleTextView.text = getString(R.string.manual_connect_connected)
-        binding.connectionTypeTextView.visibility = View.VISIBLE
-        binding.connectionTypeTextView.text = proposal?.countryName ?: "UNKNOWN"
-        binding.connectionTypeTextView.setTextColor(
+        binding.connectionCountryTextView.visibility = View.VISIBLE
+        binding.connectionCountryTextView.text = proposal?.countryName ?: "UNKNOWN"
+        binding.connectionCountryTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
         binding.securityStatusImageView.visibility = View.INVISIBLE
         binding.connectedStatusImageView.visibility = View.VISIBLE
         binding.multiAnimation.connectedState()
+    }
+
+    private fun showDisconnectingState() {
+        binding.connectionCountryTextView.text = proposal?.countryName ?: "UNKNOWN"
+        binding.connectedStatusImageView.visibility = View.INVISIBLE
+        binding.connectionState.showDisconnectingState()
     }
 
     private fun isFavourite() {
