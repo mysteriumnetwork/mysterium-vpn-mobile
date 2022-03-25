@@ -274,49 +274,47 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun checkProposalArgument() {
-        connectionType = ConnectionType.from(
-            intent?.extras?.getString(CONNECTION_TYPE_KEY) ?: ConnectionType.SMART_CONNECT.type
-        )
-        val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
-        val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
-        proposal = proposalExtra
-        if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
-            initViewModel(connectionType, countryCode, proposalExtra)
-        }
-        manualDisconnecting()
-        inflateNodeInfo()
-        inflateConnectingCardView()
-        if (
-            viewModel.connectionStatus.value?.state == ConnectionState.CONNECTED ||
-            viewModel.connectionStatus.value?.state == ConnectionState.CONNECTING ||
-            viewModel.connectionStatus.value?.state == ConnectionState.ON_HOLD ||
-            viewModel.connectionStatus.value?.state == ConnectionState.IP_NOT_CHANGED
-        ) {
+        intent?.extras?.getString(CONNECTION_TYPE_KEY)?.let {
+            connectionType = ConnectionType.from(it)
+            val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
+            val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
+            if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
+                proposal = proposalExtra
+                initViewModel(connectionType, countryCode, proposalExtra)
+            }
             manualDisconnecting()
-            analytic.trackEvent(
-                eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
-                proposal = proposal
-            )
-            viewModel.disconnect().observe(this) {
-                it.onSuccess {
-                    analytic.trackEvent(
-                        eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
-                        proposal = proposal
-                    )
-                    if (connectionType == ConnectionType.MANUAL_CONNECT && proposalExtra != null) {
-                        viewModel.connectNode(
+            inflateNodeInfo()
+            inflateConnectingCardView()
+            if (
+                viewModel.connectionStatus.value?.state == ConnectionState.CONNECTED ||
+                viewModel.connectionStatus.value?.state == ConnectionState.CONNECTING ||
+                viewModel.connectionStatus.value?.state == ConnectionState.ON_HOLD ||
+                viewModel.connectionStatus.value?.state == ConnectionState.IP_NOT_CHANGED
+            ) {
+                manualDisconnecting()
+                analytic.trackEvent(
+                    eventName = AnalyticEvent.DISCONNECT_ATTEMPT.eventName,
+                    proposal = proposal
+                )
+                viewModel.disconnect().observe(this) {
+                    it.onSuccess {
+                        analytic.trackEvent(
+                            eventName = AnalyticEvent.CONNECT_ATTEMPT.eventName,
+                            proposal = proposal
+                        )
+                        viewModel.connect(
+                            connectionType,
+                            countryCode,
                             proposalExtra,
                             exchangeRateViewModel.usdEquivalent
                         )
-                    } else if (connectionType == ConnectionType.SMART_CONNECT) {
-                        viewModel.smartConnect(countryCode)
                     }
-                }
-                it.onFailure {
-                    analytic.trackEvent(
-                        eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
-                        proposal = proposal
-                    )
+                    it.onFailure {
+                        analytic.trackEvent(
+                            eventName = AnalyticEvent.DISCONNECT_FAILURE.eventName,
+                            proposal = proposal
+                        )
+                    }
                 }
             }
         }
