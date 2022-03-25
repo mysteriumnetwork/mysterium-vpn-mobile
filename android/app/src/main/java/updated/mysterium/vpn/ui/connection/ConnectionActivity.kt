@@ -449,14 +449,7 @@ class ConnectionActivity : BaseActivity() {
         binding.connectedStatusImageView.visibility = View.INVISIBLE
         binding.connectionTypeTextView.visibility = View.INVISIBLE
         binding.manualConnectToolbar.setRightIcon(null)
-        if (connectionType == ConnectionType.SMART_CONNECT) {
-            binding.connectionState.showConnectionType(ConnectionType.SMART_CONNECT)
-        } else if (connectionType == ConnectionType.MANUAL_CONNECT) {
-            proposal?.let {
-                binding.connectionState.showConnectionType(ConnectionType.MANUAL_CONNECT)
-                binding.connectionState.showConnectionState(it)
-            }
-        }
+        binding.connectionState.showConnectionState(connectionType, proposal)
         binding.multiAnimation.connectingState()
     }
 
@@ -469,11 +462,11 @@ class ConnectionActivity : BaseActivity() {
         binding.titleTextView.text = getString(R.string.manual_connect_connected)
         binding.connectionTypeTextView.visibility = View.VISIBLE
         binding.connectionTypeTextView.text = proposal?.countryName ?: "UNKNOWN"
-        binding.securityStatusImageView.visibility = View.INVISIBLE
-        binding.connectedStatusImageView.visibility = View.VISIBLE
         binding.connectionTypeTextView.setTextColor(
             ContextCompat.getColor(this, R.color.ColorWhite)
         )
+        binding.securityStatusImageView.visibility = View.INVISIBLE
+        binding.connectedStatusImageView.visibility = View.VISIBLE
         binding.multiAnimation.connectedState()
     }
 
