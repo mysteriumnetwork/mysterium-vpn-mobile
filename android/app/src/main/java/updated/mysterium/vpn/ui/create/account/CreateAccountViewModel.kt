@@ -30,7 +30,7 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val privateKeyUseCase = useCaseProvider.privateKey()
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
-    private lateinit var newIdentity: IdentityModel
+    private var newIdentity: IdentityModel? = null
 
     fun importAccount(privateKey: String, passphrase: String) = liveDataResult {
         privateKeyUseCase.importIdentity(privateKey, passphrase)
@@ -45,7 +45,7 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             _registrationError.postValue(exception as Exception)
         }
         viewModelScope.launch(handler) {
-            if (!::newIdentity.isInitialized) {
+            if (newIdentity == null) {
                 val nodeIdentity = connectionUseCase.getIdentity()
                 newIdentity = IdentityModel(
                     address = nodeIdentity.address,
@@ -53,7 +53,9 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
                 )
             }
-            registerIntercomClient(newIdentity.address)
+            newIdentity?.let { identity ->
+                registerIntercomClient(identity.address)
+            }
         }
     }
 
