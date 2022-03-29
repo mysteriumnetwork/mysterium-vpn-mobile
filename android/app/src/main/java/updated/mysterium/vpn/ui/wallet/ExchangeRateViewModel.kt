@@ -19,6 +19,9 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     var usdEquivalent = 0.0
         private set
 
+    var mystEquivalent = 0.0
+        private set
+
     private val balanceUseCase = useCaseProvider.balance()
     private val handler = Handler()
     private val runnable = object : Runnable {
@@ -49,6 +52,7 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
             usdEquivalent = balanceUseCase.getUsdEquivalent()
+            mystEquivalent = 1 / usdEquivalent
         }
     }
 }

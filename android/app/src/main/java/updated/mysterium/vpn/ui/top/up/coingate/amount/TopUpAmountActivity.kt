@@ -10,6 +10,7 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
+import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
 import updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
@@ -38,7 +39,7 @@ class TopUpAmountActivity : BaseActivity() {
     private fun configure() {
         binding.amountRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
-            updateEquivalent(it.value.toInt())
+            updateEquivalent(it.value.toDouble())
             updateWalletEstimates(it.value.toDouble())
         }
     }
@@ -63,16 +64,16 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun handlePaymentMethod() {
         val gateway = intent.extras?.getSerializable(PAYMENT_METHOD_EXTRA_KEY) as Gateway
-        viewModel.getAmounts(gateway).observe(this) {
-            it.onSuccess { amounts ->
-                amounts?.let {
-                    topUpAdapter.replaceAll(amounts)
-
-                    amounts.find { item ->
+        viewModel.getUsdPrices(gateway).observe(this) {
+            it.onSuccess { prices ->
+                prices?.let {
+                    topUpAdapter.replaceAll(prices)
+                    prices.find { item ->
                         item.isSelected
-                    }?.value?.let { amount ->
-                        updateEquivalent(amount.toInt())
-                        updateWalletEstimates(amount.toDouble())
+                    }?.value?.let { price ->
+                        val mystAmount = exchangeRateViewModel.mystEquivalent * price.toDouble()
+                        updateEquivalent(mystAmount)
+                        updateWalletEstimates(mystAmount)
                     }
                 }
             }
@@ -83,14 +84,14 @@ class TopUpAmountActivity : BaseActivity() {
         }
     }
 
-    private fun updateEquivalent(value: Int) {
-        binding.usdEquivalentTextView.text = getString(
-            R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * value
+    private fun updateEquivalent(mystAmount: Double) {
+        binding.mystEquivalentTextView.text = getString(
+            R.string.top_up_usd_equivalent, mystAmount
         )
     }
 
-    private fun updateWalletEstimates(balance: Double) {
-        walletViewModel.getWalletEquivalent(balance).observe(this, { result ->
+    private fun updateWalletEstimates(mystAmount: Double) {
+        walletViewModel.getWalletEquivalent(mystAmount).observe(this) { result ->
             result.onSuccess { estimates ->
                 binding.videoTopUpItem.setData(WalletEstimatesUtil.convertVideoData(estimates))
                 binding.videoTopUpItem.setType(
@@ -109,7 +110,7 @@ class TopUpAmountActivity : BaseActivity() {
                     WalletEstimatesUtil.convertMusicTimeType(estimates).toUpperCase(Locale.ROOT)
                 )
             }
-        })
+        }
     }
 
     private fun navigateToCryptoPaymentFlow() {
@@ -122,8 +123,10 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun navigateToCardPaymentFlow() {
         val intent = Intent(this, CardCurrencyActivity::class.java).apply {
-            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
-            putExtra(CardCurrencyActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            val usdPrice = topUpAdapter.getSelectedValue()?.toDouble() ?: 0.0
+            val mystAmount = usdPrice * exchangeRateViewModel.mystEquivalent
+            putExtra(CardSummaryActivity.USD_PRICE_EXTRA_KEY, usdPrice)
+            putExtra(CardSummaryActivity.MYST_AMOUNT_EXTRA_KEY, mystAmount)
         }
         startActivity(intent)
     }

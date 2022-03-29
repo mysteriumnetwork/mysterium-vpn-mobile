@@ -154,14 +154,12 @@
     <string name="top_up_amount_music">Музыка</string>
     <string name="top_up_amount_pages">Интернет-страницы</string>
     <string name="top_up_amount_traffic">Трафик</string>
-    <string name="top_up_amount_description">Выберите, сколько кредитов MYST\n вы хотите добавить в свой аккаунт</string>
     <string name="top_up_amount_confirm">Подтвердить</string>
     <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение.\n На данный момент MYST исключительно на блокчейне Ethereum!</string>
     <string name="top_up_payment_title">Ожидание оплаты</string>
     <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
     <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
-    <string name="top_up_usd_equivalent">Эквивалент в долларах США ≈ %.2f$</string>
     <string name="top_up_currency_equivalent">%1$s %2$s</string>
     <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>

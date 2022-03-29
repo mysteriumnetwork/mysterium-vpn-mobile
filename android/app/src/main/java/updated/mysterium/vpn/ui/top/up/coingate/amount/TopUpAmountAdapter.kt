@@ -12,7 +12,8 @@ import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.common.extensions.dpToPx
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 
-class TopUpAmountAdapter : ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.TopUpAmountViewHolder>() {
+class TopUpAmountAdapter :
+    ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.TopUpAmountViewHolder>() {
 
     private companion object {
         const val MARGIN_DP = 24f
@@ -45,7 +46,8 @@ class TopUpAmountAdapter : ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.
         val binding = ItemCardElementBinding.bind(itemView)
 
         fun bind(cardItem: TopUpCardItem) {
-            binding.cardItemValue.text = cardItem.value
+            val text = "$${cardItem.value}"
+            binding.cardItemValue.text = text
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
                 selectedState()

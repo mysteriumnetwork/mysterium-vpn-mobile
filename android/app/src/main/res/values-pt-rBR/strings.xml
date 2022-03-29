@@ -154,14 +154,12 @@
     <string name="top_up_amount_music">Música</string>
     <string name="top_up_amount_pages">Páginas da Web</string>
     <string name="top_up_amount_traffic">Tráfego</string>
-    <string name="top_up_amount_description">Selecione quantos créditos MYST\n você quer adicionar à sua conta</string>
     <string name="top_up_amount_confirm">Confirmar</string>
     <string name="top_up_crypto_description">Selecione a croptomoeda\n em que a recarga será feita</string>
     <string name="top_up_payment_title">Aguardando por um pagamento</string>
     <string name="top_up_payment_description">Leia este código QR que contém o seu endereço de recarga</string>
     <string name="top_up_payment_link">Ou use um link de pagamento</string>
     <string name="top_up_crypto_lighting">Rede Lightning</string>
-    <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>
     <string name="top_up_free_trial">Teste Grátis</string>
     <string name="payment_processing_text">Aviso: os pagamentos levam alguns minutos para serem processados</string>
 

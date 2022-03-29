@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +8,6 @@ import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.PaymentStatus
@@ -23,6 +23,8 @@ class CardSummaryActivity : BaseActivity() {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_CURRENCY_EXTRA_KEY = "CRYPTO_CURRENCY_EXTRA_KEY"
         const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
+        const val MYST_AMOUNT_EXTRA_KEY = "MYST_AMOUNT_EXTRA_KEY"
+        const val USD_PRICE_EXTRA_KEY = "USD_PRICE_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -122,16 +124,6 @@ class CardSummaryActivity : BaseActivity() {
         showBanner(binding.paymentBalanceLimitLayout.root)
         binding.confirmContainer.visibility = View.INVISIBLE
         binding.cancelContainer.visibility = View.VISIBLE
-    }
-
-    private fun showPaymentPopUp() {
-        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.okayButton.setOnClickListener {
-            dialog.dismiss()
-            showBanner(binding.paymentProcessingLayout.root)
-        }
-        dialog.show()
     }
 
     private fun showBanner(view: View) {

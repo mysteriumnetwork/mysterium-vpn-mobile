@@ -154,14 +154,12 @@
     <string name="top_up_amount_music">音乐</string>
     <string name="top_up_amount_pages">网页</string>
     <string name="top_up_amount_traffic">流量</string>
-    <string name="top_up_amount_description">选择要向您的账户\n 添加的 MYST 点数</string>
     <string name="top_up_amount_confirm">确认</string>
     <string name="top_up_crypto_description">选择要进行充值\n 的加密货币</string>
     <string name="top_up_payment_title">等待付款</string>
     <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
     <string name="top_up_payment_link">或使用付款链接</string>
     <string name="top_up_crypto_lighting">快如闪电的网络</string>
-    <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
     <string name="top_up_free_trial">免费试用</string>
     <string name="payment_processing_text">警告：可能需要几分钟来处理付款</string>
 

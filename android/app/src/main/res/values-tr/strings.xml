@@ -156,14 +156,12 @@
     <string name="top_up_amount_music">Müzik</string>
     <string name="top_up_amount_pages">Web sayfaları</string>
     <string name="top_up_amount_traffic">Trafik</string>
-    <string name="top_up_amount_description">Hesabınıza ne kadar MYST kredisi\n eklenmesini istediğinizi seçin</string>
     <string name="top_up_amount_confirm">Onayla</string>
     <string name="top_up_crypto_description">Para ekleme işlemi için kullanılacak\n kripto para birimini seçin</string>
     <string name="top_up_payment_title">Ödeme bekleniyor</string>
     <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
     <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
-    <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
     <string name="top_up_currency_equivalent">%2$s %1$s</string>
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>

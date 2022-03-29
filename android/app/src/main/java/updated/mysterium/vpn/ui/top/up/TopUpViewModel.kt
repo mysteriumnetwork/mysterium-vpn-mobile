@@ -14,7 +14,7 @@ class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun accountFlowShown() {
         loginUseCase.accountFlowShown()
     }
-    fun getAmounts(gateway: Gateway) = liveDataResult {
+    fun getUsdPrices(gateway: Gateway) = liveDataResult {
         paymentUseCase.getGateways()
             .find {
                 it.name == gateway.gateway
