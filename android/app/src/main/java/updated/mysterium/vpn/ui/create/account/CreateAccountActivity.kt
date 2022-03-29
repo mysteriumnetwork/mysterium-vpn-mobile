@@ -23,7 +23,6 @@ import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.base.RegistrationViewModel
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import java.io.BufferedReader
@@ -67,8 +66,6 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.createNewAccountFrame.setOnClickListener {
-            binding.createNewAccountFrame.isClickable = false
-            binding.importAccountFrame.isClickable = false
             viewModel.createNewAccount()
         }
         binding.importAccountFrame.setOnClickListener {
@@ -77,16 +74,15 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.navigateForward.observe(this, {
+        viewModel.navigateForward.observe(this) {
             viewModel.accountCreated(true)
             navigateToPrivateKey()
-        })
-        viewModel.registrationError.observe(this, {
+        }
+        viewModel.registrationError.observe(this) {
             binding.createNewAccountFrame.isClickable = true
             binding.importAccountFrame.isClickable = true
             showRegistrationErrorPopUp()
-        })
-
+        }
         registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
             binding.loader.visibility = View.INVISIBLE
             if (isRegistered) {
@@ -130,7 +126,7 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun importAccount(privateKey: String, passphrase: String) {
-        viewModel.importAccount(privateKey, passphrase).observe(this, { result ->
+        viewModel.importAccount(privateKey, passphrase).observe(this) { result ->
             result.onSuccess {
                 dialogPasswordPopup.dismiss()
                 applyNewIdentity(it)
@@ -139,13 +135,13 @@ class CreateAccountActivity : BaseActivity() {
                 Log.i(TAG, "onFailure $it")
                 showPasswordWrongState()
             }
-        })
+        }
     }
 
     private fun applyNewIdentity(newIdentityAddress: String) {
         binding.loader.visibility = View.VISIBLE
 
-        viewModel.applyNewIdentity(newIdentityAddress).observe(this, {
+        viewModel.applyNewIdentity(newIdentityAddress).observe(this) {
             it.onSuccess { identity ->
                 val deferredMysteriumCoreService =
                     App.getInstance(this).deferredMysteriumCoreService
@@ -160,7 +156,7 @@ class CreateAccountActivity : BaseActivity() {
                     applyNewIdentity(newIdentityAddress)
                 }
             }
-        })
+        }
     }
 
     private fun showPasswordWrongState() {
@@ -259,24 +255,10 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun navigateToPrivateKey() {
-        val intent = Intent(this, PrivateKeyActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
-    }
-
-    private fun navigateToHome() {
-        viewModel.accountFlowShown()
-        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
+        startActivity(Intent(this, PrivateKeyActivity::class.java))
     }
 
     private fun navigateToTopUp() {
-        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
+        startActivity(Intent(this, PrepareTopUpActivity::class.java))
     }
 }
