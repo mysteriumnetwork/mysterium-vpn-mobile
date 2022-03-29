@@ -135,22 +135,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
-    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
-        withContext(Dispatchers.IO) {
-            try {
-                val order = deferredNode.await().createPaymentGatewayOrder(req)
-                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
-            } catch (e: Exception) {
-                if (isBalanceLimitExceeded()) {
-                    throw TopupPreconditionFailedException(
-                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
-                    )
-                } else {
-                    error(e)
-                }
-            }
-        }
-
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listOrders(req)
         Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
@@ -254,6 +238,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
         ) ?: error("Could not parse JSON: $gateways")
     }
 
+    suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
+        val identityAddress = getIdentity().address
+        val balanceRequest = GetBalanceRequest().apply {
+            this.identityAddress = identityAddress
+        }
+        val balance = balance(balanceRequest)
+        balance > MAX_BALANCE_LIMIT
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }
@@ -284,15 +277,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Klaxon().parse<StatusResponse>(bytes.inputStream())?.let {
             Status(it)
         }
-    }
-
-    private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
-        val identityAddress = getIdentity().address
-        val balanceRequest = GetBalanceRequest().apply {
-            this.identityAddress = identityAddress
-        }
-        val balance = balance(balanceRequest)
-        balance > MAX_BALANCE_LIMIT
     }
 
 }

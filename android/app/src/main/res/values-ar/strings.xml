@@ -161,9 +161,7 @@
     <string name="create_account_description">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا\n واستخدم وظائف محدودة وعقدًا مجانية</string>
     <string name="card_summary_title">ملخص الطلب</string>
     <string name="card_payment_pay">متابعة للدفع</string>
-    <string name="card_payment_cardinity">ستنتقل إلى صفحة الدفع على موقع Cardinity لإتمام عملية الدفع.</string>
     <string name="card_payment_total">إجمالي المبلغ المستحق</string>
-    <string name="card_payment_vat_title">ضريبة القيمة المضافة</string>
     <string name="card_payment_country_hint">حدد البلد أو المنطقة</string>
     <string name="card_payment_myst_description">%d زيادة الحد المالي لحساب MYST</string>
     <string name="private_key_description">ملاحظة مهمة! قم بتنزيل مفتاحك الخاص الآن وخزنه حتى تتفادى عدم التمكن من الدخول إلى حسابك.</string>
@@ -253,5 +251,4 @@ Wi-Fi</string>
     <string name="error_vpn_permission">يجب منح اتصال VPN إلى MysteriumVPN للعمل</string>
     <string name="home_selection_smart_connect">سيتم إطلاق ميزة الاتصال الذكي قريبًا</string>
     <string name="home_selection_all_nodes">جميع العُقَد</string>
-    <string name="card_payment_vat_value">ضريبة القيمة المضافة(%1.1f%%)</string>
 </resources>

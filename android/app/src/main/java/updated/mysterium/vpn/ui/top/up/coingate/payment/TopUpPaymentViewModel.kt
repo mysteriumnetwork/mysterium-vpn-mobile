@@ -73,6 +73,10 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         connectionUseCase.registrationFees()
     }
 
+    fun isBalanceLimitExceeded() = liveDataResult {
+        paymentUseCase.isBalanceLimitExceeded()
+    }
+
     private suspend fun registerOrderCallback() {
         paymentUseCase.paymentOrderCallback {
             if (orderId.toString() == it.orderID) {

@@ -42,11 +42,6 @@
         app:lottie_rawRes="@raw/choose_country_animation" />
 
     <include
-        android:id="@+id/paymentProcessingLayout"
-        layout="@layout/item_payment_processing_banner"
-        app:layout_constraintBottom_toTopOf="parent" />
-
-    <include
         android:id="@+id/paymentBalanceLimitLayout"
         layout="@layout/item_payment_balance_limit_banner"
         app:layout_constraintBottom_toTopOf="parent" />
@@ -82,63 +77,29 @@
             android:paddingTop="@dimen/margin_padding_size_medium_large">
 
             <TextView
-                android:id="@+id/mystValueTextView"
-                style="@style/TextAppearance.BodyRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
-                android:textColor="@color/card_payment_value"
-                app:layout_constraintBottom_toBottomOf="@+id/mystTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/mystTextView"
-                tools:ignore="HardcodedText"
-                tools:text="$10.00" />
-
-            <TextView
-                android:id="@+id/mystTextView"
+                android:id="@+id/priceTitleTextView"
                 style="@style/TextAppearance.BodyRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                 android:textColor="@color/card_payment_title"
-                app:layout_constraintBottom_toTopOf="@+id/divider3"
+                app:layout_constraintBottom_toTopOf="@+id/divider2"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="10 MYST Top-up" />
 
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
-                android:background="@drawable/divider_country_group"
-                app:layout_constraintBottom_toTopOf="@+id/vatValueTextView" />
-
             <TextView
-                android:id="@+id/vatValueTextView"
+                android:id="@+id/priceValueTextView"
                 style="@style/TextAppearance.BodyRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
-                android:text="-"
                 android:textColor="@color/card_payment_value"
-                app:layout_constraintBottom_toBottomOf="@+id/vatTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/priceTitleTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/vatTextView"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/vatTextView"
-                style="@style/TextAppearance.BodyRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_padding_size_xlarge"
-                android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
-                android:text="@string/card_payment_vat_title"
-                android:textColor="@color/card_payment_title"
-                app:layout_constraintBottom_toTopOf="@+id/divider2"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/priceTitleTextView"
+                tools:ignore="HardcodedText"
+                tools:text="$10.00" />
 
             <View
                 android:id="@+id/divider2"
@@ -147,23 +108,10 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
                 android:background="@drawable/divider_country_group"
-                app:layout_constraintBottom_toTopOf="@+id/totalValueTextView" />
+                app:layout_constraintBottom_toTopOf="@+id/totalPriceValueTextView" />
 
             <TextView
-                android:id="@+id/totalValueTextView"
-                style="@style/TextAppearance.BodyRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
-                android:text="-"
-                android:textColor="@color/primary"
-                app:layout_constraintBottom_toBottomOf="@+id/totalTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/totalTextView"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/totalTextView"
+                android:id="@+id/totalPriceTitleTextView"
                 style="@style/TextAppearance.BodyRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -174,6 +122,19 @@
                 app:layout_constraintBottom_toTopOf="@+id/divider1"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/totalPriceValueTextView"
+                style="@style/TextAppearance.BodyRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
+                android:text="-"
+                android:textColor="@color/primary"
+                app:layout_constraintBottom_toBottomOf="@+id/totalPriceTitleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/totalPriceTitleTextView"
+                tools:ignore="HardcodedText" />
+
             <View
                 android:id="@+id/divider1"
                 android:layout_width="match_parent"
@@ -183,41 +144,22 @@
                 android:background="@drawable/divider_country_group"
                 app:layout_constraintBottom_toTopOf="@+id/confirmContainer" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
                 android:id="@+id/confirmContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/cardinityPaymentDescription"
-                    style="@style/TextAppearance.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                    android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
-                    android:paddingHorizontal="@dimen/margin_padding_size_medium"
-                    android:text="@string/card_payment_cardinity"
-                    android:textAlignment="center"
-                    android:textColor="@color/card_payment_description"
-                    app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-                    app:layout_constraintEnd_toEndOf="@+id/confirmButton"
-                    app:layout_constraintStart_toStartOf="@+id/confirmButton" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/confirmButton"
                     style="@style/Widget.PrimaryButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                    android:layout_marginBottom="@dimen/margin_padding_size_biggest"
-                    android:text="@string/card_payment_pay"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:text="@string/card_payment_pay" />
 
                 <ImageView
                     android:id="@+id/confirmButtonShadow"
@@ -226,12 +168,9 @@
                     android:layout_gravity="center"
                     android:elevation="4dp"
                     android:src="@drawable/shadow_primary_button"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/cancelContainer"

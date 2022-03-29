@@ -185,10 +185,7 @@
     <!--  Card payment  -->
     <string name="card_summary_title">订单摘要</string>
     <string name="card_payment_pay">继续付款</string>
-    <string name="card_payment_cardinity">您将前往 Cardinity 付款页面付款。</string>
     <string name="card_payment_total">应付总额</string>
-    <string name="card_payment_vat_title">VAT</string>
-    <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
     <string name="card_payment_country_hint">选择国家或地区</string>
     <string name="card_payment_myst_description">%d MYST 充值</string>
 
