@@ -106,7 +106,7 @@ class CardSummaryActivity : BaseActivity() {
                 paymentHtml = order.pageHtml.htmlSecureData.toString()
             }
             it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
+                Log.e(TAG, error.message ?: error.toString())
                 if (error is TopupPreconditionFailedException) {
                     showPaymentBalanceLimitError()
                 }

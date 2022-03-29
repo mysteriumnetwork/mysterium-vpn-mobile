@@ -27,6 +27,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
         const val TAG = "NodeRepository"
+        const val MAX_BALANCE_LIMIT = 5
     }
 
     // Get available proposals for mobile. Internally on Go side
@@ -140,8 +141,10 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 val order = deferredNode.await().createPaymentGatewayOrder(req)
                 CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
             } catch (e: Exception) {
-                if (e.message?.contains("You can only top-up if you have less than 5 MYST in balance") == true) {
-                    throw TopupPreconditionFailedException()
+                if (isBalanceLimitExceeded()) {
+                    throw TopupPreconditionFailedException(
+                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
+                    )
                 } else {
                     error(e)
                 }
@@ -281,6 +284,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Klaxon().parse<StatusResponse>(bytes.inputStream())?.let {
             Status(it)
         }
+    }
+
+    private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
+        val identityAddress = getIdentity().address
+        val balanceRequest = GetBalanceRequest().apply {
+            this.identityAddress = identityAddress
+        }
+        val balance = balance(balanceRequest)
+        balance > MAX_BALANCE_LIMIT
     }
 
 }
