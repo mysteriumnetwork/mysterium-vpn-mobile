@@ -59,6 +59,9 @@ class PrepareTopUpActivity : BaseActivity() {
         binding.referralProgram.setOnClickListener {
             showReferralPopUp()
         }
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun showReferralPopUp() {
@@ -66,7 +69,7 @@ class PrepareTopUpActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, true)
         bindingPopUp.applyButton.setOnClickListener {
             val token = bindingPopUp.registrationTokenEditText.text.toString()
-            viewModel.getRegistrationTokenReward(token).observe(this, {
+            viewModel.getRegistrationTokenReward(token).observe(this) {
                 it.onSuccess { rewardAmount ->
                     applyToken(token, rewardAmount) {
                         binding.referralProgram.visibility = View.GONE
@@ -78,7 +81,7 @@ class PrepareTopUpActivity : BaseActivity() {
                     showPopUpErrorState(bindingPopUp.registrationTokenEditText)
                     bindingPopUp.errorText.visibility = View.VISIBLE
                 }
-            })
+            }
         }
         bindingPopUp.closeButton.setOnClickListener {
             dialog.dismiss()
@@ -86,7 +89,7 @@ class PrepareTopUpActivity : BaseActivity() {
         bindingPopUp.registrationTokenEditText.addTextChangedListener { editable ->
             val registrationToken = editable.toString()
             if (registrationToken.length > 3) {
-                viewModel.getRegistrationTokenReward(registrationToken).observe(this, {
+                viewModel.getRegistrationTokenReward(registrationToken).observe(this) {
                     it.onSuccess { amount ->
                         bindingPopUp.rewardAmount.visibility = View.VISIBLE
                         bindingPopUp.rewardAmount.text = amount.toString()
@@ -97,7 +100,7 @@ class PrepareTopUpActivity : BaseActivity() {
                         bindingPopUp.tokenNotWorkingImageView.visibility = View.VISIBLE
                         bindingPopUp.rewardAmount.visibility = View.INVISIBLE
                     }
-                })
+                }
             }
         }
         bindingPopUp.registrationTokenEditText.onFocusChangeListener =
@@ -125,7 +128,7 @@ class PrepareTopUpActivity : BaseActivity() {
     }
 
     private fun applyToken(token: String, amount: Double, onSuccess: () -> Unit) {
-        viewModel.registerIdentity(token).observe(this, {
+        viewModel.registerIdentity(token).observe(this) {
             it.onSuccess {
                 pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_USED)
                 isReferralTokenUsed = true
@@ -135,7 +138,7 @@ class PrepareTopUpActivity : BaseActivity() {
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
                 showRegistrationErrorPopUp()
             }
-        })
+        }
     }
 
     private fun showRegistrationErrorPopUp() {

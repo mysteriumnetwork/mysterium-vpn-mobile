@@ -49,7 +49,8 @@
             style="@style/Widget.SmallRoundedCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:visibility="invisible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -125,12 +126,13 @@
         android:layout_weight="1.5">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/selectNodeManuallyButton"
+            android:id="@+id/connectingButton"
             style="@style/Widget.RoundedUnfocusedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:clickable="false"
             android:text="@string/manual_connect_connecting" />
 
     </FrameLayout>

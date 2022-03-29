@@ -29,6 +29,7 @@ import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.onboarding.OnboardingActivity
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
+import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
@@ -82,19 +83,19 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.navigateForward.observe(this, {
+        viewModel.navigateForward.observe(this) {
             allNodesViewModel.launchProposalsPeriodically()
             exchangeRateViewModel.launchPeriodicallyExchangeRate()
             balanceViewModel.requestBalanceChange()
             establishConnectionListeners()
             analytic.trackEvent(AnalyticEvent.STARTUP.eventName)
-        })
-        viewModel.preloadFinished.observe(this, {
+        }
+        viewModel.preloadFinished.observe(this) {
             viewModel.initRepository()
-        })
-        viewModel.nodeStartingError.observe(this, {
+        }
+        viewModel.nodeStartingError.observe(this) {
             wifiNetworkErrorPopUp()
-        })
+        }
 
         registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
             if (isRegistered) {
@@ -225,10 +226,12 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun navigateToTopUp() {
-        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
+        val intents = arrayOf(
+            Intent(this, CreateAccountActivity::class.java),
+            Intent(this, PrivateKeyActivity::class.java),
+            Intent(this, PrepareTopUpActivity::class.java)
+        )
+        startActivities(intents)
         finish()
     }
 

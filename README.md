@@ -7,7 +7,7 @@ Mobile VPN app for Mysterium Network.
 ## Getting started (development)
 
 1. Install Android Studio
-2. `brew cask install android-platform-tools`
+2. `brew install --cask android-studio`
 3. Download project's firebase crashlytics config - `google-services.json` from https://console.firebase.google.com/u/1/project/mysterium-vpn/overview and place it in `android/app`
 
 ### Local development
@@ -28,7 +28,7 @@ Mobile VPN app for Mysterium Network.
 
 - Install Fastlane (if don't have it yet)
     ```bash
-    brew cask install fastlane
+    brew install fastlane
     ```
     
 - Make release build:

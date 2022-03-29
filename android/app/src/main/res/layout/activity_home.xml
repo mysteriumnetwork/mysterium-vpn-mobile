@@ -75,7 +75,7 @@
         tools:text="185.358.45.304" />
 
     <TextView
-        android:id="@+id/connectionTypeTextView"
+        android:id="@+id/connectionCountryTextView"
         style="@style/TextAppearance.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

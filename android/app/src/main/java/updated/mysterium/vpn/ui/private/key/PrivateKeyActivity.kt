@@ -55,6 +55,9 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         binding.backUpLaterFrame.setOnClickListener {
             navigateToPrepareTopUp()
         }
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun checkPermissions() {
@@ -89,15 +92,8 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         dialog.show()
     }
 
-    private fun clearErrorState(bindingPopUp: PopUpDownloadKeyBinding) {
-        bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
-            this, R.drawable.shape_password_field
-        )
-        bindingPopUp.errorText.visibility = View.GONE
-    }
-
     private fun downloadKey(passphrase: String) {
-        viewModel.downloadKey(passphrase).observe(this, { result ->
+        viewModel.downloadKey(passphrase).observe(this) { result ->
             result.onSuccess {
                 saveFile(it)
                 exportIdentity(passphrase)
@@ -105,7 +101,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
-        })
+        }
     }
 
     private fun saveFile(bytesFileContent: ByteArray) {
@@ -126,7 +122,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     }
 
     private fun exportIdentity(passphrase: String) {
-        viewModel.exportIdentity(passphrase).observe(this, { result ->
+        viewModel.exportIdentity(passphrase).observe(this) { result ->
             result.onSuccess {
                 navigateToPrepareTopUp()
             }
@@ -134,7 +130,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
                 Log.i(TAG, "onFailure ${it.localizedMessage}")
                 showRegistrationErrorPopUp(passphrase)
             }
-        })
+        }
     }
 
     private fun showRegistrationErrorPopUp(passphrase: String) {
@@ -145,7 +141,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
             exportIdentity(passphrase)
         }
         bindingPopUp.cancelButton.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
+            View.OnFocusChangeListener { _, _ ->
                 dialog.dismiss()
             }
         dialog.show()
@@ -153,9 +149,6 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private fun navigateToPrepareTopUp() {
         viewModel.accountCreated()
-        val intent = Intent(this, PrepareTopUpActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
+        startActivity(Intent(this, PrepareTopUpActivity::class.java))
     }
 }

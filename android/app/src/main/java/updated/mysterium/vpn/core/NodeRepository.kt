@@ -5,10 +5,7 @@ import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
-import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
-import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
-import updated.mysterium.vpn.exceptions.ConnectInvalidProposalException
-import updated.mysterium.vpn.exceptions.ConnectUnknownException
+import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -30,6 +27,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
         const val TAG = "NodeRepository"
+        const val MAX_BALANCE_LIMIT = 5
     }
 
     // Get available proposals for mobile. Internally on Go side
@@ -139,9 +137,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
-            val order = deferredNode.await().createPaymentGatewayOrder(req)
-            Log.d(TAG, "createPaymentGatewayOrder response: ${String(order)}")
-            CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+            try {
+                val order = deferredNode.await().createPaymentGatewayOrder(req)
+                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+            } catch (e: Exception) {
+                if (isBalanceLimitExceeded()) {
+                    throw TopupPreconditionFailedException(
+                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
+                    )
+                } else {
+                    error(e)
+                }
+            }
         }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
@@ -277,6 +284,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Klaxon().parse<StatusResponse>(bytes.inputStream())?.let {
             Status(it)
         }
+    }
+
+    private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
+        val identityAddress = getIdentity().address
+        val balanceRequest = GetBalanceRequest().apply {
+            this.identityAddress = identityAddress
+        }
+        val balance = balance(balanceRequest)
+        balance > MAX_BALANCE_LIMIT
     }
 
 }

@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_padding_size_medium_large"
         android:layout_marginTop="@dimen/margin_padding_size_large"
+        android:contentDescription="@string/back"
         android:src="@drawable/icon_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -29,11 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/paymentProcessingLayout"
-        layout="@layout/item_payment_processing_banner"
-        app:layout_constraintBottom_toTopOf="parent" />
-
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -46,6 +41,16 @@
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/choose_country_animation" />
 
+    <include
+        android:id="@+id/paymentProcessingLayout"
+        layout="@layout/item_payment_processing_banner"
+        app:layout_constraintBottom_toTopOf="parent" />
+
+    <include
+        android:id="@+id/paymentBalanceLimitLayout"
+        layout="@layout/item_payment_balance_limit_banner"
+        app:layout_constraintBottom_toTopOf="parent" />
+
     <TextView
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.Headline"
@@ -54,7 +59,7 @@
         android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
         android:paddingHorizontal="@dimen/margin_padding_size_biggest"
-        android:text="@string/card_payment_confirm"
+        android:text="@string/payment_details"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
@@ -176,47 +181,78 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_large"
                 android:background="@drawable/divider_country_group"
-                app:layout_constraintBottom_toTopOf="@+id/cardinityPaymentDescription" />
+                app:layout_constraintBottom_toTopOf="@+id/confirmContainer" />
 
-            <TextView
-                android:id="@+id/cardinityPaymentDescription"
-                style="@style/TextAppearance.Caption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
-                android:paddingHorizontal="@dimen/margin_padding_size_medium"
-                android:text="@string/card_payment_cardinity"
-                android:textAlignment="center"
-                android:textColor="@color/card_payment_description"
-                app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-                app:layout_constraintEnd_toEndOf="@+id/confirmButton"
-                app:layout_constraintStart_toStartOf="@+id/confirmButton" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/confirmButton"
-                style="@style/Widget.PrimaryButton"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/confirmContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                android:layout_marginBottom="@dimen/margin_padding_size_biggest"
-                android:text="@string/card_payment_pay"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
-                android:id="@+id/confirmButtonShadow"
+                <TextView
+                    android:id="@+id/cardinityPaymentDescription"
+                    style="@style/TextAppearance.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                    android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
+                    android:paddingHorizontal="@dimen/margin_padding_size_medium"
+                    android:text="@string/card_payment_cardinity"
+                    android:textAlignment="center"
+                    android:textColor="@color/card_payment_description"
+                    app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+                    app:layout_constraintEnd_toEndOf="@+id/confirmButton"
+                    app:layout_constraintStart_toStartOf="@+id/confirmButton" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/confirmButton"
+                    style="@style/Widget.PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                    android:layout_marginBottom="@dimen/margin_padding_size_biggest"
+                    android:text="@string/card_payment_pay"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/confirmButtonShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="4dp"
+                    android:src="@drawable/shadow_primary_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/cancelContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:elevation="4dp"
-                android:src="@drawable/shadow_primary_button"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancelButton"
+                    style="@style/Widget.NegativeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                    android:layout_marginBottom="@dimen/margin_padding_size_biggest"
+                    android:text="@string/back" />
+
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

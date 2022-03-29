@@ -3,6 +3,7 @@
 
     <!--   Common   -->
     <string name="close">Close</string>
+    <string name="back">Back</string>
 
     <!--  Onboarding  -->
     <string name="onboarding_main_title_1">Decentralized global node network</string>
@@ -13,7 +14,7 @@
     <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
     <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
     <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
-    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and  free nodes</string>
+    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and free nodes</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
 
@@ -149,7 +150,7 @@
     <string name="report_issue_send">Send</string>
     <string name="report_issue_app_version">App version</string>
     <string name="report_issue_node_version">Node version</string>
-    <string name="report_issue_error_empty_issue">Can’t be empty</string>
+    <string name="report_issue_error_empty_issue">Can\'t be empty</string>
     <string name="report_issue_error_incorrect_email">Incorrect email</string>
     <string name="report_issue_error_request">Something went wrong, please try again later</string>
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
@@ -172,17 +173,19 @@
     <string name="top_up_amount_music">Music</string>
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
-    <string name="top_up_amount_description">Select how much MYST credits \n you would like to add into your account</string>
+    <string name="top_up_amount_description">Select how much MYST credits\n you would like to add into your account</string>
     <string name="top_up_amount_confirm">Confirm</string>
-    <string name="top_up_crypto_description">Select the crypto currency \n in which the topup will be done</string>
+    <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
     <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_payment_description">Scan this QR code which contains your topup address</string>
+    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
     <string name="top_up_payment_link">Or use a payment link</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
     <string name="top_up_free_trial">Free Trial</string>
+    <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
+    <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than 5 MYST</string>
 
     <!--  Settings  -->
     <string name="settings_title">Settings</string>
@@ -215,7 +218,6 @@
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
     <string name="card_payment_myst_description">%d MYST Top-up</string>
-    <string name="card_payment_confirm">Confirm payment</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
@@ -256,7 +258,7 @@
     <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
     <string name="pop_up_payment_successfully_done">Well done</string>
     <string name="pop_up_payment_successfully_close">Close</string>
-    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn’t Work</string>
+    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn\'t Work</string>
     <string name="pop_up_payment_not_work_try_again">Please try again later</string>
     <string name="pop_up_payment_not_work_okay">Okay, got it</string>
     <string name="pop_up_payment_expired_title">Payment is not\n Successful</string>
@@ -284,10 +286,10 @@
     <string name="pop_up_details_title">Some error occurred</string>
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
-    <string name="pop_up_card_payment_description">It may take some time to process your payment. \n We\'ll send you a notification once it\'s completed</string>
+    <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
     <string name="pop_up_crypto_payment_button">Continue</string>
     <string name="pop_up_crypto_payment_title">Warning!</string>
-    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step. \n You’ll receive a notification once your payment is successfully processed.</string>
+    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>

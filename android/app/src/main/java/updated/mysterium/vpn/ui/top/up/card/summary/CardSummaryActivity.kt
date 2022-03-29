@@ -7,6 +7,7 @@ import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.PaymentStatus
@@ -54,8 +55,14 @@ class CardSummaryActivity : BaseActivity() {
         binding.confirmButton.setOnClickListener {
             viewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "10_usd")
         }
+        binding.cancelButton.setOnClickListener {
+            navigateToHome()
+        }
         binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
             binding.paymentProcessingLayout.root.visibility = View.GONE
+        }
+        binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
+            binding.paymentBalanceLimitLayout.root.visibility = View.GONE
         }
     }
 
@@ -81,6 +88,8 @@ class CardSummaryActivity : BaseActivity() {
         binding.vatTextView.text = getString(
             R.string.card_payment_vat_value, taxesPercent
         )
+        binding.confirmContainer.visibility = View.VISIBLE
+        binding.cancelContainer.visibility = View.INVISIBLE
     }
 
     private fun paymentConfirmed() {
@@ -106,6 +115,36 @@ class CardSummaryActivity : BaseActivity() {
                 Log.e(TAG, error.localizedMessage ?: error.toString())
                 navigateToHome()
             }
+        }
+    }
+
+    private fun showPaymentBalanceLimitError() {
+        showBanner(binding.paymentBalanceLimitLayout.root)
+        binding.confirmContainer.visibility = View.INVISIBLE
+        binding.cancelContainer.visibility = View.VISIBLE
+    }
+
+    private fun showPaymentPopUp() {
+        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.okayButton.setOnClickListener {
+            dialog.dismiss()
+            showBanner(binding.paymentProcessingLayout.root)
+        }
+        dialog.show()
+    }
+
+    private fun showBanner(view: View) {
+        view.visibility = View.VISIBLE
+        val animationX =
+            (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
+        ObjectAnimator.ofFloat(
+            view,
+            "translationY",
+            animationX
+        ).apply {
+            duration = 2000
+            start()
         }
     }
 

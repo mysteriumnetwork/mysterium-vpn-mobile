@@ -42,15 +42,35 @@ class ConnectionState @JvmOverloads constructor(
         }
     }
 
-    fun showDisconnectedState() {
+    fun showConnectionState(connectionType: ConnectionType?, proposal: Proposal?) {
+        if (connectionType == ConnectionType.SMART_CONNECT) {
+            showConnectionType(ConnectionType.SMART_CONNECT)
+        } else if (connectionType == ConnectionType.MANUAL_CONNECT) {
+            proposal?.let {
+                showConnectionType(ConnectionType.MANUAL_CONNECT)
+                showConnectionProposal(it)
+            }
+        }
         binding.connectedLayout.cardConnectedLayout.visibility = View.INVISIBLE
-        binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
+        binding.connectingLayout.cardConnectingLayout.visibility = View.VISIBLE
     }
 
-    fun showConnectionState(proposal: Proposal) {
-        binding.connectedLayout.cardConnectedLayout.visibility = View.INVISIBLE
+    private fun showConnectionType(type: ConnectionType?) {
+        if (type == ConnectionType.SMART_CONNECT) {
+            binding.connectingLayout.connectionTypeTextView.text =
+                context.getString(R.string.smart_connect_connecting_title)
+            binding.connectingLayout.connectingNodeInfo.visibility = View.GONE
+            binding.connectingLayout.smartConnectLoadingAnimation.visibility = View.VISIBLE
+        } else {
+            binding.connectingLayout.connectionTypeTextView.text =
+                context.getString(R.string.manual_connect_connecting_title)
+            binding.connectingLayout.connectingNodeInfo.visibility = View.VISIBLE
+            binding.connectingLayout.smartConnectLoadingAnimation.visibility = View.GONE
+        }
+    }
+
+    private fun showConnectionProposal(proposal: Proposal) {
         binding.connectingLayout.apply {
-            cardConnectingLayout.visibility = View.VISIBLE
             countryNameTextView.text = proposal.countryName
             Glide.with(context)
                 .load(proposal.countryFlagImage)
@@ -69,26 +89,13 @@ class ConnectionState @JvmOverloads constructor(
         }
     }
 
-    fun showConnectionType(type: ConnectionType?) {
-        if (type == ConnectionType.SMART_CONNECT) {
-            binding.connectingLayout.connectionTypeTextView.text =
-                context.getString(R.string.smart_connect_connecting_title)
-            binding.connectingLayout.connectingNodeInfo.visibility = View.GONE
-            binding.connectingLayout.smartConnectLoadingAnimation.visibility = View.VISIBLE
-        } else {
-            binding.connectingLayout.connectionTypeTextView.text =
-                context.getString(R.string.manual_connect_connecting_title)
-            binding.connectingLayout.connectingNodeInfo.visibility = View.VISIBLE
-            binding.connectingLayout.smartConnectLoadingAnimation.visibility = View.GONE
-        }
-    }
-
     fun showConnectedState() {
         binding.connectedLayout.cardConnectedLayout.visibility = View.VISIBLE
         binding.connectingLayout.cardConnectingLayout.visibility = View.INVISIBLE
         binding.connectedLayout.disconnectButton.text = context.getString(
             R.string.manual_connect_disconnect
         )
+        binding.connectedLayout.disconnectButton.isClickable = true
     }
 
     fun showDisconnectingState() {
@@ -97,6 +104,7 @@ class ConnectionState @JvmOverloads constructor(
         binding.connectedLayout.disconnectButton.text = context.getString(
             R.string.manual_connect_disconnecting
         )
+        binding.connectedLayout.disconnectButton.isClickable = false
     }
 
     fun updateConnectedStatistics(statistics: ConnectionStatistic, currency: String) {

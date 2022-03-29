@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import mysterium.ConnectRequest
 import mysterium.GetBalanceRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
@@ -101,17 +100,29 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
             startDeferredNode()
-            if (connectionType == ConnectionType.MANUAL_CONNECT) {
+            connect(connectionType, countryCode, proposal, rate)
+        }
+    }
+
+    fun connect(
+        connectionType: ConnectionType?,
+        countryCode: String?,
+        proposal: Proposal?,
+        rate: Double
+    ) {
+        when (connectionType) {
+            ConnectionType.MANUAL_CONNECT -> {
                 proposal?.let {
                     connectNode(it, rate)
                 }
-            } else {
+            }
+            ConnectionType.SMART_CONNECT -> {
                 smartConnect(countryCode)
             }
         }
     }
 
-    fun smartConnect(countryCode: String? = null) {
+    private fun smartConnect(countryCode: String? = null) {
         viewModelScope.launch(handler) {
             disconnectIfConnectedNode()
             val code =
@@ -129,15 +140,14 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             connectionUseCase.connect(req)
             val status = connectionUseCase.status()
-            _connectionStatus.value = status
-            updateService()
-            _connectionStatus.value?.proposal?.let {
+            updateService(status)
+            status.proposal?.let {
                 _successConnectEvent.postValue(it)
             }
         }
     }
 
-    fun connectNode(proposal: Proposal, rate: Double) {
+    private fun connectNode(proposal: Proposal, rate: Double) {
         exchangeRate = rate
         viewModelScope.launch(handler) {
             _connectionStatus.postValue(_connectionStatus.value?.copy(proposal = proposal))
@@ -150,8 +160,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             connectionUseCase.connect(req)
             val status = connectionUseCase.status()
-            _connectionStatus.value = status
-            updateService()
+            updateService(status)
             _successConnectEvent.value = proposal
         }
     }
@@ -247,13 +256,15 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             connectionUseCase.setDuration(it.duration * 1000)
         }
         connectionUseCase.connectionStatusCallback {
-            val connectionStateModel = ConnectionState.from(it)
-            if (connectionStateModel == ConnectionState.NOTCONNECTED) {
-                coreService?.setDeferredNode(null)
-                coreService?.setActiveProposal(null)
-                coreService?.stopForeground()
+            viewModelScope.launch {
+                val status = connectionUseCase.status()
+                if (status.state == ConnectionState.NOTCONNECTED) {
+                    coreService?.setDeferredNode(null)
+                    coreService?.setActiveProposal(null)
+                    coreService?.stopForeground()
+                }
+                _connectionStatus.postValue(status)
             }
-            _connectionStatus.postValue(_connectionStatus.value?.copy(state = connectionStateModel))
         }
     }
 
@@ -279,9 +290,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    private fun updateService() {
+    private fun updateService(status: Status) {
         coreService?.apply {
-            _connectionStatus.value?.proposal?.let {
+            val proposal = status.proposal
+            proposal?.let {
                 setActiveProposal(ProposalViewItem.parse(it))
             }
             setDeferredNode(deferredNode)
@@ -289,7 +301,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 NotificationChannels.STATISTIC_NOTIFICATION,
                 appNotificationManager.createConnectedToVPNNotification()
             )
-            _connectionStatus.postValue(_connectionStatus.value?.copy(state = ConnectionState.CONNECTED))
+            _connectionStatus.postValue(Status(ConnectionState.CONNECTED, proposal))
         }
     }
 
@@ -304,7 +316,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private suspend fun disconnectNode() {
-        _connectionStatus.postValue(Status(ConnectionState.DISCONNECTING, null))
+        _connectionStatus.postValue(_connectionStatus.value?.copy(state = ConnectionState.DISCONNECTING))
         coreService?.manualDisconnect()
         _manualDisconnect.call()
         connectionUseCase.disconnect()
