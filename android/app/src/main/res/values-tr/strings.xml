@@ -187,8 +187,6 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Sipariş Özeti</string>
-    <string name="card_currency_title">Para Birimi ve Ülke</string>
-    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
     <string name="card_payment_pay">Ödemeye devam et</string>
     <string name="card_payment_cardinity">Ödeme yapmak için Cardinity ödeme sayfasına yönlendirileceksin.</string>
     <string name="card_payment_total">Toplam Borcunuz</string>

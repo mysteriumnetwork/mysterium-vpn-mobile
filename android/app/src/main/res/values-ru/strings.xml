@@ -185,8 +185,6 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Сводка заказа</string>
-    <string name="card_currency_title">Валюта и страна</string>
-    <string name="card_currency_description">Выберите страну для расчета НДС</string>
     <string name="card_payment_pay">Продолжить оплату</string>
     <string name="card_payment_cardinity">Вы будете перенаправлены на страницу Cardinity для оплаты.</string>
     <string name="card_payment_total">Всего к оплате</string>

@@ -184,8 +184,6 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">订单摘要</string>
-    <string name="card_currency_title">货币和国家</string>
-    <string name="card_currency_description">选择所在国家来计算增值税</string>
     <string name="card_payment_pay">继续付款</string>
     <string name="card_payment_cardinity">您将前往 Cardinity 付款页面付款。</string>
     <string name="card_payment_total">应付总额</string>

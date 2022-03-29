@@ -9,7 +9,6 @@ import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
 import updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
@@ -122,7 +121,7 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun navigateToCardPaymentFlow() {
-        val intent = Intent(this, CardCurrencyActivity::class.java).apply {
+        val intent = Intent(this, CardSummaryActivity::class.java).apply {
             val usdPrice = topUpAdapter.getSelectedValue()?.toDouble() ?: 0.0
             val mystAmount = usdPrice * exchangeRateViewModel.mystEquivalent
             putExtra(CardSummaryActivity.USD_PRICE_EXTRA_KEY, usdPrice)
