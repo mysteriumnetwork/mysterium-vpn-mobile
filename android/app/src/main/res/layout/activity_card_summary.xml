@@ -52,16 +52,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/paymentProcessingLayout"
-        layout="@layout/item_payment_processing_banner"
-        app:layout_constraintBottom_toTopOf="parent" />
-
-    <include
-        android:id="@+id/paymentBalanceLimitLayout"
-        layout="@layout/item_payment_balance_limit_banner"
-        app:layout_constraintBottom_toTopOf="parent" />
-
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -73,6 +63,16 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/choose_country_animation" />
+
+    <include
+        android:id="@+id/paymentProcessingLayout"
+        layout="@layout/item_payment_processing_banner"
+        app:layout_constraintBottom_toTopOf="parent" />
+
+    <include
+        android:id="@+id/paymentBalanceLimitLayout"
+        layout="@layout/item_payment_balance_limit_banner"
+        app:layout_constraintBottom_toTopOf="parent" />
 
     <TextView
         android:id="@+id/descriptionTextView"
