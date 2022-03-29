@@ -3,6 +3,7 @@
 
     <!--   Common   -->
     <string name="close">Close</string>
+    <string name="back">Back</string>
 
     <!--  Onboarding  -->
     <string name="onboarding_main_title_1">Decentralized global node network</string>
@@ -182,7 +183,9 @@
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
     <string name="top_up_free_trial">Free Trial</string>
+    <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
+    <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than 5 MYST</string>
 
     <!--  Settings  -->
     <string name="settings_title">Settings</string>
@@ -215,7 +218,6 @@
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
     <string name="card_payment_myst_description">%d MYST Top-up</string>
-    <string name="card_payment_confirm">Confirm payment</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
