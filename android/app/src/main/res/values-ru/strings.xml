@@ -196,7 +196,6 @@
     <string name="card_payment_vat_value">НДС(%1.1f%%)</string>
     <string name="card_payment_country_hint">Выберите страну или регион</string>
     <string name="card_payment_myst_description">%d MYST пополнение</string>
-    <string name="card_payment_confirm">Подтвердить платеж</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Важно! Загрузите свой частный код сейчас и надежно сохраните его, чтобы предотвратить блокировку аккаунта.</string>

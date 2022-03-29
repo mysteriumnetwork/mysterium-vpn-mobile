@@ -12,6 +12,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -66,6 +67,9 @@ class CardSummaryActivity : BaseActivity() {
         binding.confirmButton.setOnClickListener {
             launchCardinityPayment()
         }
+        binding.cancelButton.setOnClickListener {
+            navigateToHome()
+        }
         binding.closeButton.setOnClickListener {
             binding.closeButton.visibility = View.GONE
             binding.webView.visibility = View.GONE
@@ -77,29 +81,8 @@ class CardSummaryActivity : BaseActivity() {
         binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
             binding.paymentProcessingLayout.root.visibility = View.GONE
         }
-    }
-
-    private fun showPaymentPopUp() {
-        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.okayButton.setOnClickListener {
-            dialog.dismiss()
-            showPaymentProcessingBanner()
-        }
-        dialog.show()
-    }
-
-    private fun showPaymentProcessingBanner() {
-        binding.paymentProcessingLayout.root.visibility = View.VISIBLE
-        val animationX =
-            (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
-        ObjectAnimator.ofFloat(
-            binding.paymentProcessingLayout.root,
-            "translationY",
-            animationX
-        ).apply {
-            duration = 2000
-            start()
+        binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
+            binding.paymentBalanceLimitLayout.root.visibility = View.GONE
         }
     }
 
@@ -124,6 +107,9 @@ class CardSummaryActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
+                if (error is TopupPreconditionFailedException) {
+                    showPaymentBalanceLimitError()
+                }
             }
         }
     }
@@ -137,6 +123,8 @@ class CardSummaryActivity : BaseActivity() {
         binding.vatTextView.text = getString(
             R.string.card_payment_vat_value, taxesPercent
         )
+        binding.confirmContainer.visibility = View.VISIBLE
+        binding.cancelContainer.visibility = View.INVISIBLE
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -181,6 +169,36 @@ class CardSummaryActivity : BaseActivity() {
                 Log.e(TAG, error.localizedMessage ?: error.toString())
                 navigateToHome()
             }
+        }
+    }
+
+    private fun showPaymentBalanceLimitError() {
+        showBanner(binding.paymentBalanceLimitLayout.root)
+        binding.confirmContainer.visibility = View.INVISIBLE
+        binding.cancelContainer.visibility = View.VISIBLE
+    }
+
+    private fun showPaymentPopUp() {
+        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.okayButton.setOnClickListener {
+            dialog.dismiss()
+            showBanner(binding.paymentProcessingLayout.root)
+        }
+        dialog.show()
+    }
+
+    private fun showBanner(view: View) {
+        view.visibility = View.VISIBLE
+        val animationX =
+            (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
+        ObjectAnimator.ofFloat(
+            view,
+            "translationY",
+            animationX
+        ).apply {
+            duration = 2000
+            start()
         }
     }
 

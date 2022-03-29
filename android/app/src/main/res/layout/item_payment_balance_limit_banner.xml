@@ -6,8 +6,8 @@
     app:layout_constraintBottom_toTopOf="parent">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/paymentProcessingCard"
-        style="@style/Widget.PaymentProcessingCardView"
+        android:id="@+id/paymentBalanceLimitCard"
+        style="@style/Widget.PaymentBalanceLimitCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_padding_size_medium"
@@ -24,7 +24,7 @@
                 android:id="@+id/clockImageView"
                 android:layout_width="46dp"
                 android:layout_height="46dp"
-                android:src="@drawable/icon_clock_five"
+                android:src="@drawable/icon_payment_balance_limit"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingStart="@dimen/margin_padding_size_medium_large"
-                android:text="@string/payment_processing_text"
+                android:text="@string/payment_balance_limit_text"
                 android:textColor="@android:color/white"
                 tools:ignore="RtlSymmetry" />
 
@@ -48,9 +48,9 @@
         android:layout_height="18dp"
         android:contentDescription="@string/close"
         android:src="@drawable/icon_close_payment_banner"
-        app:layout_constraintBottom_toTopOf="@+id/paymentProcessingCard"
-        app:layout_constraintEnd_toEndOf="@+id/paymentProcessingCard"
-        app:layout_constraintStart_toEndOf="@+id/paymentProcessingCard"
-        app:layout_constraintTop_toTopOf="@+id/paymentProcessingCard" />
+        app:layout_constraintBottom_toTopOf="@+id/paymentBalanceLimitCard"
+        app:layout_constraintEnd_toEndOf="@+id/paymentBalanceLimitCard"
+        app:layout_constraintStart_toEndOf="@+id/paymentBalanceLimitCard"
+        app:layout_constraintTop_toTopOf="@+id/paymentBalanceLimitCard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
