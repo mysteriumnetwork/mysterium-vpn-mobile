@@ -9,6 +9,7 @@ import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
 import updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
@@ -47,7 +48,12 @@ class TopUpAmountActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            navigateToCryptoPaymentFlow()
+            val gateway = intent.extras?.getSerializable(PAYMENT_METHOD_EXTRA_KEY) as Gateway
+            if (gateway == Gateway.CARDINITY) {
+                navigateToCardPaymentFlow()
+            } else {
+                navigateToCryptoPaymentFlow()
+            }
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
@@ -114,4 +120,11 @@ class TopUpAmountActivity : BaseActivity() {
         startActivity(intent)
     }
 
+    private fun navigateToCardPaymentFlow() {
+        val intent = Intent(this, CardCurrencyActivity::class.java).apply {
+            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
+            putExtra(CardCurrencyActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+        }
+        startActivity(intent)
+    }
 }

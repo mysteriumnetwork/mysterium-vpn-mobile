@@ -113,6 +113,14 @@
             android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name="updated.mysterium.vpn.notification.AppBroadcastReceiver"
             android:exported="true">
@@ -130,7 +138,8 @@
             </intent-filter>
         </service>
 
-        <service android:name="updated.mysterium.vpn.notification.PaymentStatusService" />
+        <service
+            android:name="updated.mysterium.vpn.notification.PaymentStatusService" />
 
         <!-- Pushy Declarations -->
 
