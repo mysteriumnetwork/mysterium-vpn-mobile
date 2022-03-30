@@ -19,12 +19,13 @@ import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -141,7 +142,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.topUpButton.setOnClickListener {
-            startActivity(Intent(this, PaymentMethodActivity::class.java))
+            navigateToTopUp()
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
@@ -249,7 +250,7 @@ abstract class BaseActivity : AppCompatActivity() {
             bindingPopUp.topUpButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
-                startActivity(Intent(this, PaymentMethodActivity::class.java))
+                navigateToTopUp()
             }
             bindingPopUp.continueButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
@@ -257,5 +258,12 @@ abstract class BaseActivity : AppCompatActivity() {
             }
             insufficientFoundsDialog?.show()
         }
+    }
+
+    private fun navigateToTopUp() {
+        val intent = Intent(this, TopUpAmountActivity::class.java).apply {
+            putExtra(TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY, Gateway.COINGATE)
+        }
+        startActivity(intent)
     }
 }
