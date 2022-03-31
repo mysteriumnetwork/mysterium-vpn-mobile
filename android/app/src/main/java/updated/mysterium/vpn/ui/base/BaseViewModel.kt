@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -136,9 +137,10 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getGateways() = liveDataResult {
-        paymentUseCase.getGateways().map { it.name }.toMutableList().apply {
-            remove("paypal")
-        }
+        paymentUseCase
+            .getGateways()
+            .map { Gateway.from(it.name) }
+            .toMutableList()
+            .apply { remove(Gateway.PAYPAL) }
     }
-
 }

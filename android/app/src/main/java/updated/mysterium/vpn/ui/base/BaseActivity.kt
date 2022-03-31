@@ -269,14 +269,14 @@ abstract class BaseActivity : AppCompatActivity() {
                     Intent(this, TopUpAmountActivity::class.java).apply {
                         putExtra(
                             TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways[0]
+                            gateways[0].gateway
                         )
                     }
                 } else {
                     Intent(this, PaymentMethodActivity::class.java).apply {
                         putExtra(
                             TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways.toTypedArray()
+                            gateways.map { it.gateway }.toTypedArray()
                         )
                     }
                 }
