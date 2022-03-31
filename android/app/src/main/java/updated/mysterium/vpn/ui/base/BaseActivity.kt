@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -25,6 +27,7 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -141,7 +144,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.topUpButton.setOnClickListener {
-            startActivity(Intent(this, PaymentMethodActivity::class.java))
+            navigateToPayment()
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
@@ -249,13 +252,35 @@ abstract class BaseActivity : AppCompatActivity() {
             bindingPopUp.topUpButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
-                startActivity(Intent(this, PaymentMethodActivity::class.java))
+                navigateToPayment()
             }
             bindingPopUp.continueButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
             }
             insufficientFoundsDialog?.show()
+        }
+    }
+
+    fun navigateToPayment() {
+        baseViewModel.getGateways().observe(this) {
+            it.onSuccess { gateways ->
+                val intent = if (gateways.size == 1) {
+                    Intent(this, TopUpAmountActivity::class.java).apply {
+                        putExtra(
+                            TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
+                            gateways[0].gateway
+                        )
+                    }
+                } else {
+                    val gatewayValues = gateways.map { it.gateway }
+                    PaymentMethodActivity.newIntent(this, gatewayValues)
+                }
+                startActivity(intent)
+            }
+            it.onFailure { error ->
+                Log.e(TAG, "getPaymentScreen failed with error ${error.message}")
+            }
         }
     }
 }

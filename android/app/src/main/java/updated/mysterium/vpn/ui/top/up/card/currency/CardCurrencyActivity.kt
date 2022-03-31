@@ -50,7 +50,7 @@ class CardCurrencyActivity : BaseActivity() {
 
     private fun bind() {
         binding.confirmButton.setOnClickListener {
-            navigateToPayment()
+            navigateToSummary()
         }
         binding.backButton.setOnClickListener {
             finish()
@@ -120,7 +120,7 @@ class CardCurrencyActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToPayment() {
+    private fun navigateToSummary() {
         intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.let { mystAmount ->
             val intent = Intent(this, CardSummaryActivity::class.java).apply {
                 putExtra(CardSummaryActivity.CRYPTO_AMOUNT_EXTRA_KEY, mystAmount)

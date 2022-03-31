@@ -12,11 +12,12 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
+import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 class PrepareTopUpActivity : BaseActivity() {
 
@@ -54,7 +55,7 @@ class PrepareTopUpActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.topUpNow.setOnClickListener {
-            startActivity(Intent(this, PaymentMethodActivity::class.java))
+            navigateToPayment()
         }
         binding.referralProgram.setOnClickListener {
             showReferralPopUp()
