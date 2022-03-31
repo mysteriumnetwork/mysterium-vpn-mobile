@@ -96,10 +96,7 @@ class WalletActivity : BaseActivity() {
             startActivity(intent, transitionAnimation)
         }
         binding.topUpButton.setOnClickListener {
-            val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-                putExtra(TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY, Gateway.COINGATE)
-            }
-            startActivity(intent)
+            navigateToPayment()
         }
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnectionOrHome()

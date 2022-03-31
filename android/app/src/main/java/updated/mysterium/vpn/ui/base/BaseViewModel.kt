@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
@@ -43,6 +44,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()
+    private val paymentUseCase = useCaseProvider.payment()
     private var isInternetChecking = false
     private var numberOfInternetCheck = 0
 
@@ -132,4 +134,11 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
         }
     }
+
+    fun getGateways() = liveDataResult {
+        paymentUseCase.getGateways().map { it.name }.toMutableList().apply {
+            remove("paypal")
+        }
+    }
+
 }
