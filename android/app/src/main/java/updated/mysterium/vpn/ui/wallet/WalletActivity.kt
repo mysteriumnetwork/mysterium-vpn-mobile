@@ -18,11 +18,9 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.common.tab.layout.StateTabSelectedListener
 import updated.mysterium.vpn.model.manual.connect.OnboardingTabItem
-import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 class WalletActivity : BaseActivity() {
 

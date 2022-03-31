@@ -273,12 +273,8 @@ abstract class BaseActivity : AppCompatActivity() {
                         )
                     }
                 } else {
-                    Intent(this, PaymentMethodActivity::class.java).apply {
-                        putExtra(
-                            TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways.map { it.gateway }.toTypedArray()
-                        )
-                    }
+                    val gatewayValues = gateways.map { it.gateway }
+                    PaymentMethodActivity.newIntent(this, gatewayValues)
                 }
                 startActivity(intent)
             }

@@ -12,9 +12,9 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.GatewayCardItem
 
 class PaymentMethodAdapter :
-    ContentListAdapter<String, PaymentMethodAdapter.PaymentMethodViewHolder>() {
+    ContentListAdapter<Gateway, PaymentMethodAdapter.PaymentMethodViewHolder>() {
 
-    var onItemSelected: ((String) -> Unit)? = null
+    var onItemSelected: ((Gateway) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PaymentMethodViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_payment_method, parent, false)
@@ -28,8 +28,8 @@ class PaymentMethodAdapter :
 
     inner class PaymentMethodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemPaymentMethodBinding.bind(itemView)
-        fun bind(item: String) {
-            val gatewayCardItem = GatewayCardItem.from(Gateway.from(item))
+        fun bind(item: Gateway) {
+            val gatewayCardItem = GatewayCardItem.from(item)
             val backgroundColor =
                 ContextCompat.getDrawable(itemView.context, gatewayCardItem.backgroundId)
             val iconColor = ContextCompat.getColor(itemView.context, gatewayCardItem.iconColorId)
