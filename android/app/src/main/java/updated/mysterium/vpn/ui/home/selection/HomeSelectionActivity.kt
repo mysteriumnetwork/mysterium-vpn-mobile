@@ -219,6 +219,7 @@ class HomeSelectionActivity : BaseActivity() {
                         scrollToPositionWithOffset(countryIndex, 0)
                     } else {
                         // scroll to top
+                        viewModel.saveNewCountryCode(ALL_COUNTRY_CODE)
                         sortedCountryInfoList.first().changeSelectionState()
                         scrollToPositionWithOffset(0, 0)
                     }
