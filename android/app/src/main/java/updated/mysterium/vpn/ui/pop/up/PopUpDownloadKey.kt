@@ -39,7 +39,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     bindingPopUp.passwordEditText.text?.clear()
                     passwordEditText.clearFocus()
                     passwordEditText.hideKeyboard()
-                    bindingPopUp.passwordScrollView.background = ContextCompat.getDrawable(
+                    bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
                         dialog.context, R.drawable.shape_wrong_password
                     )
                     bindingPopUp.errorText.visibility = View.VISIBLE
@@ -50,7 +50,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                 if (hasFocus) {
                     bindingPopUp.passwordEditText.hint = dialog
                         .context
-                        .getString(R.string.pop_up_private_key_hint)
+                        .getString(R.string.pop_up_password_account_hint)
                     clearErrorState()
                 }
             }
@@ -93,7 +93,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
     }
 
     private fun clearErrorState() {
-        bindingPopUp.passwordScrollView.background = ContextCompat.getDrawable(
+        bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
             dialog.context, R.drawable.shape_password_field
         )
         bindingPopUp.errorText.visibility = View.GONE
