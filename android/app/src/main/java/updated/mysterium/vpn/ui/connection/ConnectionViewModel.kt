@@ -123,6 +123,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     private fun smartConnect(countryCode: String? = null) {
+        Log.d(TAG, "Smart connect with countryCode $countryCode")
         viewModelScope.launch(handler) {
             disconnectIfConnectedNode()
             val code =
