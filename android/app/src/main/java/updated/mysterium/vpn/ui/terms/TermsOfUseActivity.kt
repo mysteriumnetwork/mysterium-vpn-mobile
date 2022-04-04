@@ -1,15 +1,13 @@
 package updated.mysterium.vpn.ui.terms
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import io.noties.markwon.Markwon
 import network.mysterium.vpn.databinding.ActivityTermsBinding
 import network.mysterium.vpn.databinding.PopUpTermsBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.terms.FullVersionTerm
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.create.account.CreateAccountActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
@@ -22,8 +20,6 @@ class TermsOfUseActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTermsBinding
     private val viewModel: TermsOfUseViewModel by inject()
-    private val shortVersionAdapter = ShortTermsAdapter()
-    private val fullVersionAdapter = FullTermsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,31 +49,19 @@ class TermsOfUseActivity : BaseActivity() {
             binding.manualConnectToolbar.visibility = View.GONE
             binding.nestedScrollView.isVerticalScrollBarEnabled = true
             binding.nestedScrollView.scrollBarFadeDuration = 0
-            binding.shortVersionRecyclerView.setBackgroundColor(Color.TRANSPARENT)
-            fullVersionAdapter.isAccepted = false
         }
     }
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        viewModel.getShortVersion().observe(this, { result ->
+        viewModel.getTerms().observe(this) { result ->
             result.onSuccess { terms ->
-                showShortVersion(terms)
+                showTerms(terms)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                // TODO("Implement error handling")
             }
-        })
-        viewModel.getFullVersion().observe(this, { result ->
-            result.onSuccess { terms ->
-                showFullVersion(terms)
-            }
-            result.onFailure { throwable ->
-                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                // TODO("Implement error handling")
-            }
-        })
+        }
     }
 
     private fun bindsAction() {
@@ -99,22 +83,10 @@ class TermsOfUseActivity : BaseActivity() {
         }
     }
 
-    private fun showShortVersion(terms: List<String>) {
-        shortVersionAdapter.replaceAll(terms)
-        binding.shortVersionRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@TermsOfUseActivity)
-            adapter = shortVersionAdapter
-            isNestedScrollingEnabled = false
-        }
-    }
-
-    private fun showFullVersion(terms: List<FullVersionTerm>) {
-        fullVersionAdapter.replaceAll(terms)
-        binding.fullVersionRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@TermsOfUseActivity)
-            adapter = fullVersionAdapter
-            isNestedScrollingEnabled = false
-        }
+    private fun showTerms(terms: String) {
+        Markwon
+            .create(this)
+            .setMarkdown(binding.termsTextView, terms)
     }
 
     private fun showUpdatedTermsPopUp() {
