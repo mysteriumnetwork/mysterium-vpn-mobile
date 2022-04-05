@@ -223,8 +223,11 @@ dependencies {
     //QrCode
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 
+    //Markdown
+    implementation "io.noties.markwon:core:4.6.2"
+
     //Mysterium
-    implementation "network.mysterium:terms:0.0.34"
+    implementation "network.mysterium:terms:0.0.40"
     implementation "network.mysterium:mobile-node:1.4.13"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
