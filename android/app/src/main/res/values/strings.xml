@@ -278,7 +278,7 @@
     <string name="pop_up_wi_fi_error_title">Wi-fi Network\n Error</string>
     <string name="pop_up_wi_fi_error_description">Please check your\n network connection</string>
     <string name="pop_up_wi_fi_error_retry">Retry</string>
-    <string name="pop_up_terms_title">Term of Use\n Changed</string>
+    <string name="pop_up_terms_title">Terms of use\n has changed</string>
     <string name="pop_up_terms_description">Check out the updated\n version here</string>
     <string name="pop_up_terms_confirm">Confirm</string>
     <string name="pop_up_private_key_title">Download key</string>
