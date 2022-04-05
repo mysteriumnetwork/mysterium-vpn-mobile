@@ -19,8 +19,11 @@ class TermsOfUseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         termsUseCase.userAcceptTerms()
     }
 
-    fun getTerms() = liveDataResult {
-        termsUseCase.fullTermsData
+    fun getShortVersion() = liveDataResult {
+        termsUseCase.getShortTerms()
     }
 
+    fun getFullVersion() = liveDataResult {
+        termsUseCase.getFullTerms()
+    }
 }

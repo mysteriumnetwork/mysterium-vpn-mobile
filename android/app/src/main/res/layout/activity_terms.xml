@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/margin_padding_size_small_plus">
@@ -52,25 +53,58 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
         android:fadeScrollbars="true"
         android:scrollbars="vertical"
+        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/termsTitleTextView">
 
-        <TextView
-            android:id="@+id/termsTextView"
-            style="@style/TextAppearance.Caption"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
-            android:layout_marginTop="@dimen/margin_padding_size_small"
-            android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
-            android:autoLink="web"
-            android:paddingVertical="@dimen/margin_padding_size_medium_large"
-            android:textColor="@color/manual_connect_subtitle_white"
-            android:textColorLink="@color/primary_light_terms" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:text="@string/terms_short"
+                android:textColor="@android:color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shortVersionRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:background="@drawable/shape_gradient_background"
+                android:paddingVertical="@dimen/margin_padding_size_medium_large"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_short_term" />
+
+            <TextView
+                style="@style/TextAppearance.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:text="@string/terms_full"
+                android:textColor="@android:color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fullVersionRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:paddingVertical="@dimen/margin_padding_size_medium_large"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_full_term" />
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
@@ -95,13 +129,13 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_large"
                 android:layout_marginVertical="@dimen/margin_padding_size_xlarge"
-                android:text="@string/terms_onboarding_description"
                 android:textAlignment="center"
                 android:textColor="@color/onboarding_description_grey_blue"
                 app:layout_constraintBottom_toTopOf="@+id/acceptButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/terms_onboarding_description" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/acceptButton"
