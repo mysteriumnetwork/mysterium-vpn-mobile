@@ -49,4 +49,5 @@
     <color name="pop_up_password_text">#50FFFFFF</color>
     <color name="pop_up_password_hint">#50FFFFFF</color>
     <color name="pop_up_negative_button_text">#70FFFFFF</color>
+    <color name="pop_up_password_helper_text">#80FFFFFF</color>
 </resources>
