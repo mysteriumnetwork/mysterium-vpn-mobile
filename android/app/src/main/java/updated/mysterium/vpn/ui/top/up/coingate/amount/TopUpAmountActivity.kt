@@ -48,7 +48,7 @@ class TopUpAmountActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            val gateway = intent.extras?.getSerializable(PAYMENT_METHOD_EXTRA_KEY) as Gateway
+            val gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
             if (gateway == Gateway.CARDINITY) {
                 navigateToCardPaymentFlow()
             } else {
@@ -62,7 +62,7 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun handlePaymentMethod() {
-        val gateway = intent.extras?.getSerializable(PAYMENT_METHOD_EXTRA_KEY) as Gateway
+        val gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
         viewModel.getUsdPrices(gateway).observe(this) {
             it.onSuccess { prices ->
                 prices?.let {
