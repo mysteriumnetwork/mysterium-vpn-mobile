@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.payment.SkuState
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
 import kotlin.math.min
 
 class BillingDataSource(application: Application) : PurchasesUpdatedListener,
@@ -21,7 +23,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     private val defaultScope = CoroutineScope(Dispatchers.Main)
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
-    private val knownInAppSKUs = mutableListOf("test")
+    private val knownInAppSKUs = mutableListOf("test_product_id")
     private val billingFlowInProcess = MutableStateFlow(false)
     private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
@@ -78,6 +80,8 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
             billingFlowInProcess.emit(false)
         }
     }
+
+    fun getNewPurchases() = newPurchaseFlow.asSharedFlow()
 
     private fun initializeFlows() {
         for (sku in knownInAppSKUs) {
@@ -157,7 +161,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         }
     }
 
-    private suspend fun refreshPurchases() {
+    suspend fun refreshPurchases() {
         Log.e(TAG, "Refreshing purchases.")
         val purchasesResult = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
         val billingResult = purchasesResult.billingResult

@@ -29,6 +29,7 @@ class CardSummaryActivity : BaseActivity() {
         binding = ActivityCardSummaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         bind()
+        subscribeViewModel()
         inflateOrderData()
     }
 
@@ -37,7 +38,7 @@ class CardSummaryActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            viewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "test")
+            paymentViewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "test_product_id")
         }
         binding.cancelButton.setOnClickListener {
             navigateToHome()
@@ -47,8 +48,14 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
+    private fun subscribeViewModel() {
+        paymentViewModel.paymentSuccessfully.observe(this) { paymentStatus ->
+            paymentConfirmed()
+        }
+    }
+
     private fun inflateOrderData() {
-        paymentViewModel.isBalanceLimitExceeded().observe(this) {
+        /*paymentViewModel.isBalanceLimitExceeded().observe(this) {
             it.onSuccess { isBalanceLimitExceeded ->
                 if (isBalanceLimitExceeded) {
                     showPaymentBalanceLimitError()
@@ -57,7 +64,7 @@ class CardSummaryActivity : BaseActivity() {
                     binding.cancelContainer.visibility = View.INVISIBLE
                 }
             }
-        }
+        }*/
         val mystAmount = intent.extras?.getDouble(MYST_AMOUNT_EXTRA_KEY)
         binding.priceTitleTextView.text = getString(
             R.string.card_payment_myst_description, mystAmount

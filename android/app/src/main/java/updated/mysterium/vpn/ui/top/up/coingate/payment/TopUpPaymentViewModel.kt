@@ -1,15 +1,24 @@
 package updated.mysterium.vpn.ui.top.up.coingate.payment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.ui.top.up.card.summary.BillingDataSource
 
-class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class TopUpPaymentViewModel(
+    useCaseProvider: UseCaseProvider,
+    val billingDataSource: BillingDataSource
+) : ViewModel() {
 
     val paymentSuccessfully: LiveData<Unit>
         get() = _paymentSuccessfully
@@ -32,6 +41,10 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _paymentFailed = MutableLiveData<Unit>()
     private val _paymentCanceled = MutableLiveData<Unit>()
     private var orderId: Long? = null
+
+    init {
+        subscribeOnBillingFlow()
+    }
 
     fun createPaymentOrder(
         currency: String,
@@ -75,6 +88,26 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun isBalanceLimitExceeded() = liveDataResult {
         paymentUseCase.isBalanceLimitExceeded()
+    }
+
+    private fun subscribeOnBillingFlow() {
+        viewModelScope.launch {
+            try {
+                billingDataSource.getNewPurchases().collect { skuList ->
+                    for (sku in skuList) {
+                        when (sku) {
+                            "test_product_id" -> {
+                                _paymentSuccessfully.postValue(Unit)
+                                billingDataSource.refreshPurchases()
+                            }
+                        }
+                    }
+                }
+            } catch (e: Throwable) {
+                Log.d(TAG, "Collection complete")
+            }
+            Log.d(TAG, "Collection Coroutine Scope Exited")
+        }
     }
 
     private suspend fun registerOrderCallback() {

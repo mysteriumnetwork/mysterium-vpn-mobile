@@ -55,7 +55,7 @@ class PaymentMethodActivity : BaseActivity() {
 
     private fun navigateToTopUp(gateway: Gateway) {
         val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-            putExtra(TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY, gateway)
+            putExtra(TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY, gateway.gateway)
         }
         startActivity(intent)
     }

@@ -135,7 +135,7 @@ object Modules {
             TopUpViewModel(get())
         }
         viewModel {
-            TopUpPaymentViewModel(get())
+            TopUpPaymentViewModel(get(), get())
         }
         viewModel {
             SettingsViewModel(get())
@@ -162,7 +162,7 @@ object Modules {
             MenuViewModel(get())
         }
         viewModel {
-            CardSummaryViewModel(get(), get())
+            CardSummaryViewModel(get())
         }
         viewModel {
             RegistrationViewModel(get())
