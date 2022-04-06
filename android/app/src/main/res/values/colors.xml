@@ -72,6 +72,10 @@
     <color name="manual_connect_connected_receive">#5A597D</color>
     <color name="manual_connect_connected_output_icons">#9090BB</color>
 
+    <color name="menu_inactive_item_text_color">#BA95B5</color>
+    <color name="menu_active_item_icon_color">#ED5BAC</color>
+    <color name="menu_inactive_item_icon_color">#D9B8D4</color>
+
     <color name="home_country_amount">#9090BB</color>
 
     <color name="search_text">#50FFFFFF</color>
