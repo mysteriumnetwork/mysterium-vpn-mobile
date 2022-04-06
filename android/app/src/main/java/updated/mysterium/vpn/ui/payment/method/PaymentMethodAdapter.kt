@@ -29,21 +29,22 @@ class PaymentMethodAdapter :
     inner class PaymentMethodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemPaymentMethodBinding.bind(itemView)
         fun bind(item: Gateway) {
-            val gatewayCardItem = GatewayCardItem.from(item)
-            val backgroundColor =
-                ContextCompat.getDrawable(itemView.context, gatewayCardItem.backgroundId)
-            val iconColor = ContextCompat.getColor(itemView.context, gatewayCardItem.iconColorId)
-            val textColor = ContextCompat.getColor(itemView.context, gatewayCardItem.textColorId)
-            val text = itemView.context.getString(gatewayCardItem.titleId)
+            GatewayCardItem.from(item)?.let { gatewayCardItem ->
+                val backgroundColor =
+                    ContextCompat.getDrawable(itemView.context, gatewayCardItem.backgroundId)
+                val iconColor = ContextCompat.getColor(itemView.context, gatewayCardItem.iconColorId)
+                val textColor = ContextCompat.getColor(itemView.context, gatewayCardItem.textColorId)
+                val text = itemView.context.getString(gatewayCardItem.titleId)
 
-            binding.paymentMethodItemCard.background = backgroundColor
-            binding.paymentMethodIcon.setBackgroundResource(gatewayCardItem.iconId)
-            binding.arrowImageView.setColorFilter(iconColor)
-            binding.paymentMethodName.setTextColor(textColor)
-            binding.paymentMethodName.text = text
+                binding.paymentMethodItemCard.background = backgroundColor
+                binding.paymentMethodIcon.setBackgroundResource(gatewayCardItem.iconId)
+                binding.arrowImageView.setColorFilter(iconColor)
+                binding.paymentMethodName.setTextColor(textColor)
+                binding.paymentMethodName.text = text
 
-            binding.paymentMethodItemCard.setOnClickListener {
-                onItemSelected?.invoke(item)
+                binding.paymentMethodItemCard.setOnClickListener {
+                    onItemSelected?.invoke(item)
+                }
             }
         }
     }

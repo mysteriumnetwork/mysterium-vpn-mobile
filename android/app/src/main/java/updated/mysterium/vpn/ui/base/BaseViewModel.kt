@@ -141,6 +141,6 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             .getGateways()
             .map { Gateway.from(it.name) }
             .toMutableList()
-            .apply { remove(Gateway.PAYPAL) }
+            .apply { removeAll(listOf(Gateway.PAYPAL, Gateway.STRIPE)) }
     }
 }
