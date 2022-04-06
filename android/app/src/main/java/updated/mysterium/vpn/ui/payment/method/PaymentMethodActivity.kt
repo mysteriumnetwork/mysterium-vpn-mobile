@@ -44,7 +44,7 @@ class PaymentMethodActivity : BaseActivity() {
 
         gateways?.let {
             PaymentMethodAdapter().apply {
-                replaceAll(it)
+                replaceAll(it.requireNoNulls())
                 onItemSelected = {
                     navigateToTopUp(it)
                 }

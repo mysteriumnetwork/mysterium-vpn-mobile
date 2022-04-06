@@ -13,7 +13,7 @@ data class GatewayCardItem(
     @ColorRes val iconColorId: Int
 ) {
     companion object {
-        fun from(value: Gateway): GatewayCardItem {
+        fun from(value: Gateway): GatewayCardItem? {
             return when (value) {
                 Gateway.COINGATE -> GatewayCardItem(
                     R.string.crypto,
@@ -36,6 +36,7 @@ data class GatewayCardItem(
                     R.color.payment_method_paypal_text_color,
                     R.color.payment_method_paypal_icon_color
                 )
+                else -> null
             }
         }
     }

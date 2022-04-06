@@ -6,8 +6,8 @@ enum class Gateway(val gateway: String) {
     PAYPAL("paypal");
 
     companion object {
-        fun from(gateway: String?): Gateway {
-            return values().find { it.gateway == gateway } ?: COINGATE
+        fun from(gateway: String?): Gateway? {
+            return values().find { it.gateway == gateway }
         }
     }
 
