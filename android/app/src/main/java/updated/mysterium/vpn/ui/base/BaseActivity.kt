@@ -265,15 +265,15 @@ abstract class BaseActivity : AppCompatActivity() {
     fun navigateToPayment() {
         baseViewModel.getGateways().observe(this) {
             it.onSuccess { gateways ->
-                val intent = if (gateways.size == 1) {
+                val intent = if (gateways.requireNoNulls().size == 1) {
                     Intent(this, TopUpAmountActivity::class.java).apply {
                         putExtra(
                             TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways[0].gateway
+                            gateways[0]?.gateway
                         )
                     }
                 } else {
-                    val gatewayValues = gateways.map { it.gateway }
+                    val gatewayValues = gateways.requireNoNulls().map { it.gateway }
                     PaymentMethodActivity.newIntent(this, gatewayValues)
                 }
                 startActivity(intent)

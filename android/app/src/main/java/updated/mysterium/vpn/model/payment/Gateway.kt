@@ -7,8 +7,8 @@ enum class Gateway(val gateway: String) {
     STRIPE("stripe");
 
     companion object {
-        fun from(gateway: String?): Gateway {
-            return values().find { it.gateway == gateway } ?: COINGATE
+        fun from(gateway: String?): Gateway? {
+            return values().find { it.gateway == gateway }
         }
     }
 

@@ -62,23 +62,23 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun handlePaymentMethod() {
-        val gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
-        viewModel.getAmounts(gateway).observe(this) {
-            it.onSuccess { amounts ->
-                amounts?.let {
-                    topUpAdapter.replaceAll(amounts)
-
-                    amounts.find { item ->
-                        item.isSelected
-                    }?.value?.let { amount ->
-                        updateEquivalent(amount.toInt())
-                        updateWalletEstimates(amount.toDouble())
+        Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))?.let { gateway ->
+            viewModel.getAmounts(gateway).observe(this) {
+                it.onSuccess { amounts ->
+                    amounts?.let {
+                        topUpAdapter.replaceAll(amounts)
+                        amounts.find { item ->
+                            item.isSelected
+                        }?.value?.let { amount ->
+                            updateEquivalent(amount.toInt())
+                            updateWalletEstimates(amount.toDouble())
+                        }
                     }
                 }
-            }
 
-            it.onFailure {
-                wifiNetworkErrorPopUp()
+                it.onFailure {
+                    wifiNetworkErrorPopUp()
+                }
             }
         }
     }
