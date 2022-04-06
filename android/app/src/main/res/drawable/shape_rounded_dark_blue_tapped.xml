@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="100dp" />
-    <solid android:color="@color/manual_connect_connected_button_dark_blue_tapped" />
+    <solid android:color="@color/manual_connect_button_background_tapped" />
 </shape>

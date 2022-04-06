@@ -111,7 +111,7 @@
     <!--   ManualNodeSelectionButton   -->
     <style name="Widget.ManualNodeSelectionButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.ManualNodeSelectionButton</item>
-        <item name="android:background">@drawable/secondary_gray_button_background</item>
+        <item name="android:background">@drawable/manual_connect_button_background</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@color/manual_node_selection_button_text_color</item>
         <item name="elevation">0dp</item>
