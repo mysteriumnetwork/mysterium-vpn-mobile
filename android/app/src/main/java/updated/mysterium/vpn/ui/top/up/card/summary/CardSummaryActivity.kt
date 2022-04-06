@@ -37,7 +37,7 @@ class CardSummaryActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            viewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "10_usd")
+            viewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "test")
         }
         binding.cancelButton.setOnClickListener {
             navigateToHome()
