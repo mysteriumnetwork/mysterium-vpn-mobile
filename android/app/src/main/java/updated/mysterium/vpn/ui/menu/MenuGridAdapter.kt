@@ -43,10 +43,20 @@ class MenuGridAdapter : ContentListAdapter<MenuItem, MenuGridAdapter.MenuGridVie
                 }
             }
             if (item.isActive) {
+                binding.menuItemView.background =
+                    ContextCompat.getDrawable(itemView.context, R.drawable.shape_menu_active_item)
                 binding.itemTitleTextView.setTextColor(Color.WHITE)
+                binding.itemLogoImageView.drawable.setTint(
+                    ContextCompat.getColor(itemView.context, R.color.menu_active_item_icon_color)
+                )
             } else {
+                binding.menuItemView.background =
+                    ContextCompat.getDrawable(itemView.context, R.drawable.shape_menu_inactive_item)
                 binding.itemTitleTextView.setTextColor(
-                    ContextCompat.getColor(itemView.context, R.color.manual_connect_icon_white)
+                    ContextCompat.getColor(itemView.context, R.color.menu_inactive_item_text_color)
+                )
+                binding.itemLogoImageView.drawable.setTint(
+                    ContextCompat.getColor(itemView.context, R.color.menu_inactive_item_icon_color)
                 )
             }
             binding.menuItemView.setOnClickListener {
