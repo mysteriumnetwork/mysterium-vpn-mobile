@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_padding_size_small"
     android:layout_marginTop="@dimen/margin_padding_size_medium"
-    android:background="@drawable/shape_menu_item">
+    android:background="@drawable/shape_menu_active_item">
 
     <FrameLayout
         android:id="@+id/itemLogoFrame"

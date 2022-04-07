@@ -62,23 +62,24 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun handlePaymentMethod() {
-        val gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
-        viewModel.getUsdPrices(gateway).observe(this) {
-            it.onSuccess { prices ->
-                prices?.let {
-                    topUpAdapter.replaceAll(prices)
-                    prices.find { item ->
-                        item.isSelected
-                    }?.value?.let { price ->
-                        val mystAmount = exchangeRateViewModel.mystEquivalent * price.toDouble()
-                        updateEquivalent(mystAmount)
-                        updateWalletEstimates(mystAmount)
+        Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))?.let { gateway ->
+            viewModel.getUsdPrices(gateway).observe(this) {
+                it.onSuccess { prices ->
+                    prices?.let {
+                        topUpAdapter.replaceAll(prices)
+                        prices.find { item ->
+                            item.isSelected
+                        }?.value?.let { price ->
+                            val mystAmount = exchangeRateViewModel.mystEquivalent * price.toDouble()
+                            updateEquivalent(mystAmount)
+                            updateWalletEstimates(mystAmount)
+                        }
                     }
                 }
-            }
 
-            it.onFailure {
-                wifiNetworkErrorPopUp()
+                it.onFailure {
+                    wifiNetworkErrorPopUp()
+                }
             }
         }
     }

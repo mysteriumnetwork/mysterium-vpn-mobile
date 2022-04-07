@@ -264,7 +264,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun navigateToPayment() {
         baseViewModel.getGateways().observe(this) {
-            it.onSuccess { gateways ->
+            it.onSuccess { result ->
+                val gateways = result.filterNotNull()
                 val intent = if (gateways.size == 1) {
                     Intent(this, TopUpAmountActivity::class.java).apply {
                         putExtra(

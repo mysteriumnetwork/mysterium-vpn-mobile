@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="291dp"
+    android:height="46dp"
+    android:viewportWidth="291"
+    android:viewportHeight="46">
+    <path
+        android:pathData="M23,0L268,0A23,23 0,0 1,291 23L291,23A23,23 0,0 1,268 46L23,46A23,23 0,0 1,0 23L0,23A23,23 0,0 1,23 0z"
+        android:fillColor="@color/manual_connect_button_background"/>
+</vector>
