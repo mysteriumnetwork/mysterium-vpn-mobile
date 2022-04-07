@@ -13,21 +13,27 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.payment.SkuState
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 import kotlin.math.min
 
 class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     BillingClientStateListener {
 
     private val defaultScope = CoroutineScope(Dispatchers.Main)
+
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
+
     private val knownInAppSKUs = mutableListOf("test_product_id")
-    private val billingFlowInProcess = MutableStateFlow(false)
-    private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
+    private val knownAutoConsumeSKUs = mutableListOf("test_product_id")
+
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
     private val skuDetailsMap: MutableMap<String, MutableStateFlow<SkuDetails?>> = HashMap()
+
+    private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
+    private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
+    private val purchaseConsumedFlow = MutableSharedFlow<List<String>>()
+    private val billingFlowInProcess = MutableStateFlow(false)
+
     private val billingClient: BillingClient
 
     companion object {
@@ -226,8 +232,26 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                 val purchaseState = purchase.purchaseState
                 if (purchaseState == Purchase.PurchaseState.PURCHASED) {
                     setSkuStateFromPurchase(purchase)
-                    if (!purchase.isAcknowledged) {
-                        defaultScope.launch {
+                    var isConsumable = false
+                    defaultScope.launch {
+                        for (sku in purchase.skus) {
+                            if (knownAutoConsumeSKUs.contains(sku)) {
+                                isConsumable = true
+                            } else {
+                                if (isConsumable) {
+                                    Log.e(
+                                        TAG, "Purchase cannot contain a mixture of consumable" +
+                                                "and non-consumable items: " + purchase.skus.toString()
+                                    )
+                                    isConsumable = false
+                                    break
+                                }
+                            }
+                        }
+                        if (isConsumable) {
+                            consumePurchase(purchase)
+                            newPurchaseFlow.tryEmit(purchase.skus)
+                        } else if (!purchase.isAcknowledged) {
                             val billingResult = billingClient.acknowledgePurchase(
                                 AcknowledgePurchaseParams.newBuilder()
                                     .setPurchaseToken(purchase.purchaseToken)
@@ -240,7 +264,10 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                                 )
                             } else {
                                 for (sku in purchase.skus) {
-                                    setSkuState(sku, SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED)
+                                    setSkuState(
+                                        sku,
+                                        SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED
+                                    )
                                 }
                             }
                             newPurchaseFlow.tryEmit(purchase.skus)
@@ -259,6 +286,30 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                     setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
                 }
             }
+        }
+    }
+
+    private suspend fun consumePurchase(purchase: Purchase) {
+        if (purchaseConsumptionInProcess.contains(purchase)) {
+            return
+        }
+        purchaseConsumptionInProcess.add(purchase)
+        val consumePurchaseResult = billingClient.consumePurchase(
+            ConsumeParams.newBuilder()
+                .setPurchaseToken(purchase.purchaseToken)
+                .build()
+        )
+        purchaseConsumptionInProcess.remove(purchase)
+        if (consumePurchaseResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+            Log.d(TAG, "Consumption successful. Emitting sku.")
+            defaultScope.launch {
+                purchaseConsumedFlow.emit(purchase.skus)
+            }
+            for (sku in purchase.skus) {
+                setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
+            }
+        } else {
+            Log.e(TAG, "Error while consuming: ${consumePurchaseResult.billingResult.debugMessage}")
         }
     }
 
