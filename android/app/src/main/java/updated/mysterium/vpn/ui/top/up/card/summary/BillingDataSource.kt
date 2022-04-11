@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.payment.SkuState
 import kotlin.math.min
@@ -89,6 +90,12 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
 
     fun getNewPurchases() = newPurchaseFlow.asSharedFlow()
 
+    suspend fun getKnownInAppSkuDetails(): List<SkuDetails>? {
+        return withContext(defaultScope.coroutineContext) {
+            querySkuDetailsAsync()
+        }
+    }
+
     private fun initializeFlows() {
         for (sku in knownInAppSKUs) {
             val skuState = MutableStateFlow(SkuState.SKU_STATE_UNPURCHASED)
@@ -155,15 +162,21 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         }
     }
 
-    private suspend fun querySkuDetailsAsync() {
-        if (!knownInAppSKUs.isNullOrEmpty()) {
+    private suspend fun querySkuDetailsAsync(): List<SkuDetails>? {
+        return if (!knownInAppSKUs.isNullOrEmpty()) {
             val skuDetailsResult = billingClient.querySkuDetails(
                 SkuDetailsParams.newBuilder()
                     .setType(BillingClient.SkuType.INAPP)
                     .setSkusList(knownInAppSKUs)
                     .build()
             )
-            onSkuDetailsResponse(skuDetailsResult.billingResult, skuDetailsResult.skuDetailsList)
+            onSkuDetailsResponse(
+                skuDetailsResult.billingResult,
+                skuDetailsResult.skuDetailsList
+            )
+            skuDetailsResult.skuDetailsList
+        } else {
+            null
         }
     }
 
@@ -343,6 +356,15 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
             reconnectMilliseconds * 2,
             RECONNECT_TIMER_MAX_TIME_MILLISECONDS
         )
+    }
+
+    suspend fun canPurchase(sku: String): Boolean {
+        val skuDetailsFlow = skuDetailsMap[sku]!!
+        val skuStateFlow = skuStateMap[sku]!!
+
+        return skuStateFlow.combine(skuDetailsFlow) { skuState, skuDetails ->
+            skuState == SkuState.SKU_STATE_UNPURCHASED && skuDetails != null
+        }.first()
     }
 
 }

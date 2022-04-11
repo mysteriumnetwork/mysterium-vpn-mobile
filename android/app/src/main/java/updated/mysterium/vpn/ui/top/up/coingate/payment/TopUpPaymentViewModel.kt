@@ -11,6 +11,7 @@ import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.payment.PaymentStatus
+import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.top.up.card.summary.BillingDataSource
@@ -41,6 +42,10 @@ class TopUpPaymentViewModel(
     private val _paymentFailed = MutableLiveData<Unit>()
     private val _paymentCanceled = MutableLiveData<Unit>()
     private var orderId: Long? = null
+
+    companion object {
+        val filterRange = ('0'..'9') + ('.')
+    }
 
     init {
         subscribeOnBillingFlow()
@@ -107,6 +112,21 @@ class TopUpPaymentViewModel(
                 Log.d(TAG, "Collection complete")
             }
             Log.d(TAG, "Collection Coroutine Scope Exited")
+        }
+    }
+
+    fun getSkuDetailList() = liveDataResult {
+        val skuDetailList = billingDataSource.getKnownInAppSkuDetails()
+        skuDetailList?.map { skuDetails ->
+            val price = skuDetails.description.filter { it in filterRange }.toDouble()
+            val mystAmount = price * balanceUseCase.getChfEquivalent()
+            TopUpPriceCardItem(
+                sku = skuDetails.sku,
+                title = skuDetails.price,
+                price = price,
+                mystAmount = mystAmount,
+                isSelected = skuDetailList.indexOf(skuDetails) == 0
+            )
         }
     }
 

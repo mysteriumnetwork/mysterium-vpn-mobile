@@ -12,7 +12,8 @@ class BalanceUseCase(
 ) {
 
     private companion object {
-        const val CURRENCY = "USD"
+        const val USD = "USD"
+        const val CHF = "CHF"
     }
 
     fun initDeferredNode(deferredNode: DeferredNode) {
@@ -27,7 +28,9 @@ class BalanceUseCase(
         callback: (Double) -> Unit
     ) = nodeRepository.registerBalanceChangeCallback(callback)
 
-    suspend fun getUsdEquivalent() = nodeRepository.getExchangeRate(CURRENCY)
+    suspend fun getUsdEquivalent() = nodeRepository.getExchangeRate(USD)
+
+    suspend fun getChfEquivalent() = nodeRepository.getExchangeRate(CHF)
 
     suspend fun getWalletEquivalent(balance: Double) = nodeRepository.getWalletEquivalent(balance)
 

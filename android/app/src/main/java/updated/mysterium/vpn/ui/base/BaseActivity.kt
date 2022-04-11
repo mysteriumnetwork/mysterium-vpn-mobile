@@ -21,12 +21,14 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
+import updated.mysterium.vpn.ui.top.up.card.price.TopUpPriceActivity
 import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -266,13 +268,10 @@ abstract class BaseActivity : AppCompatActivity() {
         baseViewModel.getGateways().observe(this) {
             it.onSuccess { result ->
                 val gateways = result.filterNotNull()
-                val intent = if (gateways.size == 1) {
-                    Intent(this, TopUpAmountActivity::class.java).apply {
-                        putExtra(
-                            TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways[0].gateway
-                        )
-                    }
+                val intent = if (gateways.size == 1 && gateways[0] == Gateway.PLAY_BILLING) {
+                    Intent(this, TopUpPriceActivity::class.java)
+                } else if (gateways.size == 1 && gateways[0] == Gateway.COINGATE) {
+                    Intent(this, TopUpAmountActivity::class.java)
                 } else {
                     val gatewayValues = gateways.map { it.gateway }
                     PaymentMethodActivity.newIntent(this, gatewayValues)

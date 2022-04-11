@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.coingate.amount
+package updated.mysterium.vpn.ui.top.up.card.price
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -10,23 +10,23 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemCardElementBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.common.extensions.dpToPx
-import updated.mysterium.vpn.model.top.up.TopUpAmountCardItem
+import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 
-class TopUpAmountAdapter :
-    ContentListAdapter<TopUpAmountCardItem, TopUpAmountAdapter.TopUpAmountViewHolder>() {
+class TopUpPriceAdapter :
+    ContentListAdapter<TopUpPriceCardItem, TopUpPriceAdapter.TopUpPriceViewHolder>() {
 
     private companion object {
         const val MARGIN_DP = 24f
     }
 
-    private var selectedCardItem: TopUpAmountCardItem? = null
-    var onItemSelected: ((TopUpAmountCardItem) -> Unit)? = null
+    private var selectedCardItem: TopUpPriceCardItem? = null
+    var onItemSelected: ((TopUpPriceCardItem) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TopUpAmountViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TopUpPriceViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_card_element, parent, false)
     )
 
-    override fun onBindViewHolder(holder: TopUpAmountViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TopUpPriceViewHolder, position: Int) {
         if (position == items.lastIndex) {
             val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
             params.rightMargin = holder.itemView.context.dpToPx(MARGIN_DP)
@@ -39,14 +39,14 @@ class TopUpAmountAdapter :
         holder.bind(items[position])
     }
 
-    fun getSelectedValue() = selectedCardItem?.value
+    fun getSelectedItem() = selectedCardItem
 
-    inner class TopUpAmountViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TopUpPriceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding = ItemCardElementBinding.bind(itemView)
 
-        fun bind(cardItem: TopUpAmountCardItem) {
-            binding.cardItemValue.text = cardItem.value
+        fun bind(cardItem: TopUpPriceCardItem) {
+            binding.cardItemValue.text = cardItem.title
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
                 selectedState()

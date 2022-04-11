@@ -142,7 +142,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             .map { Gateway.from(it.name) }
             .toMutableList()
             .apply {
-                add(Gateway.CARDINITY) // for testing purpose only
+                add(Gateway.PLAY_BILLING) // for testing purpose only
                 remove(Gateway.PAYPAL)
             }
     }

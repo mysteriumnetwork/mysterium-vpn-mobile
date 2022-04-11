@@ -19,9 +19,6 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     var usdEquivalent = 0.0
         private set
 
-    var mystEquivalent = 0.0
-        private set
-
     private val balanceUseCase = useCaseProvider.balance()
     private val handler = Handler()
     private val runnable = object : Runnable {
@@ -46,13 +43,24 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         handler.removeCallbacks(runnable)
     }
 
-    private fun loadRate() {
+    fun loadRate() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
             usdEquivalent = balanceUseCase.getUsdEquivalent()
-            mystEquivalent = 1 / usdEquivalent
         }
     }
+
+    fun getMystEquivalent(price: Double): Double {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.i(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        var chfEquivalent = 0.0
+        viewModelScope.launch(Dispatchers.IO + handler) {
+            chfEquivalent = balanceUseCase.getChfEquivalent()
+        }
+        return price * chfEquivalent
+    }
+
 }

@@ -22,7 +22,7 @@ data class GatewayCardItem(
                     R.color.payment_method_crypto_text_color,
                     R.color.payment_method_crypto_icon_color
                 )
-                Gateway.CARDINITY -> GatewayCardItem(
+                Gateway.PLAY_BILLING -> GatewayCardItem(
                     R.string.credit_card,
                     R.drawable.icon_top_up_now,
                     R.color.payment_method_card_background,

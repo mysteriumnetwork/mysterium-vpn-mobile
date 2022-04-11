@@ -9,6 +9,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
@@ -16,13 +17,13 @@ import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 class CardSummaryActivity : BaseActivity() {
 
     companion object {
-        const val MYST_AMOUNT_EXTRA_KEY = "MYST_AMOUNT_EXTRA_KEY"
-        const val USD_PRICE_EXTRA_KEY = "USD_PRICE_EXTRA_KEY"
+        const val SKU_EXTRA_KEY = "SKU_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
     private val viewModel: CardSummaryViewModel by inject()
     private val paymentViewModel: TopUpPaymentViewModel by inject()
+    private var topUpPriceCardItem: TopUpPriceCardItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,12 @@ class CardSummaryActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            paymentViewModel.billingDataSource.launchBillingFlow(this@CardSummaryActivity, "test_product_id")
+            topUpPriceCardItem?.let {
+                paymentViewModel.billingDataSource.launchBillingFlow(
+                    this@CardSummaryActivity,
+                    it.sku
+                )
+            }
         }
         binding.cancelButton.setOnClickListener {
             navigateToHome()
@@ -55,7 +61,8 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun inflateOrderData() {
-        /*paymentViewModel.isBalanceLimitExceeded().observe(this) {
+        topUpPriceCardItem = intent.extras?.getParcelable(SKU_EXTRA_KEY)
+        /*paymentViewModel.isBalanceLimitExceeded().observe(this) { // for test purposes only
             it.onSuccess { isBalanceLimitExceeded ->
                 if (isBalanceLimitExceeded) {
                     showPaymentBalanceLimitError()
@@ -65,13 +72,9 @@ class CardSummaryActivity : BaseActivity() {
                 }
             }
         }*/
-        val mystAmount = intent.extras?.getDouble(MYST_AMOUNT_EXTRA_KEY)
-        binding.priceTitleTextView.text = getString(
-            R.string.card_payment_myst_description, mystAmount
-        )
-        val usdPrice = intent.extras?.getDouble(USD_PRICE_EXTRA_KEY)
-        binding.priceValueTextView.text = getString(R.string.card_payment_price, usdPrice)
-        binding.totalPriceValueTextView.text = getString(R.string.card_payment_price, usdPrice)
+        binding.priceTitleTextView.text = getString(R.string.card_payment_myst_description, topUpPriceCardItem?.mystAmount)
+        binding.priceValueTextView.text = topUpPriceCardItem?.title
+        binding.totalPriceValueTextView.text = topUpPriceCardItem?.title
     }
 
     private fun paymentConfirmed() {
@@ -84,7 +87,6 @@ class CardSummaryActivity : BaseActivity() {
             it.onSuccess {
                 navigateToHome()
             }
-
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
                 navigateToHome()

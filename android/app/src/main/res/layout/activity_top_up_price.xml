@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
             android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-            android:text="@string/top_up_amount_description"
+            android:text="@string/top_up_price_description"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -181,7 +181,7 @@
                     app:layout_constraintGuide_percent="0.4" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/amountRecycler"
+                    android:id="@+id/priceRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_size_xsmall"
@@ -194,7 +194,7 @@
                     tools:listitem="@layout/item_card_element" />
 
                 <TextView
-                    android:id="@+id/usdEquivalentTextView"
+                    android:id="@+id/mystEquivalentTextView"
                     style="@style/TextAppearance.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                     android:id="@+id/confirmButtonFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView">
+                    app:layout_constraintTop_toBottomOf="@+id/mystEquivalentTextView">
 
                     <ImageView
                         android:layout_width="match_parent"

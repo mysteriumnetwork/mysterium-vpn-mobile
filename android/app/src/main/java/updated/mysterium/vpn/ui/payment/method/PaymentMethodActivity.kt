@@ -6,6 +6,7 @@ import android.os.Bundle
 import network.mysterium.vpn.databinding.ActivityPaymentMethodBinding
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
+import updated.mysterium.vpn.ui.top.up.card.price.TopUpPriceActivity
 import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 
 class PaymentMethodActivity : BaseActivity() {
@@ -54,8 +55,10 @@ class PaymentMethodActivity : BaseActivity() {
     }
 
     private fun navigateToTopUp(gateway: Gateway) {
-        val intent = Intent(this, TopUpAmountActivity::class.java).apply {
-            putExtra(TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY, gateway.gateway)
+        val intent = if (gateway == Gateway.PLAY_BILLING) {
+            Intent(this, TopUpPriceActivity::class.java)
+        } else {
+            Intent(this, TopUpAmountActivity::class.java)
         }
         startActivity(intent)
     }
