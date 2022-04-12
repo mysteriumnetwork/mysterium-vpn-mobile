@@ -2,12 +2,11 @@ package updated.mysterium.vpn.ui.top.up.card.price
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpPriceBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
-import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
@@ -33,7 +32,6 @@ class TopUpPriceActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
-        getSkuList()
     }
 
     private fun configure() {
@@ -41,6 +39,7 @@ class TopUpPriceActivity : BaseActivity() {
         topUpAdapter.onItemSelected = {
             onItemSelected(it)
         }
+        setSkuList()
     }
 
     private fun bindsAction() {
@@ -56,25 +55,19 @@ class TopUpPriceActivity : BaseActivity() {
         }
     }
 
-    private fun getSkuList() {
-        paymentViewModel.getSkuDetailList().observe(this) {
+    private fun setSkuList() {
+        paymentViewModel.getSkuDetails().observe(this) {
             it.onSuccess { skuDetailList ->
-                skuDetailList?.let {
-                    topUpAdapter.addAll(it)
+                skuDetailList.observeOnce(this) {
+                    it?.let { topUpAdapter.addAll(it) }
                 }
             }
-            it.onFailure { throwable ->
-                Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-            }
-        }
-        topUpAdapter.getSelectedItem()?.let {
-            onItemSelected(it)
         }
     }
 
     private fun updateEquivalent(mystAmount: Double) {
         binding.mystEquivalentTextView.text = getString(
-            R.string.top_up_usd_equivalent, mystAmount
+            R.string.top_up_myst_equivalent, mystAmount
         )
     }
 

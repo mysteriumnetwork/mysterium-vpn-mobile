@@ -43,7 +43,7 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         handler.removeCallbacks(runnable)
     }
 
-    fun loadRate() {
+    private fun loadRate() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.i(TAG, exception.localizedMessage ?: exception.toString())
         }
@@ -52,15 +52,6 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun getMystEquivalent(price: Double): Double {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.i(TAG, exception.localizedMessage ?: exception.toString())
-        }
-        var chfEquivalent = 0.0
-        viewModelScope.launch(Dispatchers.IO + handler) {
-            chfEquivalent = balanceUseCase.getChfEquivalent()
-        }
-        return price * chfEquivalent
-    }
+    fun getMystEquivalent(price: Double) = price * usdEquivalent
 
 }

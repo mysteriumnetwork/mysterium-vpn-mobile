@@ -1,10 +1,8 @@
 package updated.mysterium.vpn.ui.top.up.coingate.payment
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.android.billingclient.api.SkuDetails
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
@@ -99,14 +97,8 @@ class TopUpPaymentViewModel(
         viewModelScope.launch {
             try {
                 billingDataSource.getNewPurchases().collect { skuList ->
-                    for (sku in skuList) {
-                        when (sku) {
-                            "test_product_id" -> {
-                                _paymentSuccessfully.postValue(Unit)
-                                billingDataSource.refreshPurchases()
-                            }
-                        }
-                    }
+                    _paymentSuccessfully.postValue(Unit)
+                    billingDataSource.refreshPurchases()
                 }
             } catch (e: Throwable) {
                 Log.d(TAG, "Collection complete")
@@ -115,17 +107,31 @@ class TopUpPaymentViewModel(
         }
     }
 
-    fun getSkuDetailList() = liveDataResult {
-        val skuDetailList = billingDataSource.getKnownInAppSkuDetails()
-        skuDetailList?.map { skuDetails ->
+    fun getSkuDetails() = liveDataResult {
+        val usdEquivalent = balanceUseCase.getUsdEquivalent()
+        billingDataSource.skuDetailsList.map { list ->
+            list?.let {
+                toTopUpPriceCardItem(
+                    it,
+                    usdEquivalent
+                )
+            }
+        }
+    }
+
+    private fun toTopUpPriceCardItem(
+        list: List<SkuDetails>,
+        chfEquivalent: Double
+    ): List<TopUpPriceCardItem> {
+        return list.map { skuDetails ->
             val price = skuDetails.description.filter { it in filterRange }.toDouble()
-            val mystAmount = price * balanceUseCase.getChfEquivalent()
+            val mystEquivalent = price * chfEquivalent
             TopUpPriceCardItem(
                 sku = skuDetails.sku,
                 title = skuDetails.price,
                 price = price,
-                mystAmount = mystAmount,
-                isSelected = skuDetailList.indexOf(skuDetails) == 0
+                mystEquivalent = mystEquivalent,
+                isSelected = list.indexOf(skuDetails) == 0
             )
         }
     }

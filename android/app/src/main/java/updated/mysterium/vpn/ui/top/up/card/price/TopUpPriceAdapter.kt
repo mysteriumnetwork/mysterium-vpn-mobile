@@ -39,8 +39,6 @@ class TopUpPriceAdapter :
         holder.bind(items[position])
     }
 
-    fun getSelectedItem() = selectedCardItem
-
     inner class TopUpPriceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding = ItemCardElementBinding.bind(itemView)
@@ -49,6 +47,7 @@ class TopUpPriceAdapter :
             binding.cardItemValue.text = cardItem.title
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
+                onItemSelected?.invoke(cardItem)
                 selectedState()
             } else {
                 unselectedState()

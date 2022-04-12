@@ -72,7 +72,8 @@ class CardSummaryActivity : BaseActivity() {
                 }
             }
         }*/
-        binding.priceTitleTextView.text = getString(R.string.card_payment_myst_description, topUpPriceCardItem?.mystAmount)
+        binding.priceTitleTextView.text =
+            getString(R.string.card_payment_myst_description, topUpPriceCardItem?.mystEquivalent)
         binding.priceValueTextView.text = topUpPriceCardItem?.title
         binding.totalPriceValueTextView.text = topUpPriceCardItem?.title
     }

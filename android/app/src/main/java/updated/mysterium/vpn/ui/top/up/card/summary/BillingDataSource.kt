@@ -6,12 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.payment.SkuState
 import kotlin.math.min
@@ -29,6 +29,9 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
 
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
     private val skuDetailsMap: MutableMap<String, MutableStateFlow<SkuDetails?>> = HashMap()
+    private val _skuDetailsList = MutableLiveData<List<SkuDetails>?>()
+    val skuDetailsList
+        get() = _skuDetailsList
 
     private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
     private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
@@ -89,12 +92,6 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     }
 
     fun getNewPurchases() = newPurchaseFlow.asSharedFlow()
-
-    suspend fun getKnownInAppSkuDetails(): List<SkuDetails>? {
-        return withContext(defaultScope.coroutineContext) {
-            querySkuDetailsAsync()
-        }
-    }
 
     private fun initializeFlows() {
         for (sku in knownInAppSKUs) {
@@ -162,8 +159,8 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         }
     }
 
-    private suspend fun querySkuDetailsAsync(): List<SkuDetails>? {
-        return if (!knownInAppSKUs.isNullOrEmpty()) {
+    private suspend fun querySkuDetailsAsync() {
+        if (!knownInAppSKUs.isNullOrEmpty()) {
             val skuDetailsResult = billingClient.querySkuDetails(
                 SkuDetailsParams.newBuilder()
                     .setType(BillingClient.SkuType.INAPP)
@@ -174,9 +171,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                 skuDetailsResult.billingResult,
                 skuDetailsResult.skuDetailsList
             )
-            skuDetailsResult.skuDetailsList
-        } else {
-            null
+            _skuDetailsList.postValue(skuDetailsResult.skuDetailsList)
         }
     }
 
@@ -322,7 +317,10 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                 setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
             }
         } else {
-            Log.e(TAG, "Error while consuming: ${consumePurchaseResult.billingResult.debugMessage}")
+            Log.e(
+                TAG,
+                "Error while consuming: ${consumePurchaseResult.billingResult.debugMessage}"
+            )
         }
     }
 
