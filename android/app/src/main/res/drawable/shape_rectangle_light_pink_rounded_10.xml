@@ -4,6 +4,6 @@
 
     <corners android:radius="10dp" />
 
-    <solid android:color="@color/payment_method_paypal_background" />
+    <solid android:color="@color/payment_method_card_background" />
 
 </shape>
