@@ -187,7 +187,6 @@
     <string name="card_payment_pay">继续付款</string>
     <string name="card_payment_total">应付总额</string>
     <string name="card_payment_country_hint">选择国家或地区</string>
-    <string name="card_payment_myst_description">%d MYST 充值</string>
 
     <!--  Private key  -->
     <string name="private_key_description">重要提示！立即下载您的私人密钥，然后安全存储，以防无法访问您的账户。</string>
