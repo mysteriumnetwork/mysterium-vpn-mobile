@@ -42,6 +42,7 @@
         android:layout_gravity="center|top"
         android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
         android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+        android:padding="@dimen/margin_padding_size_small"
         android:background="@drawable/shape_card_element_unselected"
         app:layout_constraintEnd_toStartOf="@+id/rightDynamicMargin"
         app:layout_constraintStart_toEndOf="@+id/leftDynamicMargin"
