@@ -127,7 +127,9 @@ class ConnectionActivity : BaseActivity() {
         if (isInternetAvailable) {
             checkProposalArgument()
         } else {
-            wifiNetworkErrorPopUp()
+            wifiNetworkErrorPopUp {
+                baseViewModel.checkInternetConnection()
+            }
         }
     }
 
@@ -261,7 +263,9 @@ class ConnectionActivity : BaseActivity() {
             if (isInternetAvailable) {
                 showLostConnectionPopUp()
             } else {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             }
         }
     }

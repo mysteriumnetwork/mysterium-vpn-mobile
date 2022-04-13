@@ -183,13 +183,19 @@ class HomeSelectionActivity : BaseActivity() {
                 override fun canScrollVertically() = false
             }
         }
+        getSystemPresets()
+    }
+
+    private fun getSystemPresets() {
         viewModel.getSystemPresets().observe(this) {
             it.onSuccess { filters ->
                 filtersAdapter.replaceAll(filters)
                 applySavedFilter(viewModel.getPreviousFilterId(), filters)
             }
             it.onFailure { throwable ->
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    getSystemPresets()
+                }
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         }
