@@ -94,7 +94,10 @@ class SplashActivity : BaseActivity() {
             viewModel.initRepository()
         }
         viewModel.nodeStartingError.observe(this) {
-            wifiNetworkErrorPopUp()
+            wifiNetworkErrorPopUp {
+                isLoadingStarted = false
+                init()
+            }
         }
 
         registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
@@ -211,7 +214,9 @@ class SplashActivity : BaseActivity() {
             ) {
                 init()
             } else {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             }
         }
     }

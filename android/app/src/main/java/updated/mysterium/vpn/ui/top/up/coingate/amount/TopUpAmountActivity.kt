@@ -77,7 +77,9 @@ class TopUpAmountActivity : BaseActivity() {
                 }
 
                 it.onFailure {
-                    wifiNetworkErrorPopUp()
+                    wifiNetworkErrorPopUp {
+                        handlePaymentMethod()
+                    }
                 }
             }
         }

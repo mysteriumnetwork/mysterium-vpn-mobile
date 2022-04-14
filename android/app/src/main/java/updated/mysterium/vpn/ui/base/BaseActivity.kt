@@ -127,14 +127,14 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun wifiNetworkErrorPopUp() {
+    fun wifiNetworkErrorPopUp(retryAction: () -> Unit) {
         if (wifiErrorDialog == null && !isFinishing) {
             val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
             wifiErrorDialog = createPopUp(bindingPopUp.root, false)
             bindingPopUp.retryButton.setOnClickListener {
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
-                baseViewModel.checkInternetConnection()
+                retryAction()
             }
             wifiErrorDialog?.show()
         }
@@ -229,7 +229,9 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         baseViewModel.isInternetAvailable.observe(this) { isAvailable ->
             if (!isAvailable) {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             } else if (!isInternetAvailable) {
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
