@@ -9,14 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemCardElementBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
-import updated.mysterium.vpn.common.extensions.dpToPx
+
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 
-class TopUpAmountAdapter : ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.TopUpAmountViewHolder>() {
-
-    private companion object {
-        const val MARGIN_DP = 24f
-    }
+class TopUpAmountAdapter :
+    ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.TopUpAmountViewHolder>() {
 
     private var selectedCardItem: TopUpCardItem? = null
     var onItemSelected: ((TopUpCardItem) -> Unit)? = null
@@ -26,15 +23,6 @@ class TopUpAmountAdapter : ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.
     )
 
     override fun onBindViewHolder(holder: TopUpAmountViewHolder, position: Int) {
-        if (position == items.lastIndex) {
-            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
-            params.rightMargin = holder.itemView.context.dpToPx(MARGIN_DP)
-            holder.itemView.layoutParams = params
-        } else if (position == 0) {
-            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
-            params.leftMargin = holder.itemView.context.dpToPx(MARGIN_DP)
-            holder.itemView.layoutParams = params
-        }
         holder.bind(items[position])
     }
 
