@@ -177,13 +177,20 @@
         android:id="@+id/privateKeys"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
         android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:background="@drawable/shape_gradient_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/walletInfo">
+        app:layout_constraintTop_toBottomOf="@id/walletInfo">
+
+        <ImageView
+            android:id="@+id/privateKeysBackground"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_gradient_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/residentCountryList"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/residentTitle"
@@ -215,17 +222,15 @@
             app:layout_constraintTop_toBottomOf="@+id/residentTitle" />
 
         <FrameLayout
-            android:id="@+id/residentSpinnerFrame"
+            android:id="@+id/selectedCountryFrame"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_padding_size_large"
             android:layout_marginVertical="@dimen/margin_padding_size_medium_large"
-            android:layout_marginBottom="@dimen/margin_padding_size_medium"
             android:background="@drawable/shape_edit_text"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/residentDescription">
+            app:layout_constraintTop_toBottomOf="@id/residentDescription">
 
             <TextView
                 android:id="@+id/selectedCountry"
@@ -246,6 +251,22 @@
                 tools:ignore="ContentDescription" />
 
         </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/residentCountryList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+            android:layout_marginTop="@dimen/margin_padding_size_small"
+            android:layout_marginBottom="@dimen/margin_padding_size_medium"
+            android:background="@drawable/spinner_settings_menu"
+            android:visibility="invisible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectedCountryFrame"
+            tools:itemCount="25"
+            tools:listitem="@layout/item_spinner_dns" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
