@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySearchBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
 import updated.mysterium.vpn.network.usecase.NodesUseCase.Companion.ALL_COUNTRY_CODE
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.CONNECTION_TYPE_KEY
 import updated.mysterium.vpn.ui.nodes.list.FilterAdapter
 import updated.mysterium.vpn.ui.nodes.list.FilterViewModel
 
@@ -118,6 +120,7 @@ class SearchActivity : BaseActivity() {
 
     private fun navigateToHome(proposal: Proposal) {
         val intent = Intent(this, ConnectionActivity::class.java)
+        intent.putExtra(CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
         intent.putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
