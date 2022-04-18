@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.ListPopupWindow
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import network.mysterium.vpn.databinding.ViewItemNatCompatibilityDescriptionBinding
@@ -21,7 +20,6 @@ import updated.mysterium.vpn.common.ui.DimenUtils
 import updated.mysterium.vpn.common.ui.FlowablePopupWindow
 import updated.mysterium.vpn.model.settings.DnsOption
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.custom.view.LongListPopUpWindow
 import updated.mysterium.vpn.ui.menu.SpinnerArrayAdapter
 import kotlin.math.abs
 
@@ -50,7 +48,6 @@ class SettingsActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsViewModel by inject()
-    private lateinit var listPopupWindow: ListPopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +79,9 @@ class SettingsActivity : BaseActivity() {
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
         }
-        binding.residentSpinnerFrame.setOnClickListener {
+        binding.selectedCountryFrame.setOnClickListener {
             calculateSpinnerSize()
-            listPopupWindow.show()
+            binding.residentCountryList.visibility = View.VISIBLE
         }
         binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changeLightMode(isChecked)
@@ -147,7 +144,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun checkPreviousResidentCountry() {
-        viewModel.getResidentCountry().observe(this, { result ->
+        viewModel.getResidentCountry().observe(this) { result ->
             val countriesList = CountriesUtil.getAllResidentCountries()
             result.onSuccess { residentDigitCode ->
                 val residentCountry = countriesList.find { it.code == residentDigitCode }
@@ -158,25 +155,21 @@ class SettingsActivity : BaseActivity() {
                 binding.selectedCountry.text = countriesList.first().fullName
                 Log.e(TAG, it.localizedMessage ?: it.toString())
             }
-        })
+        }
     }
 
     private fun setUpResidentCountryList() {
         val countriesList = CountriesUtil.getAllResidentCountries()
         val countriesListName = countriesList.map { it.fullName }
         binding.selectedCountry.text = countriesListName.first()
-        val spinnerAdapter = SpinnerArrayAdapter(
-            this,
-            R.layout.item_spinner_dns,
-            countriesListName
-        )
-        listPopupWindow = LongListPopUpWindow(this).apply {
-            inflateView(spinnerAdapter, binding.residentSpinnerFrame)
-            setOnItemClickListener { _, _, position, _ ->
-                dismiss()
+        ResidentCountryAdapter().apply {
+            addAll(countriesListName)
+            onCountrySelected = { position ->
                 binding.selectedCountry.text = countriesListName[position]
                 viewModel.saveResidentCountry(countriesList[position].code)
+                binding.residentCountryList.visibility = View.INVISIBLE
             }
+            binding.residentCountryList.adapter = this
         }
     }
 
@@ -184,7 +177,7 @@ class SettingsActivity : BaseActivity() {
         val size = Point()
         windowManager.defaultDisplay.getSize(size) // get screen size
         val location = IntArray(2)
-        binding.residentSpinnerFrame.getLocationOnScreen(location) // get view coordinates
+        binding.residentCountryList.getLocationOnScreen(location) // get view coordinates
         val popUpHeight = size.y - location[1] // distance from view to screen bottom
         val margin = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -192,7 +185,9 @@ class SettingsActivity : BaseActivity() {
             resources.displayMetrics
         ).toInt()
         if (popUpHeight > margin) {
-            listPopupWindow.height = popUpHeight - margin // add margin from bottom
+            val lp = binding.residentCountryList.layoutParams
+            lp.height = popUpHeight - margin
+            binding.residentCountryList.layoutParams = lp
         }
     }
 
