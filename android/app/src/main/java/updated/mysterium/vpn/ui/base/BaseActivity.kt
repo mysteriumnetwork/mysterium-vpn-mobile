@@ -28,6 +28,7 @@ import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -43,6 +44,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLayoutDirection()
         baseViewModel.checkInternetConnection()
         alertDialogBuilder = AlertDialog.Builder(this)
         subscribeViewModel()
@@ -261,6 +263,14 @@ abstract class BaseActivity : AppCompatActivity() {
                 insufficientFoundsDialog = null
             }
             insufficientFoundsDialog?.show()
+        }
+    }
+
+    private fun setLayoutDirection() {
+        if (Locale.getDefault().language == "ar") {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        } else {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         }
     }
 
