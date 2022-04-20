@@ -238,9 +238,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:paddingVertical="@dimen/margin_padding_size_small"
+                android:paddingHorizontal="@dimen/margin_padding_size_large"
                 android:textAlignment="center"
                 android:textColor="@color/onboarding_skip_white"
-                tools:text="Ukraine" />
+                tools:text="South Georgia and the South Sandwich Islands" />
 
             <ImageView
                 android:layout_width="wrap_content"
