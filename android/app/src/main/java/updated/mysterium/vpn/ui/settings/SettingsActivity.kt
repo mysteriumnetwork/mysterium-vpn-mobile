@@ -80,8 +80,7 @@ class SettingsActivity : BaseActivity() {
             finish()
         }
         binding.selectedCountryFrame.setOnClickListener {
-            calculateSpinnerSize()
-            binding.residentCountryList.visibility = View.VISIBLE
+            changeCountryListVisibility()
         }
         binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changeLightMode(isChecked)
@@ -170,6 +169,15 @@ class SettingsActivity : BaseActivity() {
                 binding.residentCountryList.visibility = View.INVISIBLE
             }
             binding.residentCountryList.adapter = this
+        }
+    }
+
+    private fun changeCountryListVisibility() {
+        if (binding.residentCountryList.visibility == View.INVISIBLE) {
+            calculateSpinnerSize()
+            binding.residentCountryList.visibility = View.VISIBLE
+        } else {
+            binding.residentCountryList.visibility = View.INVISIBLE
         }
     }
 
