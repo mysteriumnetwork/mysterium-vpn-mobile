@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.intercom.android.sdk.Intercom
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
@@ -24,7 +23,6 @@ import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.settings.SettingsActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
-import java.util.*
 
 class MenuActivity : BaseActivity() {
 
@@ -94,11 +92,11 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
+        balanceViewModel.balanceLiveData.observe(this) {
             val balance = getString(R.string.menu_current_balance, it)
             MENU_ITEMS[1].dynamicSubtitle = balance // Added balance to wallet item
             menuGridAdapter.replaceAll(MENU_ITEMS)
-        })
+        }
     }
 
     private fun inflateCustomToolbarView() {
@@ -159,7 +157,7 @@ class MenuActivity : BaseActivity() {
             navigateToConnectionOrHome()
         }
         binding.helpButton.setOnClickListener {
-            Intercom.client().displayMessenger()
+            composeEmail()
         }
         binding.reportButton.setOnClickListener {
             startActivity(Intent(this, ReportIssueActivity::class.java))

@@ -12,9 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import io.intercom.android.sdk.Intercom
 import kotlinx.coroutines.CompletableDeferred
-import network.mysterium.vpn.BuildConfig
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -42,7 +40,6 @@ class App : Application(), LifecycleObserver {
         super.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         Countries.loadBitmaps()
-        setupIntercom()
         startKoin {
             androidContext(this@App)
             modules(Modules.main)
@@ -71,14 +68,6 @@ class App : Application(), LifecycleObserver {
     override fun onConfigurationChanged(newConfig: Configuration) {
         onAttach(this)
         super.onConfigurationChanged(newConfig)
-    }
-
-    private fun setupIntercom() {
-        Intercom.initialize(
-            this,
-            BuildConfig.INTERCOM_API_KEY,
-            BuildConfig.INTERCOM_APP_ID
-        )
     }
 
     private fun bindMysteriumService() {
