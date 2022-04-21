@@ -192,7 +192,7 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun composeEmail() {
-        val address = "help@mysterium.network"
+        val address = arrayOf("help@mysterium.network")
         val subject = "Mysterium: Get help"
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
