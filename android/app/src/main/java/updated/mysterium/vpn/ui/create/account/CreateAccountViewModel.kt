@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.intercom.android.sdk.Intercom
-import io.intercom.android.sdk.UserAttributes
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
@@ -14,10 +12,6 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
-
-    private companion object {
-        const val NODE_IDENTITY_KEY = "node_identity"
-    }
 
     val navigateForward: LiveData<Unit>
         get() = _navigateForward
@@ -53,8 +47,9 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
                 )
             }
-            newIdentity?.let { identity ->
-                registerIntercomClient(identity.address)
+            newIdentity?.let {
+                loginUseCase.userCreateOrImportAccount(true)
+                _navigateForward.postValue(Unit)
             }
         }
     }
@@ -71,15 +66,4 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun accountFlowShown() = loginUseCase.accountFlowShown()
 
-    private fun registerIntercomClient(address: String) {
-        Intercom.client().apply {
-            registerUnidentifiedUser()
-            val attrs = UserAttributes.Builder()
-                .withCustomAttribute(NODE_IDENTITY_KEY, address)
-                .build()
-            updateUser(attrs)
-        }
-        loginUseCase.userCreateOrImportAccount(true)
-        _navigateForward.postValue(Unit)
-    }
 }
