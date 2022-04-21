@@ -155,6 +155,10 @@
     <string name="report_issue_error_request">Something went wrong, please try again later</string>
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
 
+    <!-- Get help -->
+    <string name="get_help_email" translatable="false">help@mysterium.network</string>
+    <string name="get_help_subject" translatable="false">Mysterium: Get help</string>
+
     <!--  Monitoring  -->
     <string name="monitoring_title">History Statistics</string>
     <string name="monitoring_last_sessions">Last Sessions</string>

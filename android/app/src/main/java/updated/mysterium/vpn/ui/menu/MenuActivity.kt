@@ -192,12 +192,10 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun composeEmail() {
-        val address = arrayOf("help@mysterium.network")
-        val subject = "Mysterium: Get help"
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, address)
-            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.get_help_email)))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.get_help_subject))
         }
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
