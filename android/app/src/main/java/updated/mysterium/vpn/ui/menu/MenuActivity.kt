@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.menu
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -135,7 +136,8 @@ class MenuActivity : BaseActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun inflateGridLayout() {
         binding.menuRecyclerView.adapter = menuGridAdapter
-        binding.menuRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
+        binding.menuRecyclerView.layoutManager =
+            GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         menuGridAdapter.replaceAll(MENU_ITEMS)
     }
 
@@ -186,6 +188,19 @@ class MenuActivity : BaseActivity() {
                     // TODO("Implement navigation to Referral")
                 }
             }
+        }
+    }
+
+    private fun composeEmail() {
+        val address = "help@mysterium.network"
+        val subject = "Mysterium: Get help"
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, address)
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
         }
     }
 }
