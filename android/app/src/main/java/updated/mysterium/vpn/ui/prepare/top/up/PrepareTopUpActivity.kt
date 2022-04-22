@@ -47,7 +47,7 @@ class PrepareTopUpActivity : BaseActivity() {
             }
         }
         registrationViewModel.accountRegistrationError.observe(this) {
-            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+            detailedErrorPopUp {
                 registrationViewModel.tryRegisterAccount()
             }
         }
