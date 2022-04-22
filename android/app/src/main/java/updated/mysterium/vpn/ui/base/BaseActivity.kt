@@ -111,13 +111,12 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun detailedErrorPopUp(
-        errorMessage: String,
         retryAction: () -> Unit
     ) {
         val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.description.text = errorMessage
-        bindingPopUp.title.setText(R.string.pop_up_details_title)
+        bindingPopUp.description.setText(R.string.pop_up_registration_failed_description)
+        bindingPopUp.title.setText(R.string.pop_up_registration_failed_title)
         bindingPopUp.tryAgainButton.setOnClickListener {
             retryAction.invoke()
             dialog.dismiss()

@@ -260,7 +260,6 @@
     <string name="pop_up_private_key_title">下载密钥</string>
     <string name="pop_up_private_key_description">输入您的密码</string>
     <string name="pop_up_private_key_download">下载</string>
-    <string name="pop_up_details_title">发生了一些错误</string>
     <string name="pop_up_card_payment_button">继续</string>
     <string name="pop_up_card_payment_title">感谢购买！</string>
     <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
