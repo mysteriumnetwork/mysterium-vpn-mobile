@@ -290,7 +290,7 @@
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
     <string name="pop_up_crypto_payment_button">Continue</string>
     <string name="pop_up_crypto_payment_title">Warning!</string>
-    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n You\'ll receive a notification once your payment is successfully processed.</string>
+    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>
