@@ -9,12 +9,15 @@
     <string name="onboarding_main_title_1">Decentralized global node network</string>
     <string name="onboarding_description_title_1">Run by people, for people</string>
     <string name="onboarding_description_content_1">Our network is blind to borders. Select any IP you like from our global list and get unlimited access to worldwide content.</string>
-    <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
+    <string name="onboarding_main_title_2">Surf the web, and pay\nas you go</string>
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
     <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
     <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
     <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and free nodes</string>
+    <string name="onboarding_main_title_4">What is Smart Connect</string>
+    <string name="onboarding_description_title_4">Set preferences\nand slide to connect</string>
+    <string name="onboarding_description_content_4">Top up your account now or do it later and use limited functionality and free nodes</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
 
