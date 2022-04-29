@@ -259,26 +259,6 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                         if (isConsumable) {
                             consumePurchase(purchase)
                             newPurchaseFlow.tryEmit(purchase.skus)
-                        } else if (!purchase.isAcknowledged) {
-                            val billingResult = billingClient.acknowledgePurchase(
-                                AcknowledgePurchaseParams.newBuilder()
-                                    .setPurchaseToken(purchase.purchaseToken)
-                                    .build()
-                            )
-                            if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
-                                Log.e(
-                                    TAG,
-                                    "Error acknowledging purchase: ${purchase.skus.toString()}"
-                                )
-                            } else {
-                                for (sku in purchase.skus) {
-                                    setSkuState(
-                                        sku,
-                                        SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED
-                                    )
-                                }
-                            }
-                            newPurchaseFlow.tryEmit(purchase.skus)
                         }
                     }
                 } else {
