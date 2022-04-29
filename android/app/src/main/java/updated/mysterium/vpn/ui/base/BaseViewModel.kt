@@ -143,7 +143,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             .toMutableList()
             .apply {
                 add(Gateway.PLAY_BILLING) // for testing purpose only
-                remove(Gateway.PAYPAL)
+                removeAll(listOf(Gateway.PAYPAL, Gateway.COINGATE))
             }
     }
 }
