@@ -31,9 +31,9 @@ class FullTermsAdapter(context: Context) :
         private val binding = ItemFullTermBinding.bind(itemView)
 
         fun bind(terms: FullVersionTerm) {
-            binding.indexTextView.text = markwon.toMarkdown(terms.index.toString())
-            binding.titleTextView.text = markwon.toMarkdown(terms.title)
-            binding.contentTextView.text = markwon.toMarkdown(terms.content)
+            markwon.setMarkdown(binding.indexTextView, terms.index.toString())
+            markwon.setMarkdown(binding.titleTextView, terms.title)
+            markwon.setMarkdown(binding.contentTextView, terms.content)
             if (!isAccepted) {
                 binding.viewBackground.setBackgroundColor(Color.TRANSPARENT)
             }

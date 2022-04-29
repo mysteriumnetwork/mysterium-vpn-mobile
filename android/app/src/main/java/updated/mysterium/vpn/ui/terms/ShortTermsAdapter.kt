@@ -32,7 +32,7 @@ class ShortTermsAdapter(context: Context) :
                 // Remove divider from item
                 binding.termTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
-            binding.termTextView.text = markwon.toMarkdown(term)
+            markwon.setMarkdown(binding.termTextView, term)
         }
     }
 }
