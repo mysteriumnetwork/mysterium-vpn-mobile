@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import network.mysterium.vpn.databinding.ActivityPrivateKeyBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
@@ -29,6 +28,10 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     private lateinit var binding: ActivityPrivateKeyBinding
     private val viewModel: PrivateKeyViewModel by inject()
     private val appNotificationManager: AppNotificationManager by inject()
+    private val permissions = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,11 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        showDownloadKeyPopUp()
+        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            showDownloadKeyPopUp()
+        } else {
+            requestPermissions()
+        }
     }
 
     private fun bindsAction() {
@@ -59,22 +66,25 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     }
 
     private fun checkPermissions() {
-        if (
-            ContextCompat.checkSelfPermission(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ),
-                PERMISSION_REQUEST_EXT_STORAGE
-            )
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P && !permissionsAreGranted()) {
+            requestPermissions()
         } else {
             showDownloadKeyPopUp()
         }
+    }
+
+    private fun permissionsAreGranted(): Boolean {
+        return permissions.all {
+            ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            permissions,
+            PERMISSION_REQUEST_EXT_STORAGE
+        )
     }
 
     private fun showDownloadKeyPopUp() {
