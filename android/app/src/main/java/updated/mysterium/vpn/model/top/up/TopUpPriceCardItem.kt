@@ -6,9 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TopUpPriceCardItem(
     val sku: String,
-    val title: String,
     val price: Double,
-    val mystEquivalent: Double,
     var isSelected: Boolean = false
 ): Parcelable {
 

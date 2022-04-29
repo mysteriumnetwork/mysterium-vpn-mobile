@@ -44,7 +44,7 @@ class TopUpPriceAdapter :
         val binding = ItemCardElementBinding.bind(itemView)
 
         fun bind(cardItem: TopUpPriceCardItem) {
-            binding.cardItemValue.text = cardItem.title
+            binding.cardItemValue.text = itemView.context.getString(R.string.top_up_currency_equivalent, cardItem.price)
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
                 onItemSelected?.invoke(cardItem)

@@ -160,7 +160,6 @@
     <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
     <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
-    <string name="top_up_currency_equivalent">%1$s %2$s</string>
     <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>
 

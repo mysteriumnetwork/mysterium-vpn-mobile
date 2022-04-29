@@ -56,10 +56,10 @@ class TopUpPriceActivity : BaseActivity() {
     }
 
     private fun setSkuList() {
-        paymentViewModel.getSkuDetails().observe(this) {
-            it.onSuccess { skuDetailList ->
-                skuDetailList.observeOnce(this) {
-                    it?.let { topUpAdapter.addAll(it) }
+        paymentViewModel.getSkuDetails().observe(this) { result ->
+            result.onSuccess { skuDetailList ->
+                skuDetailList.observeOnce(this) { list ->
+                    list?.let { topUpAdapter.addAll(it) }
                 }
             }
         }

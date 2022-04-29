@@ -13,6 +13,7 @@ import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
+import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class CardSummaryActivity : BaseActivity() {
 
@@ -23,6 +24,7 @@ class CardSummaryActivity : BaseActivity() {
     private lateinit var binding: ActivityCardSummaryBinding
     private val viewModel: CardSummaryViewModel by inject()
     private val paymentViewModel: TopUpPaymentViewModel by inject()
+    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private var topUpPriceCardItem: TopUpPriceCardItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +63,6 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun inflateOrderData() {
-        topUpPriceCardItem = intent.extras?.getParcelable(SKU_EXTRA_KEY)
         /*paymentViewModel.isBalanceLimitExceeded().observe(this) { // for test purposes only
             it.onSuccess { isBalanceLimitExceeded ->
                 if (isBalanceLimitExceeded) {
@@ -72,8 +73,16 @@ class CardSummaryActivity : BaseActivity() {
                 }
             }
         }*/
-        binding.totalPriceValueTextView.text =
-            getString(R.string.card_payment_myst_description, topUpPriceCardItem?.mystEquivalent)
+        intent.extras?.getParcelable<TopUpPriceCardItem>(SKU_EXTRA_KEY)?.let { topUpPriceCardItem ->
+            topUpPriceCardItem.price.let { price ->
+                val mystEquivalent = exchangeRateViewModel.getMystEquivalent(price)
+                binding.totalPriceValueTextView.text =
+                    getString(
+                        R.string.card_payment_myst_description,
+                        mystEquivalent
+                    )
+            }
+        }
     }
 
     private fun paymentConfirmed() {

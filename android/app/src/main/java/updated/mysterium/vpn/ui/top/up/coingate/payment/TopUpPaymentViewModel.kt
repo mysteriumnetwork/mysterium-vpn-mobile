@@ -108,29 +108,23 @@ class TopUpPaymentViewModel(
     }
 
     fun getSkuDetails() = liveDataResult {
-        val usdEquivalent = balanceUseCase.getUsdEquivalent()
         billingDataSource.skuDetailsList.map { list ->
             list?.let {
                 toTopUpPriceCardItem(
-                    it,
-                    usdEquivalent
+                    it
                 )
             }
         }
     }
 
     private fun toTopUpPriceCardItem(
-        list: List<SkuDetails>,
-        chfEquivalent: Double
+        list: List<SkuDetails>
     ): List<TopUpPriceCardItem> {
         return list.map { skuDetails ->
             val price = skuDetails.description.filter { it in filterRange }.toDouble()
-            val mystEquivalent = price * chfEquivalent
             TopUpPriceCardItem(
                 sku = skuDetails.sku,
-                title = skuDetails.price,
                 price = price,
-                mystEquivalent = mystEquivalent,
                 isSelected = list.indexOf(skuDetails) == 0
             )
         }

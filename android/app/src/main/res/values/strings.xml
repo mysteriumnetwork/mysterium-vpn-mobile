@@ -174,7 +174,7 @@
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
     <string name="top_up_amount_description">Select how much MYST credits\n you would like to add into your account</string>
-    <string name="top_up_price_description">Select the price</string>
+    <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
     <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
     <string name="top_up_payment_title">Waiting for a payment</string>
@@ -183,7 +183,7 @@
     <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_myst_equivalent">MYST equivalent ≈ %.2f MYST</string>
-    <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
+    <string name="top_up_currency_equivalent" translatable="false">$%.2f</string>
     <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>

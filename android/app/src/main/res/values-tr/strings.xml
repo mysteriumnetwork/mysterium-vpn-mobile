@@ -162,7 +162,6 @@
     <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
     <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
     <string name="top_up_crypto_lighting">Lightning Network</string>
-    <string name="top_up_currency_equivalent">%2$s %1$s</string>
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>
 
