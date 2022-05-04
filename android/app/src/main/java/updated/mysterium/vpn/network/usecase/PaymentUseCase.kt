@@ -37,7 +37,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
             this.payCurrency = currency
             this.identityAddress = identityAddress
             this.mystAmount = "0"
-//            this.amountUSD = amountUSD.toString()
+            this.amountUSD = amountUSD.toString()
             this.gateway = Gateway.GOOGLE.gateway
         }
         return nodeRepository.createPaymentGatewayOrder(req)
