@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.price
+package updated.mysterium.vpn.ui.top.up.price
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,9 @@ import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
+import updated.mysterium.vpn.ui.top.up.summary.CardSummaryActivity
+import updated.mysterium.vpn.ui.top.up.TopUpAmountViewModel
+import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 

@@ -221,9 +221,6 @@ dependencies {
     //Klaxon
     implementation 'com.beust:klaxon:5.4'
 
-    //QrCode
-    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
-
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"
 

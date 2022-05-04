@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.coingate.payment
+package updated.mysterium.vpn.ui.top.up
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -12,7 +12,7 @@ import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import updated.mysterium.vpn.ui.top.up.card.summary.BillingDataSource
+import updated.mysterium.vpn.ui.top.up.summary.BillingDataSource
 
 class TopUpPaymentViewModel(
     useCaseProvider: UseCaseProvider,

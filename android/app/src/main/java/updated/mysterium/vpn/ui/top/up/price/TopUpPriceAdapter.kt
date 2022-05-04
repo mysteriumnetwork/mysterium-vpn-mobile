@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.price
+package updated.mysterium.vpn.ui.top.up.price
 
 import android.graphics.Color
 import android.view.LayoutInflater

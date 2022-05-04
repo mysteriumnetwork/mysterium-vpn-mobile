@@ -155,11 +155,6 @@
     <string name="top_up_amount_pages">Интернет-страницы</string>
     <string name="top_up_amount_traffic">Трафик</string>
     <string name="top_up_amount_confirm">Подтвердить</string>
-    <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение.\n На данный момент MYST исключительно на блокчейне Ethereum!</string>
-    <string name="top_up_payment_title">Ожидание оплаты</string>
-    <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
-    <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
-    <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>
 
@@ -202,7 +197,6 @@
     <!--  Payment method  -->
     <string name="payment_method_title">Выберите способ платежа, чтобы продолжить</string>
     <string name="credit_card">Кредитная карта</string>
-    <string name="crypto">Криптовалюта</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Использовать</string>

@@ -38,10 +38,10 @@ import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.card.summary.BillingDataSource
-import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
+import updated.mysterium.vpn.ui.top.up.summary.BillingDataSource
+import updated.mysterium.vpn.ui.top.up.summary.CardSummaryViewModel
+import updated.mysterium.vpn.ui.top.up.TopUpAmountViewModel
+import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 import updated.mysterium.vpn.ui.wallet.spendings.SpendingsViewModel

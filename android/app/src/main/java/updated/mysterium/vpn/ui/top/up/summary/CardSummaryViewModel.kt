@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.summary
+package updated.mysterium.vpn.ui.top.up.summary
 
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider

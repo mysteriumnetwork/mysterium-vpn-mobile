@@ -157,11 +157,6 @@
     <string name="top_up_amount_pages">Web sayfaları</string>
     <string name="top_up_amount_traffic">Trafik</string>
     <string name="top_up_amount_confirm">Onayla</string>
-    <string name="top_up_crypto_description">Para ekleme işlemi için kullanılacak\n kripto para birimini seçin</string>
-    <string name="top_up_payment_title">Ödeme bekleniyor</string>
-    <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
-    <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
-    <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>
 
@@ -204,7 +199,6 @@
     <!--  Payment method  -->
     <string name="payment_method_title">Devam etmek için bir ödeme yöntemi seç</string>
     <string name="credit_card">Kredi Kartı</string>
-    <string name="crypto">Kripto Para</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Doğru düğümü bulmak için\n sağ üstteki </string>

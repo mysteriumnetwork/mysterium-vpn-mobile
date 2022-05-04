@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.summary
+package updated.mysterium.vpn.ui.top.up.summary
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -18,7 +18,7 @@ import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
+import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class CardSummaryActivity : BaseActivity() {

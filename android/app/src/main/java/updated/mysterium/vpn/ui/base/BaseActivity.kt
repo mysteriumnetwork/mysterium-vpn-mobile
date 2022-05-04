@@ -28,8 +28,7 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
-import updated.mysterium.vpn.ui.top.up.card.price.TopUpPriceActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.price.TopUpPriceActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -270,8 +269,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 val gateways = result.filterNotNull()
                 val intent = if (gateways.size == 1 && gateways[0] == Gateway.GOOGLE) {
                     Intent(this, TopUpPriceActivity::class.java)
-                } else if (gateways.size == 1 && gateways[0] == Gateway.COINGATE) {
-                    Intent(this, TopUpAmountActivity::class.java)
                 } else {
                     val gatewayValues = gateways.map { it.gateway }
                     PaymentMethodActivity.newIntent(this, gatewayValues)
