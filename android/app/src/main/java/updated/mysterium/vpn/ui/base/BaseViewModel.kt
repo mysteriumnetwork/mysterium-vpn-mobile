@@ -137,6 +137,6 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getGateways() = liveDataResult {
-        listOf(Gateway.PLAY_BILLING) // for testing purpose only
+        listOf(Gateway.GOOGLE) // for testing purpose only
     }
 }

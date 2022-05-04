@@ -55,7 +55,7 @@ class PaymentMethodActivity : BaseActivity() {
     }
 
     private fun navigateToTopUp(gateway: Gateway) {
-        val intent = if (gateway == Gateway.PLAY_BILLING) {
+        val intent = if (gateway == Gateway.GOOGLE) {
             Intent(this, TopUpPriceActivity::class.java)
         } else {
             Intent(this, TopUpAmountActivity::class.java)

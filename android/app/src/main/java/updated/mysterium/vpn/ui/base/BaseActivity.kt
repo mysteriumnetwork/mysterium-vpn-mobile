@@ -268,7 +268,7 @@ abstract class BaseActivity : AppCompatActivity() {
         baseViewModel.getGateways().observe(this) {
             it.onSuccess { result ->
                 val gateways = result.filterNotNull()
-                val intent = if (gateways.size == 1 && gateways[0] == Gateway.PLAY_BILLING) {
+                val intent = if (gateways.size == 1 && gateways[0] == Gateway.GOOGLE) {
                     Intent(this, TopUpPriceActivity::class.java)
                 } else if (gateways.size == 1 && gateways[0] == Gateway.COINGATE) {
                     Intent(this, TopUpAmountActivity::class.java)

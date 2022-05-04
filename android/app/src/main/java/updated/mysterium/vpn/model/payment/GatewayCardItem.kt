@@ -22,7 +22,7 @@ data class GatewayCardItem(
                     R.color.payment_method_crypto_text_color,
                     R.color.payment_method_crypto_icon_color
                 )
-                Gateway.PLAY_BILLING -> GatewayCardItem(
+                Gateway.GOOGLE -> GatewayCardItem(
                     R.string.credit_card,
                     R.drawable.ic_card_payment_method,
                     R.drawable.shape_rectangle_light_pink_rounded_10,

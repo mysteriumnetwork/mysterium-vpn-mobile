@@ -3,7 +3,7 @@ package updated.mysterium.vpn.model.payment
 enum class Gateway(val gateway: String) {
     COINGATE("coingate"),
     PAYPAL("paypal"),
-    PLAY_BILLING("play_billing");
+    GOOGLE("google");
 
     companion object {
         fun from(gateway: String?): Gateway? {
