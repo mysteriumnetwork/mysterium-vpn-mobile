@@ -135,6 +135,22 @@ class NodeRepository(var deferredNode: DeferredNode) {
         Order.fromJSON(order) ?: error("Could not parse JSON: $order")
     }
 
+    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+        withContext(Dispatchers.IO) {
+            try {
+                val order = deferredNode.await().createPaymentGatewayOrder(req)
+                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+            } catch (e: Exception) {
+                if (isBalanceLimitExceeded()) {
+                    throw TopupPreconditionFailedException(
+                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
+                    )
+                } else {
+                    error(e)
+                }
+            }
+        }
+
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listOrders(req)
         Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
