@@ -52,3 +52,7 @@ publishInternal:
     - apt update; apt install -y jq
     - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/mysterium-vpn-mobile/releases/tags/$CI_COMMIT_TAG | jq -r .id)
     - curl --data-binary @android/app/build/outputs/apk/release/app-release.apk -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/mysterium-vpn-mobile/releases/$RELEASE_ID/assets?name=myst.apk
+  artifacts:
+    when: always
+    paths:
+      - android/app/build/outputs/apk/release/app-release.aab
