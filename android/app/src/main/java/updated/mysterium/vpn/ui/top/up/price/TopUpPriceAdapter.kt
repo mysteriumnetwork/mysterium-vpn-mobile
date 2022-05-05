@@ -15,10 +15,6 @@ import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 class TopUpPriceAdapter :
     ContentListAdapter<TopUpPriceCardItem, TopUpPriceAdapter.TopUpPriceViewHolder>() {
 
-    private companion object {
-        const val MARGIN_DP = 24f
-    }
-
     private var selectedCardItem: TopUpPriceCardItem? = null
     var onItemSelected: ((TopUpPriceCardItem) -> Unit)? = null
 
@@ -26,7 +22,7 @@ class TopUpPriceAdapter :
         LayoutInflater.from(parent.context).inflate(R.layout.item_card_element, parent, false)
     )
 
-    override fun onBindViewHolder(holder: TopUpAmountViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TopUpPriceViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
@@ -35,7 +31,8 @@ class TopUpPriceAdapter :
         val binding = ItemCardElementBinding.bind(itemView)
 
         fun bind(cardItem: TopUpPriceCardItem) {
-            binding.cardItemValue.text = itemView.context.getString(R.string.top_up_currency_equivalent, cardItem.price)
+            binding.cardItemValue.text =
+                itemView.context.getString(R.string.top_up_currency_equivalent, cardItem.price)
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
                 onItemSelected?.invoke(cardItem)
