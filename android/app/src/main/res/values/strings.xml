@@ -9,12 +9,15 @@
     <string name="onboarding_main_title_1">Decentralized global node network</string>
     <string name="onboarding_description_title_1">Run by people, for people</string>
     <string name="onboarding_description_content_1">Our network is blind to borders. Select any IP you like from our global list and get unlimited access to worldwide content.</string>
-    <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
+    <string name="onboarding_main_title_2">Surf the web, and pay\nas you go</string>
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
     <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
     <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
     <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and free nodes</string>
+    <string name="onboarding_main_title_4">What is Smart Connect</string>
+    <string name="onboarding_description_title_4">Smart and fast way to connect</string>
+    <string name="onboarding_description_content_4">Tap the smart connect button and get connected to the best node for you</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
 
@@ -155,6 +158,10 @@
     <string name="report_issue_error_request">Something went wrong, please try again later</string>
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
 
+    <!-- Get help -->
+    <string name="get_help_email" translatable="false">help@mysterium.network</string>
+    <string name="get_help_subject" translatable="false">Mysterium: Get help</string>
+
     <!--  Monitoring  -->
     <string name="monitoring_title">History Statistics</string>
     <string name="monitoring_last_sessions">Last Sessions</string>
@@ -276,13 +283,12 @@
     <string name="pop_up_private_key_title">Download key</string>
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
-    <string name="pop_up_details_title">Some error occurred</string>
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
     <string name="pop_up_crypto_payment_button">Continue</string>
     <string name="pop_up_crypto_payment_title">Warning!</string>
-    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n You\'ll receive a notification once your payment is successfully processed.</string>
+    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>

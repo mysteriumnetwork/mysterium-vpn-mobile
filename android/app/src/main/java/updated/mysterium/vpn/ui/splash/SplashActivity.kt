@@ -47,6 +47,9 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            isLoadingStarted = savedInstanceState.getBoolean("isLoadingStarted")
+        }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         applyDarkMode()
@@ -54,6 +57,11 @@ class SplashActivity : BaseActivity() {
         configure()
         subscribeViewModel()
         setUpPushyNotifications()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("isLoadingStarted", isLoadingStarted)
+        super.onSaveInstanceState(outState)
     }
 
     override fun retryLoading() {
@@ -94,7 +102,10 @@ class SplashActivity : BaseActivity() {
             viewModel.initRepository()
         }
         viewModel.nodeStartingError.observe(this) {
-            wifiNetworkErrorPopUp()
+            wifiNetworkErrorPopUp {
+                isLoadingStarted = false
+                init()
+            }
         }
 
         registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
@@ -106,7 +117,7 @@ class SplashActivity : BaseActivity() {
             }
         }
         registrationViewModel.accountRegistrationError.observe(this) {
-            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+            detailedErrorPopUp {
                 registrationViewModel.tryRegisterAccount()
             }
         }
@@ -211,7 +222,9 @@ class SplashActivity : BaseActivity() {
             ) {
                 init()
             } else {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             }
         }
     }

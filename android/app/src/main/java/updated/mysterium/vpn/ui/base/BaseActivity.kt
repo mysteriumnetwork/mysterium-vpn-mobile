@@ -29,6 +29,7 @@ import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.price.TopUpPriceActivity
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -44,6 +45,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLayoutDirection()
         baseViewModel.checkInternetConnection()
         alertDialogBuilder = AlertDialog.Builder(this)
         subscribeViewModel()
@@ -110,13 +112,12 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun detailedErrorPopUp(
-        errorMessage: String,
         retryAction: () -> Unit
     ) {
         val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.description.text = errorMessage
-        bindingPopUp.title.setText(R.string.pop_up_details_title)
+        bindingPopUp.description.setText(R.string.pop_up_registration_failed_description)
+        bindingPopUp.title.setText(R.string.pop_up_registration_failed_title)
         bindingPopUp.tryAgainButton.setOnClickListener {
             retryAction.invoke()
             dialog.dismiss()
@@ -128,14 +129,14 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun wifiNetworkErrorPopUp() {
+    fun wifiNetworkErrorPopUp(retryAction: () -> Unit) {
         if (wifiErrorDialog == null && !isFinishing) {
             val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
             wifiErrorDialog = createPopUp(bindingPopUp.root, false)
             bindingPopUp.retryButton.setOnClickListener {
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
-                baseViewModel.checkInternetConnection()
+                retryAction()
             }
             wifiErrorDialog?.show()
         }
@@ -230,7 +231,9 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         baseViewModel.isInternetAvailable.observe(this) { isAvailable ->
             if (!isAvailable) {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             } else if (!isInternetAvailable) {
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
@@ -260,6 +263,14 @@ abstract class BaseActivity : AppCompatActivity() {
                 insufficientFoundsDialog = null
             }
             insufficientFoundsDialog?.show()
+        }
+    }
+
+    private fun setLayoutDirection() {
+        if (Locale.getDefault().language == "ar") {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        } else {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         }
     }
 

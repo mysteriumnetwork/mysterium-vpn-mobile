@@ -94,7 +94,7 @@ class CreateAccountActivity : BaseActivity() {
         }
         registrationViewModel.accountRegistrationError.observe(this) {
             binding.loader.visibility = View.INVISIBLE
-            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
+            detailedErrorPopUp {
                 registrationViewModel.tryRegisterAccount()
             }
         }
@@ -152,7 +152,7 @@ class CreateAccountActivity : BaseActivity() {
 
             it.onFailure { error ->
                 binding.loader.visibility = View.GONE
-                detailedErrorPopUp(error.localizedMessage ?: error.toString()) {
+                detailedErrorPopUp {
                     applyNewIdentity(newIdentityAddress)
                 }
             }

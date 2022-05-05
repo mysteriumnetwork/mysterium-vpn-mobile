@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission
         android:name="android.permission.CAMERA"
         tools:node="remove" />
@@ -130,8 +131,7 @@
             </intent-filter>
         </service>
 
-        <service
-            android:name="updated.mysterium.vpn.notification.PaymentStatusService" />
+        <service android:name="updated.mysterium.vpn.notification.PaymentStatusService" />
 
         <!-- Pushy Declarations -->
 
@@ -189,5 +189,12 @@
             android:value="false" />
 
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="*" />
+        </intent>
+    </queries>
 
 </manifest>

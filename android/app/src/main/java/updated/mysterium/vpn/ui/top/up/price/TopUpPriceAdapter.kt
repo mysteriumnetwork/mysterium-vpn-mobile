@@ -26,16 +26,7 @@ class TopUpPriceAdapter :
         LayoutInflater.from(parent.context).inflate(R.layout.item_card_element, parent, false)
     )
 
-    override fun onBindViewHolder(holder: TopUpPriceViewHolder, position: Int) {
-        if (position == items.lastIndex) {
-            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
-            params.rightMargin = holder.itemView.context.dpToPx(MARGIN_DP)
-            holder.itemView.layoutParams = params
-        } else if (position == 0) {
-            val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
-            params.leftMargin = holder.itemView.context.dpToPx(MARGIN_DP)
-            holder.itemView.layoutParams = params
-        }
+    override fun onBindViewHolder(holder: TopUpAmountViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
