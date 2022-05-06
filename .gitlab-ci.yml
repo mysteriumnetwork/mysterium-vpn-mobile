@@ -55,4 +55,4 @@ publishInternal:
   artifacts:
     when: always
     paths:
-      - android/app/build/outputs/apk/release/app-release.aab
+      - /builds/mysteriumnetwork/mysterium-vpn-mobile/android/app/build/outputs/bundle/release/app-release.aab
