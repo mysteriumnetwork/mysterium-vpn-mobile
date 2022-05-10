@@ -1,7 +1,7 @@
 package updated.mysterium.vpn.model.nodes
 
 import android.os.Parcelable
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
