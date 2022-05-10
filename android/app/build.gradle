@@ -203,9 +203,6 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.6"
     kapt "androidx.room:room-compiler:2.2.6"
 
-    //GSON
-    implementation "com.google.code.gson:gson:2.8.6"
-
     //Line chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
@@ -215,8 +212,8 @@ dependencies {
     //Rounded image
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    //Klaxon
-    implementation 'com.beust:klaxon:5.4'
+    //Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
     //QrCode
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'

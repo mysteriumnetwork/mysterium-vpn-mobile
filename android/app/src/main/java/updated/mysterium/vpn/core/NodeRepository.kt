@@ -1,10 +1,14 @@
 package updated.mysterium.vpn.core
 
 import android.util.Log
-import com.beust.klaxon.Klaxon
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
+import okio.buffer
+import okio.source
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
@@ -29,6 +33,11 @@ class NodeRepository(var deferredNode: DeferredNode) {
         const val TAG = "NodeRepository"
         const val MAX_BALANCE_LIMIT = 5
     }
+
+    private val moshi = Moshi
+        .Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     // Get available proposals for mobile. Internally on Go side
     // proposals are fetched once and cached but it is possible to refresh cache by
@@ -259,31 +268,45 @@ class NodeRepository(var deferredNode: DeferredNode) {
     }
 
     private suspend fun parseProposals(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<ProposalsResponse>(bytes.inputStream())
+        kotlin.runCatching {
+            moshi
+                .adapter(ProposalsResponse::class.java)
+                .fromJson(bytes.inputStream().source().buffer())
+        }.getOrNull()
     }
 
     private suspend fun getCountries(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getCountries(req)
     }
 
-    private suspend fun parseCountries(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<Map<String, Int>>(bytes.inputStream())
-            ?.map { item ->
-                val countryCode = item.key
-                val proposalsNumber = item.value
-                CountryInfo.from(countryCode, proposalsNumber)
-            }
-            ?.filterNotNull()
+    private suspend fun parseCountries(bytes: ByteArray) = withContext(Dispatchers.IO) {
+        kotlin.runCatching {
+            moshi
+                .adapter<MutableMap<String, Int>>(
+                    Types.newParameterizedType(
+                        MutableMap::class.java,
+                        String::class.java,
+                        Int::class.javaObjectType,
+                    )
+                )
+                .fromJson(bytes.inputStream().source().buffer())?.mapNotNull {
+                    CountryInfo.from(it.key, it.value)
+                }
+        }.getOrNull()
     }
 
     private suspend fun getStatus() = withContext(Dispatchers.IO) {
         deferredNode.await().status
     }
 
-    private suspend fun parseStatus(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<StatusResponse>(bytes.inputStream())?.let {
-            Status(it)
-        }
+    private suspend fun parseStatus(bytes: ByteArray) = withContext(Dispatchers.IO) {
+        kotlin.runCatching {
+            moshi
+                .adapter(StatusResponse::class.java)
+                .fromJson(bytes.inputStream().source().buffer())?.let {
+                    Status(it)
+                }
+        }.getOrNull()
     }
 
     private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
