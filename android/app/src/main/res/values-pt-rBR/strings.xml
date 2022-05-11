@@ -245,9 +245,9 @@
     <string name="pop_up_card_payment_button">Continuar</string>
     <string name="pop_up_card_payment_title">Agradecemos a sua compra!</string>
     <string name="pop_up_card_payment_description">O pagamento pode levar algum tempo para ser processado. Enviaremos uma notificação quando ele for concluído.</string>
-    <string name="pop_up_crypto_payment_button">Continuar</string>
-    <string name="pop_up_crypto_payment_title">Aviso!</string>
-    <string name="pop_up_crypto_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
+    <string name="pop_up_payment_button">Continuar</string>
+    <string name="pop_up_payment_title">Aviso!</string>
+    <string name="pop_up_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
     <string name="pop_up_private_key_error">Senha incorreta</string>
     <string name="pop_up_import_wrong_password">Senha incorreta</string>
     <string name="pop_up_private_key_hint">A senha deve ter de 12 a 16 caracteres</string>

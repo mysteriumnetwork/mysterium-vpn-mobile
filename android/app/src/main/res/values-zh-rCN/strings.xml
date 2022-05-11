@@ -245,9 +245,9 @@
     <string name="pop_up_card_payment_button">继续</string>
     <string name="pop_up_card_payment_title">感谢购买！</string>
     <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
-    <string name="pop_up_crypto_payment_button">继续</string>
-    <string name="pop_up_crypto_payment_title">警告！</string>
-    <string name="pop_up_crypto_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
+    <string name="pop_up_payment_button">继续</string>
+    <string name="pop_up_payment_title">警告！</string>
+    <string name="pop_up_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
 
     <string name="pop_up_private_key_error">密码有误</string>
 
