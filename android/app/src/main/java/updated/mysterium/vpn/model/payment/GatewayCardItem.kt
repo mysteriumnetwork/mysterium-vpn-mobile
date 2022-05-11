@@ -16,18 +16,11 @@ data class GatewayCardItem(
         fun from(value: Gateway): GatewayCardItem {
             return when (value) {
                 Gateway.GOOGLE -> GatewayCardItem(
-                    R.string.credit_card,
-                    R.drawable.ic_card_payment_method,
+                    R.string.google_play_billing,
+                    R.drawable.ic_google_payment_method,
                     R.drawable.shape_rectangle_light_pink_rounded_10,
-                    R.color.payment_method_card_text_color,
-                    R.color.payment_method_card_icon_color
-                )
-                Gateway.PAYPAL -> GatewayCardItem(
-                    R.string.paypal,
-                    R.drawable.icon_paypal_payment_method,
-                    R.drawable.shape_rectangle_blue_rounded_10,
-                    R.color.payment_method_paypal_text_color,
-                    R.color.payment_method_paypal_icon_color
+                    R.color.payment_method_google_text_color,
+                    R.color.payment_method_google_icon_color
                 )
             }
         }

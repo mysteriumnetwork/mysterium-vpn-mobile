@@ -150,10 +150,10 @@
     <string name="create_account_new">إنشاء حساب\n جديد</string>
     <string name="create_account_import">استيراد\n الحساب</string>
     <string name="create_account_description">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا\n واستخدم وظائف محدودة وعقدًا مجانية</string>
-    <string name="card_summary_title">ملخص الطلب</string>
-    <string name="card_payment_pay">متابعة للدفع</string>
-    <string name="card_payment_total">إجمالي المبلغ المستحق</string>
-    <string name="card_payment_country_hint">حدد البلد أو المنطقة</string>
+    <string name="payment_summary_title">ملخص الطلب</string>
+    <string name="payment_pay">متابعة للدفع</string>
+    <string name="payment_total">إجمالي المبلغ المستحق</string>
+    <string name="payment_country_hint">حدد البلد أو المنطقة</string>
     <string name="private_key_description">ملاحظة مهمة! قم بتنزيل مفتاحك الخاص الآن وخزنه حتى تتفادى عدم التمكن من الدخول إلى حسابك.</string>
     <string name="private_key_back_up">النسخ الاحتياطي\n للمفتاح الخاص</string>
     <string name="private_key_back_up_later">النسخ الاحتياطي\n لاحقًا</string>
@@ -162,7 +162,7 @@
     <string name="prepare_top_up_now">التعبئة الآن</string>
     <string name="prepare_top_up_later">التعبئة لاحقًا</string>
     <string name="payment_method_title">يُرجى اختيار وسيلة دفع للمتابعة</string>
-    <string name="credit_card">البطاقة الائتمانية</string>
+    <string name="google_play_billing">البطاقة الائتمانية</string>
     <string name="search_hint_first_part">استخدام</string>
     <string name="search_hint_highlighted">شريط البحث</string>
     <string name="search_hint_second_part">في الجزء العلوي للعثور\n على العقدة الصحيحة</string>
@@ -205,11 +205,9 @@ Wi-Fi</string>
     <string name="pop_up_private_key_title">تنزيل المفتاح</string>
     <string name="pop_up_private_key_description">اكتب كلمة مرورك</string>
     <string name="pop_up_private_key_download">تنزيل</string>
-    <string name="pop_up_card_payment_button">متابعة</string>
-    <string name="pop_up_card_payment_title">شكرًا على الشراء!</string>
-    <string name="pop_up_card_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت. سنرسل إليك إشعارًا بمجرد إتمام عملية الدفع.</string>
+    <string name="pop_up_payment_title_thanks">شكرًا على الشراء!</string>
     <string name="pop_up_payment_button">متابعة</string>
-    <string name="pop_up_payment_title">تحذير!</string>
+    <string name="pop_up_payment_title_warning">تحذير!</string>
     <string name="pop_up_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت بعد هذه الخطوة. سنرسل إليك إشعارًا بمجرد الإتمام الناجح لعملية الدفع.</string>
     <string name="pop_up_private_key_error">كلمة مرور غير صحيحة</string>
     <string name="pop_up_import_wrong_password">كلمة مرور غير صحيحة</string>

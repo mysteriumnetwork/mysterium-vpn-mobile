@@ -174,10 +174,10 @@
     <string name="create_account_description">立即为您的账户充值或稍后充值，并\n 使用有限的功能和免费节点</string>
 
     <!--  Card payment  -->
-    <string name="card_summary_title">订单摘要</string>
-    <string name="card_payment_pay">继续付款</string>
-    <string name="card_payment_total">应付总额</string>
-    <string name="card_payment_country_hint">选择国家或地区</string>
+    <string name="payment_summary_title">订单摘要</string>
+    <string name="payment_pay">继续付款</string>
+    <string name="payment_total">应付总额</string>
+    <string name="payment_country_hint">选择国家或地区</string>
 
     <!--  Private key  -->
     <string name="private_key_description">重要提示！立即下载您的私人密钥，然后安全存储，以防无法访问您的账户。</string>
@@ -192,7 +192,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">选择一种付款方式继续</string>
-    <string name="credit_card">信用卡</string>
+    <string name="google_play_billing">信用卡</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">使用</string>
@@ -242,11 +242,9 @@
     <string name="pop_up_private_key_title">下载密钥</string>
     <string name="pop_up_private_key_description">输入您的密码</string>
     <string name="pop_up_private_key_download">下载</string>
-    <string name="pop_up_card_payment_button">继续</string>
-    <string name="pop_up_card_payment_title">感谢购买！</string>
-    <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
+    <string name="pop_up_payment_title_thanks">感谢购买！</string>
     <string name="pop_up_payment_button">继续</string>
-    <string name="pop_up_payment_title">警告！</string>
+    <string name="pop_up_payment_title_warning">警告！</string>
     <string name="pop_up_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
 
     <string name="pop_up_private_key_error">密码有误</string>

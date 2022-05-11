@@ -1,7 +1,6 @@
 package updated.mysterium.vpn.model.payment
 
 enum class Gateway(val gateway: String) {
-    PAYPAL("paypal"),
     GOOGLE("google");
 
     companion object {

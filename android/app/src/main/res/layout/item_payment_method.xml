@@ -34,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/paymentMethodIcon"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/credit_card"
+            tools:text="@string/google_play_billing"
             tools:textColor="@color/create_account_import_text" />
 
         <ImageView

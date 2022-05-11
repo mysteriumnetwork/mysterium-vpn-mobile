@@ -10,7 +10,7 @@ import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.summary.CardSummaryActivity
+import updated.mysterium.vpn.ui.top.up.summary.PaymentSummaryActivity
 import updated.mysterium.vpn.ui.top.up.TopUpAmountViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
@@ -110,8 +110,8 @@ class TopUpPriceActivity : BaseActivity() {
     }
 
     private fun navigateToCardPaymentFlow() {
-        val intent = Intent(this, CardSummaryActivity::class.java).apply {
-            putExtra(CardSummaryActivity.SKU_EXTRA_KEY, selectedItem)
+        val intent = Intent(this, PaymentSummaryActivity::class.java).apply {
+            putExtra(PaymentSummaryActivity.SKU_EXTRA_KEY, selectedItem)
         }
         startActivity(intent)
     }

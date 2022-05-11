@@ -18,16 +18,14 @@
     <color name="create_account_trial_button_text_tapped">#FFFFFF</color>
 
     <color name="payment_method_card_background">#33D61F85</color>
-    <color name="payment_method_card_text_color">#FFFFFF</color>
-    <color name="payment_method_paypal_background">#335BB1EF</color>
-    <color name="payment_method_paypal_text_color">#FFFFFF</color>
+    <color name="payment_method_google_text_color">#FFFFFF</color>
 
     <color name="top_up_unselected_state">#10FFFFFF</color>
-    <color name="card_payment_background">#60607B</color>
-    <color name="card_payment_divider">#30FFFFFF</color>
-    <color name="card_payment_title">#FFFFFF</color>
-    <color name="card_payment_value">#FFFFFF</color>
-    <color name="card_payment_description">#FFFFFF</color>
+    <color name="payment_background">#60607B</color>
+    <color name="payment_divider">#30FFFFFF</color>
+    <color name="payment_title">#FFFFFF</color>
+    <color name="payment_value">#FFFFFF</color>
+    <color name="payment_description">#FFFFFF</color>
 
     <color name="manual_connect_list_background">#514D69</color>
     <color name="manual_connect_items_empty_background">#10FFFFFF</color>

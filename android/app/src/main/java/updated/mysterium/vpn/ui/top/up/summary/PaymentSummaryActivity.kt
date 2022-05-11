@@ -10,7 +10,6 @@ import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
-import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
@@ -21,14 +20,14 @@ import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
-class CardSummaryActivity : BaseActivity() {
+class PaymentSummaryActivity : BaseActivity() {
 
     companion object {
         const val SKU_EXTRA_KEY = "SKU_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
-    private val viewModel: CardSummaryViewModel by inject()
+    private val viewModel: PaymentSummaryViewModel by inject()
     private val paymentViewModel: TopUpPaymentViewModel by inject()
     private val paymentStatusViewModel: PaymentStatusViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
@@ -79,8 +78,8 @@ class CardSummaryActivity : BaseActivity() {
         startService()
 
         paymentStatusViewModel.getPayment(price).observe(this) {
-            it.onSuccess { order ->
-                inflateOrderData(order)
+            it.onSuccess {
+                inflateOrderData(price)
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
@@ -91,7 +90,7 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun inflateOrderData(cardOrder: CardOrder) {
+    private fun inflateOrderData(price: Double) {
         paymentViewModel.isBalanceLimitExceeded().observe(this) {
             it.onSuccess { isBalanceLimitExceeded ->
                 if (isBalanceLimitExceeded) {
@@ -102,10 +101,10 @@ class CardSummaryActivity : BaseActivity() {
                 }
             }
         }
-        val mystEquivalent = exchangeRateViewModel.getMystEquivalent(cardOrder.orderTotalAmount)
+        val mystEquivalent = exchangeRateViewModel.getMystEquivalent(price)
         binding.totalPriceValueTextView.text =
             getString(
-                R.string.card_payment_myst_description,
+                R.string.payment_myst_description,
                 mystEquivalent
             )
     }
@@ -113,7 +112,7 @@ class CardSummaryActivity : BaseActivity() {
     private fun launchPlayBillingPayment() {
         topUpPriceCardItem?.let {
             paymentViewModel.billingDataSource.launchBillingFlow(
-                this@CardSummaryActivity,
+                this@PaymentSummaryActivity,
                 it.sku
             )
         }

@@ -175,11 +175,11 @@
     <string name="create_account_import">Hesabı\n İçe Aktar</string>
     <string name="create_account_description">Hesabınıza şimdi para ekleyin veya bu işlemi daha sonra\n gerçekleştirerek sınırlı işlevlerden ve ücretsiz düğümlerden yararlanın</string>
 
-    <!--  Card payment  -->
-    <string name="card_summary_title">Sipariş Özeti</string>
-    <string name="card_payment_pay">Ödemeye devam et</string>
-    <string name="card_payment_total">Toplam Borcunuz</string>
-    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
+    <!--  Payment  -->
+    <string name="payment_summary_title">Sipariş Özeti</string>
+    <string name="payment_pay">Ödemeye devam et</string>
+    <string name="payment_total">Toplam Borcunuz</string>
+    <string name="payment_country_hint">Ülke veya Bölge seç</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Önemli! Kişisel anahtarını şimdi indir ve hesabının kilitlenmesini önlemek için güvenli bir şekilde sakla.</string>
@@ -194,7 +194,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Devam etmek için bir ödeme yöntemi seç</string>
-    <string name="credit_card">Kredi Kartı</string>
+    <string name="google_play_billing">Kredi Kartı</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Doğru düğümü bulmak için\n sağ üstteki </string>
@@ -244,11 +244,9 @@
     <string name="pop_up_private_key_title">Anahtarı indirin</string>
     <string name="pop_up_private_key_description">Parolanızı Girin</string>
     <string name="pop_up_private_key_download">İndir</string>
-    <string name="pop_up_card_payment_button">Devam</string>
-    <string name="pop_up_card_payment_title">Satın aldığın için teşekkürler!</string>
-    <string name="pop_up_card_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen tamamlandığında sana bir bildirim göndereceğiz.</string>
+    <string name="pop_up_payment_title_thanks">Satın aldığın için teşekkürler!</string>
     <string name="pop_up_payment_button">Devam</string>
-    <string name="pop_up_payment_title">Uyarı!</string>
+    <string name="pop_up_payment_title_warning">Uyarı!</string>
     <string name="pop_up_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
     <string name="pop_up_private_key_error">Hatalı Parola</string>
     <string name="pop_up_import_wrong_password">Hatalı Parola</string>

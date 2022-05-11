@@ -111,7 +111,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.summary.CardSummaryActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.summary.PaymentSummaryActivity"
             android:screenOrientation="portrait" />
 
         <receiver

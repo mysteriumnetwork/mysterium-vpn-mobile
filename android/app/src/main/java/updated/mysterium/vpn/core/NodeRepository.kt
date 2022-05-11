@@ -12,7 +12,6 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
-import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentGateway
 import updated.mysterium.vpn.model.statistics.Location
@@ -138,8 +137,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
-                val order = deferredNode.await().createPaymentGatewayOrder(req)
-                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+                deferredNode.await().createPaymentGatewayOrder(req)
             } catch (e: Exception) {
                 if (isBalanceLimitExceeded()) {
                     throw TopupPreconditionFailedException(

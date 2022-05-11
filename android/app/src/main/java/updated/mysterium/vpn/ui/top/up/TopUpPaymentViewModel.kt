@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
-import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
@@ -19,26 +18,10 @@ class TopUpPaymentViewModel(
     val billingDataSource: BillingDataSource
 ) : ViewModel() {
 
-    val paymentSuccessfully: LiveData<Unit>
-        get() = _paymentSuccessfully
-
-    val paymentExpired: LiveData<Unit>
-        get() = _paymentExpired
-
-    val paymentFailed: LiveData<Unit>
-        get() = _paymentFailed
-
-    val paymentCanceled: LiveData<Unit>
-        get() = _paymentCanceled
-
     private val paymentUseCase = useCaseProvider.payment()
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
     private val _paymentSuccessfully = MutableLiveData<Unit>()
-    private val _paymentExpired = MutableLiveData<Unit>()
-    private val _paymentFailed = MutableLiveData<Unit>()
-    private val _paymentCanceled = MutableLiveData<Unit>()
-    private var orderId: Long? = null
 
     companion object {
         val filterRange = ('0'..'9') + ('.')
@@ -46,22 +29,6 @@ class TopUpPaymentViewModel(
 
     init {
         subscribeOnBillingFlow()
-    }
-
-    fun createPaymentOrder(
-        currency: String,
-        mystAmount: Double,
-        isLighting: Boolean
-    ) = liveDataResult {
-        registerOrderCallback()
-        val order = paymentUseCase.createPaymentOrder(
-            currency,
-            connectionUseCase.getIdentityAddress(),
-            mystAmount,
-            isLighting
-        )
-        orderId = order.id
-        order
     }
 
     fun clearPopUpTopUpHistory() {
@@ -125,18 +92,4 @@ class TopUpPaymentViewModel(
         }
     }
 
-    private suspend fun registerOrderCallback() {
-        paymentUseCase.paymentOrderCallback {
-            if (orderId.toString() == it.orderID) {
-                when (PaymentStatus.from(it.status)) {
-                    PaymentStatus.STATUS_PAID -> _paymentSuccessfully.postValue(Unit)
-                    PaymentStatus.STATUS_EXPIRED -> _paymentExpired.postValue(Unit)
-                    PaymentStatus.STATUS_CANCELED -> _paymentCanceled.postValue(Unit)
-                    PaymentStatus.STATUS_INVALID, PaymentStatus.STATUS_REFUNDED -> {
-                        _paymentFailed.postValue(Unit)
-                    }
-                }
-            }
-        }
-    }
 }

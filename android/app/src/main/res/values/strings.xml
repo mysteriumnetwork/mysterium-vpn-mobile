@@ -207,13 +207,13 @@
     <string name="create_account_import">Import\n Account</string>
     <string name="create_account_description">Create an account to start or import your existing account using your private key.</string>
 
-    <!--  Card payment  -->
-    <string name="card_summary_title">Order Summary</string>
-    <string name="card_payment_pay">Continue to Pay</string>
-    <string name="card_payment_price">$%.2f</string>
-    <string name="card_payment_total">Total Due</string>
-    <string name="card_payment_country_hint">Select Country or Region</string>
-    <string name="card_payment_myst_description">%.2f MYST</string>
+    <!--  Payment  -->
+    <string name="payment_summary_title">Order Summary</string>
+    <string name="payment_pay">Continue to Pay</string>
+    <string name="payment_price">$%.2f</string>
+    <string name="payment_total">Total Due</string>
+    <string name="payment_country_hint">Select Country or Region</string>
+    <string name="payment_myst_description">%.2f MYST</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
@@ -228,8 +228,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Choose a payment method to continue</string>
-    <string name="credit_card">Credit Card</string>
-    <string name="paypal">Paypal</string>
+    <string name="google_play_billing">Google Play Billing</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Use </string>
@@ -279,11 +278,9 @@
     <string name="pop_up_private_key_title">Download key</string>
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
-    <string name="pop_up_card_payment_button">Continue</string>
-    <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
-    <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
+    <string name="pop_up_payment_title_thanks">Thanks for the purchase!</string>
     <string name="pop_up_payment_button">Continue</string>
-    <string name="pop_up_payment_title">Warning!</string>
+    <string name="pop_up_payment_title_warning">Warning!</string>
     <string name="pop_up_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>

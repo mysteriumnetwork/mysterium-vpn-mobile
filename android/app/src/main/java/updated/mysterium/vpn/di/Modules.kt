@@ -39,7 +39,7 @@ import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.summary.BillingDataSource
-import updated.mysterium.vpn.ui.top.up.summary.CardSummaryViewModel
+import updated.mysterium.vpn.ui.top.up.summary.PaymentSummaryViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpAmountViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
@@ -166,7 +166,7 @@ object Modules {
             MenuViewModel(get())
         }
         viewModel {
-            CardSummaryViewModel(get())
+            PaymentSummaryViewModel(get())
         }
         viewModel {
             RegistrationViewModel(get())

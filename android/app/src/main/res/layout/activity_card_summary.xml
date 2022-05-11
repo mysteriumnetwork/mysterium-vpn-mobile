@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_large"
-        android:text="@string/card_summary_title"
+        android:text="@string/payment_summary_title"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +83,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
-                android:text="@string/card_payment_total"
+                android:text="@string/payment_total"
                 android:textColor="@color/primary"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                    android:text="@string/card_payment_pay" />
+                    android:text="@string/payment_pay" />
 
                 <ImageView
                     android:id="@+id/confirmButtonShadow"

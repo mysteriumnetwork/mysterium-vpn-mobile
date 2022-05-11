@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemCardElementBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
-import updated.mysterium.vpn.common.extensions.dpToPx
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 
 class TopUpPriceAdapter :

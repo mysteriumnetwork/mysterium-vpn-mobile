@@ -174,10 +174,10 @@
     <string name="create_account_description">Recarregue sua conta agora ou faça isso mais tarde e\n use a funcionalidades limitadas e nós gratuitos</string>
 
     <!--  Card payment  -->
-    <string name="card_summary_title">Resumo do pedido</string>
-    <string name="card_payment_pay">Continue para pagar</string>
-    <string name="card_payment_total">Valor total</string>
-    <string name="card_payment_country_hint">Selecione o país ou a região</string>
+    <string name="payment_summary_title">Resumo do pedido</string>
+    <string name="payment_pay">Continue para pagar</string>
+    <string name="payment_total">Valor total</string>
+    <string name="payment_country_hint">Selecione o país ou a região</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Importante! Baixe sua chave particular agora e armazene-a de forma segura para não ficar sem acesso à sua conta.</string>
@@ -192,7 +192,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Escolha uma forma de pagamento para continuar</string>
-    <string name="credit_card">Cartão de crédito</string>
+    <string name="google_play_billing">Cartão de crédito</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Usar </string>
@@ -242,11 +242,9 @@
     <string name="pop_up_private_key_title">Chave de download</string>
     <string name="pop_up_private_key_description">Digite a sua senha</string>
     <string name="pop_up_private_key_download">Fazer download</string>
-    <string name="pop_up_card_payment_button">Continuar</string>
-    <string name="pop_up_card_payment_title">Agradecemos a sua compra!</string>
-    <string name="pop_up_card_payment_description">O pagamento pode levar algum tempo para ser processado. Enviaremos uma notificação quando ele for concluído.</string>
+    <string name="pop_up_payment_title_thanks">Agradecemos a sua compra!</string>
     <string name="pop_up_payment_button">Continuar</string>
-    <string name="pop_up_payment_title">Aviso!</string>
+    <string name="pop_up_payment_title_warning">Aviso!</string>
     <string name="pop_up_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
     <string name="pop_up_private_key_error">Senha incorreta</string>
     <string name="pop_up_import_wrong_password">Senha incorreta</string>

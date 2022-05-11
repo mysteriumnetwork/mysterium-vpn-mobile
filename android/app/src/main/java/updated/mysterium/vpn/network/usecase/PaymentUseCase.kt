@@ -4,7 +4,6 @@ import mysterium.CreateOrderRequest
 import mysterium.CreatePaymentGatewayOrderReq
 import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.core.NodeRepository
-import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.Order
 
@@ -32,7 +31,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     suspend fun createPaymentGatewayOrder(
         identityAddress: String,
         amountUSD: Double
-    ): CardOrder {
+    ) {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress
@@ -40,7 +39,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
             this.amountUSD = amountUSD.toString()
             this.gateway = Gateway.GOOGLE.gateway
         }
-        return nodeRepository.createPaymentGatewayOrder(req)
+        nodeRepository.createPaymentGatewayOrder(req)
     }
 
     suspend fun paymentOrderCallback(
