@@ -287,7 +287,7 @@
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium bakiyesi</string>
-    <string name="push_notification_balance_message">Bakiyeniz tükeniyor!</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">Bakiyeniz tükeniyor!</string>
     <string name="push_notification_connection_title">Mysterium bağlantısı</string>
     <string name="push_notification_connection_message">Düğüm bağlantısı kesildi!</string>
     <string name="push_notification_connected_title">%1$s ile bağlantı kuruldu</string>

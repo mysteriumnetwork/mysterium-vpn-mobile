@@ -286,7 +286,7 @@
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium 余额</string>
-    <string name="push_notification_balance_message">您的余额快用完！</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">您的余额快用完！</string>
     <string name="push_notification_connection_title">Mysterium 连接</string>
     <string name="push_notification_connection_message">与节点的连接已断开！</string>
     <string name="push_notification_connected_title">已连接至 %1$s</string>

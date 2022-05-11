@@ -256,7 +256,7 @@
 
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
-    <string name="pop_up_top_up_description">Credits is running out</string>
+    <string name="pop_up_top_up_description">Your credits are running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
@@ -315,7 +315,7 @@
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium balance</string>
-    <string name="push_notification_balance_message">Your balance is running out!</string>
+    <string name="push_notification_balance_message">\uD83D\uDD3B You’re running out of MYST. Tap here to top up.</string>
     <string name="push_notification_connection_title">Mysterium connection</string>
     <string name="push_notification_connection_message">Connection to node is lost!</string>
     <string name="push_notification_connected_title">Connected to %1$s</string>

@@ -244,7 +244,7 @@ Wi-Fi</string>
     <string name="pop_up_new_version_description">يُرجى تحديث تطبيقك من متجر Google Play</string>
     <string name="pop_up_new_version_update">تحديث</string>
     <string name="push_notification_balance_title">رصيد Mysterium</string>
-    <string name="push_notification_balance_message">رصيدك ينفد!</string>
+    <!-- TODO: re-translate --> <string name="push_notification_balance_message">رصيدك ينفد!</string>
     <string name="push_notification_connection_title">اتصال Mysterium</string>
     <string name="push_notification_connection_message">فقدان الاتصال بالعقدة!</string>
     <string name="push_notification_connected_title">متصل بـ %1$s</string>

@@ -61,17 +61,37 @@ class BalanceUseCase(
         sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.MIN_BALANCE)
     }
 
-    fun isBalancePushShown() = sharedPreferencesManager.containsPreferenceValue(
-        SharedPreferencesList.BALANCE_PUSH
+    fun isFirstBalancePushShown() = sharedPreferencesManager.containsPreferenceValue(
+        SharedPreferencesList.FIRST_BALANCE_PUSH
     )
 
-    fun balancePushShown() = sharedPreferencesManager.setPreferenceValue(
-        key = SharedPreferencesList.BALANCE_PUSH,
+    fun firstBalancePushShown() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.FIRST_BALANCE_PUSH,
+        value = true
+    )
+
+    fun isSecondBalancePushShown() = sharedPreferencesManager.containsPreferenceValue(
+        SharedPreferencesList.SECOND_BALANCE_PUSH
+    )
+
+    fun secondBalancePushShown() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.SECOND_BALANCE_PUSH,
+        value = true
+    )
+
+    fun isThirdBalancePushShown() = sharedPreferencesManager.containsPreferenceValue(
+        SharedPreferencesList.THIRD_BALANCE_PUSH
+    )
+
+    fun thirdBalancePushShown() = sharedPreferencesManager.setPreferenceValue(
+        key = SharedPreferencesList.THIRD_BALANCE_PUSH,
         value = true
     )
 
     fun clearBalancePushHistory() {
-        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.BALANCE_PUSH)
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.FIRST_BALANCE_PUSH)
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.SECOND_BALANCE_PUSH)
+        sharedPreferencesManager.removePreferenceValue(SharedPreferencesList.THIRD_BALANCE_PUSH)
     }
 
     fun isMinBalancePushShown() = sharedPreferencesManager.containsPreferenceValue(

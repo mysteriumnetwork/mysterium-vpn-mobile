@@ -285,7 +285,7 @@
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Остаток Mysterium</string>
-    <string name="push_notification_balance_message">Ваш остаток заканчивается!</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">Ваш остаток заканчивается!</string>
     <string name="push_notification_connection_title">Подключение Mysterium</string>
     <string name="push_notification_connection_message">Соединение с узлом потеряно!</string>
     <string name="push_notification_connected_title">Подключено к %1$s</string>
