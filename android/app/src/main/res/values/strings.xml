@@ -256,7 +256,7 @@
 
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
-    <string name="pop_up_top_up_description">Credits is running out</string>
+    <string name="pop_up_top_up_description">Your credits are running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
