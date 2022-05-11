@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">Просматривайте страницы в интернете и платите по мере использования</string>
     <string name="onboarding_description_title_2">Нет блокировки подписок</string>
     <string name="onboarding_description_content_2">Пополните свой счет сейчас или сделайте это позже и используйте ограниченную функциональность и бесплатные узлы</string>
-    <string name="onboarding_main_title_3">Пополните счет популярными криптовалютами</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BCH и другие</string>
-    <string name="onboarding_description_content_3">Пополните свой счет сейчас или сделайте это позже и используйте ограниченную функциональность и бесплатные узлы</string>
     <string name="onboarding_skip">Пропустить</string>
     <string name="onboarding_next">Далее</string>
 
@@ -51,7 +48,6 @@
     <string name="manual_connect_price_per_hour">%.5f/ч</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/ГБ</string>
     <string name="manual_connect_saved_to_favourite">Успешно сохранено</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH и другие</string>
     <string name="manual_connect_search">Поиск</string>
     <string name="manual_connect_node_id">Идентификатор или страна узла</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>

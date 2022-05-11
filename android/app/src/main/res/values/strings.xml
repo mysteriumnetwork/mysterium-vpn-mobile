@@ -12,12 +12,9 @@
     <string name="onboarding_main_title_2">Surf the web, and pay\nas you go</string>
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
-    <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
-    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and free nodes</string>
-    <string name="onboarding_main_title_4">What is Smart Connect</string>
-    <string name="onboarding_description_title_4">Smart and fast way to connect</string>
-    <string name="onboarding_description_content_4">Tap the smart connect button and get connected to the best node for you</string>
+    <string name="onboarding_main_title_3">What is Smart Connect</string>
+    <string name="onboarding_description_title_3">Smart and fast way to connect</string>
+    <string name="onboarding_description_content_3">Tap the smart connect button and get connected to the best node for you</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
 
@@ -62,7 +59,6 @@
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
     <string name="manual_connect_search">Search</string>
     <string name="manual_connect_node_id">Node id or Country</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>

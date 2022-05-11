@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">上网，并在此过程中付款</string>
     <string name="onboarding_description_title_2">订购后可解锁一切功能</string>
     <string name="onboarding_description_content_2">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
-    <string name="onboarding_main_title_3">使用热门加密货币充值</string>
-    <string name="onboarding_description_title_3">比特币、以太币、莱特币、比特币现金和其他代币</string>
-    <string name="onboarding_description_content_3">立即为您的账户充值或稍后充值，并使用有限的功能和免费节点</string>
     <string name="onboarding_skip">跳过</string>
     <string name="onboarding_next">下一个</string>
 
@@ -53,7 +50,6 @@
     <string name="manual_connect_price_per_hour">%.5f/小时</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">保存成功</string>
-    <string name="manual_connect_currency_hint">比特币、以太币、莱特币、比特币现金和其他代币</string>
     <string name="manual_connect_search">搜索</string>
     <string name="manual_connect_node_id">节点 ID 或国家</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>

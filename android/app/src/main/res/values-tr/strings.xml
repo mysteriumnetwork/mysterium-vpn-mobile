@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">Web\'de gezinin ve kullandığınız kadar ödeyin</string>
     <string name="onboarding_description_title_2">Kısıtlamasız abonelikler</string>
     <string name="onboarding_description_content_2">Hesabınıza şimdi para ekleyin veya bu işlemi daha sonra gerçekleştirerek sınırlı işlevlerden ve ücretsiz düğümlerden yararlanın</string>
-    <string name="onboarding_main_title_3">Popüler kripto para birimlerini ekleyin</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH ve daha fazlası</string>
-    <string name="onboarding_description_content_3">Hesabınıza şimdi para ekleyin veya bu işlemi daha sonra gerçekleştirerek sınırlı işlevlerden ve ücretsiz düğümlerden yararlanın</string>
     <string name="onboarding_skip">Atla</string>
     <string name="onboarding_next">Sonraki</string>
 
@@ -53,7 +50,6 @@
     <string name="manual_connect_price_per_hour">%.5f/sa</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Başarıyla kaydedildi</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH ve daha fazlası</string>
     <string name="manual_connect_search">Arama</string>
     <string name="manual_connect_node_id">Düğüm Kimliği veya Ülke</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>

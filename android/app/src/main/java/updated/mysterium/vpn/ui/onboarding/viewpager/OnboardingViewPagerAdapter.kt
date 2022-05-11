@@ -30,17 +30,9 @@ class OnboardingViewPagerAdapter(
             OnboardingScreen(
                 position = 2,
                 topTitleRes = R.string.onboarding_main_title_3,
-                additionalTopTitleRes = R.string.manual_connect_currency_hint,
                 contentTitleRes = R.string.onboarding_description_title_3,
                 contentDescriptionRes = R.string.onboarding_description_content_3,
                 animationRes = R.raw.onboarding_animation_3
-            ),
-            OnboardingScreen(
-                position = 3,
-                topTitleRes = R.string.onboarding_main_title_4,
-                contentTitleRes = R.string.onboarding_description_title_4,
-                contentDescriptionRes = R.string.onboarding_description_content_4,
-                animationRes = R.raw.onboarding_animation_4
             )
         )
     }

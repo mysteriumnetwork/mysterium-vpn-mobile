@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">تصفح الويب وادفع أثناء التنقل</string>
     <string name="onboarding_description_title_2">لا يوجد قفل في الاشتراكات</string>
     <string name="onboarding_description_content_2">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا واستخدم وظائف محدودة وعقدًا مجانية</string>
-    <string name="onboarding_main_title_3">التعبئة بالعملات المشفرة الشائعة</string>
-    <string name="onboarding_description_title_3">BTC وETH وLTC وBСH والمزيد</string>
-    <string name="onboarding_description_content_3">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا واستخدم وظائف محدودة وعقدًا مجانية</string>
     <string name="onboarding_skip">تخطي</string>
     <string name="onboarding_next">التالي</string>
     <string name="manual_connect_country_select_title">تحديد العقدة</string>
@@ -51,7 +48,6 @@
     <string name="manual_connect_price_per_hour">%.5f/س</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/جيجابايت</string>
     <string name="manual_connect_saved_to_favourite">تم الحفظ بنجاح</string>
-    <string name="manual_connect_currency_hint">BTC وETH وLTC وBСH والمزيد</string>
     <string name="manual_connect_search">بحث</string>
     <string name="manual_connect_node_id">معرف العقدة أو البلد</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>

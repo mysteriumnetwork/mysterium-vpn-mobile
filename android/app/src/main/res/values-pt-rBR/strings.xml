@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">Navegue pela Web e pague conforme o uso</string>
     <string name="onboarding_description_title_2">Nenhum bloqueio de assinaturas</string>
     <string name="onboarding_description_content_2">Recarregue sua conta agora ou faça isso mais tarde e use a funcionalidades limitadas e nós gratuitos</string>
-    <string name="onboarding_main_title_3">Recarregue com criptomoedas populares</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH e mais</string>
-    <string name="onboarding_description_content_3">Recarregue sua conta agora ou faça isso mais tarde e use a funcionalidades limitadas e nós gratuitos</string>
     <string name="onboarding_skip">Ignorar</string>
     <string name="onboarding_next">Avançar</string>
 
@@ -53,7 +50,6 @@
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Salvo com sucesso</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH e mais</string>
     <string name="manual_connect_search">Pesquisar</string>
     <string name="manual_connect_node_id">ID do nó ou país</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
