@@ -221,6 +221,9 @@ dependencies {
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"
 
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.6.0"
+
     //Mysterium
     implementation "network.mysterium:terms:0.0.41"
     implementation "network.mysterium:mobile-node:1.6.5"
