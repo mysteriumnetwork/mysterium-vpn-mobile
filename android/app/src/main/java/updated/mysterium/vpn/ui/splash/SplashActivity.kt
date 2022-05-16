@@ -149,6 +149,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun setUpPushyNotifications() {
+        viewModel.setUpInactiveUserPushyNotifications()
         pushyNotifications.register {
             val lastCurrency = viewModel.getLastCryptoCurrency()
             if (lastCurrency == null) {

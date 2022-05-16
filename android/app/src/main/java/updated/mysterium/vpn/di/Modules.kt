@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.room.Room
+import androidx.work.WorkManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -103,9 +104,12 @@ object Modules {
                 get()
             )
         }
+        single {
+            WorkManager.getInstance(androidContext())
+        }
 
         viewModel {
-            SplashViewModel(get())
+            SplashViewModel(get(), get())
         }
         viewModel {
             SearchViewModel()
