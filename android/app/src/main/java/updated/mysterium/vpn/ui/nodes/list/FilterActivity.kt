@@ -10,16 +10,13 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.Countries
-import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality
 import updated.mysterium.vpn.model.filter.NodeType
-import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.network.usecase.FilterUseCase
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.search.SearchActivity
 
@@ -132,7 +129,7 @@ class FilterActivity : BaseActivity() {
 
     private fun initProposalListRecycler() {
         nodeListAdapter.onNodeClickedListener = {
-            navigateToHomeConnection(it)
+            navigateToConnection(it)
         }
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@FilterActivity)
@@ -222,15 +219,6 @@ class FilterActivity : BaseActivity() {
 
     private fun navigateToHomeSelection() {
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
-    }
-
-    private fun navigateToHomeConnection(proposal: Proposal) {
-        val intent = Intent(this, ConnectionActivity::class.java).apply {
-            putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
-            putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)

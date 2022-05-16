@@ -20,9 +20,12 @@ import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.localisation.LocaleHelper
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.Notifications
+import updated.mysterium.vpn.ui.base.BaseViewModel.Companion.CONNECT_BALANCE_LIMIT
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
@@ -270,6 +273,37 @@ abstract class BaseActivity : AppCompatActivity() {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         } else {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+        }
+    }
+
+    fun navigateToConnection(proposal: Proposal) {
+        if ((baseViewModel.balance.value ?: 0.0) >= CONNECT_BALANCE_LIMIT) {
+            val intent = Intent(this, ConnectionActivity::class.java).apply {
+                putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
+                putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+        } else {
+            insufficientFundsPopUp()
+        }
+    }
+
+    fun navigateToConnection(countryCode: String?, animation: Bundle? = null) {
+        if ((baseViewModel.balance.value ?: 0.0) >= CONNECT_BALANCE_LIMIT) {
+            val intent = Intent(this, ConnectionActivity::class.java).apply {
+                countryCode?.let {
+                    putExtra(
+                        ConnectionActivity.CONNECTION_TYPE_KEY,
+                        ConnectionType.SMART_CONNECT.type
+                    )
+                    putExtra(ConnectionActivity.COUNTRY_CODE_KEY, countryCode)
+                }
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent, animation)
+        } else {
+            insufficientFundsPopUp()
         }
     }
 
