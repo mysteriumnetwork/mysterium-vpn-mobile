@@ -20,6 +20,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val BALANCE_LIMIT = 0.5
         private const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.2
         private const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
+        const val CONNECT_BALANCE_LIMIT = 0.0001
     }
 
     val balanceRunningOut: LiveData<Boolean>

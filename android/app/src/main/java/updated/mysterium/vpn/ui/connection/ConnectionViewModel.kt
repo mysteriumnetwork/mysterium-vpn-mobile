@@ -37,6 +37,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val TAG = "HomeViewModel"
         const val SESSION_NUMBER_BEFORE_REVIEW = 3
         const val SORT_BY_TYPE = "quality"
+        const val DISCONNECT_BALANCE_LIMIT = 0.0001
     }
 
     val successConnectEvent: LiveData<Proposal>
@@ -85,6 +86,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         isConnectionStopped = false
     }
 
+    init {
+        balanceListener()
+    }
+
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager,
@@ -93,9 +98,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         proposal: Proposal?,
         rate: Double
     ) {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, exception.localizedMessage ?: exception.toString())
-        }
         viewModelScope.launch(handler) {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
@@ -324,5 +326,15 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         coreService?.setActiveProposal(null)
         coreService?.setDeferredNode(null)
         coreService?.stopForeground()
+    }
+
+    private fun balanceListener() {
+        viewModelScope.launch {
+            balanceUseCase.initBalanceListener {
+                if (it <= DISCONNECT_BALANCE_LIMIT) {
+                    disconnect()
+                }
+            }
+        }
     }
 }
