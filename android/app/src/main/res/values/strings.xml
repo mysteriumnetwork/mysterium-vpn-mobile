@@ -143,6 +143,10 @@
     <string name="profile_keys_description">On Mysterium your account is not stored in centralised servers. Private keys that hold your tokens are stored only in your application. </string>
     <string name="profile_backup">Please back it up so that you can recover your account later.</string>
     <string name="profile_download_keys">Download</string>
+    <string name="profile_storage_permission_rationale_title">We need permissions to store your account</string>
+    <string name="profile_storage_permission_rationale_message">If you deny this permission, you won’t be able to access your account.</string>
+    <string name="profile_storage_permission_rationale_cancel">Cancel</string>
+    <string name="profile_storage_permission_rationale_deny">Deny</string>
 
     <!--  Report issue  -->
     <string name="report_issue_app_version_template" translatable="false">%1$s</string>
