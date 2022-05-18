@@ -108,7 +108,7 @@ class FilterActivity : BaseActivity() {
             navigateToSearch()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.filtersLayout.typeCardView.setOnClickListener {
             nodeFilter.onTypeChanged()

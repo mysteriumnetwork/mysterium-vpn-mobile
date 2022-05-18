@@ -153,10 +153,10 @@ class MenuActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.helpButton.setOnClickListener {
             composeEmail()
@@ -170,7 +170,7 @@ class MenuActivity : BaseActivity() {
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
                 0 -> menuItem.onItemClickListener = {
-                    navigateToConnectionOrHome()
+                    navigateToConnectionIfConnectedOrHome()
                 }
                 1 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, WalletActivity::class.java))

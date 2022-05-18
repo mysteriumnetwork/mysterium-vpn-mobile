@@ -86,7 +86,7 @@ class CreateAccountActivity : BaseActivity() {
         registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
             binding.loader.visibility = View.INVISIBLE
             if (isRegistered) {
-                navigateToConnectionOrHome(isBackTransition = false)
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
                 finish()
             } else {
                 navigateToTopUp()

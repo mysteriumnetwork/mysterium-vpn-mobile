@@ -48,7 +48,7 @@ class SearchActivity : BaseActivity() {
             finish()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.editText.addTextChangedListener {
             viewModel.search(it.toString())

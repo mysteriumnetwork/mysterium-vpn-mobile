@@ -97,7 +97,7 @@ class WalletActivity : BaseActivity() {
             navigateToPayment()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
     }
 

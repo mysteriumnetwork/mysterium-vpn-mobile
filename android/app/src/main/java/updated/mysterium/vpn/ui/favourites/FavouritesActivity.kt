@@ -45,7 +45,7 @@ class FavouritesActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

@@ -19,6 +19,7 @@ import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -29,6 +30,7 @@ import updated.mysterium.vpn.ui.base.BaseViewModel.Companion.CONNECT_BALANCE_LIM
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
 import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 import java.util.*
@@ -41,6 +43,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var connectionState = ConnectionState.NOTCONNECTED
     protected val pushyNotifications = Notifications(this)
     private val dialogs = emptyList<Dialog>().toMutableList()
+    private val homeSelectionViewModel: HomeSelectionViewModel by inject()
     private var insufficientFoundsDialog: AlertDialog? = null
     private var wifiErrorDialog: AlertDialog? = null
     private lateinit var alertDialogBuilder: AlertDialog.Builder
@@ -163,35 +166,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun navigateToConnectionOrHome(isBackTransition: Boolean = true) {
-        val intent = if (
-            connectionState == ConnectionState.CONNECTED ||
-            connectionState == ConnectionState.CONNECTING ||
-            connectionState == ConnectionState.ON_HOLD
-        ) {
-            Intent(this, ConnectionActivity::class.java)
-        } else {
-            Intent(this, HomeSelectionActivity::class.java)
-        }
-        intent.apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        val transitionAnimation = if (isBackTransition) {
-            ActivityOptions.makeCustomAnimation(
-                applicationContext,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            ).toBundle()
-        } else {
-            ActivityOptions.makeCustomAnimation(
-                applicationContext,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            ).toBundle()
-        }
-        startActivity(intent, transitionAnimation)
-    }
-
     fun establishConnectionListeners() {
         baseViewModel.establishListeners()
     }
@@ -276,34 +250,76 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun navigateToConnectionIfConnectedOrHome(isBackTransition: Boolean = true) {
+        val intent = if (
+            connectionState == ConnectionState.CONNECTED ||
+            connectionState == ConnectionState.CONNECTING ||
+            connectionState == ConnectionState.ON_HOLD
+        ) {
+            Intent(this, ConnectionActivity::class.java)
+        } else {
+            Intent(this, HomeSelectionActivity::class.java)
+        }
+        intent.apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent, getTransitionAnimation(isBackTransition))
+    }
+
+    fun navigateToConnectionIfBalanceOrHome() {
+        baseViewModel.balance.observeOnce(this) { balance ->
+            if (balance >= CONNECT_BALANCE_LIMIT) {
+                navigateToSmartConnection(isBackTransition = false, isConnectIntent = true)
+            } else {
+                val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
+            }
+        }
+    }
+
     fun navigateToConnection(proposal: Proposal) {
         if ((baseViewModel.balance.value ?: 0.0) >= CONNECT_BALANCE_LIMIT) {
-            val intent = Intent(this, ConnectionActivity::class.java).apply {
-                putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
-                putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            navigateToManualConnection(proposal)
         } else {
             insufficientFundsPopUp()
         }
     }
 
-    fun navigateToConnection(countryCode: String?, animation: Bundle? = null) {
+    fun navigateToConnection(isBackTransition: Boolean? = null, isConnectIntent: Boolean = false) {
         if ((baseViewModel.balance.value ?: 0.0) >= CONNECT_BALANCE_LIMIT) {
+            navigateToSmartConnection(isBackTransition, isConnectIntent)
+        } else {
+            insufficientFundsPopUp()
+        }
+    }
+
+    private fun navigateToManualConnection(proposal: Proposal) {
+        val intent = Intent(this, ConnectionActivity::class.java).apply {
+            putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
+            putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToSmartConnection(
+        isBackTransition: Boolean? = null,
+        isConnectIntent: Boolean = false
+    ) {
+        if (connectionState == ConnectionState.CONNECTED || isConnectIntent) {
             val intent = Intent(this, ConnectionActivity::class.java).apply {
-                countryCode?.let {
+                if (isConnectIntent) {
                     putExtra(
                         ConnectionActivity.CONNECTION_TYPE_KEY,
                         ConnectionType.SMART_CONNECT.type
                     )
-                    putExtra(ConnectionActivity.COUNTRY_CODE_KEY, countryCode)
+                    putExtra(ConnectionActivity.COUNTRY_CODE_KEY, getCountryCode())
                 }
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            startActivity(intent, animation)
-        } else {
-            insufficientFundsPopUp()
+            startActivity(intent, getTransitionAnimation(isBackTransition))
         }
     }
 
@@ -329,4 +345,25 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getTransitionAnimation(isBackTransition: Boolean?): Bundle? {
+        return if (isBackTransition == true) {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).toBundle()
+        } else {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            ).toBundle()
+        }
+    }
+
+    private fun getCountryCode(): String? {
+        return homeSelectionViewModel.getPreviousCountryCode()
+    }
+
 }

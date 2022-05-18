@@ -54,7 +54,7 @@ class TopUpCryptoActivity : BaseActivity() {
         }
         binding.freeTrialButtonButton.setOnClickListener {
             viewModel.accountFlowShown()
-            navigateToConnectionOrHome(isBackTransition = false)
+            navigateToConnectionIfConnectedOrHome(isBackTransition = false)
         }
         binding.confirmButton.setOnClickListener {
             val cryptoName = topUpAdapter.getSelectedValue()
