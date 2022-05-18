@@ -4,32 +4,37 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityProfileBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.pop.up.PopUpDownloadKey
+import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 
 class ProfileActivity : BaseActivity() {
 
     private companion object {
-        const val TAG = "ProfileActivity"
         const val COPY_LABEL = "User identity address"
+        private const val STORAGE_PERMISSION_REQUEST_CODE = 1
     }
 
     private lateinit var binding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by inject()
     private val appNotificationManager: AppNotificationManager by inject()
     private var identityAddress = ""
+    private val storagePermissions = arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,20 @@ class ProfileActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
-        requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 1)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE && grantResults.isNotEmpty()) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                showDownloadKeyPopUp()
+            }
+        }
+        return
     }
 
     override fun showConnectionHint() {
@@ -47,7 +65,7 @@ class ProfileActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        viewModel.getIdentity().observe(this, { result ->
+        viewModel.getIdentity().observe(this) { result ->
             result.onSuccess { identity ->
                 binding.identityValueTextView.text = identity.address
                 identityAddress = identity.address
@@ -56,7 +74,7 @@ class ProfileActivity : BaseActivity() {
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
                 // TODO("Implement error handling")
             }
-        })
+        }
     }
 
     private fun bindsAction() {
@@ -70,8 +88,49 @@ class ProfileActivity : BaseActivity() {
             finish()
         }
         binding.downloadButton.setOnClickListener {
+            downloadPrivateKey()
+        }
+    }
+
+    private fun downloadPrivateKey() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (areStoragePermissionsGranted()) {
+                showDownloadKeyPopUp()
+            } else if (storagePermissions.any { shouldShowRequestPermissionRationale(it) }) {
+                showRequestPermissionRationale()
+            } else {
+                requestStoragePermission()
+            }
+        } else {
             showDownloadKeyPopUp()
         }
+    }
+
+    private fun showRequestPermissionRationale() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.profile_storage_permission_rationale_title)
+            .setMessage(R.string.profile_storage_permission_rationale_message)
+            .setNegativeButton(R.string.profile_storage_permission_rationale_cancel) { dialog, _ ->
+                dialog.dismiss()
+                requestStoragePermission()
+            }
+            .setPositiveButton(R.string.profile_storage_permission_rationale_deny) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun areStoragePermissionsGranted(): Boolean {
+        return storagePermissions.all {
+            checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun requestStoragePermission() {
+        requestPermissions(
+            storagePermissions,
+            STORAGE_PERMISSION_REQUEST_CODE
+        )
     }
 
     private fun showDownloadKeyPopUp() {
@@ -88,14 +147,14 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun downloadKey(passphrase: String) {
-        viewModel.downloadKey(passphrase).observe(this, { result ->
+        viewModel.downloadKey(passphrase).observe(this) { result ->
             result.onSuccess {
                 saveFile(it)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
-        })
+        }
     }
 
     private fun saveFile(bytesFileContent: ByteArray) {
