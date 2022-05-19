@@ -261,30 +261,6 @@ class HomeSelectionActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToConnection(
-        isBackTransition: Boolean? = null,
-        isConnectIntent: Boolean = false
-    ) {
-        if (connectionState == ConnectionState.CONNECTED || isConnectIntent) {
-            val transitionAnimation: Bundle? =
-                if (isBackTransition == true) {
-                    ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    ).toBundle()
-                } else {
-                    ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left
-                    ).toBundle()
-                }
-            val countryCode = if (isConnectIntent) viewModel.getPreviousCountryCode() else null
-            navigateToConnection(countryCode, transitionAnimation)
-        }
-    }
-
     private fun navigateToMenu() {
         startActivity(Intent(this, MenuActivity::class.java))
     }

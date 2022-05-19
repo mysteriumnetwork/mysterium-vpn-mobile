@@ -9,6 +9,7 @@ import network.mysterium.vpn.R
 import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.splash.SplashActivity
+import updated.mysterium.vpn.ui.splash.SplashActivity.Companion.REDIRECTED_FROM_PUSH_KEY
 
 typealias NotificationFactory = (Context) -> Notification
 
@@ -178,10 +179,12 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     }
 
     fun showInactiveUserNotification() {
-        val intent = Intent(context, ConnectionActivity::class.java).apply {
+        val intent = Intent(context, SplashActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra(REDIRECTED_FROM_PUSH_KEY, true)
         }
-        val appIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        val appIntent =
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(context, paymentStatusChannel)
             .setSmallIcon(R.drawable.notification_logo)

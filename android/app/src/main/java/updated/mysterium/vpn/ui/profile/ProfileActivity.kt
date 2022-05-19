@@ -21,7 +21,6 @@ import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.pop.up.PopUpDownloadKey
-import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 
 class ProfileActivity : BaseActivity() {
 
@@ -82,7 +81,7 @@ class ProfileActivity : BaseActivity() {
             copyToClipboard()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

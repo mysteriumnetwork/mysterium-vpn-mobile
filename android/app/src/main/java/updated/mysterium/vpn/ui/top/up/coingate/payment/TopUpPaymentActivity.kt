@@ -97,7 +97,7 @@ class TopUpPaymentActivity : BaseActivity() {
         }
         binding.freeTrialButtonButton.setOnClickListener {
             topUpViewModel.accountFlowShown()
-            navigateToConnectionOrHome(isBackTransition = false)
+            navigateToConnectionIfConnectedOrHome(isBackTransition = false)
         }
     }
 

@@ -45,7 +45,7 @@ class ReportIssueActivity : BaseActivity() {
             checkCorrectInputData()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
