@@ -39,11 +39,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
+    private val homeSelectionViewModel: HomeSelectionViewModel by inject()
     protected var isInternetAvailable = true
     protected var connectionState = ConnectionState.NOTCONNECTED
     protected val pushyNotifications = Notifications(this)
     private val dialogs = emptyList<Dialog>().toMutableList()
-    private val homeSelectionViewModel: HomeSelectionViewModel by inject()
     private var insufficientFoundsDialog: AlertDialog? = null
     private var wifiErrorDialog: AlertDialog? = null
     private lateinit var alertDialogBuilder: AlertDialog.Builder
