@@ -84,7 +84,7 @@
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                 android:text="@string/payment_total"
-                android:textColor="@color/primary"
+                android:textColor="@color/payment_total"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -95,7 +95,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:text="-"
-                android:textColor="@color/primary"
+                android:textColor="@color/payment_total"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/totalPriceTitleTextView"
                 app:layout_constraintEnd_toEndOf="parent"

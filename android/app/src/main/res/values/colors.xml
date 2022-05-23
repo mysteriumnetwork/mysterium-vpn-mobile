@@ -33,10 +33,7 @@
 
     <color name="top_up_unselected_state">#F4F4FC</color>
     <color name="payment_background">#F4F4FC</color>
-    <color name="payment_divider">#9090BB</color>
-    <color name="payment_title">#9090BB</color>
-    <color name="payment_value">#5A597D</color>
-    <color name="payment_description">#9090BB</color>
+    <color name="payment_total">#D61F85</color>
 
     <color name="manual_connect_items_empty_background">#F4F4FC</color>
     <color name="manual_connect_list_background">#FFFFFF</color>
