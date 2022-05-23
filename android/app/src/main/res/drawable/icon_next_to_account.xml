@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/icon_next_to_account_available"
+        android:state_activated="true"/>
+    <item android:drawable="@drawable/icon_next_to_account_non_available"
+        android:state_activated="false" />
+</selector>

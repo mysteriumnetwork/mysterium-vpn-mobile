@@ -202,7 +202,6 @@
     <!--  Private key  -->
     <string name="private_key_description">Önemli! Kişisel anahtarını şimdi indir ve hesabının kilitlenmesini önlemek için güvenli bir şekilde sakla.</string>
     <string name="private_key_back_up">Özel Anahtarı\n Yedekle</string>
-    <string name="private_key_back_up_later">Sonra\n Yedekle</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Mysterium dVPN\'i kullanmaya başlamak için hesabına yükleme yap veya tavsiye kodunu kullan</string>

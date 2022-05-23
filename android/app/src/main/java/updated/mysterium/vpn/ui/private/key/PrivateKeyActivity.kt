@@ -16,6 +16,7 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.pop.up.PopUpDownloadKey
@@ -39,6 +40,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         super.onCreate(savedInstanceState)
         binding = ActivityPrivateKeyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setNextToAccountFrameAvailability()
         bindsAction()
     }
 
@@ -60,7 +62,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         binding.backUpKeyFrame.setOnClickListener {
             backUpKey()
         }
-        binding.backUpLaterFrame.setOnClickListener {
+        binding.nextToAccountFrame.setOnClickListener {
             navigateToPrepareTopUp()
         }
         binding.backButton.setOnClickListener {
@@ -153,8 +155,9 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private fun exportIdentity(passphrase: String) {
         viewModel.exportIdentity(passphrase).observe(this) { result ->
+            setNextToAccountFrameAvailability(result.isSuccess)
             result.onSuccess {
-                navigateToPrepareTopUp()
+                viewModel.accountCreated()
             }
             result.onFailure {
                 Log.i(TAG, "onFailure ${it.localizedMessage}")
@@ -178,7 +181,25 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     }
 
     private fun navigateToPrepareTopUp() {
-        viewModel.accountCreated()
         startActivity(Intent(this, PrepareTopUpActivity::class.java))
     }
+
+    private fun setNextToAccountFrameAvailability(isAvailable: Boolean? = null) {
+        when (isAvailable) {
+            true -> {
+                binding.nextToAccountFrame.isEnabled = true
+                binding.nextToAccountIcon.isActivated = true
+                binding.nextToAccountTitle.alpha = 1f
+            }
+            false -> {
+                binding.nextToAccountFrame.isEnabled = false
+                binding.nextToAccountIcon.isActivated = false
+                binding.nextToAccountTitle.alpha = 0.5f
+            }
+            else -> {
+                setNextToAccountFrameAvailability(viewModel.isAccountCreated())
+            }
+        }
+    }
+
 }

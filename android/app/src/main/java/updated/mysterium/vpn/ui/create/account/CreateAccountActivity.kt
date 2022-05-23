@@ -75,7 +75,6 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this) {
-            viewModel.accountCreated(true)
             navigateToPrivateKey()
         }
         viewModel.registrationError.observe(this) {
