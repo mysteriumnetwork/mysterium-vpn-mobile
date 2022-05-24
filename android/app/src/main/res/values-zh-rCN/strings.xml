@@ -199,7 +199,6 @@
     <!--  Private key  -->
     <string name="private_key_description">重要提示！立即下载您的私人密钥，然后安全存储，以防无法访问您的账户。</string>
     <string name="private_key_back_up">备份\n 私钥</string>
-    <string name="private_key_back_up_later">稍后\n 备份</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">给账户充值或使用推荐码开始使用 Mysterium dVPN</string>

@@ -199,7 +199,6 @@
     <!--  Private key  -->
     <string name="private_key_description">Importante! Baixe sua chave particular agora e armazene-a de forma segura para não ficar sem acesso à sua conta.</string>
     <string name="private_key_back_up">Fazer backup\n da chave privada</string>
-    <string name="private_key_back_up_later">Fazer backup\n depois</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Recarregue sua conta ou use o código de indicação para começar a usar a Mysterium dVPN</string>

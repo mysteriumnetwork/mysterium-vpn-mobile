@@ -116,7 +116,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/backUpLaterFrame"
+                android:id="@+id/nextToAccountFrame"
                 style="@style/RippleEffectSecondaryColor"
                 android:layout_width="138dp"
                 android:layout_height="149dp"
@@ -131,19 +131,21 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/nextToAccountIcon"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_padding_size_medium"
-                    android:src="@drawable/icon_back_up_later"
+                    android:src="@drawable/icon_next_to_account"
                     tools:ignore="ContentDescription" />
 
                 <TextView
+                    android:id="@+id/nextToAccountTitle"
                     style="@style/TextAppearance.HeadSubNumbers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/private_key_back_up_later"
+                    android:text="@string/private_key_next_to_account"
                     android:textAlignment="center"
                     android:textColor="@color/manual_connect_connecting_title_grey_blue" />
 

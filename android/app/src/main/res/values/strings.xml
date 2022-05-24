@@ -233,7 +233,7 @@
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
     <string name="private_key_back_up">Back up\n Private Key</string>
-    <string name="private_key_back_up_later">Back up\n Later</string>
+    <string name="private_key_next_to_account">Next to\n Account</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Top up your account or use the referral code to start using Mysterium dVPN</string>

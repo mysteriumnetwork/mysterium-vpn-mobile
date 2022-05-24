@@ -172,7 +172,6 @@
     <string name="card_payment_myst_description">%d زيادة الحد المالي لحساب MYST</string>
     <string name="private_key_description">ملاحظة مهمة! قم بتنزيل مفتاحك الخاص الآن وخزنه حتى تتفادى عدم التمكن من الدخول إلى حسابك.</string>
     <string name="private_key_back_up">النسخ الاحتياطي\n للمفتاح الخاص</string>
-    <string name="private_key_back_up_later">النسخ الاحتياطي\n لاحقًا</string>
     <string name="prepare_top_up_description">قم بزيادة الحد المالي لحسابك أو استخدم رمز الإحالة لبدء استخدام Mysterium dVPN</string>
     <string name="prepare_top_up_referral">استخدم رمز الإحالة</string>
     <string name="prepare_top_up_now">التعبئة الآن</string>
