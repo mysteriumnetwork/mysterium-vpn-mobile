@@ -52,7 +52,7 @@ class TopUpPaymentActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        viewModel.paymentSuccessfully.observe(this, {
+        viewModel.paymentSuccessfully.observe(this) {
             val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
             val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.toFloat()
             if (currency != null && amount != null) {
@@ -63,16 +63,16 @@ class TopUpPaymentActivity : BaseActivity() {
             }
             viewModel.clearPopUpTopUpHistory()
             registerAccount()
-        })
-        viewModel.paymentExpired.observe(this, {
+        }
+        viewModel.paymentExpired.observe(this) {
             showTopUpExpired()
-        })
-        viewModel.paymentFailed.observe(this, {
+        }
+        viewModel.paymentFailed.observe(this) {
             showTopUpServerFailed()
-        })
-        viewModel.paymentCanceled.observe(this, {
+        }
+        viewModel.paymentCanceled.observe(this) {
             showTopUpCanceled()
-        })
+        }
     }
 
     private fun registerAccount() {
@@ -120,25 +120,23 @@ class TopUpPaymentActivity : BaseActivity() {
         viewModel.createPaymentOrder(
             currency,
             amount?.toDouble() ?: 0.0,
-            isLighting ?: false
-        ).observe(this, { result ->
+            isLightning ?: false
+        ).observe(this) { result ->
             binding.loader.visibility = View.GONE
             binding.loader.cancelAnimation()
             result.onSuccess {
                 paymentLoaded(currency, it)
                 showPaymentPopUp()
             }
-            result.onFailure {
+            result.onFailure { exception ->
+                Log.e(TAG, exception.localizedMessage ?: exception.toString())
                 showTopUpServerFailed()
             }
-        })
+        }
     }
 
     private fun paymentLoaded(currency: String, order: Order) {
-        link = order.paymentURL
-        order.paymentURL?.let { qrLink ->
-            showQrCode(qrLink)
-        }
+        showQrCode(order.publicGatewayData.paymentURL)
         showEquivalent(currency, order)
         binding.timer.visibility = View.VISIBLE
         binding.timer.startTimer()

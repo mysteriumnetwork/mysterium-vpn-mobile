@@ -1,33 +1,33 @@
 package updated.mysterium.vpn.network.usecase
 
 import com.google.gson.Gson
-import mysterium.CreateOrderRequest
 import mysterium.CreatePaymentGatewayOrderReq
 import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.core.NodeRepository
-import updated.mysterium.vpn.model.payment.CardOrder
-import updated.mysterium.vpn.model.payment.CardinityGatewayLocalisation
-import updated.mysterium.vpn.model.payment.Gateway
-import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.payment.*
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
-    suspend fun createPaymentOrder(
+    suspend fun createCoingatePaymentGatewayOrder(
         currency: String,
         identityAddress: String,
         mystAmount: Double,
-        isLighting: Boolean
+        isLightning: Boolean
     ): Order {
-        val req = CreateOrderRequest().apply {
+        val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress
-            this.mystAmount = mystAmount
-            this.lightning = isLighting
+            this.mystAmount = mystAmount.toString()
+            this.gateway = Gateway.COINGATE.gateway
+            this.gatewayCallerData = Gson()
+                .toJson(Lightning(isLightning))
+                .toString()
+                .toByteArray()
         }
-        return nodeRepository.createPaymentOrder(req)
+        return nodeRepository.createCoingatePaymentGatewayOrder(req)
     }
 
-    suspend fun createPaymentGatewayOrder(
+    suspend fun createCardinityPaymentGatewayOrder(
         country: String,
         identityAddress: String,
         mystAmount: Double,
@@ -44,7 +44,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
                 .toString()
                 .toByteArray()
         }
-        return nodeRepository.createPaymentGatewayOrder(req)
+        return nodeRepository.createCardinityPaymentGatewayOrder(req)
     }
 
     suspend fun paymentOrderCallback(

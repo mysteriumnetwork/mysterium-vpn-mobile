@@ -138,13 +138,13 @@ class NodeRepository(var deferredNode: DeferredNode) {
         IdentityRegistrationFees(fee = res.fee)
     }
 
-    suspend fun createPaymentOrder(req: CreateOrderRequest) = withContext(Dispatchers.IO) {
-        val order = deferredNode.await().createOrder(req).decodeToString()
-        Log.d(TAG, "createPaymentOrder response: $order")
-        Order.fromJSON(order) ?: error("Could not parse JSON: $order")
-    }
+    suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+        withContext(Dispatchers.IO) {
+            val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+            Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+        }
 
-    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createCardinityPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req)
