@@ -36,14 +36,14 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun createPaymentOrder(
         currency: String,
         mystAmount: Double,
-        isLighting: Boolean
+        isLightning: Boolean
     ) = liveDataResult {
         registerOrderCallback()
         val order = paymentUseCase.createPaymentOrder(
             currency,
             connectionUseCase.getIdentityAddress(),
             mystAmount,
-            isLighting
+            isLightning
         )
         orderId = order.id
         order

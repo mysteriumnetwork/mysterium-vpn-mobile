@@ -30,7 +30,7 @@ class TopUpPaymentActivity : BaseActivity() {
     companion object {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
-        const val CRYPTO_IS_LIGHTING_EXTRA_KEY = "CRYPTO_IS_LIGHTING_EXTRA_KEY"
+        const val CRYPTO_IS_LIGHTNING_EXTRA_KEY = "CRYPTO_IS_LIGHTNING_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
         private const val TAG = "TopUpPaymentActivity"
@@ -108,7 +108,7 @@ class TopUpPaymentActivity : BaseActivity() {
 
         val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY) ?: ""
         val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
-        val isLighting = intent.extras?.getBoolean(CRYPTO_IS_LIGHTING_EXTRA_KEY)
+        val isLightning = intent.extras?.getBoolean(CRYPTO_IS_LIGHTNING_EXTRA_KEY)
         amount?.let {
             binding.usdEquivalentTextView.text = getString(
                 R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it

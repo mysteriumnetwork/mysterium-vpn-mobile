@@ -190,7 +190,7 @@
     <string name="top_up_payment_title">Waiting for a payment</string>
     <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
     <string name="top_up_payment_link">Or use a payment link</string>
-    <string name="top_up_crypto_lighting">Lightning Network</string>
+    <string name="top_up_crypto_lightning">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
     <string name="top_up_free_trial">Free Trial</string>

@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-        android:background="@drawable/shape_lighting"
+        android:background="@drawable/shape_lightning"
         android:orientation="horizontal"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,11 +46,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_padding_size_medium_large"
-            android:text="@string/top_up_crypto_lighting"
+            android:text="@string/top_up_crypto_lightning"
             android:textColor="@android:color/white" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/lightingSwitch"
+            android:id="@+id/lightning_switch"
             style="@style/SwitchStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

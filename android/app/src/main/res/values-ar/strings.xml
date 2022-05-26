@@ -142,7 +142,7 @@
     <string name="top_up_payment_title">في انتظار الدفع</string>
     <string name="top_up_payment_description">امسح رمز الاستجابة السريعة هذا ضوئيًا الذي يحتوي على عنوان التعبئة الخاص بك</string>
     <string name="top_up_payment_link">أو استخدم رابط الدفع</string>
-    <string name="top_up_crypto_lighting">شبكة الإضاءة</string>
+    <string name="top_up_crypto_lightning">شبكة الإضاءة</string>
     <string name="top_up_usd_equivalent">ما يعادل دولار أمريكي ≈ %.2f دولار</string>
     <string name="top_up_free_trial">تجربة مجانية</string>
     <string name="payment_processing_text">تحذير: سوف يستغرق التطبيق بعض الوقت لمعالجة عمليات الدفع</string>

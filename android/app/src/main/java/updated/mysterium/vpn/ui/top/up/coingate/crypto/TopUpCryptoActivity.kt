@@ -39,7 +39,7 @@ class TopUpCryptoActivity : BaseActivity() {
         topUpAdapter.replaceAll(getCryptoList())
         topUpAdapter.onItemSelected = {
             binding.cryptoAnimation.changeAnimation(it.value)
-            if (it.isLightingAvailable) {
+            if (it.isLightningAvailable) {
                 binding.switchFrame.visibility = View.VISIBLE
             } else {
                 binding.switchFrame.visibility = View.INVISIBLE
@@ -62,8 +62,8 @@ class TopUpCryptoActivity : BaseActivity() {
                 putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
                 putExtra(TopUpPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
                 putExtra(
-                    TopUpPaymentActivity.CRYPTO_IS_LIGHTING_EXTRA_KEY,
-                    binding.lightingSwitch.isChecked
+                    TopUpPaymentActivity.CRYPTO_IS_LIGHTNING_EXTRA_KEY,
+                    binding.lightningSwitch.isChecked
                 )
             }
             startActivity(intent)
