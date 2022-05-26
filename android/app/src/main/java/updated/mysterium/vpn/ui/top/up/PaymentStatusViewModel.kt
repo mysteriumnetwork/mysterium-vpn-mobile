@@ -22,7 +22,7 @@ class PaymentStatusViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         currency: String
     ) = liveDataResult {
         registerOrderCallback()
-        paymentUseCase.createPaymentGatewayOrder(
+        paymentUseCase.createCardinityPaymentGatewayOrder(
             country = countryCode,
             identityAddress = connectionUseCase.getIdentityAddress(),
             mystAmount = mystAmount.toDouble(),

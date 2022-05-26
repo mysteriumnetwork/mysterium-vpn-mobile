@@ -31,19 +31,19 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _paymentExpired = MutableLiveData<Unit>()
     private val _paymentFailed = MutableLiveData<Unit>()
     private val _paymentCanceled = MutableLiveData<Unit>()
-    private var orderId: Long? = null
+    private var orderId: String? = null
 
     fun createPaymentOrder(
         currency: String,
         mystAmount: Double,
-        isLighting: Boolean
+        isLightning: Boolean
     ) = liveDataResult {
         registerOrderCallback()
-        val order = paymentUseCase.createPaymentOrder(
+        val order = paymentUseCase.createCoingatePaymentGatewayOrder(
             currency,
             connectionUseCase.getIdentityAddress(),
             mystAmount,
-            isLighting
+            isLightning
         )
         orderId = order.id
         order
