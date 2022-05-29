@@ -8,6 +8,7 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
+import com.android.billingclient.api.Purchase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -304,11 +305,13 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         }
     }
 
-    fun launchBillingFlow(activity: Activity, sku: String) {
+    fun launchBillingFlow(activity: Activity, sku: String, id: String) {
         val skuDetails = skuDetailsMap[sku]?.value
         if (null != skuDetails) {
             val billingFlowParamsBuilder = BillingFlowParams.newBuilder()
-            billingFlowParamsBuilder.setSkuDetails(skuDetails)
+            billingFlowParamsBuilder
+                .setObfuscatedAccountId(id)
+                .setSkuDetails(skuDetails)
             defaultScope.launch {
                 val br = billingClient.launchBillingFlow(
                     activity,

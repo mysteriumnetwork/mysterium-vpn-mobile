@@ -31,7 +31,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     suspend fun createPaymentGatewayOrder(
         identityAddress: String,
         amountUSD: Double
-    ) {
+    ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress
@@ -39,7 +39,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
             this.amountUSD = amountUSD.toString()
             this.gateway = Gateway.GOOGLE.gateway
         }
-        nodeRepository.createPaymentGatewayOrder(req)
+        return nodeRepository.createPaymentGatewayOrder(req)
     }
 
     suspend fun paymentOrderCallback(

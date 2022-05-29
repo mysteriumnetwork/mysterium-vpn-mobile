@@ -79,6 +79,7 @@ class PaymentSummaryActivity : BaseActivity() {
 
         paymentStatusViewModel.getPayment(price).observe(this) {
             it.onSuccess {
+                topUpPriceCardItem = topUpPriceCardItem?.copy(id = it.id)
                 inflateOrderData(price)
             }
             it.onFailure { error ->
@@ -113,7 +114,8 @@ class PaymentSummaryActivity : BaseActivity() {
         topUpPriceCardItem?.let {
             paymentViewModel.billingDataSource.launchBillingFlow(
                 this@PaymentSummaryActivity,
-                it.sku
+                it.sku,
+                it.id
             )
         }
     }

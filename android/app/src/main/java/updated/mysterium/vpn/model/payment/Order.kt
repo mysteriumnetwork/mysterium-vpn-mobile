@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken
 
 data class Order constructor(
     @SerializedName("id")
-    val id: Long,
+    val id: String,
     @SerializedName("identity_address")
     val identity: String,
     @SerializedName("status")

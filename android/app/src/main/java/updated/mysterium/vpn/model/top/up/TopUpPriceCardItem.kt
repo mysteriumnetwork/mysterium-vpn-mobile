@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class TopUpPriceCardItem(
+    val id: String,
     val sku: String,
     val price: Double,
     var isSelected: Boolean = false

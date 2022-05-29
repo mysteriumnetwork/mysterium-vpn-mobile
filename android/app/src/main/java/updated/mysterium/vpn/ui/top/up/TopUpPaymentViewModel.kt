@@ -85,6 +85,7 @@ class TopUpPaymentViewModel(
         return list.map { skuDetails ->
             val price = skuDetails.description.filter { it in filterRange }.toDouble()
             TopUpPriceCardItem(
+                id = "",
                 sku = skuDetails.sku,
                 price = price,
                 isSelected = list.indexOf(skuDetails) == 0

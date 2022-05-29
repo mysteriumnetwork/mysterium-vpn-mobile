@@ -137,7 +137,9 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
-                deferredNode.await().createPaymentGatewayOrder(req)
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Log.d(TAG, "createPaymentOrder response: $order")
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (e: Exception) {
                 if (isBalanceLimitExceeded()) {
                     throw TopupPreconditionFailedException(
