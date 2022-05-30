@@ -75,13 +75,13 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getProposals(filterId: Int, countryCode: String) = liveDataResult {
         (if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
-            if (_proposals.value.isNullOrEmpty()) filterUseCase.getProposals() else _proposals.value
+            if (_proposals.value.isNullOrEmpty()) nodesUseCase.getFilteredProposals() else _proposals.value
         } else if (filterId != FilterUseCase.ALL_NODES_FILTER_ID && countryCode == ALL_COUNTRY_CODE) {
-            filterUseCase.getProposals(filterId)
+            nodesUseCase.getFilteredProposals(filterId)
         } else if (filterId == FilterUseCase.ALL_NODES_FILTER_ID && countryCode != ALL_COUNTRY_CODE) {
-            filterUseCase.getProposals(countryCode = countryCode)
+            nodesUseCase.getFilteredProposals(countryCode = countryCode)
         } else {
-            filterUseCase.getProposals(filterId, countryCode)
+            nodesUseCase.getFilteredProposals(filterId, countryCode)
         }) ?: emptyList()
     }
 
@@ -137,7 +137,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
         }
         viewModelScope.launch(Dispatchers.IO + handler) {
-            cachedProposalList = nodesUseCase.getAllProposals()
+            cachedProposalList = nodesUseCase.getProposalList()
             if (cachedProposalList.isNotEmpty()) {
                 _proposals.postValue(cachedProposalList)
             }

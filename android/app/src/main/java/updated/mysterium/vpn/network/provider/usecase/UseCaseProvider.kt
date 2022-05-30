@@ -11,7 +11,7 @@ class UseCaseProvider(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) {
 
-    fun nodes() = NodesUseCase(nodeRepository)
+    fun nodes() = NodesUseCase(nodeRepository, sharedPreferencesManager)
 
     fun location() = LocationUseCase(nodeRepository)
 
