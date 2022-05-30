@@ -198,6 +198,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                             "sure SKU matches SKUS in the Play developer console."
                 )
             } else {
+                Log.e(TAG, "${purchase.skus} purchase state = ${purchase.purchaseState}, isAcknowledged = ${purchase.isAcknowledged}")
                 when (purchase.purchaseState) {
                     Purchase.PurchaseState.PENDING -> skuStateFlow.tryEmit(SkuState.SKU_STATE_PENDING)
                     Purchase.PurchaseState.UNSPECIFIED_STATE -> skuStateFlow.tryEmit(SkuState.SKU_STATE_UNPURCHASED)
@@ -282,6 +283,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         if (purchaseConsumptionInProcess.contains(purchase)) {
             return
         }
+        Log.e(TAG, "purchase.isAcknowledged before consume: ${purchase.isAcknowledged}")
         purchaseConsumptionInProcess.add(purchase)
         val consumePurchaseResult = billingClient.consumePurchase(
             ConsumeParams.newBuilder()
@@ -289,8 +291,9 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                 .build()
         )
         purchaseConsumptionInProcess.remove(purchase)
+        Log.e(TAG, "purchase.isAcknowledged after consume: ${purchase.isAcknowledged}")
         if (consumePurchaseResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            Log.d(TAG, "Consumption successful. Emitting sku.")
+            Log.e(TAG, "Consumption successful. Emitting sku.")
             defaultScope.launch {
                 purchaseConsumedFlow.emit(purchase.skus)
             }
@@ -312,6 +315,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
             billingFlowParamsBuilder
                 .setObfuscatedAccountId(id)
                 .setSkuDetails(skuDetails)
+            Log.e(TAG, "ObfuscatedAccountId = $id")
             defaultScope.launch {
                 val br = billingClient.launchBillingFlow(
                     activity,
