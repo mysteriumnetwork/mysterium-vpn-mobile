@@ -7,19 +7,19 @@ import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class FavouritesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private val nodesUseCase = useCaseProvider.nodes()
+    private val favouritesUseCase = useCaseProvider.favourites()
     private var allNodes: List<Proposal> = emptyList()
 
     fun getSavedNodes(proposals: List<Proposal>?) = liveDataResult {
         if (proposals == null) {
-            nodesUseCase.getFavourites(allNodes)
+            favouritesUseCase.getFavourites(allNodes)
         } else {
             allNodes = proposals
-            nodesUseCase.getFavourites(proposals)
+            favouritesUseCase.getFavourites(proposals)
         }
     }
 
     fun deleteNodeFromFavourite(proposal: Proposal) = liveDataResult {
-        nodesUseCase.deleteFromFavourite(proposal)
+        favouritesUseCase.deleteFromFavourite(proposal)
     }
 }
