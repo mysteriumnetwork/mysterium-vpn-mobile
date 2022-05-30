@@ -25,8 +25,8 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
 
-    private val knownInAppSKUs = mutableListOf("test_product_id")
-    private val knownAutoConsumeSKUs = mutableListOf("test_product_id")
+    private val knownInAppSKUs = mutableListOf("test_product_id", "product_id_2")
+    private val knownAutoConsumeSKUs = mutableListOf("test_product_id", "product_id_2")
 
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
     private val skuDetailsMap: MutableMap<String, MutableStateFlow<SkuDetails?>> = HashMap()
