@@ -38,4 +38,7 @@ class UseCaseProvider(
     fun token() = TokenUseCase(nodeRepository)
 
     fun pushy() = PushyUseCase(sharedPreferencesManager)
+
+    fun countryInfo() = CountryInfoUseCase(nodeRepository, sharedPreferencesManager)
+
 }

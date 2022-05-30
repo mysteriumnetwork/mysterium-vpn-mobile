@@ -1,12 +1,10 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.GetProposalsRequest
-import network.mysterium.vpn.R
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
-import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
 
