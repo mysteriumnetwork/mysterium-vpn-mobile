@@ -25,6 +25,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
 
     private val knownInAppSKUs = mutableListOf("test_product_id", "product_id_2")
+    private val knownAutoConsumeSKUs = mutableListOf("test_product_id", "product_id_2")
 
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
     private val skuDetailsMap: MutableMap<String, MutableStateFlow<SkuDetails?>> = HashMap()
@@ -32,7 +33,9 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     val skuDetailsList
         get() = _skuDetailsList
 
+    private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
     private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
+    private val purchaseConsumedFlow = MutableSharedFlow<List<String>>()
     private val billingFlowInProcess = MutableStateFlow(false)
 
     private val billingClient: BillingClient
@@ -234,7 +237,33 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                     }
                     updatedSkus.add(sku)
                 }
-                setSkuStateFromPurchase(purchase)
+                val purchaseState = purchase.purchaseState
+                if (purchaseState == Purchase.PurchaseState.PURCHASED) {
+                    setSkuStateFromPurchase(purchase)
+                    var isConsumable = false
+                    defaultScope.launch {
+                        for (sku in purchase.skus) {
+                            if (knownAutoConsumeSKUs.contains(sku)) {
+                                isConsumable = true
+                            } else {
+                                if (isConsumable) {
+                                    Log.e(
+                                        TAG, "Purchase cannot contain a mixture of consumable" +
+                                                "and non-consumable items: " + purchase.skus.toString()
+                                    )
+                                    isConsumable = false
+                                    break
+                                }
+                            }
+                        }
+                        if (isConsumable) {
+                            consumePurchase(purchase)
+                            newPurchaseFlow.tryEmit(purchase.skus)
+                        }
+                    }
+                } else {
+                    setSkuStateFromPurchase(purchase)
+                }
             }
         } else {
             Log.e(TAG, "Empty purchase list.")
@@ -248,6 +277,33 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         }
     }
 
+    private suspend fun consumePurchase(purchase: Purchase) {
+        if (purchaseConsumptionInProcess.contains(purchase)) {
+            return
+        }
+        purchaseConsumptionInProcess.add(purchase)
+        val consumePurchaseResult = billingClient.consumePurchase(
+            ConsumeParams.newBuilder()
+                .setPurchaseToken(purchase.purchaseToken)
+                .build()
+        )
+        purchaseConsumptionInProcess.remove(purchase)
+        if (consumePurchaseResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+            Log.e(TAG, "Consumption successful. Emitting sku.")
+            defaultScope.launch {
+                purchaseConsumedFlow.emit(purchase.skus)
+            }
+            for (sku in purchase.skus) {
+                setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
+            }
+        } else {
+            Log.e(
+                TAG,
+                "Error while consuming: ${consumePurchaseResult.billingResult.debugMessage}"
+            )
+        }
+    }
+
     fun launchBillingFlow(activity: Activity, sku: String, id: String) {
         val skuDetails = skuDetailsMap[sku]?.value
         if (null != skuDetails) {
@@ -255,7 +311,6 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
             billingFlowParamsBuilder
                 .setObfuscatedAccountId(id)
                 .setSkuDetails(skuDetails)
-            Log.e(TAG, "ObfuscatedAccountId = $id")
             defaultScope.launch {
                 val br = billingClient.launchBillingFlow(
                     activity,
