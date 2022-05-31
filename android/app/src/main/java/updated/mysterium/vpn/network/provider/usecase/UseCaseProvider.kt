@@ -11,7 +11,7 @@ class UseCaseProvider(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) {
 
-    fun nodes() = NodesUseCase(nodeRepository, database.nodeDao())
+    fun nodes() = NodesUseCase(nodeRepository, sharedPreferencesManager)
 
     fun location() = LocationUseCase(nodeRepository)
 
@@ -38,4 +38,9 @@ class UseCaseProvider(
     fun token() = TokenUseCase(nodeRepository)
 
     fun pushy() = PushyUseCase(sharedPreferencesManager)
+
+    fun countryInfo() = CountryInfoUseCase(nodeRepository, sharedPreferencesManager)
+
+    fun favourites() = FavouritesUseCase(database.nodeDao())
+
 }

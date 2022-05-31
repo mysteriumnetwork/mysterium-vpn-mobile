@@ -75,6 +75,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val settingsUseCase = useCaseProvider.settings()
     private val statisticUseCase = useCaseProvider.statistic()
+    private val favouritesUseCase = useCaseProvider.favourites()
     private var deferredNode = DeferredNode()
     private var exchangeRate = 0.0
     private var isConnectionStopped = false
@@ -187,12 +188,12 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun addToFavourite(proposal: Proposal) = liveDataResult {
-        nodesUseCase.addToFavourite(proposal)
+        favouritesUseCase.addToFavourite(proposal)
     }
 
     fun deleteFromFavourite(proposal: Proposal) {
         viewModelScope.launch {
-            nodesUseCase.deleteFromFavourite(proposal)
+            favouritesUseCase.deleteFromFavourite(proposal)
         }
     }
 
@@ -222,7 +223,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun isFavourite(nodeId: String) = liveDataResult {
-        nodesUseCase.isFavourite(nodeId)
+        favouritesUseCase.isFavourite(nodeId)
     }
 
     fun manualDisconnect() {
