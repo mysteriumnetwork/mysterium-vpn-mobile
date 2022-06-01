@@ -49,10 +49,6 @@ class TopUpPriceActivity : BaseActivity() {
         binding.confirmButton.setOnClickListener {
             navigateToCardPaymentFlow()
         }
-        binding.freeTrialButtonButton.setOnClickListener {
-            viewModel.accountFlowShown()
-            navigateToConnectionOrHome(isBackTransition = false)
-        }
     }
 
     private fun setSkuList() {

@@ -235,21 +235,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/freeTrialButtonButton"
-                        style="@style/Widget.TrialButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                        android:layout_marginVertical="@dimen/margin_padding_size_small_medium"
-                        android:text="@string/top_up_free_trial"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/confirmButton" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
