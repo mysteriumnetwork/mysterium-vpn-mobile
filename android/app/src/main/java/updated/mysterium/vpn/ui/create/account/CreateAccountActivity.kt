@@ -82,7 +82,7 @@ class CreateAccountActivity : BaseActivity() {
             binding.importAccountFrame.isClickable = true
             showRegistrationErrorPopUp()
         }
-        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+        registrationViewModel.identityRegistrationResult.observe(this) { isRegistered ->
             binding.loader.visibility = View.INVISIBLE
             if (isRegistered) {
                 navigateToConnectionIfConnectedOrHome(isBackTransition = false)
@@ -91,10 +91,10 @@ class CreateAccountActivity : BaseActivity() {
                 navigateToTopUp()
             }
         }
-        registrationViewModel.accountRegistrationError.observe(this) {
+        registrationViewModel.identityRegistrationError.observe(this) {
             binding.loader.visibility = View.INVISIBLE
             detailedErrorPopUp {
-                registrationViewModel.tryRegisterAccount()
+                registrationViewModel.tryRegisterIdentity()
             }
         }
     }
@@ -146,7 +146,7 @@ class CreateAccountActivity : BaseActivity() {
                     App.getInstance(this).deferredMysteriumCoreService
                 balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
                 viewModel.accountCreated(false)
-                registrationViewModel.tryRegisterAccount(identity)
+                registrationViewModel.tryRegisterIdentity(identity)
             }
 
             it.onFailure { error ->

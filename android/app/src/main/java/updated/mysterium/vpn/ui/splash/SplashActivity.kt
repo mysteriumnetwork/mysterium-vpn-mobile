@@ -112,7 +112,7 @@ class SplashActivity : BaseActivity() {
             }
         }
 
-        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+        registrationViewModel.identityRegistrationResult.observe(this) { isRegistered ->
             val redirectedFromPush = intent?.extras?.getBoolean(REDIRECTED_FROM_PUSH_KEY) ?: false
             if (isRegistered && !redirectedFromPush) {
                 navigateToConnectionIfConnectedOrHome(isBackTransition = false)
@@ -121,16 +121,16 @@ class SplashActivity : BaseActivity() {
                 navigateForward(redirectedFromPush)
             }
         }
-        registrationViewModel.accountRegistrationError.observe(this) {
+        registrationViewModel.identityRegistrationError.observe(this) {
             detailedErrorPopUp {
-                registrationViewModel.tryRegisterAccount()
+                registrationViewModel.tryRegisterIdentity()
             }
         }
 
         lifecycleScope.launchWhenStarted {
             analytic.eventTracked.collect { event ->
                 if (event == AnalyticEvent.STARTUP.eventName) {
-                    registrationViewModel.tryRegisterAccount()
+                    registrationViewModel.tryRegisterIdentity()
                 }
             }
         }
