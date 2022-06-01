@@ -93,7 +93,7 @@
     <color name="pop_up_transparent_dark_blue">#703C3857</color>
     <color name="pop_up_background">#FFFFFF</color>
     <color name="pop_up_title">#5A597D</color>
-    <color name="pop_up_password_text">#3C3857</color>
+    <color name="pop_up_password_text">#803C3857</color>
     <color name="pop_up_password_hint">#503C3857</color>
     <color name="pop_up_negative_button_text">#B33C3857</color>
     <color name="pop_up_password_helper_text">#805A597D</color>

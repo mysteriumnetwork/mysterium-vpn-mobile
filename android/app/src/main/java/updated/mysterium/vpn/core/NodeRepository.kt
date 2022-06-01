@@ -257,7 +257,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        val gateways = deferredNode.await().gateways
+        val gateways = deferredNode.await().getGateways(GetGatewaysRequest())
         PaymentGateway.listFromJSON(
             gateways.decodeToString()
         ) ?: error("Could not parse JSON: $gateways")

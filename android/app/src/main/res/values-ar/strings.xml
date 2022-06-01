@@ -238,7 +238,7 @@ Wi-Fi</string>
     <string name="pop_up_referral_hint">أدخل الرمز هنا</string>
     <string name="pop_up_referral_title">رمز الإحالة</string>
     <string name="pop_up_referral_description">ستحصل على</string>
-    <string name="pop_up_referral_error">الرمز المتغير غير صحيح</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">الرمز المتغير غير صحيح</string>
     <string name="pop_up_new_version_title">إصدار جديد متوفر</string>
     <string name="pop_up_new_version_description">يُرجى تحديث تطبيقك من متجر Google Play</string>
     <string name="pop_up_new_version_update">تحديث</string>

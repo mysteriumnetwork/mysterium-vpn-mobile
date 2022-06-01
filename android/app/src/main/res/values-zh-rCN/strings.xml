@@ -278,7 +278,7 @@
     <string name="pop_up_referral_hint">在此输入代码</string>
     <string name="pop_up_referral_title">推荐人代码</string>
     <string name="pop_up_referral_description">您将获得</string>
-    <string name="pop_up_referral_error">令牌错误</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">令牌错误</string>
     <string name="pop_up_new_version_title">有新版本</string>
     <string name="pop_up_new_version_description">请在 Google Play 商店中更新应用程序</string>
     <string name="pop_up_new_version_update">更新</string>

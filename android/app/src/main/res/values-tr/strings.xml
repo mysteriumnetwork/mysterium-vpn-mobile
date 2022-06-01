@@ -279,7 +279,7 @@
     <string name="pop_up_referral_hint">Kodu buraya girin</string>
     <string name="pop_up_referral_title">Referans kodu</string>
     <string name="pop_up_referral_description">Alacağınız tutar:</string>
-    <string name="pop_up_referral_error">Hatalı belirteç</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Hatalı belirteç</string>
     <string name="pop_up_new_version_title">Yeni Sürüm Mevcut</string>
     <string name="pop_up_new_version_description">Lütfen uygulamanı Google Play Store\\\'da güncelle</string>
     <string name="pop_up_new_version_update">Güncelleme</string>

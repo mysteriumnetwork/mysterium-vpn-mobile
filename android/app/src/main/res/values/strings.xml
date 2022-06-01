@@ -312,7 +312,8 @@
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
-    <string name="pop_up_referral_error">Incorrect token</string>
+    <string name="pop_up_referral_empty_error">Field can\'t be empty</string>
+    <string name="pop_up_referral_invalid_error">Code is not valid</string>
     <string name="pop_up_new_version_title">New Version\n Available</string>
     <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
     <string name="pop_up_new_version_update">Update</string>
