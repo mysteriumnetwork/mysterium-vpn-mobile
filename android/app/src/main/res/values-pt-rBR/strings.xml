@@ -276,7 +276,7 @@
     <string name="pop_up_referral_hint">Insira o código aqui</string>
     <string name="pop_up_referral_title">Código de indicação</string>
     <string name="pop_up_referral_description">Você receberá</string>
-    <string name="pop_up_referral_error">Token incorreto</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Token incorreto</string>
     <string name="pop_up_new_version_title">Nova versão disponível</string>
     <string name="pop_up_new_version_description">Atualize seu aplicativo na Google Play Store</string>
     <string name="pop_up_new_version_update">Atualizar</string>

@@ -277,7 +277,7 @@
     <string name="pop_up_referral_hint">Введите код здесь</string>
     <string name="pop_up_referral_title">Реферальный код</string>
     <string name="pop_up_referral_description">Вы получите</string>
-    <string name="pop_up_referral_error">Неверный токен</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Неверный токен</string>
     <string name="pop_up_new_version_title">Доступна новая версия</string>
     <string name="pop_up_new_version_description">Пожалуйста, обновите приложение в Google Play Store</string>
     <string name="pop_up_new_version_update">Обновить</string>
