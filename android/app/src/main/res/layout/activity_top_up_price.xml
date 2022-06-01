@@ -193,22 +193,12 @@
                     tools:itemCount="5"
                     tools:listitem="@layout/item_card_element" />
 
-                <TextView
-                    android:id="@+id/mystEquivalentTextView"
-                    style="@style/TextAppearance.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-                    android:textColor="@color/manual_connect_divider_grey_blue"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/confirmButtonFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/mystEquivalentTextView">
+                    android:layout_marginTop="@dimen/margin_padding_size_small_medium"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -228,9 +218,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                        android:layout_marginTop="@dimen/margin_padding_size_medium"
-                        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                         android:text="@string/top_up_amount_confirm"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

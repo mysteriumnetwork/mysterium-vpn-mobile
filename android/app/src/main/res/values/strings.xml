@@ -180,7 +180,6 @@
     <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
-    <string name="top_up_myst_equivalent">MYST equivalent ≈ %.2f MYST</string>
     <string name="top_up_currency_equivalent" translatable="false">$%.2f</string>
     <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>

@@ -2,24 +2,21 @@ package updated.mysterium.vpn.ui.top.up.price
 
 import android.content.Intent
 import android.os.Bundle
-import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpPriceBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.summary.PaymentSummaryActivity
 import updated.mysterium.vpn.ui.top.up.TopUpAmountViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
+import updated.mysterium.vpn.ui.top.up.summary.PaymentSummaryActivity
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 
 class TopUpPriceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTopUpPriceBinding
-    private val viewModel: TopUpViewModel by inject()
     private val walletViewModel: TopUpAmountViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val paymentViewModel: TopUpPaymentViewModel by inject()
@@ -61,12 +58,6 @@ class TopUpPriceActivity : BaseActivity() {
         }
     }
 
-    private fun updateEquivalent(mystAmount: Double) {
-        binding.mystEquivalentTextView.text = getString(
-            R.string.top_up_myst_equivalent, mystAmount
-        )
-    }
-
     private fun updateWalletEstimates(mystAmount: Double) {
         walletViewModel.getWalletEquivalent(mystAmount).observe(this) { result ->
             result.onSuccess { estimates ->
@@ -101,7 +92,6 @@ class TopUpPriceActivity : BaseActivity() {
     private fun onItemSelected(selectedItem: TopUpPriceCardItem) {
         this.selectedItem = selectedItem
         val mystAmount = exchangeRateViewModel.getMystEquivalent(selectedItem.price)
-        updateEquivalent(mystAmount)
         updateWalletEstimates(mystAmount)
     }
 

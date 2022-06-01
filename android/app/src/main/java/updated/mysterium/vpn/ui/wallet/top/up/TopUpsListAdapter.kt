@@ -25,7 +25,7 @@ class TopUpsListAdapter : ContentListAdapter<Order, TopUpsListAdapter.TopUpsList
         private val binding = ItemTopUpBinding.bind(itemView)
 
         fun bind(topUp: Order) {
-            binding.mystSpentTextView.text = topUp.mystAmount.toString()
+            binding.mystSpentTextView.text = topUp.receiveMyst.toString()
             binding.paidTextView.text = itemView.context.getString(
                 R.string.wallet_top_ups_currency,
                 topUp.payAmount,

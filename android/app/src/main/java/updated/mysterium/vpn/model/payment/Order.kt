@@ -11,8 +11,8 @@ data class Order constructor(
     val identity: String,
     @SerializedName("status")
     val status: String,
-    @SerializedName("myst_amount")
-    val mystAmount: Long,
+    @SerializedName("receive_myst")
+    val receiveMyst: Double,
     @SerializedName("pay_currency")
     val payCurrency: String? = null,
     @SerializedName("pay_amount")

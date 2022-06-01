@@ -10,6 +10,7 @@ import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
+import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
@@ -18,7 +19,6 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
-import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class PaymentSummaryActivity : BaseActivity() {
 
@@ -30,7 +30,6 @@ class PaymentSummaryActivity : BaseActivity() {
     private val viewModel: PaymentSummaryViewModel by inject()
     private val paymentViewModel: TopUpPaymentViewModel by inject()
     private val paymentStatusViewModel: PaymentStatusViewModel by inject()
-    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private var topUpPriceCardItem: TopUpPriceCardItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,9 +77,9 @@ class PaymentSummaryActivity : BaseActivity() {
         startService()
 
         paymentStatusViewModel.getPayment(price).observe(this) {
-            it.onSuccess {
-                topUpPriceCardItem = topUpPriceCardItem?.copy(id = it.id)
-                inflateOrderData(price)
+            it.onSuccess { order ->
+                topUpPriceCardItem = topUpPriceCardItem?.copy(id = order.id)
+                inflateOrderData(order)
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
@@ -91,7 +90,7 @@ class PaymentSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun inflateOrderData(price: Double) {
+    private fun inflateOrderData(order: Order) {
         paymentViewModel.isBalanceLimitExceeded().observe(this) {
             it.onSuccess { isBalanceLimitExceeded ->
                 if (isBalanceLimitExceeded) {
@@ -102,11 +101,10 @@ class PaymentSummaryActivity : BaseActivity() {
                 }
             }
         }
-        val mystEquivalent = exchangeRateViewModel.getMystEquivalent(price)
         binding.totalPriceValueTextView.text =
             getString(
                 R.string.payment_myst_description,
-                mystEquivalent
+                order.receiveMyst
             )
     }
 
