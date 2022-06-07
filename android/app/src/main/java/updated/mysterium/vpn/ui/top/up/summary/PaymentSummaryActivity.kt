@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.asLiveData
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
@@ -48,6 +49,9 @@ class PaymentSummaryActivity : BaseActivity() {
                 paymentConfirmed()
             }
         }
+        paymentViewModel.billingDataSource.purchasePendingFlow.asLiveData().observe(this) {
+            showPaymentProcessingBanner()
+        }
     }
 
     private fun bind() {
@@ -62,6 +66,9 @@ class PaymentSummaryActivity : BaseActivity() {
         }
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
+        }
+        binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
+            binding.paymentProcessingLayout.root.visibility = View.GONE
         }
     }
 
@@ -142,6 +149,10 @@ class PaymentSummaryActivity : BaseActivity() {
         showBanner(binding.paymentBalanceLimitLayout.root)
         binding.confirmContainer.visibility = View.INVISIBLE
         binding.cancelContainer.visibility = View.VISIBLE
+    }
+
+    private fun showPaymentProcessingBanner() {
+        showBanner(binding.paymentProcessingLayout.root)
     }
 
     private fun showBanner(view: View) {

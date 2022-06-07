@@ -19,6 +19,9 @@ import kotlin.math.min
 class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     BillingClientStateListener {
 
+    val purchasePendingFlow
+        get() = _purchasePendingFlow
+
     private val defaultScope = CoroutineScope(Dispatchers.Main)
 
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
@@ -35,6 +38,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
 
     private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
     private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
+    private val _purchasePendingFlow = MutableSharedFlow<Purchase>()
     private val _purchaseConsumedFlow = MutableSharedFlow<Purchase>()
     val purchaseConsumedFlow
         get() = _purchaseConsumedFlow
@@ -200,7 +204,12 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                 )
             } else {
                 when (purchase.purchaseState) {
-                    Purchase.PurchaseState.PENDING -> skuStateFlow.tryEmit(SkuState.SKU_STATE_PENDING)
+                    Purchase.PurchaseState.PENDING -> {
+                        defaultScope.launch {
+                            _purchasePendingFlow.emit(purchase)
+                        }
+                        skuStateFlow.tryEmit(SkuState.SKU_STATE_PENDING)
+                    }
                     Purchase.PurchaseState.UNSPECIFIED_STATE -> skuStateFlow.tryEmit(SkuState.SKU_STATE_UNPURCHASED)
                     Purchase.PurchaseState.PURCHASED -> if (purchase.isAcknowledged) {
                         skuStateFlow.tryEmit(SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED)
