@@ -35,7 +35,9 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
 
     private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
     private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
-    private val purchaseConsumedFlow = MutableSharedFlow<List<String>>()
+    private val _purchaseConsumedFlow = MutableSharedFlow<Purchase>()
+    val purchaseConsumedFlow
+        get() = _purchaseConsumedFlow
     private val billingFlowInProcess = MutableStateFlow(false)
 
     private val billingClient: BillingClient
@@ -291,7 +293,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         if (consumePurchaseResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
             Log.e(TAG, "Consumption successful. Emitting sku.")
             defaultScope.launch {
-                purchaseConsumedFlow.emit(purchase.skus)
+                _purchaseConsumedFlow.emit(purchase)
             }
             for (sku in purchase.skus) {
                 setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)

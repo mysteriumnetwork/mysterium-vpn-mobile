@@ -6,6 +6,7 @@ import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.payment.Purchase
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
@@ -51,4 +52,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     suspend fun getGateways() = nodeRepository.getGateways()
 
     suspend fun isBalanceLimitExceeded() = nodeRepository.isBalanceLimitExceeded()
+
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        nodeRepository.gatewayClientCallback(purchase)
 }

@@ -5,6 +5,7 @@ import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
@@ -14,6 +15,7 @@ import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentGateway
+import updated.mysterium.vpn.model.payment.Purchase
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
@@ -25,7 +27,6 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
-        const val TAG = "NodeRepository"
         const val MAX_BALANCE_LIMIT = 5
     }
 
@@ -85,6 +86,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
             deferredNode.await().registerOrderUpdatedCallback(cb)
         }
     }
+
+    // GatewayClientCallback triggers payment callback for google from client side.
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        withContext(Dispatchers.IO) {
+            val req = GatewayClientCallbackReq().apply {
+                this.identityAddress = purchase.identityAddress
+                this.gateway = purchase.gateway.gateway
+                this.googlePurchaseToken = purchase.googlePurchaseToken
+                this.googleProductID = purchase.googleProductID
+            }
+            deferredNode.await().gatewayClientCallback(req)
+        }
 
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
@@ -248,7 +261,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        val gateways = deferredNode.await().gateways
+        val gateways = deferredNode.await().getGateways(GetGatewaysRequest())
         PaymentGateway.listFromJSON(
             gateways.decodeToString()
         ) ?: error("Could not parse JSON: $gateways")
