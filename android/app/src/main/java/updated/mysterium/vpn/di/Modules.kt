@@ -166,7 +166,7 @@ object Modules {
             MenuViewModel(get())
         }
         viewModel {
-            PaymentSummaryViewModel(get())
+            PaymentSummaryViewModel(get(), get())
         }
         viewModel {
             RegistrationViewModel(get())

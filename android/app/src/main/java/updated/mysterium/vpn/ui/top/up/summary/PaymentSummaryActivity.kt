@@ -49,7 +49,7 @@ class PaymentSummaryActivity : BaseActivity() {
                 paymentConfirmed()
             }
         }
-        paymentViewModel.billingDataSource.purchasePendingFlow.asLiveData().observe(this) {
+        viewModel.billingDataSource.purchasePendingFlow.asLiveData().observe(this) {
             showPaymentProcessingBanner()
         }
     }

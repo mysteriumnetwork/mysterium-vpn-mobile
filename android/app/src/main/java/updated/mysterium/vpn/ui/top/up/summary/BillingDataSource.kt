@@ -22,6 +22,9 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     val purchasePendingFlow
         get() = _purchasePendingFlow
 
+    val purchaseConsumedFlow
+        get() = _purchaseConsumedFlow
+
     private val defaultScope = CoroutineScope(Dispatchers.Main)
 
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
@@ -37,11 +40,8 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         get() = _skuDetailsList
 
     private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
-    private val newPurchaseFlow = MutableSharedFlow<List<String>>(extraBufferCapacity = 1)
     private val _purchasePendingFlow = MutableSharedFlow<Purchase>()
     private val _purchaseConsumedFlow = MutableSharedFlow<Purchase>()
-    val purchaseConsumedFlow
-        get() = _purchaseConsumedFlow
     private val billingFlowInProcess = MutableStateFlow(false)
 
     private val billingClient: BillingClient
@@ -96,8 +96,6 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
             billingFlowInProcess.emit(false)
         }
     }
-
-    fun getNewPurchases() = newPurchaseFlow.asSharedFlow()
 
     private fun initializeFlows() {
         for (sku in knownInAppSKUs) {
@@ -181,7 +179,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         }
     }
 
-    suspend fun refreshPurchases() {
+    private suspend fun refreshPurchases() {
         Log.e(TAG, "Refreshing purchases.")
         val purchasesResult = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
         val billingResult = purchasesResult.billingResult
@@ -269,7 +267,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                         }
                         if (isConsumable) {
                             consumePurchase(purchase)
-                            newPurchaseFlow.tryEmit(purchase.skus)
+                            refreshPurchases()
                         }
                     }
                 } else {
