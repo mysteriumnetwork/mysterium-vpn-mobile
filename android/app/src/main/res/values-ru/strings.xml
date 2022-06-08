@@ -101,7 +101,7 @@
     <string name="wallet_top_ups_time">Время</string>
     <string name="wallet_top_ups_paid">Оплачено</string>
     <string name="wallet_top_ups_myst">MYST</string>
-    <string name="wallet_top_ups_currency" formatted="false">%.6f %2$s</string>
+    <string name="wallet_top_ups_currency" formatted="false">%.6l %2$s</string>
     <string name="wallet_video">Онлайн\n видео</string>
     <string name="wallet_web">Интернет\n просмотр</string>
     <string name="wallet_download">загрузки\n данных</string>

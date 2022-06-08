@@ -151,7 +151,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun navigateForward() {
+    private fun navigateForward(redirectedFromPush: Boolean) {
         when {
             !viewModel.isUserAlreadyLogin() -> {
                 navigateToOnboarding()

@@ -31,7 +31,7 @@ class TopUpsListAdapter : ContentListAdapter<Order, TopUpsListAdapter.TopUpsList
                 topUp.payAmount,
                 topUp.payCurrency
             )
-            topUp.publicGatewayData.createdAt?.let {
+            topUp.publicGatewayData?.createdAt?.let {
                 binding.timeTextView.text = DateUtil.getHowLongHoursAgo(it)
             }
         }
