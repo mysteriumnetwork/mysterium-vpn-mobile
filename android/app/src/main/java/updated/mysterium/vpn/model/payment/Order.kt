@@ -1,49 +1,76 @@
 package updated.mysterium.vpn.model.payment
 
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Json
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 data class Order constructor(
-    @SerializedName("id")
+    @Json(name = "id")
     val id: String,
-    @SerializedName("identity_address")
-    val identity: String,
-    @SerializedName("status")
+    @Json(name = "status")
     val status: String,
-    @SerializedName("receive_myst")
-    val receiveMyst: Double,
-    @SerializedName("pay_currency")
-    val payCurrency: String? = null,
-    @SerializedName("pay_amount")
-    val payAmount: Double? = null,
-    @SerializedName("payment_address")
-    val paymentAddress: String,
-    @SerializedName("payment_url")
-    val paymentURL: String? = null,
-    @SerializedName("expire_at")
-    val expireAt: String?,
-    @SerializedName("created_at")
-    val createdAt: String?
+    @Json(name = "identity")
+    val identity: String,
+    @Json(name = "channel_address")
+    val channelAddress: String,
+    @Json(name = "gateway")
+    val gateway: String,
+    @Json(name = "receive_myst")
+    val receiveMyst: String,
+    @Json(name = "pay_amount")
+    val payAmount: String?,
+    @Json(name = "pay_currency")
+    val payCurrency: String?,
+    @Json(name = "country")
+    val country: String,
+    @Json(name = "currency")
+    val currency: String,
+    @Json(name = "items_sub_total")
+    val itemsSubTotal: String,
+    @Json(name = "tax_rate")
+    val taxRate: String,
+    @Json(name = "tax_sub_total")
+    val taxSubTotal: String,
+    @Json(name = "order_total")
+    val orderTotal: String,
+    @Json(name = "public_gateway_data")
+    val publicGatewayData: PublicGatewayData
 ) {
     val created: Boolean
         get() = status in listOf("new", "pending")
-            && payAmount != null && payAmount.compareTo(0) > 0
-            && !payCurrency.isNullOrEmpty()
+                && payAmount != null && payAmount.toLong() > 0
+                && !payCurrency.isNullOrEmpty()
     val paid: Boolean
         get() = status in listOf("confirming", "paid")
     val failed: Boolean
         get() = status in listOf("invalid", "expired", "canceled")
 
     companion object {
+        private val moshi = Moshi
+            .Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
 
         fun fromJSON(json: String): Order? {
-            return Gson().fromJson(json, Order::class.java)
+            return kotlin.runCatching {
+                moshi
+                    .adapter(Order::class.java)
+                    .fromJson(json)
+            }.getOrNull()
         }
 
         fun listFromJSON(json: String): List<Order>? {
-            val listType = object : TypeToken<List<Order?>?>() {}.type
-            return Gson().fromJson(json, listType)
+            return kotlin.runCatching {
+                moshi
+                    .adapter<List<Order>>(
+                        Types.newParameterizedType(
+                            MutableList::class.java,
+                            Order::class.java
+                        )
+                    )
+                    .fromJson(json)
+            }.getOrNull()
         }
     }
 }

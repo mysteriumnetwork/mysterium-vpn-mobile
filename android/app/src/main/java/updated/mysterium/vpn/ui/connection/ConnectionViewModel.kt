@@ -37,6 +37,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val TAG = "HomeViewModel"
         const val SESSION_NUMBER_BEFORE_REVIEW = 3
         const val SORT_BY_TYPE = "quality"
+        const val DISCONNECT_BALANCE_LIMIT = 0.0001
     }
 
     val successConnectEvent: LiveData<Proposal>
@@ -74,6 +75,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val settingsUseCase = useCaseProvider.settings()
     private val statisticUseCase = useCaseProvider.statistic()
+    private val favouritesUseCase = useCaseProvider.favourites()
     private var deferredNode = DeferredNode()
     private var exchangeRate = 0.0
     private var isConnectionStopped = false
@@ -85,6 +87,10 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         isConnectionStopped = false
     }
 
+    init {
+        balanceListener()
+    }
+
     fun init(
         deferredMysteriumCoreService: CompletableDeferred<MysteriumCoreService>,
         notificationManager: AppNotificationManager,
@@ -93,9 +99,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         proposal: Proposal?,
         rate: Double
     ) {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, exception.localizedMessage ?: exception.toString())
-        }
         viewModelScope.launch(handler) {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
@@ -185,12 +188,12 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun addToFavourite(proposal: Proposal) = liveDataResult {
-        nodesUseCase.addToFavourite(proposal)
+        favouritesUseCase.addToFavourite(proposal)
     }
 
     fun deleteFromFavourite(proposal: Proposal) {
         viewModelScope.launch {
-            nodesUseCase.deleteFromFavourite(proposal)
+            favouritesUseCase.deleteFromFavourite(proposal)
         }
     }
 
@@ -220,7 +223,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun isFavourite(nodeId: String) = liveDataResult {
-        nodesUseCase.isFavourite(nodeId)
+        favouritesUseCase.isFavourite(nodeId)
     }
 
     fun manualDisconnect() {
@@ -324,5 +327,15 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         coreService?.setActiveProposal(null)
         coreService?.setDeferredNode(null)
         coreService?.stopForeground()
+    }
+
+    private fun balanceListener() {
+        viewModelScope.launch {
+            balanceUseCase.initBalanceListener {
+                if (it <= DISCONNECT_BALANCE_LIMIT) {
+                    disconnect()
+                }
+            }
+        }
     }
 }

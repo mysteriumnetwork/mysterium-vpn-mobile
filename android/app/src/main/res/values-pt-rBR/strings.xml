@@ -182,7 +182,6 @@
     <!--  Private key  -->
     <string name="private_key_description">Importante! Baixe sua chave particular agora e armazene-a de forma segura para não ficar sem acesso à sua conta.</string>
     <string name="private_key_back_up">Fazer backup\n da chave privada</string>
-    <string name="private_key_back_up_later">Fazer backup\n depois</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Recarregue sua conta ou use o código de indicação para começar a usar a Mysterium dVPN</string>
@@ -257,14 +256,14 @@
     <string name="pop_up_referral_hint">Insira o código aqui</string>
     <string name="pop_up_referral_title">Código de indicação</string>
     <string name="pop_up_referral_description">Você receberá</string>
-    <string name="pop_up_referral_error">Token incorreto</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Token incorreto</string>
     <string name="pop_up_new_version_title">Nova versão disponível</string>
     <string name="pop_up_new_version_description">Atualize seu aplicativo na Google Play Store</string>
     <string name="pop_up_new_version_update">Atualizar</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Saldo no Mysterium</string>
-    <string name="push_notification_balance_message">Seu saldo está acabando!</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">Seu saldo está acabando!</string>
     <string name="push_notification_connection_title">Conexão com o Mysterium</string>
     <string name="push_notification_connection_message">Perda de conexão com o nó.</string>
     <string name="push_notification_connected_title">Conectado a %1$s</string>

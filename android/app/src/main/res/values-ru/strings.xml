@@ -182,7 +182,6 @@
     <!--  Private key  -->
     <string name="private_key_description">Важно! Загрузите свой частный код сейчас и надежно сохраните его, чтобы предотвратить блокировку аккаунта.</string>
     <string name="private_key_back_up">Резервное копирование\n закрытого ключа</string>
-    <string name="private_key_back_up_later">Резервное копирование\n выполнить позже</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Пополните свой счет или используйте реферальный код, чтобы начать использовать Mysterium dVPN</string>
@@ -257,14 +256,14 @@
     <string name="pop_up_referral_hint">Введите код здесь</string>
     <string name="pop_up_referral_title">Реферальный код</string>
     <string name="pop_up_referral_description">Вы получите</string>
-    <string name="pop_up_referral_error">Неверный токен</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Неверный токен</string>
     <string name="pop_up_new_version_title">Доступна новая версия</string>
     <string name="pop_up_new_version_description">Пожалуйста, обновите приложение в Google Play Store</string>
     <string name="pop_up_new_version_update">Обновить</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Остаток Mysterium</string>
-    <string name="push_notification_balance_message">Ваш остаток заканчивается!</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">Ваш остаток заканчивается!</string>
     <string name="push_notification_connection_title">Подключение Mysterium</string>
     <string name="push_notification_connection_message">Соединение с узлом потеряно!</string>
     <string name="push_notification_connected_title">Подключено к %1$s</string>

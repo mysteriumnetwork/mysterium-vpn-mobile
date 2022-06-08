@@ -139,6 +139,10 @@
     <string name="profile_keys_description">On Mysterium your account is not stored in centralised servers. Private keys that hold your tokens are stored only in your application. </string>
     <string name="profile_backup">Please back it up so that you can recover your account later.</string>
     <string name="profile_download_keys">Download</string>
+    <string name="profile_storage_permission_rationale_title">We need permissions to store your account</string>
+    <string name="profile_storage_permission_rationale_message">If you deny this permission, you won’t be able to access your account.</string>
+    <string name="profile_storage_permission_rationale_cancel">Cancel</string>
+    <string name="profile_storage_permission_rationale_deny">Deny</string>
 
     <!--  Report issue  -->
     <string name="report_issue_app_version_template" translatable="false">%1$s</string>
@@ -217,7 +221,7 @@
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
     <string name="private_key_back_up">Back up\n Private Key</string>
-    <string name="private_key_back_up_later">Back up\n Later</string>
+    <string name="private_key_next_to_account">Next to\n Account</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Top up your account or use the referral code to start using Mysterium dVPN</string>
@@ -242,7 +246,7 @@
 
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
-    <string name="pop_up_top_up_description">Credits is running out</string>
+    <string name="pop_up_top_up_description">Your credits are running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
@@ -292,14 +296,15 @@
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
-    <string name="pop_up_referral_error">Incorrect token</string>
+    <string name="pop_up_referral_empty_error">Field can\'t be empty</string>
+    <string name="pop_up_referral_invalid_error">Code is not valid</string>
     <string name="pop_up_new_version_title">New Version\n Available</string>
     <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
     <string name="pop_up_new_version_update">Update</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium balance</string>
-    <string name="push_notification_balance_message">Your balance is running out!</string>
+    <string name="push_notification_balance_message">\uD83D\uDD3B You’re running out of MYST. Tap here to top up.</string>
     <string name="push_notification_connection_title">Mysterium connection</string>
     <string name="push_notification_connection_message">Connection to node is lost!</string>
     <string name="push_notification_connected_title">Connected to %1$s</string>
@@ -308,6 +313,8 @@
     <string name="push_notification_payment_success_message"> Success! Your payment for %1s %2s is successful. Visit the app to see your balance.</string>
     <string name="push_notification_payment_failed_title">Payment failed</string>
     <string name="push_notification_payment_failed_message">Your payment failed. Please visit the application to try to top up or contact support.</string>
+    <string name="push_notification_inactive_user_title">MysteriumVPN</string>
+    <string name="push_notification_inactive_user_message">We haven’t seen you on Mysterium VPN for a while. Get connected and stay secure! </string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

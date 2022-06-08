@@ -10,14 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.CONNECTION_TYPE_KEY
-import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.COUNTRY_CODE_KEY
 import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterActivity
@@ -262,36 +258,6 @@ class HomeSelectionActivity : BaseActivity() {
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
             adapter = allNodesAdapter
-        }
-    }
-
-    private fun navigateToConnection(
-        isBackTransition: Boolean? = null,
-        isConnectIntent: Boolean = false
-    ) {
-        if (connectionState == ConnectionState.CONNECTED || isConnectIntent) {
-            val transitionAnimation: Bundle? =
-                if (isBackTransition == true) {
-                    ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    ).toBundle()
-                } else {
-                    ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left
-                    ).toBundle()
-                }
-            val intent = Intent(this, ConnectionActivity::class.java).apply {
-                if (isConnectIntent) {
-                    putExtra(CONNECTION_TYPE_KEY, ConnectionType.SMART_CONNECT.type)
-                    putExtra(COUNTRY_CODE_KEY, viewModel.getPreviousCountryCode())
-                }
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent, transitionAnimation)
         }
     }
 

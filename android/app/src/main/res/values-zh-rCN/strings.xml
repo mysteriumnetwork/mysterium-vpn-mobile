@@ -182,7 +182,6 @@
     <!--  Private key  -->
     <string name="private_key_description">重要提示！立即下载您的私人密钥，然后安全存储，以防无法访问您的账户。</string>
     <string name="private_key_back_up">备份\n 私钥</string>
-    <string name="private_key_back_up_later">稍后\n 备份</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">给账户充值或使用推荐码开始使用 Mysterium dVPN</string>
@@ -259,14 +258,14 @@
     <string name="pop_up_referral_hint">在此输入代码</string>
     <string name="pop_up_referral_title">推荐人代码</string>
     <string name="pop_up_referral_description">您将获得</string>
-    <string name="pop_up_referral_error">令牌错误</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">令牌错误</string>
     <string name="pop_up_new_version_title">有新版本</string>
     <string name="pop_up_new_version_description">请在 Google Play 商店中更新应用程序</string>
     <string name="pop_up_new_version_update">更新</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium 余额</string>
-    <string name="push_notification_balance_message">您的余额快用完！</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">您的余额快用完！</string>
     <string name="push_notification_connection_title">Mysterium 连接</string>
     <string name="push_notification_connection_message">与节点的连接已断开！</string>
     <string name="push_notification_connected_title">已连接至 %1$s</string>

@@ -14,7 +14,6 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 class Notifications(private val activity: Activity) {
 
     companion object {
-        const val PERMISSION_REQUEST_EXT_STORAGE = 0
         private const val TAG = "Notifications"
     }
 

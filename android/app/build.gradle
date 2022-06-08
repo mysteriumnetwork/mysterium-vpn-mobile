@@ -204,9 +204,6 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.6"
     kapt "androidx.room:room-compiler:2.2.6"
 
-    //GSON
-    implementation "com.google.code.gson:gson:2.8.6"
-
     //Line chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
@@ -216,14 +213,17 @@ dependencies {
     //Rounded image
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    //Klaxon
-    implementation 'com.beust:klaxon:5.4'
+    //Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"
 
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.6.0"
+
     //Mysterium
-    implementation "network.mysterium:terms:0.0.40"
+    implementation "network.mysterium:terms:0.0.41"
     implementation "network.mysterium:mobile-node:1.8.0"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.

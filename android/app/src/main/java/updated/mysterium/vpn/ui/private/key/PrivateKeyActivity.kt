@@ -8,13 +8,16 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPrivateKeyBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
+import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.notification.AppNotificationManager
-import updated.mysterium.vpn.notification.Notifications.Companion.PERMISSION_REQUEST_EXT_STORAGE
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.pop.up.PopUpDownloadKey
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
@@ -22,13 +25,13 @@ import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private companion object {
-        const val TAG = "PrivateKeyActivity"
+        private const val STORAGE_PERMISSION_REQUEST_CODE = 0
     }
 
     private lateinit var binding: ActivityPrivateKeyBinding
     private val viewModel: PrivateKeyViewModel by inject()
     private val appNotificationManager: AppNotificationManager by inject()
-    private val permissions = arrayOf(
+    private val storagePermissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
@@ -37,6 +40,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         super.onCreate(savedInstanceState)
         binding = ActivityPrivateKeyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setNextToAccountFrameAvailability()
         bindsAction()
     }
 
@@ -46,18 +50,19 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            showDownloadKeyPopUp()
-        } else {
-            requestPermissions()
+        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE && grantResults.isNotEmpty()) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                showDownloadKeyPopUp()
+            }
         }
+        return
     }
 
     private fun bindsAction() {
         binding.backUpKeyFrame.setOnClickListener {
-            checkPermissions()
+            backUpKey()
         }
-        binding.backUpLaterFrame.setOnClickListener {
+        binding.nextToAccountFrame.setOnClickListener {
             navigateToPrepareTopUp()
         }
         binding.backButton.setOnClickListener {
@@ -65,25 +70,44 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         }
     }
 
-    private fun checkPermissions() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P && !permissionsAreGranted()) {
-            requestPermissions()
+    private fun backUpKey() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (areStoragePermissionsGranted()) {
+                showDownloadKeyPopUp()
+            } else if (storagePermissions.any { shouldShowRequestPermissionRationale(it) }) {
+                showRequestPermissionRationale()
+            } else {
+                requestStoragePermission()
+            }
         } else {
             showDownloadKeyPopUp()
         }
     }
 
-    private fun permissionsAreGranted(): Boolean {
-        return permissions.all {
-            ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    private fun showRequestPermissionRationale() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.profile_storage_permission_rationale_title)
+            .setMessage(R.string.profile_storage_permission_rationale_message)
+            .setNegativeButton(R.string.profile_storage_permission_rationale_cancel) { dialog, _ ->
+                dialog.dismiss()
+                requestStoragePermission()
+            }
+            .setPositiveButton(R.string.profile_storage_permission_rationale_deny) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun areStoragePermissionsGranted(): Boolean {
+        return storagePermissions.all {
+            checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
         }
     }
 
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-            this,
-            permissions,
-            PERMISSION_REQUEST_EXT_STORAGE
+    private fun requestStoragePermission() {
+        requestPermissions(
+            storagePermissions,
+            STORAGE_PERMISSION_REQUEST_CODE
         )
     }
 
@@ -131,8 +155,9 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private fun exportIdentity(passphrase: String) {
         viewModel.exportIdentity(passphrase).observe(this) { result ->
+            setNextToAccountFrameAvailability(result.isSuccess)
             result.onSuccess {
-                navigateToPrepareTopUp()
+                viewModel.accountCreated()
             }
             result.onFailure {
                 Log.i(TAG, "onFailure ${it.localizedMessage}")
@@ -156,7 +181,25 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     }
 
     private fun navigateToPrepareTopUp() {
-        viewModel.accountCreated()
         startActivity(Intent(this, PrepareTopUpActivity::class.java))
     }
+
+    private fun setNextToAccountFrameAvailability(isAvailable: Boolean? = null) {
+        when (isAvailable) {
+            true -> {
+                binding.nextToAccountFrame.isEnabled = true
+                binding.nextToAccountIcon.isActivated = true
+                binding.nextToAccountTitle.alpha = 1f
+            }
+            false -> {
+                binding.nextToAccountFrame.isEnabled = false
+                binding.nextToAccountIcon.isActivated = false
+                binding.nextToAccountTitle.alpha = 0.5f
+            }
+            else -> {
+                setNextToAccountFrameAvailability(viewModel.isAccountCreated())
+            }
+        }
+    }
+
 }

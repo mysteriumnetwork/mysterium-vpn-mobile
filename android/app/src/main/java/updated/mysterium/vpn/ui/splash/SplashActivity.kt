@@ -34,6 +34,10 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
 
+    companion object {
+        const val REDIRECTED_FROM_PUSH_KEY = "REDIRECTED_FROM_PUSH"
+    }
+
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
@@ -106,24 +110,25 @@ class SplashActivity : BaseActivity() {
             }
         }
 
-        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
-            if (isRegistered) {
-                navigateToConnectionOrHome(isBackTransition = false)
+        registrationViewModel.identityRegistrationResult.observe(this) { isRegistered ->
+            val redirectedFromPush = intent?.extras?.getBoolean(REDIRECTED_FROM_PUSH_KEY) ?: false
+            if (isRegistered && !redirectedFromPush) {
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
                 finish()
             } else {
-                navigateForward()
+                navigateForward(redirectedFromPush)
             }
         }
-        registrationViewModel.accountRegistrationError.observe(this) {
+        registrationViewModel.identityRegistrationError.observe(this) {
             detailedErrorPopUp {
-                registrationViewModel.tryRegisterAccount()
+                registrationViewModel.tryRegisterIdentity()
             }
         }
 
         lifecycleScope.launchWhenStarted {
             analytic.eventTracked.collect { event ->
                 if (event == AnalyticEvent.STARTUP.eventName) {
-                    registrationViewModel.tryRegisterAccount()
+                    registrationViewModel.tryRegisterIdentity()
                 }
             }
         }
@@ -154,8 +159,11 @@ class SplashActivity : BaseActivity() {
             !viewModel.isTermsAccepted() -> {
                 navigateToTerms()
             }
-            viewModel.isTopUpFlowShown() -> {
-                navigateToConnectionOrHome(isBackTransition = false)
+            viewModel.isTopUpFlowShown() && !redirectedFromPush -> {
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
+            }
+            redirectedFromPush -> {
+                navigateToConnectionIfBalanceOrHome()
             }
             viewModel.isAccountCreated() -> {
                 navigateToTopUp()

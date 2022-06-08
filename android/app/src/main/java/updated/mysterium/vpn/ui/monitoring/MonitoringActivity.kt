@@ -20,7 +20,6 @@ import updated.mysterium.vpn.common.date.DateUtil
 import updated.mysterium.vpn.common.extensions.toIntWithoutRounding
 import updated.mysterium.vpn.model.session.Session
 import updated.mysterium.vpn.ui.base.BaseActivity
-import java.util.*
 
 class MonitoringActivity : BaseActivity() {
 
@@ -62,7 +61,7 @@ class MonitoringActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()

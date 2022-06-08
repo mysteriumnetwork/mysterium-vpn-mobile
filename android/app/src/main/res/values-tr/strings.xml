@@ -184,7 +184,6 @@
     <!--  Private key  -->
     <string name="private_key_description">Önemli! Kişisel anahtarını şimdi indir ve hesabının kilitlenmesini önlemek için güvenli bir şekilde sakla.</string>
     <string name="private_key_back_up">Özel Anahtarı\n Yedekle</string>
-    <string name="private_key_back_up_later">Sonra\n Yedekle</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Mysterium dVPN\'i kullanmaya başlamak için hesabına yükleme yap veya tavsiye kodunu kullan</string>
@@ -259,14 +258,14 @@
     <string name="pop_up_referral_hint">Kodu buraya girin</string>
     <string name="pop_up_referral_title">Referans kodu</string>
     <string name="pop_up_referral_description">Alacağınız tutar:</string>
-    <string name="pop_up_referral_error">Hatalı belirteç</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Hatalı belirteç</string>
     <string name="pop_up_new_version_title">Yeni Sürüm Mevcut</string>
     <string name="pop_up_new_version_description">Lütfen uygulamanı Google Play Store\\\'da güncelle</string>
     <string name="pop_up_new_version_update">Güncelleme</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium bakiyesi</string>
-    <string name="push_notification_balance_message">Bakiyeniz tükeniyor!</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">Bakiyeniz tükeniyor!</string>
     <string name="push_notification_connection_title">Mysterium bağlantısı</string>
     <string name="push_notification_connection_message">Düğüm bağlantısı kesildi!</string>
     <string name="push_notification_connected_title">%1$s ile bağlantı kuruldu</string>
