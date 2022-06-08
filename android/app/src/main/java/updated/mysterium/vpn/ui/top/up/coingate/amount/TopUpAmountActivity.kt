@@ -25,6 +25,7 @@ class TopUpAmountActivity : BaseActivity() {
     private val walletViewModel: TopUpAmountViewModel by inject()
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val topUpAdapter = TopUpAmountAdapter()
+    private var gateway: Gateway? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,7 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun configure() {
+        gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
         binding.amountRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
             updateEquivalent(it.value.toInt())
@@ -48,8 +50,7 @@ class TopUpAmountActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            val gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
-            if (gateway == Gateway.CARDINITY) {
+            if (gateway == Gateway.CARDINITY || gateway == Gateway.STRIPE) {
                 navigateToCardPaymentFlow()
             } else {
                 navigateToCryptoPaymentFlow()
@@ -62,7 +63,7 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun handlePaymentMethod() {
-        Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))?.let { gateway ->
+        gateway?.let { gateway ->
             viewModel.getAmounts(gateway).observe(this) {
                 it.onSuccess { amounts ->
                     amounts?.let {
@@ -126,6 +127,7 @@ class TopUpAmountActivity : BaseActivity() {
         val intent = Intent(this, CardCurrencyActivity::class.java).apply {
             val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
             putExtra(CardCurrencyActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
         }
         startActivity(intent)
     }

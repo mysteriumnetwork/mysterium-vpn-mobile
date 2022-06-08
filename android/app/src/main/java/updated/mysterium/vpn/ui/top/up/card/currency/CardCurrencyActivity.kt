@@ -9,6 +9,7 @@ import network.mysterium.vpn.databinding.ActivityCardCurrencyBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
@@ -19,6 +20,7 @@ class CardCurrencyActivity : BaseActivity() {
     companion object {
         const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
         private const val TAG = "CardCurrencyActivity"
+        const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityCardCurrencyBinding
@@ -34,6 +36,7 @@ class CardCurrencyActivity : BaseActivity() {
             field = value
             checkValidData()
         }
+    private var gateway: Gateway? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,7 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun configure() {
+        gateway = Gateway.from(intent.extras?.getString(GATEWAY_EXTRA_KEY))
         setUpCountriesSpinner()
         setUpCurrencies()
     }
@@ -58,15 +62,17 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun setUpCurrencies() {
-        viewModel.getCurrencies().observe(this) {
-            it.onSuccess { currencies ->
-                currencies?.let {
-                    inflateCurrencies(currencies)
+        gateway?.let {
+            viewModel.getCurrencies(it.gateway).observe(this) {
+                it.onSuccess { currencies ->
+                    currencies?.let {
+                        inflateCurrencies(currencies)
+                    }
                 }
-            }
 
-            it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
+                it.onFailure { error ->
+                    Log.e(TAG, error.localizedMessage ?: error.toString())
+                }
             }
         }
     }
@@ -126,6 +132,7 @@ class CardCurrencyActivity : BaseActivity() {
                 putExtra(CardSummaryActivity.CRYPTO_AMOUNT_EXTRA_KEY, mystAmount)
                 putExtra(CardSummaryActivity.CRYPTO_CURRENCY_EXTRA_KEY, selectedCurrency)
                 putExtra(CardSummaryActivity.COUNTRY_EXTRA_KEY, selectedCountry)
+                putExtra(CardSummaryActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
             }
             startActivity(intent)
         }

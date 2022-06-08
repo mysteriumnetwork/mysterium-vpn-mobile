@@ -32,13 +32,14 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
         identityAddress: String,
         mystAmount: Double,
         currency: String,
+        gateway: String
     ): CardOrder {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.country = country
             this.payCurrency = currency
             this.identityAddress = identityAddress
             this.mystAmount = mystAmount.toString()
-            this.gateway = Gateway.CARDINITY.gateway
+            this.gateway = gateway
             this.gatewayCallerData = Gson()
                 .toJson(CardinityGatewayLocalisation("US"))
                 .toString()

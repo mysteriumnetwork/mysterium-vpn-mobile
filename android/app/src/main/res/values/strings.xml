@@ -246,6 +246,7 @@
     <string name="credit_card">Credit Card</string>
     <string name="crypto">Crypto</string>
     <string name="paypal">Paypal</string>
+    <string name="stripe">Stripe</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Use </string>

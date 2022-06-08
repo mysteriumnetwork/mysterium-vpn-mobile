@@ -10,10 +10,10 @@ class CardCurrencyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val paymentUseCase = useCaseProvider.payment()
 
-    fun getCurrencies() = liveDataResult {
+    fun getCurrencies(gateway: String) = liveDataResult {
         paymentUseCase.getGateways()
             .find {
-                it.name == Gateway.CARDINITY.gateway
+                it.name == gateway
             }
             ?.currencies
             ?.map {

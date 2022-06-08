@@ -30,6 +30,7 @@ class CardSummaryActivity : BaseActivity() {
         const val CRYPTO_CURRENCY_EXTRA_KEY = "CRYPTO_CURRENCY_EXTRA_KEY"
         const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
         private const val TAG = "CardSummaryActivity"
+        const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
         private const val HTML_MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
         private const val paymentCallbackUrl = "https://checkout.cardinity.com/callback/"
@@ -97,10 +98,11 @@ class CardSummaryActivity : BaseActivity() {
         val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY) ?: return
         val currency = intent.extras?.getString(CRYPTO_CURRENCY_EXTRA_KEY) ?: return
         val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
+        val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return
 
         startService()
 
-        paymentStatusViewModel.getPayment(amount, country, currency).observe(this) {
+        paymentStatusViewModel.getPayment(amount, country, currency, gateway).observe(this) {
             it.onSuccess { order ->
                 inflateOrderData(order)
                 paymentHtml = order.pageHtml.htmlSecureData.toString()
