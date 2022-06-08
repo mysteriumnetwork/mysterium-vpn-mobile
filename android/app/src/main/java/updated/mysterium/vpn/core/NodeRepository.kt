@@ -144,7 +144,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
             Order.fromJSON(order) ?: error("Could not parse JSON: $order")
         }
 
-    suspend fun createCardinityPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createCardPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req)

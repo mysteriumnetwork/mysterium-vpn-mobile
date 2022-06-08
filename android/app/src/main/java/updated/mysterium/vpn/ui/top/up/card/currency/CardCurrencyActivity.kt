@@ -8,6 +8,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardCurrencyBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.countries.CountriesUtil
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
@@ -18,8 +19,7 @@ import updated.mysterium.vpn.ui.top.up.card.summary.HintSpinnerArrayAdapter
 class CardCurrencyActivity : BaseActivity() {
 
     companion object {
-        const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
-        private const val TAG = "CardCurrencyActivity"
+        const val AMOUNT_EXTRA_KEY = "AMOUNT_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
     }
 
@@ -127,10 +127,10 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun navigateToSummary() {
-        intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.let { mystAmount ->
+        intent.extras?.getInt(AMOUNT_EXTRA_KEY)?.let { mystAmount ->
             val intent = Intent(this, CardSummaryActivity::class.java).apply {
-                putExtra(CardSummaryActivity.CRYPTO_AMOUNT_EXTRA_KEY, mystAmount)
-                putExtra(CardSummaryActivity.CRYPTO_CURRENCY_EXTRA_KEY, selectedCurrency)
+                putExtra(CardSummaryActivity.AMOUNT_EXTRA_KEY, mystAmount)
+                putExtra(CardSummaryActivity.CURRENCY_EXTRA_KEY, selectedCurrency)
                 putExtra(CardSummaryActivity.COUNTRY_EXTRA_KEY, selectedCountry)
                 putExtra(CardSummaryActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
             }

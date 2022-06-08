@@ -126,7 +126,8 @@ class TopUpAmountActivity : BaseActivity() {
     private fun navigateToCardPaymentFlow() {
         val intent = Intent(this, CardCurrencyActivity::class.java).apply {
             val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
-            putExtra(CardCurrencyActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            putExtra(CardCurrencyActivity.AMOUNT_EXTRA_KEY, cryptoAmount)
+            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
             putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
         }
         startActivity(intent)
