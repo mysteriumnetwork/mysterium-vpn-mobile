@@ -13,14 +13,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.payment.SkuState
 import kotlin.math.min
 
 class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     BillingClientStateListener {
 
-    val purchasePendingFlow
-        get() = _purchasePendingFlow
+    val purchaseUpdatedFlow
+        get() = _newPurchaseFlow
 
     val purchaseConsumedFlow
         get() = _purchaseConsumedFlow
@@ -40,7 +41,7 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
         get() = _skuDetailsList
 
     private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
-    private val _purchasePendingFlow = MutableSharedFlow<Purchase>()
+    private val _newPurchaseFlow = SingleLiveEvent<Unit>()
     private val _purchaseConsumedFlow = MutableSharedFlow<Purchase>()
     private val billingFlowInProcess = MutableStateFlow(false)
 
@@ -201,13 +202,16 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
                             "sure SKU matches SKUS in the Play developer console."
                 )
             } else {
-                when (purchase.purchaseState) {
-                    Purchase.PurchaseState.PENDING -> {
-                        defaultScope.launch {
-                            _purchasePendingFlow.emit(purchase)
-                        }
-                        skuStateFlow.tryEmit(SkuState.SKU_STATE_PENDING)
+                if (skuStateFlow.value == SkuState.SKU_STATE_UNPURCHASED &&
+                    (purchase.purchaseState == SkuState.SKU_STATE_PENDING.ordinal ||
+                            purchase.purchaseState == SkuState.SKU_STATE_PURCHASED.ordinal)
+                ) {
+                    defaultScope.launch {
+                        _newPurchaseFlow.postValue(Unit)
                     }
+                }
+                when (purchase.purchaseState) {
+                    Purchase.PurchaseState.PENDING -> skuStateFlow.tryEmit(SkuState.SKU_STATE_PENDING)
                     Purchase.PurchaseState.UNSPECIFIED_STATE -> skuStateFlow.tryEmit(SkuState.SKU_STATE_UNPURCHASED)
                     Purchase.PurchaseState.PURCHASED -> if (purchase.isAcknowledged) {
                         skuStateFlow.tryEmit(SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED)
@@ -357,4 +361,3 @@ class BillingDataSource(application: Application) : PurchasesUpdatedListener,
     }
 
 }
-

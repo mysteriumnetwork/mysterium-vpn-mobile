@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.asLiveData
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
+import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
@@ -49,7 +49,9 @@ class PaymentSummaryActivity : BaseActivity() {
                 paymentConfirmed()
             }
         }
-        viewModel.billingDataSource.purchasePendingFlow.asLiveData().observe(this) {
+        viewModel.billingDataSource.purchaseUpdatedFlow.observe(this) {
+            setButtonAvailability(false)
+            showPaymentPopUp()
             showPaymentProcessingBanner()
         }
     }
@@ -126,6 +128,7 @@ class PaymentSummaryActivity : BaseActivity() {
     }
 
     private fun paymentConfirmed() {
+        setButtonAvailability(true)
         pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
         pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
         pushyNotifications.subscribe("USD")
@@ -166,6 +169,26 @@ class PaymentSummaryActivity : BaseActivity() {
         ).apply {
             duration = 2000
             start()
+        }
+    }
+
+    private fun showPaymentPopUp() {
+        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.okayButton.setOnClickListener {
+            dialog.dismiss()
+            navigateToHome()
+        }
+        dialog.show()
+    }
+
+    private fun setButtonAvailability(isAvailable: Boolean) {
+        if (isAvailable) {
+            binding.confirmContainer.visibility = View.VISIBLE
+            binding.cancelContainer.visibility = View.INVISIBLE
+        } else {
+            binding.confirmContainer.visibility = View.INVISIBLE
+            binding.cancelContainer.visibility = View.VISIBLE
         }
     }
 
