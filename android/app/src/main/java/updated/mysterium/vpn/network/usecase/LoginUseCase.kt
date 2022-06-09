@@ -48,4 +48,7 @@ class LoginUseCase(
     fun isNewUser() = sharedPreferencesManager.getBoolPreferenceValue(
         SharedPreferencesList.IS_NEW_USER
     )
+
+     suspend fun upgradeIdentityIfNeeded() = nodeRepository.upgradeIdentityIfNeeded()
+
 }

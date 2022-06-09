@@ -114,6 +114,7 @@ class SplashViewModel(
             service?.subscribeToListeners()
             balanceUseCase.initDeferredNode(deferredNode)
             connectionUseCase.initDeferredNode(deferredNode)
+            loginUseCase.upgradeIdentityIfNeeded()
             if (isAnimationLoaded) {
                 if (!isNavigateForward) {
                     isNavigateForward = true

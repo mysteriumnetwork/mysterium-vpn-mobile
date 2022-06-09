@@ -12,6 +12,8 @@ import okio.source
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
+import updated.mysterium.vpn.model.identity.MigrateHermesStatus
+import updated.mysterium.vpn.model.identity.MigrateHermesStatusResponse
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
@@ -130,6 +132,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
             channelAddress = res.channelAddress,
             registrationStatus = res.registrationStatus
         )
+    }
+
+    suspend fun upgradeIdentityIfNeeded() = withContext(Dispatchers.IO) {
+        val identityAddress = deferredNode.await().getIdentity(GetIdentityRequest()).identityAddress
+        val statusResponse =
+            deferredNode.await().migrateHermesStatus(identityAddress).decodeToString()
+        val status = MigrateHermesStatus.from(MigrateHermesStatusResponse.fromJSON(statusResponse))
+        Log.d(TAG, "MigrateHermesStatus ${status?.status}")
+        if (status == MigrateHermesStatus.REQUIRED) {
+            deferredNode.await().migrateHermes(identityAddress)
+            Log.d(TAG, "MigrateHermesStatus ${status.status}")
+        }
     }
 
     // Get registration fees.
@@ -257,7 +271,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        val gateways = deferredNode.await().getGateways(GetGatewaysRequest())
+        val gateways = deferredNode.await().gateways
         PaymentGateway.listFromJSON(
             gateways.decodeToString()
         ) ?: error("Could not parse JSON: $gateways")
