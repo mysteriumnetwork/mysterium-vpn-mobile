@@ -32,12 +32,16 @@ class PaymentMethodAdapter :
             GatewayCardItem.from(item)?.let { gatewayCardItem ->
                 val backgroundColor =
                     ContextCompat.getDrawable(itemView.context, gatewayCardItem.backgroundId)
-                val iconColor = ContextCompat.getColor(itemView.context, gatewayCardItem.iconColorId)
-                val textColor = ContextCompat.getColor(itemView.context, gatewayCardItem.textColorId)
+                val iconColor =
+                    ContextCompat.getColor(itemView.context, gatewayCardItem.iconColorId)
+                val textColor =
+                    ContextCompat.getColor(itemView.context, gatewayCardItem.textColorId)
                 val text = itemView.context.getString(gatewayCardItem.titleId)
 
                 binding.paymentMethodItemCard.background = backgroundColor
-                binding.paymentMethodIcon.setBackgroundResource(gatewayCardItem.iconId)
+                binding.paymentMethodIcon.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, gatewayCardItem.iconId)
+                )
                 binding.arrowImageView.setColorFilter(iconColor)
                 binding.paymentMethodName.setTextColor(textColor)
                 binding.paymentMethodName.text = text
