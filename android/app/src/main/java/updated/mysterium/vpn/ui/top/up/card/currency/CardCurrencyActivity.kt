@@ -106,9 +106,14 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun inflateCurrencies(currencies: List<CurrencyCardItem>) {
-        adapter.replaceAll(currencies)
-        adapter.onItemSelected = {
-            selectedCurrency = it.currency
+        if (currencies.size == 1) {
+            adapter.clear()
+            selectedCurrency = currencies.first().currency
+        } else {
+            adapter.replaceAll(currencies)
+            adapter.onItemSelected = {
+                selectedCurrency = it.currency
+            }
         }
         binding.currenciesRecyclerView.adapter = adapter
     }
