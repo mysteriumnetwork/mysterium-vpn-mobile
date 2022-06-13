@@ -32,7 +32,7 @@ class CardSummaryActivity : BaseActivity() {
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
         private const val HTML_MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
-        private const val paymentCallbackUrl = "https://checkout.cardinity.com/callback/"
+        private const val paymentCallbackUrl = "payment/stripe/redirect"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -135,7 +135,6 @@ class CardSummaryActivity : BaseActivity() {
             binding.webView.visibility = View.VISIBLE
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.webViewClient = object : WebViewClient() {
-
                 override fun onLoadResource(view: WebView?, url: String?) {
                     super.onLoadResource(view, url)
                     if (url?.contains(paymentCallbackUrl) == true) {
