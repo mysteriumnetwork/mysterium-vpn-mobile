@@ -2,7 +2,6 @@ package updated.mysterium.vpn.ui.top.up.coingate.amount
 
 import android.content.Intent
 import android.os.Bundle
-import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.data.WalletEstimatesUtil
@@ -11,7 +10,6 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
 import updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity
-import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.util.*
 
 class TopUpAmountActivity : BaseActivity() {
@@ -23,7 +21,6 @@ class TopUpAmountActivity : BaseActivity() {
     private lateinit var binding: ActivityTopUpAmountBinding
     private val viewModel: TopUpViewModel by inject()
     private val walletViewModel: TopUpAmountViewModel by inject()
-    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val topUpAdapter = TopUpAmountAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +35,6 @@ class TopUpAmountActivity : BaseActivity() {
     private fun configure() {
         binding.amountRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
-            updateEquivalent(it.value.toInt())
             updateWalletEstimates(it.value.toDouble())
         }
     }
@@ -70,7 +66,6 @@ class TopUpAmountActivity : BaseActivity() {
                         amounts.find { item ->
                             item.isSelected
                         }?.value?.let { amount ->
-                            updateEquivalent(amount.toInt())
                             updateWalletEstimates(amount.toDouble())
                         }
                     }
@@ -85,14 +80,8 @@ class TopUpAmountActivity : BaseActivity() {
         }
     }
 
-    private fun updateEquivalent(value: Int) {
-        binding.usdEquivalentTextView.text = getString(
-            R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * value
-        )
-    }
-
     private fun updateWalletEstimates(balance: Double) {
-        walletViewModel.getWalletEquivalent(balance).observe(this, { result ->
+        walletViewModel.getWalletEquivalent(balance).observe(this) { result ->
             result.onSuccess { estimates ->
                 binding.videoTopUpItem.setData(WalletEstimatesUtil.convertVideoData(estimates))
                 binding.videoTopUpItem.setType(
@@ -111,7 +100,7 @@ class TopUpAmountActivity : BaseActivity() {
                     WalletEstimatesUtil.convertMusicTimeType(estimates).toUpperCase(Locale.ROOT)
                 )
             }
-        })
+        }
     }
 
     private fun navigateToCryptoPaymentFlow() {
