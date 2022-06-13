@@ -193,22 +193,11 @@
                     tools:itemCount="5"
                     tools:listitem="@layout/item_card_element" />
 
-                <TextView
-                    android:id="@+id/usdEquivalentTextView"
-                    style="@style/TextAppearance.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-                    android:textColor="@color/manual_connect_divider_grey_blue"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/confirmButtonFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView">
+                    app:layout_constraintTop_toBottomOf="@+id/amountRecycler">
 
                     <ImageView
                         android:layout_width="match_parent"
