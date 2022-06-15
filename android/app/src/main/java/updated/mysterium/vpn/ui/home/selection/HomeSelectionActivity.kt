@@ -1,15 +1,17 @@
 package updated.mysterium.vpn.ui.home.selection
 
-import android.app.ActivityOptions
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
@@ -21,9 +23,9 @@ import java.util.*
 
 class HomeSelectionActivity : BaseActivity() {
 
-    private companion object {
-        const val TAG = "HomeSelectionActivity"
-        const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
+    companion object {
+        const val SHOW_PAYMENT_PROCESSING_BANNER_KEY = "SHOW_PAYMENT_PROCESSING_BANNER"
+        private const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
     }
 
     private lateinit var binding: ActivityHomeSelectionBinding
@@ -72,6 +74,9 @@ class HomeSelectionActivity : BaseActivity() {
         initCountriesList()
         viewModel.initConnectionListener()
         subscribeToResidentCountry()
+        intent.extras?.get(SHOW_PAYMENT_PROCESSING_BANNER_KEY)?.let {
+            showPaymentProcessingBanner()
+        }
     }
 
     private fun subscribeViewModel() {
@@ -104,6 +109,9 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnection(isBackTransition = false)
+        }
+        binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
+            binding.paymentProcessingLayout.root.visibility = View.GONE
         }
     }
 
@@ -258,6 +266,22 @@ class HomeSelectionActivity : BaseActivity() {
         binding.nodesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HomeSelectionActivity)
             adapter = allNodesAdapter
+        }
+    }
+
+    private fun showPaymentProcessingBanner() {
+        binding.titleTextView.doOnLayout {
+            binding.paymentProcessingLayout.root.visibility = View.VISIBLE
+            val animationX =
+                (binding.titleTextView.x + resources.getDimension(R.dimen.margin_padding_size_medium))
+            ObjectAnimator.ofFloat(
+                binding.paymentProcessingLayout.root,
+                "translationY",
+                animationX
+            ).apply {
+                duration = 2000
+                start()
+            }
         }
     }
 

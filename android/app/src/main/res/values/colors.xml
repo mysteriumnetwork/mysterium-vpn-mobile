@@ -93,9 +93,10 @@
     <color name="payment_banner_icon_background">#3C3857</color>
     <color name="payment_banner_icon_color">#ffffff</color>
 
-    <color name="payment_processing_card_shadow">#1A704C60</color>
+    <color name="payment_processing_card_shadow">#4D704C60</color>
     <color name="payment_processing_icon_color">#FF8440</color>
-    <color name="payment_processing_card_color">#33FF8440</color>
+    <color name="payment_processing_card_color">#FFFFFF</color>
+    <color name="payment_processing_text_color">#9090BB</color>
 
     <color name="payment_balance_limit_card_shadow">#1A704C60</color>
     <color name="payment_balance_limit_icon_color">#ED5BAC</color>

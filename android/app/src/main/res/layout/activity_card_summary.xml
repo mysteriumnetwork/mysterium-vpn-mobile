@@ -46,11 +46,6 @@
         layout="@layout/item_payment_balance_limit_banner"
         app:layout_constraintBottom_toTopOf="parent" />
 
-    <include
-        android:id="@+id/paymentProcessingLayout"
-        layout="@layout/item_payment_processing_banner"
-        app:layout_constraintBottom_toTopOf="parent" />
-
     <TextView
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.Headline"

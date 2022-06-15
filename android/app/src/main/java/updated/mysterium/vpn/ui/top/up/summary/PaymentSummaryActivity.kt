@@ -18,6 +18,7 @@ import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 
@@ -52,7 +53,6 @@ class PaymentSummaryActivity : BaseActivity() {
         viewModel.billingDataSource.purchaseUpdatedFlow.observe(this) {
             setButtonAvailability(false)
             showPaymentPopUp()
-            showPaymentProcessingBanner()
         }
     }
 
@@ -68,9 +68,6 @@ class PaymentSummaryActivity : BaseActivity() {
         }
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
-        }
-        binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
-            binding.paymentProcessingLayout.root.visibility = View.GONE
         }
     }
 
@@ -154,10 +151,6 @@ class PaymentSummaryActivity : BaseActivity() {
         binding.cancelContainer.visibility = View.VISIBLE
     }
 
-    private fun showPaymentProcessingBanner() {
-        showBanner(binding.paymentProcessingLayout.root)
-    }
-
     private fun showBanner(view: View) {
         view.visibility = View.VISIBLE
         val animationX =
@@ -196,6 +189,7 @@ class PaymentSummaryActivity : BaseActivity() {
         viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
         }
         startActivity(intent)
     }
