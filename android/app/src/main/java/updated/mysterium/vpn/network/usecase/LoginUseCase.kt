@@ -45,6 +45,4 @@ class LoginUseCase(
         value = isNewUser
     )
 
-    suspend fun upgradeIdentityIfNeeded() = nodeRepository.upgradeIdentityIfNeeded()
-
 }

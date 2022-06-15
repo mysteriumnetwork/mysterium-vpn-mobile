@@ -4,6 +4,7 @@ import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
@@ -127,6 +128,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
     ): Identity = withContext(Dispatchers.IO) {
         val res = deferredNode.await().getIdentity(getIdentityRequest)
+        upgradeIdentityIfNeeded(res.identityAddress)
         Identity(
             address = res.identityAddress,
             channelAddress = res.channelAddress,
@@ -134,15 +136,21 @@ class NodeRepository(var deferredNode: DeferredNode) {
         )
     }
 
-    suspend fun upgradeIdentityIfNeeded() = withContext(Dispatchers.IO) {
-        val identityAddress = deferredNode.await().getIdentity(GetIdentityRequest()).identityAddress
-        val statusResponse =
-            deferredNode.await().migrateHermesStatus(identityAddress).decodeToString()
-        val status = MigrateHermesStatus.from(MigrateHermesStatusResponse.fromJSON(statusResponse))
-        Log.d(TAG, "MigrateHermesStatus ${status?.status}")
-        if (status == MigrateHermesStatus.REQUIRED) {
-            deferredNode.await().migrateHermes(identityAddress)
-            Log.d(TAG, "MigrateHermesStatus ${status.status}")
+    suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        withContext(Dispatchers.IO + handler) {
+            Log.d(TAG, "Identity address $identityAddress")
+            val statusResponse =
+                deferredNode.await().migrateHermesStatus(identityAddress).decodeToString()
+            Log.d(TAG, "MigrateHermesStatus $statusResponse")
+            val status =
+                MigrateHermesStatus.from(MigrateHermesStatusResponse.fromJSON(statusResponse))
+            if (status == MigrateHermesStatus.REQUIRED) {
+                Log.d(TAG, "Migration...")
+                 deferredNode.await().migrateHermes(identityAddress)
+            }
         }
     }
 
@@ -229,13 +237,16 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun exportIdentity(
         address: String, newPassphrase: String
     ): ByteArray = withContext(Dispatchers.IO) {
+        upgradeIdentityIfNeeded(address)
         deferredNode.await().exportIdentity(address, newPassphrase)
     }
 
     suspend fun importIdentity(
         privateKey: ByteArray, passphrase: String
     ): String = withContext(Dispatchers.IO) {
-        deferredNode.await().importIdentity(privateKey, passphrase)
+        val identityAddress = deferredNode.await().importIdentity(privateKey, passphrase)
+        upgradeIdentityIfNeeded(identityAddress)
+        identityAddress
     }
 
     suspend fun getWalletEquivalent(balance: Double): Estimates = withContext(Dispatchers.IO) {
@@ -271,7 +282,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        val gateways = deferredNode.await().gateways
+        val gateways = deferredNode.await().getGateways(GetGatewaysRequest())
         PaymentGateway.listFromJSON(
             gateways.decodeToString()
         ) ?: error("Could not parse JSON: $gateways")
