@@ -12,6 +12,7 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.PaymentStatus
@@ -22,17 +23,16 @@ import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 
-
 class CardSummaryActivity : BaseActivity() {
 
     companion object {
-        const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
-        const val CRYPTO_CURRENCY_EXTRA_KEY = "CRYPTO_CURRENCY_EXTRA_KEY"
+        const val AMOUNT_EXTRA_KEY = "AMOUNT_EXTRA_KEY"
+        const val CURRENCY_EXTRA_KEY = "CURRENCY_EXTRA_KEY"
         const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
-        private const val TAG = "CardSummaryActivity"
+        const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
         private const val HTML_MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
-        private const val paymentCallbackUrl = "https://checkout.cardinity.com/callback/"
+        private const val paymentCallbackUrl = "payment/stripe/redirect"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -65,7 +65,7 @@ class CardSummaryActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            launchCardinityPayment()
+            launchCardPayment()
         }
         binding.cancelButton.setOnClickListener {
             navigateToHome()
@@ -87,20 +87,21 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun getMystAmount() {
-        val mystAmount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
+        val mystAmount = intent.extras?.getInt(AMOUNT_EXTRA_KEY)
         binding.mystTextView.text = getString(
             R.string.card_payment_myst_description, mystAmount
         )
     }
 
     private fun loadPayment() {
-        val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY) ?: return
-        val currency = intent.extras?.getString(CRYPTO_CURRENCY_EXTRA_KEY) ?: return
+        val amount = intent.extras?.getInt(AMOUNT_EXTRA_KEY) ?: return
+        val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY) ?: return
         val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
+        val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return
 
         startService()
 
-        paymentStatusViewModel.getPayment(amount, country, currency).observe(this) {
+        paymentStatusViewModel.getPayment(amount, country, currency, gateway).observe(this) {
             it.onSuccess { order ->
                 inflateOrderData(order)
                 paymentHtml = order.pageHtml.htmlSecureData.toString()
@@ -128,13 +129,12 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun launchCardinityPayment() {
+    private fun launchCardPayment() {
         paymentHtml?.let { htmlData ->
             binding.closeButton.visibility = View.VISIBLE
             binding.webView.visibility = View.VISIBLE
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.webViewClient = object : WebViewClient() {
-
                 override fun onLoadResource(view: WebView?, url: String?) {
                     super.onLoadResource(view, url)
                     if (url?.contains(paymentCallbackUrl) == true) {
@@ -147,8 +147,8 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun paymentConfirmed() {
-        val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
-        val currency = intent.extras?.getString(CRYPTO_CURRENCY_EXTRA_KEY)
+        val amount = intent.extras?.getInt(AMOUNT_EXTRA_KEY)
+        val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY)
         if (currency != null && amount != null) {
             pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
             pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)

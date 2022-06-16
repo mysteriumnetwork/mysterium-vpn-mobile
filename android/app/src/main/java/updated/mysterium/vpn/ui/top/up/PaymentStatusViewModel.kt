@@ -19,14 +19,16 @@ class PaymentStatusViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun getPayment(
         mystAmount: Int,
         countryCode: String,
-        currency: String
+        currency: String,
+        gateway: String
     ) = liveDataResult {
         registerOrderCallback()
-        paymentUseCase.createCardinityPaymentGatewayOrder(
+        paymentUseCase.createCardPaymentGatewayOrder(
             country = countryCode,
             identityAddress = connectionUseCase.getIdentityAddress(),
             mystAmount = mystAmount.toDouble(),
-            currency = currency
+            currency = currency,
+            gateway = gateway
         )
     }
 

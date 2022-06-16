@@ -27,24 +27,25 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
         return nodeRepository.createCoingatePaymentGatewayOrder(req)
     }
 
-    suspend fun createCardinityPaymentGatewayOrder(
+    suspend fun createCardPaymentGatewayOrder(
         country: String,
         identityAddress: String,
         mystAmount: Double,
         currency: String,
+        gateway: String
     ): CardOrder {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.country = country
             this.payCurrency = currency
             this.identityAddress = identityAddress
             this.mystAmount = mystAmount.toString()
-            this.gateway = Gateway.CARDINITY.gateway
+            this.gateway = gateway
             this.gatewayCallerData = Gson()
-                .toJson(CardinityGatewayLocalisation("US"))
+                .toJson(CardGatewayLocalisation("US"))
                 .toString()
                 .toByteArray()
         }
-        return nodeRepository.createCardinityPaymentGatewayOrder(req)
+        return nodeRepository.createCardPaymentGatewayOrder(req)
     }
 
     suspend fun paymentOrderCallback(

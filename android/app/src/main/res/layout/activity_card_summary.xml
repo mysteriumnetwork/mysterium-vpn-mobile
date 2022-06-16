@@ -215,21 +215,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:id="@+id/cardinityPaymentDescription"
-                    style="@style/TextAppearance.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                    android:layout_marginBottom="@dimen/margin_padding_size_medium_large"
-                    android:paddingHorizontal="@dimen/margin_padding_size_medium"
-                    android:text="@string/card_payment_cardinity"
-                    android:textAlignment="center"
-                    android:textColor="@color/card_payment_description"
-                    app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-                    app:layout_constraintEnd_toEndOf="@+id/confirmButton"
-                    app:layout_constraintStart_toStartOf="@+id/confirmButton" />
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/confirmButton"
                     style="@style/Widget.PrimaryButton"
