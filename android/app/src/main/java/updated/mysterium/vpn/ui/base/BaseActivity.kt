@@ -23,6 +23,7 @@ import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.Notifications
@@ -32,7 +33,7 @@ import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
+import updated.mysterium.vpn.ui.top.up.price.TopUpPriceActivity
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -164,6 +165,35 @@ abstract class BaseActivity : AppCompatActivity() {
         dialogs.forEach {
             it.dismiss()
         }
+    }
+
+    fun navigateToConnectionOrHome(isBackTransition: Boolean = true) {
+        val intent = if (
+            connectionState == ConnectionState.CONNECTED ||
+            connectionState == ConnectionState.CONNECTING ||
+            connectionState == ConnectionState.ON_HOLD
+        ) {
+            Intent(this, ConnectionActivity::class.java)
+        } else {
+            Intent(this, HomeSelectionActivity::class.java)
+        }
+        intent.apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        val transitionAnimation = if (isBackTransition) {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).toBundle()
+        } else {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            ).toBundle()
+        }
+        startActivity(intent, transitionAnimation)
     }
 
     fun establishConnectionListeners() {
@@ -327,13 +357,8 @@ abstract class BaseActivity : AppCompatActivity() {
         baseViewModel.getGateways().observe(this) {
             it.onSuccess { result ->
                 val gateways = result.filterNotNull()
-                val intent = if (gateways.size == 1) {
-                    Intent(this, TopUpAmountActivity::class.java).apply {
-                        putExtra(
-                            TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways[0].gateway
-                        )
-                    }
+                val intent = if (gateways.size == 1 && gateways[0] == Gateway.GOOGLE) {
+                    Intent(this, TopUpPriceActivity::class.java)
                 } else {
                     val gatewayValues = gateways.map { it.gateway }
                     PaymentMethodActivity.newIntent(this, gatewayValues)

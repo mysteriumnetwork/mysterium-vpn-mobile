@@ -174,6 +174,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
     implementation 'com.google.android.gms:play-services-base:17.6.0'
     implementation "com.google.android.material:material:1.3.0-alpha01"
+    implementation "com.android.billingclient:billing-ktx:4.0.0"
 
     //Koin
     implementation 'org.koin:koin-core:2.2.0'
@@ -215,9 +216,6 @@ dependencies {
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
-    //QrCode
-    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
-
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"
 
@@ -226,7 +224,7 @@ dependencies {
 
     //Mysterium
     implementation "network.mysterium:terms:0.0.41"
-    implementation "network.mysterium:mobile-node:1.7.1"
+    implementation "network.mysterium:mobile-node:1.8.0"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     //implementation files('/Users/macbook/AndroidStudioProjects/Mysterium.aar')

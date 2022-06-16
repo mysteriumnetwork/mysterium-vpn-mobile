@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_padding_size_medium"
+            android:padding="@dimen/margin_padding_size_small"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:paddingStart="@dimen/margin_padding_size_medium_large"
                 android:text="@string/payment_processing_text"
-                android:textColor="@android:color/white"
+                android:textColor="@color/payment_processing_text_color"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>

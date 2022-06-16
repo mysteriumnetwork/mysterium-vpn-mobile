@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_padding_size_small_medium"
     app:rippleColor="@color/primary_card_view"
-    tools:cardBackgroundColor="@color/payment_method_card_background">
+    android:background="@drawable/shape_rectangle_gray_rounded_10">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/paymentMethodIcon"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/credit_card"
+            tools:text="@string/google_play_billing"
             tools:textColor="@color/create_account_import_text" />
 
         <ImageView

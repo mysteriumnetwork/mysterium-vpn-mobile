@@ -1,50 +1,29 @@
 package updated.mysterium.vpn.network.usecase
 
-import com.google.gson.Gson
 import mysterium.CreatePaymentGatewayOrderReq
 import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.core.NodeRepository
-import updated.mysterium.vpn.model.payment.*
+import updated.mysterium.vpn.model.payment.Gateway
+import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.payment.Purchase
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
-    suspend fun createCoingatePaymentGatewayOrder(
-        currency: String,
+    companion object {
+        private const val currency = "USD"
+    }
+
+    suspend fun createPaymentGatewayOrder(
         identityAddress: String,
-        mystAmount: Double,
-        isLightning: Boolean
+        amountUSD: Double
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress
-            this.mystAmount = mystAmount.toString()
-            this.gateway = Gateway.COINGATE.gateway
-            this.gatewayCallerData = Gson()
-                .toJson(Lightning(isLightning))
-                .toString()
-                .toByteArray()
+            this.amountUSD = amountUSD.toString()
+            this.gateway = Gateway.GOOGLE.gateway
         }
-        return nodeRepository.createCoingatePaymentGatewayOrder(req)
-    }
-
-    suspend fun createCardinityPaymentGatewayOrder(
-        country: String,
-        identityAddress: String,
-        mystAmount: Double,
-        currency: String,
-    ): CardOrder {
-        val req = CreatePaymentGatewayOrderReq().apply {
-            this.country = country
-            this.payCurrency = currency
-            this.identityAddress = identityAddress
-            this.mystAmount = mystAmount.toString()
-            this.gateway = Gateway.CARDINITY.gateway
-            this.gatewayCallerData = Gson()
-                .toJson(CardinityGatewayLocalisation("US"))
-                .toString()
-                .toByteArray()
-        }
-        return nodeRepository.createCardinityPaymentGatewayOrder(req)
+        return nodeRepository.createPaymentGatewayOrder(req)
     }
 
     suspend fun paymentOrderCallback(
@@ -54,4 +33,9 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     }
 
     suspend fun getGateways() = nodeRepository.getGateways()
+
+    suspend fun isBalanceLimitExceeded() = nodeRepository.isBalanceLimitExceeded()
+
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        nodeRepository.gatewayClientCallback(purchase)
 }

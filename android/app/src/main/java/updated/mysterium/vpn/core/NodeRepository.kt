@@ -7,6 +7,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mysterium.*
+import updated.mysterium.vpn.common.extensions.TAG
 import okio.buffer
 import okio.source
 import updated.mysterium.vpn.exceptions.*
@@ -16,9 +17,9 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
-import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentGateway
+import updated.mysterium.vpn.model.payment.Purchase
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
@@ -30,7 +31,6 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
-        const val TAG = "NodeRepository"
         const val MAX_BALANCE_LIMIT = 5
     }
 
@@ -96,6 +96,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
     }
 
+    // GatewayClientCallback triggers payment callback for google from client side.
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        withContext(Dispatchers.IO) {
+            val req = GatewayClientCallbackReq().apply {
+                this.identityAddress = purchase.identityAddress
+                this.gateway = purchase.gateway.gateway
+                this.googlePurchaseToken = purchase.googlePurchaseToken
+                this.googleProductID = purchase.googleProductID
+            }
+            deferredNode.await().gatewayClientCallback(req)
+        }
+
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
@@ -138,17 +150,12 @@ class NodeRepository(var deferredNode: DeferredNode) {
         IdentityRegistrationFees(fee = res.fee)
     }
 
-    suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
-        withContext(Dispatchers.IO) {
-            val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
-            Order.fromJSON(order) ?: error("Could not parse JSON: $order")
-        }
-
-    suspend fun createCardinityPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
-                val order = deferredNode.await().createPaymentGatewayOrder(req)
-                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Log.d(TAG, "createPaymentOrder response: $order")
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (e: Exception) {
                 if (isBalanceLimitExceeded()) {
                     throw TopupPreconditionFailedException(
@@ -263,6 +270,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
         ) ?: error("Could not parse JSON: $gateways")
     }
 
+    suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
+        val identityAddress = getIdentity().address
+        val balanceRequest = GetBalanceRequest().apply {
+            this.identityAddress = identityAddress
+        }
+        val balance = balance(balanceRequest)
+        balance > MAX_BALANCE_LIMIT
+    }
+
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getProposals(req)
     }
@@ -307,15 +323,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
                     Status(it)
                 }
         }.getOrNull()
-    }
-
-    private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
-        val identityAddress = getIdentity().address
-        val balanceRequest = GetBalanceRequest().apply {
-            this.identityAddress = identityAddress
-        }
-        val balance = balance(balanceRequest)
-        balance > MAX_BALANCE_LIMIT
     }
 
 }

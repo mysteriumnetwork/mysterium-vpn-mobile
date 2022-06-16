@@ -138,10 +138,6 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getGateways() = liveDataResult {
-        paymentUseCase
-            .getGateways()
-            .map { Gateway.from(it.name) }
-            .toMutableList()
-            .apply { remove(Gateway.PAYPAL) }
+        listOf(Gateway.GOOGLE) // for testing purpose only
     }
 }

@@ -17,16 +17,12 @@ class PaymentStatusViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _paymentSuccessfully = SingleLiveEvent<PaymentStatus>()
 
     fun getPayment(
-        mystAmount: Int,
-        countryCode: String,
-        currency: String
+        amountUSD: Double
     ) = liveDataResult {
         registerOrderCallback()
-        paymentUseCase.createCardinityPaymentGatewayOrder(
-            country = countryCode,
+        paymentUseCase.createPaymentGatewayOrder(
             identityAddress = connectionUseCase.getIdentityAddress(),
-            mystAmount = mystAmount.toDouble(),
-            currency = currency
+            amountUSD = amountUSD
         )
     }
 

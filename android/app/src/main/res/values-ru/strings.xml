@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">Просматривайте страницы в интернете и платите по мере использования</string>
     <string name="onboarding_description_title_2">Нет блокировки подписок</string>
     <string name="onboarding_description_content_2">Пополните свой счет сейчас или сделайте это позже и используйте ограниченную функциональность и бесплатные узлы</string>
-    <string name="onboarding_main_title_3">Пополните счет популярными криптовалютами</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BCH и другие</string>
-    <string name="onboarding_description_content_3">Пополните свой счет сейчас или сделайте это позже и используйте ограниченную функциональность и бесплатные узлы</string>
     <string name="onboarding_skip">Пропустить</string>
     <string name="onboarding_next">Далее</string>
 
@@ -51,7 +48,6 @@
     <string name="manual_connect_price_per_hour">%.5f/ч</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/ГБ</string>
     <string name="manual_connect_saved_to_favourite">Успешно сохранено</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH и другие</string>
     <string name="manual_connect_search">Поиск</string>
     <string name="manual_connect_node_id">Идентификатор или страна узла</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
@@ -105,7 +101,7 @@
     <string name="wallet_top_ups_time">Время</string>
     <string name="wallet_top_ups_paid">Оплачено</string>
     <string name="wallet_top_ups_myst">MYST</string>
-    <string name="wallet_top_ups_currency" formatted="false">%.6f %2$s</string>
+    <string name="wallet_top_ups_currency" formatted="false">%.6l %2$s</string>
     <string name="wallet_video">Онлайн\n видео</string>
     <string name="wallet_web">Интернет\n просмотр</string>
     <string name="wallet_download">загрузки\n данных</string>
@@ -154,15 +150,7 @@
     <string name="top_up_amount_music">Музыка</string>
     <string name="top_up_amount_pages">Интернет-страницы</string>
     <string name="top_up_amount_traffic">Трафик</string>
-    <string name="top_up_amount_description">Выберите, сколько кредитов MYST\n вы хотите добавить в свой аккаунт</string>
     <string name="top_up_amount_confirm">Подтвердить</string>
-    <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение.\n На данный момент MYST исключительно на блокчейне Ethereum!</string>
-    <string name="top_up_payment_title">Ожидание оплаты</string>
-    <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
-    <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
-    <string name="top_up_crypto_lightning">Lightning Network</string>
-    <string name="top_up_usd_equivalent">Эквивалент в долларах США ≈ %.2f$</string>
-    <string name="top_up_currency_equivalent">%1$s %2$s</string>
     <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>
 
@@ -186,16 +174,10 @@
     <string name="create_account_description">Пополните свой счет сейчас или сделайте это позже и\n используйте ограниченную функциональность и бесплатные узлы</string>
 
     <!--  Card payment  -->
-    <string name="card_summary_title">Сводка заказа</string>
-    <string name="card_currency_title">Валюта и страна</string>
-    <string name="card_currency_description">Выберите страну для расчета НДС</string>
-    <string name="card_payment_pay">Продолжить оплату</string>
-    <string name="card_payment_cardinity">Вы будете перенаправлены на страницу Cardinity для оплаты.</string>
-    <string name="card_payment_total">Всего к оплате</string>
-    <string name="card_payment_vat_title">НДС</string>
-    <string name="card_payment_vat_value">НДС(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Выберите страну или регион</string>
-    <string name="card_payment_myst_description">%d MYST пополнение</string>
+    <string name="payment_summary_title">Сводка заказа</string>
+    <string name="payment_pay">Продолжить оплату</string>
+    <string name="payment_total">Всего к оплате</string>
+    <string name="payment_country_hint">Выберите страну или регион</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Важно! Загрузите свой частный код сейчас и надежно сохраните его, чтобы предотвратить блокировку аккаунта.</string>
@@ -209,8 +191,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Выберите способ платежа, чтобы продолжить</string>
-    <string name="credit_card">Кредитная карта</string>
-    <string name="crypto">Криптовалюта</string>
+    <string name="google_play_billing">Кредитная карта</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Использовать</string>
@@ -260,12 +241,10 @@
     <string name="pop_up_private_key_title">Скачать ключ</string>
     <string name="pop_up_private_key_description">Введите свой пароль</string>
     <string name="pop_up_private_key_download">Скачать</string>
-    <string name="pop_up_card_payment_button">Продолжить</string>
-    <string name="pop_up_card_payment_title">Благодарим за покупку!</string>
-    <string name="pop_up_card_payment_description">Обработка вашего платежа может занять некоторое время. Как только она будет закончена, вы получите уведомление.</string>
-    <string name="pop_up_crypto_payment_button">Продолжить</string>
-    <string name="pop_up_crypto_payment_title">Предупреждение!</string>
-    <string name="pop_up_crypto_payment_description">Обработка вашего платежа после этого шага может занять некоторое время. Как только платеж будет выполнен, вы получите уведомление.</string>
+    <string name="pop_up_payment_title_thanks">Благодарим за покупку!</string>
+    <string name="pop_up_payment_button">Продолжить</string>
+    <string name="pop_up_payment_title_warning">Предупреждение!</string>
+    <string name="pop_up_payment_description">Обработка вашего платежа после этого шага может занять некоторое время. Как только платеж будет выполнен, вы получите уведомление.</string>
     <string name="pop_up_private_key_error">Неверный пароль</string>
     <string name="pop_up_import_wrong_password">Неверный пароль</string>
     <string name="pop_up_private_key_hint">Длина пароля 12–16 символов.</string>

@@ -21,7 +21,6 @@ import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
-import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -60,7 +59,6 @@ class SplashActivity : BaseActivity() {
         ensureVpnServicePermission()
         configure()
         subscribeViewModel()
-        setUpPushyNotifications()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -151,21 +149,6 @@ class SplashActivity : BaseActivity() {
                 delegate.applyDayNight()
             }
         }
-    }
-
-    private fun setUpPushyNotifications() {
-        viewModel.setUpInactiveUserPushyNotifications()
-        pushyNotifications.register {
-            val lastCurrency = viewModel.getLastCryptoCurrency()
-            if (lastCurrency == null) {
-                pushyNotifications.subscribe(PushyTopic.PAYMENT_FALSE)
-            } else {
-                pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
-                pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
-                pushyNotifications.subscribe(lastCurrency)
-            }
-        }
-        pushyNotifications.listen()
     }
 
     private fun navigateForward(redirectedFromPush: Boolean) {

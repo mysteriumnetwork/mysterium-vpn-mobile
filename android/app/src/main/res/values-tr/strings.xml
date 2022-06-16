@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">Web\'de gezinin ve kullandığınız kadar ödeyin</string>
     <string name="onboarding_description_title_2">Kısıtlamasız abonelikler</string>
     <string name="onboarding_description_content_2">Hesabınıza şimdi para ekleyin veya bu işlemi daha sonra gerçekleştirerek sınırlı işlevlerden ve ücretsiz düğümlerden yararlanın</string>
-    <string name="onboarding_main_title_3">Popüler kripto para birimlerini ekleyin</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH ve daha fazlası</string>
-    <string name="onboarding_description_content_3">Hesabınıza şimdi para ekleyin veya bu işlemi daha sonra gerçekleştirerek sınırlı işlevlerden ve ücretsiz düğümlerden yararlanın</string>
     <string name="onboarding_skip">Atla</string>
     <string name="onboarding_next">Sonraki</string>
 
@@ -53,7 +50,6 @@
     <string name="manual_connect_price_per_hour">%.5f/sa</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Başarıyla kaydedildi</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH ve daha fazlası</string>
     <string name="manual_connect_search">Arama</string>
     <string name="manual_connect_node_id">Düğüm Kimliği veya Ülke</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
@@ -107,7 +103,7 @@
     <string name="wallet_top_ups_time">Zaman</string>
     <string name="wallet_top_ups_paid">Ödendi</string>
     <string name="wallet_top_ups_myst">MYST</string>
-    <string name="wallet_top_ups_currency" formatted="false">%2$s %.6f</string>
+    <string name="wallet_top_ups_currency" formatted="false">%2$s %.6l</string>
     <string name="wallet_video">Online\n video</string>
     <string name="wallet_web">Web\'de\n gezinme</string>
     <string name="wallet_download">/ veri\n yükleme</string>
@@ -156,15 +152,7 @@
     <string name="top_up_amount_music">Müzik</string>
     <string name="top_up_amount_pages">Web sayfaları</string>
     <string name="top_up_amount_traffic">Trafik</string>
-    <string name="top_up_amount_description">Hesabınıza ne kadar MYST kredisi\n eklenmesini istediğinizi seçin</string>
     <string name="top_up_amount_confirm">Onayla</string>
-    <string name="top_up_crypto_description">Para ekleme işlemi için kullanılacak\n kripto para birimini seçin</string>
-    <string name="top_up_payment_title">Ödeme bekleniyor</string>
-    <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
-    <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
-    <string name="top_up_crypto_lightning">Lightning Network</string>
-    <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
-    <string name="top_up_currency_equivalent">%2$s %1$s</string>
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>
 
@@ -187,17 +175,11 @@
     <string name="create_account_import">Hesabı\n İçe Aktar</string>
     <string name="create_account_description">Hesabınıza şimdi para ekleyin veya bu işlemi daha sonra\n gerçekleştirerek sınırlı işlevlerden ve ücretsiz düğümlerden yararlanın</string>
 
-    <!--  Card payment  -->
-    <string name="card_summary_title">Sipariş Özeti</string>
-    <string name="card_currency_title">Para Birimi ve Ülke</string>
-    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
-    <string name="card_payment_pay">Ödemeye devam et</string>
-    <string name="card_payment_cardinity">Ödeme yapmak için Cardinity ödeme sayfasına yönlendirileceksin.</string>
-    <string name="card_payment_total">Toplam Borcunuz</string>
-    <string name="card_payment_vat_title">KDV</string>
-    <string name="card_payment_vat_value">KDV(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
-    <string name="card_payment_myst_description">%d MYST Yüklemesi</string>
+    <!--  Payment  -->
+    <string name="payment_summary_title">Sipariş Özeti</string>
+    <string name="payment_pay">Ödemeye devam et</string>
+    <string name="payment_total">Toplam Borcunuz</string>
+    <string name="payment_country_hint">Ülke veya Bölge seç</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Önemli! Kişisel anahtarını şimdi indir ve hesabının kilitlenmesini önlemek için güvenli bir şekilde sakla.</string>
@@ -211,8 +193,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Devam etmek için bir ödeme yöntemi seç</string>
-    <string name="credit_card">Kredi Kartı</string>
-    <string name="crypto">Kripto Para</string>
+    <string name="google_play_billing">Kredi Kartı</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Doğru düğümü bulmak için\n sağ üstteki </string>
@@ -262,12 +243,10 @@
     <string name="pop_up_private_key_title">Anahtarı indirin</string>
     <string name="pop_up_private_key_description">Parolanızı Girin</string>
     <string name="pop_up_private_key_download">İndir</string>
-    <string name="pop_up_card_payment_button">Devam</string>
-    <string name="pop_up_card_payment_title">Satın aldığın için teşekkürler!</string>
-    <string name="pop_up_card_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen tamamlandığında sana bir bildirim göndereceğiz.</string>
-    <string name="pop_up_crypto_payment_button">Devam</string>
-    <string name="pop_up_crypto_payment_title">Uyarı!</string>
-    <string name="pop_up_crypto_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
+    <string name="pop_up_payment_title_thanks">Satın aldığın için teşekkürler!</string>
+    <string name="pop_up_payment_button">Devam</string>
+    <string name="pop_up_payment_title_warning">Uyarı!</string>
+    <string name="pop_up_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
     <string name="pop_up_private_key_error">Hatalı Parola</string>
     <string name="pop_up_import_wrong_password">Hatalı Parola</string>
     <string name="pop_up_private_key_hint">Parola uzunluğu 12–16 karakterdir</string>
