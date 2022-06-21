@@ -11,6 +11,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
@@ -24,10 +25,6 @@ class SplashViewModel(
     useCaseProvider: UseCaseProvider,
     private val workManager: WorkManager
 ) : ViewModel() {
-
-    private companion object {
-        const val TAG = "SplashViewModel"
-    }
 
     val navigateForward: LiveData<Unit>
         get() = _navigateForward
@@ -91,8 +88,6 @@ class SplashViewModel(
 
     fun isTopUpFlowShown() = loginUseCase.isTopFlowShown()
 
-    fun isNewUser() = loginUseCase.isNewUser()
-
     fun animationLoaded() {
         if (isDataLoaded) {
             if (!isNavigateForward) {
@@ -126,10 +121,6 @@ class SplashViewModel(
 
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 
-    fun getIdentityAddress() = liveDataResult {
-        connectionUseCase.getIdentityAddress()
-    }
-
     fun getIdentity() = liveDataResult {
         IdentityModel(connectionUseCase.getIdentity())
     }
@@ -142,7 +133,7 @@ class SplashViewModel(
                 .addTag(ReviveUserWork.WEEK_DELAY_NOTIFICATION)
                 .build()
 
-        val seecondNotificationWork =
+        val secondNotificationWork =
             OneTimeWorkRequest
                 .Builder(ReviveUserWork::class.java)
                 .setInitialDelay(7, TimeUnit.DAYS)
@@ -160,7 +151,7 @@ class SplashViewModel(
 
         workManager
             .beginWith(firstNotificationWork)
-            .then(seecondNotificationWork)
+            .then(secondNotificationWork)
             .then(lastNotificationWork)
             .enqueue()
 
