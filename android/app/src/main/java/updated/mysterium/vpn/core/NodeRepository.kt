@@ -6,6 +6,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
 import mysterium.*
 import okio.buffer
@@ -126,7 +127,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // if it is not created yet.
     suspend fun getIdentity(
         getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
-    ): Identity = withContext(Dispatchers.IO) {
+    ): Identity = withContext(Dispatchers.IO + SupervisorJob()) {
         val res = deferredNode.await().getIdentity(getIdentityRequest)
         upgradeIdentityIfNeeded(res.identityAddress)
         Identity(
@@ -136,20 +137,17 @@ class NodeRepository(var deferredNode: DeferredNode) {
         )
     }
 
-    suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
+    private suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
         withContext(Dispatchers.IO + handler) {
-            Log.d(TAG, "Identity address $identityAddress")
             val statusResponse =
                 deferredNode.await().migrateHermesStatus(identityAddress).decodeToString()
-            Log.d(TAG, "MigrateHermesStatus $statusResponse")
             val status =
                 MigrateHermesStatus.from(MigrateHermesStatusResponse.fromJSON(statusResponse))
             if (status == MigrateHermesStatus.REQUIRED) {
-                Log.d(TAG, "Migration...")
-                 deferredNode.await().migrateHermes(identityAddress)
+                deferredNode.await().migrateHermes(identityAddress)
             }
         }
     }
@@ -170,11 +168,13 @@ class NodeRepository(var deferredNode: DeferredNode) {
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req)
-                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+                CardOrder.fromJSON(order.decodeToString())
+                    ?: error("Could not parse JSON: $order")
             } catch (e: Exception) {
                 if (isBalanceLimitExceeded()) {
                     throw TopupPreconditionFailedException(
-                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
+                        e.message
+                            ?: "You can only top-up if you have less than 5 MYST in balance"
                     )
                 } else {
                     error(e)
@@ -236,14 +236,14 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     suspend fun exportIdentity(
         address: String, newPassphrase: String
-    ): ByteArray = withContext(Dispatchers.IO) {
+    ): ByteArray = withContext(Dispatchers.IO + SupervisorJob()) {
         upgradeIdentityIfNeeded(address)
         deferredNode.await().exportIdentity(address, newPassphrase)
     }
 
     suspend fun importIdentity(
         privateKey: ByteArray, passphrase: String
-    ): String = withContext(Dispatchers.IO) {
+    ): String = withContext(Dispatchers.IO + SupervisorJob()) {
         val identityAddress = deferredNode.await().importIdentity(privateKey, passphrase)
         upgradeIdentityIfNeeded(identityAddress)
         identityAddress
