@@ -7,25 +7,17 @@ import network.mysterium.vpn.databinding.PopUpNoAmountBinding
 class PopUpNoAmount(layoutInflater: LayoutInflater) {
 
     var bindingPopUp = PopUpNoAmountBinding.inflate(layoutInflater)
-    private var onTryAgainAction: (() -> Unit)? = null
-    private lateinit var dialog: AlertDialog
-
-    fun tryAgainAction(onTryAgainAction: () -> Unit) {
-        this.onTryAgainAction = onTryAgainAction
-    }
-
-    fun setDialog(alertDialog: AlertDialog) {
-        dialog = alertDialog
-    }
+    var onTryAgainAction: (() -> Unit)? = null
+    var dialog: AlertDialog? = null
 
     fun setUp() {
         bindingPopUp.apply {
             tryAgainButton.setOnClickListener {
                 onTryAgainAction?.invoke()
-                dialog.dismiss()
+                dialog?.dismiss()
             }
             closeButton.setOnClickListener {
-                dialog.dismiss()
+                dialog?.dismiss()
             }
         }
     }

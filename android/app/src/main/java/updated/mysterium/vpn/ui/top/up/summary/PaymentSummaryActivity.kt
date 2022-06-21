@@ -181,17 +181,15 @@ class PaymentSummaryActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun showNoAmountPopUp(tryAgain: () -> Unit) {
+    private fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
         val popUpNoAmount = PopUpNoAmount(layoutInflater)
-        val dialog = createPopUp(popUpNoAmount.bindingPopUp.root, true)
+        val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
         popUpNoAmount.apply {
-            setDialog(dialog)
-            tryAgainAction {
-                tryAgain()
-            }
+            this.dialog = dialogNoAmount
+            this.onTryAgainAction = onTryAgainClick
             setUp()
         }
-        dialog.show()
+        dialogNoAmount.show()
     }
 
     private fun setButtonAvailability(isAvailable: Boolean) {
