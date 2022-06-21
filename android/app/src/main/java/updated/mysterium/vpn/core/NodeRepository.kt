@@ -156,13 +156,15 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Log.d(TAG, "createPaymentOrder response: $order")
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
-            } catch (e: Exception) {
+            } catch (exception: Exception) {
                 if (isBalanceLimitExceeded()) {
-                    throw TopupPreconditionFailedException(
-                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
+                    throw TopupBalanceLimitException(
+                        exception.message ?: "You can only top-up if you have less than 5 MYST in balance"
                     )
+                } else if (exception.message == "Cannot provide more balance at this time") {
+                    throw TopupNoAmountException()
                 } else {
-                    error(e)
+                    error(exception)
                 }
             }
         }

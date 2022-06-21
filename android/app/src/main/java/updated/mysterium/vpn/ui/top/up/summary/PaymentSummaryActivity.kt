@@ -10,7 +10,8 @@ import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
+import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
+import updated.mysterium.vpn.exceptions.TopupNoAmountException
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -19,6 +20,7 @@ import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
+import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 
@@ -79,9 +81,11 @@ class PaymentSummaryActivity : BaseActivity() {
 
     private fun loadPayment() {
         val price = topUpPriceCardItem?.price ?: 0.0
-
         startService()
+        getPayment(price)
+    }
 
+    private fun getPayment(price: Double) {
         paymentStatusViewModel.getPayment(price).observe(this) {
             it.onSuccess { order ->
                 topUpPriceCardItem = topUpPriceCardItem?.copy(id = order.id)
@@ -89,8 +93,10 @@ class PaymentSummaryActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
-                if (error is TopupPreconditionFailedException) {
+                if (error is TopupBalanceLimitException) {
                     showPaymentBalanceLimitError()
+                } else if (error is TopupNoAmountException) {
+                    showNoAmountPopUp { getPayment(price) }
                 }
             }
         }
@@ -171,6 +177,19 @@ class PaymentSummaryActivity : BaseActivity() {
         bindingPopUp.okayButton.setOnClickListener {
             dialog.dismiss()
             navigateToHome()
+        }
+        dialog.show()
+    }
+
+    private fun showNoAmountPopUp(tryAgain: () -> Unit) {
+        val popUpNoAmount = PopUpNoAmount(layoutInflater)
+        val dialog = createPopUp(popUpNoAmount.bindingPopUp.root, true)
+        popUpNoAmount.apply {
+            setDialog(dialog)
+            tryAgainAction {
+                tryAgain()
+            }
+            setUp()
         }
         dialog.show()
     }
