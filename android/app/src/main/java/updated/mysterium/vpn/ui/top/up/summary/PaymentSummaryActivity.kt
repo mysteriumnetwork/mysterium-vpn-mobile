@@ -94,30 +94,20 @@ class PaymentSummaryActivity : BaseActivity() {
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
                 if (error is TopupBalanceLimitException) {
-                    showPaymentBalanceLimitError()
+                    showBanner(binding.paymentBalanceLimitLayout.root)
                 } else if (error is TopupNoAmountException) {
                     showNoAmountPopUp { getPayment(price) }
                 }
+                setButtonAvailability(false)
             }
         }
     }
 
     private fun inflateOrderData(order: Order) {
-        paymentViewModel.isBalanceLimitExceeded().observe(this) {
-            it.onSuccess { isBalanceLimitExceeded ->
-                if (isBalanceLimitExceeded) {
-                    showPaymentBalanceLimitError()
-                } else {
-                    binding.confirmContainer.visibility = View.VISIBLE
-                    binding.cancelContainer.visibility = View.INVISIBLE
-                }
-            }
-        }
-        binding.totalPriceValueTextView.text =
-            getString(
-                R.string.payment_myst_description,
-                order.receiveMyst
-            )
+        binding.totalPriceValueTextView.text = getString(
+            R.string.payment_myst_description,
+            order.receiveMyst
+        )
     }
 
     private fun launchPlayBillingPayment() {
@@ -149,12 +139,6 @@ class PaymentSummaryActivity : BaseActivity() {
                 navigateToHome()
             }
         }
-    }
-
-    private fun showPaymentBalanceLimitError() {
-        showBanner(binding.paymentBalanceLimitLayout.root)
-        binding.confirmContainer.visibility = View.INVISIBLE
-        binding.cancelContainer.visibility = View.VISIBLE
     }
 
     private fun showBanner(view: View) {
