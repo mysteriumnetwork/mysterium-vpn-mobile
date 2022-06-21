@@ -12,12 +12,9 @@
     <string name="onboarding_main_title_2">Surf the web, and pay\nas you go</string>
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
-    <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
-    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and free nodes</string>
-    <string name="onboarding_main_title_4">What is Smart Connect</string>
-    <string name="onboarding_description_title_4">Smart and fast way to connect</string>
-    <string name="onboarding_description_content_4">Tap the smart connect button and get connected to the best node for you</string>
+    <string name="onboarding_main_title_3">What is Smart Connect</string>
+    <string name="onboarding_description_title_3">Smart and fast way to connect</string>
+    <string name="onboarding_description_content_3">Tap the smart connect button and get connected to the best node for you</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
 
@@ -62,7 +59,6 @@
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
     <string name="manual_connect_search">Search</string>
     <string name="manual_connect_node_id">Node id or Country</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
@@ -127,7 +123,7 @@
     <string name="wallet_top_ups_time">Time</string>Paid
     <string name="wallet_top_ups_paid">Paid</string>
     <string name="wallet_top_ups_myst">MYST</string>
-    <string name="wallet_top_ups_currency" translatable="false">%.6f %2$s</string>
+    <string name="wallet_top_ups_currency" translatable="false">%.6l %2$s</string>
     <string name="wallet_video">Online\n video</string>
     <string name="wallet_web">Web\n browsing</string>
     <string name="wallet_download">of data\n download</string>
@@ -185,14 +181,10 @@
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
     <string name="top_up_amount_description">Select how much MYST credits\n you would like to add into your account</string>
+    <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
-    <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
-    <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
-    <string name="top_up_payment_link">Or use a payment link</string>
-    <string name="top_up_crypto_lightning">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
-    <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
+    <string name="top_up_currency_equivalent" translatable="false">$%.2f</string>
     <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
@@ -218,17 +210,13 @@
     <string name="create_account_import">Import\n Account</string>
     <string name="create_account_description">Create an account to start or import your existing account using your private key.</string>
 
-    <!--  Card payment  -->
-    <string name="card_summary_title">Order Summary</string>
-    <string name="card_currency_title">Currency &amp; Country</string>
-    <string name="card_currency_description">Select your country for the VAT calculation</string>
-    <string name="card_payment_pay">Continue to Pay</string>
-    <string name="card_payment_cardinity">You will be taken to Cardinity payment page to pay.</string>
-    <string name="card_payment_total">Total Due</string>
-    <string name="card_payment_vat_title">VAT</string>
-    <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Select Country or Region</string>
-    <string name="card_payment_myst_description">%d MYST Top-up</string>
+    <!--  Payment  -->
+    <string name="payment_summary_title">Order Summary</string>
+    <string name="payment_pay">Continue to Pay</string>
+    <string name="payment_price">$%.2f</string>
+    <string name="payment_total">Total Due</string>
+    <string name="payment_country_hint">Select Country or Region</string>
+    <string name="payment_myst_description">%.2f MYST</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
@@ -243,9 +231,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Choose a payment method to continue</string>
-    <string name="credit_card">Credit Card</string>
-    <string name="crypto">Crypto</string>
-    <string name="paypal">Paypal</string>
+    <string name="google_play_billing">Google Play Billing</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Use </string>
@@ -295,12 +281,10 @@
     <string name="pop_up_private_key_title">Download key</string>
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
-    <string name="pop_up_card_payment_button">Continue</string>
-    <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
-    <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
-    <string name="pop_up_crypto_payment_button">Continue</string>
-    <string name="pop_up_crypto_payment_title">Warning!</string>
-    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
+    <string name="pop_up_payment_title_thanks">Thanks for the purchase!</string>
+    <string name="pop_up_payment_button">Continue</string>
+    <string name="pop_up_payment_title_warning">Warning!</string>
+    <string name="pop_up_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>

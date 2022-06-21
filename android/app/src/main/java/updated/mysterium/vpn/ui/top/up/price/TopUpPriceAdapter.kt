@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.currency
+package updated.mysterium.vpn.ui.top.up.price
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,34 +7,34 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ItemCardCurrencyBinding
+import network.mysterium.vpn.databinding.ItemCardElementBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
-import updated.mysterium.vpn.model.top.up.CurrencyCardItem
+import updated.mysterium.vpn.model.top.up.TopUpPriceCardItem
 
-class CardCurrencyAdapter :
-    ContentListAdapter<CurrencyCardItem, CardCurrencyAdapter.CardCurrencyViewHolder>() {
+class TopUpPriceAdapter :
+    ContentListAdapter<TopUpPriceCardItem, TopUpPriceAdapter.TopUpPriceViewHolder>() {
 
-    private var selectedCardItem: CurrencyCardItem? = null
-    var onItemSelected: ((CurrencyCardItem) -> Unit)? = null
+    private var selectedCardItem: TopUpPriceCardItem? = null
+    var onItemSelected: ((TopUpPriceCardItem) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CardCurrencyViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_card_currency, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TopUpPriceViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_card_element, parent, false)
     )
 
-    override fun onBindViewHolder(holder: CardCurrencyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TopUpPriceViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    fun getSelectedValue() = selectedCardItem?.currency
+    inner class TopUpPriceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    inner class CardCurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding = ItemCardElementBinding.bind(itemView)
 
-        val binding = ItemCardCurrencyBinding.bind(itemView)
-
-        fun bind(cardItem: CurrencyCardItem) {
-            binding.cardItemValue.text = cardItem.currency
+        fun bind(cardItem: TopUpPriceCardItem) {
+            binding.cardItemValue.text =
+                itemView.context.getString(R.string.top_up_currency_equivalent, cardItem.price)
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
+                onItemSelected?.invoke(cardItem)
                 selectedState()
             } else {
                 unselectedState()
@@ -44,9 +44,8 @@ class CardCurrencyAdapter :
                     onItemSelected?.invoke(cardItem)
                     selectedCardItem?.changeState()
                     cardItem.changeState()
-                    notifyItemChanged(items.indexOf(selectedCardItem))
                     selectedCardItem = cardItem
-                    notifyItemChanged(items.indexOf(selectedCardItem))
+                    notifyDataSetChanged()
                 }
             }
         }
@@ -54,8 +53,9 @@ class CardCurrencyAdapter :
         private fun selectedState() {
             binding.cardItemValue.setTextColor(Color.WHITE)
             binding.cardItemFrame.background = ContextCompat.getDrawable(
-                itemView.context, R.drawable.shape_card_currency_selected
+                itemView.context, R.drawable.shape_card_element_selected
             )
+            binding.shadow.visibility = View.VISIBLE
         }
 
         private fun unselectedState() {
@@ -63,8 +63,9 @@ class CardCurrencyAdapter :
                 itemView.context.getColor(R.color.onboarding_title_dark_blue)
             )
             binding.cardItemFrame.background = ContextCompat.getDrawable(
-                itemView.context, R.drawable.shape_card_currency_unselected
+                itemView.context, R.drawable.shape_card_element_unselected
             )
+            binding.shadow.visibility = View.INVISIBLE
         }
     }
 }

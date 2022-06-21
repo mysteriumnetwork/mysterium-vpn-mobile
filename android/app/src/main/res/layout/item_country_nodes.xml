@@ -14,8 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/crypto_btc" />
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/countryName"
