@@ -10,7 +10,8 @@ import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
+import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
+import updated.mysterium.vpn.exceptions.TopupNoAmountException
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -19,6 +20,7 @@ import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
+import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpPaymentViewModel
 
@@ -79,9 +81,11 @@ class PaymentSummaryActivity : BaseActivity() {
 
     private fun loadPayment() {
         val price = topUpPriceCardItem?.price ?: 0.0
-
         startService()
+        getPayment(price)
+    }
 
+    private fun getPayment(price: Double) {
         paymentStatusViewModel.getPayment(price).observe(this) {
             it.onSuccess { order ->
                 topUpPriceCardItem = topUpPriceCardItem?.copy(id = order.id)
@@ -89,29 +93,21 @@ class PaymentSummaryActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
-                if (error is TopupPreconditionFailedException) {
-                    showPaymentBalanceLimitError()
+                if (error is TopupBalanceLimitException) {
+                    showBanner(binding.paymentBalanceLimitLayout.root)
+                } else if (error is TopupNoAmountException) {
+                    showNoAmountPopUp { getPayment(price) }
                 }
+                setButtonAvailability(false)
             }
         }
     }
 
     private fun inflateOrderData(order: Order) {
-        paymentViewModel.isBalanceLimitExceeded().observe(this) {
-            it.onSuccess { isBalanceLimitExceeded ->
-                if (isBalanceLimitExceeded) {
-                    showPaymentBalanceLimitError()
-                } else {
-                    binding.confirmContainer.visibility = View.VISIBLE
-                    binding.cancelContainer.visibility = View.INVISIBLE
-                }
-            }
-        }
-        binding.totalPriceValueTextView.text =
-            getString(
-                R.string.payment_myst_description,
-                order.receiveMyst
-            )
+        binding.totalPriceValueTextView.text = getString(
+            R.string.payment_myst_description,
+            order.receiveMyst
+        )
     }
 
     private fun launchPlayBillingPayment() {
@@ -145,12 +141,6 @@ class PaymentSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun showPaymentBalanceLimitError() {
-        showBanner(binding.paymentBalanceLimitLayout.root)
-        binding.confirmContainer.visibility = View.INVISIBLE
-        binding.cancelContainer.visibility = View.VISIBLE
-    }
-
     private fun showBanner(view: View) {
         view.visibility = View.VISIBLE
         val animationX =
@@ -173,6 +163,17 @@ class PaymentSummaryActivity : BaseActivity() {
             navigateToHome()
         }
         dialog.show()
+    }
+
+    private fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
+        val popUpNoAmount = PopUpNoAmount(layoutInflater)
+        val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
+        popUpNoAmount.apply {
+            this.dialog = dialogNoAmount
+            this.onTryAgainAction = onTryAgainClick
+            setUp()
+        }
+        dialogNoAmount.show()
     }
 
     private fun setButtonAvailability(isAvailable: Boolean) {

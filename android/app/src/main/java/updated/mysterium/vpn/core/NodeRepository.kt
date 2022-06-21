@@ -9,9 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
 import mysterium.*
-import updated.mysterium.vpn.common.extensions.TAG
 import okio.buffer
 import okio.source
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
@@ -36,6 +36,9 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
         const val MAX_BALANCE_LIMIT = 5
+        const val BALANCE_LIMIT_ERROR_MESSAGE =
+            "You can only top-up if you have less than 5 MYST in balance"
+        const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
     }
 
     private val moshi = Moshi
@@ -176,14 +179,11 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Log.d(TAG, "createPaymentOrder response: $order")
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
-            } catch (e: Exception) {
-                if (isBalanceLimitExceeded()) {
-                    throw TopupPreconditionFailedException(
-                        e.message
-                            ?: "You can only top-up if you have less than 5 MYST in balance"
-                    )
-                } else {
-                    error(e)
+            } catch (exception: Exception) {
+                when (exception.message) {
+                    BALANCE_LIMIT_ERROR_MESSAGE -> throw TopupBalanceLimitException()
+                    NO_BALANCE_ERROR_MESSAGE -> throw TopupNoAmountException()
+                    else -> error(exception)
                 }
             }
         }
