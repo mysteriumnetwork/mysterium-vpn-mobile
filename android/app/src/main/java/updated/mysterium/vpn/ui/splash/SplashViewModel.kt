@@ -12,9 +12,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.notification.ReviveUserWork
 import java.util.concurrent.TimeUnit
@@ -119,12 +121,6 @@ class SplashViewModel(
 
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 
-    fun getLastCryptoCurrency() = pushyUseCase.getCryptoCurrency()
-    
-    fun getIdentityAddress() = liveDataResult {
-        connectionUseCase.getIdentityAddress()
-    }
-
     fun getIdentity() = liveDataResult {
         IdentityModel(connectionUseCase.getIdentity())
     }
@@ -137,7 +133,7 @@ class SplashViewModel(
                 .addTag(ReviveUserWork.WEEK_DELAY_NOTIFICATION)
                 .build()
 
-        val seecondNotificationWork =
+        val secondNotificationWork =
             OneTimeWorkRequest
                 .Builder(ReviveUserWork::class.java)
                 .setInitialDelay(7, TimeUnit.DAYS)
@@ -155,7 +151,7 @@ class SplashViewModel(
 
         workManager
             .beginWith(firstNotificationWork)
-            .then(seecondNotificationWork)
+            .then(secondNotificationWork)
             .then(lastNotificationWork)
             .enqueue()
 
