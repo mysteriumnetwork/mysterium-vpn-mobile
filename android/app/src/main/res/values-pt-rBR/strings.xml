@@ -189,7 +189,7 @@
     <string name="card_currency_title">Moeda e país</string>
     <string name="card_currency_description">Selecione seu país para o cálculo do IVA</string>
     <string name="card_payment_pay">Continue para pagar</string>
-    <string name="card_payment_cardinity">Você será encaminhado para a página de pagamento da Cardinity para pagar.</string>
+    <string name="card_payment_stripe">Você será encaminhado para a página de pagamento da Stripe para pagar.</string>
     <string name="card_payment_total">Valor total</string>
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>

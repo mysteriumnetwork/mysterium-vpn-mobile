@@ -50,7 +50,7 @@ class TopUpAmountActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            if (gateway == Gateway.CARDINITY || gateway == Gateway.STRIPE) {
+            if (gateway == Gateway.STRIPE) {
                 navigateToCardPaymentFlow()
             } else {
                 navigateToCryptoPaymentFlow()
