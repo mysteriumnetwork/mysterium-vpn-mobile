@@ -25,8 +25,6 @@ class CardCurrencyAdapter :
         holder.bind(items[position])
     }
 
-    fun getSelectedValue() = selectedCardItem?.currency
-
     inner class CardCurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding = ItemCardCurrencyBinding.bind(itemView)

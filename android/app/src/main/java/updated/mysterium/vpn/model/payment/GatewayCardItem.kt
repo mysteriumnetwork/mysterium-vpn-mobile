@@ -8,7 +8,7 @@ import network.mysterium.vpn.R
 data class GatewayCardItem(
     @StringRes val titleId: Int,
     @DrawableRes val iconId: Int,
-    @ColorRes val backgroundId: Int,
+    @DrawableRes val backgroundId: Int,
     @ColorRes val textColorId: Int,
     @ColorRes val iconColorId: Int
 ) {
@@ -17,31 +17,17 @@ data class GatewayCardItem(
             return when (value) {
                 Gateway.COINGATE -> GatewayCardItem(
                     R.string.crypto,
-                    R.drawable.icon_crypto,
-                    R.color.payment_method_crypto_background,
+                    R.drawable.icon_crypto_payment_option,
+                    R.drawable.shape_rectangle_crypto_rounded_10,
                     R.color.payment_method_crypto_text_color,
                     R.color.payment_method_crypto_icon_color
-                )
-                Gateway.CARDINITY -> GatewayCardItem(
-                    R.string.credit_card,
-                    R.drawable.icon_top_up_now,
-                    R.color.payment_method_card_background,
-                    R.color.payment_method_card_text_color,
-                    R.color.payment_method_card_icon_color
-                )
-                Gateway.PAYPAL -> GatewayCardItem(
-                    R.string.paypal,
-                    R.drawable.icon_paypal,
-                    R.color.payment_method_paypal_background,
-                    R.color.payment_method_paypal_text_color,
-                    R.color.payment_method_paypal_icon_color
                 )
                 Gateway.STRIPE -> GatewayCardItem(
                     R.string.stripe,
-                    R.drawable.icon_stripe,
-                    R.color.payment_method_crypto_background,
-                    R.color.payment_method_crypto_text_color,
-                    R.color.payment_method_crypto_icon_color
+                    R.drawable.icon_stripe_payment_option,
+                    R.drawable.shape_rectangle_stripe_rounded_10,
+                    R.color.payment_method_stripe_text_color,
+                    R.color.payment_method_stripe_icon_color
                 )
                 else -> null
             }

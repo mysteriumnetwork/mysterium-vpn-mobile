@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_padding_size_small_medium"
     app:rippleColor="@color/primary_card_view"
-    tools:cardBackgroundColor="@color/payment_method_card_background">
+    tools:background="@drawable/shape_rectangle_gray_rounded_10">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -223,7 +223,7 @@
     <string name="card_currency_title">Currency &amp; Country</string>
     <string name="card_currency_description">Select your country for the VAT calculation</string>
     <string name="card_payment_pay">Continue to Pay</string>
-    <string name="card_payment_cardinity">You will be taken to Cardinity payment page to pay.</string>
+    <string name="card_payment_stripe">You will be taken to Stripe payment page to pay.</string>
     <string name="card_payment_total">Total Due</string>
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
