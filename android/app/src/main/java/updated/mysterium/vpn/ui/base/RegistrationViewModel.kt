@@ -9,33 +9,50 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import mysterium.GetBalanceRequest
 import mysterium.RegisterIdentityRequest
+import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.wallet.Identity
 import updated.mysterium.vpn.model.wallet.IdentityModel
+import updated.mysterium.vpn.model.wallet.IdentityRegistrationStatus
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class RegistrationViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private companion object {
-        const val TAG = "RegistrationViewModel"
-    }
+    val identityRegistrationResult: LiveData<Boolean>
+        get() = _identityRegistrationResult
 
-    val accountRegistrationResult: LiveData<Boolean>
-        get() = _accountRegistrationResult
+    val identityRegistrationError: LiveData<Throwable>
+        get() = _identityRegistrationError
 
-    val accountRegistrationError: LiveData<Throwable>
-        get() = _accountRegistrationError
-
-    private val _accountRegistrationResult = MutableLiveData<Boolean>()
-    private val _accountRegistrationError = MutableLiveData<Throwable>()
+    private val _identityRegistrationResult = MutableLiveData<Boolean>()
+    private val _identityRegistrationError = MutableLiveData<Throwable>()
 
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
     private val balanceUseCase = useCaseProvider.balance()
 
-    fun tryRegisterAccount(identity: Identity? = null) {
+    fun registerIdentityWithToken(token: String) = liveDataResult {
+        val nodeIdentity = connectionUseCase.getIdentity()
+        val identity = IdentityModel(
+            address = nodeIdentity.address,
+            channelAddress = nodeIdentity.channelAddress,
+            status = IdentityRegistrationStatus.parse(nodeIdentity.registrationStatus)
+        )
+        if (!identity.registered) {
+            val req = RegisterIdentityRequest().apply {
+                identityAddress = identity.address
+                this.token = token
+            }
+            connectionUseCase.registerIdentity(req)
+            connectionUseCase.registrationFees()
+            _identityRegistrationResult.postValue(true)
+        }
+    }
+
+    fun tryRegisterIdentity(identity: Identity? = null) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
-            _accountRegistrationError.postValue(exception)
+            _identityRegistrationError.postValue(exception)
         }
         viewModelScope.launch(handler) {
             val identityModel = if (identity == null) {
@@ -43,14 +60,13 @@ class RegistrationViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             } else {
                 IdentityModel(identity)
             }
-
             checkRegistrationStatus(identityModel)
         }
     }
 
     private suspend fun checkRegistrationStatus(identity: IdentityModel) {
         if (identity.registered) {
-            _accountRegistrationResult.postValue(true)
+            _identityRegistrationResult.postValue(true)
         } else {
             checkFreeRegistration(identity)
         }
@@ -59,7 +75,7 @@ class RegistrationViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun checkFreeRegistration(identity: IdentityModel) {
         val isRegistrationAvailable = loginUseCase.isFreeRegistrationAvailable(identity.address)
         if (isRegistrationAvailable) {
-            registerAccount(identity)
+            registerIdentity(identity)
         } else {
             checkUpdatedBalance(identity)
         }
@@ -71,13 +87,13 @@ class RegistrationViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         val balance = balanceUseCase.forceBalanceUpdate(balanceRequest).balance
         if (balance > 0) {
-            registerAccount(identity)
+            registerIdentity(identity)
         } else {
-            _accountRegistrationResult.postValue(false)
+            _identityRegistrationResult.postValue(false)
         }
     }
 
-    private suspend fun registerAccount(identity: IdentityModel) {
+    private suspend fun registerIdentity(identity: IdentityModel) {
         val req = RegisterIdentityRequest().apply {
             identityAddress = identity.address
             token?.let {
@@ -86,6 +102,7 @@ class RegistrationViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         connectionUseCase.registerIdentity(req)
         connectionUseCase.registrationFees()
-        _accountRegistrationResult.postValue(true)
+        _identityRegistrationResult.postValue(true)
     }
+
 }

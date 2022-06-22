@@ -21,7 +21,6 @@ import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.animation.OnAnimationCompletedListener
 import updated.mysterium.vpn.common.network.NetworkUtil
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
-import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -35,6 +34,10 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
 class SplashActivity : BaseActivity() {
 
+    companion object {
+        const val REDIRECTED_FROM_PUSH_KEY = "REDIRECTED_FROM_PUSH"
+    }
+
     private lateinit var binding: ActivitySplashBinding
     private val balanceViewModel: BalanceViewModel by inject()
     private val viewModel: SplashViewModel by inject()
@@ -47,13 +50,21 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            isLoadingStarted = savedInstanceState.getBoolean("isLoadingStarted")
+        }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         applyDarkMode()
         ensureVpnServicePermission()
         configure()
         subscribeViewModel()
-        setUpPushyNotifications()
+        viewModel.setUpInactiveUserPushyNotifications()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("isLoadingStarted", isLoadingStarted)
+        super.onSaveInstanceState(outState)
     }
 
     override fun retryLoading() {
@@ -94,27 +105,31 @@ class SplashActivity : BaseActivity() {
             viewModel.initRepository()
         }
         viewModel.nodeStartingError.observe(this) {
-            wifiNetworkErrorPopUp()
-        }
-
-        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
-            if (isRegistered) {
-                navigateToConnectionOrHome(isBackTransition = false)
-                finish()
-            } else {
-                navigateForward()
+            wifiNetworkErrorPopUp {
+                isLoadingStarted = false
+                init()
             }
         }
-        registrationViewModel.accountRegistrationError.observe(this) {
-            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
-                registrationViewModel.tryRegisterAccount()
+
+        registrationViewModel.identityRegistrationResult.observe(this) { isRegistered ->
+            val redirectedFromPush = intent?.extras?.getBoolean(REDIRECTED_FROM_PUSH_KEY) ?: false
+            if (isRegistered && !redirectedFromPush) {
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
+                finish()
+            } else {
+                navigateForward(redirectedFromPush)
+            }
+        }
+        registrationViewModel.identityRegistrationError.observe(this) {
+            detailedErrorPopUp {
+                registrationViewModel.tryRegisterIdentity()
             }
         }
 
         lifecycleScope.launchWhenStarted {
             analytic.eventTracked.collect { event ->
                 if (event == AnalyticEvent.STARTUP.eventName) {
-                    registrationViewModel.tryRegisterAccount()
+                    registrationViewModel.tryRegisterIdentity()
                 }
             }
         }
@@ -137,21 +152,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun setUpPushyNotifications() {
-        pushyNotifications.register {
-            val lastCurrency = viewModel.getLastCryptoCurrency()
-            if (lastCurrency == null) {
-                pushyNotifications.subscribe(PushyTopic.PAYMENT_FALSE)
-            } else {
-                pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
-                pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
-                pushyNotifications.subscribe(lastCurrency)
-            }
-        }
-        pushyNotifications.listen()
-    }
-
-    private fun navigateForward() {
+    private fun navigateForward(redirectedFromPush: Boolean) {
         when {
             !viewModel.isUserAlreadyLogin() -> {
                 navigateToOnboarding()
@@ -159,8 +160,11 @@ class SplashActivity : BaseActivity() {
             !viewModel.isTermsAccepted() -> {
                 navigateToTerms()
             }
-            viewModel.isTopUpFlowShown() -> {
-                navigateToConnectionOrHome(isBackTransition = false)
+            viewModel.isTopUpFlowShown() && !redirectedFromPush -> {
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
+            }
+            redirectedFromPush -> {
+                navigateToConnectionIfBalanceOrHome()
             }
             viewModel.isAccountCreated() -> {
                 navigateToTopUp()
@@ -211,7 +215,9 @@ class SplashActivity : BaseActivity() {
             ) {
                 init()
             } else {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             }
         }
     }

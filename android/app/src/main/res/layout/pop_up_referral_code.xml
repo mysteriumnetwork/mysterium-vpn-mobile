@@ -143,7 +143,7 @@
                 style="@style/TextAppearance.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pop_up_referral_error"
+                android:text="@string/pop_up_referral_invalid_error"
                 android:textColor="@color/menu_subtitle_light_pink"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/registrationTokenEditText"

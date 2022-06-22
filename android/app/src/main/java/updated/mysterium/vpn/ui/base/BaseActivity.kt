@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,19 +18,29 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.localisation.LocaleHelper
+import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.payment.Gateway
+import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.Notifications
+import updated.mysterium.vpn.ui.base.BaseViewModel.Companion.CONNECT_BALANCE_LIMIT
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
 import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
+import updated.mysterium.vpn.ui.top.up.price.TopUpPriceActivity
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
+    private val homeSelectionViewModel: HomeSelectionViewModel by inject()
     protected var isInternetAvailable = true
     protected var connectionState = ConnectionState.NOTCONNECTED
     protected val pushyNotifications = Notifications(this)
@@ -40,6 +51,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLayoutDirection()
         baseViewModel.checkInternetConnection()
         alertDialogBuilder = AlertDialog.Builder(this)
         subscribeViewModel()
@@ -106,13 +118,12 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun detailedErrorPopUp(
-        errorMessage: String,
         retryAction: () -> Unit
     ) {
         val bindingPopUp = PopUpRetryRegistrationBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.description.text = errorMessage
-        bindingPopUp.title.setText(R.string.pop_up_details_title)
+        bindingPopUp.description.setText(R.string.pop_up_registration_failed_description)
+        bindingPopUp.title.setText(R.string.pop_up_registration_failed_title)
         bindingPopUp.tryAgainButton.setOnClickListener {
             retryAction.invoke()
             dialog.dismiss()
@@ -124,14 +135,14 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun wifiNetworkErrorPopUp() {
+    fun wifiNetworkErrorPopUp(retryAction: () -> Unit) {
         if (wifiErrorDialog == null && !isFinishing) {
             val bindingPopUp = PopUpWiFiErrorBinding.inflate(layoutInflater)
             wifiErrorDialog = createPopUp(bindingPopUp.root, false)
             bindingPopUp.retryButton.setOnClickListener {
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
-                baseViewModel.checkInternetConnection()
+                retryAction()
             }
             wifiErrorDialog?.show()
         }
@@ -141,7 +152,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.topUpButton.setOnClickListener {
-            startActivity(Intent(this, PaymentMethodActivity::class.java))
+            navigateToPayment()
         }
         bindingPopUp.continueButton.setOnClickListener {
             dialog.dismiss()
@@ -226,7 +237,9 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         baseViewModel.isInternetAvailable.observe(this) { isAvailable ->
             if (!isAvailable) {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             } else if (!isInternetAvailable) {
                 wifiErrorDialog?.dismiss()
                 wifiErrorDialog = null
@@ -249,7 +262,7 @@ abstract class BaseActivity : AppCompatActivity() {
             bindingPopUp.topUpButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
                 insufficientFoundsDialog = null
-                startActivity(Intent(this, PaymentMethodActivity::class.java))
+                navigateToPayment()
             }
             bindingPopUp.continueButton.setOnClickListener {
                 insufficientFoundsDialog?.dismiss()
@@ -258,4 +271,124 @@ abstract class BaseActivity : AppCompatActivity() {
             insufficientFoundsDialog?.show()
         }
     }
+
+    private fun setLayoutDirection() {
+        if (Locale.getDefault().language == "ar") {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        } else {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+        }
+    }
+
+    fun navigateToConnectionIfConnectedOrHome(isBackTransition: Boolean = true) {
+        val intent = if (
+            connectionState == ConnectionState.CONNECTED ||
+            connectionState == ConnectionState.CONNECTING ||
+            connectionState == ConnectionState.ON_HOLD
+        ) {
+            Intent(this, ConnectionActivity::class.java)
+        } else {
+            Intent(this, HomeSelectionActivity::class.java)
+        }
+        intent.apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent, getTransitionAnimation(isBackTransition))
+    }
+
+    fun navigateToConnectionIfBalanceOrHome() {
+        baseViewModel.balance.observeOnce(this) { balance ->
+            if (balance >= CONNECT_BALANCE_LIMIT) {
+                navigateToSmartConnection(isBackTransition = false, isConnectIntent = true)
+            } else {
+                val intent = Intent(this, HomeSelectionActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
+            }
+        }
+    }
+
+    fun navigateToConnection(proposal: Proposal) {
+        if ((baseViewModel.balance.value ?: 0.0) >= CONNECT_BALANCE_LIMIT) {
+            navigateToManualConnection(proposal)
+        } else {
+            insufficientFundsPopUp()
+        }
+    }
+
+    fun navigateToConnection(isBackTransition: Boolean? = null, isConnectIntent: Boolean = false) {
+        if ((baseViewModel.balance.value ?: 0.0) >= CONNECT_BALANCE_LIMIT) {
+            navigateToSmartConnection(isBackTransition, isConnectIntent)
+        } else {
+            insufficientFundsPopUp()
+        }
+    }
+
+    private fun navigateToManualConnection(proposal: Proposal) {
+        val intent = Intent(this, ConnectionActivity::class.java).apply {
+            putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
+            putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToSmartConnection(
+        isBackTransition: Boolean? = null,
+        isConnectIntent: Boolean = false
+    ) {
+        if (connectionState == ConnectionState.CONNECTED || isConnectIntent) {
+            val intent = Intent(this, ConnectionActivity::class.java).apply {
+                if (isConnectIntent) {
+                    putExtra(
+                        ConnectionActivity.CONNECTION_TYPE_KEY,
+                        ConnectionType.SMART_CONNECT.type
+                    )
+                    putExtra(ConnectionActivity.COUNTRY_CODE_KEY, getCountryCode())
+                }
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent, getTransitionAnimation(isBackTransition))
+        }
+    }
+
+    fun navigateToPayment() {
+        baseViewModel.getGateways().observe(this) {
+            it.onSuccess { result ->
+                val gateways = result.filterNotNull()
+                val intent = if (gateways.size == 1 && gateways[0] == Gateway.GOOGLE) {
+                    Intent(this, TopUpPriceActivity::class.java)
+                } else {
+                    val gatewayValues = gateways.map { it.gateway }
+                    PaymentMethodActivity.newIntent(this, gatewayValues)
+                }
+                startActivity(intent)
+            }
+            it.onFailure { error ->
+                Log.e(TAG, "getPaymentScreen failed with error ${error.message}")
+            }
+        }
+    }
+
+    private fun getTransitionAnimation(isBackTransition: Boolean?): Bundle? {
+        return if (isBackTransition == true) {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).toBundle()
+        } else {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            ).toBundle()
+        }
+    }
+
+    private fun getCountryCode(): String? {
+        return homeSelectionViewModel.getPreviousCountryCode()
+    }
+
 }

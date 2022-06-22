@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.model.nodes
 
-import com.beust.klaxon.Json
+import com.squareup.moshi.Json
 
 class ProposalsResponse(
     @Json(name = "proposals")

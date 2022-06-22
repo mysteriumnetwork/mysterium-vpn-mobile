@@ -58,101 +58,25 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         style="@style/Widget.PrimaryCardView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/paymentMethodList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/centerGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
-
-            <LinearLayout
-                android:id="@+id/creditCardPayment"
-                style="@style/RippleEffectPrimaryColor"
-                android:layout_width="138dp"
-                android:layout_height="149dp"
-                android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:layout_marginStart="@dimen/margin_padding_size_large"
-                android:layout_marginEnd="@dimen/margin_padding_size_small"
-                android:background="@drawable/shape_rectangle_pink_rounded_10"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical"
-                android:weightSum="2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_medium"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon_top_up_now"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/TextAppearance.HeadSubNumbers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:text="@string/credit_card"
-                    android:textAlignment="center"
-                    android:textColor="@color/create_account_import_text" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/cryptoPayment"
-                style="@style/RippleEffectSecondaryColor"
-                android:layout_width="138dp"
-                android:layout_height="149dp"
-                android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:layout_marginStart="@dimen/margin_padding_size_small"
-                android:layout_marginEnd="@dimen/margin_padding_size_large"
-                android:background="@drawable/shape_rectangle_gray_rounded_10"
-                android:orientation="vertical"
-                android:weightSum="2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_padding_size_medium"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon_crypto"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    style="@style/TextAppearance.HeadSubNumbers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:text="@string/crypto"
-                    android:textAlignment="center"
-                    android:textColor="@color/manual_connect_connecting_title_grey_blue" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_payment_method"
+            android:layout_margin="@dimen/margin_padding_size_small_medium"/>
 
     </com.google.android.material.card.MaterialCardView>
 

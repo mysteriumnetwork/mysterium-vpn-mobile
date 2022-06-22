@@ -1,17 +1,21 @@
 package updated.mysterium.vpn.ui.terms
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.noties.markwon.Markwon
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemFullTermBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.model.terms.FullVersionTerm
 
-class FullTermsAdapter : ContentListAdapter<FullVersionTerm, FullTermsAdapter.FullTermsViewHolder>() {
+class FullTermsAdapter(context: Context) :
+    ContentListAdapter<FullVersionTerm, FullTermsAdapter.FullTermsViewHolder>() {
 
+    private val markwon = Markwon.create(context)
     var isAccepted = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FullTermsViewHolder(
@@ -27,11 +31,11 @@ class FullTermsAdapter : ContentListAdapter<FullVersionTerm, FullTermsAdapter.Fu
         private val binding = ItemFullTermBinding.bind(itemView)
 
         fun bind(terms: FullVersionTerm) {
-            binding.indexTextView.text = terms.index.toString()
-            binding.titleTextView.text = terms.title
-            binding.contentTextView.text = terms.content
+            markwon.setMarkdown(binding.indexTextView, terms.index.toString())
+            markwon.setMarkdown(binding.titleTextView, terms.title)
+            markwon.setMarkdown(binding.contentTextView, terms.content)
             if (!isAccepted) {
-                 binding.viewBackground.setBackgroundColor(Color.TRANSPARENT)
+                binding.viewBackground.setBackgroundColor(Color.TRANSPARENT)
             }
         }
     }

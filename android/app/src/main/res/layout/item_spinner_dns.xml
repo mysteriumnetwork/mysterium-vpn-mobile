@@ -9,6 +9,7 @@
     android:gravity="center"
     android:maxLines="1"
     android:paddingVertical="@dimen/margin_padding_size_small_plus"
+    android:paddingHorizontal="@dimen/margin_padding_size_medium_large"
     android:textAlignment="center"
     android:textColor="@color/onboarding_skip_white"
     tools:text="Auto" />

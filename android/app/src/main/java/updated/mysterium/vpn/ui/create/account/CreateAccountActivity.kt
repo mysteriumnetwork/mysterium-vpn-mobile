@@ -75,7 +75,6 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.navigateForward.observe(this) {
-            viewModel.accountCreated(true)
             navigateToPrivateKey()
         }
         viewModel.registrationError.observe(this) {
@@ -83,19 +82,19 @@ class CreateAccountActivity : BaseActivity() {
             binding.importAccountFrame.isClickable = true
             showRegistrationErrorPopUp()
         }
-        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+        registrationViewModel.identityRegistrationResult.observe(this) { isRegistered ->
             binding.loader.visibility = View.INVISIBLE
             if (isRegistered) {
-                navigateToConnectionOrHome(isBackTransition = false)
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
                 finish()
             } else {
                 navigateToTopUp()
             }
         }
-        registrationViewModel.accountRegistrationError.observe(this) {
+        registrationViewModel.identityRegistrationError.observe(this) {
             binding.loader.visibility = View.INVISIBLE
-            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
-                registrationViewModel.tryRegisterAccount()
+            detailedErrorPopUp {
+                registrationViewModel.tryRegisterIdentity()
             }
         }
     }
@@ -147,12 +146,12 @@ class CreateAccountActivity : BaseActivity() {
                     App.getInstance(this).deferredMysteriumCoreService
                 balanceViewModel.initDeferredNode(deferredMysteriumCoreService)
                 viewModel.accountCreated(false)
-                registrationViewModel.tryRegisterAccount(identity)
+                registrationViewModel.tryRegisterIdentity(identity)
             }
 
             it.onFailure { error ->
                 binding.loader.visibility = View.GONE
-                detailedErrorPopUp(error.localizedMessage ?: error.toString()) {
+                detailedErrorPopUp {
                     applyNewIdentity(newIdentityAddress)
                 }
             }

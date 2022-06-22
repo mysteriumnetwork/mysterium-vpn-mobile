@@ -8,8 +8,10 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -18,6 +20,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val BALANCE_LIMIT = 0.5
         private const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.2
         private const val PING_A_SERVER_COMMAND = "/system/bin/ping -c 1 8.8.8.8"
+        const val CONNECT_BALANCE_LIMIT = 0.0001
     }
 
     val balanceRunningOut: LiveData<Boolean>
@@ -43,6 +46,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val balanceUseCase = useCaseProvider.balance()
     private val connectionUseCase = useCaseProvider.connection()
     private val settingsUseCase = useCaseProvider.settings()
+    private val paymentUseCase = useCaseProvider.payment()
     private var isInternetChecking = false
     private var numberOfInternetCheck = 0
 
@@ -131,5 +135,9 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 _connectionState.postValue(state)
             }
         }
+    }
+
+    fun getGateways() = liveDataResult {
+        listOf(Gateway.GOOGLE) // for testing purpose only
     }
 }

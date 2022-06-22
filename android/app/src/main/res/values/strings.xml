@@ -9,12 +9,12 @@
     <string name="onboarding_main_title_1">Decentralized global node network</string>
     <string name="onboarding_description_title_1">Run by people, for people</string>
     <string name="onboarding_description_content_1">Our network is blind to borders. Select any IP you like from our global list and get unlimited access to worldwide content.</string>
-    <string name="onboarding_main_title_2">Surf the web, and pay as you go</string>
+    <string name="onboarding_main_title_2">Surf the web, and pay\nas you go</string>
     <string name="onboarding_description_title_2">No lock in subscriptions</string>
     <string name="onboarding_description_content_2">Using our micropayments system, Hermes Protocol, you only pay for the gigabytes you actually use. No subscriptions, no monthly fees – just minute-by-minute payments.</string>
-    <string name="onboarding_main_title_3">Top up with popular cryptocurrencies</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH and more</string>
-    <string name="onboarding_description_content_3">Top up your account now or do it later and use limited functionality and free nodes</string>
+    <string name="onboarding_main_title_3">What is Smart Connect</string>
+    <string name="onboarding_description_title_3">Smart and fast way to connect</string>
+    <string name="onboarding_description_content_3">Tap the smart connect button and get connected to the best node for you</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
 
@@ -59,7 +59,6 @@
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Successfully saved</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
     <string name="manual_connect_search">Search</string>
     <string name="manual_connect_node_id">Node id or Country</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
@@ -124,7 +123,7 @@
     <string name="wallet_top_ups_time">Time</string>Paid
     <string name="wallet_top_ups_paid">Paid</string>
     <string name="wallet_top_ups_myst">MYST</string>
-    <string name="wallet_top_ups_currency" translatable="false">%.6f %2$s</string>
+    <string name="wallet_top_ups_currency" translatable="false">%.6l %2$s</string>
     <string name="wallet_video">Online\n video</string>
     <string name="wallet_web">Web\n browsing</string>
     <string name="wallet_download">of data\n download</string>
@@ -140,6 +139,10 @@
     <string name="profile_keys_description">On Mysterium your account is not stored in centralised servers. Private keys that hold your tokens are stored only in your application. </string>
     <string name="profile_backup">Please back it up so that you can recover your account later.</string>
     <string name="profile_download_keys">Download</string>
+    <string name="profile_storage_permission_rationale_title">We need permissions to store your account</string>
+    <string name="profile_storage_permission_rationale_message">If you deny this permission, you won’t be able to access your account.</string>
+    <string name="profile_storage_permission_rationale_cancel">Cancel</string>
+    <string name="profile_storage_permission_rationale_deny">Deny</string>
 
     <!--  Report issue  -->
     <string name="report_issue_app_version_template" translatable="false">%1$s</string>
@@ -154,6 +157,10 @@
     <string name="report_issue_error_incorrect_email">Incorrect email</string>
     <string name="report_issue_error_request">Something went wrong, please try again later</string>
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
+
+    <!-- Get help -->
+    <string name="get_help_email" translatable="false">help@mysterium.network</string>
+    <string name="get_help_subject" translatable="false">Mysterium: Get help</string>
 
     <!--  Monitoring  -->
     <string name="monitoring_title">History Statistics</string>
@@ -174,14 +181,10 @@
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
     <string name="top_up_amount_description">Select how much MYST credits\n you would like to add into your account</string>
+    <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
-    <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
-    <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
-    <string name="top_up_payment_link">Or use a payment link</string>
-    <string name="top_up_crypto_lighting">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
-    <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
+    <string name="top_up_currency_equivalent" translatable="false">$%.2f</string>
     <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
@@ -207,22 +210,18 @@
     <string name="create_account_import">Import\n Account</string>
     <string name="create_account_description">Create an account to start or import your existing account using your private key.</string>
 
-    <!--  Card payment  -->
-    <string name="card_summary_title">Order Summary</string>
-    <string name="card_currency_title">Currency &amp; Country</string>
-    <string name="card_currency_description">Select your country for the VAT calculation</string>
-    <string name="card_payment_pay">Continue to Pay</string>
-    <string name="card_payment_cardinity">You will be taken to Cardinity payment page to pay.</string>
-    <string name="card_payment_total">Total Due</string>
-    <string name="card_payment_vat_title">VAT</string>
-    <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Select Country or Region</string>
-    <string name="card_payment_myst_description">%d MYST Top-up</string>
+    <!--  Payment  -->
+    <string name="payment_summary_title">Order Summary</string>
+    <string name="payment_pay">Continue to Pay</string>
+    <string name="payment_price">$%.2f</string>
+    <string name="payment_total">Total Due</string>
+    <string name="payment_country_hint">Select Country or Region</string>
+    <string name="payment_myst_description">%.2f MYST</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>
     <string name="private_key_back_up">Back up\n Private Key</string>
-    <string name="private_key_back_up_later">Back up\n Later</string>
+    <string name="private_key_next_to_account">Next to\n Account</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Top up your account or use the referral code to start using Mysterium dVPN</string>
@@ -232,8 +231,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Choose a payment method to continue</string>
-    <string name="credit_card">Credit Card</string>
-    <string name="crypto">Crypto</string>
+    <string name="google_play_billing">Google Play Billing</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Use </string>
@@ -248,7 +246,7 @@
 
     <!--  Pop up  -->
     <string name="pop_up_top_up_title">Top up Your\n Account</string>
-    <string name="pop_up_top_up_description">Credits is running out</string>
+    <string name="pop_up_top_up_description">Your credits are running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
@@ -277,19 +275,16 @@
     <string name="pop_up_wi_fi_error_title">Wi-fi Network\n Error</string>
     <string name="pop_up_wi_fi_error_description">Please check your\n network connection</string>
     <string name="pop_up_wi_fi_error_retry">Retry</string>
-    <string name="pop_up_terms_title">Term of Use\n Changed</string>
+    <string name="pop_up_terms_title">Terms of use\n has changed</string>
     <string name="pop_up_terms_description">Check out the updated\n version here</string>
     <string name="pop_up_terms_confirm">Confirm</string>
     <string name="pop_up_private_key_title">Download key</string>
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
-    <string name="pop_up_details_title">Some error occurred</string>
-    <string name="pop_up_card_payment_button">Continue</string>
-    <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
-    <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
-    <string name="pop_up_crypto_payment_button">Continue</string>
-    <string name="pop_up_crypto_payment_title">Warning!</string>
-    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n You\'ll receive a notification once your payment is successfully processed.</string>
+    <string name="pop_up_payment_title_thanks">Thanks for the purchase!</string>
+    <string name="pop_up_payment_button">Continue</string>
+    <string name="pop_up_payment_title_warning">Warning!</string>
+    <string name="pop_up_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>
@@ -301,14 +296,18 @@
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
-    <string name="pop_up_referral_error">Incorrect token</string>
+    <string name="pop_up_referral_empty_error">Field can\'t be empty</string>
+    <string name="pop_up_referral_invalid_error">Code is not valid</string>
     <string name="pop_up_new_version_title">New Version\n Available</string>
     <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
     <string name="pop_up_new_version_update">Update</string>
+    <string name="pop_up_no_amount_title">Can\'t display\n amount</string>
+    <string name="pop_up_no_amount_description">Sorry, we can\`t display your amount right now.</string>
+    <string name="pop_up_no_amount_try_again">Try again</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium balance</string>
-    <string name="push_notification_balance_message">Your balance is running out!</string>
+    <string name="push_notification_balance_message">\uD83D\uDD3B You’re running out of MYST. Tap here to top up.</string>
     <string name="push_notification_connection_title">Mysterium connection</string>
     <string name="push_notification_connection_message">Connection to node is lost!</string>
     <string name="push_notification_connected_title">Connected to %1$s</string>
@@ -317,6 +316,8 @@
     <string name="push_notification_payment_success_message"> Success! Your payment for %1s %2s is successful. Visit the app to see your balance.</string>
     <string name="push_notification_payment_failed_title">Payment failed</string>
     <string name="push_notification_payment_failed_message">Your payment failed. Please visit the application to try to top up or contact support.</string>
+    <string name="push_notification_inactive_user_title">MysteriumVPN</string>
+    <string name="push_notification_inactive_user_message">We haven’t seen you on Mysterium VPN for a while. Get connected and stay secure! </string>
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>

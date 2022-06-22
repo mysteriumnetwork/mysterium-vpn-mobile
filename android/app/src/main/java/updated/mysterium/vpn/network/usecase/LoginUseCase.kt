@@ -45,7 +45,4 @@ class LoginUseCase(
         value = isNewUser
     )
 
-    fun isNewUser() = sharedPreferencesManager.getBoolPreferenceValue(
-        SharedPreferencesList.IS_NEW_USER
-    )
 }

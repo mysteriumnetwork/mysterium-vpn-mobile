@@ -65,6 +65,12 @@ class ConnectionActivity : BaseActivity() {
         checkAbilityToConnect()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        getSelectedNode()
+    }
+
     override fun retryLoading() {
         getSelectedNode()
     }
@@ -127,7 +133,9 @@ class ConnectionActivity : BaseActivity() {
         if (isInternetAvailable) {
             checkProposalArgument()
         } else {
-            wifiNetworkErrorPopUp()
+            wifiNetworkErrorPopUp {
+                baseViewModel.checkInternetConnection()
+            }
         }
     }
 
@@ -261,7 +269,9 @@ class ConnectionActivity : BaseActivity() {
             if (isInternetAvailable) {
                 showLostConnectionPopUp()
             } else {
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    baseViewModel.checkInternetConnection()
+                }
             }
         }
     }

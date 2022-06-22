@@ -2,11 +2,11 @@ package updated.mysterium.vpn.ui.menu
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.intercom.android.sdk.Intercom
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityMenuBinding
@@ -24,7 +24,6 @@ import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.settings.SettingsActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
-import java.util.*
 
 class MenuActivity : BaseActivity() {
 
@@ -94,11 +93,11 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun subscribeViewModel() {
-        balanceViewModel.balanceLiveData.observe(this, {
+        balanceViewModel.balanceLiveData.observe(this) {
             val balance = getString(R.string.menu_current_balance, it)
             MENU_ITEMS[1].dynamicSubtitle = balance // Added balance to wallet item
             menuGridAdapter.replaceAll(MENU_ITEMS)
-        })
+        }
     }
 
     private fun inflateCustomToolbarView() {
@@ -137,7 +136,8 @@ class MenuActivity : BaseActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun inflateGridLayout() {
         binding.menuRecyclerView.adapter = menuGridAdapter
-        binding.menuRecyclerView.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
+        binding.menuRecyclerView.layoutManager =
+            GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         menuGridAdapter.replaceAll(MENU_ITEMS)
     }
 
@@ -153,13 +153,13 @@ class MenuActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.helpButton.setOnClickListener {
-            Intercom.client().displayMessenger()
+            composeEmail()
         }
         binding.reportButton.setOnClickListener {
             startActivity(Intent(this, ReportIssueActivity::class.java))
@@ -170,7 +170,7 @@ class MenuActivity : BaseActivity() {
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
                 0 -> menuItem.onItemClickListener = {
-                    navigateToConnectionOrHome()
+                    navigateToConnectionIfConnectedOrHome()
                 }
                 1 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, WalletActivity::class.java))
@@ -188,6 +188,17 @@ class MenuActivity : BaseActivity() {
                     // TODO("Implement navigation to Referral")
                 }
             }
+        }
+    }
+
+    private fun composeEmail() {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.get_help_email)))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.get_help_subject))
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
         }
     }
 }

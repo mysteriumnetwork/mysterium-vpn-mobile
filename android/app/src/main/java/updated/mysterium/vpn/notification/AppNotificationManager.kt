@@ -9,6 +9,7 @@ import network.mysterium.vpn.R
 import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.splash.SplashActivity
+import updated.mysterium.vpn.ui.splash.SplashActivity.Companion.REDIRECTED_FROM_PUSH_KEY
 
 typealias NotificationFactory = (Context) -> Notification
 
@@ -20,8 +21,8 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
     private val statisticsChannel = "statistics"
     private val connLostChannel = "connectionlost"
-    private val topUpBalanceChannel = "topupbalance"
     private val paymentStatusChannel = "paymentstatus"
+    private val inactiveUserChannel = "inactiveUser"
     private lateinit var context: Context
 
     // pendingAppIntent is used to navigate back to MainActivity
@@ -37,8 +38,8 @@ class AppNotificationManager(private val notificationManager: NotificationManage
 
         createChannel(statisticsChannel)
         createChannel(connLostChannel)
-        createChannel(topUpBalanceChannel)
         createChannel(paymentStatusChannel)
+        createChannel(inactiveUserChannel)
     }
 
     private fun createChannel(channelId: String) {
@@ -165,6 +166,33 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
                     context.getString(R.string.push_notification_payment_failed_message)
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVibrate(LongArray(0))
+            .setContentIntent(appIntent)
+            .setOnlyAlertOnce(true)
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(NotificationChannels.STATISTIC_NOTIFICATION, notification)
+    }
+
+    fun showInactiveUserNotification() {
+        val intent = Intent(context, SplashActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra(REDIRECTED_FROM_PUSH_KEY, true)
+        }
+        val appIntent =
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val notification = NotificationCompat.Builder(context, paymentStatusChannel)
+            .setSmallIcon(R.drawable.notification_logo)
+            .setContentTitle(context.getString(R.string.push_notification_inactive_user_title))
+            .setContentText(context.getString(R.string.push_notification_inactive_user_message))
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    context.getString(R.string.push_notification_inactive_user_message)
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

@@ -1,23 +1,21 @@
 package updated.mysterium.vpn.ui.home.selection
 
-import android.app.ActivityOptions
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.connection.ConnectionType
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.PresetFilter
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.CONNECTION_TYPE_KEY
-import updated.mysterium.vpn.ui.connection.ConnectionActivity.Companion.COUNTRY_CODE_KEY
 import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterActivity
@@ -25,9 +23,9 @@ import java.util.*
 
 class HomeSelectionActivity : BaseActivity() {
 
-    private companion object {
-        const val TAG = "HomeSelectionActivity"
-        const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
+    companion object {
+        const val SHOW_PAYMENT_PROCESSING_BANNER_KEY = "SHOW_PAYMENT_PROCESSING_BANNER"
+        private const val ALL_COUNTRY_CODE = "ALL_COUNTRY"
     }
 
     private lateinit var binding: ActivityHomeSelectionBinding
@@ -76,6 +74,9 @@ class HomeSelectionActivity : BaseActivity() {
         initCountriesList()
         viewModel.initConnectionListener()
         subscribeToResidentCountry()
+        intent.extras?.get(SHOW_PAYMENT_PROCESSING_BANNER_KEY)?.let {
+            showPaymentProcessingBanner()
+        }
     }
 
     private fun subscribeViewModel() {
@@ -108,6 +109,9 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.manualConnectToolbar.onConnectClickListener {
             navigateToConnection(isBackTransition = false)
+        }
+        binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
+            binding.paymentProcessingLayout.root.visibility = View.GONE
         }
     }
 
@@ -183,13 +187,19 @@ class HomeSelectionActivity : BaseActivity() {
                 override fun canScrollVertically() = false
             }
         }
+        getSystemPresets()
+    }
+
+    private fun getSystemPresets() {
         viewModel.getSystemPresets().observe(this) {
             it.onSuccess { filters ->
                 filtersAdapter.replaceAll(filters)
                 applySavedFilter(viewModel.getPreviousFilterId(), filters)
             }
             it.onFailure { throwable ->
-                wifiNetworkErrorPopUp()
+                wifiNetworkErrorPopUp {
+                    getSystemPresets()
+                }
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
             }
         }
@@ -219,6 +229,7 @@ class HomeSelectionActivity : BaseActivity() {
                         scrollToPositionWithOffset(countryIndex, 0)
                     } else {
                         // scroll to top
+                        viewModel.saveNewCountryCode(ALL_COUNTRY_CODE)
                         sortedCountryInfoList.first().changeSelectionState()
                         scrollToPositionWithOffset(0, 0)
                     }
@@ -258,33 +269,19 @@ class HomeSelectionActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToConnection(
-        isBackTransition: Boolean? = null,
-        isConnectIntent: Boolean = false
-    ) {
-        if (connectionState == ConnectionState.CONNECTED || isConnectIntent) {
-            val transitionAnimation: Bundle? =
-                if (isBackTransition == true) {
-                    ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    ).toBundle()
-                } else {
-                    ActivityOptions.makeCustomAnimation(
-                        applicationContext,
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left
-                    ).toBundle()
-                }
-            val intent = Intent(this, ConnectionActivity::class.java).apply {
-                if (isConnectIntent) {
-                    putExtra(CONNECTION_TYPE_KEY, ConnectionType.SMART_CONNECT.type)
-                    putExtra(COUNTRY_CODE_KEY, viewModel.getPreviousCountryCode())
-                }
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun showPaymentProcessingBanner() {
+        binding.titleTextView.doOnLayout {
+            binding.paymentProcessingLayout.root.visibility = View.VISIBLE
+            val animationX =
+                (binding.titleTextView.x + resources.getDimension(R.dimen.margin_padding_size_medium))
+            ObjectAnimator.ofFloat(
+                binding.paymentProcessingLayout.root,
+                "translationY",
+                animationX
+            ).apply {
+                duration = 2000
+                start()
             }
-            startActivity(intent, transitionAnimation)
         }
     }
 

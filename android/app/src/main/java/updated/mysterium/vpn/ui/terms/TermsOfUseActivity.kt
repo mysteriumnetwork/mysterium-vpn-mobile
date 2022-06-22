@@ -21,9 +21,9 @@ class TermsOfUseActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityTermsBinding
+    private var shortVersionAdapter: ShortTermsAdapter? = null
+    private var fullVersionAdapter: FullTermsAdapter? = null
     private val viewModel: TermsOfUseViewModel by inject()
-    private val shortVersionAdapter = ShortTermsAdapter()
-    private val fullVersionAdapter = FullTermsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +54,13 @@ class TermsOfUseActivity : BaseActivity() {
             binding.nestedScrollView.isVerticalScrollBarEnabled = true
             binding.nestedScrollView.scrollBarFadeDuration = 0
             binding.shortVersionRecyclerView.setBackgroundColor(Color.TRANSPARENT)
-            fullVersionAdapter.isAccepted = false
+            fullVersionAdapter?.isAccepted = false
         }
     }
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        viewModel.getShortVersion().observe(this, { result ->
+        viewModel.getShortVersion().observe(this) { result ->
             result.onSuccess { terms ->
                 showShortVersion(terms)
             }
@@ -68,8 +68,8 @@ class TermsOfUseActivity : BaseActivity() {
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
                 // TODO("Implement error handling")
             }
-        })
-        viewModel.getFullVersion().observe(this, { result ->
+        }
+        viewModel.getFullVersion().observe(this) { result ->
             result.onSuccess { terms ->
                 showFullVersion(terms)
             }
@@ -77,12 +77,12 @@ class TermsOfUseActivity : BaseActivity() {
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
                 // TODO("Implement error handling")
             }
-        })
+        }
     }
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
@@ -100,7 +100,10 @@ class TermsOfUseActivity : BaseActivity() {
     }
 
     private fun showShortVersion(terms: List<String>) {
-        shortVersionAdapter.replaceAll(terms)
+        if (shortVersionAdapter == null) {
+            shortVersionAdapter = ShortTermsAdapter(this)
+        }
+        shortVersionAdapter?.replaceAll(terms)
         binding.shortVersionRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@TermsOfUseActivity)
             adapter = shortVersionAdapter
@@ -109,7 +112,10 @@ class TermsOfUseActivity : BaseActivity() {
     }
 
     private fun showFullVersion(terms: List<FullVersionTerm>) {
-        fullVersionAdapter.replaceAll(terms)
+        if (fullVersionAdapter == null) {
+            fullVersionAdapter = FullTermsAdapter(this)
+        }
+        fullVersionAdapter?.replaceAll(terms)
         binding.fullVersionRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@TermsOfUseActivity)
             adapter = fullVersionAdapter

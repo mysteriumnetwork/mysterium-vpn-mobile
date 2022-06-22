@@ -4,27 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
-import network.mysterium.vpn.R
+import androidx.appcompat.app.AlertDialog
 import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
-import network.mysterium.vpn.databinding.PopUpReferralCodeBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
+import updated.mysterium.vpn.ui.pop.up.PopUpReferralCode
 
 class PrepareTopUpActivity : BaseActivity() {
 
-    companion object {
-        private const val TAG = "PrepareTopUpActivity"
-    }
-
     private lateinit var binding: ActivityPrepareTopUpBinding
+    private lateinit var dialog: AlertDialog
     private val viewModel: PrepareTopUpViewModel by inject()
     private val registrationViewModel: RegistrationViewModel by inject()
     private var isReferralTokenUsed = false
@@ -33,28 +27,28 @@ class PrepareTopUpActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPrepareTopUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        registrationViewModel.tryRegisterAccount()
+        registrationViewModel.tryRegisterIdentity()
         subscribeViewModel()
         bindsAction()
     }
 
     private fun subscribeViewModel() {
-        registrationViewModel.accountRegistrationResult.observe(this) { isRegistered ->
+        registrationViewModel.identityRegistrationResult.observe(this) { isRegistered ->
             if (isRegistered) {
-                navigateToConnectionOrHome(isBackTransition = false)
+                navigateToConnectionIfConnectedOrHome(isBackTransition = false)
                 finish()
             }
         }
-        registrationViewModel.accountRegistrationError.observe(this) {
-            detailedErrorPopUp(it.localizedMessage ?: it.toString()) {
-                registrationViewModel.tryRegisterAccount()
+        registrationViewModel.identityRegistrationError.observe(this) {
+            detailedErrorPopUp {
+                registrationViewModel.tryRegisterIdentity()
             }
         }
     }
 
     private fun bindsAction() {
         binding.topUpNow.setOnClickListener {
-            startActivity(Intent(this, PaymentMethodActivity::class.java))
+            navigateToPayment()
         }
         binding.referralProgram.setOnClickListener {
             showReferralPopUp()
@@ -65,74 +59,36 @@ class PrepareTopUpActivity : BaseActivity() {
     }
 
     private fun showReferralPopUp() {
-        val bindingPopUp = PopUpReferralCodeBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, true)
-        bindingPopUp.applyButton.setOnClickListener {
-            val token = bindingPopUp.registrationTokenEditText.text.toString()
-            viewModel.getRegistrationTokenReward(token).observe(this) {
-                it.onSuccess { rewardAmount ->
-                    applyToken(token, rewardAmount) {
-                        binding.referralProgram.visibility = View.GONE
-                        dialog.dismiss()
-                        navigateToHomeSelection()
-                    }
-                }
-                it.onFailure {
-                    showPopUpErrorState(bindingPopUp.registrationTokenEditText)
-                    bindingPopUp.errorText.visibility = View.VISIBLE
-                }
-            }
-        }
-        bindingPopUp.closeButton.setOnClickListener {
-            dialog.dismiss()
-        }
-        bindingPopUp.registrationTokenEditText.addTextChangedListener { editable ->
-            val registrationToken = editable.toString()
-            if (registrationToken.length > 3) {
-                viewModel.getRegistrationTokenReward(registrationToken).observe(this) {
-                    it.onSuccess { amount ->
-                        bindingPopUp.rewardAmount.visibility = View.VISIBLE
-                        bindingPopUp.rewardAmount.text = amount.toString()
-                        bindingPopUp.tokenNotWorkingImageView.visibility = View.INVISIBLE
+        val popUpReferralCode = PopUpReferralCode(layoutInflater)
+        dialog = createPopUp(popUpReferralCode.bindingPopUp.root, true)
+        popUpReferralCode.apply {
+            setDialog(dialog)
+            applyAction { token ->
+                viewModel.getRegistrationTokenReward(token).observe(this@PrepareTopUpActivity) {
+                    it.onSuccess { rewardAmount ->
+                        showRewardAmount(rewardAmount)
+                        registerIdentityWithToken(token)
                     }
                     it.onFailure { throwable ->
                         Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
-                        bindingPopUp.tokenNotWorkingImageView.visibility = View.VISIBLE
-                        bindingPopUp.rewardAmount.visibility = View.INVISIBLE
+                        hideRewardAmount()
+                        showRegistrationTokenRewardError()
                     }
                 }
             }
+            setUp()
         }
-        bindingPopUp.registrationTokenEditText.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    bindingPopUp.registrationTokenEditText.background = ContextCompat.getDrawable(
-                        this, R.drawable.shape_password_field
-                    )
-                    bindingPopUp.registrationTokenEditText.text?.clear()
-                    bindingPopUp.registrationTokenEditText.hint =
-                        getString(R.string.pop_up_referral_hint)
-                    bindingPopUp.errorText.visibility = View.INVISIBLE
-                }
-            }
         dialog.show()
     }
 
-    private fun showPopUpErrorState(editText: EditText) {
-        editText.background = ContextCompat.getDrawable(
-            this, R.drawable.shape_wrong_password
-        )
-        editText.text?.clear()
-        editText.clearFocus()
-        editText.hint = ""
-    }
-
-    private fun applyToken(token: String, amount: Double, onSuccess: () -> Unit) {
-        viewModel.registerIdentity(token).observe(this) {
+    private fun registerIdentityWithToken(token: String) {
+        registrationViewModel.registerIdentityWithToken(token).observe(this) {
             it.onSuccess {
                 pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_USED)
                 isReferralTokenUsed = true
-                onSuccess.invoke()
+                binding.referralProgram.visibility = View.GONE
+                dialog.dismiss()
+                navigateToHomeSelection()
             }
             it.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
@@ -161,4 +117,5 @@ class PrepareTopUpActivity : BaseActivity() {
         }
         startActivity(intent)
     }
+
 }
