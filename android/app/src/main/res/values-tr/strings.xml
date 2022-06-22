@@ -197,7 +197,7 @@
     <string name="card_payment_vat_title">KDV</string>
     <string name="card_payment_vat_value">KDV(%1.1f%%)</string>
     <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
-    <string name="card_payment_myst_description">%d MYST Yüklemesi</string>
+    <string name="card_payment_myst_description">%.2f MYST Yüklemesi</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Önemli! Kişisel anahtarını şimdi indir ve hesabının kilitlenmesini önlemek için güvenli bir şekilde sakla.</string>

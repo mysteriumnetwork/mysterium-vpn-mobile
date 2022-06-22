@@ -192,6 +192,7 @@
     <string name="top_up_payment_link">Or use a payment link</string>
     <string name="top_up_crypto_lightning">Lightning Network</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
+    <string name="top_up_amount_usd" translatable="false">$%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
     <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>
@@ -228,7 +229,7 @@
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
-    <string name="card_payment_myst_description">%d MYST Top-up</string>
+    <string name="card_payment_myst_description">%.2f MYST Top-up</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Important! Download your private key now and safely store it to prevent being locked out of your account.</string>

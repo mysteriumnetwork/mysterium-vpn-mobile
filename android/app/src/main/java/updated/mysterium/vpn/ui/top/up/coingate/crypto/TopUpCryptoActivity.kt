@@ -16,14 +16,13 @@ import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 class TopUpCryptoActivity : BaseActivity() {
 
     companion object {
-        const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
+        const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityTopUpCryptoBinding
     private val viewModel: TopUpViewModel by inject()
-    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val topUpAdapter = TopUpCryptoAdapter()
-    private var cryptoAmount: Int? = null
+    private var amountUSD: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +58,7 @@ class TopUpCryptoActivity : BaseActivity() {
         binding.confirmButton.setOnClickListener {
             val cryptoName = topUpAdapter.getSelectedValue()
             val intent = Intent(this, TopUpPaymentActivity::class.java).apply {
-                putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+                putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
                 putExtra(TopUpPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
                 putExtra(
                     TopUpPaymentActivity.CRYPTO_IS_LIGHTNING_EXTRA_KEY,
@@ -71,12 +70,10 @@ class TopUpCryptoActivity : BaseActivity() {
     }
 
     private fun getCryptoValue() {
-        cryptoAmount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
-        cryptoAmount?.let {
-            binding.usdEquivalentTextView.text = getString(
-                R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it
-            )
-        }
+        amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)
+        binding.usdEquivalentTextView.text = getString(
+            R.string.top_up_usd_equivalent, amountUSD
+        )
     }
 
     private fun getCryptoList() = listOf(

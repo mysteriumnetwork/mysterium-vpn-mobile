@@ -10,11 +10,14 @@ class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val loginUseCase = useCaseProvider.login()
     private val paymentUseCase = useCaseProvider.payment()
+    private val balanceUseCase = useCaseProvider.balance()
 
     fun accountFlowShown() {
         loginUseCase.accountFlowShown()
     }
-    fun getAmounts(gateway: Gateway) = liveDataResult {
+
+    fun getAmountsUSD(gateway: Gateway) = liveDataResult {
+        val usdEquivalent = balanceUseCase.getUsdEquivalent()
         paymentUseCase.getGateways()
             .find {
                 it.name == gateway.gateway
@@ -22,7 +25,7 @@ class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             ?.orderOptions
             ?.amountsSuggestion
             ?.mapIndexed { index, value ->
-                TopUpCardItem(value.toString(), index == 0)
+                TopUpCardItem(value.toDouble(), value * usdEquivalent, index == 0)
             }
     }
 }

@@ -19,7 +19,7 @@ import updated.mysterium.vpn.ui.top.up.card.summary.HintSpinnerArrayAdapter
 class CardCurrencyActivity : BaseActivity() {
 
     companion object {
-        const val AMOUNT_EXTRA_KEY = "AMOUNT_EXTRA_KEY"
+        const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
     }
 
@@ -132,9 +132,9 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun navigateToSummary() {
-        intent.extras?.getInt(AMOUNT_EXTRA_KEY)?.let { mystAmount ->
+        intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)?.let { amountUSD ->
             val intent = Intent(this, CardSummaryActivity::class.java).apply {
-                putExtra(CardSummaryActivity.AMOUNT_EXTRA_KEY, mystAmount)
+                putExtra(CardSummaryActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
                 putExtra(CardSummaryActivity.CURRENCY_EXTRA_KEY, selectedCurrency)
                 putExtra(CardSummaryActivity.COUNTRY_EXTRA_KEY, selectedCountry)
                 putExtra(CardSummaryActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)

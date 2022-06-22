@@ -21,7 +21,7 @@ class TopUpAmountActivity : BaseActivity() {
     private lateinit var binding: ActivityTopUpAmountBinding
     private val viewModel: TopUpViewModel by inject()
     private val walletViewModel: TopUpAmountViewModel by inject()
-    private val topUpAdapter = TopUpAmountAdapter()
+    private val topUpAdapter = TopUpAmountUSDAdapter()
     private var gateway: Gateway? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class TopUpAmountActivity : BaseActivity() {
         gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
         binding.amountRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
-            updateWalletEstimates(it.value.toDouble())
+            updateWalletEstimates(it.mystAmount)
         }
     }
 
@@ -60,14 +60,14 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun handlePaymentMethod() {
         gateway?.let { gateway ->
-            viewModel.getAmounts(gateway).observe(this) {
-                it.onSuccess { amounts ->
-                    amounts?.let {
-                        topUpAdapter.replaceAll(amounts)
-                        amounts.find { item ->
+            viewModel.getAmountsUSD(gateway).observe(this) {
+                it.onSuccess { amountsUSD ->
+                    amountsUSD?.let {
+                        topUpAdapter.replaceAll(amountsUSD)
+                        amountsUSD.find { item ->
                             item.isSelected
-                        }?.value?.let { amount ->
-                            updateWalletEstimates(amount.toDouble())
+                        }?.mystAmount?.let { mystAmount ->
+                            updateWalletEstimates(mystAmount)
                         }
                     }
                 }
@@ -81,8 +81,8 @@ class TopUpAmountActivity : BaseActivity() {
         }
     }
 
-    private fun updateWalletEstimates(balance: Double) {
-        walletViewModel.getWalletEquivalent(balance).observe(this) { result ->
+    private fun updateWalletEstimates(mystAmount: Double) {
+        walletViewModel.getWalletEquivalent(mystAmount).observe(this) { result ->
             result.onSuccess { estimates ->
                 binding.videoTopUpItem.setData(WalletEstimatesUtil.convertVideoData(estimates))
                 binding.videoTopUpItem.setType(
@@ -106,16 +106,16 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun navigateToCryptoPaymentFlow() {
         val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
-            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
-            putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_EXTRA_KEY, cryptoAmount)
+            val amountUSD = topUpAdapter.getSelectedValue()
+            putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
         }
         startActivity(intent)
     }
 
     private fun navigateToCardPaymentFlow() {
         val intent = Intent(this, CardCurrencyActivity::class.java).apply {
-            val cryptoAmount = topUpAdapter.getSelectedValue()?.toInt()
-            putExtra(CardCurrencyActivity.AMOUNT_EXTRA_KEY, cryptoAmount)
+            val amountUSD = topUpAdapter.getSelectedValue()
+            putExtra(CardCurrencyActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
             putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
             putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
         }

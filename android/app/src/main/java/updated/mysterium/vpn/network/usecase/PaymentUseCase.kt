@@ -11,13 +11,13 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     suspend fun createCoingatePaymentGatewayOrder(
         currency: String,
         identityAddress: String,
-        mystAmount: Double,
+        amountUSD: Double,
         isLightning: Boolean
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress
-            this.mystAmount = mystAmount.toString()
+            this.amountUSD = amountUSD.toString()
             this.gateway = Gateway.COINGATE.gateway
             this.gatewayCallerData = Gson()
                 .toJson(Lightning(isLightning))
@@ -30,7 +30,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     suspend fun createCardPaymentGatewayOrder(
         country: String,
         identityAddress: String,
-        mystAmount: Double,
+        amountUSD: Double,
         currency: String,
         gateway: String
     ): CardOrder {
@@ -38,7 +38,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
             this.country = country
             this.payCurrency = currency
             this.identityAddress = identityAddress
-            this.mystAmount = mystAmount.toString()
+            this.amountUSD = amountUSD.toString()
             this.gateway = gateway
             this.gatewayCallerData = Gson()
                 .toJson(CardGatewayLocalisation("US"))

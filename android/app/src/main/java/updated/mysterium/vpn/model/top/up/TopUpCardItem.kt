@@ -1,7 +1,8 @@
 package updated.mysterium.vpn.model.top.up
 
 data class TopUpCardItem(
-    val value: String,
+    val mystAmount: Double,
+    val amountUSD: Double,
     var isSelected: Boolean = false
 ) {
 

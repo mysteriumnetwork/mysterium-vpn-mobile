@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class CardOrder(
+    @SerializedName("receive_myst")
+    val receiveMyst: Double,
     @SerializedName("items_sub_total")
     val payAmount: Double,
     @SerializedName("tax_sub_total")
