@@ -17,8 +17,8 @@ class PaymentStatusViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _paymentSuccessfully = SingleLiveEvent<PaymentStatus>()
 
     fun getPayment(
-        mystAmount: Int,
         countryCode: String,
+        amountUSD: Double,
         currency: String,
         gateway: String
     ) = liveDataResult {
@@ -26,7 +26,7 @@ class PaymentStatusViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         paymentUseCase.createCardPaymentGatewayOrder(
             country = countryCode,
             identityAddress = connectionUseCase.getIdentityAddress(),
-            mystAmount = mystAmount.toDouble(),
+            amountUSD = amountUSD,
             currency = currency,
             gateway = gateway
         )

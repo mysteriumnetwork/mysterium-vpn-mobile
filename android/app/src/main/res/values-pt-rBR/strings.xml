@@ -194,7 +194,7 @@
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
     <string name="card_payment_country_hint">Selecione o país ou a região</string>
-    <string name="card_payment_myst_description">Recarregar MYST %d</string>
+    <string name="card_payment_myst_description">Recarregar MYST %.2f</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Importante! Baixe sua chave particular agora e armazene-a de forma segura para não ficar sem acesso à sua conta.</string>

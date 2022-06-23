@@ -35,14 +35,14 @@ class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun createPaymentOrder(
         currency: String,
-        mystAmount: Double,
+        amountUSD: Double,
         isLightning: Boolean
     ) = liveDataResult {
         registerOrderCallback()
         val order = paymentUseCase.createCoingatePaymentGatewayOrder(
             currency,
             connectionUseCase.getIdentityAddress(),
-            mystAmount,
+            amountUSD,
             isLightning
         )
         orderId = order.id

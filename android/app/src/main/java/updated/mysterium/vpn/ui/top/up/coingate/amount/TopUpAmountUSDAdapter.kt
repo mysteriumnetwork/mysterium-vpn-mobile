@@ -12,30 +12,32 @@ import updated.mysterium.vpn.common.adapters.ContentListAdapter
 
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 
-class TopUpAmountAdapter :
-    ContentListAdapter<TopUpCardItem, TopUpAmountAdapter.TopUpAmountViewHolder>() {
+class TopUpAmountUSDAdapter :
+    ContentListAdapter<TopUpCardItem, TopUpAmountUSDAdapter.TopUpAmountUSDViewHolder>() {
 
     private var selectedCardItem: TopUpCardItem? = null
     var onItemSelected: ((TopUpCardItem) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TopUpAmountViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TopUpAmountUSDViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_card_element, parent, false)
     )
 
-    override fun onBindViewHolder(holder: TopUpAmountViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TopUpAmountUSDViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    fun getSelectedValue() = selectedCardItem?.value
+    fun getSelectedValue() = selectedCardItem?.amountUSD
 
-    inner class TopUpAmountViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TopUpAmountUSDViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding = ItemCardElementBinding.bind(itemView)
 
         fun bind(cardItem: TopUpCardItem) {
-            binding.cardItemValue.text = cardItem.value
+            binding.cardItemValue.text =
+                itemView.context.getString(R.string.top_up_amount_usd, cardItem.amountUSD)
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
+                onItemSelected?.invoke(cardItem)
                 selectedState()
             } else {
                 unselectedState()

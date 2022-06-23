@@ -14,6 +14,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -21,24 +22,21 @@ import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import java.math.BigDecimal
 import kotlin.math.abs
 
 class TopUpPaymentActivity : BaseActivity() {
 
     companion object {
-        const val CRYPTO_AMOUNT_EXTRA_KEY = "CRYPTO_AMOUNT_EXTRA_KEY"
+        const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTNING_EXTRA_KEY = "CRYPTO_IS_LIGHTNING_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
-        private const val TAG = "TopUpPaymentActivity"
     }
 
     private lateinit var binding: ActivityTopUpPaymentBinding
     private val topUpViewModel: TopUpViewModel by inject()
-    private val exchangeRateViewModel: ExchangeRateViewModel by inject()
     private val viewModel: TopUpPaymentViewModel by inject()
     private var link: String? = null
 
@@ -54,8 +52,8 @@ class TopUpPaymentActivity : BaseActivity() {
     private fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this) {
             val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
-            val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)?.toFloat()
-            if (currency != null && amount != null) {
+            val amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)?.toFloat()
+            if (currency != null && amountUSD != null) {
                 pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
                 pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
                 pushyNotifications.subscribe(currency)
@@ -107,11 +105,11 @@ class TopUpPaymentActivity : BaseActivity() {
         binding.paymentAnimation.layoutParams = param
 
         val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY) ?: ""
-        val amount = intent.extras?.getInt(CRYPTO_AMOUNT_EXTRA_KEY)
+        val amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)
         val isLightning = intent.extras?.getBoolean(CRYPTO_IS_LIGHTNING_EXTRA_KEY)
-        amount?.let {
+        amountUSD?.let {
             binding.usdEquivalentTextView.text = getString(
-                R.string.top_up_usd_equivalent, exchangeRateViewModel.usdEquivalent * it
+                R.string.top_up_usd_equivalent, amountUSD
             )
         }
 
@@ -119,7 +117,7 @@ class TopUpPaymentActivity : BaseActivity() {
 
         viewModel.createPaymentOrder(
             currency,
-            amount?.toDouble() ?: 0.0,
+            amountUSD ?: 0.0,
             isLightning ?: false
         ).observe(this) { result ->
             binding.loader.visibility = View.GONE

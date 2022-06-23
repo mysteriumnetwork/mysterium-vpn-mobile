@@ -26,7 +26,7 @@ import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 class CardSummaryActivity : BaseActivity() {
 
     companion object {
-        const val AMOUNT_EXTRA_KEY = "AMOUNT_EXTRA_KEY"
+        const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
         const val CURRENCY_EXTRA_KEY = "CURRENCY_EXTRA_KEY"
         const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
@@ -48,7 +48,6 @@ class CardSummaryActivity : BaseActivity() {
         setContentView(binding.root)
         subscribeViewModel()
         bind()
-        getMystAmount()
         loadPayment()
     }
 
@@ -86,22 +85,15 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun getMystAmount() {
-        val mystAmount = intent.extras?.getInt(AMOUNT_EXTRA_KEY)
-        binding.mystTextView.text = getString(
-            R.string.card_payment_myst_description, mystAmount
-        )
-    }
-
     private fun loadPayment() {
-        val amount = intent.extras?.getInt(AMOUNT_EXTRA_KEY) ?: return
+        val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY) ?: return
         val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY) ?: return
         val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
         val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return
 
         startService()
 
-        paymentStatusViewModel.getPayment(amount, country, currency, gateway).observe(this) {
+        paymentStatusViewModel.getPayment(country, amountUSD, currency, gateway).observe(this) {
             it.onSuccess { order ->
                 inflateOrderData(order)
                 paymentHtml = order.pageHtml.htmlSecureData.toString()
@@ -116,9 +108,16 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun inflateOrderData(cardOrder: CardOrder) {
-        binding.mystValueTextView.text = cardOrder.payAmount.toString()
+        binding.mystTextView.text = getString(
+            R.string.card_payment_myst_description, cardOrder.receiveMyst
+        )
+        binding.mystValueTextView.text = getString(
+            R.string.top_up_amount_usd, cardOrder.payAmount
+        )
         binding.vatValueTextView.text = cardOrder.taxes.toString()
-        binding.totalValueTextView.text = cardOrder.orderTotalAmount.toString()
+        binding.totalValueTextView.text = getString(
+            R.string.top_up_amount_usd, cardOrder.orderTotalAmount
+        )
 
         val taxesPercent = cardOrder.taxes / cardOrder.orderTotalAmount * 100
         binding.vatTextView.text = getString(
@@ -147,9 +146,9 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun paymentConfirmed() {
-        val amount = intent.extras?.getInt(AMOUNT_EXTRA_KEY)
+        val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)
         val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY)
-        if (currency != null && amount != null) {
+        if (currency != null && amountUSD != null) {
             pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
             pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
             pushyNotifications.subscribe(currency)
