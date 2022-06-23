@@ -93,11 +93,9 @@ class PaymentSummaryActivity : BaseActivity() {
                 topUpPriceCardItem = topUpPriceCardItem?.copy(id = order.id)
                 if (topUpPriceCardItem?.id?.isEmpty() == true) {
                     showNoAmountPopUp { getPayment(price) }
-                    setButtonAvailability(false)
                     return@onSuccess
                 }
                 inflateOrderData(order)
-                setButtonAvailability(true)
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
