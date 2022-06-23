@@ -89,6 +89,10 @@ class PaymentSummaryActivity : BaseActivity() {
         paymentStatusViewModel.getPayment(price).observe(this) {
             it.onSuccess { order ->
                 topUpPriceCardItem = topUpPriceCardItem?.copy(id = order.id)
+                if (topUpPriceCardItem?.id?.isEmpty() == true) {
+                    showNoAmountPopUp { getPayment(price) }
+                    return@onSuccess
+                }
                 inflateOrderData(order)
             }
             it.onFailure { error ->
@@ -111,6 +115,8 @@ class PaymentSummaryActivity : BaseActivity() {
     }
 
     private fun launchPlayBillingPayment() {
+        if (topUpPriceCardItem?.id?.isEmpty() == true) return
+
         topUpPriceCardItem?.let {
             paymentViewModel.billingDataSource.launchBillingFlow(
                 this@PaymentSummaryActivity,
