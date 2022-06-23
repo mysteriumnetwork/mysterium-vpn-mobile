@@ -63,9 +63,7 @@ class PaymentSummaryActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            if (topUpPriceCardItem?.id?.isNotEmpty() == true) {
-                launchPlayBillingPayment()
-            }
+            launchPlayBillingPayment()
         }
         binding.cancelButton.setOnClickListener {
             navigateToHome()
@@ -117,6 +115,8 @@ class PaymentSummaryActivity : BaseActivity() {
     }
 
     private fun launchPlayBillingPayment() {
+        if (topUpPriceCardItem?.id?.isEmpty() == true) return
+
         topUpPriceCardItem?.let {
             paymentViewModel.billingDataSource.launchBillingFlow(
                 this@PaymentSummaryActivity,
