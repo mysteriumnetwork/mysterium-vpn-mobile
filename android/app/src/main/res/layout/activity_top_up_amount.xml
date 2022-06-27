@@ -3,20 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/backButton">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/centerGuideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftGuideline"
@@ -56,96 +48,112 @@
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toTopOf="@+id/backButton" />
 
-        <ImageView
-            android:id="@+id/leftHorizontalDivider"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topUpItemContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:src="@drawable/divider_top_up"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/videoTopUpItem"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintBottom_toTopOf="@id/topUpDescription"
+            app:layout_constraintTop_toBottomOf="@id/title">
 
-        <ImageView
-            android:id="@+id/rightHorizontalDivider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:src="@drawable/divider_top_up"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/centerGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/videoTopUpItem"
-            tools:ignore="ContentDescription" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/centerGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
-        <ImageView
-            android:id="@+id/topVerticalDivider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_large"
-            android:src="@drawable/divider_top_up_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/videoTopUpItem"
-            tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/leftHorizontalDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:src="@drawable/divider_top_up"
+                app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoTopUpItem"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/bottomVerticalDivider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium_large"
-            android:src="@drawable/divider_top_up_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/musicTopUpItem"
-            tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/rightHorizontalDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:src="@drawable/divider_top_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/videoTopUpItem"
+                tools:ignore="ContentDescription" />
 
-        <updated.mysterium.vpn.ui.custom.view.TopUpItemView
-            android:id="@+id/videoTopUpItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            app:topUpIcon="@drawable/icon_video"
-            app:topUpTitle="@string/top_up_amount_video"
-            app:topUpType="H"
-            app:topUpValue="10" />
+            <ImageView
+                android:id="@+id/topVerticalDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:src="@drawable/divider_top_up_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/videoTopUpItem"
+                tools:ignore="ContentDescription" />
 
-        <updated.mysterium.vpn.ui.custom.view.TopUpItemView
-            android:id="@+id/musicTopUpItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/leftHorizontalDivider"
-            app:topUpIcon="@drawable/icon_music"
-            app:topUpTitle="@string/top_up_amount_music"
-            app:topUpType="H"
-            app:topUpValue="60" />
+            <ImageView
+                android:id="@+id/bottomVerticalDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_medium_large"
+                android:src="@drawable/divider_top_up_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/musicTopUpItem"
+                tools:ignore="ContentDescription" />
 
-        <updated.mysterium.vpn.ui.custom.view.TopUpItemView
-            android:id="@+id/pagesTopUpItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/centerGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            app:topUpIcon="@drawable/icon_pages"
-            app:topUpTitle="@string/top_up_amount_pages"
-            app:topUpValue="1500" />
+            <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+                android:id="@+id/videoTopUpItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:topUpIcon="@drawable/icon_video"
+                app:topUpTitle="@string/top_up_amount_video"
+                app:topUpType="H"
+                app:topUpValue="10" />
 
-        <updated.mysterium.vpn.ui.custom.view.TopUpItemView
-            android:id="@+id/trafficTopUpItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/centerGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/rightHorizontalDivider"
-            app:topUpIcon="@drawable/icon_cloud"
-            app:topUpTitle="@string/top_up_amount_traffic"
-            app:topUpType="GiB"
-            app:topUpValue="15" />
+            <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+                android:id="@+id/musicTopUpItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/leftHorizontalDivider"
+                app:topUpIcon="@drawable/icon_music"
+                app:topUpTitle="@string/top_up_amount_music"
+                app:topUpType="H"
+                app:topUpValue="60" />
+
+            <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+                android:id="@+id/pagesTopUpItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:topUpIcon="@drawable/icon_pages"
+                app:topUpTitle="@string/top_up_amount_pages"
+                app:topUpValue="1500" />
+
+            <updated.mysterium.vpn.ui.custom.view.TopUpItemView
+                android:id="@+id/trafficTopUpItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/rightHorizontalDivider"
+                app:topUpIcon="@drawable/icon_cloud"
+                app:topUpTitle="@string/top_up_amount_traffic"
+                app:topUpType="GiB"
+                app:topUpValue="15" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/topUpDescription"
@@ -154,14 +162,16 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_padding_size_medium_large"
             android:layout_marginTop="@dimen/margin_padding_size_small_medium"
-            android:text="@string/top_up_amount_description"
+            android:text="@string/top_up_price_description"
             android:textAlignment="center"
             android:textColor="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@id/priceCardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trafficTopUpItem" />
+            app:layout_constraintTop_toBottomOf="@+id/topUpItemContainer" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/priceCardView"
             style="@style/Widget.PrimaryCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -171,22 +181,16 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/horizontalGuideline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.4" />
+                android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/amountRecycler"
+                    android:id="@+id/priceRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+                    android:layout_marginTop="@dimen/margin_padding_size_small_medium"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/confirmButtonFrame"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -197,7 +201,8 @@
                     android:id="@+id/confirmButtonFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/amountRecycler">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/priceRecycler">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -217,27 +222,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                        android:layout_marginTop="@dimen/margin_padding_size_medium"
-                        android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                         android:text="@string/top_up_amount_confirm"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/freeTrialButtonButton"
-                        style="@style/Widget.TrialButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                        android:layout_marginVertical="@dimen/margin_padding_size_small_medium"
-                        android:text="@string/top_up_free_trial"
-                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/confirmButton" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

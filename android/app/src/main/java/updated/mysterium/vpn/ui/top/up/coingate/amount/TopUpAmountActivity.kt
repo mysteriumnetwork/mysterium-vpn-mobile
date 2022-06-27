@@ -35,7 +35,7 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun configure() {
         gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
-        binding.amountRecycler.adapter = topUpAdapter
+        binding.priceRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
             updateWalletEstimates(it.mystAmount)
         }
@@ -51,10 +51,6 @@ class TopUpAmountActivity : BaseActivity() {
             } else {
                 navigateToCryptoPaymentFlow()
             }
-        }
-        binding.freeTrialButtonButton.setOnClickListener {
-            viewModel.accountFlowShown()
-            navigateToConnectionIfConnectedOrHome(isBackTransition = false)
         }
     }
 

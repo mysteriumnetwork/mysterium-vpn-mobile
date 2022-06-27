@@ -185,6 +185,7 @@
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
     <string name="top_up_amount_description">Select how much MYST credits\n you would like to add into your account</string>
+    <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
     <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
     <string name="top_up_payment_title">Waiting for a payment</string>
