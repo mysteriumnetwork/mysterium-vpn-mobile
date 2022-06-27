@@ -20,6 +20,7 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 
@@ -76,9 +77,6 @@ class CardSummaryActivity : BaseActivity() {
                 showPaymentPopUp()
                 paymentProcessed = false
             }
-        }
-        binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
-            binding.paymentProcessingLayout.root.visibility = View.GONE
         }
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
@@ -182,7 +180,6 @@ class CardSummaryActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.okayButton.setOnClickListener {
             dialog.dismiss()
-            showBanner(binding.paymentProcessingLayout.root)
         }
         dialog.show()
     }
@@ -205,6 +202,7 @@ class CardSummaryActivity : BaseActivity() {
         viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
         }
         startActivity(intent)
     }
