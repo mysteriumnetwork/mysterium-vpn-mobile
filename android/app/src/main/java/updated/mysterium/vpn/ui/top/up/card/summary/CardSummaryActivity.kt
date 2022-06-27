@@ -13,7 +13,8 @@ import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.exceptions.TopupPreconditionFailedException
+import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
+import updated.mysterium.vpn.exceptions.TopupNoAmountException
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
@@ -21,6 +22,7 @@ import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
+import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 
@@ -84,13 +86,17 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun loadPayment() {
+        val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
         val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY) ?: return
         val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY) ?: return
-        val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
         val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return
 
         startService()
 
+        getPayment(country, amountUSD, currency, gateway)
+    }
+
+    private fun getPayment(country: String, amountUSD: Double, currency: String, gateway: String) {
         paymentStatusViewModel.getPayment(country, amountUSD, currency, gateway).observe(this) {
             it.onSuccess { order ->
                 inflateOrderData(order)
@@ -98,9 +104,12 @@ class CardSummaryActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
-                if (error is TopupPreconditionFailedException) {
+                if (error is TopupBalanceLimitException) {
                     showPaymentBalanceLimitError()
+                } else if (error is TopupNoAmountException) {
+                    showNoAmountPopUp { getPayment(country, amountUSD, currency, gateway) }
                 }
+                setButtonAvailability(false)
             }
         }
     }
@@ -144,6 +153,7 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun paymentConfirmed() {
+        setButtonAvailability(true)
         val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)
         val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY)
         if (currency != null && amountUSD != null) {
@@ -175,15 +185,6 @@ class CardSummaryActivity : BaseActivity() {
         binding.cancelContainer.visibility = View.VISIBLE
     }
 
-    private fun showPaymentPopUp() {
-        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.okayButton.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.show()
-    }
-
     private fun showBanner(view: View) {
         view.visibility = View.VISIBLE
         val animationX =
@@ -195,6 +196,36 @@ class CardSummaryActivity : BaseActivity() {
         ).apply {
             duration = 2000
             start()
+        }
+    }
+
+    private fun showPaymentPopUp() {
+        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
+        val dialog = createPopUp(bindingPopUp.root, false)
+        bindingPopUp.okayButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
+        val popUpNoAmount = PopUpNoAmount(layoutInflater)
+        val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
+        popUpNoAmount.apply {
+            this.dialog = dialogNoAmount
+            this.onTryAgainAction = onTryAgainClick
+            setUp()
+        }
+        dialogNoAmount.show()
+    }
+
+    private fun setButtonAvailability(isAvailable: Boolean) {
+        if (isAvailable) {
+            binding.confirmContainer.visibility = View.VISIBLE
+            binding.cancelContainer.visibility = View.INVISIBLE
+        } else {
+            binding.confirmContainer.visibility = View.INVISIBLE
+            binding.cancelContainer.visibility = View.VISIBLE
         }
     }
 

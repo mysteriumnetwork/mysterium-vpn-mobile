@@ -319,6 +319,9 @@
     <string name="pop_up_new_version_title">New Version\n Available</string>
     <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
     <string name="pop_up_new_version_update">Update</string>
+    <string name="pop_up_no_amount_title">Can\'t display\n amount</string>
+    <string name="pop_up_no_amount_description">Sorry, we can\`t display your amount right now.</string>
+    <string name="pop_up_no_amount_try_again">Try again</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium balance</string>

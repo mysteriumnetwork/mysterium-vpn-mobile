@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import mysterium.*
 import okio.buffer
 import okio.source
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
@@ -34,8 +35,9 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
-        const val TAG = "NodeRepository"
-        const val MAX_BALANCE_LIMIT = 5
+        const val BALANCE_LIMIT_ERROR_MESSAGE =
+            "You can only top-up if you have less than 5 MYST in balance"
+        const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
     }
 
     private val moshi = Moshi
@@ -160,22 +162,28 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
-            val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
-            Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+            try {
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+            } catch (exception: Exception) {
+                when (exception.message) {
+                    BALANCE_LIMIT_ERROR_MESSAGE -> throw TopupBalanceLimitException()
+                    NO_BALANCE_ERROR_MESSAGE -> throw TopupNoAmountException()
+                    else -> error(exception)
+                }
+            }
         }
 
-    suspend fun createCardPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createCardPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq): CardOrder =
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req)
                 CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
-            } catch (e: Exception) {
-                if (isBalanceLimitExceeded()) {
-                    throw TopupPreconditionFailedException(
-                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
-                    )
-                } else {
-                    error(e)
+            } catch (exception: Exception) {
+                when (exception.message) {
+                    BALANCE_LIMIT_ERROR_MESSAGE -> throw TopupBalanceLimitException()
+                    NO_BALANCE_ERROR_MESSAGE -> throw TopupNoAmountException()
+                    else -> error(exception)
                 }
             }
         }
@@ -330,15 +338,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
                     Status(it)
                 }
         }.getOrNull()
-    }
-
-    private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
-        val identityAddress = getIdentity().address
-        val balanceRequest = GetBalanceRequest().apply {
-            this.identityAddress = identityAddress
-        }
-        val balance = balance(balanceRequest)
-        balance > MAX_BALANCE_LIMIT
     }
 
 }
