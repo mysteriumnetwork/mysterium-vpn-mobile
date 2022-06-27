@@ -61,7 +61,14 @@ class TopUpPaymentViewModel(
         list: List<SkuDetails>
     ): List<TopUpPriceCardItem> {
         return list.map { skuDetails ->
-            val price = skuDetails.description.filter { it in filterRange }.toDouble()
+            // Parse description from (5.99 USD) format to 5.99
+            val price = skuDetails.description
+                .replace("(", "")
+                .replace(")", "")
+                .split(" ")
+                .first()
+                .toDouble()
+
             TopUpPriceCardItem(
                 id = "",
                 sku = skuDetails.sku,
