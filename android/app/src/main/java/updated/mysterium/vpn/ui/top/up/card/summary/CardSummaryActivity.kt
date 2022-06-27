@@ -204,6 +204,7 @@ class CardSummaryActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.okayButton.setOnClickListener {
             dialog.dismiss()
+            navigateToHome()
         }
         dialog.show()
     }
