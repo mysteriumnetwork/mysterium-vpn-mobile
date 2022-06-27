@@ -4,7 +4,9 @@ import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
 import mysterium.*
 import okio.buffer
@@ -12,6 +14,8 @@ import okio.source
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
+import updated.mysterium.vpn.model.identity.MigrateHermesStatus
+import updated.mysterium.vpn.model.identity.MigrateHermesStatusResponse
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
@@ -123,13 +127,29 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // if it is not created yet.
     suspend fun getIdentity(
         getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
-    ): Identity = withContext(Dispatchers.IO) {
+    ): Identity = withContext(Dispatchers.IO + SupervisorJob()) {
         val res = deferredNode.await().getIdentity(getIdentityRequest)
+        upgradeIdentityIfNeeded(res.identityAddress)
         Identity(
             address = res.identityAddress,
             channelAddress = res.channelAddress,
             registrationStatus = res.registrationStatus
         )
+    }
+
+    private suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        withContext(Dispatchers.IO + handler) {
+            val statusResponse =
+                deferredNode.await().migrateHermesStatus(identityAddress).decodeToString()
+            val status =
+                MigrateHermesStatus.from(MigrateHermesStatusResponse.fromJSON(statusResponse))
+            if (status == MigrateHermesStatus.REQUIRED) {
+                deferredNode.await().migrateHermes(identityAddress)
+            }
+        }
     }
 
     // Get registration fees.
@@ -214,14 +234,17 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     suspend fun exportIdentity(
         address: String, newPassphrase: String
-    ): ByteArray = withContext(Dispatchers.IO) {
+    ): ByteArray = withContext(Dispatchers.IO + SupervisorJob()) {
+        upgradeIdentityIfNeeded(address)
         deferredNode.await().exportIdentity(address, newPassphrase)
     }
 
     suspend fun importIdentity(
         privateKey: ByteArray, passphrase: String
-    ): String = withContext(Dispatchers.IO) {
-        deferredNode.await().importIdentity(privateKey, passphrase)
+    ): String = withContext(Dispatchers.IO + SupervisorJob()) {
+        val identityAddress = deferredNode.await().importIdentity(privateKey, passphrase)
+        upgradeIdentityIfNeeded(identityAddress)
+        identityAddress
     }
 
     suspend fun getWalletEquivalent(balance: Double): Estimates = withContext(Dispatchers.IO) {
