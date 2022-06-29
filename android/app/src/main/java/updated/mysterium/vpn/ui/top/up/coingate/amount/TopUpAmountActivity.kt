@@ -46,10 +46,10 @@ class TopUpAmountActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
-            if (gateway == Gateway.STRIPE) {
-                navigateToCardPaymentFlow()
-            } else {
+            if (gateway == Gateway.COINGATE) {
                 navigateToCryptoPaymentFlow()
+            } else {
+                navigateToCardPaymentFlow()
             }
         }
     }
