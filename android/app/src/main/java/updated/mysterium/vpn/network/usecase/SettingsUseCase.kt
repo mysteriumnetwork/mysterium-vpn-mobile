@@ -68,7 +68,7 @@ class SettingsUseCase(
     )
 
     fun isNatAvailable() = sharedPreferencesManager.getBoolPreferenceValue(
-        SharedPreferencesList.IS_NAT_AVAILABLE, false
+        SharedPreferencesList.IS_NAT_AVAILABLE, true
     )
 
     fun setNatCompatibility(isAvailable: Boolean) = sharedPreferencesManager.setPreferenceValue(
