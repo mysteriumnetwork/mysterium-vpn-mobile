@@ -57,7 +57,7 @@ class CountryInfoUseCase(
 
     private fun getNatCompatibility(): String {
         val isNatAvailable = sharedPreferencesManager.getBoolPreferenceValue(
-            SharedPreferencesList.IS_NAT_AVAILABLE, false
+            SharedPreferencesList.IS_NAT_AVAILABLE, true
         )
         return if (isNatAvailable) {
             NAT_COMPATIBILITY
