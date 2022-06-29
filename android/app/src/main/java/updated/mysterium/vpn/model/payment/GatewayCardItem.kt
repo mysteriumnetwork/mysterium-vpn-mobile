@@ -22,6 +22,13 @@ data class GatewayCardItem(
                     R.color.payment_method_crypto_text_color,
                     R.color.payment_method_crypto_icon_color
                 )
+                Gateway.PAYPAL -> GatewayCardItem(
+                    R.string.paypal,
+                    R.drawable.icon_paypal_payment_option,
+                    R.drawable.shape_rectangle_paypal_rounded_10,
+                    R.color.payment_method_paypal_text_color,
+                    R.color.payment_method_paypal_icon_color
+                )
                 Gateway.STRIPE -> GatewayCardItem(
                     R.string.stripe,
                     R.drawable.icon_stripe_payment_option,

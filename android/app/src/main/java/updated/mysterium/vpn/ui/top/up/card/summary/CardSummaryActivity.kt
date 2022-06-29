@@ -35,7 +35,8 @@ class CardSummaryActivity : BaseActivity() {
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
         private const val HTML_MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
-        private const val paymentCallbackUrl = "payment/stripe/redirect"
+        private const val stripePaymentCallbackUrl = "payment/stripe/redirect"
+        private const val paypalPaymentCallbackUrl = "payment/paypal/redirect"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -143,8 +144,12 @@ class CardSummaryActivity : BaseActivity() {
             binding.webView.webViewClient = object : WebViewClient() {
                 override fun onLoadResource(view: WebView?, url: String?) {
                     super.onLoadResource(view, url)
-                    if (url?.contains(paymentCallbackUrl) == true) {
-                        paymentProcessed = true
+                    url?.let {
+                        if (it.contains(stripePaymentCallbackUrl) ||
+                            it.contains(paypalPaymentCallbackUrl)
+                        ) {
+                            paymentProcessed = true
+                        }
                     }
                 }
             }
