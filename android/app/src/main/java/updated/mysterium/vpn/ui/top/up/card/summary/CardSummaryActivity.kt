@@ -70,7 +70,7 @@ class CardSummaryActivity : BaseActivity() {
             launchCardPayment()
         }
         binding.cancelButton.setOnClickListener {
-            navigateToHome()
+            navigateToHome(false)
         }
         binding.closeButton.setOnClickListener {
             binding.closeButton.visibility = View.GONE
@@ -169,12 +169,12 @@ class CardSummaryActivity : BaseActivity() {
     private fun registerAccount() {
         paymentViewModel.registerAccount().observe(this) {
             it.onSuccess {
-                navigateToHome()
+                navigateToHome(true)
             }
 
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToHome()
+                navigateToHome(false)
             }
         }
     }
@@ -204,7 +204,7 @@ class CardSummaryActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.okayButton.setOnClickListener {
             dialog.dismiss()
-            navigateToHome()
+            navigateToHome(true)
         }
         dialog.show()
     }
@@ -230,11 +230,13 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToHome() {
+    private fun navigateToHome(paymentProcessing: Boolean) {
         viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
+            if (paymentProcessing) {
+                putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
+            }
         }
         startActivity(intent)
     }
