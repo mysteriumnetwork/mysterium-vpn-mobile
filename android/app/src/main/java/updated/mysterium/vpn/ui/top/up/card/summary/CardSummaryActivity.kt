@@ -12,6 +12,8 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.AppConstants.Payments.PAYPAL_CALLBACK_URL
+import updated.mysterium.vpn.common.AppConstants.Payments.STRIPE_CALLBACK_URL
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.exceptions.TopupNoAmountException
@@ -35,8 +37,6 @@ class CardSummaryActivity : BaseActivity() {
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
         private const val HTML_MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
-        private const val stripePaymentCallbackUrl = "payment/stripe/redirect"
-        private const val paypalPaymentCallbackUrl = "payment/paypal/redirect"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -145,8 +145,8 @@ class CardSummaryActivity : BaseActivity() {
                 override fun onLoadResource(view: WebView?, url: String?) {
                     super.onLoadResource(view, url)
                     url?.let {
-                        if (it.contains(stripePaymentCallbackUrl) ||
-                            it.contains(paypalPaymentCallbackUrl)
+                        if (it.contains(STRIPE_CALLBACK_URL) ||
+                            it.contains(PAYPAL_CALLBACK_URL)
                         ) {
                             paymentProcessed = true
                         }
