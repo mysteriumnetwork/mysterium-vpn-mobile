@@ -88,7 +88,7 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"0.68.1\""
+        buildConfigField "String", "NODE_VERSION", "\"1.9.3\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -223,6 +223,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.6.0"
 
     //Mysterium
+    // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.41"
     implementation "network.mysterium:mobile-node:1.9.3"
 
