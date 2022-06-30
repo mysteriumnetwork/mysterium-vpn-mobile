@@ -180,11 +180,11 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 Log.d(TAG, "createPaymentOrder response: $order")
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                when (exception.message) {
-                    BALANCE_LIMIT_ERROR_MESSAGE -> throw TopupBalanceLimitException()
-                    NO_BALANCE_ERROR_MESSAGE -> throw TopupNoAmountException()
-                    else -> error(exception)
-                }
+                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
+                    throw TopupNoAmountException()
+                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
+                    throw TopupBalanceLimitException()
+                } else error(exception)
             }
         }
 

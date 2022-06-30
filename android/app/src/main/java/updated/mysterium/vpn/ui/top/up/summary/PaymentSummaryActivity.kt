@@ -66,7 +66,7 @@ class PaymentSummaryActivity : BaseActivity() {
             launchPlayBillingPayment()
         }
         binding.cancelButton.setOnClickListener {
-            navigateToHome()
+            navigateToHome(false)
         }
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
@@ -89,6 +89,10 @@ class PaymentSummaryActivity : BaseActivity() {
         paymentStatusViewModel.getPayment(price).observe(this) {
             it.onSuccess { order ->
                 topUpPriceCardItem = topUpPriceCardItem?.copy(id = order.id)
+                if (topUpPriceCardItem?.id?.isEmpty() == true) {
+                    showNoAmountPopUp { getPayment(price) }
+                    return@onSuccess
+                }
                 inflateOrderData(order)
             }
             it.onFailure { error ->
@@ -111,6 +115,8 @@ class PaymentSummaryActivity : BaseActivity() {
     }
 
     private fun launchPlayBillingPayment() {
+        if (topUpPriceCardItem?.id?.isEmpty() == true) return
+
         topUpPriceCardItem?.let {
             paymentViewModel.billingDataSource.launchBillingFlow(
                 this@PaymentSummaryActivity,
@@ -132,11 +138,11 @@ class PaymentSummaryActivity : BaseActivity() {
     private fun registerAccount() {
         paymentViewModel.registerAccount().observe(this) {
             it.onSuccess {
-                navigateToHome()
+                navigateToHome(true)
             }
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToHome()
+                navigateToHome(false)
             }
         }
     }
@@ -160,7 +166,7 @@ class PaymentSummaryActivity : BaseActivity() {
         val dialog = createPopUp(bindingPopUp.root, false)
         bindingPopUp.okayButton.setOnClickListener {
             dialog.dismiss()
-            navigateToHome()
+            navigateToHome(true)
         }
         dialog.show()
     }
@@ -186,11 +192,13 @@ class PaymentSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToHome() {
+    private fun navigateToHome(paymentProcessing: Boolean) {
         viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
+            if (paymentProcessing) {
+                putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
+            }
         }
         startActivity(intent)
     }
