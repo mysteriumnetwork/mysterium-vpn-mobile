@@ -173,13 +173,8 @@ class CardSummaryActivity : BaseActivity() {
 
     private fun registerAccount() {
         paymentViewModel.registerAccount().observe(this) {
-            it.onSuccess {
-                navigateToHome(true)
-            }
-
             it.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                navigateToHome(false)
             }
         }
     }
