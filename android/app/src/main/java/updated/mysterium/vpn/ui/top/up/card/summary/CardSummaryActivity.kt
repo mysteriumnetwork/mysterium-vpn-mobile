@@ -105,10 +105,16 @@ class CardSummaryActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
-                if (error is TopupBalanceLimitException) {
-                    showPaymentBalanceLimitError()
-                } else if (error is TopupNoAmountException) {
-                    showNoAmountPopUp { getPayment(country, amountUSD, currency, gateway) }
+                when (error) {
+                    is TopupBalanceLimitException -> {
+                        showPaymentBalanceLimitError()
+                    }
+                    is TopupNoAmountException -> {
+                        showNoAmountPopUp { getPayment(country, amountUSD, currency, gateway) }
+                    }
+                    else -> wifiNetworkErrorPopUp {
+                        getPayment(country, amountUSD, currency, gateway)
+                    }
                 }
                 setButtonAvailability(false)
             }
