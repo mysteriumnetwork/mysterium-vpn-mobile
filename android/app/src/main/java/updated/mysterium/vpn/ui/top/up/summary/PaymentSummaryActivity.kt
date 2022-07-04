@@ -97,10 +97,18 @@ class PaymentSummaryActivity : BaseActivity() {
             }
             it.onFailure { error ->
                 Log.e(TAG, error.message ?: error.toString())
-                if (error is TopupBalanceLimitException) {
-                    showBanner(binding.paymentBalanceLimitLayout.root)
-                } else if (error is TopupNoAmountException) {
-                    showNoAmountPopUp { getPayment(price) }
+                when (error) {
+                    is TopupBalanceLimitException -> {
+                        showBanner(binding.paymentBalanceLimitLayout.root)
+                    }
+                    is TopupNoAmountException -> {
+                        showNoAmountPopUp { getPayment(price) }
+                    }
+                    else -> {
+                        wifiNetworkErrorPopUp {
+                            getPayment(price)
+                        }
+                    }
                 }
                 setButtonAvailability(false)
             }
