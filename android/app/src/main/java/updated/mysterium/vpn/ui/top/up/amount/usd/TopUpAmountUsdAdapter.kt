@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.coingate.amount
+package updated.mysterium.vpn.ui.top.up.amount.usd
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -12,8 +12,8 @@ import updated.mysterium.vpn.common.adapters.ContentListAdapter
 
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 
-class TopUpAmountUSDAdapter :
-    ContentListAdapter<TopUpCardItem, TopUpAmountUSDAdapter.TopUpAmountUSDViewHolder>() {
+class TopUpAmountUsdAdapter :
+    ContentListAdapter<TopUpCardItem, TopUpAmountUsdAdapter.TopUpAmountUSDViewHolder>() {
 
     private var selectedCardItem: TopUpCardItem? = null
     var onItemSelected: ((TopUpCardItem) -> Unit)? = null

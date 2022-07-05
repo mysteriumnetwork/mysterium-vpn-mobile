@@ -24,6 +24,7 @@ import updated.mysterium.vpn.model.nodes.ProposalsResponse
 import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentGateway
+import updated.mysterium.vpn.model.payment.Purchase
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
@@ -102,6 +103,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
     }
 
+    // GatewayClientCallback triggers payment callback for google from client side.
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        withContext(Dispatchers.IO) {
+            val req = GatewayClientCallbackReq().apply {
+                this.identityAddress = purchase.identityAddress
+                this.gateway = purchase.gateway.gateway
+                this.googlePurchaseToken = purchase.googlePurchaseToken
+                this.googleProductID = purchase.googleProductID
+            }
+            deferredNode.await().gatewayClientCallback(req)
+        }
+
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
@@ -159,6 +172,21 @@ class NodeRepository(var deferredNode: DeferredNode) {
         val res = deferredNode.await().identityRegistrationFees
         IdentityRegistrationFees(fee = res.fee)
     }
+
+    suspend fun createPlayBillingPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+        withContext(Dispatchers.IO) {
+            try {
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Log.d(TAG, "createPaymentOrder response: $order")
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+            } catch (exception: Exception) {
+                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
+                    throw TopupNoAmountException()
+                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
+                    throw TopupBalanceLimitException()
+                } else error(exception)
+            }
+        }
 
     suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {

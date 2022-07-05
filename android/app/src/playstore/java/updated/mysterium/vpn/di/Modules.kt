@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.room.Room
 import androidx.work.WorkManager
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -38,6 +39,10 @@ import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdViewModel
+import updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdViewModel
+import updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingDataSource
+import updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingSummaryViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 import updated.mysterium.vpn.ui.wallet.spendings.SpendingsViewModel
@@ -103,6 +108,9 @@ object Modules {
         single {
             WorkManager.getInstance(androidContext())
         }
+        single {
+            PlayBillingDataSource(androidApplication())
+        }
 
         viewModel {
             SplashViewModel(get(), get())
@@ -141,6 +149,12 @@ object Modules {
             TopUpsListViewModel(get())
         }
         viewModel {
+            PlayBillingAmountUsdViewModel(get(), get())
+        }
+        viewModel {
+            TopUpAmountUsdViewModel(get())
+        }
+        viewModel {
             PrivateKeyViewModel(get())
         }
         viewModel {
@@ -154,6 +168,9 @@ object Modules {
         }
         viewModel {
             MenuViewModel(get())
+        }
+        viewModel {
+            PlayBillingSummaryViewModel(get(), get())
         }
         viewModel {
             RegistrationViewModel(get())

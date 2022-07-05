@@ -130,7 +130,9 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun paymentLoaded(currency: String, order: Order) {
-        showQrCode(order.publicGatewayData.paymentURL)
+        order.publicGatewayData.paymentURL?.let {
+            showQrCode(it)
+        }
         showEquivalent(currency, order)
         binding.timer.visibility = View.VISIBLE
         binding.timer.startTimer()

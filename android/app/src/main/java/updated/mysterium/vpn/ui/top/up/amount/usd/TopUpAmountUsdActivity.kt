@@ -1,5 +1,6 @@
-package updated.mysterium.vpn.ui.top.up.coingate.amount
+package updated.mysterium.vpn.ui.top.up.amount.usd
 
+import android.content.Intent
 import android.os.Bundle
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
@@ -9,7 +10,7 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import java.util.*
 
-class TopUpAmountActivity : BaseActivity() {
+class TopUpAmountUsdActivity : BaseActivity() {
 
     companion object {
         const val PAYMENT_METHOD_EXTRA_KEY = "PAYMENT_METHOD_EXTRA_KEY"
@@ -17,8 +18,8 @@ class TopUpAmountActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTopUpAmountBinding
     private val viewModel: TopUpViewModel by inject()
-    private val walletViewModel: TopUpAmountViewModel by inject()
-    private val topUpAdapter = TopUpAmountUSDAdapter()
+    private val walletViewModel: TopUpAmountUsdViewModel by inject()
+    private val topUpAdapter = TopUpAmountUsdAdapter()
     private var gateway: Gateway? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,20 +99,25 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun navigateToCryptoPaymentFlow() {
-//        val intent = Intent(this, CryptoCurrencyActivity::class.java).apply {
-//            val amountUSD = topUpAdapter.getSelectedValue()
-//            putExtra(CryptoCurrencyActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
-//        }
-//        startActivity(intent)
+        val intent = Intent(
+            this,
+            Class.forName("updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity")
+        ).apply {
+            val amountUSD = topUpAdapter.getSelectedValue()
+            putExtra("CRYPTO_AMOUNT_USD_EXTRA_KEY", amountUSD)
+        }
+        startActivity(intent)
     }
 
     private fun navigateToCardPaymentFlow() {
-//        val intent = Intent(this, CardCurrencyActivity::class.java).apply {
-//            val amountUSD = topUpAdapter.getSelectedValue()
-//            putExtra(CardCurrencyActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
-//            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
-//            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
-//        }
-//        startActivity(intent)
+        val intent = Intent(
+            this,
+            Class.forName("updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity")
+        ).apply {
+            val amountUSD = topUpAdapter.getSelectedValue()
+            putExtra("AMOUNT_USD_EXTRA_KEY", amountUSD)
+            putExtra("GATEWAY_EXTRA_KEY", gateway?.gateway)
+        }
+        startActivity(intent)
     }
 }
