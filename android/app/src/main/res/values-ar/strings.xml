@@ -170,9 +170,6 @@
     <string name="prepare_top_up_referral">استخدم رمز الإحالة</string>
     <string name="prepare_top_up_now">التعبئة الآن</string>
     <string name="prepare_top_up_later">التعبئة لاحقًا</string>
-    <string name="payment_method_title">يُرجى اختيار وسيلة دفع للمتابعة</string>
-    <string name="credit_card">البطاقة الائتمانية</string>
-    <string name="crypto">تشفير</string>
     <string name="search_hint_first_part">استخدام</string>
     <string name="search_hint_highlighted">شريط البحث</string>
     <string name="search_hint_second_part">في الجزء العلوي للعثور\n على العقدة الصحيحة</string>

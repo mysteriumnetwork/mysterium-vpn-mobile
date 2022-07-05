@@ -201,11 +201,6 @@
     <string name="prepare_top_up_now">Пополнить сейчас</string>
     <string name="prepare_top_up_later">Пополнить позже</string>
 
-    <!--  Payment method  -->
-    <string name="payment_method_title">Выберите способ платежа, чтобы продолжить</string>
-    <string name="credit_card">Кредитная карта</string>
-    <string name="crypto">Криптовалюта</string>
-
     <!--  Search  -->
     <string name="search_hint_first_part">Использовать</string>
     <string name="search_hint_highlighted">Панель поиска</string>

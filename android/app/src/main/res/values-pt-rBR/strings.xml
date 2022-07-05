@@ -200,11 +200,6 @@
     <string name="prepare_top_up_now">Recarregar agora</string>
     <string name="prepare_top_up_later">Recarregar depois</string>
 
-    <!--  Payment method  -->
-    <string name="payment_method_title">Escolha uma forma de pagamento para continuar</string>
-    <string name="credit_card">Cartão de crédito</string>
-    <string name="crypto">Cripto</string>
-
     <!--  Search  -->
     <string name="search_hint_first_part">Usar </string>
     <string name="search_hint_highlighted">Barra de Pesquisa</string>

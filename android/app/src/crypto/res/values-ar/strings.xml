@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Payment method  -->
+    <string name="payment_method_title">يُرجى اختيار وسيلة دفع للمتابعة</string>
+    <string name="credit_card">البطاقة الائتمانية</string>
+    <string name="crypto">تشفير</string>
+
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">في انتظار الدفع</string>
     <string name="top_up_payment_description">امسح رمز الاستجابة السريعة هذا ضوئيًا الذي يحتوي على عنوان التعبئة الخاص بك</string>

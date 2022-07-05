@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Payment method  -->
+    <string name="payment_method_title">Выберите способ платежа, чтобы продолжить</string>
+    <string name="credit_card">Кредитная карта</string>
+    <string name="crypto">Криптовалюта</string>
+
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Ожидание оплаты</string>
     <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>

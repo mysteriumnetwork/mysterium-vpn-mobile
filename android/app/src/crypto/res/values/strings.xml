@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Payment method  -->
+    <string name="payment_method_title">Choose a payment method to continue</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="crypto">Crypto</string>
+    <string name="paypal">Paypal</string>
+    <string name="stripe">Stripe</string>
+
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Waiting for a payment</string>
     <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>

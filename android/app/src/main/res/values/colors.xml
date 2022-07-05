@@ -27,17 +27,6 @@
     <color name="create_account_trial_button_text">#B33C3857</color>
     <color name="create_account_trial_button_text_tapped">#803C3857</color>
 
-    <color name="payment_method_stripe_background">#F6F6FA</color>
-    <color name="payment_method_stripe_icon_color">#9090BB</color>
-    <color name="payment_method_stripe_text_color">#5A597D</color>
-    <color name="payment_method_paypal_background">#335BB1EF</color>
-    <color name="payment_method_paypal_icon_color">#5BB1EF</color>
-    <color name="payment_method_paypal_text_color">#5BB1EF</color>
-    <color name="payment_method_crypto_background">#F6F6FA</color>
-    <color name="payment_method_crypto_icon_color">#9090BB</color>
-    <color name="payment_method_crypto_icon_background_color">#9090BB</color>
-    <color name="payment_method_crypto_text_color">#5A597D</color>
-
     <color name="card_payment_background">#F4F4FC</color>
     <color name="card_payment_divider">#9090BB</color>
     <color name="card_payment_title">#9090BB</color>

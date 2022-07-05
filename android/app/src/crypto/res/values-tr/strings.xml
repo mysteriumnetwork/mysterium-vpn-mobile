@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Payment method  -->
+    <string name="payment_method_title">Devam etmek için bir ödeme yöntemi seç</string>
+    <string name="credit_card">Kredi Kartı</string>
+    <string name="crypto">Kripto Para</string>
+
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Ödeme bekleniyor</string>
     <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>

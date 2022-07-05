@@ -200,11 +200,6 @@
     <string name="prepare_top_up_now">立即充值</string>
     <string name="prepare_top_up_later">稍后充值</string>
 
-    <!--  Payment method  -->
-    <string name="payment_method_title">选择一种付款方式继续</string>
-    <string name="credit_card">信用卡</string>
-    <string name="crypto">加密</string>
-
     <!--  Search  -->
     <string name="search_hint_first_part">使用</string>
     <string name="search_hint_highlighted">搜索栏</string>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Payment method  -->
+    <string name="payment_method_title">选择一种付款方式继续</string>
+    <string name="credit_card">信用卡</string>
+    <string name="crypto">加密</string>
+
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">等待付款</string>
     <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>

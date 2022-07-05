@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Payment method  -->
+    <string name="payment_method_title">Escolha uma forma de pagamento para continuar</string>
+    <string name="credit_card">Cartão de crédito</string>
+    <string name="crypto">Cripto</string>
+
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Aguardando por um pagamento</string>
     <string name="top_up_payment_description">Leia este código QR que contém o seu endereço de recarga</string>
