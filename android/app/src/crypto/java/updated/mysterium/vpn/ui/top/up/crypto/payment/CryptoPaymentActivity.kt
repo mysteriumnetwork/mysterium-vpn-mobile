@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.coingate.payment
+package updated.mysterium.vpn.ui.top.up.crypto.payment
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -25,7 +25,7 @@ import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import java.math.BigDecimal
 import kotlin.math.abs
 
-class TopUpPaymentActivity : BaseActivity() {
+class CryptoPaymentActivity : BaseActivity() {
 
     companion object {
         const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
@@ -35,14 +35,14 @@ class TopUpPaymentActivity : BaseActivity() {
         private const val ANIMATION_MARGIN = 80
     }
 
-    private lateinit var binding: ActivityTopUpPaymentBinding
+    private lateinit var binding: ActivityCryptoPaymentBinding
     private val topUpViewModel: TopUpViewModel by inject()
-    private val viewModel: TopUpPaymentViewModel by inject()
+    private val viewModel: CryptoPaymentViewModel by inject()
     private var link: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTopUpPaymentBinding.inflate(layoutInflater)
+        binding = ActivityCryptoPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getExtra()
         subscribeViewModel()
@@ -92,10 +92,6 @@ class TopUpPaymentActivity : BaseActivity() {
         }
         binding.copyButton.setOnClickListener {
             copyToClipboard()
-        }
-        binding.freeTrialButtonButton.setOnClickListener {
-            topUpViewModel.accountFlowShown()
-            navigateToConnectionIfConnectedOrHome(isBackTransition = false)
         }
     }
 

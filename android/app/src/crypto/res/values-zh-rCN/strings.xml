@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Crypto payment  -->
+    <string name="top_up_payment_title">等待付款</string>
+    <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
+    <string name="top_up_payment_link">或使用付款链接</string>
+    <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
+    <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>
+
+    <string name="pop_up_payment_successfully_title">付款\n 成功</string>
+    <string name="pop_up_payment_successfully_done">做得好</string>
+    <string name="pop_up_payment_successfully_close">关闭</string>
+
+    <string name="pop_up_payment_not_work_title">付款服务器\n 故障</string>
+    <string name="pop_up_payment_not_work_try_again">请稍后重试</string>
+    <string name="pop_up_payment_not_work_okay">好，明白了</string>
+
+    <string name="pop_up_payment_expired_title">付款\n 失败</string>
+    <string name="pop_up_payment_expired_description">已超时</string>
+    <string name="pop_up_payment_expired_try_again">重试</string>
+    <string name="pop_up_payment_expired_later">稍后充值</string>
+
+    <string name="pop_up_crypto_payment_button">继续</string>
+    <string name="pop_up_crypto_payment_title">警告！</string>
+    <string name="pop_up_crypto_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
+
+</resources>

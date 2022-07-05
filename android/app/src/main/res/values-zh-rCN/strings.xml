@@ -157,11 +157,8 @@
     <string name="top_up_amount_description">选择要向您的账户\n 添加的 MYST 点数</string>
     <string name="top_up_amount_confirm">确认</string>
     <string name="top_up_crypto_description">选择要进行充值\n 的加密货币</string>
-    <string name="top_up_payment_title">等待付款</string>
-    <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
-    <string name="top_up_payment_link">或使用付款链接</string>
+
     <string name="top_up_crypto_lightning">快如闪电的网络</string>
-    <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
     <string name="top_up_free_trial">免费试用</string>
     <string name="payment_processing_text">警告：可能需要几分钟来处理付款</string>
 
@@ -227,20 +224,8 @@
     <string name="pop_up_top_up_description">点数快用完</string>
     <string name="pop_up_top_up_positive">立即充值</string>
     <string name="pop_up_top_up_negative">继续</string>
-    <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
-    <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>
     <string name="pop_up_insufficient_funds_title">资金\n 不足</string>
     <string name="pop_up_insufficient_funds_description">请为您的账户 充值</string>
-    <string name="pop_up_payment_successfully_title">付款\n 成功</string>
-    <string name="pop_up_payment_successfully_done">做得好</string>
-    <string name="pop_up_payment_successfully_close">关闭</string>
-    <string name="pop_up_payment_not_work_title">付款服务器\n 故障</string>
-    <string name="pop_up_payment_not_work_try_again">请稍后重试</string>
-    <string name="pop_up_payment_not_work_okay">好，明白了</string>
-    <string name="pop_up_payment_expired_title">付款\n 失败</string>
-    <string name="pop_up_payment_expired_description">已超时</string>
-    <string name="pop_up_payment_expired_try_again">重试</string>
-    <string name="pop_up_payment_expired_later">稍后充值</string>
     <string name="pop_up_node_failed_title">无法连接</string>
     <string name="pop_up_node_failed_description">检查您的网络</string>
     <string name="pop_up_node_failed_another">选择另一个节点</string>
@@ -262,10 +247,6 @@
     <string name="pop_up_card_payment_button">继续</string>
     <string name="pop_up_card_payment_title">感谢购买！</string>
     <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
-    <string name="pop_up_crypto_payment_button">继续</string>
-    <string name="pop_up_crypto_payment_title">警告！</string>
-    <string name="pop_up_crypto_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
-
     <string name="pop_up_private_key_error">密码有误</string>
 
     <string name="pop_up_import_wrong_password">密码有误</string>

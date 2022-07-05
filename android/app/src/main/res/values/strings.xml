@@ -188,11 +188,8 @@
     <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
     <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
-    <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
-    <string name="top_up_payment_link">Or use a payment link</string>
+
     <string name="top_up_crypto_lightning">Lightning Network</string>
-    <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
     <string name="top_up_amount_usd" translatable="false">$%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
     <string name="top_up_free_trial">Free Trial</string>
@@ -266,20 +263,8 @@
     <string name="pop_up_top_up_description">Your credits are running out</string>
     <string name="pop_up_top_up_positive">Top up now</string>
     <string name="pop_up_top_up_negative">Continue</string>
-    <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
-    <string name="pop_up_payment_canceled_description">You canceled the\n payment process</string>
     <string name="pop_up_insufficient_funds_title">Insufficient\n Funds</string>
     <string name="pop_up_insufficient_funds_description">Please top up your account</string>
-    <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
-    <string name="pop_up_payment_successfully_done">Well done</string>
-    <string name="pop_up_payment_successfully_close">Close</string>
-    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn\'t Work</string>
-    <string name="pop_up_payment_not_work_try_again">Please try again later</string>
-    <string name="pop_up_payment_not_work_okay">Okay, got it</string>
-    <string name="pop_up_payment_expired_title">Payment is not\n Successful</string>
-    <string name="pop_up_payment_expired_description">Time is over</string>
-    <string name="pop_up_payment_expired_try_again">Try again</string>Top up later
-    <string name="pop_up_payment_expired_later">Top up later</string>
     <string name="pop_up_node_failed_title">Failed to Connect</string>
     <string name="pop_up_node_failed_description">Check your network</string>
     <string name="pop_up_node_failed_another">Choose another node</string>
@@ -301,9 +286,6 @@
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
-    <string name="pop_up_crypto_payment_button">Continue</string>
-    <string name="pop_up_crypto_payment_title">Warning!</string>
-    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
     <string name="pop_up_private_key_error">Enter at least 12 characters</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>

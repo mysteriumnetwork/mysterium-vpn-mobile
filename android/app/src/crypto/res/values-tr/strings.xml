@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Crypto payment  -->
+    <string name="top_up_payment_title">Ödeme bekleniyor</string>
+    <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
+    <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
+    <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_payment_canceled_title">Ödeme\n İptal Edildi</string>
+    <string name="pop_up_payment_canceled_description">Ödeme işlemini\n iptal ettiniz</string>
+
+    <string name="pop_up_payment_successfully_title">Ödeme\n Başarılı</string>
+    <string name="pop_up_payment_successfully_done">Tebrikler</string>
+    <string name="pop_up_payment_successfully_close">Kapat</string>
+
+    <string name="pop_up_payment_not_work_title">Ödeme Sunucusu\n Çalışmıyor</string>
+    <string name="pop_up_payment_not_work_try_again">Lütfen daha sonra tekrar deneyin</string>
+    <string name="pop_up_payment_not_work_okay">Tamam, anladım</string>
+
+    <string name="pop_up_payment_expired_title">Ödeme\n Başarısız</string>
+    <string name="pop_up_payment_expired_description">Süre doldu</string>
+    <string name="pop_up_payment_expired_try_again">Tekrar dene</string>
+    <string name="pop_up_payment_expired_later">Daha sonra para ekle</string>
+
+    <string name="pop_up_crypto_payment_button">Devam</string>
+    <string name="pop_up_crypto_payment_title">Uyarı!</string>
+    <string name="pop_up_crypto_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
+
+</resources>

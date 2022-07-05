@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Crypto payment  -->
+    <string name="top_up_payment_title">Waiting for a payment</string>
+    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
+    <string name="top_up_payment_link">Or use a payment link</string>
+    <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
+    <string name="pop_up_payment_canceled_description">You canceled the\n payment process</string>
+
+    <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
+    <string name="pop_up_payment_successfully_done">Well done</string>
+    <string name="pop_up_payment_successfully_close">Close</string>
+
+    <string name="pop_up_payment_not_work_title">Payment Server\n Doesn\'t Work</string>
+    <string name="pop_up_payment_not_work_try_again">Please try again later</string>
+    <string name="pop_up_payment_not_work_okay">Okay, got it</string>
+
+    <string name="pop_up_payment_expired_title">Payment is not\n Successful</string>
+    <string name="pop_up_payment_expired_description">Time is over</string>
+    <string name="pop_up_payment_expired_try_again">Try again</string>Top up later
+    <string name="pop_up_payment_expired_later">Top up later</string>
+
+    <string name="pop_up_crypto_payment_title">Warning!</string>
+    <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
+    <string name="pop_up_crypto_payment_button">Continue</string>
+
+</resources>

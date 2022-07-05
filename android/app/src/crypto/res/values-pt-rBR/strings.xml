@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Crypto payment  -->
+    <string name="top_up_payment_title">Aguardando por um pagamento</string>
+    <string name="top_up_payment_description">Leia este código QR que contém o seu endereço de recarga</string>
+    <string name="top_up_payment_link">Ou use um link de pagamento</string>
+    <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_payment_canceled_title">Pagamento\n Cancelado</string>
+    <string name="pop_up_payment_canceled_description">Você cancelou o\n processo de pagamento</string>
+
+    <string name="pop_up_payment_successfully_title">Pagamento\n Feito com Sucesso</string>
+    <string name="pop_up_payment_successfully_done">Muito bem</string>
+    <string name="pop_up_payment_successfully_close">Fechar</string>
+
+    <string name="pop_up_payment_not_work_title">O Servidor de Pagamento\n Não Está Respondendo</string>
+    <string name="pop_up_payment_not_work_try_again">Tente novamente mais tarde</string>
+    <string name="pop_up_payment_not_work_okay">Ok, entendi</string>
+
+    <string name="pop_up_payment_expired_title">Pagamento não\n Efetuado</string>
+    <string name="pop_up_payment_expired_description">Tempo esgotado</string>
+    <string name="pop_up_payment_expired_try_again">Tentar novamente</string>
+    <string name="pop_up_payment_expired_later">Recarregar depois</string>
+
+    <string name="pop_up_crypto_payment_button">Continuar</string>
+    <string name="pop_up_crypto_payment_title">Aviso!</string>
+    <string name="pop_up_crypto_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
+
+</resources>

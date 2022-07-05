@@ -139,11 +139,8 @@
     <string name="top_up_amount_description">حدد مقدار أرصدة MYST\n التي ترغب في إضافتها إلى حسابك</string>
     <string name="top_up_amount_confirm">تأكيد</string>
     <string name="top_up_crypto_description">حدد العملة المشفرة التي\n سيتم بها تعبئة الرصيد</string>
-    <string name="top_up_payment_title">في انتظار الدفع</string>
-    <string name="top_up_payment_description">امسح رمز الاستجابة السريعة هذا ضوئيًا الذي يحتوي على عنوان التعبئة الخاص بك</string>
-    <string name="top_up_payment_link">أو استخدم رابط الدفع</string>
+
     <string name="top_up_crypto_lightning">شبكة الإضاءة</string>
-    <string name="top_up_usd_equivalent">ما يعادل دولار أمريكي ≈ %.2f دولار</string>
     <string name="top_up_free_trial">تجربة مجانية</string>
     <string name="payment_processing_text">تحذير: سوف يستغرق التطبيق بعض الوقت لمعالجة عمليات الدفع</string>
     <string name="settings_title">الإعدادات</string>
@@ -188,20 +185,8 @@
     <string name="pop_up_top_up_description">الأرصدة تنفد</string>
     <string name="pop_up_top_up_positive">التعبئة الآن</string>
     <string name="pop_up_top_up_negative">متابعة</string>
-    <string name="pop_up_payment_canceled_title">تم إلغاء\n الدفع</string>
-    <string name="pop_up_payment_canceled_description">لقد ألغيت\n عملية الدفع</string>
     <string name="pop_up_insufficient_funds_title">أموال\n غير كافية</string>
     <string name="pop_up_insufficient_funds_description">يُرجى تعبئة حسابك</string>
-    <string name="pop_up_payment_successfully_title">نجح\n الدفع</string>
-    <string name="pop_up_payment_successfully_done">أحسنت</string>
-    <string name="pop_up_payment_successfully_close">إغلاق</string>
-    <string name="pop_up_payment_not_work_title">خادم الدفع\n لا يعمل</string>
-    <string name="pop_up_payment_not_work_try_again">يُرجى المحاولة مرة أخرى لاحقًا</string>
-    <string name="pop_up_payment_not_work_okay">موافق، حسنًا</string>
-    <string name="pop_up_payment_expired_title">الدفع غير\n ناجح</string>
-    <string name="pop_up_payment_expired_description">انتهى الوقت</string>
-    <string name="pop_up_payment_expired_try_again">حاول مرة أخرى</string>
-    <string name="pop_up_payment_expired_later">التعبئة لاحقًا</string>
     <string name="pop_up_node_failed_title">فشل في الاتصال</string>
     <string name="pop_up_node_failed_description">تحقق من شبكتك</string>
     <string name="pop_up_node_failed_another">اختيار عقدة أخرى</string>
@@ -224,9 +209,6 @@ Wi-Fi</string>
     <string name="pop_up_card_payment_button">متابعة</string>
     <string name="pop_up_card_payment_title">شكرًا على الشراء!</string>
     <string name="pop_up_card_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت. سنرسل إليك إشعارًا بمجرد إتمام عملية الدفع.</string>
-    <string name="pop_up_crypto_payment_button">متابعة</string>
-    <string name="pop_up_crypto_payment_title">تحذير!</string>
-    <string name="pop_up_crypto_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت بعد هذه الخطوة. سنرسل إليك إشعارًا بمجرد الإتمام الناجح لعملية الدفع.</string>
     <string name="pop_up_private_key_error">كلمة مرور غير صحيحة</string>
     <string name="pop_up_import_wrong_password">كلمة مرور غير صحيحة</string>
     <string name="pop_up_private_key_hint">طول كلمة المرور 12–16 حرفًا</string>

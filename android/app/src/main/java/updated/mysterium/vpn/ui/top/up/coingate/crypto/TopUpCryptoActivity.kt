@@ -10,8 +10,7 @@ import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentActivity
-import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
+import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity
 
 class TopUpCryptoActivity : BaseActivity() {
 
@@ -57,11 +56,11 @@ class TopUpCryptoActivity : BaseActivity() {
         }
         binding.confirmButton.setOnClickListener {
             val cryptoName = topUpAdapter.getSelectedValue()
-            val intent = Intent(this, TopUpPaymentActivity::class.java).apply {
-                putExtra(TopUpPaymentActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
-                putExtra(TopUpPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
+            val intent = Intent(this, CryptoPaymentActivity::class.java).apply {
+                putExtra(CryptoPaymentActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
+                putExtra(CryptoPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
                 putExtra(
-                    TopUpPaymentActivity.CRYPTO_IS_LIGHTNING_EXTRA_KEY,
+                    CryptoPaymentActivity.CRYPTO_IS_LIGHTNING_EXTRA_KEY,
                     binding.lightningSwitch.isChecked
                 )
             }

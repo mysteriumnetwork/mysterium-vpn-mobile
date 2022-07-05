@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.coingate.payment
+package updated.mysterium.vpn.ui.top.up.crypto.payment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class TopUpPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     val paymentSuccessfully: LiveData<Unit>
         get() = _paymentSuccessfully
