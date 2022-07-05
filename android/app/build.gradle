@@ -133,9 +133,9 @@ android {
             dimension = "default"
             buildConfigField "String", "BUILD_VARIANT", "\"playstore\""
         }
-        free {
+        crypto {
             dimension = "default"
-            buildConfigField "String", "BUILD_VARIANT", "\"free\""
+            buildConfigField "String", "BUILD_VARIANT", "\"crypto\""
         }
     }
     buildFeatures {
