@@ -9,7 +9,7 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
-import updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity
+import updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity
 import java.util.*
 
 class TopUpAmountActivity : BaseActivity() {
@@ -101,9 +101,9 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun navigateToCryptoPaymentFlow() {
-        val intent = Intent(this, TopUpCryptoActivity::class.java).apply {
+        val intent = Intent(this, CryptoCurrencyActivity::class.java).apply {
             val amountUSD = topUpAdapter.getSelectedValue()
-            putExtra(TopUpCryptoActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
+            putExtra(CryptoCurrencyActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
         }
         startActivity(intent)
     }

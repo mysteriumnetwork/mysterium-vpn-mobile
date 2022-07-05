@@ -1,31 +1,28 @@
-package updated.mysterium.vpn.ui.top.up.coingate.crypto
+package updated.mysterium.vpn.ui.top.up.crypto.currency
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityTopUpCryptoBinding
-import org.koin.android.ext.android.inject
+import network.mysterium.vpn.databinding.ActivityCryptoCurrencyBinding
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
-import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity
 
-class TopUpCryptoActivity : BaseActivity() {
+class CryptoCurrencyActivity : BaseActivity() {
 
     companion object {
         const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
     }
 
-    private lateinit var binding: ActivityTopUpCryptoBinding
-    private val viewModel: TopUpViewModel by inject()
-    private val topUpAdapter = TopUpCryptoAdapter()
+    private lateinit var binding: ActivityCryptoCurrencyBinding
+    private val adapter = CryptoCurrencyAdapter()
     private var amountUSD: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTopUpCryptoBinding.inflate(layoutInflater)
+        binding = ActivityCryptoCurrencyBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getCryptoValue()
         configure()
@@ -33,9 +30,9 @@ class TopUpCryptoActivity : BaseActivity() {
     }
 
     private fun configure() {
-        binding.amountRecycler.adapter = topUpAdapter
-        topUpAdapter.replaceAll(getCryptoList())
-        topUpAdapter.onItemSelected = {
+        binding.amountRecycler.adapter = adapter
+        adapter.replaceAll(getCryptoList())
+        adapter.onItemSelected = {
             binding.cryptoAnimation.changeAnimation(it.value)
             if (it.isLightningAvailable) {
                 binding.switchFrame.visibility = View.VISIBLE
@@ -50,12 +47,8 @@ class TopUpCryptoActivity : BaseActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
-        binding.freeTrialButtonButton.setOnClickListener {
-            viewModel.accountFlowShown()
-            navigateToConnectionIfConnectedOrHome(isBackTransition = false)
-        }
         binding.confirmButton.setOnClickListener {
-            val cryptoName = topUpAdapter.getSelectedValue()
+            val cryptoName = adapter.getSelectedValue()
             val intent = Intent(this, CryptoPaymentActivity::class.java).apply {
                 putExtra(CryptoPaymentActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
                 putExtra(CryptoPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)

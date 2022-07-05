@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.coingate.crypto
+package updated.mysterium.vpn.ui.top.up.crypto.currency
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 
-class TopUpCryptoAdapter : ContentListAdapter<CryptoCardItem, TopUpCryptoAdapter.TopUpCryptoViewHolder>() {
+class CryptoCurrencyAdapter : ContentListAdapter<CryptoCardItem, CryptoCurrencyAdapter.TopUpCryptoViewHolder>() {
 
     private var selectedCardItem: CryptoCardItem? = null
     var onItemSelected: ((CryptoCardItem) -> Unit)? = null

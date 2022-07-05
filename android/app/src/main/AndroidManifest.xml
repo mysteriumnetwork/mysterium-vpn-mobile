@@ -85,7 +85,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.coingate.crypto.TopUpCryptoActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity"
             android:screenOrientation="portrait" />
 
         <activity
