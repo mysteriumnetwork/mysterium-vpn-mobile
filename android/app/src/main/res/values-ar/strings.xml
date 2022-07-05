@@ -159,13 +159,10 @@
     <string name="create_account_import">استيراد\n الحساب</string>
     <string name="create_account_description">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا\n واستخدم وظائف محدودة وعقدًا مجانية</string>
     <string name="card_summary_title">ملخص الطلب</string>
-    <string name="card_currency_title">العملة والبلد</string>
-    <string name="card_currency_description">حدد بلدك لحساب ضريبة القيمة المضافة</string>
     <string name="card_payment_pay">متابعة للدفع</string>
     <string name="card_payment_stripe">ستنتقل إلى صفحة الدفع على موقع Stripe لإتمام عملية الدفع.</string>
     <string name="card_payment_total">إجمالي المبلغ المستحق</string>
     <string name="card_payment_vat_title">ضريبة القيمة المضافة</string>
-    <string name="card_payment_country_hint">حدد البلد أو المنطقة</string>
     <string name="card_payment_myst_description">%.2f زيادة الحد المالي لحساب MYST</string>
     <string name="private_key_description">ملاحظة مهمة! قم بتنزيل مفتاحك الخاص الآن وخزنه حتى تتفادى عدم التمكن من الدخول إلى حسابك.</string>
     <string name="private_key_back_up">النسخ الاحتياطي\n للمفتاح الخاص</string>

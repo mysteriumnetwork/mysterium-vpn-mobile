@@ -14,7 +14,6 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
-import updated.mysterium.vpn.ui.top.up.card.summary.HintSpinnerArrayAdapter
 
 class CardCurrencyActivity : BaseActivity() {
 

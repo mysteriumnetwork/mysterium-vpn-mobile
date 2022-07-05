@@ -186,14 +186,11 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Sipariş Özeti</string>
-    <string name="card_currency_title">Para Birimi ve Ülke</string>
-    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
     <string name="card_payment_pay">Ödemeye devam et</string>
     <string name="card_payment_stripe">Ödeme yapmak için Stripe ödeme sayfasına yönlendirileceksin.</string>
     <string name="card_payment_total">Toplam Borcunuz</string>
     <string name="card_payment_vat_title">KDV</string>
     <string name="card_payment_vat_value">KDV(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
     <string name="card_payment_myst_description">%.2f MYST Yüklemesi</string>
 
     <!--  Private key  -->

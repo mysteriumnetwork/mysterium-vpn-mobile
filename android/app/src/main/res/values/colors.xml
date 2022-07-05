@@ -38,7 +38,6 @@
     <color name="payment_method_crypto_icon_background_color">#9090BB</color>
     <color name="payment_method_crypto_text_color">#5A597D</color>
 
-    <color name="top_up_unselected_state">#F4F4FC</color>
     <color name="card_payment_background">#F4F4FC</color>
     <color name="card_payment_divider">#9090BB</color>
     <color name="card_payment_title">#9090BB</color>

@@ -7,6 +7,11 @@
     <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
     <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
 
+    <!-- Card currency -->
+    <string name="card_currency_title">Para Birimi ve Ülke</string>
+    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
+    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
+
     <!--  Pop up  -->
     <string name="pop_up_payment_canceled_title">Ödeme\n İptal Edildi</string>
     <string name="pop_up_payment_canceled_description">Ödeme işlemini\n iptal ettiniz</string>

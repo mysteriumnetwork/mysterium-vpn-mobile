@@ -7,6 +7,11 @@
     <string name="top_up_payment_link">或使用付款链接</string>
     <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
 
+    <!-- Card currency -->
+    <string name="card_currency_title">货币和国家</string>
+    <string name="card_currency_description">选择所在国家来计算增值税</string>
+    <string name="card_payment_country_hint">选择国家或地区</string>
+
     <!--  Pop up  -->
     <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
     <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>

@@ -184,14 +184,11 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Сводка заказа</string>
-    <string name="card_currency_title">Валюта и страна</string>
-    <string name="card_currency_description">Выберите страну для расчета НДС</string>
     <string name="card_payment_pay">Продолжить оплату</string>
     <string name="card_payment_stripe">Вы будете перенаправлены на страницу Stripe для оплаты.</string>
     <string name="card_payment_total">Всего к оплате</string>
     <string name="card_payment_vat_title">НДС</string>
     <string name="card_payment_vat_value">НДС(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Выберите страну или регион</string>
     <string name="card_payment_myst_description">%.2f MYST пополнение</string>
 
     <!--  Private key  -->

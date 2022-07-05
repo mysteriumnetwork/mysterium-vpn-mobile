@@ -7,6 +7,11 @@
     <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
     <string name="top_up_usd_equivalent">Эквивалент в долларах США ≈ %.2f$</string>
 
+    <!-- Card currency -->
+    <string name="card_currency_title">Валюта и страна</string>
+    <string name="card_currency_description">Выберите страну для расчета НДС</string>
+    <string name="card_payment_country_hint">Выберите страну или регион</string>
+
     <!--  Pop up  -->
     <string name="pop_up_payment_canceled_title">Платеж\n отменен</string>
     <string name="pop_up_payment_canceled_description">Вы отменили\n процесс оплаты</string>

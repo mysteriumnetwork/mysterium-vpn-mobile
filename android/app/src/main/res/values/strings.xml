@@ -219,14 +219,11 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Order Summary</string>
-    <string name="card_currency_title">Currency &amp; Country</string>
-    <string name="card_currency_description">Select your country for the VAT calculation</string>
     <string name="card_payment_pay">Continue to Pay</string>
     <string name="card_payment_stripe">You will be taken to Stripe payment page to pay.</string>
     <string name="card_payment_total">Total Due</string>
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Select Country or Region</string>
     <string name="card_payment_myst_description">%.2f MYST Top-up</string>
 
     <!--  Private key  -->
