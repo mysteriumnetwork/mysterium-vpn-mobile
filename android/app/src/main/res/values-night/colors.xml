@@ -17,6 +17,7 @@
     <color name="create_account_trial_button_text">#FFFFFF</color>
     <color name="create_account_trial_button_text_tapped">#FFFFFF</color>
 
+    <color name="top_up_unselected_state">#10FFFFFF</color>
     <color name="card_payment_background">#60607B</color>
     <color name="card_payment_divider">#30FFFFFF</color>
     <color name="card_payment_title">#FFFFFF</color>

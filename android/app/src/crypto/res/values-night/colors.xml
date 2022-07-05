@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="top_up_unselected_state">#10FFFFFF</color>
-
     <color name="payment_method_stripe_background">#33F6F6FA</color>
     <color name="payment_method_stripe_text_color">#FFFFFF</color>
     <color name="payment_method_crypto_background">#33F6F6FA</color>

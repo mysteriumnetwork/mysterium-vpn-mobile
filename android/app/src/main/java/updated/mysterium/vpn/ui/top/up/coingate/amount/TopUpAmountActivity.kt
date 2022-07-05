@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.top.up.coingate.amount
 
-import android.content.Intent
 import android.os.Bundle
 import network.mysterium.vpn.databinding.ActivityTopUpAmountBinding
 import org.koin.android.ext.android.inject
@@ -8,8 +7,6 @@ import updated.mysterium.vpn.common.data.WalletEstimatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity
-import updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity
 import java.util.*
 
 class TopUpAmountActivity : BaseActivity() {
@@ -101,20 +98,20 @@ class TopUpAmountActivity : BaseActivity() {
     }
 
     private fun navigateToCryptoPaymentFlow() {
-        val intent = Intent(this, CryptoCurrencyActivity::class.java).apply {
-            val amountUSD = topUpAdapter.getSelectedValue()
-            putExtra(CryptoCurrencyActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
-        }
-        startActivity(intent)
+//        val intent = Intent(this, CryptoCurrencyActivity::class.java).apply {
+//            val amountUSD = topUpAdapter.getSelectedValue()
+//            putExtra(CryptoCurrencyActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
+//        }
+//        startActivity(intent)
     }
 
     private fun navigateToCardPaymentFlow() {
-        val intent = Intent(this, CardCurrencyActivity::class.java).apply {
-            val amountUSD = topUpAdapter.getSelectedValue()
-            putExtra(CardCurrencyActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
-            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
-            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
-        }
-        startActivity(intent)
+//        val intent = Intent(this, CardCurrencyActivity::class.java).apply {
+//            val amountUSD = topUpAdapter.getSelectedValue()
+//            putExtra(CardCurrencyActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
+//            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
+//            putExtra(CardCurrencyActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
+//        }
+//        startActivity(intent)
     }
 }

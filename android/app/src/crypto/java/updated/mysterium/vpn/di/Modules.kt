@@ -2,7 +2,6 @@ package updated.mysterium.vpn.di
 
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
 import androidx.room.Room
 import androidx.work.WorkManager
 import org.koin.android.ext.koin.androidContext
@@ -38,8 +37,8 @@ import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.TopUpViewModel
+import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountViewModel
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
@@ -91,7 +90,7 @@ object Modules {
         }
         single {
             AppNotificationManager(
-                androidContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                androidContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             ).apply { init(androidContext()) }
         }
         single {
@@ -148,7 +147,7 @@ object Modules {
             TopUpsListViewModel(get())
         }
         viewModel {
-            TopUpAmountViewModel(get())
+            TopUpAmountUsdViewModel(get())
         }
         viewModel {
             PrivateKeyViewModel(get())
@@ -182,3 +181,4 @@ object Modules {
         "MYSTERIUM_DATABASE"
     ).build()
 }
+
