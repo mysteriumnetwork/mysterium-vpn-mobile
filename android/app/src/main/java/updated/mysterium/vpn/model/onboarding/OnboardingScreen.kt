@@ -5,7 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class OnboardingScreen(
-    val position: Int,
     val topTitleRes: Int,
     val additionalTopTitleRes: Int? = null,
     val contentTitleRes: Int,
