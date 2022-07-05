@@ -127,6 +127,17 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    flavorDimensions "default"
+    productFlavors {
+        playstore {
+            dimension = "default"
+            buildConfigField "String", "BUILD_VARIANT", "\"playstore\""
+        }
+        free {
+            dimension = "default"
+            buildConfigField "String", "BUILD_VARIANT", "\"free\""
+        }
+    }
     buildFeatures {
         dataBinding true
         buildFeatures.viewBinding = true
