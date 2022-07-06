@@ -14,18 +14,6 @@ import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
 object FlavorModules {
 
     val main = module {
-        single {
-            Modules.provideDatabase(androidContext())
-        }
-        single {
-            NodeRepository(get())
-        }
-        single {
-            SharedPreferencesManager(androidContext())
-        }
-        single {
-            UseCaseProvider(get(), get(), get())
-        }
         viewModel {
             CryptoPaymentViewModel(get())
         }

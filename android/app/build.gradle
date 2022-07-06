@@ -186,9 +186,8 @@ dependencies {
     playstoreImplementation "com.android.billingclient:billing-ktx:4.0.0"
 
     //Koin
-    implementation 'org.koin:koin-core:2.2.0'
-    implementation 'org.koin:koin-androidx-viewmodel:2.2.0'
-    implementation "org.koin:koin-androidx-fragment:2.2.0"
+    implementation "io.insert-koin:koin-core:3.1.6"
+    implementation "io.insert-koin:koin-android:3.1.6"
 
     //Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
