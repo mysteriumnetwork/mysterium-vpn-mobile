@@ -188,7 +188,7 @@
     <string name="card_payment_total">应付总额</string>
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_myst_description">%.2f MYST 充值</string>
+    <string name="card_payment_myst_top_up_description">%.2f MYST 充值</string>
 
     <!--  Private key  -->
     <string name="private_key_description">重要提示！立即下载您的私人密钥，然后安全存储，以防无法访问您的账户。</string>

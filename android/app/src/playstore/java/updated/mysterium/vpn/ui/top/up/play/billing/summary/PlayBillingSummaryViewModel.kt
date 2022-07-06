@@ -6,6 +6,7 @@ import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.payment.PaymentStatus
+import updated.mysterium.vpn.model.payment.PlayBillingOrderRequestInfo
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
@@ -25,12 +26,12 @@ class PlayBillingSummaryViewModel(
     private val paymentUseCase = useCaseProvider.payment()
 
     fun getPlayBillingPayment(
-        amountUSD: Double
+        info: PlayBillingOrderRequestInfo
     ) = liveDataResult {
         registerOrderCallback()
         paymentUseCase.createPlayBillingPaymentGatewayOrder(
             identityAddress = connectionUseCase.getIdentityAddress(),
-            amountUSD = amountUSD
+            amountUsd = info.amountUsd
         )
     }
 

@@ -8,6 +8,7 @@ import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyViewModel
+import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentViewModel
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
 
@@ -25,6 +26,9 @@ object FlavorModules {
         }
         viewModel {
             CardCurrencyViewModel(get())
+        }
+        viewModel {
+            CardPaymentViewModel(get())
         }
     }
 }

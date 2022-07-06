@@ -14,12 +14,12 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun createPlayBillingPaymentGatewayOrder(
         identityAddress: String,
-        amountUSD: Double
+        amountUsd: Double
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
             this.identityAddress = identityAddress
-            this.amountUSD = amountUSD.toString()
+            this.amountUSD = amountUsd.toString()
             this.gateway = Gateway.GOOGLE.gateway
         }
         return nodeRepository.createPlayBillingPaymentGatewayOrder(req)
@@ -50,7 +50,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
         amountUSD: Double,
         currency: String,
         gateway: String
-    ): CardOrder {
+    ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.country = country
             this.payCurrency = currency

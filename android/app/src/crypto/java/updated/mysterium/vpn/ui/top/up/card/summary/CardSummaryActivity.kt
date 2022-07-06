@@ -1,29 +1,16 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
-import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.View
-import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
-import updated.mysterium.vpn.exceptions.TopupNoAmountException
-import updated.mysterium.vpn.model.payment.CardOrder
+import updated.mysterium.vpn.model.payment.CardOrderRequestInfo
+import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
-import updated.mysterium.vpn.notification.PaymentStatusService
-import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
-import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity.Companion.PAYMENT_HTML_KEY
-import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
+import updated.mysterium.vpn.ui.top.up.summary.SummaryActivity
 
-class CardSummaryActivity : BaseActivity() {
+class CardSummaryActivity : SummaryActivity() {
 
     companion object {
         const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
@@ -32,102 +19,40 @@ class CardSummaryActivity : BaseActivity() {
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
     }
 
-    private lateinit var binding: ActivityCardSummaryBinding
     private val viewModel: CardSummaryViewModel by inject()
-
-    private val paymentViewModel: CryptoPaymentViewModel by inject()
-    private val paymentStatusViewModel: PaymentStatusViewModel by inject()
     private var paymentHtml: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityCardSummaryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        subscribeViewModel()
-        bind()
-        loadPayment()
-    }
-
-    private fun subscribeViewModel() {
-        paymentStatusViewModel.paymentSuccessfully.observe(this) { paymentStatus ->
+    override fun subscribeViewModel() {
+        viewModel.paymentSuccessfully.observe(this) { paymentStatus ->
             if (paymentStatus == PaymentStatus.STATUS_PAID) {
                 paymentConfirmed()
             }
         }
     }
 
-    private fun bind() {
-        binding.backButton.setOnClickListener {
-            finish()
-        }
-        binding.confirmButton.setOnClickListener {
-            launchCardPayment()
-        }
-        binding.cancelButton.setOnClickListener {
-            navigateToHome()
-        }
-        binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
-            binding.paymentBalanceLimitLayout.root.visibility = View.GONE
-        }
+    override fun getOrderRequestInfo(): CardOrderRequestInfo? {
+        val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY) ?: return null
+        val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return null
+        val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY) ?: return null
+        val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return null
+        return CardOrderRequestInfo(amountUSD, country, currency, gateway)
     }
 
-    private fun loadPayment() {
-        val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return
-        val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY) ?: return
-        val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY) ?: return
-        val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return
-
-        startService()
-
-        getPayment(country, amountUSD, currency, gateway)
-    }
-
-    private fun getPayment(country: String, amountUSD: Double, currency: String, gateway: String) {
-        paymentStatusViewModel.getPayment(country, amountUSD, currency, gateway).observe(this) {
-            it.onSuccess { order ->
-                inflateOrderData(order)
-                paymentHtml = order.pageHtml.htmlSecureData.toString()
-            }
-            it.onFailure { error ->
-                Log.e(TAG, error.message ?: error.toString())
-                when (error) {
-                    is TopupBalanceLimitException -> {
-                        showPaymentBalanceLimitError()
-                    }
-                    is TopupNoAmountException -> {
-                        showNoAmountPopUp { getPayment(country, amountUSD, currency, gateway) }
-                    }
-                    else -> wifiNetworkErrorPopUp {
-                        getPayment(country, amountUSD, currency, gateway)
-                    }
+    override fun getOrder(info: OrderRequestInfo?) {
+        (info as? CardOrderRequestInfo?)?.let {
+            viewModel.getPayment(it).observe(this) { result ->
+                result.onSuccess { order ->
+                    onSuccess.invoke(order)
+                    paymentHtml = order.publicGatewayData.checkoutUrl
                 }
-                setButtonAvailability(false)
+                result.onFailure { error ->
+                    onFailure.invoke(error)
+                }
             }
         }
     }
 
-    private fun inflateOrderData(cardOrder: CardOrder) {
-        binding.mystTextView.text = getString(
-            R.string.card_payment_myst_description, cardOrder.receiveMyst
-        )
-        binding.mystValueTextView.text = getString(
-            R.string.top_up_amount_usd, cardOrder.payAmount
-        )
-        binding.vatValueTextView.text = cardOrder.taxes.toString()
-        binding.totalValueTextView.text = getString(
-            R.string.top_up_amount_usd, cardOrder.orderTotalAmount
-        )
-
-        val taxesPercent = cardOrder.taxes / cardOrder.orderTotalAmount * 100
-        binding.vatTextView.text = getString(
-            R.string.card_payment_vat_value, taxesPercent
-        )
-        binding.confirmContainer.visibility = View.VISIBLE
-        binding.cancelContainer.visibility = View.INVISIBLE
-    }
-
-
-    private fun launchCardPayment() {
+    override fun launchPayment() {
         val intent = Intent(this, CardPaymentActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             putExtra(PAYMENT_HTML_KEY, paymentHtml)
@@ -143,70 +68,10 @@ class CardSummaryActivity : BaseActivity() {
             pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
             pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
             pushyNotifications.subscribe(currency)
-            paymentViewModel.updateLastCurrency(currency)
+            viewModel.updateLastCurrency(currency)
         }
-        paymentViewModel.clearPopUpTopUpHistory()
+        viewModel.clearPopUpTopUpHistory()
         registerAccount()
     }
 
-    private fun registerAccount() {
-        paymentViewModel.registerAccount().observe(this) {
-            it.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
-            }
-        }
-    }
-
-    private fun showPaymentBalanceLimitError() {
-        showBanner(binding.paymentBalanceLimitLayout.root)
-        binding.confirmContainer.visibility = View.INVISIBLE
-        binding.cancelContainer.visibility = View.VISIBLE
-    }
-
-    private fun showBanner(view: View) {
-        view.visibility = View.VISIBLE
-        val animationX =
-            (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
-        ObjectAnimator.ofFloat(
-            view,
-            "translationY",
-            animationX
-        ).apply {
-            duration = 2000
-            start()
-        }
-    }
-
-    private fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
-        val popUpNoAmount = PopUpNoAmount(layoutInflater)
-        val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
-        popUpNoAmount.apply {
-            this.dialog = dialogNoAmount
-            this.onTryAgainAction = onTryAgainClick
-            setUp()
-        }
-        dialogNoAmount.show()
-    }
-
-    private fun setButtonAvailability(isAvailable: Boolean) {
-        if (isAvailable) {
-            binding.confirmContainer.visibility = View.VISIBLE
-            binding.cancelContainer.visibility = View.INVISIBLE
-        } else {
-            binding.confirmContainer.visibility = View.INVISIBLE
-            binding.cancelContainer.visibility = View.VISIBLE
-        }
-    }
-
-    private fun navigateToHome() {
-        viewModel.accountFlowShown()
-        val intent = Intent(this, HomeSelectionActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
-        startActivity(intent)
-    }
-
-    private fun startService() {
-        startService(Intent(this, PaymentStatusService::class.java))
-    }
 }

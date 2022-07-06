@@ -106,6 +106,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:textColor="@color/card_payment_value"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/mystTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/mystTextView"
@@ -120,6 +121,7 @@
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                 android:textColor="@color/card_payment_title"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/divider3"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="10 MYST Top-up" />
@@ -131,6 +133,7 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
                 android:background="@drawable/divider_country_group"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/vatValueTextView" />
 
             <TextView
@@ -141,6 +144,7 @@
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:text="-"
                 android:textColor="@color/card_payment_value"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/vatTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/vatTextView"
@@ -155,6 +159,7 @@
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                 android:text="@string/card_payment_vat_title"
                 android:textColor="@color/card_payment_title"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/divider2"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -165,6 +170,7 @@
                 android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_plus"
                 android:background="@drawable/divider_country_group"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/totalValueTextView" />
 
             <TextView

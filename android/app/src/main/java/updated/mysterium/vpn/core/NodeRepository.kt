@@ -21,7 +21,6 @@ import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
-import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentGateway
 import updated.mysterium.vpn.model.payment.Purchase
@@ -202,11 +201,11 @@ class NodeRepository(var deferredNode: DeferredNode) {
             }
         }
 
-    suspend fun createCardPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq): CardOrder =
+    suspend fun createCardPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq): Order =
         withContext(Dispatchers.IO) {
             try {
-                val order = deferredNode.await().createPaymentGatewayOrder(req)
-                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
                 if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
                     throw TopupNoAmountException()

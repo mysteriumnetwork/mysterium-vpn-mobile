@@ -42,6 +42,7 @@ class CardPaymentActivity : BaseActivity() {
             binding.webView.visibility = View.VISIBLE
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.webViewClient = object : WebViewClient() {
+
                 override fun onLoadResource(view: WebView?, url: String?) {
                     super.onLoadResource(view, url)
                     url?.let {

@@ -189,7 +189,7 @@
     <string name="card_payment_total">Всего к оплате</string>
     <string name="card_payment_vat_title">НДС</string>
     <string name="card_payment_vat_value">НДС(%1.1f%%)</string>
-    <string name="card_payment_myst_description">%.2f MYST пополнение</string>
+    <string name="card_payment_myst_top_up_description">%.2f MYST пополнение</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Важно! Загрузите свой частный код сейчас и надежно сохраните его, чтобы предотвратить блокировку аккаунта.</string>
