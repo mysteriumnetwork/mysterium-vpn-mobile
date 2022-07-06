@@ -21,7 +21,6 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.top.up.TopUpViewModel
 import java.math.BigDecimal
 import kotlin.math.abs
 
@@ -36,7 +35,6 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityCryptoPaymentBinding
-    private val topUpViewModel: TopUpViewModel by inject()
     private val viewModel: CryptoPaymentViewModel by inject()
     private var link: String? = null
 
@@ -243,7 +241,7 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun navigateToHome() {
-        topUpViewModel.accountFlowShown()
+        viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }

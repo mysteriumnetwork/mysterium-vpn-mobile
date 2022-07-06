@@ -32,7 +32,6 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
-import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -334,9 +333,12 @@ abstract class BaseActivity : AppCompatActivity() {
                 } else {
                     val gateways = result.filterNotNull()
                     if (gateways.size == 1) {
-                        Intent(this, TopUpAmountUsdActivity::class.java).apply {
+                        Intent(
+                            this,
+                            Class.forName("updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity")
+                        ).apply {
                             putExtra(
-                                TopUpAmountUsdActivity.PAYMENT_METHOD_EXTRA_KEY,
+                                "PAYMENT_METHOD_EXTRA_KEY",
                                 gateways[0].gateway
                             )
                         }

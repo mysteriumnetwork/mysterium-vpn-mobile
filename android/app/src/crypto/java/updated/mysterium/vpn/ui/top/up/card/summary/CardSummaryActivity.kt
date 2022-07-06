@@ -26,6 +26,7 @@ import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
 import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
+import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
 
 class CardSummaryActivity : BaseActivity() {
 
@@ -41,7 +42,7 @@ class CardSummaryActivity : BaseActivity() {
     private lateinit var binding: ActivityCardSummaryBinding
     private val viewModel: CardSummaryViewModel by inject()
 
-    //    private val paymentViewModel: CryptoPaymentViewModel by inject()
+    private val paymentViewModel: CryptoPaymentViewModel by inject()
     private val paymentStatusViewModel: PaymentStatusViewModel by inject()
     private var paymentHtml: String? = null
     private var paymentProcessed = false
@@ -171,18 +172,18 @@ class CardSummaryActivity : BaseActivity() {
             pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
             pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
             pushyNotifications.subscribe(currency)
-//            paymentViewModel.updateLastCurrency(currency)
+            paymentViewModel.updateLastCurrency(currency)
         }
-//        paymentViewModel.clearPopUpTopUpHistory()
+        paymentViewModel.clearPopUpTopUpHistory()
         registerAccount()
     }
 
     private fun registerAccount() {
-//        paymentViewModel.registerAccount().observe(this) {
-//            it.onFailure { error ->
-//                Log.e(TAG, error.localizedMessage ?: error.toString())
-//            }
-//        }
+        paymentViewModel.registerAccount().observe(this) {
+            it.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+            }
+        }
     }
 
     private fun showPaymentBalanceLimitError() {

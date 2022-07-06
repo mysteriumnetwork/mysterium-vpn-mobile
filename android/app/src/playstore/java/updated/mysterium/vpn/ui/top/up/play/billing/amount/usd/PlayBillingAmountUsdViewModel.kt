@@ -1,30 +1,15 @@
 package updated.mysterium.vpn.ui.top.up.play.billing.amount.usd
 
-import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.SkuDetails
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.top.up.TopUpPlayBillingCardItem
-import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingDataSource
 
 class PlayBillingAmountUsdViewModel(
-    useCaseProvider: UseCaseProvider,
-    val playBillingDataSource: PlayBillingDataSource
+    private val playBillingDataSource: PlayBillingDataSource
 ) : ViewModel() {
-
-    private val balanceUseCase = useCaseProvider.balance()
-
-    fun getWalletEquivalent(balance: Double) = liveDataResult {
-        balanceUseCase.getWalletEquivalent(balance)
-    }
 
     fun getSkuDetails() = liveDataResult {
         playBillingDataSource.skuDetailsList.map { list ->

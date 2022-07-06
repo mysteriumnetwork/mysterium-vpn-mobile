@@ -9,32 +9,31 @@ import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemCardElementBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
+import updated.mysterium.vpn.model.top.up.AmountUsdCardItem
 
-import updated.mysterium.vpn.model.top.up.TopUpCardItem
+class AmountUsdAdapter :
+    ContentListAdapter<AmountUsdCardItem, AmountUsdAdapter.AmountUsdViewHolder>() {
 
-class TopUpAmountUsdAdapter :
-    ContentListAdapter<TopUpCardItem, TopUpAmountUsdAdapter.TopUpAmountUSDViewHolder>() {
+    private var selectedCardItem: AmountUsdCardItem? = null
+    var onItemSelected: ((AmountUsdCardItem) -> Unit)? = null
 
-    private var selectedCardItem: TopUpCardItem? = null
-    var onItemSelected: ((TopUpCardItem) -> Unit)? = null
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TopUpAmountUSDViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AmountUsdViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_card_element, parent, false)
     )
 
-    override fun onBindViewHolder(holder: TopUpAmountUSDViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AmountUsdViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    fun getSelectedValue() = selectedCardItem?.amountUSD
+    fun getSelectedValue() = selectedCardItem
 
-    inner class TopUpAmountUSDViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class AmountUsdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding = ItemCardElementBinding.bind(itemView)
 
-        fun bind(cardItem: TopUpCardItem) {
+        fun bind(cardItem: AmountUsdCardItem) {
             binding.cardItemValue.text =
-                itemView.context.getString(R.string.top_up_amount_usd, cardItem.amountUSD)
+                itemView.context.getString(R.string.top_up_amount_usd, cardItem.amountUsd)
             if (cardItem.isSelected) {
                 selectedCardItem = cardItem
                 onItemSelected?.invoke(cardItem)

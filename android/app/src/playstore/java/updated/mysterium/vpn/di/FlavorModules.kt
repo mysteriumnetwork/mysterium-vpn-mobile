@@ -14,7 +14,7 @@ object FlavorModules {
             PlayBillingDataSource(androidApplication())
         }
         viewModel {
-            PlayBillingAmountUsdViewModel(get(), get())
+            PlayBillingAmountUsdViewModel(get())
         }
         viewModel {
             PlayBillingSummaryViewModel(get(), get())

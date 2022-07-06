@@ -81,6 +81,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="updated.mysterium.vpn.ui.top.up.amount.usd.AmountUsdActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdActivity"
             android:screenOrientation="portrait" />
 

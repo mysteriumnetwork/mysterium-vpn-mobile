@@ -77,9 +77,11 @@ class PlayBillingSummaryActivity : BaseActivity() {
     }
 
     private fun loadPayment() {
-        val price = topUpPlayBillingCardItem?.amountUsd ?: 0.0
+        val price = topUpPlayBillingCardItem?.amountUsd
         startService()
-        getPayment(price)
+        price?.let {
+            getPayment(it)
+        }
     }
 
     private fun getPayment(price: Double) {

@@ -26,6 +26,7 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val paymentUseCase = useCaseProvider.payment()
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
+    private val loginUseCase = useCaseProvider.login()
     private val pushyUseCase = useCaseProvider.pushy()
     private val _paymentSuccessfully = MutableLiveData<Unit>()
     private val _paymentExpired = MutableLiveData<Unit>()
@@ -87,4 +88,9 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
         }
     }
+
+    fun accountFlowShown() {
+        loginUseCase.accountFlowShown()
+    }
+
 }

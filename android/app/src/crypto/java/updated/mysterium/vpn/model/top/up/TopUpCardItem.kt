@@ -4,9 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TopUpPlayBillingCardItem(
-    val id: String,
-    val sku: String,
+data class TopUpCardItem(
     override val amountUsd: Double,
     override var isSelected: Boolean = false
 ) : AmountUsdCardItem(amountUsd, isSelected), Parcelable

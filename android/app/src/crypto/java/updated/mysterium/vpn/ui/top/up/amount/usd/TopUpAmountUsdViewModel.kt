@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up
+package updated.mysterium.vpn.ui.top.up.amount.usd
 
 import androidx.lifecycle.ViewModel
 import updated.mysterium.vpn.common.extensions.liveDataResult
@@ -6,15 +6,10 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.TopUpCardItem
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class TopUpAmountUsdViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
-    private val loginUseCase = useCaseProvider.login()
-    private val paymentUseCase = useCaseProvider.payment()
     private val balanceUseCase = useCaseProvider.balance()
-
-    fun accountFlowShown() {
-        loginUseCase.accountFlowShown()
-    }
+    private val paymentUseCase = useCaseProvider.payment()
 
     fun getAmountsUSD(gateway: Gateway) = liveDataResult {
         val usdEquivalent = balanceUseCase.getUsdEquivalent()
@@ -25,7 +20,8 @@ class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             ?.orderOptions
             ?.amountsSuggestion
             ?.mapIndexed { index, value ->
-                TopUpCardItem(value.toDouble(), value * usdEquivalent, index == 0)
+                TopUpCardItem(value * usdEquivalent, index == 0)
             }
     }
+
 }
