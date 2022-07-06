@@ -140,6 +140,9 @@
             android:name="updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name="updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name="updated.mysterium.vpn.notification.AppBroadcastReceiver"
             android:exported="true">

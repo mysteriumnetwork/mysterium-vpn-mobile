@@ -1,19 +1,13 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
-import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.AppConstants.Payments.PAYPAL_CALLBACK_URL
-import updated.mysterium.vpn.common.AppConstants.Payments.STRIPE_CALLBACK_URL
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.exceptions.TopupNoAmountException
@@ -23,9 +17,10 @@ import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity.Companion.SHOW_PAYMENT_PROCESSING_BANNER_KEY
 import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
+import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity
+import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity.Companion.PAYMENT_HTML_KEY
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
 
 class CardSummaryActivity : BaseActivity() {
@@ -35,8 +30,6 @@ class CardSummaryActivity : BaseActivity() {
         const val CURRENCY_EXTRA_KEY = "CURRENCY_EXTRA_KEY"
         const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
-        private const val HTML_MIME_TYPE = "text/html"
-        private const val ENCODING = "utf-8"
     }
 
     private lateinit var binding: ActivityCardSummaryBinding
@@ -45,7 +38,6 @@ class CardSummaryActivity : BaseActivity() {
     private val paymentViewModel: CryptoPaymentViewModel by inject()
     private val paymentStatusViewModel: PaymentStatusViewModel by inject()
     private var paymentHtml: String? = null
-    private var paymentProcessed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,15 +64,7 @@ class CardSummaryActivity : BaseActivity() {
             launchCardPayment()
         }
         binding.cancelButton.setOnClickListener {
-            navigateToHome(false)
-        }
-        binding.closeButton.setOnClickListener {
-            binding.closeButton.visibility = View.GONE
-            binding.webView.visibility = View.GONE
-            if (paymentProcessed) {
-                showPaymentPopUp()
-                paymentProcessed = false
-            }
+            navigateToHome()
         }
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
@@ -142,26 +126,13 @@ class CardSummaryActivity : BaseActivity() {
         binding.cancelContainer.visibility = View.INVISIBLE
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+
     private fun launchCardPayment() {
-        paymentHtml?.let { htmlData ->
-            binding.closeButton.visibility = View.VISIBLE
-            binding.webView.visibility = View.VISIBLE
-            binding.webView.settings.javaScriptEnabled = true
-            binding.webView.webViewClient = object : WebViewClient() {
-                override fun onLoadResource(view: WebView?, url: String?) {
-                    super.onLoadResource(view, url)
-                    url?.let {
-                        if (it.contains(STRIPE_CALLBACK_URL) ||
-                            it.contains(PAYPAL_CALLBACK_URL)
-                        ) {
-                            paymentProcessed = true
-                        }
-                    }
-                }
-            }
-            binding.webView.loadDataWithBaseURL(null, htmlData, HTML_MIME_TYPE, ENCODING, null)
+        val intent = Intent(this, CardPaymentActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra(PAYMENT_HTML_KEY, paymentHtml)
         }
+        startActivity(intent)
     }
 
     private fun paymentConfirmed() {
@@ -206,16 +177,6 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun showPaymentPopUp() {
-        val bindingPopUp = PopUpCardPaymentBinding.inflate(layoutInflater)
-        val dialog = createPopUp(bindingPopUp.root, false)
-        bindingPopUp.okayButton.setOnClickListener {
-            dialog.dismiss()
-            navigateToHome(true)
-        }
-        dialog.show()
-    }
-
     private fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
         val popUpNoAmount = PopUpNoAmount(layoutInflater)
         val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
@@ -237,13 +198,10 @@ class CardSummaryActivity : BaseActivity() {
         }
     }
 
-    private fun navigateToHome(paymentProcessing: Boolean) {
+    private fun navigateToHome() {
         viewModel.accountFlowShown()
         val intent = Intent(this, HomeSelectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            if (paymentProcessing) {
-                putExtra(SHOW_PAYMENT_PROCESSING_BANNER_KEY, true)
-            }
         }
         startActivity(intent)
     }
