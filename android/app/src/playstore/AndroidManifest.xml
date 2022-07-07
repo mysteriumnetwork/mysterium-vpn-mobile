@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="network.mysterium.vpn">
+
+    <application>
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingSummaryActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdActivity"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>

@@ -85,22 +85,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="updated.mysterium.vpn.ui.settings.SettingsActivity"
             android:screenOrientation="portrait" />
 
@@ -122,25 +106,6 @@
 
         <activity
             android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingSummaryActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name="updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity"
             android:screenOrientation="portrait" />
 
         <receiver
