@@ -36,7 +36,6 @@ import updated.mysterium.vpn.ui.search.SearchViewModel
 import updated.mysterium.vpn.ui.settings.SettingsViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
-import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 import updated.mysterium.vpn.ui.wallet.spendings.SpendingsViewModel
@@ -150,9 +149,6 @@ object Modules {
         }
         viewModel {
             RegistrationViewModel(get())
-        }
-        viewModel {
-            CardPaymentViewModel(get())
         }
     }
 
