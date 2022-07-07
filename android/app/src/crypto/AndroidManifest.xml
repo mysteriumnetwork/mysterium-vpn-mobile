@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="network.mysterium.vpn">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="network.mysterium.vpn"
+    tools:ignore="LockedOrientationActivity">
 
     <application>
 
@@ -27,7 +29,8 @@
             android:name="updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity"
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity"
             android:screenOrientation="portrait" />
 
     </application>
