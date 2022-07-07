@@ -7,7 +7,7 @@ import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity
-import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity.Companion.PAYMENT_HTML_KEY
+import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity.Companion.PAYMENT_URL_KEY
 import updated.mysterium.vpn.ui.top.up.summary.SummaryActivity
 
 class CardSummaryActivity : SummaryActivity() {
@@ -20,7 +20,7 @@ class CardSummaryActivity : SummaryActivity() {
     }
 
     private val viewModel: CardSummaryViewModel by inject()
-    private var paymentHtml: String? = null
+    private var paymentUrl: String? = null
 
     override fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this) { paymentStatus ->
@@ -43,7 +43,7 @@ class CardSummaryActivity : SummaryActivity() {
             viewModel.getPayment(it).observe(this) { result ->
                 result.onSuccess { order ->
                     onSuccess.invoke(order)
-                    paymentHtml = order.publicGatewayData.checkoutUrl
+                    paymentUrl = order.publicGatewayData.checkoutUrl
                 }
                 result.onFailure { error ->
                     onFailure.invoke(error)
@@ -53,11 +53,13 @@ class CardSummaryActivity : SummaryActivity() {
     }
 
     override fun launchPayment() {
-        val intent = Intent(this, CardPaymentActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(PAYMENT_HTML_KEY, paymentHtml)
+        paymentUrl?.let {
+            val intent = Intent(this, CardPaymentActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                putExtra(PAYMENT_URL_KEY, paymentUrl)
+            }
+            startActivity(intent)
         }
-        startActivity(intent)
     }
 
     private fun paymentConfirmed() {

@@ -16,14 +16,12 @@ import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 class CardPaymentActivity : BaseActivity() {
 
     companion object {
-        const val PAYMENT_HTML_KEY = "PAYMENT_HTML_KEY"
-        private const val HTML_MIME_TYPE = "text/html"
-        private const val ENCODING = "utf-8"
+        const val PAYMENT_URL_KEY = "PAYMENT_URL_KEY"
     }
 
     private lateinit var binding: ActivityPaymentWebviewBinding
     private val viewModel: CardPaymentViewModel by inject()
-    private var paymentHtml: String? = null
+    private var paymentUrl: String? = null
     private var paymentProcessed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +34,8 @@ class CardPaymentActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun configure() {
-        paymentHtml = intent.extras?.getString(PAYMENT_HTML_KEY)
-        paymentHtml?.let { htmlData ->
+        paymentUrl = intent.extras?.getString(PAYMENT_URL_KEY)
+        paymentUrl?.let { url ->
             binding.closeButton.visibility = View.VISIBLE
             binding.webView.visibility = View.VISIBLE
             binding.webView.settings.javaScriptEnabled = true
@@ -54,11 +52,7 @@ class CardPaymentActivity : BaseActivity() {
                     }
                 }
             }
-            binding.webView.loadDataWithBaseURL(
-                null, htmlData,
-                HTML_MIME_TYPE,
-                ENCODING, null
-            )
+            binding.webView.loadUrl(url)
         }
     }
 
