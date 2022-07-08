@@ -22,7 +22,7 @@
 
     <color name="top_up_unselected_state">#10FFFFFF</color>
     <color name="payment_background">#60607B</color>
-    <color name="payment_total">#ED5BAC</color>
+    <color name="payment_total">#FFFFFF</color>
 
     <color name="manual_connect_list_background">#514D69</color>
     <color name="manual_connect_items_empty_background">#10FFFFFF</color>

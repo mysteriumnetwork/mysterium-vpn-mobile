@@ -90,7 +90,7 @@
 
             <TextView
                 android:id="@+id/totalPriceValueTextView"
-                style="@style/TextAppearance.BodyRegular"
+                style="@style/TextAppearance.HeadSubNumbers"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
