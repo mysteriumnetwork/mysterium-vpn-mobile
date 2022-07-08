@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private companion object {
         const val REQUEST_INTERVAL = 1000 * 60 * 15L // 15 minutes
-        const val TAG = "ExchangeRateViewModel"
     }
 
     var usdEquivalent = 0.0
@@ -51,4 +51,7 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             usdEquivalent = balanceUseCase.getUsdEquivalent()
         }
     }
+
+    fun getMystEquivalent(price: Double) = price / usdEquivalent
+
 }

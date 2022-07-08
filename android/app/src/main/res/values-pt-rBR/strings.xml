@@ -11,9 +11,6 @@
     <string name="onboarding_main_title_2">Navegue pela Web e pague conforme o uso</string>
     <string name="onboarding_description_title_2">Nenhum bloqueio de assinaturas</string>
     <string name="onboarding_description_content_2">Recarregue sua conta agora ou faça isso mais tarde e use a funcionalidades limitadas e nós gratuitos</string>
-    <string name="onboarding_main_title_3">Recarregue com criptomoedas populares</string>
-    <string name="onboarding_description_title_3">BTC, ETH, LTC, BСH e mais</string>
-    <string name="onboarding_description_content_3">Recarregue sua conta agora ou faça isso mais tarde e use a funcionalidades limitadas e nós gratuitos</string>
     <string name="onboarding_skip">Ignorar</string>
     <string name="onboarding_next">Avançar</string>
 
@@ -53,7 +50,6 @@
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
     <string name="manual_connect_saved_to_favourite">Salvo com sucesso</string>
-    <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH e mais</string>
     <string name="manual_connect_search">Pesquisar</string>
     <string name="manual_connect_node_id">ID do nó ou país</string>
     <string name="manual_connect_multi_data_type">%1$s/%2$s</string>
@@ -154,14 +150,7 @@
     <string name="top_up_amount_music">Música</string>
     <string name="top_up_amount_pages">Páginas da Web</string>
     <string name="top_up_amount_traffic">Tráfego</string>
-    <string name="top_up_amount_description">Selecione quantos créditos MYST\n você quer adicionar à sua conta</string>
     <string name="top_up_amount_confirm">Confirmar</string>
-    <string name="top_up_crypto_description">Selecione a croptomoeda\n em que a recarga será feita</string>
-    <string name="top_up_payment_title">Aguardando por um pagamento</string>
-    <string name="top_up_payment_description">Leia este código QR que contém o seu endereço de recarga</string>
-    <string name="top_up_payment_link">Ou use um link de pagamento</string>
-    <string name="top_up_crypto_lighting">Rede Lightning</string>
-    <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>
     <string name="top_up_free_trial">Teste Grátis</string>
     <string name="payment_processing_text">Aviso: os pagamentos levam alguns minutos para serem processados</string>
 
@@ -185,21 +174,14 @@
     <string name="create_account_description">Recarregue sua conta agora ou faça isso mais tarde e\n use a funcionalidades limitadas e nós gratuitos</string>
 
     <!--  Card payment  -->
-    <string name="card_summary_title">Resumo do pedido</string>
-    <string name="card_currency_title">Moeda e país</string>
-    <string name="card_currency_description">Selecione seu país para o cálculo do IVA</string>
-    <string name="card_payment_pay">Continue para pagar</string>
-    <string name="card_payment_cardinity">Você será encaminhado para a página de pagamento da Cardinity para pagar.</string>
-    <string name="card_payment_total">Valor total</string>
-    <string name="card_payment_vat_title">VAT</string>
-    <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Selecione o país ou a região</string>
-    <string name="card_payment_myst_description">Recarregar MYST %d</string>
+    <string name="payment_summary_title">Resumo do pedido</string>
+    <string name="payment_pay">Continue para pagar</string>
+    <string name="payment_total">Valor total</string>
+    <string name="payment_country_hint">Selecione o país ou a região</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Importante! Baixe sua chave particular agora e armazene-a de forma segura para não ficar sem acesso à sua conta.</string>
     <string name="private_key_back_up">Fazer backup\n da chave privada</string>
-    <string name="private_key_back_up_later">Fazer backup\n depois</string>
 
     <!--  Prepare top up  -->
     <string name="prepare_top_up_description">Recarregue sua conta ou use o código de indicação para começar a usar a Mysterium dVPN</string>
@@ -209,8 +191,7 @@
 
     <!--  Payment method  -->
     <string name="payment_method_title">Escolha uma forma de pagamento para continuar</string>
-    <string name="credit_card">Cartão de crédito</string>
-    <string name="crypto">Cripto</string>
+    <string name="google_play_billing">Cartão de crédito</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Usar </string>
@@ -260,12 +241,10 @@
     <string name="pop_up_private_key_title">Chave de download</string>
     <string name="pop_up_private_key_description">Digite a sua senha</string>
     <string name="pop_up_private_key_download">Fazer download</string>
-    <string name="pop_up_card_payment_button">Continuar</string>
-    <string name="pop_up_card_payment_title">Agradecemos a sua compra!</string>
-    <string name="pop_up_card_payment_description">O pagamento pode levar algum tempo para ser processado. Enviaremos uma notificação quando ele for concluído.</string>
-    <string name="pop_up_crypto_payment_button">Continuar</string>
-    <string name="pop_up_crypto_payment_title">Aviso!</string>
-    <string name="pop_up_crypto_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
+    <string name="pop_up_payment_title_thanks">Agradecemos a sua compra!</string>
+    <string name="pop_up_payment_button">Continuar</string>
+    <string name="pop_up_payment_title_warning">Aviso!</string>
+    <string name="pop_up_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
     <string name="pop_up_private_key_error">Senha incorreta</string>
     <string name="pop_up_import_wrong_password">Senha incorreta</string>
     <string name="pop_up_private_key_hint">A senha deve ter de 12 a 16 caracteres</string>
@@ -277,14 +256,14 @@
     <string name="pop_up_referral_hint">Insira o código aqui</string>
     <string name="pop_up_referral_title">Código de indicação</string>
     <string name="pop_up_referral_description">Você receberá</string>
-    <string name="pop_up_referral_error">Token incorreto</string>
+    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Token incorreto</string>
     <string name="pop_up_new_version_title">Nova versão disponível</string>
     <string name="pop_up_new_version_description">Atualize seu aplicativo na Google Play Store</string>
     <string name="pop_up_new_version_update">Atualizar</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Saldo no Mysterium</string>
-    <string name="push_notification_balance_message">Seu saldo está acabando!</string>
+    <!-- TODO: re-translate --><string name="push_notification_balance_message">Seu saldo está acabando!</string>
     <string name="push_notification_connection_title">Conexão com o Mysterium</string>
     <string name="push_notification_connection_message">Perda de conexão com o nó.</string>
     <string name="push_notification_connected_title">Conectado a %1$s</string>

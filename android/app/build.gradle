@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 import com.android.build.OutputFile
@@ -88,7 +87,7 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"0.68.1\""
+        buildConfigField "String", "NODE_VERSION", "\"1.9.3\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -174,6 +173,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
     implementation 'com.google.android.gms:play-services-base:17.6.0'
     implementation "com.google.android.material:material:1.3.0-alpha01"
+    implementation "com.android.billingclient:billing-ktx:4.0.0"
 
     //Koin
     implementation 'org.koin:koin-core:2.2.0'
@@ -203,9 +203,6 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.6"
     kapt "androidx.room:room-compiler:2.2.6"
 
-    //GSON
-    implementation "com.google.code.gson:gson:2.8.6"
-
     //Line chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
@@ -215,23 +212,19 @@ dependencies {
     //Rounded image
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    //Klaxon
-    implementation 'com.beust:klaxon:5.4'
-
-    //QrCode
-    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    //Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"
 
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.6.0"
+
     //Mysterium
     implementation "network.mysterium:terms:0.0.49"
-    implementation "network.mysterium:mobile-node:1.6.5"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
-    // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
-    //implementation files('/Users/macbook/AndroidStudioProjects/Mysterium.aar')
-    // implementation files('/Users/soffokl/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
-
+    implementation "network.mysterium:mobile-node:1.9.3"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation(

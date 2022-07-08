@@ -3,7 +3,6 @@ package updated.mysterium.vpn.model.payment
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import mysterium.PaymentOrderOptions
 
 data class PaymentGateway(
     val name: String,

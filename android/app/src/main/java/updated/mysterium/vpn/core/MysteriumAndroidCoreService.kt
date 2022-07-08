@@ -25,7 +25,10 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.vpn.R
@@ -47,14 +50,15 @@ import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.notification.NotificationFactory
 import updated.mysterium.vpn.notification.PushReceiver
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
-import java.util.*
 
 class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
     private companion object {
         const val TAG = "MysteriumVPNService"
-        const val BALANCE_LIMIT = 0.5
-        const val MIN_BALANCE_LIMIT = BALANCE_LIMIT * 0.2
+        const val FIRST_BALANCE_LIMIT = 2.0
+        const val SECOND_BALANCE_LIMIT = 1.0
+        const val THIRD_BALANCE_LIMIT = 0.5
+        const val MIN_BALANCE_LIMIT = THIRD_BALANCE_LIMIT * 0.2
         const val CURRENCY = "MYSTT"
     }
 
@@ -114,13 +118,18 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private fun initBalanceListener() {
         GlobalScope.launch(Dispatchers.IO) {
             balanceUseCase.initBalanceListener {
-                if (it < BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isBalancePushShown()) {
-                    makeBalancePushNotification()
-                    balanceUseCase.balancePushShown()
-                }
                 if (it < MIN_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isMinBalancePushShown()) {
                     makeBalancePushNotification()
                     balanceUseCase.minBalancePushShown()
+                } else if (it < THIRD_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isThirdBalancePushShown()) {
+                    makeBalancePushNotification()
+                    balanceUseCase.thirdBalancePushShown()
+                } else if (it < SECOND_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isSecondBalancePushShown()) {
+                    makeBalancePushNotification()
+                    balanceUseCase.secondBalancePushShown()
+                } else if (it < FIRST_BALANCE_LIMIT && it > 0.0 && !balanceUseCase.isFirstBalancePushShown()) {
+                    makeBalancePushNotification()
+                    balanceUseCase.firstBalancePushShown()
                 }
             }
         }
@@ -239,7 +248,8 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 currencySpent = exchangeRate * statistics.tokensSpent
             )
             val countryName = activeProposal?.countryName ?: "Unknown"
-            val notificationTitle = getString(R.string.push_notification_connected_title, countryName)
+            val notificationTitle =
+                getString(R.string.push_notification_connected_title, countryName)
             val tokensSpent = PriceUtils.displayMoney(
                 ProposalPaymentMoney(
                     amount = connectionStatistic.tokensSpent,
@@ -297,7 +307,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             return this@MysteriumAndroidCoreService
         }
 
-        override fun startForegroundWithNotification(id: Int, notificationFactory: NotificationFactory) {
+        override fun startForegroundWithNotification(
+            id: Int,
+            notificationFactory: NotificationFactory
+        ) {
             startForeground(id, notificationFactory(this@MysteriumAndroidCoreService))
         }
 

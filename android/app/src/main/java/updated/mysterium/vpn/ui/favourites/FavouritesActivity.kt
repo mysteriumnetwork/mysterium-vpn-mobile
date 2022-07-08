@@ -6,11 +6,9 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.databinding.ActivityFavouritesBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.search.SearchActivity
 
 class FavouritesActivity : BaseActivity() {
@@ -47,7 +45,7 @@ class FavouritesActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onLeftButtonClicked {
             finish()
@@ -96,12 +94,4 @@ class FavouritesActivity : BaseActivity() {
         binding.qualityTextView.visibility = View.INVISIBLE
     }
 
-    private fun navigateToConnection(proposal: Proposal) {
-        val intent = Intent(this, ConnectionActivity::class.java).apply {
-            putExtra(ConnectionActivity.CONNECTION_TYPE_KEY, ConnectionType.MANUAL_CONNECT.type)
-            putExtra(ConnectionActivity.EXTRA_PROPOSAL_MODEL, proposal)
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
-        startActivity(intent)
-    }
 }

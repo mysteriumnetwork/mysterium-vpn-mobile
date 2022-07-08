@@ -1,48 +1,27 @@
 package updated.mysterium.vpn.network.usecase
 
-import com.google.gson.Gson
-import mysterium.CreateOrderRequest
 import mysterium.CreatePaymentGatewayOrderReq
 import mysterium.OrderUpdatedCallbackPayload
 import updated.mysterium.vpn.core.NodeRepository
-import updated.mysterium.vpn.model.payment.CardOrder
-import updated.mysterium.vpn.model.payment.CardinityGatewayLocalisation
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.Order
+import updated.mysterium.vpn.model.payment.Purchase
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
-    suspend fun createPaymentOrder(
-        currency: String,
-        identityAddress: String,
-        mystAmount: Double,
-        isLighting: Boolean
-    ): Order {
-        val req = CreateOrderRequest().apply {
-            this.payCurrency = currency
-            this.identityAddress = identityAddress
-            this.mystAmount = mystAmount
-            this.lightning = isLighting
-        }
-        return nodeRepository.createPaymentOrder(req)
+    companion object {
+        private const val currency = "USD"
     }
 
     suspend fun createPaymentGatewayOrder(
-        country: String,
         identityAddress: String,
-        mystAmount: Double,
-        currency: String,
-    ): CardOrder {
+        amountUSD: Double
+    ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
-            this.country = country
             this.payCurrency = currency
             this.identityAddress = identityAddress
-            this.mystAmount = mystAmount.toString()
-            this.gateway = Gateway.CARDINITY.gateway
-            this.gatewayCallerData = Gson()
-                .toJson(CardinityGatewayLocalisation("US"))
-                .toString()
-                .toByteArray()
+            this.amountUSD = amountUSD.toString()
+            this.gateway = Gateway.GOOGLE.gateway
         }
         return nodeRepository.createPaymentGatewayOrder(req)
     }
@@ -54,4 +33,9 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     }
 
     suspend fun getGateways() = nodeRepository.getGateways()
+
+    suspend fun isBalanceLimitExceeded() = nodeRepository.isBalanceLimitExceeded()
+
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        nodeRepository.gatewayClientCallback(purchase)
 }

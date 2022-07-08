@@ -55,7 +55,7 @@ class App : Application(), LifecycleObserver {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onMoveToBackgroung() {
+    fun onMoveToBackground() {
         // App goes to background, stop fetching periodical works
         allNodesViewModel.stopPeriodicalProposalFetch()
         exchangeRateViewModel.stopPeriodicallyExchangeRate()

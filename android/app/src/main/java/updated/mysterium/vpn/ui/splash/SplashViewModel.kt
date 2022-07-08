@@ -5,22 +5,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
+import updated.mysterium.vpn.notification.ReviveUserWork
+import java.util.concurrent.TimeUnit
 
-class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
-
-    private companion object {
-        const val TAG = "SplashViewModel"
-    }
+class SplashViewModel(
+    useCaseProvider: UseCaseProvider,
+    private val workManager: WorkManager
+) : ViewModel() {
 
     val navigateForward: LiveData<Unit>
         get() = _navigateForward
@@ -39,7 +43,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val loginUseCase = useCaseProvider.login()
     private val termsUseCase = useCaseProvider.terms()
     private val settingsUseCase = useCaseProvider.settings()
-    private val pushyUseCase = useCaseProvider.pushy()
     private var deferredNode = DeferredNode()
     private var service: MysteriumCoreService? = null
     private var isAnimationLoaded = false
@@ -85,8 +88,6 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun isTopUpFlowShown() = loginUseCase.isTopFlowShown()
 
-    fun isNewUser() = loginUseCase.isNewUser()
-
     fun animationLoaded() {
         if (isDataLoaded) {
             if (!isNavigateForward) {
@@ -120,13 +121,39 @@ class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 
-    fun getLastCryptoCurrency() = pushyUseCase.getCryptoCurrency()
-
-    fun getIdentityAddress() = liveDataResult {
-        connectionUseCase.getIdentityAddress()
-    }
-
     fun getIdentity() = liveDataResult {
         IdentityModel(connectionUseCase.getIdentity())
+    }
+
+    fun setUpInactiveUserPushyNotifications() {
+        val firstNotificationWork =
+            OneTimeWorkRequest
+                .Builder(ReviveUserWork::class.java)
+                .setInitialDelay(7, TimeUnit.DAYS)
+                .addTag(ReviveUserWork.WEEK_DELAY_NOTIFICATION)
+                .build()
+
+        val secondNotificationWork =
+            OneTimeWorkRequest
+                .Builder(ReviveUserWork::class.java)
+                .setInitialDelay(7, TimeUnit.DAYS)
+                .addTag(ReviveUserWork.TWO_WEEKS_DELAY_NOTIFICATION)
+                .build()
+
+        val lastNotificationWork =
+            OneTimeWorkRequest
+                .Builder(ReviveUserWork::class.java)
+                .setInitialDelay(14, TimeUnit.DAYS)
+                .addTag(ReviveUserWork.MONTH_DELAY_NOTIFICATION)
+                .build()
+
+        workManager.cancelAllWork()
+
+        workManager
+            .beginWith(firstNotificationWork)
+            .then(secondNotificationWork)
+            .then(lastNotificationWork)
+            .enqueue()
+
     }
 }

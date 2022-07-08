@@ -142,7 +142,7 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun inflateAppVersion() {
-        val version = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
+        val version = "${BuildConfig.VERSION_CODE}.${BuildConfig.VERSION_NAME}"
         val formattedVersion = getString(R.string.report_issue_app_version_template, version)
         binding.appVersionTextView.text = getString(R.string.menu_app_version, formattedVersion)
     }
@@ -153,10 +153,10 @@ class MenuActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.manualConnectToolbar.onLeftButtonClicked {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.manualConnectToolbar.onConnectClickListener {
-            navigateToConnectionOrHome()
+            navigateToConnectionIfConnectedOrHome()
         }
         binding.helpButton.setOnClickListener {
             composeEmail()
@@ -170,7 +170,7 @@ class MenuActivity : BaseActivity() {
         MENU_ITEMS.forEachIndexed { index, menuItem ->
             when (index) {
                 0 -> menuItem.onItemClickListener = {
-                    navigateToConnectionOrHome()
+                    navigateToConnectionIfConnectedOrHome()
                 }
                 1 -> menuItem.onItemClickListener = {
                     startActivity(Intent(this, WalletActivity::class.java))

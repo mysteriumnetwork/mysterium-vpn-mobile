@@ -218,4 +218,9 @@
 
     </androidx.cardview.widget.CardView>
 
+    <include
+        android:id="@+id/paymentProcessingLayout"
+        layout="@layout/item_payment_processing_banner"
+        app:layout_constraintBottom_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,11 @@
 package updated.mysterium.vpn.database.preferences
 
 enum class SharedPreferencesList(val prefName: String) {
-    //Logic parameters
     BALANCE("BALANCE"),
     MIN_BALANCE("MIN_BALANCE"),
-    BALANCE_PUSH("BALANCE_PUSH"),
+    FIRST_BALANCE_PUSH("FIRST_BALANCE_PUSH"),
+    SECOND_BALANCE_PUSH("SECOND_BALANCE_PUSH"),
+    THIRD_BALANCE_PUSH("THIRD_BALANCE_PUSH"),
     MIN_BALANCE_PUSH("MIN_BALANCE_PUSH"),
     LOGIN("LOGIN"),
     TOP_UP_FLOW("TOP_UP_FLOW"),
@@ -20,8 +21,5 @@ enum class SharedPreferencesList(val prefName: String) {
     PREVIOUS_FILTER_ID("PREVIOUS_FILTER_ID"),
     IS_REVIEW_SHOWN("IS_REVIEW_SHOWN"),
     IS_NAT_AVAILABLE("IS_NAT_AVAILABLE"),
-    DURATION("DURATION"),
-
-    //Pushy parameters
-    CRYPTO_PAYMENT("CRYPTO_PAYMENT"),
+    DURATION("DURATION")
 }

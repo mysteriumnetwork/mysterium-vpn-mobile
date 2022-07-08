@@ -1,18 +1,19 @@
 package updated.mysterium.vpn.network.usecase
 
 import mysterium.GetProposalsRequest
-import network.mysterium.vpn.R
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.NodeRepository
-import updated.mysterium.vpn.database.dao.NodeDao
 import updated.mysterium.vpn.database.entity.NodeEntity
-import updated.mysterium.vpn.model.manual.connect.CountryInfo
+import updated.mysterium.vpn.database.preferences.SharedPreferencesList
+import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.model.manual.connect.PriceLevel
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.model.nodes.ProposalItem
+import java.util.*
 
 class NodesUseCase(
     private val nodeRepository: NodeRepository,
-    private val nodeDao: NodeDao
+    private val sharedPreferencesManager: SharedPreferencesManager
 ) {
 
     companion object {
@@ -25,48 +26,34 @@ class NodesUseCase(
         nodeRepository.deferredNode = deferredNode
     }
 
-    suspend fun getAllProposals(): List<Proposal> {
-        return createProposalList(getAllNodes())
+    suspend fun getProposalList(): List<Proposal> {
+        val allNodes = requestProposals().map { NodeEntity(it) }
+        return createProposalList(allNodes)
     }
 
-    suspend fun getFavourites(proposals: List<Proposal>) = checkFavouriteRelevance(
-        allAvailableNodes = proposals,
-        favourites = createProposalList(nodeDao.getFavourites())
-    )
-
-    suspend fun addToFavourite(
-        proposal: Proposal
-    ) = nodeDao.addToFavourite(NodeEntity(proposal, true))
-
-    suspend fun deleteFromFavourite(proposal: Proposal) {
-        nodeDao.deleteFromFavourite(proposal.providerID + proposal.serviceType)
-    }
-
-    suspend fun isFavourite(nodeId: String): NodeEntity? = nodeDao.getById(nodeId)
-
-    private suspend fun getAllNodes(): List<NodeEntity> {
-        val proposalsRequest = GetProposalsRequest().apply {
-            this.refresh = true
-            serviceType = SERVICE_TYPE
-            natCompatibility = NAT_COMPATIBILITY
-        }
-        return nodeRepository.proposals(proposalsRequest)
-            .map { NodeEntity(it) }
-    }
-
-    private fun checkFavouriteRelevance(
-        allAvailableNodes: List<Proposal>,
-        favourites: List<Proposal>
+    suspend fun getFilteredProposals(
+        filterId: Int? = null,
+        countryCode: String? = null
     ): List<Proposal> {
-        favourites.forEach { favourite ->
-            val nodeEntity = allAvailableNodes.find { node ->
-                node.providerID == favourite.providerID
-            }
-            if (nodeEntity == null) {
-                favourite.isAvailable = false
-            }
+        return requestProposals(filterId, countryCode).map { Proposal(NodeEntity(it)) }
+    }
+
+    private suspend fun requestProposals(
+        filterId: Int? = null,
+        countryCode: String? = null
+    ): List<ProposalItem> {
+        val request = GetProposalsRequest().apply {
+            refresh = true
+            serviceType = SERVICE_TYPE
+            natCompatibility = getNatCompatibility()
         }
-        return favourites
+        filterId?.let {
+            request.presetID = filterId.toLong()
+        }
+        countryCode?.let {
+            request.locationCountry = countryCode.toUpperCase(Locale.ROOT)
+        }
+        return nodeRepository.proposals(request)
     }
 
     private fun createProposalList(allNodesList: List<NodeEntity>): List<Proposal> {
@@ -99,4 +86,16 @@ class NodesUseCase(
         }
         return parsedProposals
     }
+
+    private fun getNatCompatibility(): String {
+        val isNatAvailable = sharedPreferencesManager.getBoolPreferenceValue(
+            SharedPreferencesList.IS_NAT_AVAILABLE, true
+        )
+        return if (isNatAvailable) {
+            NAT_COMPATIBILITY
+        } else {
+            ""
+        }
+    }
+
 }

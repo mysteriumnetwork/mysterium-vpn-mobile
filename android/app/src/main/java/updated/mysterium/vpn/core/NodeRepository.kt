@@ -1,20 +1,29 @@
 package updated.mysterium.vpn.core
 
 import android.util.Log
-import com.beust.klaxon.Klaxon
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
 import mysterium.*
+import okio.buffer
+import okio.source
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.*
 import updated.mysterium.vpn.model.connection.Status
 import updated.mysterium.vpn.model.connection.StatusResponse
+import updated.mysterium.vpn.model.identity.MigrateHermesStatus
+import updated.mysterium.vpn.model.identity.MigrateHermesStatusResponse
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
-import updated.mysterium.vpn.model.payment.CardOrder
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.payment.PaymentGateway
+import updated.mysterium.vpn.model.payment.Purchase
 import updated.mysterium.vpn.model.statistics.Location
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
@@ -26,9 +35,16 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
-        const val TAG = "NodeRepository"
         const val MAX_BALANCE_LIMIT = 5
+        const val BALANCE_LIMIT_ERROR_MESSAGE =
+            "You can only top-up if you have less than 5 MYST in balance"
+        const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
     }
+
+    private val moshi = Moshi
+        .Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     // Get available proposals for mobile. Internally on Go side
     // proposals are fetched once and cached but it is possible to refresh cache by
@@ -87,6 +103,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
     }
 
+    // GatewayClientCallback triggers payment callback for google from client side.
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        withContext(Dispatchers.IO) {
+            val req = GatewayClientCallbackReq().apply {
+                this.identityAddress = purchase.identityAddress
+                this.gateway = purchase.gateway.gateway
+                this.googlePurchaseToken = purchase.googlePurchaseToken
+                this.googleProductID = purchase.googleProductID
+            }
+            deferredNode.await().gatewayClientCallback(req)
+        }
+
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
@@ -114,13 +142,29 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // if it is not created yet.
     suspend fun getIdentity(
         getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
-    ): Identity = withContext(Dispatchers.IO) {
+    ): Identity = withContext(Dispatchers.IO + SupervisorJob()) {
         val res = deferredNode.await().getIdentity(getIdentityRequest)
+        upgradeIdentityIfNeeded(res.identityAddress)
         Identity(
             address = res.identityAddress,
             channelAddress = res.channelAddress,
             registrationStatus = res.registrationStatus
         )
+    }
+
+    private suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+        withContext(Dispatchers.IO + handler) {
+            val statusResponse =
+                deferredNode.await().migrateHermesStatus(identityAddress).decodeToString()
+            val status =
+                MigrateHermesStatus.from(MigrateHermesStatusResponse.fromJSON(statusResponse))
+            if (status == MigrateHermesStatus.REQUIRED) {
+                deferredNode.await().migrateHermes(identityAddress)
+            }
+        }
     }
 
     // Get registration fees.
@@ -129,25 +173,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
         IdentityRegistrationFees(fee = res.fee)
     }
 
-    suspend fun createPaymentOrder(req: CreateOrderRequest) = withContext(Dispatchers.IO) {
-        val order = deferredNode.await().createOrder(req).decodeToString()
-        Log.d(TAG, "createPaymentOrder response: $order")
-        Order.fromJSON(order) ?: error("Could not parse JSON: $order")
-    }
-
     suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
-                val order = deferredNode.await().createPaymentGatewayOrder(req)
-                CardOrder.fromJSON(order.decodeToString()) ?: error("Could not parse JSON: $order")
-            } catch (e: Exception) {
-                if (isBalanceLimitExceeded()) {
-                    throw TopupPreconditionFailedException(
-                        e.message ?: "You can only top-up if you have less than 5 MYST in balance"
-                    )
-                } else {
-                    error(e)
-                }
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Log.d(TAG, "createPaymentOrder response: $order")
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+            } catch (exception: Exception) {
+                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
+                    throw TopupNoAmountException()
+                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
+                    throw TopupBalanceLimitException()
+                } else error(exception)
             }
         }
 
@@ -205,14 +242,17 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     suspend fun exportIdentity(
         address: String, newPassphrase: String
-    ): ByteArray = withContext(Dispatchers.IO) {
+    ): ByteArray = withContext(Dispatchers.IO + SupervisorJob()) {
+        upgradeIdentityIfNeeded(address)
         deferredNode.await().exportIdentity(address, newPassphrase)
     }
 
     suspend fun importIdentity(
         privateKey: ByteArray, passphrase: String
-    ): String = withContext(Dispatchers.IO) {
-        deferredNode.await().importIdentity(privateKey, passphrase)
+    ): String = withContext(Dispatchers.IO + SupervisorJob()) {
+        val identityAddress = deferredNode.await().importIdentity(privateKey, passphrase)
+        upgradeIdentityIfNeeded(identityAddress)
+        identityAddress
     }
 
     suspend fun getWalletEquivalent(balance: Double): Estimates = withContext(Dispatchers.IO) {
@@ -248,10 +288,19 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        val gateways = deferredNode.await().gateways
+        val gateways = deferredNode.await().getGateways(GetGatewaysRequest())
         PaymentGateway.listFromJSON(
             gateways.decodeToString()
         ) ?: error("Could not parse JSON: $gateways")
+    }
+
+    suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
+        val identityAddress = getIdentity().address
+        val balanceRequest = GetBalanceRequest().apply {
+            this.identityAddress = identityAddress
+        }
+        val balance = balance(balanceRequest)
+        balance > MAX_BALANCE_LIMIT
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
@@ -259,40 +308,45 @@ class NodeRepository(var deferredNode: DeferredNode) {
     }
 
     private suspend fun parseProposals(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<ProposalsResponse>(bytes.inputStream())
+        kotlin.runCatching {
+            moshi
+                .adapter(ProposalsResponse::class.java)
+                .fromJson(bytes.inputStream().source().buffer())
+        }.getOrNull()
     }
 
     private suspend fun getCountries(req: GetProposalsRequest) = withContext(Dispatchers.IO) {
         deferredNode.await().getCountries(req)
     }
 
-    private suspend fun parseCountries(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<Map<String, Int>>(bytes.inputStream())
-            ?.map { item ->
-                val countryCode = item.key
-                val proposalsNumber = item.value
-                CountryInfo.from(countryCode, proposalsNumber)
-            }
-            ?.filterNotNull()
+    private suspend fun parseCountries(bytes: ByteArray) = withContext(Dispatchers.IO) {
+        kotlin.runCatching {
+            moshi
+                .adapter<MutableMap<String, Int>>(
+                    Types.newParameterizedType(
+                        MutableMap::class.java,
+                        String::class.java,
+                        Int::class.javaObjectType,
+                    )
+                )
+                .fromJson(bytes.inputStream().source().buffer())?.mapNotNull {
+                    CountryInfo.from(it.key, it.value)
+                }
+        }.getOrNull()
     }
 
     private suspend fun getStatus() = withContext(Dispatchers.IO) {
         deferredNode.await().status
     }
 
-    private suspend fun parseStatus(bytes: ByteArray) = withContext(Dispatchers.Default) {
-        Klaxon().parse<StatusResponse>(bytes.inputStream())?.let {
-            Status(it)
-        }
-    }
-
-    private suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
-        val identityAddress = getIdentity().address
-        val balanceRequest = GetBalanceRequest().apply {
-            this.identityAddress = identityAddress
-        }
-        val balance = balance(balanceRequest)
-        balance > MAX_BALANCE_LIMIT
+    private suspend fun parseStatus(bytes: ByteArray) = withContext(Dispatchers.IO) {
+        kotlin.runCatching {
+            moshi
+                .adapter(StatusResponse::class.java)
+                .fromJson(bytes.inputStream().source().buffer())?.let {
+                    Status(it)
+                }
+        }.getOrNull()
     }
 
 }
