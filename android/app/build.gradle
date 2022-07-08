@@ -222,8 +222,8 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.6.0"
 
     //Mysterium
+    implementation "network.mysterium:terms:0.0.49"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
-    implementation "network.mysterium:terms:0.0.41"
     implementation "network.mysterium:mobile-node:1.9.3"
 
     testImplementation 'junit:junit:4.12'

@@ -27,6 +27,7 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
+        mavenCentral()
         maven {
             url "https://oss.sonatype.org/service/local/repositories/releases/content/"
         }
