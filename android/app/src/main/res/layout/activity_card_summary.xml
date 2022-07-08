@@ -101,11 +101,12 @@
 
             <TextView
                 android:id="@+id/mystValueTextView"
-                style="@style/TextAppearance.BodyRegular"
+                style="@style/TextAppearance.HeadSubNumbers"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:textColor="@color/card_payment_value"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/mystTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/mystTextView"
@@ -135,12 +136,13 @@
 
             <TextView
                 android:id="@+id/vatValueTextView"
-                style="@style/TextAppearance.BodyRegular"
+                style="@style/TextAppearance.HeadSubNumbers"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:text="-"
                 android:textColor="@color/card_payment_value"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/vatTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/vatTextView"
@@ -169,12 +171,13 @@
 
             <TextView
                 android:id="@+id/totalValueTextView"
-                style="@style/TextAppearance.BodyRegular"
+                style="@style/TextAppearance.HeadSubNumbers"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_padding_size_xlarge"
                 android:text="-"
-                android:textColor="@color/primary"
+                android:textColor="@color/card_payment_total"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/totalTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/totalTextView"
@@ -188,7 +191,7 @@
                 android:layout_marginStart="@dimen/margin_padding_size_xlarge"
                 android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
                 android:text="@string/card_payment_total"
-                android:textColor="@color/primary"
+                android:textColor="@color/card_payment_total"
                 app:layout_constraintBottom_toTopOf="@+id/divider1"
                 app:layout_constraintStart_toStartOf="parent" />
 

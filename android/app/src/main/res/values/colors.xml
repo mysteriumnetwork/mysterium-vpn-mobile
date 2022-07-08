@@ -44,6 +44,7 @@
     <color name="card_payment_title">#9090BB</color>
     <color name="card_payment_value">#5A597D</color>
     <color name="card_payment_description">#9090BB</color>
+    <color name="card_payment_total">#D61F85</color>
 
     <color name="manual_connect_items_empty_background">#F4F4FC</color>
     <color name="manual_connect_list_background">#FFFFFF</color>
