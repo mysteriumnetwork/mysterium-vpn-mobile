@@ -88,7 +88,7 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"1.9.3\""
+        buildConfigField "String", "NODE_VERSION", "\"1.9.5\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -227,7 +227,7 @@ dependencies {
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.49"
-    implementation "network.mysterium:mobile-node:1.9.4"
+    implementation "network.mysterium:mobile-node:1.9.5"
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
     //implementation files('/Users/macbook/AndroidStudioProjects/Mysterium.aar')
