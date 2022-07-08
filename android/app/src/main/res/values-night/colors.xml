@@ -23,6 +23,7 @@
     <color name="card_payment_title">#FFFFFF</color>
     <color name="card_payment_value">#FFFFFF</color>
     <color name="card_payment_description">#FFFFFF</color>
+    <color name="card_payment_total">#FFFFFF</color>
 
     <color name="manual_connect_list_background">#514D69</color>
     <color name="manual_connect_items_empty_background">#10FFFFFF</color>
