@@ -10,14 +10,15 @@
         style="@style/Widget.PaymentProcessingCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_size_medium"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginVertical="@dimen/margin_padding_size_small"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_padding_size_small"
+            android:padding="@dimen/margin_padding_size_medium"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView

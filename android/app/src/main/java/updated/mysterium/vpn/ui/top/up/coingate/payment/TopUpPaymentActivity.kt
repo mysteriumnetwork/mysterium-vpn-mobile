@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.top.up.coingate.payment
 
+import android.animation.ObjectAnimator
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
@@ -16,6 +18,7 @@ import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
+import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.PaymentStatusService
@@ -97,6 +100,9 @@ class TopUpPaymentActivity : BaseActivity() {
             topUpViewModel.accountFlowShown()
             navigateToConnectionIfConnectedOrHome(isBackTransition = false)
         }
+        binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
+            binding.paymentBalanceLimitLayout.root.visibility = View.GONE
+        }
     }
 
     private fun getExtra() {
@@ -128,7 +134,11 @@ class TopUpPaymentActivity : BaseActivity() {
             }
             result.onFailure { exception ->
                 Log.e(TAG, exception.localizedMessage ?: exception.toString())
-                showTopUpServerFailed()
+                if (exception is TopupBalanceLimitException) {
+                    showPaymentBalanceLimitError()
+                } else {
+                    showTopUpServerFailed()
+                }
             }
         }
     }
@@ -229,6 +239,18 @@ class TopUpPaymentActivity : BaseActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun showPaymentBalanceLimitError() {
+        binding.paymentBalanceLimitLayout.root.doOnLayout { view ->
+            val animationY = binding.backButton.y + binding.backButton.height + view.height
+            view.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(view, "translationY", animationY)
+                .apply {
+                    duration = 2000
+                    start()
+                }
+        }
     }
 
     private fun showRegistrationErrorPopUp() {

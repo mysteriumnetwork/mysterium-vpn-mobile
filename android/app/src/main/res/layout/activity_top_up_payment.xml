@@ -256,4 +256,9 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <include
+        android:id="@+id/paymentBalanceLimitLayout"
+        layout="@layout/item_payment_balance_limit_banner"
+        app:layout_constraintBottom_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
