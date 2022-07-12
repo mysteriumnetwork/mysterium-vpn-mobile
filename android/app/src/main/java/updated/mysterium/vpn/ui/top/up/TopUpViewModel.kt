@@ -24,8 +24,12 @@ class TopUpViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             }
             ?.orderOptions
             ?.amountsSuggestion
-            ?.mapIndexed { index, value ->
-                TopUpCardItem(value.toDouble(), value * usdEquivalent, index == 0)
+            ?.mapIndexed { index, amount ->
+                TopUpCardItem(
+                    mystAmount = amount / usdEquivalent,
+                    amountUSD = amount,
+                    isSelected = index == 0
+                )
             }
     }
 }

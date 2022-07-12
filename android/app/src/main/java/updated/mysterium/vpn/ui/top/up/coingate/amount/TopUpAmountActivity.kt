@@ -37,7 +37,7 @@ class TopUpAmountActivity : BaseActivity() {
         gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
         binding.priceRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
-            updateWalletEstimates(it.mystAmount)
+            updateWalletEstimates(it.amountUSD)
         }
     }
 
@@ -56,19 +56,17 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun handlePaymentMethod() {
         gateway?.let { gateway ->
-            viewModel.getAmountsUSD(gateway).observe(this) {
-                it.onSuccess { amountsUSD ->
-                    amountsUSD?.let {
-                        topUpAdapter.replaceAll(amountsUSD)
-                        amountsUSD.find { item ->
-                            item.isSelected
-                        }?.mystAmount?.let { mystAmount ->
-                            updateWalletEstimates(mystAmount)
+            viewModel.getAmountsUSD(gateway).observe(this) { result ->
+                result.onSuccess { list ->
+                    list?.let {
+                        topUpAdapter.replaceAll(list)
+                        val selectedItem = list.find { item -> item.isSelected }
+                        selectedItem?.amountUSD?.let { amountUSD ->
+                            updateWalletEstimates(amountUSD)
                         }
                     }
                 }
-
-                it.onFailure {
+                result.onFailure {
                     wifiNetworkErrorPopUp {
                         handlePaymentMethod()
                     }
