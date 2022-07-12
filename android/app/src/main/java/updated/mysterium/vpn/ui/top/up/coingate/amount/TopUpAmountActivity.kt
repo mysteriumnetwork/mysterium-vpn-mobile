@@ -37,7 +37,7 @@ class TopUpAmountActivity : BaseActivity() {
         gateway = Gateway.from(intent.extras?.getString(PAYMENT_METHOD_EXTRA_KEY))
         binding.priceRecycler.adapter = topUpAdapter
         topUpAdapter.onItemSelected = {
-            updateWalletEstimates(it.amountUSD)
+            updateWalletEstimates(it.mystAmount)
         }
     }
 
@@ -61,8 +61,8 @@ class TopUpAmountActivity : BaseActivity() {
                     list?.let {
                         topUpAdapter.replaceAll(list)
                         val selectedItem = list.find { item -> item.isSelected }
-                        selectedItem?.amountUSD?.let { amountUSD ->
-                            updateWalletEstimates(amountUSD)
+                        selectedItem?.mystAmount?.let { mystAmount ->
+                            updateWalletEstimates(mystAmount)
                         }
                     }
                 }
