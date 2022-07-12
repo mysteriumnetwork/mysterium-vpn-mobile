@@ -70,8 +70,6 @@ class PopUpReferralCode(layoutInflater: LayoutInflater) {
             background = ContextCompat.getDrawable(
                 dialog.context, R.drawable.shape_wrong_password
             )
-            text?.clear()
-            hint = ""
             clearFocus()
             hideKeyboard()
         }
@@ -83,7 +81,6 @@ class PopUpReferralCode(layoutInflater: LayoutInflater) {
             background = ContextCompat.getDrawable(
                 dialog.context, R.drawable.shape_password_field
             )
-            hint = dialog.context.getString(R.string.pop_up_referral_hint)
         }
     }
 
