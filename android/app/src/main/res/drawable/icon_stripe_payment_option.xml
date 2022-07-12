@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+      android:fillColor="@color/payment_method_stripe_icon_background_color" />
+  <path
+      android:pathData="M28.8,29H11.2C9.985,29 9,27.993 9,26.75V13.25C9,12.007 9.985,11 11.2,11H28.8C30.015,11 31,12.007 31,13.25V26.75C31,27.993 30.015,29 28.8,29ZM11.2,13.25V26.75H28.8V13.25H11.2ZM23.85,24.5C22.331,24.5 21.1,23.241 21.1,21.688C21.1,20.134 22.331,18.875 23.85,18.875C25.369,18.875 26.6,20.134 26.6,21.688C26.6,22.433 26.31,23.149 25.795,23.676C25.279,24.204 24.579,24.5 23.85,24.5ZM19.45,24.5C17.931,24.5 16.7,23.241 16.7,21.688C16.7,20.134 17.931,18.875 19.45,18.875C20.047,18.875 20.627,19.078 21.1,19.451C20.408,19.976 20.001,20.806 20.001,21.687C20.001,22.568 20.408,23.397 21.1,23.923C20.627,24.296 20.047,24.499 19.45,24.5Z"
+      android:fillColor="@color/payment_method_stripe_icon_color"/>
+</vector>
