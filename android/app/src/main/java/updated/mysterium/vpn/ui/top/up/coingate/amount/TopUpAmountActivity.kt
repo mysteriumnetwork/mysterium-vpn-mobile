@@ -56,19 +56,17 @@ class TopUpAmountActivity : BaseActivity() {
 
     private fun handlePaymentMethod() {
         gateway?.let { gateway ->
-            viewModel.getAmountsUSD(gateway).observe(this) {
-                it.onSuccess { amountsUSD ->
-                    amountsUSD?.let {
-                        topUpAdapter.replaceAll(amountsUSD)
-                        amountsUSD.find { item ->
-                            item.isSelected
-                        }?.mystAmount?.let { mystAmount ->
+            viewModel.getAmountsUSD(gateway).observe(this) { result ->
+                result.onSuccess { list ->
+                    list?.let {
+                        topUpAdapter.replaceAll(list)
+                        val selectedItem = list.find { item -> item.isSelected }
+                        selectedItem?.mystAmount?.let { mystAmount ->
                             updateWalletEstimates(mystAmount)
                         }
                     }
                 }
-
-                it.onFailure {
+                result.onFailure {
                     wifiNetworkErrorPopUp {
                         handlePaymentMethod()
                     }
