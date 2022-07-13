@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.google.android.play.core.review.ReviewManagerFactory
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
@@ -199,18 +198,6 @@ class ConnectionActivity : BaseActivity() {
                 if (isReviewAvailable) {
                     playStoreHelper?.showReview(this)
                 }
-            }
-        }
-    }
-
-    private fun showReview() {
-        val manager = ReviewManagerFactory.create(this)
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                manager.launchReviewFlow(this, task.result)
-            } else {
-                Log.e(TAG, task.exception?.localizedMessage ?: task.exception.toString())
             }
         }
     }
