@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.view.doOnLayout
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
@@ -186,23 +187,17 @@ class CardSummaryActivity : BaseActivity() {
     }
 
     private fun showPaymentBalanceLimitError() {
-        showBanner(binding.paymentBalanceLimitLayout.root)
+        binding.paymentBalanceLimitLayout.root.doOnLayout { view ->
+            val animationY = binding.backButton.y + binding.backButton.height + view.height
+            view.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(view, "translationY", animationY)
+                .apply {
+                    duration = 2000
+                    start()
+                }
+        }
         binding.confirmContainer.visibility = View.INVISIBLE
         binding.cancelContainer.visibility = View.VISIBLE
-    }
-
-    private fun showBanner(view: View) {
-        view.visibility = View.VISIBLE
-        val animationX =
-            (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
-        ObjectAnimator.ofFloat(
-            view,
-            "translationY",
-            animationX
-        ).apply {
-            duration = 2000
-            start()
-        }
     }
 
     private fun showPaymentPopUp() {

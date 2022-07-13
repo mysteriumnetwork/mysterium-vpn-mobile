@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.toolbar_base_connect.view.*
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import org.koin.android.ext.android.inject
@@ -270,18 +271,16 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private fun showPaymentProcessingBanner() {
-        binding.titleTextView.doOnLayout {
-            binding.paymentProcessingLayout.root.visibility = View.VISIBLE
-            val animationX =
-                (binding.titleTextView.x + resources.getDimension(R.dimen.margin_padding_size_medium))
-            ObjectAnimator.ofFloat(
-                binding.paymentProcessingLayout.root,
-                "translationY",
-                animationX
-            ).apply {
-                duration = 2000
-                start()
-            }
+        binding.paymentProcessingLayout.root.doOnLayout { view ->
+            val animationY = binding.manualConnectToolbar.leftButton.y +
+                    binding.manualConnectToolbar.leftButton.height +
+                    view.height
+            view.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(view, "translationY", animationY)
+                .apply {
+                    duration = 2000
+                    start()
+                }
         }
     }
 
