@@ -157,11 +157,8 @@
     <string name="top_up_amount_description">Выберите, сколько кредитов MYST\n вы хотите добавить в свой аккаунт</string>
     <string name="top_up_amount_confirm">Подтвердить</string>
     <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение.\n На данный момент MYST исключительно на блокчейне Ethereum!</string>
-    <string name="top_up_payment_title">Ожидание оплаты</string>
-    <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
-    <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
+
     <string name="top_up_crypto_lightning">Lightning Network</string>
-    <string name="top_up_usd_equivalent">Эквивалент в долларах США ≈ %.2f$</string>
     <string name="top_up_currency_equivalent">%1$s %2$s</string>
     <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>
@@ -187,15 +184,12 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Сводка заказа</string>
-    <string name="card_currency_title">Валюта и страна</string>
-    <string name="card_currency_description">Выберите страну для расчета НДС</string>
     <string name="card_payment_pay">Продолжить оплату</string>
     <string name="card_payment_stripe">Вы будете перенаправлены на страницу Stripe для оплаты.</string>
     <string name="card_payment_total">Всего к оплате</string>
     <string name="card_payment_vat_title">НДС</string>
     <string name="card_payment_vat_value">НДС(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Выберите страну или регион</string>
-    <string name="card_payment_myst_description">%.2f MYST пополнение</string>
+    <string name="card_payment_myst_top_up_description">%.2f MYST пополнение</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Важно! Загрузите свой частный код сейчас и надежно сохраните его, чтобы предотвратить блокировку аккаунта.</string>
@@ -206,11 +200,6 @@
     <string name="prepare_top_up_referral">Использовать реферальный код</string>
     <string name="prepare_top_up_now">Пополнить сейчас</string>
     <string name="prepare_top_up_later">Пополнить позже</string>
-
-    <!--  Payment method  -->
-    <string name="payment_method_title">Выберите способ платежа, чтобы продолжить</string>
-    <string name="credit_card">Кредитная карта</string>
-    <string name="crypto">Криптовалюта</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Использовать</string>
@@ -228,20 +217,8 @@
     <string name="pop_up_top_up_description">Кредиты заканчиваются</string>
     <string name="pop_up_top_up_positive">Пополнить сейчас</string>
     <string name="pop_up_top_up_negative">Продолжить</string>
-    <string name="pop_up_payment_canceled_title">Платеж\n отменен</string>
-    <string name="pop_up_payment_canceled_description">Вы отменили\n процесс оплаты</string>
     <string name="pop_up_insufficient_funds_title">Недостаточно\n средств</string>
     <string name="pop_up_insufficient_funds_description">Пожалуйста, пополните свой аккаунт</string>
-    <string name="pop_up_payment_successfully_title">Оплата\n успешно произведена</string>
-    <string name="pop_up_payment_successfully_done">Отличная работа</string>
-    <string name="pop_up_payment_successfully_close">Закрыть</string>
-    <string name="pop_up_payment_not_work_title">Платежный сервер\n не работает</string>
-    <string name="pop_up_payment_not_work_try_again">Пожалуйста, повторите попытку позже</string>
-    <string name="pop_up_payment_not_work_okay">Хорошо, понятно</string>
-    <string name="pop_up_payment_expired_title">Оплата\n не произведена</string>
-    <string name="pop_up_payment_expired_description">Время вышло</string>
-    <string name="pop_up_payment_expired_try_again">Попробовать ещё раз</string>
-    <string name="pop_up_payment_expired_later">Пополнить позже</string>
     <string name="pop_up_node_failed_title">Не удалось подключиться</string>
     <string name="pop_up_node_failed_description">Проверьте свою сеть</string>
     <string name="pop_up_node_failed_another">Выберите другой узел</string>
@@ -263,9 +240,6 @@
     <string name="pop_up_card_payment_button">Продолжить</string>
     <string name="pop_up_card_payment_title">Благодарим за покупку!</string>
     <string name="pop_up_card_payment_description">Обработка вашего платежа может занять некоторое время. Как только она будет закончена, вы получите уведомление.</string>
-    <string name="pop_up_crypto_payment_button">Продолжить</string>
-    <string name="pop_up_crypto_payment_title">Предупреждение!</string>
-    <string name="pop_up_crypto_payment_description">Обработка вашего платежа после этого шага может занять некоторое время. Как только платеж будет выполнен, вы получите уведомление.</string>
     <string name="pop_up_private_key_error">Неверный пароль</string>
     <string name="pop_up_import_wrong_password">Неверный пароль</string>
     <string name="pop_up_private_key_hint">Длина пароля 12–16 символов.</string>

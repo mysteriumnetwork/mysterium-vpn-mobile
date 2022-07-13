@@ -127,6 +127,17 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    flavorDimensions "default"
+    productFlavors {
+        playstore {
+            dimension = "default"
+            buildConfigField "String", "BUILD_VARIANT", "\"playstore\""
+        }
+        crypto {
+            dimension = "default"
+            buildConfigField "String", "BUILD_VARIANT", "\"crypto\""
+        }
+    }
     buildFeatures {
         dataBinding true
         buildFeatures.viewBinding = true
@@ -169,16 +180,13 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.5.0"
 
     //Google
-    implementation 'com.google.android.play:core:1.10.0'
-    implementation "com.google.android.play:core-ktx:1.8.1"
-    implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
-    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    playstoreImplementation "com.google.android.play:core-ktx:1.8.1"
     implementation "com.google.android.material:material:1.3.0-alpha01"
+    playstoreImplementation "com.android.billingclient:billing-ktx:4.0.0"
 
     //Koin
-    implementation 'org.koin:koin-core:2.2.0'
-    implementation 'org.koin:koin-androidx-viewmodel:2.2.0'
-    implementation "org.koin:koin-androidx-fragment:2.2.0"
+    implementation "io.insert-koin:koin-core:3.1.6"
+    implementation "io.insert-koin:koin-android:3.1.6"
 
     //Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
@@ -216,7 +224,7 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
     //QrCode
-    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    cryptoImplementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"

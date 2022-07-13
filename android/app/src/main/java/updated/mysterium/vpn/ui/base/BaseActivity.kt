@@ -12,12 +12,14 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.localisation.LocaleHelper
@@ -31,8 +33,6 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
-import updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountActivity
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -326,22 +326,37 @@ abstract class BaseActivity : AppCompatActivity() {
     fun navigateToPayment() {
         baseViewModel.getGateways().observe(this) {
             it.onSuccess { result ->
-                val gateways = result.filterNotNull()
-                val intent = if (gateways.size == 1) {
-                    Intent(this, TopUpAmountActivity::class.java).apply {
-                        putExtra(
-                            TopUpAmountActivity.PAYMENT_METHOD_EXTRA_KEY,
-                            gateways[0].gateway
-                        )
-                    }
+                val intent = if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
+                    Intent(
+                        this,
+                        Class.forName("updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdActivity")
+                    )
                 } else {
-                    val gatewayValues = gateways.map { it.gateway }
-                    PaymentMethodActivity.newIntent(this, gatewayValues)
+                    val gateways = result.filterNotNull()
+                    if (gateways.size == 1) {
+                        Intent(
+                            this,
+                            Class.forName("updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity")
+                        ).apply {
+                            putExtra(
+                                "PAYMENT_METHOD_EXTRA_KEY",
+                                gateways[0].gateway
+                            )
+                        }
+                    } else {
+                        val gatewayValues = gateways.map { it.gateway }
+                        Intent(
+                            this@BaseActivity,
+                            Class.forName("updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity")
+                        ).apply {
+                            putExtra("gatewaysExtra", gatewayValues.toTypedArray())
+                        }
+                    }
                 }
                 startActivity(intent)
-            }
-            it.onFailure { error ->
-                Log.e(TAG, "getPaymentScreen failed with error ${error.message}")
+                it.onFailure { error ->
+                    Log.e(TAG, "getPaymentScreen failed with error ${error.message}")
+                }
             }
         }
     }

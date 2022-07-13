@@ -8,6 +8,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import network.mysterium.vpn.BuildConfig
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -138,9 +140,16 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getGateways() = liveDataResult {
-        paymentUseCase
-            .getGateways()
-            .map { Gateway.from(it.name) }
-            .toMutableList()
+        if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
+            mutableListOf(Gateway.GOOGLE)
+        } else {
+            paymentUseCase
+                .getGateways()
+                .map { Gateway.from(it.name) }
+                .toMutableList()
+                .apply {
+                    remove(Gateway.GOOGLE)
+                }
+        }
     }
 }

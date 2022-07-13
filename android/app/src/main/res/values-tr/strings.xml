@@ -159,11 +159,8 @@
     <string name="top_up_amount_description">Hesabınıza ne kadar MYST kredisi\n eklenmesini istediğinizi seçin</string>
     <string name="top_up_amount_confirm">Onayla</string>
     <string name="top_up_crypto_description">Para ekleme işlemi için kullanılacak\n kripto para birimini seçin</string>
-    <string name="top_up_payment_title">Ödeme bekleniyor</string>
-    <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
-    <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
+
     <string name="top_up_crypto_lightning">Lightning Network</string>
-    <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
     <string name="top_up_currency_equivalent">%2$s %1$s</string>
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>
@@ -189,15 +186,12 @@
 
     <!--  Card payment  -->
     <string name="card_summary_title">Sipariş Özeti</string>
-    <string name="card_currency_title">Para Birimi ve Ülke</string>
-    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
     <string name="card_payment_pay">Ödemeye devam et</string>
     <string name="card_payment_stripe">Ödeme yapmak için Stripe ödeme sayfasına yönlendirileceksin.</string>
     <string name="card_payment_total">Toplam Borcunuz</string>
     <string name="card_payment_vat_title">KDV</string>
     <string name="card_payment_vat_value">KDV(%1.1f%%)</string>
-    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
-    <string name="card_payment_myst_description">%.2f MYST Yüklemesi</string>
+    <string name="card_payment_myst_top_up_description">%.2f MYST Yüklemesi</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Önemli! Kişisel anahtarını şimdi indir ve hesabının kilitlenmesini önlemek için güvenli bir şekilde sakla.</string>
@@ -208,11 +202,6 @@
     <string name="prepare_top_up_referral">Referans kodu kullan</string>
     <string name="prepare_top_up_now">Hemen para ekle</string>
     <string name="prepare_top_up_later">Daha sonra para ekle</string>
-
-    <!--  Payment method  -->
-    <string name="payment_method_title">Devam etmek için bir ödeme yöntemi seç</string>
-    <string name="credit_card">Kredi Kartı</string>
-    <string name="crypto">Kripto Para</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Doğru düğümü bulmak için\n sağ üstteki </string>
@@ -230,20 +219,8 @@
     <string name="pop_up_top_up_description">Krediler tükeniyor</string>
     <string name="pop_up_top_up_positive">Hemen para ekle</string>
     <string name="pop_up_top_up_negative">Devam</string>
-    <string name="pop_up_payment_canceled_title">Ödeme\n İptal Edildi</string>
-    <string name="pop_up_payment_canceled_description">Ödeme işlemini\n iptal ettiniz</string>
     <string name="pop_up_insufficient_funds_title">Para\n Yetersiz</string>
     <string name="pop_up_insufficient_funds_description">Lütfen hesabınıza para ekleyin</string>
-    <string name="pop_up_payment_successfully_title">Ödeme\n Başarılı</string>
-    <string name="pop_up_payment_successfully_done">Tebrikler</string>
-    <string name="pop_up_payment_successfully_close">Kapat</string>
-    <string name="pop_up_payment_not_work_title">Ödeme Sunucusu\n Çalışmıyor</string>
-    <string name="pop_up_payment_not_work_try_again">Lütfen daha sonra tekrar deneyin</string>
-    <string name="pop_up_payment_not_work_okay">Tamam, anladım</string>
-    <string name="pop_up_payment_expired_title">Ödeme\n Başarısız</string>
-    <string name="pop_up_payment_expired_description">Süre doldu</string>
-    <string name="pop_up_payment_expired_try_again">Tekrar dene</string>
-    <string name="pop_up_payment_expired_later">Daha sonra para ekle</string>
     <string name="pop_up_node_failed_title">Bağlantı Kurulamadı</string>
     <string name="pop_up_node_failed_description">Ağınızı kontrol edin</string>
     <string name="pop_up_node_failed_another">Başka bir düğüm seçin</string>
@@ -265,9 +242,6 @@
     <string name="pop_up_card_payment_button">Devam</string>
     <string name="pop_up_card_payment_title">Satın aldığın için teşekkürler!</string>
     <string name="pop_up_card_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen tamamlandığında sana bir bildirim göndereceğiz.</string>
-    <string name="pop_up_crypto_payment_button">Devam</string>
-    <string name="pop_up_crypto_payment_title">Uyarı!</string>
-    <string name="pop_up_crypto_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
     <string name="pop_up_private_key_error">Hatalı Parola</string>
     <string name="pop_up_import_wrong_password">Hatalı Parola</string>
     <string name="pop_up_private_key_hint">Parola uzunluğu 12–16 karakterdir</string>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Payment method  -->
+    <string name="payment_method_title">Выберите способ платежа, чтобы продолжить</string>
+    <string name="credit_card">Кредитная карта</string>
+    <string name="crypto">Криптовалюта</string>
+
+    <!--  Crypto payment  -->
+    <string name="top_up_payment_title">Ожидание оплаты</string>
+    <string name="top_up_payment_description">Отсканируйте этот QR-код, который содержит ваш адрес пополнения</string>
+    <string name="top_up_payment_link">Или воспользуйтесь ссылкой для оплаты</string>
+    <string name="top_up_usd_equivalent">Эквивалент в долларах США ≈ %.2f$</string>
+
+    <!-- Card currency -->
+    <string name="card_currency_title">Валюта и страна</string>
+    <string name="card_currency_description">Выберите страну для расчета НДС</string>
+    <string name="card_payment_country_hint">Выберите страну или регион</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_payment_canceled_title">Платеж\n отменен</string>
+    <string name="pop_up_payment_canceled_description">Вы отменили\n процесс оплаты</string>
+
+    <string name="pop_up_payment_successfully_title">Оплата\n успешно произведена</string>
+    <string name="pop_up_payment_successfully_done">Отличная работа</string>
+    <string name="pop_up_payment_successfully_close">Закрыть</string>
+
+    <string name="pop_up_payment_not_work_title">Платежный сервер\n не работает</string>
+    <string name="pop_up_payment_not_work_try_again">Пожалуйста, повторите попытку позже</string>
+    <string name="pop_up_payment_not_work_okay">Хорошо, понятно</string>
+
+    <string name="pop_up_payment_expired_title">Оплата\n не произведена</string>
+    <string name="pop_up_payment_expired_description">Время вышло</string>
+    <string name="pop_up_payment_expired_try_again">Попробовать ещё раз</string>
+    <string name="pop_up_payment_expired_later">Пополнить позже</string>
+
+    <string name="pop_up_crypto_payment_button">Продолжить</string>
+    <string name="pop_up_crypto_payment_title">Предупреждение!</string>
+    <string name="pop_up_crypto_payment_description">Обработка вашего платежа после этого шага может занять некоторое время. Как только платеж будет выполнен, вы получите уведомление.</string>
+
+</resources>

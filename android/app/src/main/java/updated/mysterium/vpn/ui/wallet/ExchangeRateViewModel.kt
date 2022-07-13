@@ -51,4 +51,7 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             usdEquivalent = balanceUseCase.getUsdEquivalent()
         }
     }
+
+    fun getMystEquivalent(price: Double) = price / usdEquivalent
+
 }

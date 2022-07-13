@@ -17,11 +17,11 @@ data class Order constructor(
     @Json(name = "gateway")
     val gateway: String,
     @Json(name = "receive_myst")
-    val receiveMyst: String,
+    val receiveMyst: Double,
     @Json(name = "pay_amount")
-    val payAmount: String?,
+    val payAmount: Double,
     @Json(name = "pay_currency")
-    val payCurrency: String?,
+    val payCurrency: String,
     @Json(name = "country")
     val country: String,
     @Json(name = "currency")
@@ -29,11 +29,11 @@ data class Order constructor(
     @Json(name = "items_sub_total")
     val itemsSubTotal: String,
     @Json(name = "tax_rate")
-    val taxRate: String,
+    val taxRate: Double,
     @Json(name = "tax_sub_total")
-    val taxSubTotal: String,
+    val taxSubTotal: Double,
     @Json(name = "order_total")
-    val orderTotal: String,
+    val orderTotal: Double,
     @Json(name = "public_gateway_data")
     val publicGatewayData: PublicGatewayData
 ) {

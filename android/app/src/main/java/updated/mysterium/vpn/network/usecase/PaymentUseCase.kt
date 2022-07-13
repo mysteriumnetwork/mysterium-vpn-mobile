@@ -8,6 +8,23 @@ import updated.mysterium.vpn.model.payment.*
 
 class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
+    companion object {
+        private const val currency = "USD"
+    }
+
+    suspend fun createPlayBillingPaymentGatewayOrder(
+        identityAddress: String,
+        amountUsd: Double
+    ): Order {
+        val req = CreatePaymentGatewayOrderReq().apply {
+            this.payCurrency = currency
+            this.identityAddress = identityAddress
+            this.amountUSD = amountUsd.toString()
+            this.gateway = Gateway.GOOGLE.gateway
+        }
+        return nodeRepository.createPlayBillingPaymentGatewayOrder(req)
+    }
+
     suspend fun createCoingatePaymentGatewayOrder(
         currency: String,
         identityAddress: String,
@@ -33,7 +50,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
         amountUSD: Double,
         currency: String,
         gateway: String
-    ): CardOrder {
+    ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.country = country
             this.payCurrency = currency

@@ -36,12 +36,6 @@ import updated.mysterium.vpn.ui.search.SearchViewModel
 import updated.mysterium.vpn.ui.settings.SettingsViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
-import updated.mysterium.vpn.ui.top.up.PaymentStatusViewModel
-import updated.mysterium.vpn.ui.top.up.TopUpViewModel
-import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.amount.TopUpAmountViewModel
-import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryViewModel
-import updated.mysterium.vpn.ui.top.up.coingate.payment.TopUpPaymentViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
 import updated.mysterium.vpn.ui.wallet.spendings.SpendingsViewModel
@@ -79,9 +73,6 @@ object Modules {
         }
         single {
             FilterViewModel(get())
-        }
-        single {
-            PaymentStatusViewModel(get())
         }
         single {
             HomeSelectionViewModel(get())
@@ -136,19 +127,10 @@ object Modules {
             TermsOfUseViewModel(get())
         }
         viewModel {
-            TopUpViewModel(get())
-        }
-        viewModel {
-            TopUpPaymentViewModel(get())
-        }
-        viewModel {
             SettingsViewModel(get())
         }
         viewModel {
             TopUpsListViewModel(get())
-        }
-        viewModel {
-            TopUpAmountViewModel(get())
         }
         viewModel {
             PrivateKeyViewModel(get())
@@ -166,17 +148,11 @@ object Modules {
             MenuViewModel(get())
         }
         viewModel {
-            CardSummaryViewModel(get())
-        }
-        viewModel {
             RegistrationViewModel(get())
-        }
-        viewModel {
-            CardCurrencyViewModel(get())
         }
     }
 
-    private fun provideDatabase(context: Context) = Room.databaseBuilder(
+    fun provideDatabase(context: Context) = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
         "MYSTERIUM_DATABASE"
