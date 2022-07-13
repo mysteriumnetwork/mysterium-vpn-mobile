@@ -4,10 +4,8 @@
     android:viewportWidth="70"
     android:viewportHeight="70">
     <path
-        android:fillAlpha="0.1"
         android:fillColor="@color/payment_method_crypto_icon_background_color"
-        android:pathData="M35,35m-35,0a35,35 0,1 1,70 0a35,35 0,1 1,-70 0"
-        android:strokeAlpha="0.1" />
+        android:pathData="M35,35m-35,0a35,35 0,1 1,70 0a35,35 0,1 1,-70 0" />
     <path
         android:fillColor="#00000000"
         android:pathData="M35,35m-17,0a17,17 0,1 1,34 0a17,17 0,1 1,-34 0"

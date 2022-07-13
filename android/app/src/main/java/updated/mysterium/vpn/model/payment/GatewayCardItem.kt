@@ -30,7 +30,7 @@ data class GatewayCardItem(
                     R.color.payment_method_paypal_icon_color
                 )
                 Gateway.STRIPE -> GatewayCardItem(
-                    R.string.stripe,
+                    R.string.credit_card,
                     R.drawable.icon_stripe_payment_option,
                     R.drawable.shape_rectangle_stripe_rounded_10,
                     R.color.payment_method_stripe_text_color,
