@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.google.android.play.core.review.ReviewManagerFactory
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
@@ -14,7 +15,6 @@ import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
 import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
-import updated.mysterium.vpn.common.showReview
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.model.connection.ConnectionType
@@ -193,8 +193,20 @@ class ConnectionActivity : BaseActivity() {
         viewModel.isReviewAvailable().observe(this) {
             it.onSuccess { isReviewAvailable ->
                 if (isReviewAvailable) {
-                    this.showReview()
+                    showReview()
                 }
+            }
+        }
+    }
+
+    private fun showReview() {
+        val manager = ReviewManagerFactory.create(this)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                manager.launchReviewFlow(this, task.result)
+            } else {
+                Log.e(TAG, task.exception?.localizedMessage ?: task.exception.toString())
             }
         }
     }
