@@ -1,11 +1,7 @@
 package updated.mysterium.vpn.di
 
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import updated.mysterium.vpn.core.NodeRepository
-import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
-import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdViewModel
 import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyViewModel
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentViewModel
