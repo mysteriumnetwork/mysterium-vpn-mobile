@@ -17,6 +17,16 @@
     <color name="create_account_trial_button_text">#FFFFFF</color>
     <color name="create_account_trial_button_text_tapped">#FFFFFF</color>
 
+    <color name="payment_method_stripe_background">#33ED5BAC</color>
+    <color name="payment_method_stripe_icon_color">#ED5BAC</color>
+    <color name="payment_method_stripe_icon_background_color">#33ED5BAC</color>
+    <color name="payment_method_stripe_text_color">#FFFFFF</color>
+    <color name="payment_method_paypal_icon_background_color">#335BB1EF</color>
+    <color name="payment_method_paypal_text_color">#FFFFFF</color>
+    <color name="payment_method_crypto_background">#33F6F6FA</color>
+    <color name="payment_method_crypto_icon_background_color">#339090BB</color>
+    <color name="payment_method_crypto_text_color">#FFFFFF</color>
+
     <color name="top_up_unselected_state">#10FFFFFF</color>
     <color name="card_payment_background">#60607B</color>
     <color name="card_payment_divider">#30FFFFFF</color>
@@ -56,4 +66,13 @@
     <color name="pop_up_negative_button_text">#70FFFFFF</color>
     <color name="pop_up_password_helper_text">#80FFFFFF</color>
     <color name="pop_up_icon_color">#9090BB</color>
+
+    <color name="payment_processing_card_shadow">#3C3857</color>
+    <color name="payment_processing_card_color">#504F6D</color>
+    <color name="payment_processing_text_color">#D0D0D8</color>
+
+    <color name="payment_balance_limit_card_shadow">#3C3857</color>
+    <color name="payment_balance_limit_card_color">#504F6D</color>
+    <color name="payment_balance_limit_text_color">#D0D0D8</color>
+
 </resources>
