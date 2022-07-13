@@ -10,11 +10,12 @@ import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
 import network.mysterium.vpn.databinding.PopUpNodeFailedBinding
 import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.injectOrNull
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
 import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
-import updated.mysterium.vpn.common.showReview
+import updated.mysterium.vpn.common.playstore.PlayStoreHelper
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
 import updated.mysterium.vpn.model.connection.ConnectionType
@@ -47,6 +48,8 @@ class ConnectionActivity : BaseActivity() {
     private val analytic: MysteriumAnalytic by inject()
     private val notificationManager: AppNotificationManager by inject()
     private var isDisconnectedByUser = false
+
+    private val playStoreHelper: PlayStoreHelper? by injectOrNull(PlayStoreHelper::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -193,7 +196,7 @@ class ConnectionActivity : BaseActivity() {
         viewModel.isReviewAvailable().observe(this) {
             it.onSuccess { isReviewAvailable ->
                 if (isReviewAvailable) {
-                    this.showReview()
+                    playStoreHelper?.showReview(this)
                 }
             }
         }
