@@ -121,3 +121,6 @@ iOSInjectionProject/
 
 # Firebase Crashlytics
 GoogleService-Info.plist
+
+# OS generated
+.DS_Store
