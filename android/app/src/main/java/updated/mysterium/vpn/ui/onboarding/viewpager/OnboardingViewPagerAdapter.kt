@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.model.onboarding.OnboardingScreen
 import updated.mysterium.vpn.ui.onboarding.OnboardingItemFragment
 
@@ -43,7 +44,7 @@ class OnboardingViewPagerAdapter(
         )
 
         val ONBOARDING_SCREENS_LIST =
-            if (BuildConfig.FLAVOR == "playstore") {
+            if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
                 listOf(
                     decentralizedScreen,
                     noSubscriptionScreen,

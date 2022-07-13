@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import network.mysterium.vpn.BuildConfig
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -139,7 +140,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     }
 
     fun getGateways() = liveDataResult {
-        if (BuildConfig.FLAVOR == "playstore") {
+        if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
             mutableListOf(Gateway.GOOGLE)
         } else {
             paymentUseCase

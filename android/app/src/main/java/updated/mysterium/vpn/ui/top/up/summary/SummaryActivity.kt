@@ -9,6 +9,7 @@ import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.exceptions.TopupNoAmountException
@@ -26,14 +27,14 @@ abstract class SummaryActivity : BaseActivity() {
 
     val onSuccess: (order: Order) -> Unit = { order ->
         when (BuildConfig.FLAVOR) {
-            "playstore" -> {
+            Flavors.PLAY_STORE.value -> {
                 setVatVisibility(false)
                 binding.totalValueTextView.text = getString(
                     R.string.card_payment_myst_description,
                     order.receiveMyst
                 )
             }
-            "crypto" -> {
+            Flavors.CRYPTO.value -> {
                 setVatVisibility(true)
                 binding.mystTextView.text = getString(
                     R.string.card_payment_myst_description, order.receiveMyst

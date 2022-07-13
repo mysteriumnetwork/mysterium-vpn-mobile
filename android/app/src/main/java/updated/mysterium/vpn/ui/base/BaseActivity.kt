@@ -19,6 +19,7 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.localisation.LocaleHelper
@@ -325,7 +326,7 @@ abstract class BaseActivity : AppCompatActivity() {
     fun navigateToPayment() {
         baseViewModel.getGateways().observe(this) {
             it.onSuccess { result ->
-                val intent = if (BuildConfig.FLAVOR == "playstore") {
+                val intent = if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
                     Intent(
                         this,
                         Class.forName("updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdActivity")
