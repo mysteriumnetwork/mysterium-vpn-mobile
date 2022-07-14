@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 import com.android.build.OutputFile
@@ -236,11 +235,6 @@ dependencies {
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.49"
     implementation "network.mysterium:mobile-node:1.9.5"
-    // Change NODE_VERSION in defaultConfig if updating version of mobile-node
-    // Comment network.mysterium:mobile-node and replace with your local path to use local node build.
-    //implementation files('/Users/macbook/AndroidStudioProjects/Mysterium.aar')
-    // implementation files('/Users/soffokl/go/src/github.com/mysteriumnetwork/node/build/package/Mysterium.aar')
-
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation(

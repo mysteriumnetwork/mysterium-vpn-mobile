@@ -3,7 +3,6 @@ package updated.mysterium.vpn.common.countries
 import updated.mysterium.vpn.model.settings.CountryISO
 import java.util.*
 
-
 object CountriesUtil {
 
     fun getAllResidentCountries(): List<CountryISO> {
