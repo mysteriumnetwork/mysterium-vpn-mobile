@@ -280,6 +280,7 @@
     <string name="pop_up_private_key_title">Download key</string>
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
+    <string name="pop_up_payment_title_thanks">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>

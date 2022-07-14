@@ -239,6 +239,7 @@
     <string name="pop_up_private_key_title">Anahtarı indirin</string>
     <string name="pop_up_private_key_description">Parolanızı Girin</string>
     <string name="pop_up_private_key_download">İndir</string>
+    <string name="pop_up_payment_title_thanks">Satın aldığın için teşekkürler!</string>
     <string name="pop_up_card_payment_button">Devam</string>
     <string name="pop_up_card_payment_title">Satın aldığın için teşekkürler!</string>
     <string name="pop_up_card_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen tamamlandığında sana bir bildirim göndereceğiz.</string>

@@ -236,6 +236,7 @@
     <string name="pop_up_private_key_title">Chave de download</string>
     <string name="pop_up_private_key_description">Digite a sua senha</string>
     <string name="pop_up_private_key_download">Fazer download</string>
+    <string name="pop_up_payment_title_thanks">Agradecemos a sua compra!</string>
     <string name="pop_up_card_payment_button">Continuar</string>
     <string name="pop_up_card_payment_title">Agradecemos a sua compra!</string>
     <string name="pop_up_card_payment_description">O pagamento pode levar algum tempo para ser processado. Enviaremos uma notificação quando ele for concluído.</string>

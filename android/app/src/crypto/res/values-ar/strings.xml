@@ -21,6 +21,10 @@
     <string name="pop_up_payment_canceled_title">تم إلغاء\n الدفع</string>
     <string name="pop_up_payment_canceled_description">لقد ألغيت\n عملية الدفع</string>
 
+    <string name="pop_up_payment_button">متابعة</string>
+    <string name="pop_up_payment_title_warning">تحذير!</string>
+    <string name="pop_up_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت بعد هذه الخطوة. سنرسل إليك إشعارًا بمجرد الإتمام الناجح لعملية الدفع.</string>
+
     <string name="pop_up_payment_successfully_title">نجح\n الدفع</string>
     <string name="pop_up_payment_successfully_done">أحسنت</string>
     <string name="pop_up_payment_successfully_close">إغلاق</string>

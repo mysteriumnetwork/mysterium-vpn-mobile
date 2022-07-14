@@ -21,6 +21,10 @@
     <string name="pop_up_payment_canceled_title">Ödeme\n İptal Edildi</string>
     <string name="pop_up_payment_canceled_description">Ödeme işlemini\n iptal ettiniz</string>
 
+    <string name="pop_up_payment_button">Devam</string>
+    <string name="pop_up_payment_title_warning">Uyarı!</string>
+    <string name="pop_up_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
+
     <string name="pop_up_payment_successfully_title">Ödeme\n Başarılı</string>
     <string name="pop_up_payment_successfully_done">Tebrikler</string>
     <string name="pop_up_payment_successfully_close">Kapat</string>

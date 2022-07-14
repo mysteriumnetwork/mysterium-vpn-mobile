@@ -23,6 +23,10 @@
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
     <string name="pop_up_payment_canceled_description">You canceled the\n payment process</string>
 
+    <string name="pop_up_payment_button">Continue</string>
+    <string name="pop_up_payment_title_warning">Warning!</string>
+    <string name="pop_up_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
+
     <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
     <string name="pop_up_payment_successfully_done">Well done</string>
     <string name="pop_up_payment_successfully_close">Close</string>

@@ -200,6 +200,7 @@ Wi-Fi</string>
     <string name="pop_up_private_key_title">تنزيل المفتاح</string>
     <string name="pop_up_private_key_description">اكتب كلمة مرورك</string>
     <string name="pop_up_private_key_download">تنزيل</string>
+    <string name="pop_up_payment_title_thanks">شكرًا على الشراء!</string>
     <string name="pop_up_card_payment_button">متابعة</string>
     <string name="pop_up_card_payment_title">شكرًا على الشراء!</string>
     <string name="pop_up_card_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت. سنرسل إليك إشعارًا بمجرد إتمام عملية الدفع.</string>

@@ -21,6 +21,10 @@
     <string name="pop_up_payment_canceled_title">付款\n 已取消</string>
     <string name="pop_up_payment_canceled_description">您已取消\n 付款流程</string>
 
+    <string name="pop_up_payment_button">继续</string>
+    <string name="pop_up_payment_title_warning">警告！</string>
+    <string name="pop_up_payment_description">完成这个步骤后，可能需要一些时间来处理您的付款。付款成功后，您会收到通知。</string>
+
     <string name="pop_up_payment_successfully_title">付款\n 成功</string>
     <string name="pop_up_payment_successfully_done">做得好</string>
     <string name="pop_up_payment_successfully_close">关闭</string>

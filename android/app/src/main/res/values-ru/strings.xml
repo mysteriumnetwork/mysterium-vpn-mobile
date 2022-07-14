@@ -237,6 +237,7 @@
     <string name="pop_up_private_key_title">Скачать ключ</string>
     <string name="pop_up_private_key_description">Введите свой пароль</string>
     <string name="pop_up_private_key_download">Скачать</string>
+    <string name="pop_up_payment_title_thanks">Благодарим за покупку!</string>
     <string name="pop_up_card_payment_button">Продолжить</string>
     <string name="pop_up_card_payment_title">Благодарим за покупку!</string>
     <string name="pop_up_card_payment_description">Обработка вашего платежа может занять некоторое время. Как только она будет закончена, вы получите уведомление.</string>
