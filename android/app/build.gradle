@@ -87,7 +87,7 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"1.9.3\""
+        buildConfigField "String", "NODE_VERSION", "\"1.9.5\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -124,6 +124,17 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
+        }
+    }
+    flavorDimensions "default"
+    productFlavors {
+        playstore {
+            dimension = "default"
+            buildConfigField "String", "BUILD_VARIANT", "\"playstore\""
+        }
+        crypto {
+            dimension = "default"
+            buildConfigField "String", "BUILD_VARIANT", "\"crypto\""
         }
     }
     buildFeatures {
@@ -168,17 +179,13 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.5.0"
 
     //Google
-    implementation 'com.google.android.play:core:1.10.0'
-    implementation "com.google.android.play:core-ktx:1.8.1"
-    implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
-    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    playstoreImplementation "com.google.android.play:core-ktx:1.8.1"
     implementation "com.google.android.material:material:1.3.0-alpha01"
-    implementation "com.android.billingclient:billing-ktx:4.0.0"
+    playstoreImplementation "com.android.billingclient:billing-ktx:4.0.0"
 
     //Koin
-    implementation 'org.koin:koin-core:2.2.0'
-    implementation 'org.koin:koin-androidx-viewmodel:2.2.0'
-    implementation "org.koin:koin-androidx-fragment:2.2.0"
+    implementation "io.insert-koin:koin-core:3.1.6"
+    implementation "io.insert-koin:koin-android:3.1.6"
 
     //Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
@@ -215,6 +222,9 @@ dependencies {
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
+    //QrCode
+    cryptoImplementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+
     //Markdown
     implementation "io.noties.markwon:core:4.6.2"
 
@@ -223,8 +233,8 @@ dependencies {
 
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
-    implementation "network.mysterium:terms:0.0.41"
-    implementation "network.mysterium:mobile-node:1.9.3"
+    implementation "network.mysterium:terms:0.0.49"
+    implementation "network.mysterium:mobile-node:1.9.5"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation(

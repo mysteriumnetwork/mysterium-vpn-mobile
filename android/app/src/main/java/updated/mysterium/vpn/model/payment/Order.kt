@@ -29,11 +29,11 @@ data class Order constructor(
     @Json(name = "items_sub_total")
     val itemsSubTotal: String,
     @Json(name = "tax_rate")
-    val taxRate: String,
+    val taxRate: Double,
     @Json(name = "tax_sub_total")
-    val taxSubTotal: String,
+    val taxSubTotal: Double,
     @Json(name = "order_total")
-    val orderTotal: String,
+    val orderTotal: Double,
     @Json(name = "public_gateway_data")
     val publicGatewayData: PublicGatewayData
 ) {

@@ -145,11 +145,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pop_up_referral_invalid_error"
                 android:textColor="@color/menu_subtitle_light_pink"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/registrationTokenEditText"
+                android:visibility="invisible"
+                android:layout_margin="@dimen/margin_padding_size_small"
+                app:layout_constraintBottom_toTopOf="@+id/applyButton"
                 app:layout_constraintEnd_toEndOf="@+id/registrationTokenEditText"
                 app:layout_constraintStart_toStartOf="@+id/registrationTokenEditText"
-                app:layout_constraintTop_toTopOf="@+id/registrationTokenEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/registrationTokenEditText" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/applyButton"
@@ -164,7 +165,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/registrationTokenEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/errorText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -37,6 +37,7 @@ platform :android do
   lane :internal do
     gradle(
       task: "clean bundle",
+      flavor: "playstore",
       build_type: "Release",
       project_dir: "android",
       print_command: false, # to prevent outputting passwords

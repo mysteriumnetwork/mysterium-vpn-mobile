@@ -42,7 +42,6 @@
         android:layout_gravity="center|top"
         android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
         android:layout_marginTop="@dimen/margin_padding_size_xsmall"
-        android:padding="@dimen/margin_padding_size_small"
         android:background="@drawable/shape_card_element_unselected"
         app:layout_constraintEnd_toStartOf="@+id/rightDynamicMargin"
         app:layout_constraintStart_toEndOf="@+id/leftDynamicMargin"
@@ -56,6 +55,15 @@
             android:layout_gravity="center"
             android:textColor="@color/onboarding_title_dark_blue"
             tools:text="5" />
+
+        <ImageView
+            android:id="@+id/mystHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:visibility="invisible"
+            android:src="@drawable/icon_crypto_hint"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 

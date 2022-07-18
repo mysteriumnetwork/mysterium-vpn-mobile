@@ -12,11 +12,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
-import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.notification.ReviveUserWork
 import java.util.concurrent.TimeUnit
@@ -43,6 +41,7 @@ class SplashViewModel(
     private val loginUseCase = useCaseProvider.login()
     private val termsUseCase = useCaseProvider.terms()
     private val settingsUseCase = useCaseProvider.settings()
+    private val pushyUseCase = useCaseProvider.pushy()
     private var deferredNode = DeferredNode()
     private var service: MysteriumCoreService? = null
     private var isAnimationLoaded = false
@@ -121,9 +120,7 @@ class SplashViewModel(
 
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 
-    fun getIdentity() = liveDataResult {
-        IdentityModel(connectionUseCase.getIdentity())
-    }
+    fun getLastCryptoCurrency() = pushyUseCase.getCryptoCurrency()
 
     fun setUpInactiveUserPushyNotifications() {
         val firstNotificationWork =

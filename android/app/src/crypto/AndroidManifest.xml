@@ -1,0 +1,38 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="network.mysterium.vpn"
+    tools:ignore="LockedOrientationActivity">
+
+    <application>
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>

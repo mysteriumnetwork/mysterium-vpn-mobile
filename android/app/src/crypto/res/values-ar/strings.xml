@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Payment method  -->
+    <string name="payment_method_title">يُرجى اختيار وسيلة دفع للمتابعة</string>
+    <string name="credit_card">البطاقة الائتمانية</string>
+    <string name="crypto">تشفير</string>
+
+    <!--  Crypto payment  -->
+    <string name="top_up_payment_title">في انتظار الدفع</string>
+    <string name="top_up_payment_description">امسح رمز الاستجابة السريعة هذا ضوئيًا الذي يحتوي على عنوان التعبئة الخاص بك</string>
+    <string name="top_up_payment_link">أو استخدم رابط الدفع</string>
+    <string name="top_up_usd_equivalent">ما يعادل دولار أمريكي ≈ %.2f دولار</string>
+
+    <!-- Card currency -->
+    <string name="card_currency_title">العملة والبلد</string>
+    <string name="card_currency_description">حدد بلدك لحساب ضريبة القيمة المضافة</string>
+    <string name="card_payment_country_hint">حدد البلد أو المنطقة</string>
+
+    <!--  Pop up  -->
+    <string name="pop_up_payment_canceled_title">تم إلغاء\n الدفع</string>
+    <string name="pop_up_payment_canceled_description">لقد ألغيت\n عملية الدفع</string>
+
+    <string name="pop_up_payment_button">متابعة</string>
+    <string name="pop_up_payment_title_warning">تحذير!</string>
+    <string name="pop_up_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت بعد هذه الخطوة. سنرسل إليك إشعارًا بمجرد الإتمام الناجح لعملية الدفع.</string>
+
+    <string name="pop_up_payment_successfully_title">نجح\n الدفع</string>
+    <string name="pop_up_payment_successfully_done">أحسنت</string>
+    <string name="pop_up_payment_successfully_close">إغلاق</string>
+
+    <string name="pop_up_payment_not_work_title">خادم الدفع\n لا يعمل</string>
+    <string name="pop_up_payment_not_work_try_again">يُرجى المحاولة مرة أخرى لاحقًا</string>
+    <string name="pop_up_payment_not_work_okay">موافق، حسنًا</string>
+
+    <string name="pop_up_payment_expired_title">الدفع غير\n ناجح</string>
+    <string name="pop_up_payment_expired_description">انتهى الوقت</string>
+    <string name="pop_up_payment_expired_try_again">حاول مرة أخرى</string>
+    <string name="pop_up_payment_expired_later">التعبئة لاحقًا</string>
+
+    <string name="pop_up_crypto_payment_title">تحذير!</string>
+    <string name="pop_up_crypto_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت بعد هذه الخطوة. سنرسل إليك إشعارًا بمجرد الإتمام الناجح لعملية الدفع.</string>
+    <string name="pop_up_crypto_payment_button">متابعة</string>
+
+</resources>

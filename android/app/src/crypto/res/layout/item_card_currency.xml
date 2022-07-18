@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardItemFrame"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
+    android:layout_marginTop="@dimen/margin_padding_size_xsmall"
+    android:layout_weight="1"
+    android:background="@drawable/shape_card_currency_unselected"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/cardItemValue"
+        style="@style/TextAppearance.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingHorizontal="@dimen/margin_padding_size_medium"
+        android:paddingVertical="@dimen/margin_padding_size_small"
+        android:textColor="@color/onboarding_title_dark_blue"
+        tools:text="$ USD" />
+
+</FrameLayout>
