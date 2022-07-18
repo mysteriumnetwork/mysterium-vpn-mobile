@@ -149,6 +149,7 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 .toMutableList()
                 .apply {
                     remove(Gateway.GOOGLE)
+                    sortBy { it?.gateway }
                 }
         }
     }
