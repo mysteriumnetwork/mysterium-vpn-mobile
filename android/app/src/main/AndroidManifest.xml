@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="network.mysterium.vpn">
+    package="network.mysterium.vpn"
+    tools:ignore="LockedOrientationActivity">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -81,7 +82,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.price.TopUpPriceActivity"
+            android:name="updated.mysterium.vpn.ui.top.up.amount.usd.AmountUsdActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -106,14 +107,6 @@
 
         <activity
             android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.summary.PaymentSummaryActivity"
             android:screenOrientation="portrait" />
 
         <receiver

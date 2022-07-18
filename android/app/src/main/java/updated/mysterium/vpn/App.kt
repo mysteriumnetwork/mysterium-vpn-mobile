@@ -20,6 +20,7 @@ import updated.mysterium.vpn.common.countries.Countries
 import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
 import updated.mysterium.vpn.core.MysteriumAndroidCoreService
 import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.di.FlavorModules
 import updated.mysterium.vpn.di.Modules
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
@@ -42,7 +43,7 @@ class App : Application(), LifecycleObserver {
         Countries.loadBitmaps()
         startKoin {
             androidContext(this@App)
-            modules(Modules.main)
+            modules(Modules.main, FlavorModules.main)
         }
         bindMysteriumService()
     }

@@ -35,7 +35,6 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
-        const val MAX_BALANCE_LIMIT = 5
         const val BALANCE_LIMIT_ERROR_MESSAGE =
             "You can only top-up if you have less than 5 MYST in balance"
         const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
@@ -173,11 +172,39 @@ class NodeRepository(var deferredNode: DeferredNode) {
         IdentityRegistrationFees(fee = res.fee)
     }
 
-    suspend fun createPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createPlayBillingPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Log.d(TAG, "createPaymentOrder response: $order")
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+            } catch (exception: Exception) {
+                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
+                    throw TopupNoAmountException()
+                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
+                    throw TopupBalanceLimitException()
+                } else error(exception)
+            }
+        }
+
+    suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+        withContext(Dispatchers.IO) {
+            try {
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
+                Order.fromJSON(order) ?: error("Could not parse JSON: $order")
+            } catch (exception: Exception) {
+                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
+                    throw TopupNoAmountException()
+                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
+                    throw TopupBalanceLimitException()
+                } else error(exception)
+            }
+        }
+
+    suspend fun createCardPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq): Order =
+        withContext(Dispatchers.IO) {
+            try {
+                val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
                 if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
@@ -288,19 +315,13 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun getGateways() = withContext(Dispatchers.IO) {
-        val gateways = deferredNode.await().getGateways(GetGatewaysRequest())
+        val request = GetGatewaysRequest().apply {
+            optionsCurrency = "USD"
+        }
+        val gateways = deferredNode.await().getGateways(request)
         PaymentGateway.listFromJSON(
             gateways.decodeToString()
         ) ?: error("Could not parse JSON: $gateways")
-    }
-
-    suspend fun isBalanceLimitExceeded() = withContext(Dispatchers.IO) {
-        val identityAddress = getIdentity().address
-        val balanceRequest = GetBalanceRequest().apply {
-            this.identityAddress = identityAddress
-        }
-        val balance = balance(balanceRequest)
-        balance > MAX_BALANCE_LIMIT
     }
 
     private suspend fun getProposals(req: GetProposalsRequest) = withContext(Dispatchers.IO) {

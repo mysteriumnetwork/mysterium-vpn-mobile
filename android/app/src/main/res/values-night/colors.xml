@@ -17,12 +17,13 @@
     <color name="create_account_trial_button_text">#FFFFFF</color>
     <color name="create_account_trial_button_text_tapped">#FFFFFF</color>
 
-    <color name="payment_method_card_background">#33D61F85</color>
-    <color name="payment_method_google_text_color">#FFFFFF</color>
-
     <color name="top_up_unselected_state">#10FFFFFF</color>
-    <color name="payment_background">#60607B</color>
-    <color name="payment_total">#FFFFFF</color>
+    <color name="card_payment_background">#60607B</color>
+    <color name="card_payment_divider">#30FFFFFF</color>
+    <color name="card_payment_title">#FFFFFF</color>
+    <color name="card_payment_value">#FFFFFF</color>
+    <color name="card_payment_description">#FFFFFF</color>
+    <color name="card_payment_total">#FFFFFF</color>
 
     <color name="manual_connect_list_background">#514D69</color>
     <color name="manual_connect_items_empty_background">#10FFFFFF</color>
@@ -55,4 +56,13 @@
     <color name="pop_up_negative_button_text">#70FFFFFF</color>
     <color name="pop_up_password_helper_text">#80FFFFFF</color>
     <color name="pop_up_icon_color">#9090BB</color>
+
+    <color name="payment_processing_card_shadow">#3C3857</color>
+    <color name="payment_processing_card_color">#504F6D</color>
+    <color name="payment_processing_text_color">#D0D0D8</color>
+
+    <color name="payment_balance_limit_card_shadow">#3C3857</color>
+    <color name="payment_balance_limit_card_color">#504F6D</color>
+    <color name="payment_balance_limit_text_color">#D0D0D8</color>
+
 </resources>

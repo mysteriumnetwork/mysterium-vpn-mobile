@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.7">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/mystAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/myst_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btcAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/btc_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/ethAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/eth_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/ltcAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/ltc_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/daiAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/dai_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/tAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/t_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/dogeAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/doge_animation" />
+
+</FrameLayout>

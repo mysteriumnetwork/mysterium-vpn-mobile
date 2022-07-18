@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="payment_method_stripe_background">#F6F6FA</color>
+    <color name="payment_method_stripe_icon_color">#9090BB</color>
+    <color name="payment_method_stripe_icon_background_color">#1A9090BB</color>
+    <color name="payment_method_stripe_text_color">#5A597D</color>
+    <color name="payment_method_paypal_background">#335BB1EF</color>
+    <color name="payment_method_paypal_icon_color">#5BB1EF</color>
+    <color name="payment_method_paypal_icon_background_color">#1A5BB1EF</color>
+    <color name="payment_method_paypal_text_color">#5BB1EF</color>
+    <color name="payment_method_crypto_background">#F6F6FA</color>
+    <color name="payment_method_crypto_icon_color">#9090BB</color>
+    <color name="payment_method_crypto_icon_background_color">#1A9090BB</color>
+    <color name="payment_method_crypto_text_color">#5A597D</color>
+
+</resources>

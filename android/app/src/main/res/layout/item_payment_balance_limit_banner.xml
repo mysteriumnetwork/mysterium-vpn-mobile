@@ -10,7 +10,8 @@
         style="@style/Widget.PaymentBalanceLimitCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_size_medium"
+        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
+        android:layout_marginVertical="@dimen/margin_padding_size_small"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -35,7 +36,7 @@
                 android:layout_gravity="center"
                 android:paddingStart="@dimen/margin_padding_size_medium_large"
                 android:text="@string/payment_balance_limit_text"
-                android:textColor="@android:color/white"
+                android:textColor="@color/payment_balance_limit_text_color"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
