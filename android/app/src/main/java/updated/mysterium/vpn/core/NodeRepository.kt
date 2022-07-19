@@ -36,7 +36,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
         const val BALANCE_LIMIT_ERROR_MESSAGE =
-            "You can only top-up if you have less than 5 MYST in balance"
+            "You can only top-up if you have less than 50 MYST in balance"
         const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
     }
 
