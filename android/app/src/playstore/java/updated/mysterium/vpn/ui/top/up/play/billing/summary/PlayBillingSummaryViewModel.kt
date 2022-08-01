@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import mysterium.RegisterIdentityRequest
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
@@ -15,7 +14,6 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.payment.PlayBillingOrderRequestInfo
 import updated.mysterium.vpn.model.payment.Purchase
-import updated.mysterium.vpn.model.wallet.IdentityModel
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class PlayBillingSummaryViewModel(
@@ -77,19 +75,6 @@ class PlayBillingSummaryViewModel(
         balanceUseCase.clearMinBalancePopUpHistory()
         balanceUseCase.clearBalancePushHistory()
         balanceUseCase.clearMinBalancePushHistory()
-    }
-
-    fun registerAccount() = liveDataResult {
-        val identity = connectionUseCase.getIdentity()
-        val identityModel = IdentityModel(identity)
-        val req = RegisterIdentityRequest().apply {
-            identityAddress = identityModel.address
-            token?.let {
-                this.token = it
-            }
-        }
-        connectionUseCase.registerIdentity(req)
-        connectionUseCase.registrationFees()
     }
 
     fun accountFlowShown() {
