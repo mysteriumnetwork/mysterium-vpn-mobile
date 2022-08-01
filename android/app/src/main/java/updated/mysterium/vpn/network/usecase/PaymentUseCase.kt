@@ -72,4 +72,8 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     }
 
     suspend fun getGateways() = nodeRepository.getGateways()
+
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        nodeRepository.gatewayClientCallback(purchase)
+
 }
