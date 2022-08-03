@@ -233,9 +233,9 @@ dependencies {
 
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
-    implementation "network.mysterium:terms:0.0.49"
+    implementation "network.mysterium:terms:0.0.50"
     implementation "network.mysterium:mobile-node:1.11.1"
-
+    
     testImplementation 'junit:junit:4.12'
     androidTestImplementation(
             'androidx.test:core:1.2.0',
