@@ -216,7 +216,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
-        val orders = deferredNode.await().listOrders(req)
+        val orders = deferredNode.await().listPaymentGatewayOrders(req)
         Order.listFromJSON(orders.decodeToString()) ?: error("Could not parse JSON: $orders")
     }
 

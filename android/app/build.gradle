@@ -87,7 +87,7 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"1.9.5\""
+        buildConfigField "String", "NODE_VERSION", "\"1.11.1\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -234,8 +234,8 @@ dependencies {
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.50"
-    implementation "network.mysterium:mobile-node:1.9.5"
-
+    implementation "network.mysterium:mobile-node:1.11.1"
+    
     testImplementation 'junit:junit:4.12'
     androidTestImplementation(
             'androidx.test:core:1.2.0',
