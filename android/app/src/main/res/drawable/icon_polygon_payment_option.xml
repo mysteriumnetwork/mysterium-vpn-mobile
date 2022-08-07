@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+      android:fillColor="@color/payment_method_icon_background_color" />
+  <path
+      android:pathData="M20,24V25.7143L24.1831,28L29,25.2819L28.9072,19.6829L24.8159,17.2818L15.1824,22.7175L11.0929,20.3176L11,14.7185L15.8155,12L20,14.2857V16"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/payment_method_icon_color"
+      android:strokeLineCap="round"/>
+</vector>
