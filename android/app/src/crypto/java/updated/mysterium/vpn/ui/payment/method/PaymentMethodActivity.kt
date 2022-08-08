@@ -79,7 +79,7 @@ class PaymentMethodActivity : BaseActivity() {
 
     private fun navigateToTopUp(paymentOption: PaymentOption) {
         val intent = Intent(this, TopUpAmountUsdActivity::class.java).apply {
-            putExtra(TopUpAmountUsdActivity.PAYMENT_METHOD_EXTRA_KEY, paymentOption.value)
+            putExtra(TopUpAmountUsdActivity.PAYMENT_OPTION_EXTRA_KEY, paymentOption.value)
         }
         startActivity(intent)
     }
