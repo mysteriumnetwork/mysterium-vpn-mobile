@@ -27,6 +27,7 @@
 
     <string name="pop_up_payment_successfully_title">نجح\n الدفع</string>
     <string name="pop_up_payment_successfully_done">أحسنت</string>
+    <!-- TODO: re-translate -->
     <string name="pop_up_payment_successfully_close">إغلاق</string>
 
     <string name="pop_up_payment_not_work_title">خادم الدفع\n لا يعمل</string>

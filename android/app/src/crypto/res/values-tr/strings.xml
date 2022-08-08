@@ -27,6 +27,7 @@
 
     <string name="pop_up_payment_successfully_title">Ödeme\n Başarılı</string>
     <string name="pop_up_payment_successfully_done">Tebrikler</string>
+    <!-- TODO: re-translate -->
     <string name="pop_up_payment_successfully_close">Kapat</string>
 
     <string name="pop_up_payment_not_work_title">Ödeme Sunucusu\n Çalışmıyor</string>

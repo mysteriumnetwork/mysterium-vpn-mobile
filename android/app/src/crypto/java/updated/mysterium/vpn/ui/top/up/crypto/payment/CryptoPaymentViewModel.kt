@@ -74,6 +74,10 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         connectionUseCase.registrationFees()
     }
 
+    fun channelAddress() = liveDataResult {
+        connectionUseCase.getIdentity().channelAddress
+    }
+
     private suspend fun registerOrderCallback() {
         paymentUseCase.paymentOrderCallback {
             if (orderId.toString() == it.orderID) {

@@ -32,7 +32,7 @@
 
     <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
     <string name="pop_up_payment_successfully_done">Well done</string>
-    <string name="pop_up_payment_successfully_close">Close</string>
+    <string name="pop_up_payment_successfully_close">To home screen</string>
 
     <string name="pop_up_payment_not_work_title">Payment Server\n Doesn\'t Work</string>
     <string name="pop_up_payment_not_work_try_again">Please try again later</string>

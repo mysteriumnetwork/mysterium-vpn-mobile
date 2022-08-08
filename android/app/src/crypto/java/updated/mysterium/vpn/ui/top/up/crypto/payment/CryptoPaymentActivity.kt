@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
+import androidx.lifecycle.distinctUntilChanged
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
@@ -18,10 +19,12 @@ import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.model.payment.Order
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.PaymentStatusService
+import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import java.math.BigDecimal
@@ -40,6 +43,7 @@ class CryptoPaymentActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCryptoPaymentBinding
     private val viewModel: CryptoPaymentViewModel by inject()
+    private val balanceViewModeL: BalanceViewModel by inject()
     private var link: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,30 +105,59 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun getExtra() {
+        setPaymentAnimationParams()
+        startService()
+        if (intent.extras?.getBoolean(MYST_POLYGON_EXTRA_KEY) == true) {
+            waitForPayment()
+        } else {
+            createPaymentOrder()
+        }
+    }
+
+    private fun setPaymentAnimationParams() {
         val param = binding.paymentAnimation.layoutParams as ViewGroup.MarginLayoutParams
         param.setMargins(0, ANIMATION_MARGIN, 0, ANIMATION_MARGIN)
         binding.paymentAnimation.layoutParams = param
+    }
 
+    private fun waitForPayment() {
+        viewModel.channelAddress().observe(this) {
+            setLoaderVisibility(false)
+            it.onSuccess { channelAddress ->
+                showTopUpAddress(channelAddress)
+                setCurrencyEquivalentVisibility(false)
+                setUsdEquivalentVisibility(false)
+                setTimerVisibility(false)
+                val initialBalance = balanceViewModeL.balanceLiveData.value
+                balanceViewModeL.balanceLiveData.distinctUntilChanged()
+                    .observeOnce(this) { newBalance ->
+                        if (initialBalance != newBalance) showTopUpSuccessfully()
+                    }
+            }
+            it.onFailure {
+                showTopUpServerFailed()
+            }
+        }
+    }
+
+    private fun createPaymentOrder() {
         val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY) ?: ""
         val amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)
         val isLightning = intent.extras?.getBoolean(CRYPTO_IS_LIGHTNING_EXTRA_KEY)
-        amountUSD?.let {
-            binding.usdEquivalentTextView.text = getString(
-                R.string.top_up_usd_equivalent, amountUSD
-            )
-        }
-
-        startService()
 
         viewModel.createPaymentOrder(
             currency,
             amountUSD ?: 0.0,
             isLightning ?: false
         ).observe(this) { result ->
-            binding.loader.visibility = View.GONE
-            binding.loader.cancelAnimation()
-            result.onSuccess {
-                paymentLoaded(currency, it)
+            setLoaderVisibility(false)
+            result.onSuccess { order ->
+                order.publicGatewayData.paymentURL?.let { link ->
+                    showTopUpAddress(link)
+                }
+                setCurrencyEquivalentVisibility(true, currency, order)
+                setUsdEquivalentVisibility(true, amountUSD)
+                setTimerVisibility(true)
                 showPaymentPopUp()
             }
             result.onFailure { exception ->
@@ -138,16 +171,28 @@ class CryptoPaymentActivity : BaseActivity() {
         }
     }
 
-    private fun paymentLoaded(currency: String, order: Order) {
-        order.publicGatewayData.paymentURL?.let {
-            showQrCode(it)
+    private fun setLoaderVisibility(isVisible: Boolean) {
+        if (isVisible) {
+            binding.loader.visibility = View.VISIBLE
+        } else {
+            binding.loader.visibility = View.GONE
+            binding.loader.cancelAnimation()
         }
-        showEquivalent(currency, order)
-        binding.timer.visibility = View.VISIBLE
-        binding.timer.startTimer()
-        binding.qrShadow.visibility = View.VISIBLE
-        binding.qrCodeFrame.visibility = View.VISIBLE
-        binding.currencyEquivalentFrame.visibility = View.VISIBLE
+    }
+
+    private fun setTimerVisibility(isVisible: Boolean) {
+        if (isVisible) {
+            binding.timer.visibility = View.VISIBLE
+            binding.timer.startTimer()
+        } else {
+            binding.timer.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showTopUpAddress(link: String) {
+        this.link = link
+        binding.linkValueTextView.text = link
+        showQrCode(link)
     }
 
     private fun showQrCode(link: String) {
@@ -160,6 +205,8 @@ class CryptoPaymentActivity : BaseActivity() {
             qrSize
         )
         binding.qrCode.setImageBitmap(bitmap)
+        binding.qrShadow.visibility = View.VISIBLE
+        binding.qrCodeFrame.visibility = View.VISIBLE
     }
 
     private fun calculateQrSize(): Int {
@@ -169,15 +216,34 @@ class CryptoPaymentActivity : BaseActivity() {
         return abs(fullSize * 0.8).toInt() // size with spaces
     }
 
-    private fun showEquivalent(currency: String, order: Order) {
-        binding.linkValueTextView.text = link
-        val amount = order.payAmount // round currency amount
-            ?.toBigDecimal()
-            ?.setScale(6, BigDecimal.ROUND_HALF_EVEN)
-            ?.toPlainString()
-        binding.currencyEquivalentTextView.text = getString(
-            R.string.top_up_currency_equivalent, amount, currency
-        )
+    private fun setCurrencyEquivalentVisibility(
+        isVisible: Boolean,
+        currency: String? = null,
+        order: Order? = null
+    ) {
+        if (isVisible) {
+            binding.currencyEquivalentFrame.visibility = View.VISIBLE
+            val amount = order?.payAmount // round currency amount
+                ?.toBigDecimal()
+                ?.setScale(6, BigDecimal.ROUND_HALF_EVEN)
+                ?.toPlainString()
+            binding.currencyEquivalentTextView.text = getString(
+                R.string.top_up_currency_equivalent, amount, currency
+            )
+        } else {
+            binding.currencyEquivalentFrame.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setUsdEquivalentVisibility(isVisible: Boolean, amountUSD: Double? = null) {
+        if (isVisible && amountUSD != null) {
+            binding.usdEquivalentTextView.visibility = View.VISIBLE
+            binding.usdEquivalentTextView.text = getString(
+                R.string.top_up_usd_equivalent, amountUSD
+            )
+        } else {
+            binding.usdEquivalentTextView.visibility = View.INVISIBLE
+        }
     }
 
     private fun copyToClipboard() {

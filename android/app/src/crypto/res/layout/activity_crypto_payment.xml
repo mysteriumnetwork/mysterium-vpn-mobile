@@ -219,6 +219,7 @@
                 android:layout_marginTop="@dimen/margin_padding_size_large"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 android:text="@string/top_up_usd_equivalent"
+                android:visibility="invisible"
                 android:textColor="@color/manual_connect_divider_grey_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
