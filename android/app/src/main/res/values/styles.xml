@@ -466,12 +466,6 @@
         <item name="cardBackgroundColor">@color/payment_balance_limit_card_color</item>
     </style>
 
-    <style name="Widget.PaymentMethodCardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">10dp</item>
-        <item name="cardElevation">0dp</item>
-        <item name="cardBackgroundColor">@color/payment_method_card_background_color</item>
-    </style>
-
     <!--  TabLayoutStyle -->
     <style name="FloatTabLayout" parent="Widget.Design.TabLayout">
         <item name="android:background">@android:color/transparent</item>
