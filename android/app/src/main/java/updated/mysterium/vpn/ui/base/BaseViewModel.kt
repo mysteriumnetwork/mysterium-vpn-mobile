@@ -13,7 +13,7 @@ import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
-import updated.mysterium.vpn.model.payment.Gateway
+import updated.mysterium.vpn.model.payment.PaymentOption
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -139,17 +139,17 @@ class BaseViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
     }
 
-    fun getGateways() = liveDataResult {
+    fun getPaymentOptions() = liveDataResult {
         if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
-            mutableListOf(Gateway.GOOGLE)
+            mutableListOf(PaymentOption.GOOGLE)
         } else {
             paymentUseCase
                 .getGateways()
-                .map { Gateway.from(it.name) }
+                .map { PaymentOption.from(it.name) }
                 .toMutableList()
                 .apply {
-                    remove(Gateway.GOOGLE)
-                    sortBy { it?.gateway }
+                    remove(PaymentOption.GOOGLE)
+                    sortBy { it?.value }
                 }
         }
     }

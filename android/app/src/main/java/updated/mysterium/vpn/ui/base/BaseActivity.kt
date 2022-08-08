@@ -26,6 +26,7 @@ import updated.mysterium.vpn.common.localisation.LocaleHelper
 import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
+import updated.mysterium.vpn.model.payment.PaymentOption
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.base.BaseViewModel.Companion.CONNECT_BALANCE_LIMIT
@@ -324,7 +325,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun navigateToPayment() {
-        baseViewModel.getGateways().observe(this) {
+        baseViewModel.getPaymentOptions().observe(this) {
             it.onSuccess { result ->
                 val intent = if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
                     Intent(
@@ -332,24 +333,26 @@ abstract class BaseActivity : AppCompatActivity() {
                         Class.forName("updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdActivity")
                     )
                 } else {
-                    val gateways = result.filterNotNull()
-                    if (gateways.size == 1) {
+                    val paymentOptions: List<PaymentOption> = result.filterNotNull()
+                    if (paymentOptions.size == 1) {
                         Intent(
                             this,
                             Class.forName("updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity")
                         ).apply {
                             putExtra(
                                 "PAYMENT_METHOD_EXTRA_KEY",
-                                gateways[0].gateway
+                                paymentOptions[0].value
                             )
                         }
                     } else {
-                        val gatewayValues = gateways.map { it.gateway }
                         Intent(
                             this@BaseActivity,
                             Class.forName("updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity")
                         ).apply {
-                            putExtra("gatewaysExtra", gatewayValues.toTypedArray())
+                            putExtra(
+                                "paymentOptionsExtra",
+                                paymentOptions.map { it.value }.toTypedArray()
+                            )
                         }
                     }
                 }

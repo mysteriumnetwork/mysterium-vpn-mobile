@@ -33,6 +33,7 @@ class CryptoPaymentActivity : BaseActivity() {
         const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
         const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
         const val CRYPTO_IS_LIGHTNING_EXTRA_KEY = "CRYPTO_IS_LIGHTNING_EXTRA_KEY"
+        const val MYST_POLYGON_EXTRA_KEY = "MYST_POLYGON_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
     }
