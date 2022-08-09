@@ -35,9 +35,7 @@ class PaymentMethodActivity : BaseActivity() {
     private fun setUpPaymentMethodList() {
         PaymentMethodAdapter().apply {
             replaceAll(getPaymentOptions())
-            onItemSelected = {
-                onPaymentOptionSelected(it)
-            }
+            onItemSelected = ::onPaymentOptionSelected
             binding.paymentMethodList.adapter = this
         }
     }

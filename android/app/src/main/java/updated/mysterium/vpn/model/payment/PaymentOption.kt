@@ -11,11 +11,7 @@ enum class PaymentOption(val value: String, val gateway: Gateway?) {
     MYST_POLYGON("myst_polygon", null);
 
     companion object {
-        fun from(gateway: String?): PaymentOption? {
-            return values().find {
-                it.value == gateway
-            }
-        }
+        fun from(gateway: String?): PaymentOption? = values().find { it.value == gateway }
     }
 
 }
