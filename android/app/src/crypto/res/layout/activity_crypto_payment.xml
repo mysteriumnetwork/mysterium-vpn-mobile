@@ -175,8 +175,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_link_edit_text"
-                    android:textColor="@android:color/white">
+                    android:background="@drawable/shape_link_edit_text">
 
                     <TextView
                         android:id="@+id/linkValueTextView"
@@ -188,7 +187,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textAlignment="center"
-                        android:textColor="@color/manual_connect_country_dark_blue"
+                        android:textColor="@color/crypto_payment_address_text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/copyButton"
                         app:layout_constraintStart_toStartOf="parent"
@@ -219,6 +218,7 @@
                 android:layout_marginTop="@dimen/margin_padding_size_large"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 android:text="@string/top_up_usd_equivalent"
+                android:visibility="invisible"
                 android:textColor="@color/manual_connect_divider_grey_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

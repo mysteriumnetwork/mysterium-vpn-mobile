@@ -73,7 +73,7 @@
                 android:layout_marginVertical="@dimen/margin_padding_size_xxlarge"
                 android:text="@string/pop_up_payment_successfully_done"
                 android:textAlignment="center"
-                android:textColor="@color/pop_up_title"
+                android:textColor="@color/pop_up_successful_title_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon" />

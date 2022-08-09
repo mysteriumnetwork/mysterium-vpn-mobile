@@ -69,8 +69,7 @@ class CryptoCurrencyActivity : BaseActivity() {
     }
 
     private fun getCryptoList() = listOf(
-        CryptoCardItem(CryptoAnimationView.MYST, false, R.raw.myst_animation, true),
-        CryptoCardItem(CryptoAnimationView.BTC, true, R.raw.btc_animation),
+        CryptoCardItem(CryptoAnimationView.BTC, true, R.raw.btc_animation, true),
         CryptoCardItem(CryptoAnimationView.ETH, false, R.raw.eth_animation),
         CryptoCardItem(CryptoAnimationView.LTC, true, R.raw.ltc_animation),
         CryptoCardItem(CryptoAnimationView.DAI, false, R.raw.dai_animation),

@@ -27,6 +27,7 @@
 
     <string name="pop_up_payment_successfully_title">Оплата\n успешно произведена</string>
     <string name="pop_up_payment_successfully_done">Отличная работа</string>
+    <!-- TODO: re-translate -->
     <string name="pop_up_payment_successfully_close">Закрыть</string>
 
     <string name="pop_up_payment_not_work_title">Платежный сервер\n не работает</string>
