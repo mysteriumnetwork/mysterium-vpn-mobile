@@ -49,13 +49,13 @@ class SplashActivity : BaseActivity() {
     private var isLoadingStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyDarkMode()
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
             isLoadingStarted = savedInstanceState.getBoolean("isLoadingStarted")
         }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        applyDarkMode()
         ensureVpnServicePermission()
         configure()
         subscribeViewModel()
