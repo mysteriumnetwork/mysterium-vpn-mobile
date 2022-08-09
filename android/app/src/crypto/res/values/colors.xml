@@ -6,4 +6,8 @@
     <color name="payment_method_icon_color">#9090BB</color>
     <color name="payment_method_icon_background_color">#339090BB</color>
 
+    <color name="crypto_payment_address_background_color">#F6F6FA</color>
+    <color name="crypto_payment_address_border_color">#B1B0D7</color>
+    <color name="crypto_payment_address_text_color">#803C3857</color>
+
 </resources>
