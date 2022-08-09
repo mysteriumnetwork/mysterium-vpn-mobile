@@ -128,10 +128,10 @@ class CryptoPaymentActivity : BaseActivity() {
                 setCurrencyEquivalentVisibility(false)
                 setUsdEquivalentVisibility(false)
                 setTimerVisibility(false)
-                val initialBalance = balanceViewModeL.balanceLiveData.value
+                val initialBalance = balanceViewModeL.balanceLiveData.value ?: 0.0
                 balanceViewModeL.balanceLiveData.distinctUntilChanged()
                     .observeOnce(this) { newBalance ->
-                        if (initialBalance != newBalance) showTopUpSuccessfully()
+                        if (newBalance > initialBalance) showTopUpSuccessfully()
                     }
             }
             it.onFailure {
