@@ -10,8 +10,8 @@ import android.media.RingtoneManager
 import android.media.RingtoneManager.TYPE_NOTIFICATION
 import android.net.Uri
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
-import me.pushy.sdk.Pushy
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -121,7 +121,9 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
             .setVibrate(longArrayOf(0, 400, 250, 400))
             .setSound(RingtoneManager.getDefaultUri(TYPE_NOTIFICATION))
 
-        Pushy.setNotificationChannel(builder, context)
+        with(NotificationManagerCompat.from(context)) {
+            notify(0, builder.build())
+        }
 
         return builder
     }

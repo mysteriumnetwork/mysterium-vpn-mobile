@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.top.up.play.billing.summary
 
-import android.os.Bundle
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.model.payment.OrderRequestInfo
@@ -70,9 +69,9 @@ class PlayBillingSummaryActivity : SummaryActivity() {
 
     private fun paymentConfirmed() {
         setButtonAvailability(true)
-        pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
-        pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
-        pushyNotifications.subscribe("USD")
+        pushyNotifications?.unsubscribe(PushyTopic.PAYMENT_FALSE)
+        pushyNotifications?.subscribe(PushyTopic.PAYMENT_TRUE)
+        pushyNotifications?.subscribe("USD")
         viewModel.clearPopUpTopUpHistory()
         registerAccount()
     }

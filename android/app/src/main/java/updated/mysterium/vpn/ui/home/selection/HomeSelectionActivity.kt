@@ -119,7 +119,7 @@ class HomeSelectionActivity : BaseActivity() {
     private fun subscribeToResidentCountry() {
         viewModel.getResidentCountry().observe(this) {
             it.onSuccess { country ->
-                pushyNotifications.subscribe(country)
+                pushyNotifications?.subscribe(country)
             }
         }
     }

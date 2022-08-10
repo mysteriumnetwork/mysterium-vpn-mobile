@@ -9,9 +9,10 @@ import kotlinx.coroutines.launch
 import me.pushy.sdk.Pushy
 import updated.mysterium.vpn.common.extensions.getPushySubcategoryName
 import updated.mysterium.vpn.common.extensions.getSubcategoryName
+import updated.mysterium.vpn.common.playstore.NotificationsHelper
 import updated.mysterium.vpn.model.pushy.PushyTopic
 
-class Notifications(private val activity: Activity) {
+class Notifications(private val activity: Activity): NotificationsHelper {
 
     companion object {
         private const val TAG = "Notifications"
@@ -20,13 +21,13 @@ class Notifications(private val activity: Activity) {
     var deviceToken: String? = null
         private set
 
-    fun listen() {
+    override fun listen() {
         if (Pushy.isRegistered(activity.applicationContext)) {
             Pushy.listen(activity.applicationContext)
         }
     }
 
-    fun register(onRegisteredAction: () -> Unit) {
+    override fun register(onRegisteredAction: () -> Unit) {
         if (!Pushy.isRegistered(activity.applicationContext)) {
             val handler = CoroutineExceptionHandler { _, exception ->
                 Log.e(TAG, "Failed to register to pushy.me", exception)
@@ -43,7 +44,7 @@ class Notifications(private val activity: Activity) {
         }
     }
 
-    fun subscribe(pushyTopic: String) {
+    override fun subscribe(pushyTopic: String) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, "Failed to subscribe", exception)
         }
@@ -54,7 +55,7 @@ class Notifications(private val activity: Activity) {
         }
     }
 
-    fun subscribe(pushyTopic: PushyTopic) {
+    override fun subscribe(pushyTopic: PushyTopic) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, "Failed to subscribe", exception)
         }
@@ -65,7 +66,7 @@ class Notifications(private val activity: Activity) {
         }
     }
 
-    fun unsubscribe(pushyTopic: PushyTopic) {
+    override fun unsubscribe(pushyTopic: PushyTopic) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, "Failed to unsubscribe", exception)
         }
