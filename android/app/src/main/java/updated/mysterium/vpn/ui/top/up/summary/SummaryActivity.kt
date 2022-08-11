@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import kotlinx.android.synthetic.main.item_payment_balance_limit_banner.view.*
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
@@ -178,7 +177,7 @@ abstract class SummaryActivity : BaseActivity() {
 
     private fun showBanner(limit: Double) {
         binding.paymentBalanceLimitLayout.root.visibility = View.VISIBLE
-        binding.paymentBalanceLimitLayout.root.paymentProcessingTextView.text =
+        binding.paymentBalanceLimitLayout.balanceLimitTextView.text =
             getString(R.string.payment_balance_limit_text, limit)
         val animationX =
             (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
