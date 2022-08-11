@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingStart="@dimen/margin_padding_size_medium_large"
-                android:text="@string/payment_balance_limit_text"
                 android:textColor="@color/payment_balance_limit_text_color"
                 tools:ignore="RtlSymmetry" />
 

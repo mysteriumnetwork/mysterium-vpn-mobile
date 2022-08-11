@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import kotlinx.android.synthetic.main.item_payment_balance_limit_banner.view.*
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
@@ -58,7 +59,7 @@ abstract class SummaryActivity : BaseActivity() {
         Log.e(TAG, error.message ?: error.toString())
         when (error) {
             is TopupBalanceLimitException -> {
-                showPaymentBalanceLimitError()
+                showPaymentBalanceLimitError(error.limit)
             }
             is TopupNoAmountException -> {
                 showNoAmountPopUp {
@@ -165,8 +166,8 @@ abstract class SummaryActivity : BaseActivity() {
         }
     }
 
-    private fun showPaymentBalanceLimitError() {
-        showBanner(binding.paymentBalanceLimitLayout.root)
+    private fun showPaymentBalanceLimitError(limit: Double) {
+        showBanner(limit)
         binding.confirmContainer.visibility = View.INVISIBLE
         binding.cancelContainer.visibility = View.VISIBLE
     }
@@ -175,12 +176,14 @@ abstract class SummaryActivity : BaseActivity() {
         startService(Intent(this, PaymentStatusService::class.java))
     }
 
-    private fun showBanner(view: View) {
-        view.visibility = View.VISIBLE
+    private fun showBanner(limit: Double) {
+        binding.paymentBalanceLimitLayout.root.visibility = View.VISIBLE
+        binding.paymentBalanceLimitLayout.root.paymentProcessingTextView.text =
+            getString(R.string.payment_balance_limit_text, limit)
         val animationX =
             (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
         ObjectAnimator.ofFloat(
-            view,
+            binding.paymentBalanceLimitLayout.root,
             "translationY",
             animationX
         ).apply {

@@ -35,8 +35,7 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 class NodeRepository(var deferredNode: DeferredNode) {
 
     private companion object {
-        const val BALANCE_LIMIT_ERROR_MESSAGE =
-            "You can only top-up if you have less than 50 MYST in balance"
+        val BALANCE_LIMIT_ERROR_REGEX_PATTERN = "You can only top-up if you have less than \\d+.\\d{2} MYST in balance"
         const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
     }
 
@@ -179,11 +178,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 Log.d(TAG, "createPaymentOrder response: $order")
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
-                    throw TopupNoAmountException()
-                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
-                    throw TopupBalanceLimitException()
-                } else error(exception)
+                handlePaymentException(exception)
             }
         }
 
@@ -193,11 +188,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
-                    throw TopupNoAmountException()
-                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
-                    throw TopupBalanceLimitException()
-                } else error(exception)
+                handlePaymentException(exception)
             }
         }
 
@@ -207,13 +198,29 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
-                    throw TopupNoAmountException()
-                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
-                    throw TopupBalanceLimitException()
-                } else error(exception)
+                handlePaymentException(exception)
             }
         }
+
+    private fun handlePaymentException(exception: Exception): Nothing {
+        if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
+            throw TopupNoAmountException()
+        } else if (isBalanceLimitException(exception.message.toString())) {
+            throw TopupBalanceLimitException(getBalanceLimit(exception.message.toString()))
+        } else error(exception)
+    }
+
+    private fun isBalanceLimitException(exceptionMessage: String?): Boolean {
+        return exceptionMessage?.let {
+            Regex(BALANCE_LIMIT_ERROR_REGEX_PATTERN).containsMatchIn(it)
+        } ?: false
+    }
+
+    private fun getBalanceLimit(exceptionMessage: String?): Double {
+        return exceptionMessage?.let {
+            Regex("\\d+\\.\\d{2}").find(it)?.value?.toDouble()
+        } ?: 5.0
+    }
 
     suspend fun listOrders(req: ListOrdersRequest) = withContext(Dispatchers.IO) {
         val orders = deferredNode.await().listPaymentGatewayOrders(req)
