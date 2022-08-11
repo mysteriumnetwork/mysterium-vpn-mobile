@@ -70,9 +70,9 @@ class PlayBillingSummaryActivity : SummaryActivity() {
 
     private fun paymentConfirmed() {
         setButtonAvailability(true)
-        pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
-        pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
-        pushyNotifications.subscribe("USD")
+        pushyNotifications?.unsubscribe(PushyTopic.PAYMENT_FALSE)
+        pushyNotifications?.subscribe(PushyTopic.PAYMENT_TRUE)
+        pushyNotifications?.subscribe("USD")
         viewModel.clearPopUpTopUpHistory()
         registerAccount()
     }

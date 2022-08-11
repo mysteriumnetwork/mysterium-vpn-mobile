@@ -68,9 +68,6 @@ class CardSummaryActivity : SummaryActivity() {
         val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)
         val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY)
         if (currency != null && amountUSD != null) {
-            pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
-            pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
-            pushyNotifications.subscribe(currency)
             viewModel.updateLastCurrency(currency)
         }
         viewModel.clearPopUpTopUpHistory()

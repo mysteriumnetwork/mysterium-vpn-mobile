@@ -60,9 +60,6 @@ class CryptoPaymentActivity : BaseActivity() {
             val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
             val amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)?.toFloat()
             if (currency != null && amountUSD != null) {
-                pushyNotifications.unsubscribe(PushyTopic.PAYMENT_FALSE)
-                pushyNotifications.subscribe(PushyTopic.PAYMENT_TRUE)
-                pushyNotifications.subscribe(currency)
                 viewModel.updateLastCurrency(currency)
             }
             viewModel.clearPopUpTopUpHistory()

@@ -19,16 +19,17 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import network.mysterium.vpn.databinding.PopUpTopUpAccountBinding
 import network.mysterium.vpn.databinding.PopUpWiFiErrorBinding
 import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.injectOrNull
 import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.localisation.LocaleHelper
+import updated.mysterium.vpn.common.playstore.NotificationsHelper
 import updated.mysterium.vpn.model.connection.ConnectionType
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.payment.PaymentOption
 import updated.mysterium.vpn.model.pushy.PushyTopic
-import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.base.BaseViewModel.Companion.CONNECT_BALANCE_LIMIT
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
@@ -41,9 +42,9 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
     private val homeSelectionViewModel: HomeSelectionViewModel by inject()
+    protected val pushyNotifications: NotificationsHelper? by injectOrNull(NotificationsHelper::class.java)
     protected var isInternetAvailable = true
     protected var connectionState = ConnectionState.NOTCONNECTED
-    protected val pushyNotifications = Notifications(this)
     private val dialogs = emptyList<Dialog>().toMutableList()
     private var insufficientFoundsDialog: AlertDialog? = null
     private var wifiErrorDialog: AlertDialog? = null
@@ -182,9 +183,9 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun subscribeViewModel() {
         baseViewModel.balance.observe(this) {
             if (it < BaseViewModel.BALANCE_LIMIT) {
-                pushyNotifications.subscribe(PushyTopic.LESS_THEN_HALF_MYST)
+                pushyNotifications?.subscribe(PushyTopic.LESS_THEN_HALF_MYST)
             } else {
-                pushyNotifications.unsubscribe(PushyTopic.LESS_THEN_HALF_MYST)
+                pushyNotifications?.unsubscribe(PushyTopic.LESS_THEN_HALF_MYST)
             }
         }
         baseViewModel.balanceRunningOut.observe(this) {

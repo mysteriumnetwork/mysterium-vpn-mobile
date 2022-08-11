@@ -325,4 +325,11 @@
     <!--  HomeSelection  -->
     <string name="home_selection_smart_connect">Smart Connect is coming soon</string>
     <string name="home_selection_all_nodes">All nodes</string>
+
+    <!--  Notifications channels  -->
+    <string name="marketing_notification_chanel">Marketing Updates</string>
+    <string name="statisctics_notification_chanel">Connection Statistics</string>
+    <string name="connection_lost_notification_chanel">Lost Connection</string>
+    <string name="payment_notification_chanel">Payments</string>
+    <string name="innactive_notification_chanel">Reminder Notifications</string>
 </resources>

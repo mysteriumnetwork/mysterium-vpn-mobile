@@ -84,7 +84,7 @@ class PrepareTopUpActivity : BaseActivity() {
     private fun registerIdentityWithToken(token: String) {
         registrationViewModel.registerIdentityWithToken(token).observe(this) {
             it.onSuccess {
-                pushyNotifications.subscribe(PushyTopic.REFERRAL_CODE_USED)
+                pushyNotifications?.subscribe(PushyTopic.REFERRAL_CODE_USED)
                 isReferralTokenUsed = true
                 binding.referralProgram.visibility = View.GONE
                 dialog.dismiss()
