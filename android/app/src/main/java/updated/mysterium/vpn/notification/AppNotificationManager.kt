@@ -36,18 +36,24 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         }
         pendingAppIntent = PendingIntent.getActivity(ctx, 0, intent, 0)
 
-        createChannel(statisticsChannel)
-        createChannel(connLostChannel)
-        createChannel(paymentStatusChannel)
-        createChannel(inactiveUserChannel)
+        registerAllNotificationChannels(context)
     }
 
-    private fun createChannel(channelId: String) {
+    private fun registerAllNotificationChannels(context: Context) {
+        with(context) {
+            createChannel(statisticsChannel, getString(R.string.statisctics_notification_chanel))
+            createChannel(connLostChannel, getString(R.string.connection_lost_notification_chanel))
+            createChannel(paymentStatusChannel, getString(R.string.payment_notification_chanel))
+            createChannel(inactiveUserChannel, getString(R.string.innactive_notification_chanel))
+        }
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
         val channel = NotificationChannel(
-            channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT
+            channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
         )
         channel.enableVibration(false)
         notificationManager.createNotificationChannel(channel)
