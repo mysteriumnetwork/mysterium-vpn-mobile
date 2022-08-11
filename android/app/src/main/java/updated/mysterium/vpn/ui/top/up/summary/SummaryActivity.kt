@@ -11,6 +11,7 @@ import network.mysterium.vpn.databinding.ActivityCardSummaryBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.TAG
+import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.exceptions.TopupNoAmountException
 import updated.mysterium.vpn.model.payment.Order
@@ -54,11 +55,11 @@ abstract class SummaryActivity : BaseActivity() {
         setButtonAvailability(true)
     }
 
-    val onFailure: (error: Throwable) -> Unit = { error ->
+    val onFailure: (error: BaseNetworkException) -> Unit = { error ->
         Log.e(TAG, error.message ?: error.toString())
-        when (error) {
+        when (error.exception) {
             is TopupBalanceLimitException -> {
-                showPaymentBalanceLimitError()
+                showPaymentBalanceLimitError(error.getMessage(this))
             }
             is TopupNoAmountException -> {
                 showNoAmountPopUp {
@@ -165,8 +166,8 @@ abstract class SummaryActivity : BaseActivity() {
         }
     }
 
-    private fun showPaymentBalanceLimitError() {
-        showBanner(binding.paymentBalanceLimitLayout.root)
+    private fun showPaymentBalanceLimitError(message: String) {
+        showBanner(message)
         binding.confirmContainer.visibility = View.INVISIBLE
         binding.cancelContainer.visibility = View.VISIBLE
     }
@@ -175,12 +176,13 @@ abstract class SummaryActivity : BaseActivity() {
         startService(Intent(this, PaymentStatusService::class.java))
     }
 
-    private fun showBanner(view: View) {
-        view.visibility = View.VISIBLE
+    private fun showBanner(message: String) {
+        binding.paymentBalanceLimitLayout.root.visibility = View.VISIBLE
+        binding.paymentBalanceLimitLayout.balanceLimitTextView.text = message
         val animationX =
             (binding.titleTextView.x + binding.titleTextView.height + resources.getDimension(R.dimen.margin_padding_size_medium))
         ObjectAnimator.ofFloat(
-            view,
+            binding.paymentBalanceLimitLayout.root,
             "translationY",
             animationX
         ).apply {

@@ -29,13 +29,12 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/paymentProcessingTextView"
+                android:id="@+id/balanceLimitTextView"
                 style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingStart="@dimen/margin_padding_size_medium_large"
-                android:text="@string/payment_balance_limit_text"
                 android:textColor="@color/payment_balance_limit_text_color"
                 tools:ignore="RtlSymmetry" />
 

@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.content.Intent
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.model.payment.CardOrderRequestInfo
 import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.model.payment.PaymentStatus
@@ -46,7 +47,7 @@ class CardSummaryActivity : SummaryActivity() {
                     paymentUrl = order.publicGatewayData.checkoutUrl
                 }
                 result.onFailure { error ->
-                    onFailure.invoke(error)
+                    onFailure.invoke(error as BaseNetworkException)
                 }
             }
         }

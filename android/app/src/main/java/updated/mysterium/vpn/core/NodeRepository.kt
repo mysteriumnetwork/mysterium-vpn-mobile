@@ -34,12 +34,6 @@ import updated.mysterium.vpn.model.wallet.IdentityRegistrationFees
 // ViewModels.
 class NodeRepository(var deferredNode: DeferredNode) {
 
-    private companion object {
-        const val BALANCE_LIMIT_ERROR_MESSAGE =
-            "You can only top-up if you have less than 50 MYST in balance"
-        const val NO_BALANCE_ERROR_MESSAGE = "Cannot provide more balance at this time"
-    }
-
     private val moshi = Moshi
         .Builder()
         .add(KotlinJsonAdapterFactory())
@@ -117,19 +111,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
-
-        Log.e(TAG, res.errorMessage)
-        when (res.errorCode) {
-            "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
-            "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
-            "Unknown" -> {
-                if (res.errorMessage == "connection already exists") {
-                    throw ConnectAlreadyExistsException(res.errorMessage)
-                } else {
-                    throw ConnectUnknownException(res.errorMessage)
-                }
-            }
-        }
+        throw BaseNetworkException.fromErrorCode(res.errorCode, res.errorMessage)
     }
 
     // Disconnect from VPN service.
@@ -172,32 +154,24 @@ class NodeRepository(var deferredNode: DeferredNode) {
         IdentityRegistrationFees(fee = res.fee)
     }
 
-    suspend fun createPlayBillingPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createPlayBillingPaymentGatewayOrder(req: CreatePaymentGatewayOrderReq): Order =
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Log.d(TAG, "createPaymentOrder response: $order")
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
-                    throw TopupNoAmountException()
-                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
-                    throw TopupBalanceLimitException()
-                } else error(exception)
+                throw BaseNetworkException.fromException(exception)
             }
         }
 
-    suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq) =
+    suspend fun createCoingatePaymentGatewayOrder(req: CreatePaymentGatewayOrderReq): Order =
         withContext(Dispatchers.IO) {
             try {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
-                    throw TopupNoAmountException()
-                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
-                    throw TopupBalanceLimitException()
-                } else error(exception)
+                throw BaseNetworkException.fromException(exception)
             }
         }
 
@@ -207,11 +181,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
                 val order = deferredNode.await().createPaymentGatewayOrder(req).decodeToString()
                 Order.fromJSON(order) ?: error("Could not parse JSON: $order")
             } catch (exception: Exception) {
-                if (exception.message?.contains(NO_BALANCE_ERROR_MESSAGE) == true) {
-                    throw TopupNoAmountException()
-                } else if (exception.message?.contains(BALANCE_LIMIT_ERROR_MESSAGE) == true) {
-                    throw TopupBalanceLimitException()
-                } else error(exception)
+                throw BaseNetworkException.fromException(exception)
             }
         }
 
