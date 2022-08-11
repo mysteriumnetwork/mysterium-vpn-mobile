@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.notification
 
-import android.app.Activity
+import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +12,7 @@ import updated.mysterium.vpn.common.extensions.getSubcategoryName
 import updated.mysterium.vpn.common.playstore.NotificationsHelper
 import updated.mysterium.vpn.model.pushy.PushyTopic
 
-class Notifications(private val activity: Activity): NotificationsHelper {
+class Notifications(private val context: Context): NotificationsHelper {
 
     companion object {
         private const val TAG = "Notifications"
@@ -22,24 +22,24 @@ class Notifications(private val activity: Activity): NotificationsHelper {
         private set
 
     override fun listen() {
-        if (Pushy.isRegistered(activity.applicationContext)) {
-            Pushy.listen(activity.applicationContext)
+        if (Pushy.isRegistered(context)) {
+            Pushy.listen(context)
         }
     }
 
     override fun register(onRegisteredAction: () -> Unit) {
-        if (!Pushy.isRegistered(activity.applicationContext)) {
+        if (!Pushy.isRegistered(context)) {
             val handler = CoroutineExceptionHandler { _, exception ->
                 Log.e(TAG, "Failed to register to pushy.me", exception)
             }
             CoroutineScope(Dispatchers.IO).launch(handler) {
-                Pushy.register(activity.applicationContext)
-                deviceToken = Pushy.getDeviceCredentials(activity.applicationContext).token
-                Log.i(TAG, Pushy.getDeviceCredentials(activity.applicationContext).token)
+                Pushy.register(context)
+                deviceToken = Pushy.getDeviceCredentials(context).token
+                Log.i(TAG, Pushy.getDeviceCredentials(context).token)
                 onRegisteredAction.invoke()
             }
         } else {
-            deviceToken = Pushy.getDeviceCredentials(activity.applicationContext).token
+            deviceToken = Pushy.getDeviceCredentials(context).token
             onRegisteredAction.invoke()
         }
     }
@@ -49,9 +49,9 @@ class Notifications(private val activity: Activity): NotificationsHelper {
             Log.e(TAG, "Failed to subscribe", exception)
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            Pushy.subscribe(pushyTopic.getPushySubcategoryName(), activity.applicationContext)
+            Pushy.subscribe(pushyTopic.getPushySubcategoryName(), context)
             // Unsubscribe from same topic without subcategory
-            Pushy.unsubscribe(pushyTopic, activity.applicationContext)
+            Pushy.unsubscribe(pushyTopic, context)
         }
     }
 
@@ -60,9 +60,9 @@ class Notifications(private val activity: Activity): NotificationsHelper {
             Log.e(TAG, "Failed to subscribe", exception)
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            Pushy.subscribe(pushyTopic.getSubcategoryName(), activity.applicationContext)
+            Pushy.subscribe(pushyTopic.getSubcategoryName(), context)
             // Unsubscribe from same topic without subcategory
-            Pushy.unsubscribe(pushyTopic.topic, activity.applicationContext)
+            Pushy.unsubscribe(pushyTopic.topic, context)
         }
     }
 
@@ -72,8 +72,8 @@ class Notifications(private val activity: Activity): NotificationsHelper {
         }
         CoroutineScope(Dispatchers.IO).launch(handler) {
             // Unsubscribe from topic with and without subcategory
-            Pushy.unsubscribe(pushyTopic.getSubcategoryName(), activity.applicationContext)
-            Pushy.unsubscribe(pushyTopic.topic, activity.applicationContext)
+            Pushy.unsubscribe(pushyTopic.getSubcategoryName(), context)
+            Pushy.unsubscribe(pushyTopic.topic, context)
         }
     }
 }
