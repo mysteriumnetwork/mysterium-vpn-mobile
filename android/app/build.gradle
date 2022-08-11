@@ -214,7 +214,7 @@ dependencies {
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
     //Pushy
-    playstoreImplementation "me.pushy:sdk:1.0.81"
+    playstoreImplementation "me.pushy:sdk:1.0.86"
 
     //Rounded image
     implementation 'com.makeramen:roundedimageview:2.3.0'

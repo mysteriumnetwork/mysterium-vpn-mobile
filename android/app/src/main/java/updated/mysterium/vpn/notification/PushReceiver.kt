@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.notification
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
@@ -9,8 +10,8 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.media.RingtoneManager.TYPE_NOTIFICATION
 import android.net.Uri
+import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
@@ -120,10 +121,9 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
             .setContentText(message)
             .setVibrate(longArrayOf(0, 400, 250, 400))
             .setSound(RingtoneManager.getDefaultUri(TYPE_NOTIFICATION))
+            .setChannelId(NotificationChannels.PUSHY_NOTIFICATION_ID.toString())
 
-        with(NotificationManagerCompat.from(context)) {
-            notify(0, builder.build())
-        }
+        createChannel(context)
 
         return builder
     }
@@ -147,5 +147,17 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         else -> {
             Intent(context, TermsOfUseActivity::class.java)
         }
+    }
+
+    private fun createChannel(context: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return
+        }
+        val channel = NotificationChannel(
+            NotificationChannels.PUSHY_NOTIFICATION_ID.toString(),
+            context.getString(R.string.marketing_notification_chanel),
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
 }
