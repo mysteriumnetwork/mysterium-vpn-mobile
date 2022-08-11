@@ -4,6 +4,8 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.common.PlayStoreHelperImpl
+import updated.mysterium.vpn.common.playstore.NotificationsHelper
+import updated.mysterium.vpn.common.playstore.PlayStoreHelper
 import updated.mysterium.vpn.notification.Notifications
 import updated.mysterium.vpn.ui.top.up.play.billing.amount.usd.PlayBillingAmountUsdViewModel
 import updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingDataSource
@@ -21,10 +23,10 @@ object FlavorModules {
         viewModel {
             PlayBillingSummaryViewModel(get(), get())
         }
-        single {
+        single<PlayStoreHelper> {
             PlayStoreHelperImpl()
         }
-        single {
+        single<NotificationsHelper> {
             Notifications(androidApplication())
         }
     }
