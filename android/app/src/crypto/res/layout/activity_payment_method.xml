@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/prepare_top_up_animation" />
+        app:lottie_rawRes="@raw/payment_card_animation" />
 
     <TextView
         android:id="@+id/descriptionTextView"
