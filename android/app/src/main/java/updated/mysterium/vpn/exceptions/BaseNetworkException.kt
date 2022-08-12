@@ -16,10 +16,10 @@ open class BaseNetworkException(val exception: Exception) : Exception() {
     }
 
     fun getMessage(context: Context): String {
-        return when (val cause = cause) {
+        return when (exception) {
             is TopupBalanceLimitException -> context.getString(
                 R.string.payment_balance_limit_text,
-                cause.limit
+                exception.limit
             )
             else -> localizedMessage ?: context.getString(R.string.unknown_error)
         }

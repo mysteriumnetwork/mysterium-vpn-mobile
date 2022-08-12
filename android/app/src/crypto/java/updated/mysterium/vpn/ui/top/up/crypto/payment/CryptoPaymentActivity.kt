@@ -20,9 +20,9 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.observeOnce
+import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.model.payment.Order
-import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -157,12 +157,13 @@ class CryptoPaymentActivity : BaseActivity() {
                 setTimerVisibility(true)
                 showPaymentPopUp()
             }
-            result.onFailure { exception ->
-                Log.e(TAG, exception.localizedMessage ?: exception.toString())
-                if (exception is TopupBalanceLimitException) {
-                    showPaymentBalanceLimitError()
-                } else {
-                    showTopUpServerFailed()
+            result.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                when ((error as BaseNetworkException).exception) {
+                    is TopupBalanceLimitException -> {
+                        showPaymentBalanceLimitError(error.getMessage(this))
+                    }
+                    else -> showTopUpServerFailed()
                 }
             }
         }
@@ -301,7 +302,8 @@ class CryptoPaymentActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun showPaymentBalanceLimitError() {
+    private fun showPaymentBalanceLimitError(message: String) {
+        binding.paymentBalanceLimitLayout.balanceLimitTextView.text = message
         binding.paymentBalanceLimitLayout.root.doOnLayout { view ->
             val animationY = binding.backButton.y + binding.backButton.height + view.height
             view.visibility = View.VISIBLE
