@@ -27,9 +27,6 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
-        maven {
-            url "https://oss.sonatype.org/service/local/repositories/releases/content/"
-        }
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
