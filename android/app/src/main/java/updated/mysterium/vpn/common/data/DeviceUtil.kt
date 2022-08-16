@@ -18,8 +18,7 @@ object DeviceUtil {
     )
 
     fun getAppVersion(context: Context): String {
-        val version = "${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
-        return context.getString(R.string.report_issue_app_version_template, version)
+        return context.getString(R.string.report_issue_app_version_template, BuildConfig.VERSION_CODE.toString())
     }
 
     fun getAndroidVersion(): String {
