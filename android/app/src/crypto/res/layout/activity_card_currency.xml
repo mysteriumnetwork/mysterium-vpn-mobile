@@ -87,8 +87,8 @@
                 android:id="@+id/countrySpinnerFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
-                app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+                android:layout_marginBottom="@dimen/margin_padding_size_small_medium"
+                app:layout_constraintBottom_toTopOf="@+id/stateSpinnerFrame"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -98,11 +98,44 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
-                    android:background="@drawable/spinner_countries_background"
+                    android:background="@drawable/spinner_location_background"
                     android:dropDownWidth="match_parent"
                     android:gravity="center"
                     android:overlapAnchor="false"
-                    android:popupBackground="@drawable/spinner_countries_background"
+                    android:popupBackground="@drawable/spinner_location_background"
+                    android:textAlignment="center" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_biggest"
+                    android:src="@drawable/icon_currency_dropdown"
+                    tools:ignore="ContentDescription" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/stateSpinnerFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_size_xxlarge"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <Spinner
+                    android:id="@+id/statesSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_padding_size_xlarge"
+                    android:background="@drawable/spinner_location_background"
+                    android:dropDownWidth="match_parent"
+                    android:gravity="center"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@drawable/spinner_location_background"
                     android:textAlignment="center" />
 
                 <ImageView

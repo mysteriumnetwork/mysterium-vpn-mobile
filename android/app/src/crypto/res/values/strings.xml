@@ -21,6 +21,7 @@
     <string name="card_currency_title">Currency &amp; Country</string>
     <string name="card_currency_description">Select your country for the VAT calculation</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
+    <string name="card_payment_state_hint">Select State</string>
 
     <!--  Pop up  -->
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>

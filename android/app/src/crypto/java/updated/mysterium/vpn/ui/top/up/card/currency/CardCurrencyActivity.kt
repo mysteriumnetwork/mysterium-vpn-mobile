@@ -7,9 +7,10 @@ import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityCardCurrencyBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.common.countries.CountriesUtil
+import updated.mysterium.vpn.common.location.StatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -26,6 +27,11 @@ class CardCurrencyActivity : BaseActivity() {
     private val viewModel: CardCurrencyViewModel by inject()
     private val adapter = CardCurrencyAdapter()
     private var selectedCountry: String? = null
+        set(value) {
+            field = value
+            checkValidData()
+        }
+    private var selectedStateOfAmerica: String? = null
         set(value) {
             field = value
             checkValidData()
@@ -48,6 +54,7 @@ class CardCurrencyActivity : BaseActivity() {
     private fun configure() {
         gateway = Gateway.from(intent.extras?.getString(GATEWAY_EXTRA_KEY))
         setUpCountriesSpinner()
+        setUpStatesOfAmericaSpinner()
         setUpCurrencies()
     }
 
@@ -61,15 +68,15 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun setUpCurrencies() {
-        gateway?.let {
-            viewModel.getCurrencies(it.gateway).observe(this) {
-                it.onSuccess { currencies ->
+        gateway?.let { gateway ->
+            viewModel.getCurrencies(gateway.gateway).observe(this) { result ->
+                result.onSuccess { currencies ->
                     currencies?.let {
                         inflateCurrencies(currencies)
                     }
                 }
 
-                it.onFailure { error ->
+                result.onFailure { error ->
                     Log.e(TAG, error.localizedMessage ?: error.toString())
                 }
             }
@@ -88,7 +95,7 @@ class CardCurrencyActivity : BaseActivity() {
         }
         val spinnerAdapter = HintSpinnerArrayAdapter(
             this,
-            R.layout.item_spinner_payment_country,
+            R.layout.item_spinner_payment_location,
             countriesAdapterItems
         )
         binding.countriesSpinner.apply {
@@ -104,6 +111,49 @@ class CardCurrencyActivity : BaseActivity() {
                         it.fullName == countryFullName
                     }?.code?.let { countryCode ->
                         selectedCountry = countryCode
+                        setStatesOfAmericaSpinnerVisibility(selectedCountry == "US")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setStatesOfAmericaSpinnerVisibility(isVisible: Boolean) {
+        if (isVisible) {
+            binding.stateSpinnerFrame.visibility = View.VISIBLE
+        } else {
+            binding.stateSpinnerFrame.visibility = View.GONE
+        }
+    }
+
+    private fun setUpStatesOfAmericaSpinner() {
+        val statesList = StatesUtil.getAllPaymentStates()
+        val hintItem = getString(R.string.card_payment_state_hint)
+        val statesAdapterItems: List<String> = mutableListOf(hintItem).apply {
+            addAll(
+                statesList.map {
+                    it.stateName
+                }
+            )
+        }
+        val spinnerAdapter = HintSpinnerArrayAdapter(
+            this,
+            R.layout.item_spinner_payment_location,
+            statesAdapterItems
+        )
+        binding.statesSpinner.apply {
+            binding.stateSpinnerFrame.setOnClickListener {
+                performClick()
+            }
+            adapter = spinnerAdapter
+            onItemSelected { position ->
+                spinnerAdapter.selectedPosition = position
+                if (position != 0) {
+                    val stateFullName = statesAdapterItems[position]
+                    statesList.find {
+                        it.stateName == stateFullName
+                    }?.stateCode?.let { stateCode ->
+                        selectedStateOfAmerica = stateCode
                     }
                 }
             }
@@ -124,9 +174,16 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun checkValidData() {
-        if (selectedCountry != null && selectedCurrency != null) {
+        if (
+            ((selectedCountry == "US" && selectedStateOfAmerica != null) ||
+                    (selectedCountry != null && selectedCountry != "US"))
+            && selectedCurrency != null
+        ) {
             binding.confirmButton.isEnabled = true
             binding.confirmButtonShadow.visibility = View.VISIBLE
+        } else {
+            binding.confirmButton.isEnabled = false
+            binding.confirmButtonShadow.visibility = View.INVISIBLE
         }
     }
 
@@ -136,6 +193,7 @@ class CardCurrencyActivity : BaseActivity() {
                 putExtra(CardSummaryActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
                 putExtra(CardSummaryActivity.CURRENCY_EXTRA_KEY, selectedCurrency)
                 putExtra(CardSummaryActivity.COUNTRY_EXTRA_KEY, selectedCountry)
+                putExtra(CardSummaryActivity.STATE_EXTRA_KEY, selectedStateOfAmerica)
                 putExtra(CardSummaryActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
             }
             startActivity(intent)

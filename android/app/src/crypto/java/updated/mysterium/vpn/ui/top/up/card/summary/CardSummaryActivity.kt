@@ -6,7 +6,6 @@ import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.model.payment.CardOrderRequestInfo
 import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.model.payment.PaymentStatus
-import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity.Companion.PAYMENT_URL_KEY
 import updated.mysterium.vpn.ui.top.up.summary.SummaryActivity
@@ -17,6 +16,7 @@ class CardSummaryActivity : SummaryActivity() {
         const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
         const val CURRENCY_EXTRA_KEY = "CURRENCY_EXTRA_KEY"
         const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
+        const val STATE_EXTRA_KEY = "STATE_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
     }
 
@@ -34,9 +34,10 @@ class CardSummaryActivity : SummaryActivity() {
     override fun getOrderRequestInfo(): CardOrderRequestInfo? {
         val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY) ?: return null
         val country = intent.extras?.getString(COUNTRY_EXTRA_KEY) ?: return null
+        val state = intent.extras?.getString(STATE_EXTRA_KEY) ?: return null
         val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY) ?: return null
         val gateway = intent.extras?.getString(GATEWAY_EXTRA_KEY) ?: return null
-        return CardOrderRequestInfo(amountUSD, country, currency, gateway)
+        return CardOrderRequestInfo(amountUSD, country, state, currency, gateway)
     }
 
     override fun getOrder(info: OrderRequestInfo?) {
