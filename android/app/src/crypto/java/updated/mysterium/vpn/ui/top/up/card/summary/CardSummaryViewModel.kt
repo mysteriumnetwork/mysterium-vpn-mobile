@@ -31,6 +31,7 @@ class CardSummaryViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         registerOrderCallback()
         paymentUseCase.createCardPaymentGatewayOrder(
             country = info.country,
+            state = info.state,
             identityAddress = connectionUseCase.getIdentityAddress(),
             amountUSD = info.amountUsd,
             currency = info.currency,

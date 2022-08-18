@@ -46,6 +46,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun createCardPaymentGatewayOrder(
         country: String,
+        state: String,
         identityAddress: String,
         amountUSD: Double,
         currency: String,
@@ -53,6 +54,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.country = country
+            this.state = state
             this.payCurrency = currency
             this.identityAddress = identityAddress
             this.amountUSD = amountUSD.toString()

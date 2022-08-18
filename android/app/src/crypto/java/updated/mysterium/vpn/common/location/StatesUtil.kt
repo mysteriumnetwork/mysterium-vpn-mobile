@@ -1,0 +1,60 @@
+package updated.mysterium.vpn.common.location
+
+import updated.mysterium.vpn.model.location.StateOfAmerica
+
+object StatesUtil {
+
+    fun getAllPaymentStates(): List<StateOfAmerica> = listOf(
+        StateOfAmerica("AL", "Alabama"),
+        StateOfAmerica("AK", "Alaska"),
+        StateOfAmerica("AZ", "Arizona"),
+        StateOfAmerica("AR", "Arkansas"),
+        StateOfAmerica("CA", "California"),
+        StateOfAmerica("CO", "Colorado"),
+        StateOfAmerica("CT", "Connecticut"),
+        StateOfAmerica("DE", "Delaware"),
+        StateOfAmerica("FL", "Florida"),
+        StateOfAmerica("GA", "Georgia"),
+        StateOfAmerica("HI", "Hawaii"),
+        StateOfAmerica("ID", "Idaho"),
+        StateOfAmerica("IL", "Illinois"),
+        StateOfAmerica("IN", "Indiana"),
+        StateOfAmerica("IA", "Iowa"),
+        StateOfAmerica("KS", "Kansas"),
+        StateOfAmerica("KY", "Kentucky"),
+        StateOfAmerica("LA", "Louisiana"),
+        StateOfAmerica("ME", "Maine"),
+        StateOfAmerica("MD", "Maryland"),
+        StateOfAmerica("MA", "Massachusetts"),
+        StateOfAmerica("MI", "Michigan"),
+        StateOfAmerica("MN", "Minnesota"),
+        StateOfAmerica("MS", "Mississippi"),
+        StateOfAmerica("MO", "Missouri"),
+        StateOfAmerica("MT", "Montana"),
+        StateOfAmerica("NE", "Nebraska"),
+        StateOfAmerica("NV", "Nevada"),
+        StateOfAmerica("NH", "New Hampshire"),
+        StateOfAmerica("NJ", "New Jersey"),
+        StateOfAmerica("NM", "New Mexico"),
+        StateOfAmerica("NY", "New York"),
+        StateOfAmerica("NC", "North Carolina"),
+        StateOfAmerica("ND", "North Dakota"),
+        StateOfAmerica("OH", "Ohio"),
+        StateOfAmerica("OK", "Oklahoma"),
+        StateOfAmerica("OR", "Oregon"),
+        StateOfAmerica("PA", "Pennsylvania"),
+        StateOfAmerica("RI", "Rhode Island"),
+        StateOfAmerica("SC", "South Carolina"),
+        StateOfAmerica("SD", "South Dakota"),
+        StateOfAmerica("TN", "Tennessee"),
+        StateOfAmerica("TX", "Texas"),
+        StateOfAmerica("UT", "Utah"),
+        StateOfAmerica("VT", "Vermont"),
+        StateOfAmerica("VA", "Virginia"),
+        StateOfAmerica("WA", "Washington"),
+        StateOfAmerica("WV", "West Virginia"),
+        StateOfAmerica("WI", "Wisconsin"),
+        StateOfAmerica("WY", "Wyoming")
+    )
+
+}
