@@ -118,6 +118,9 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun waitForPayment() {
+        val initialBalance = balanceViewModeL.balanceLiveData.value ?: 0.0
+        if (initialBalance >= 50.00) showPaymentBalanceLimitError(getString(R.string.payment_balance_limit_text, 50.00))
+
         viewModel.channelAddress().observe(this) {
             setLoaderVisibility(false)
             it.onSuccess { channelAddress ->
@@ -125,7 +128,6 @@ class CryptoPaymentActivity : BaseActivity() {
                 setCurrencyEquivalentVisibility(false)
                 setUsdEquivalentVisibility(false)
                 setTimerVisibility(false)
-                val initialBalance = balanceViewModeL.balanceLiveData.value ?: 0.0
                 balanceViewModeL.balanceLiveData.distinctUntilChanged()
                     .observeOnce(this) { newBalance ->
                         if (newBalance > initialBalance) showTopUpSuccessfully()
