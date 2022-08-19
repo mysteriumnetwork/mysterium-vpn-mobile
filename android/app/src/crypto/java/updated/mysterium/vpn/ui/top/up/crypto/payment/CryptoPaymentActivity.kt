@@ -17,6 +17,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.*
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.AppConstants.Payments.PAYMENT_BALANCE_LIMIT
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.observeOnce
@@ -118,6 +119,9 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun waitForPayment() {
+        val initialBalance = balanceViewModeL.balanceLiveData.value ?: 0.0
+        if (initialBalance >= PAYMENT_BALANCE_LIMIT) showPaymentBalanceLimitError(getString(R.string.payment_balance_limit_text, PAYMENT_BALANCE_LIMIT))
+
         viewModel.channelAddress().observe(this) {
             setLoaderVisibility(false)
             it.onSuccess { channelAddress ->
@@ -125,7 +129,6 @@ class CryptoPaymentActivity : BaseActivity() {
                 setCurrencyEquivalentVisibility(false)
                 setUsdEquivalentVisibility(false)
                 setTimerVisibility(false)
-                val initialBalance = balanceViewModeL.balanceLiveData.value ?: 0.0
                 balanceViewModeL.balanceLiveData.distinctUntilChanged()
                     .observeOnce(this) { newBalance ->
                         if (newBalance > initialBalance) showTopUpSuccessfully()
