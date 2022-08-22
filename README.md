@@ -2,7 +2,12 @@
 
 Mobile VPN app for Mysterium Network.
 
-<a href='https://play.google.com/store/apps/details?id=network.mysterium.vpn&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='261' /></a>
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/network.mysterium.vpn/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=network.mysterium.vpn)
 
 ## Getting started (development)
 
