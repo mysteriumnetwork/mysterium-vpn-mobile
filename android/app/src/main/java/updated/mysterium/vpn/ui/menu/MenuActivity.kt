@@ -22,6 +22,7 @@ import updated.mysterium.vpn.ui.monitoring.MonitoringActivity
 import updated.mysterium.vpn.ui.profile.ProfileActivity
 import updated.mysterium.vpn.ui.report.issue.ReportIssueActivity
 import updated.mysterium.vpn.ui.settings.SettingsActivity
+import updated.mysterium.vpn.ui.provider.ProviderActivity
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
 import updated.mysterium.vpn.ui.wallet.WalletActivity
 
@@ -49,6 +50,10 @@ class MenuActivity : BaseActivity() {
             MenuItem(
                 iconResId = R.drawable.menu_icon_settings,
                 titleResId = R.string.menu_list_item_settings,
+            ),
+            MenuItem(
+                iconResId = R.drawable.menu_icon_settings,
+                titleResId = R.string.menu_list_item_provider,
             ),
             MenuItem(
                 iconResId = R.drawable.menu_icon_referral_deactivated,
@@ -185,6 +190,9 @@ class MenuActivity : BaseActivity() {
                     startActivity(Intent(this, SettingsActivity::class.java))
                 }
                 5 -> menuItem.onItemClickListener = {
+                    startActivity(Intent(this, ProviderActivity::class.java))
+                }
+                6 -> menuItem.onItemClickListener = {
                     // TODO("Implement navigation to Referral")
                 }
             }

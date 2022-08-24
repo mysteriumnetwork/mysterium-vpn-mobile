@@ -90,6 +90,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="updated.mysterium.vpn.ui.provider.ProviderActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="updated.mysterium.vpn.ui.create.account.CreateAccountActivity"
             android:screenOrientation="portrait" />
 

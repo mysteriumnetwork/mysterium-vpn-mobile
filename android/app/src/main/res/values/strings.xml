@@ -92,6 +92,8 @@
     <string name="menu_item_wallet_subtitle">Top up your account</string>
     <string name="menu_item_monitoring_subtitle">Connection history</string>
     <string name="menu_list_item_settings">Settings</string>
+    <string name="menu_list_item_provider">Provider mode</string>
+
     <string name="menu_list_item_report">Report an issue</string>
     <string name="menu_list_item_help">Get help</string>
     <string name="menu_terms">Terms of Use</string>
@@ -196,6 +198,11 @@
     <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
     <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than 50 MYST</string>
+
+    <!--  Provider  -->
+    <string name="server_title">Server</string>
+    <string name="provider_title">Myst provider</string>
+    <string name="enable_provider_title">Enable</string>
 
     <!--  Settings  -->
     <string name="settings_title">Settings</string>
