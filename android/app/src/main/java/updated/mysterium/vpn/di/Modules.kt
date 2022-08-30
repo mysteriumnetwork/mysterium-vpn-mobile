@@ -36,6 +36,7 @@ import updated.mysterium.vpn.ui.search.SearchViewModel
 import updated.mysterium.vpn.ui.settings.SettingsViewModel
 import updated.mysterium.vpn.ui.splash.SplashViewModel
 import updated.mysterium.vpn.ui.terms.TermsOfUseViewModel
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryViewModel
 import updated.mysterium.vpn.ui.top.up.summary.SummaryViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 import updated.mysterium.vpn.ui.wallet.WalletViewModel
@@ -153,6 +154,9 @@ object Modules {
         }
         viewModel {
             SummaryViewModel(get())
+        }
+        viewModel {
+            SelectCountryViewModel(get())
         }
     }
 

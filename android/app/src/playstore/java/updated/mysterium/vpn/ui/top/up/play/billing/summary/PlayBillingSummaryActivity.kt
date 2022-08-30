@@ -8,6 +8,7 @@ import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.payment.PlayBillingOrderRequestInfo
 import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.model.top.up.TopUpPlayBillingCardItem
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity
 import updated.mysterium.vpn.ui.top.up.summary.SummaryActivity
 
 class PlayBillingSummaryActivity : SummaryActivity() {
@@ -33,8 +34,11 @@ class PlayBillingSummaryActivity : SummaryActivity() {
 
     override fun getOrderRequestInfo(): PlayBillingOrderRequestInfo? {
         this.topUpPlayBillingCardItem = intent.extras?.getParcelable(SKU_EXTRA_KEY)
+        val country =
+            intent.extras?.getString(SelectCountryActivity.COUNTRY_EXTRA_KEY) ?: return null
+        val state = intent.extras?.getString(SelectCountryActivity.STATE_EXTRA_KEY) ?: ""
         return topUpPlayBillingCardItem?.amountUsd?.let {
-            PlayBillingOrderRequestInfo(it, "", "")
+            PlayBillingOrderRequestInfo(it, country, state)
         }
     }
 

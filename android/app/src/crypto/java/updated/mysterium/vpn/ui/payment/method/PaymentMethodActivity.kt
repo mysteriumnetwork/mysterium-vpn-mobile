@@ -5,15 +5,13 @@ import android.os.Bundle
 import network.mysterium.vpn.databinding.ActivityPaymentMethodBinding
 import updated.mysterium.vpn.model.payment.PaymentOption
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity
-import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity.Companion.MYST_POLYGON_EXTRA_KEY
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity
 
 class PaymentMethodActivity : BaseActivity() {
 
     companion object {
-        private const val PAYMENT_OPTIONS_EXTRA = "paymentOptionsExtra"
-        private const val MYST_CHAIN_EXTRA = "mystChainExtra"
+        const val MYST_CHAIN_EXTRA_KEY = "MYST_CHAIN_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityPaymentMethodBinding
@@ -41,10 +39,10 @@ class PaymentMethodActivity : BaseActivity() {
     }
 
     private fun getPaymentOptions(): List<PaymentOption> {
-        return if (intent.extras?.getBoolean(MYST_CHAIN_EXTRA) == true) {
+        return if (intent.extras?.getBoolean(MYST_CHAIN_EXTRA_KEY) == true) {
             listOf(PaymentOption.MYST_ETHEREUM, PaymentOption.MYST_POLYGON)
         } else {
-            val extras = intent.getStringArrayExtra(PAYMENT_OPTIONS_EXTRA)
+            val extras = intent.getStringArrayExtra(PAYMENT_OPTION_EXTRA_KEY)
                 ?.mapNotNull { PaymentOption.from(it) } ?: emptyList()
             mutableListOf<PaymentOption>().apply {
                 this.addAll(extras)
@@ -57,13 +55,13 @@ class PaymentMethodActivity : BaseActivity() {
         when (paymentOption) {
             PaymentOption.MYST_TOTAL -> navigateToMystChainSelect()
             PaymentOption.MYST_POLYGON -> navigateToCryptoPayment()
-            else -> navigateToTopUp(paymentOption)
+            else -> navigateToCountrySelect(paymentOption)
         }
     }
 
     private fun navigateToMystChainSelect() {
         val intent = Intent(this, PaymentMethodActivity::class.java).apply {
-            putExtra(MYST_CHAIN_EXTRA, true)
+            putExtra(MYST_CHAIN_EXTRA_KEY, true)
         }
         startActivity(intent)
     }
@@ -75,10 +73,11 @@ class PaymentMethodActivity : BaseActivity() {
         startActivity(intent)
     }
 
-    private fun navigateToTopUp(paymentOption: PaymentOption) {
-        val intent = Intent(this, TopUpAmountUsdActivity::class.java).apply {
-            putExtra(TopUpAmountUsdActivity.PAYMENT_OPTION_EXTRA_KEY, paymentOption.value)
+    private fun navigateToCountrySelect(paymentOption: PaymentOption) {
+        val intent = Intent(this, SelectCountryActivity::class.java).apply {
+            putExtra(PAYMENT_OPTION_EXTRA_KEY, paymentOption.value)
         }
         startActivity(intent)
     }
+
 }
