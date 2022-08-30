@@ -34,7 +34,7 @@ class PlayBillingSummaryActivity : SummaryActivity() {
     override fun getOrderRequestInfo(): PlayBillingOrderRequestInfo? {
         this.topUpPlayBillingCardItem = intent.extras?.getParcelable(SKU_EXTRA_KEY)
         return topUpPlayBillingCardItem?.amountUsd?.let {
-            PlayBillingOrderRequestInfo(it)
+            PlayBillingOrderRequestInfo(it, "", "")
         }
     }
 

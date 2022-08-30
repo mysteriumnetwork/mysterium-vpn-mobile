@@ -2,8 +2,8 @@ package updated.mysterium.vpn.model.payment
 
 class CardOrderRequestInfo(
     override val amountUsd: Double,
-    val country: String,
-    val state: String,
+    override val country: String,
+    override val state: String,
     val currency: String,
     val gateway: String
-) : OrderRequestInfo(amountUsd)
+) : OrderRequestInfo(amountUsd, country, state)
