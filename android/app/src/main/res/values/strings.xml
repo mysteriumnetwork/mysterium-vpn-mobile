@@ -284,7 +284,8 @@
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
-    <string name="pop_up_private_key_error">Enter at least 12 characters</string>
+    <string name="pop_up_private_key_valid_error">Enter at least 12 characters</string>
+    <string name="pop_up_private_key_match_error">Passwords didn\'t match</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>
     <string name="pop_up_import_account_title">Import account</string>
@@ -292,6 +293,7 @@
     <string name="pop_up_password_account_title">Account password</string>
     <string name="pop_up_password_account_apply">Apply</string>
     <string name="pop_up_password_account_hint">Enter password here</string>
+    <string name="pop_up_repeat_password_account_hint">Repeat password here</string>
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>

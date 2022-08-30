@@ -240,7 +240,7 @@
     <string name="pop_up_card_payment_button">继续</string>
     <string name="pop_up_card_payment_title">感谢购买！</string>
     <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
-    <string name="pop_up_private_key_error">密码有误</string>
+    <string name="pop_up_private_key_valid_error">密码有误</string>
 
     <string name="pop_up_import_wrong_password">密码有误</string>
     <string name="pop_up_private_key_hint">密码长度为 12–16 个字符</string>
