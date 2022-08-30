@@ -26,10 +26,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="updated.mysterium.vpn.ui.top.up.card.currency.SelectCountryActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentActivity"
             android:screenOrientation="portrait" />
 

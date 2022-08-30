@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.currency
+package updated.mysterium.vpn.ui.top.up.select.country
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,20 +7,22 @@ import android.view.View
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySelectCountryBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.common.location.CountriesUtil
 import updated.mysterium.vpn.common.location.StatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
 
 class SelectCountryActivity : BaseActivity() {
 
     companion object {
         const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
+        const val CURRENCY_EXTRA_KEY = "CURRENCY_EXTRA_KEY"
+        const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
+        const val STATE_EXTRA_KEY = "STATE_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivitySelectCountryBinding
@@ -189,12 +191,15 @@ class SelectCountryActivity : BaseActivity() {
 
     private fun navigateToSummary() {
         intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)?.let { amountUSD ->
-            val intent = Intent(this, CardSummaryActivity::class.java).apply {
-                putExtra(CardSummaryActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
-                putExtra(CardSummaryActivity.CURRENCY_EXTRA_KEY, selectedCurrency)
-                putExtra(CardSummaryActivity.COUNTRY_EXTRA_KEY, selectedCountry)
-                putExtra(CardSummaryActivity.STATE_EXTRA_KEY, selectedStateOfAmerica)
-                putExtra(CardSummaryActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
+            val intent = Intent(
+                this,
+                Class.forName("updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity")
+            ).apply {
+                putExtra(AMOUNT_USD_EXTRA_KEY, amountUSD)
+                putExtra(CURRENCY_EXTRA_KEY, selectedCurrency)
+                putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+                putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
+                putExtra(GATEWAY_EXTRA_KEY, gateway?.gateway)
             }
             startActivity(intent)
         }

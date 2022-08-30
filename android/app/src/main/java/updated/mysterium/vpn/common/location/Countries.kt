@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package updated.mysterium.vpn.common.countries
+package updated.mysterium.vpn.common.location
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

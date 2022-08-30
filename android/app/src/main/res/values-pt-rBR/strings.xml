@@ -162,6 +162,11 @@
     <string name="top_up_free_trial">Teste Grátis</string>
     <string name="payment_processing_text">Aviso: os pagamentos levam alguns minutos para serem processados</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">Moeda e país</string>
+    <string name="card_currency_description">Selecione seu país para o cálculo do IVA</string>
+    <string name="card_payment_country_hint">Selecione o país ou a região</string>
+
     <!--  Settings  -->
     <string name="settings_title">Configurações</string>
     <string name="settings_description">A identidade é o seu ID de usuário interno no Mysterium. Nunca envie Ethereum ou qualquer tipo de tokens ERC20 nesse local.</string>

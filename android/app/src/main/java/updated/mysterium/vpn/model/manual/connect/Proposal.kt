@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import updated.mysterium.vpn.model.proposal.parameters.ProposalViewItem
-import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.database.entity.NodeEntity
 import updated.mysterium.vpn.model.nodes.ProposalPaymentMethod
 import updated.mysterium.vpn.model.proposal.parameters.NodeType

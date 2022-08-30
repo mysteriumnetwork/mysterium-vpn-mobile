@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.model.filter.NodeFilter
 import updated.mysterium.vpn.model.filter.NodePrice
 import updated.mysterium.vpn.model.filter.NodeQuality

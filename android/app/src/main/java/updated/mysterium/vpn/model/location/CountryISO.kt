@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.model.settings
+package updated.mysterium.vpn.model.location
 
 data class CountryISO(
     val fullName: String,

@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import updated.mysterium.vpn.common.countries.Countries
-import updated.mysterium.vpn.common.data.UnitFormatter
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemSessionBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
+import updated.mysterium.vpn.common.data.UnitFormatter
 import updated.mysterium.vpn.common.date.DateUtil
+import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.model.session.Session
 import java.util.*
 
@@ -39,8 +39,9 @@ class SessionsAdapter : ContentListAdapter<Session, SessionsAdapter.SessionViewH
                     ?.name
                     ?: UNKNOWN
                 durationTextView.text = DateUtil.convertToDateType((session.duration) * 1000)
-                val dataReceivedText = "${UnitFormatter.bytesDisplay(session.dataReceived).value} " +
-                    UnitFormatter.bytesDisplay(session.dataReceived).units
+                val dataReceivedText =
+                    "${UnitFormatter.bytesDisplay(session.dataReceived).value} " +
+                            UnitFormatter.bytesDisplay(session.dataReceived).units
                 dataReceivedTextView.text = dataReceivedText
             }
         }
