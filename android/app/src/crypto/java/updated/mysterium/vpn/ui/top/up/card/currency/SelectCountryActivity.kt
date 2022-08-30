@@ -5,26 +5,26 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityCardCurrencyBinding
+import network.mysterium.vpn.databinding.ActivitySelectCountryBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.onItemSelected
-import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.location.StatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
 
-class CardCurrencyActivity : BaseActivity() {
+class SelectCountryActivity : BaseActivity() {
 
     companion object {
         const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
         const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
     }
 
-    private lateinit var binding: ActivityCardCurrencyBinding
-    private val viewModel: CardCurrencyViewModel by inject()
+    private lateinit var binding: ActivitySelectCountryBinding
+    private val viewModel: SelectCountryViewModel by inject()
     private val adapter = CardCurrencyAdapter()
     private var selectedCountry: String? = null
         set(value) {
@@ -45,7 +45,7 @@ class CardCurrencyActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCardCurrencyBinding.inflate(layoutInflater)
+        binding = ActivitySelectCountryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
         bind()

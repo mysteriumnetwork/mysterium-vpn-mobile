@@ -6,7 +6,7 @@ import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
-class CardCurrencyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
+class SelectCountryViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     private val paymentUseCase = useCaseProvider.payment()
 

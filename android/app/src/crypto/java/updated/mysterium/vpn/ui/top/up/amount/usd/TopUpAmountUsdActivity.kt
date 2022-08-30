@@ -71,7 +71,7 @@ class TopUpAmountUsdActivity : AmountUsdActivity() {
     private fun navigateToCardPaymentFlow(gateway: Gateway?) {
         val intent = Intent(
             this,
-            Class.forName("updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyActivity")
+            Class.forName("updated.mysterium.vpn.ui.top.up.card.currency.SelectCountryActivity")
         ).apply {
             val amountUSD = adapter.getSelectedValue()?.amountUsd
             putExtra("AMOUNT_USD_EXTRA_KEY", amountUSD)

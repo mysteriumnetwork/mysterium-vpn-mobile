@@ -12,7 +12,7 @@
     <string name="top_up_payment_link">Ou use um link de pagamento</string>
     <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">Moeda e país</string>
     <string name="card_currency_description">Selecione seu país para o cálculo do IVA</string>
     <string name="card_payment_country_hint">Selecione o país ou a região</string>

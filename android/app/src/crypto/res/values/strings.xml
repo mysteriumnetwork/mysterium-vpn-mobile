@@ -17,7 +17,7 @@
     <string name="top_up_payment_link">Or use a payment link</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">Currency &amp; Country</string>
     <string name="card_currency_description">Select your country for the VAT calculation</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
