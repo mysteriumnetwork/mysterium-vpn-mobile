@@ -22,7 +22,7 @@ Terms & Conditions - https://mysterium.network/terms-conditions/
 About Mysterium Network:
 Website - https://mysterium.network/
 GitHub - https://github.com/MysteriumNetwork
-Node runners - https://my.mysteriun.network
+Node runners - https://mystnodes.com/
 
 Join the conversation:
 Discord - https://discord.com/invite/n3vtSwc
