@@ -241,7 +241,7 @@
     <string name="pop_up_card_payment_button">Продолжить</string>
     <string name="pop_up_card_payment_title">Благодарим за покупку!</string>
     <string name="pop_up_card_payment_description">Обработка вашего платежа может занять некоторое время. Как только она будет закончена, вы получите уведомление.</string>
-    <string name="pop_up_private_key_error">Неверный пароль</string>
+    <string name="pop_up_private_key_valid_error">Неверный пароль</string>
     <string name="pop_up_import_wrong_password">Неверный пароль</string>
     <string name="pop_up_private_key_hint">Длина пароля 12–16 символов.</string>
     <string name="pop_up_import_account_title">Импортировать аккаунт</string>

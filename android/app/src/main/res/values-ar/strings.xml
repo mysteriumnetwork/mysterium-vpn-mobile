@@ -204,7 +204,7 @@ Wi-Fi</string>
     <string name="pop_up_card_payment_button">متابعة</string>
     <string name="pop_up_card_payment_title">شكرًا على الشراء!</string>
     <string name="pop_up_card_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت. سنرسل إليك إشعارًا بمجرد إتمام عملية الدفع.</string>
-    <string name="pop_up_private_key_error">كلمة مرور غير صحيحة</string>
+    <string name="pop_up_private_key_valid_error">كلمة مرور غير صحيحة</string>
     <string name="pop_up_import_wrong_password">كلمة مرور غير صحيحة</string>
     <string name="pop_up_private_key_hint">طول كلمة المرور 12–16 حرفًا</string>
     <string name="pop_up_import_account_title">استيراد الحساب</string>
