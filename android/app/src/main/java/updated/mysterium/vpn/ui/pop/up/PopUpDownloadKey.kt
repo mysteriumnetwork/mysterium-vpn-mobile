@@ -142,21 +142,27 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
     }
 
     private fun setErrorState(errorMessage: String) {
-        bindingPopUp.passwordEditText.text?.clear()
-        bindingPopUp.repeatPasswordEditText.text?.clear()
-        bindingPopUp.passwordEditText.clearFocus()
-        bindingPopUp.repeatPasswordEditText.clearFocus()
-        bindingPopUp.passwordEditText.hideKeyboard()
-        bindingPopUp.passwordEditText.background = ContextCompat.getDrawable(
-            dialog.context, R.drawable.shape_wrong_password
-        )
-        bindingPopUp.repeatPasswordEditText.background = ContextCompat.getDrawable(
-            dialog.context, R.drawable.shape_wrong_password
-        )
-        bindingPopUp.errorText.text = errorMessage
-        bindingPopUp.errorText.visibility = View.VISIBLE
-        bindingPopUp.passwordEditText.hint = ""
-        bindingPopUp.repeatPasswordEditText.hint = ""
+        with(bindingPopUp.passwordEditText) {
+            text?.clear()
+            clearFocus()
+            hideKeyboard()
+            background = ContextCompat.getDrawable(
+                dialog.context, R.drawable.shape_wrong_password
+            )
+            hint = ""
+        }
+        with(bindingPopUp.repeatPasswordEditText) {
+            text?.clear()
+            clearFocus()
+            background = ContextCompat.getDrawable(
+                dialog.context, R.drawable.shape_wrong_password
+            )
+            hint = ""
+        }
+        with(bindingPopUp.errorText) {
+            text = errorMessage
+            View.VISIBLE
+        }
     }
 
     private fun clearErrorState() {
