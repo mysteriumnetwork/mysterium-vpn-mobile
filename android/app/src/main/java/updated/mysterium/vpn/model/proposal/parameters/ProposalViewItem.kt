@@ -20,7 +20,7 @@ package updated.mysterium.vpn.model.proposal.parameters
 import android.graphics.Bitmap
 import android.util.Log
 import network.mysterium.vpn.R
-import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.model.manual.connect.Proposal
 import updated.mysterium.vpn.model.nodes.ProposalPaymentMethod
 import java.util.*
@@ -55,7 +55,10 @@ class ProposalViewItem constructor(
                 proposalViewItem.countryName = Countries.values[proposalViewItem.countryCode]?.name
                     ?: ""
             } else {
-                Log.e("ProposalViewItem", "Country with code ${proposalViewItem.countryCode} not found")
+                Log.e(
+                    "ProposalViewItem",
+                    "Country with code ${proposalViewItem.countryCode} not found"
+                )
             }
 
             proposalViewItem.qualityLevel = proposal.qualityLevel

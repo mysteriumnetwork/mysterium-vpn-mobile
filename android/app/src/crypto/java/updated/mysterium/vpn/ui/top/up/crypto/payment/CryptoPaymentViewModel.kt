@@ -36,12 +36,16 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun createPaymentOrder(
         currency: String,
+        country: String,
+        state: String,
         amountUSD: Double,
         isLightning: Boolean
     ) = liveDataResult {
         registerOrderCallback()
         val order = paymentUseCase.createCoingatePaymentGatewayOrder(
             currency,
+            country,
+            state,
             connectionUseCase.getIdentityAddress(),
             amountUSD,
             isLightning

@@ -12,10 +12,10 @@ import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import network.mysterium.vpn.databinding.ViewItemNatCompatibilityDescriptionBinding
 import org.koin.android.ext.android.inject
-import updated.mysterium.vpn.common.countries.CountriesUtil
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.isDarkThemeOn
 import updated.mysterium.vpn.common.extensions.onItemSelected
+import updated.mysterium.vpn.common.location.CountriesUtil
 import updated.mysterium.vpn.common.ui.DimenUtils
 import updated.mysterium.vpn.common.ui.FlowablePopupWindow
 import updated.mysterium.vpn.model.settings.DnsOption

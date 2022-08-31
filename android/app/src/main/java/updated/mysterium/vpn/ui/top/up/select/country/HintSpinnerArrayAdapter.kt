@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.currency
+package updated.mysterium.vpn.ui.top.up.select.country
 
 import android.content.Context
 import android.view.View
@@ -14,7 +14,7 @@ class HintSpinnerArrayAdapter(
 
     var selectedPosition = 0
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View? {
         return if (position == selectedPosition || position == 0) {
             TextView(context).apply {
                 visibility = View.GONE

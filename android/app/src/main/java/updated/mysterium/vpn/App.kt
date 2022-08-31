@@ -16,8 +16,8 @@ import kotlinx.coroutines.CompletableDeferred
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import updated.mysterium.vpn.common.countries.Countries
 import updated.mysterium.vpn.common.localisation.LocaleHelper.onAttach
+import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.core.MysteriumAndroidCoreService
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.di.FlavorModules

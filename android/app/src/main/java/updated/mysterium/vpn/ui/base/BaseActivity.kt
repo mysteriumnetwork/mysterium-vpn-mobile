@@ -39,6 +39,12 @@ import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    companion object {
+        const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
+        const val PAYMENT_OPTION_EXTRA_KEY = "PAYMENT_OPTION_EXTRA_KEY"
+        const val MYST_POLYGON_EXTRA_KEY = "MYST_POLYGON_EXTRA_KEY"
+    }
+
     protected var connectionStateToolbar: ConnectionToolbar? = null
     protected val baseViewModel: BaseViewModel by inject()
     private val homeSelectionViewModel: HomeSelectionViewModel by inject()
@@ -341,7 +347,7 @@ abstract class BaseActivity : AppCompatActivity() {
                             Class.forName("updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity")
                         ).apply {
                             putExtra(
-                                "PAYMENT_METHOD_EXTRA_KEY",
+                                PAYMENT_OPTION_EXTRA_KEY,
                                 paymentOptions[0].value
                             )
                         }
@@ -351,7 +357,7 @@ abstract class BaseActivity : AppCompatActivity() {
                             Class.forName("updated.mysterium.vpn.ui.payment.method.PaymentMethodActivity")
                         ).apply {
                             putExtra(
-                                "paymentOptionsExtra",
+                                PAYMENT_OPTION_EXTRA_KEY,
                                 paymentOptions.map { it.value }.toTypedArray()
                             )
                         }

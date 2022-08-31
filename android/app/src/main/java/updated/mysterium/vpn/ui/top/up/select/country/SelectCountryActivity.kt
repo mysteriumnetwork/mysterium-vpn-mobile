@@ -1,30 +1,36 @@
-package updated.mysterium.vpn.ui.top.up.card.currency
+package updated.mysterium.vpn.ui.top.up.select.country
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
-import network.mysterium.vpn.databinding.ActivityCardCurrencyBinding
+import network.mysterium.vpn.databinding.ActivitySelectCountryBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.Flavors
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.onItemSelected
-import updated.mysterium.vpn.common.countries.CountriesUtil
+import updated.mysterium.vpn.common.location.CountriesUtil
 import updated.mysterium.vpn.common.location.StatesUtil
 import updated.mysterium.vpn.model.payment.Gateway
+import updated.mysterium.vpn.model.payment.PaymentOption
+import updated.mysterium.vpn.model.top.up.AmountUsdCardItem
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
-import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity
+import updated.mysterium.vpn.ui.top.up.amount.usd.AmountUsdActivity.Companion.AMOUNT_USD_EXTRA_KEY
 
-class CardCurrencyActivity : BaseActivity() {
+class SelectCountryActivity : BaseActivity() {
 
     companion object {
-        const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
-        const val GATEWAY_EXTRA_KEY = "GATEWAY_EXTRA_KEY"
+        const val CURRENCY_EXTRA_KEY = "CURRENCY_EXTRA_KEY"
+        const val COUNTRY_EXTRA_KEY = "COUNTRY_EXTRA_KEY"
+        const val STATE_EXTRA_KEY = "STATE_EXTRA_KEY"
+        const val MYST_CHAIN_EXTRA_KEY = "MYST_CHAIN_EXTRA_KEY"
     }
 
-    private lateinit var binding: ActivityCardCurrencyBinding
-    private val viewModel: CardCurrencyViewModel by inject()
+    private lateinit var binding: ActivitySelectCountryBinding
+    private val viewModel: SelectCountryViewModel by inject()
     private val adapter = CardCurrencyAdapter()
     private var selectedCountry: String? = null
         set(value) {
@@ -41,18 +47,18 @@ class CardCurrencyActivity : BaseActivity() {
             field = value
             checkValidData()
         }
-    private var gateway: Gateway? = null
+    private var paymentOption: PaymentOption? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCardCurrencyBinding.inflate(layoutInflater)
+        binding = ActivitySelectCountryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configure()
         bind()
     }
 
     private fun configure() {
-        gateway = Gateway.from(intent.extras?.getString(GATEWAY_EXTRA_KEY))
+        paymentOption = PaymentOption.from(intent.extras?.getString(PAYMENT_OPTION_EXTRA_KEY))
         setUpCountriesSpinner()
         setUpStatesOfAmericaSpinner()
         setUpCurrencies()
@@ -68,16 +74,18 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun setUpCurrencies() {
-        gateway?.let { gateway ->
-            viewModel.getCurrencies(gateway.gateway).observe(this) { result ->
-                result.onSuccess { currencies ->
-                    currencies?.let {
-                        inflateCurrencies(currencies)
+        paymentOption?.gateway?.let { gateway ->
+            // inflate currencies for crypto payments on the separate screen
+            if (gateway != Gateway.COINGATE) {
+                viewModel.getCurrencies(gateway.gateway).observe(this) { result ->
+                    result.onSuccess { currencies ->
+                        currencies?.let {
+                            inflateCurrencies(currencies)
+                        }
                     }
-                }
-
-                result.onFailure { error ->
-                    Log.e(TAG, error.localizedMessage ?: error.toString())
+                    result.onFailure { error ->
+                        Log.e(TAG, error.localizedMessage ?: error.toString())
+                    }
                 }
             }
         }
@@ -122,7 +130,7 @@ class CardCurrencyActivity : BaseActivity() {
         if (isVisible) {
             binding.stateSpinnerFrame.visibility = View.VISIBLE
         } else {
-            binding.stateSpinnerFrame.visibility = View.GONE
+            binding.stateSpinnerFrame.visibility = View.INVISIBLE
         }
     }
 
@@ -175,9 +183,12 @@ class CardCurrencyActivity : BaseActivity() {
 
     private fun checkValidData() {
         if (
+        // select state for USA users
             ((selectedCountry == "US" && selectedStateOfAmerica != null) ||
-                    (selectedCountry != null && selectedCountry != "US"))
-            && selectedCurrency != null
+                    (selectedCountry != "US" && selectedCountry != null))
+            // select currency for non-crypto payments
+            && ((paymentOption?.gateway != Gateway.COINGATE && selectedCurrency != null) ||
+                    paymentOption?.gateway == Gateway.COINGATE)
         ) {
             binding.confirmButton.isEnabled = true
             binding.confirmButtonShadow.visibility = View.VISIBLE
@@ -188,15 +199,84 @@ class CardCurrencyActivity : BaseActivity() {
     }
 
     private fun navigateToSummary() {
-        intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)?.let { amountUSD ->
-            val intent = Intent(this, CardSummaryActivity::class.java).apply {
-                putExtra(CardSummaryActivity.AMOUNT_USD_EXTRA_KEY, amountUSD)
-                putExtra(CardSummaryActivity.CURRENCY_EXTRA_KEY, selectedCurrency)
-                putExtra(CardSummaryActivity.COUNTRY_EXTRA_KEY, selectedCountry)
-                putExtra(CardSummaryActivity.STATE_EXTRA_KEY, selectedStateOfAmerica)
-                putExtra(CardSummaryActivity.GATEWAY_EXTRA_KEY, gateway?.gateway)
+        if (BuildConfig.FLAVOR == Flavors.PLAY_STORE.value) {
+            navigateToPlayBillingSummary()
+        } else {
+            paymentOption?.let { paymentOption ->
+                when (paymentOption) {
+                    PaymentOption.MYST_TOTAL -> navigateToMystChainSelect()
+                    PaymentOption.MYST_POLYGON -> navigateToCryptoPayment()
+                    else -> navigateToTopUp(paymentOption)
+                }
+            } ?: navigateToCardSummary()
+        }
+    }
+
+    private fun navigateToPlayBillingSummary() {
+        intent?.extras?.getParcelable<AmountUsdCardItem>("SKU_EXTRA_KEY")?.let { sku ->
+            val intent = Intent(
+                this,
+                Class.forName("updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingSummaryActivity")
+            ).apply {
+                putExtra("SKU_EXTRA_KEY", sku)
+                putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+                putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
             }
             startActivity(intent)
         }
     }
+
+    private fun navigateToMystChainSelect() {
+        val intent = Intent(
+            this,
+            Class.forName("updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity")
+        ).apply {
+            putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+            putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
+            putExtra(MYST_CHAIN_EXTRA_KEY, true)
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToCryptoPayment() {
+        val intent = Intent(
+            this,
+            Class.forName("updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity")
+        ).apply {
+            putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+            putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
+            putExtra(MYST_POLYGON_EXTRA_KEY, true)
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToTopUp(paymentOption: PaymentOption) {
+        val intent = Intent(
+            this,
+            Class.forName("updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdActivity")
+        ).apply {
+            putExtra(CURRENCY_EXTRA_KEY, selectedCurrency)
+            putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+            putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
+            putExtra(PAYMENT_OPTION_EXTRA_KEY, paymentOption.value)
+        }
+        startActivity(intent)
+    }
+
+    private fun navigateToCardSummary() {
+        intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)?.let { amountUSD ->
+            val intent = Intent(
+                this,
+                Class.forName("updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryActivity")
+            ).apply {
+                putExtra(AMOUNT_USD_EXTRA_KEY, amountUSD)
+                putExtra(CURRENCY_EXTRA_KEY, selectedCurrency)
+                putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+                putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
+                putExtra(GATEWAY_EXTRA_KEY, paymentOption?.gateway?.gateway)
+            }
+            startActivity(intent)
+        }
+    }
+
 }

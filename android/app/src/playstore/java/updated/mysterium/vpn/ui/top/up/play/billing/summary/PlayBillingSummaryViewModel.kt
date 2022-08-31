@@ -60,7 +60,9 @@ class PlayBillingSummaryViewModel(
         registerOrderCallback()
         paymentUseCase.createPlayBillingPaymentGatewayOrder(
             identityAddress = connectionUseCase.getIdentityAddress(),
-            amountUsd = info.amountUsd
+            amountUsd = info.amountUsd,
+            country = info.country,
+            state = info.state
         )
     }
 

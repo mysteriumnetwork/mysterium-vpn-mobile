@@ -12,7 +12,7 @@
     <string name="top_up_payment_link">أو استخدم رابط الدفع</string>
     <string name="top_up_usd_equivalent">ما يعادل دولار أمريكي ≈ %.2f دولار</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">العملة والبلد</string>
     <string name="card_currency_description">حدد بلدك لحساب ضريبة القيمة المضافة</string>
     <string name="card_payment_country_hint">حدد البلد أو المنطقة</string>

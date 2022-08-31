@@ -3,7 +3,7 @@ package updated.mysterium.vpn.di
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdViewModel
-import updated.mysterium.vpn.ui.top.up.card.currency.CardCurrencyViewModel
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryViewModel
 import updated.mysterium.vpn.ui.top.up.card.payment.CardPaymentViewModel
 import updated.mysterium.vpn.ui.top.up.card.summary.CardSummaryViewModel
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentViewModel
@@ -21,7 +21,7 @@ object FlavorModules {
             CardSummaryViewModel(get())
         }
         viewModel {
-            CardCurrencyViewModel(get())
+            SelectCountryViewModel(get())
         }
         viewModel {
             CardPaymentViewModel(get())

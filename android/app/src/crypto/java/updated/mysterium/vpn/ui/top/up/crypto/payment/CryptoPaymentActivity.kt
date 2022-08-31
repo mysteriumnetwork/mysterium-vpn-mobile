@@ -28,16 +28,17 @@ import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
+import updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity.Companion.CRYPTO_AMOUNT_USD_EXTRA_KEY
+import updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity.Companion.CRYPTO_IS_LIGHTNING_EXTRA_KEY
+import updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity.Companion.CRYPTO_NAME_EXTRA_KEY
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity.Companion.COUNTRY_EXTRA_KEY
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity.Companion.STATE_EXTRA_KEY
 import java.math.BigDecimal
 import kotlin.math.abs
 
 class CryptoPaymentActivity : BaseActivity() {
 
     companion object {
-        const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
-        const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
-        const val CRYPTO_IS_LIGHTNING_EXTRA_KEY = "CRYPTO_IS_LIGHTNING_EXTRA_KEY"
-        const val MYST_POLYGON_EXTRA_KEY = "MYST_POLYGON_EXTRA_KEY"
         private const val COPY_LABEL = "User identity address"
         private const val ANIMATION_MARGIN = 80
     }
@@ -120,7 +121,12 @@ class CryptoPaymentActivity : BaseActivity() {
 
     private fun waitForPayment() {
         val initialBalance = balanceViewModeL.balanceLiveData.value ?: 0.0
-        if (initialBalance >= PAYMENT_BALANCE_LIMIT) showPaymentBalanceLimitError(getString(R.string.payment_balance_limit_text, PAYMENT_BALANCE_LIMIT))
+        if (initialBalance >= PAYMENT_BALANCE_LIMIT) showPaymentBalanceLimitError(
+            getString(
+                R.string.payment_balance_limit_text,
+                PAYMENT_BALANCE_LIMIT
+            )
+        )
 
         viewModel.channelAddress().observe(this) {
             setLoaderVisibility(false)
@@ -142,11 +148,15 @@ class CryptoPaymentActivity : BaseActivity() {
 
     private fun createPaymentOrder() {
         val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY) ?: ""
+        val country = intent?.extras?.getString(COUNTRY_EXTRA_KEY) ?: ""
+        val stateOfAmerica = intent?.extras?.getString(STATE_EXTRA_KEY) ?: ""
         val amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)
         val isLightning = intent.extras?.getBoolean(CRYPTO_IS_LIGHTNING_EXTRA_KEY)
 
         viewModel.createPaymentOrder(
             currency,
+            country,
+            stateOfAmerica,
             amountUSD ?: 0.0,
             isLightning ?: false
         ).observe(this) { result ->

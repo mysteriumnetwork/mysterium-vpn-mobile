@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import updated.mysterium.vpn.common.countries.Countries
-import updated.mysterium.vpn.common.data.UnitFormatter
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemSpendingBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
 import updated.mysterium.vpn.common.data.DataUtil
+import updated.mysterium.vpn.common.data.UnitFormatter
 import updated.mysterium.vpn.common.date.DateUtil
+import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.model.filter.NodeType
 import updated.mysterium.vpn.model.session.Spending
 import java.util.*
@@ -45,10 +45,13 @@ class SpendingsAdapter : ContentListAdapter<Spending, SpendingsAdapter.SpendingV
             val nodeTypeDrawable = if (nodeType == NodeType.RESIDENTIAL) {
                 ContextCompat.getDrawable(itemView.context, R.drawable.icon_residential_spending)
             } else {
-                ContextCompat.getDrawable(itemView.context, R.drawable.icon_non_residential_spending)
+                ContextCompat.getDrawable(
+                    itemView.context,
+                    R.drawable.icon_non_residential_spending
+                )
             }
             val dataReceivedText = "${UnitFormatter.bytesDisplay(spending.dataSize).value} " +
-                UnitFormatter.bytesDisplay(spending.dataSize).units
+                    UnitFormatter.bytesDisplay(spending.dataSize).units
             val mystSpent = DataUtil.convertTokenToMyst(spending.tokenSpend)
             binding.nodeTypeImageView.setImageDrawable(nodeTypeDrawable)
             binding.countryTextView.text = Countries

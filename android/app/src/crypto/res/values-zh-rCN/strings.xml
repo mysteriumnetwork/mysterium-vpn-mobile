@@ -12,7 +12,7 @@
     <string name="top_up_payment_link">或使用付款链接</string>
     <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">货币和国家</string>
     <string name="card_currency_description">选择所在国家来计算增值税</string>
     <string name="card_payment_country_hint">选择国家或地区</string>

@@ -162,6 +162,11 @@
     <string name="top_up_free_trial">免费试用</string>
     <string name="payment_processing_text">警告：可能需要几分钟来处理付款</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">货币和国家</string>
+    <string name="card_currency_description">选择所在国家来计算增值税</string>
+    <string name="card_payment_country_hint">选择国家或地区</string>
+
     <!--  Settings  -->
     <string name="settings_title">设置</string>
     <string name="settings_description">身份即您的 Mysterium 内部用户 ID。请勿在那里发送以太币或任何类型的 ERC20 代币。</string>

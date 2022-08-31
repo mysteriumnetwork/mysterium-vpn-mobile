@@ -165,6 +165,11 @@
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">Para Birimi ve Ülke</string>
+    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
+    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
+
     <!--  Settings  -->
     <string name="settings_title">Ayarlar</string>
     <string name="settings_description">Kimlik, Mysterium\'daki dahili kullanıcı kimliğinizdir. Buraya hiçbir zaman ether veya herhangi bir ERC20 token\'ı göndermeyin.</string>

@@ -197,6 +197,12 @@
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
     <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than $%.2f MYST</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">Currency &amp; Country</string>
+    <string name="card_currency_description">Select your country for the VAT calculation</string>
+    <string name="card_payment_country_hint">Select Country or Region</string>
+    <string name="card_payment_state_hint">Select State</string>
+
     <!--  Settings  -->
     <string name="settings_title">Settings</string>
     <string name="settings_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
