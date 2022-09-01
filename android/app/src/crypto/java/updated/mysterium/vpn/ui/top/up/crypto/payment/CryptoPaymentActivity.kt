@@ -166,11 +166,12 @@ class CryptoPaymentActivity : BaseActivity() {
             }
             result.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                when ((error as BaseNetworkException).exception) {
-                    is TopupBalanceLimitException -> {
-                        showPaymentBalanceLimitError(error.getMessage(this))
-                    }
-                    else -> showTopUpServerFailed()
+                if (error is BaseNetworkException && error.exception is TopupBalanceLimitException) {
+                    showPaymentBalanceLimitError(
+                        error.getMessage(this)
+                    )
+                } else {
+                    showTopUpServerFailed()
                 }
             }
         }

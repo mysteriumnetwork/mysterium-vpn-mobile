@@ -44,7 +44,13 @@ class CardSummaryActivity : SummaryActivity() {
                     paymentUrl = order.publicGatewayData.checkoutUrl
                 }
                 result.onFailure { error ->
-                    onFailure.invoke(error as BaseNetworkException)
+                    if (error is BaseNetworkException) {
+                        onFailure.invoke(error)
+                    } else {
+                        wifiNetworkErrorPopUp {
+                            getOrder(info)
+                        }
+                    }
                 }
             }
         }
