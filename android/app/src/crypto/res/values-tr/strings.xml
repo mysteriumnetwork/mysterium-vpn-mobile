@@ -8,7 +8,7 @@
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Ödeme bekleniyor</string>
-    <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
+    <string name="top_up_payment_crypto_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
     <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
     <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
 

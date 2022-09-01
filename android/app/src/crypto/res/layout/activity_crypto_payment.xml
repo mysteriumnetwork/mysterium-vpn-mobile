@@ -77,8 +77,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_xsmall"
         android:background="@drawable/shape_qr_frame"
-        android:padding="@dimen/margin_padding_size_xsmall"
+        android:padding="@dimen/margin_padding_size_small_plus"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/topUpDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currencyEquivalentFrame">
@@ -127,16 +128,55 @@
         android:id="@+id/topUpDescription"
         style="@style/TextAppearance.Headline"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
-        android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_padding_size_small_plus"
         android:gravity="center"
-        android:text="@string/top_up_payment_description"
+        android:text="@string/top_up_payment_crypto_description"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/polygonOnlyWarningCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/polygonOnlyWarningCardView"
+        style="@style/Widget.PrimaryCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_padding_size_small_plus"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_padding_size_large"
+            android:paddingVertical="@dimen/margin_padding_size_small"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/warningIcon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="start|center_vertical"
+                android:src="@drawable/icon_pop_up_crypto_warning"
+                app:tint="@color/crypto_payment_polygon_only_warning_icon_color"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/warningText"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
+                android:layout_marginStart="@dimen/margin_padding_size_large"
+                android:text="@string/top_up_polygon_only_warning"
+                android:textColor="@color/manual_connect_divider_grey_blue" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
@@ -146,31 +186,28 @@
         android:layout_margin="@dimen/margin_padding_size_small_plus"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/useLinkTextView"
                 style="@style/TextAppearance.Headline"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
                 android:text="@string/top_up_payment_link"
                 android:textAlignment="center"
-                android:textColor="@color/manual_connect_country_name_dark_blue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/manual_connect_country_name_dark_blue" />
 
             <FrameLayout
                 android:id="@+id/linkValueContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
-                android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/useLinkTextView">
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
+                android:textAlignment="center">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -215,30 +252,76 @@
                 style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_large"
-                android:layout_marginBottom="@dimen/margin_padding_size_medium"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
                 android:text="@string/top_up_usd_equivalent"
-                android:visibility="invisible"
                 android:textColor="@color/manual_connect_divider_grey_blue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linkValueContainer" />
+                android:visibility="gone" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/paymentAnimation"
-                android:layout_width="0dp"
+                android:layout_width="128dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
-                android:layout_marginBottom="@dimen/margin_padding_size_medium"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/usdEquivalentTextView"
-                app:layout_constraintStart_toStartOf="@+id/usdEquivalentTextView"
-                app:layout_constraintTop_toBottomOf="@+id/usdEquivalentTextView"
+                android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/payment_loader_animation" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/balanceRefreshingTextView"
+                style="@style/TextAppearance.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
+                android:text="@string/top_up_payment_balance_refreshing"
+                android:textAlignment="center"
+                android:textColor="@color/manual_connect_divider_grey_blue"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/receivedMystFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/receivedMystValueTextView"
+                    style="@style/TextAppearance.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/manual_connect_country_name_dark_blue"
+                    tools:text="2.51345654 MYST" />
+
+                <TextView
+                    android:id="@+id/receivedMystTitleTextView"
+                    style="@style/TextAppearance.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/top_up_payment_myst_received"
+                    android:textAlignment="center"
+                    android:textColor="@color/manual_connect_country_name_dark_blue" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/closeButton"
+                style="@style/Widget.TrialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/margin_padding_size_small"
+                android:text="@string/top_up_payment_back_to_home_screen"
+                android:textAlignment="center"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

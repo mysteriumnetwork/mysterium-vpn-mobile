@@ -21,6 +21,7 @@ import updated.mysterium.vpn.common.AppConstants.Payments.PAYMENT_BALANCE_LIMIT
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
 import updated.mysterium.vpn.common.extensions.observeOnce
+import updated.mysterium.vpn.common.extensions.setVisibility
 import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
 import updated.mysterium.vpn.model.payment.Order
@@ -129,15 +130,14 @@ class CryptoPaymentActivity : BaseActivity() {
         )
 
         viewModel.channelAddress().observe(this) {
-            setLoaderVisibility(false)
+            stopLoaderAnimation()
             it.onSuccess { channelAddress ->
-                showTopUpAddress(channelAddress)
-                setCurrencyEquivalentVisibility(false)
-                setUsdEquivalentVisibility(false)
-                setTimerVisibility(false)
+                setMystPolygonWaitingScreen(channelAddress)
                 balanceViewModeL.balanceLiveData.distinctUntilChanged()
                     .observeOnce(this) { newBalance ->
-                        if (newBalance > initialBalance) showTopUpSuccessfully()
+                        if (newBalance > initialBalance) {
+                            setMystPolygonReceivedScreen(newBalance)
+                        }
                     }
             }
             it.onFailure {
@@ -160,44 +160,65 @@ class CryptoPaymentActivity : BaseActivity() {
             amountUSD ?: 0.0,
             isLightning ?: false
         ).observe(this) { result ->
-            setLoaderVisibility(false)
+            stopLoaderAnimation()
             result.onSuccess { order ->
-                order.publicGatewayData.paymentURL?.let { link ->
-                    showTopUpAddress(link)
-                }
-                setCurrencyEquivalentVisibility(true, currency, order)
-                setUsdEquivalentVisibility(true, amountUSD)
-                setTimerVisibility(true)
-                showPaymentPopUp()
+                setCryptoOrderScreen(order, currency, amountUSD)
             }
             result.onFailure { error ->
                 Log.e(TAG, error.localizedMessage ?: error.toString())
-                when ((error as BaseNetworkException).exception) {
-                    is TopupBalanceLimitException -> {
-                        showPaymentBalanceLimitError(error.getMessage(this))
-                    }
-                    else -> showTopUpServerFailed()
+                if (error is BaseNetworkException && error.exception is TopupBalanceLimitException) {
+                    showPaymentBalanceLimitError(
+                        error.getMessage(this)
+                    )
+                } else {
+                    showTopUpServerFailed()
                 }
             }
         }
     }
 
-    private fun setLoaderVisibility(isVisible: Boolean) {
-        if (isVisible) {
-            binding.loader.visibility = View.VISIBLE
-        } else {
-            binding.loader.visibility = View.GONE
-            binding.loader.cancelAnimation()
-        }
+    private fun setMystPolygonWaitingScreen(channelAddress: String) {
+        binding.timer.setVisibility(false)
+        setCurrencyEquivalentVisibility(false)
+        binding.topUpDescription.text = getString(R.string.top_up_payment_myst_polygon_description)
+        binding.polygonOnlyWarningCardView.setVisibility(true)
+        showTopUpAddress(channelAddress)
+        binding.usdEquivalentTextView.setVisibility(false)
+        binding.receivedMystFrame.setVisibility(false)
+        binding.paymentAnimation.setVisibility(true)
+        binding.balanceRefreshingTextView.setVisibility(true)
+        binding.closeButton.setVisibility(false)
     }
 
-    private fun setTimerVisibility(isVisible: Boolean) {
-        if (isVisible) {
-            binding.timer.visibility = View.VISIBLE
-            binding.timer.startTimer()
-        } else {
-            binding.timer.visibility = View.INVISIBLE
+    private fun setMystPolygonReceivedScreen(newBalance: Double) {
+        binding.receivedMystFrame.setVisibility(true)
+        binding.receivedMystValueTextView.text =
+            getString(R.string.top_up_payment_myst_description, newBalance)
+        binding.paymentAnimation.setVisibility(false)
+        binding.closeButton.setVisibility(true)
+    }
+
+    private fun setCryptoOrderScreen(order: Order, currency: String, amountUSD: Double?) {
+        binding.timer.setVisibility(true)
+        binding.timer.startTimer()
+        setCurrencyEquivalentVisibility(true, currency, order)
+        binding.topUpDescription.text = getString(R.string.top_up_payment_crypto_description)
+        binding.polygonOnlyWarningCardView.setVisibility(false)
+        order.publicGatewayData.paymentURL?.let { link ->
+            showTopUpAddress(link)
         }
+        binding.usdEquivalentTextView.setVisibility(true)
+        binding.usdEquivalentTextView.text = getString(R.string.top_up_usd_equivalent, amountUSD)
+        showPaymentPopUp()
+        binding.receivedMystFrame.setVisibility(false)
+        binding.paymentAnimation.setVisibility(true)
+        binding.balanceRefreshingTextView.setVisibility(false)
+        binding.closeButton.setVisibility(false)
+    }
+
+    private fun stopLoaderAnimation() {
+        binding.loader.visibility = View.GONE
+        binding.loader.cancelAnimation()
     }
 
     private fun showTopUpAddress(link: String) {
@@ -224,7 +245,7 @@ class CryptoPaymentActivity : BaseActivity() {
         val topCoordinate = binding.currencyEquivalentFrame.calculateRectOnScreen().bottom
         val bottomCoordinate = binding.topUpDescription.calculateRectOnScreen().top
         val fullSize = topCoordinate - bottomCoordinate
-        return abs(fullSize * 0.8).toInt() // size with spaces
+        return abs(fullSize * 0.6).toInt() // size with spaces
     }
 
     private fun setCurrencyEquivalentVisibility(
@@ -242,18 +263,7 @@ class CryptoPaymentActivity : BaseActivity() {
                 R.string.top_up_currency_equivalent, amount, currency
             )
         } else {
-            binding.currencyEquivalentFrame.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun setUsdEquivalentVisibility(isVisible: Boolean, amountUSD: Double? = null) {
-        if (isVisible && amountUSD != null) {
-            binding.usdEquivalentTextView.visibility = View.VISIBLE
-            binding.usdEquivalentTextView.text = getString(
-                R.string.top_up_usd_equivalent, amountUSD
-            )
-        } else {
-            binding.usdEquivalentTextView.visibility = View.INVISIBLE
+            binding.currencyEquivalentFrame.visibility = View.GONE
         }
     }
 

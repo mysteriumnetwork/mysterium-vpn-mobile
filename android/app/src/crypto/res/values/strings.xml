@@ -13,9 +13,15 @@
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
+    <string name="top_up_polygon_only_warning">Only Polygon Myst is supported.\nDo not send Ethereum MYST!</string>
+    <string name="top_up_payment_crypto_description">Scan this QR code which contains your top-up address</string>
+    <string name="top_up_payment_myst_polygon_description">Deposit Polygon MYST directly to your Payment channel. Scan QR code or copy address to proceed.</string>
+    <string name="top_up_payment_balance_refreshing">Balance is being refreshed automatically while this screen is open</string>
     <string name="top_up_payment_link">Or use a payment link</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
+    <string name="top_up_payment_back_to_home_screen">Back to Home Screen</string>
+    <string name="top_up_payment_myst_description">%.8f MYST</string>
+    <string name="top_up_payment_myst_received">received!</string>
 
     <!-- Select country -->
     <string name="card_currency_title">Currency &amp; Country</string>
