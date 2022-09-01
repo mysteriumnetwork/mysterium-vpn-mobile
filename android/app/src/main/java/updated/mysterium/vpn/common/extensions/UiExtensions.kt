@@ -32,3 +32,6 @@ fun Number.toPx() = TypedValue.applyDimension(
     this.toFloat(),
     Resources.getSystem().displayMetrics
 ).toInt()
+
+fun View.setVisibility(isVisible: Boolean) =
+    if (isVisible) this.visibility = View.VISIBLE else this.visibility = View.GONE

@@ -9,5 +9,7 @@
     <color name="crypto_payment_address_background_color">#F6F6FA</color>
     <color name="crypto_payment_address_border_color">#B1B0D7</color>
     <color name="crypto_payment_address_text_color">#803C3857</color>
+    <color name="crypto_payment_time_warning_icon_color">#FF8C04</color>
+    <color name="crypto_payment_polygon_only_warning_icon_color">#ED5BAC</color>
 
 </resources>
