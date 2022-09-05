@@ -14,6 +14,7 @@ import org.koin.java.KoinJavaComponent.injectOrNull
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.analytics.AnalyticEvent
 import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
 import updated.mysterium.vpn.common.playstore.PlayStoreHelper
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
@@ -35,7 +36,6 @@ class ConnectionActivity : BaseActivity() {
         const val EXTRA_PROPOSAL_MODEL = "PROPOSAL_MODEL"
         const val CONNECTION_TYPE_KEY = "CONNECTION_TYPE"
         const val COUNTRY_CODE_KEY = "COUNTRY_CODE"
-        private const val TAG = "ConnectionActivity"
         private const val CURRENCY = "MYSTT"
         private const val MIN_BALANCE = 0.0001
     }
@@ -187,6 +187,7 @@ class ConnectionActivity : BaseActivity() {
             ConnectionState.ON_HOLD -> {
                 loadIpAddress()
                 inflateConnectedCardView()
+                viewModel.repeatLastConnection()
             }
         }
         updateStatusTitle(connectionState)
