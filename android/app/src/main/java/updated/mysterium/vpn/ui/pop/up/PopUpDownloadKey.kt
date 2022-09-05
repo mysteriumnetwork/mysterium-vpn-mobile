@@ -161,7 +161,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         }
         with(bindingPopUp.errorText) {
             text = errorMessage
-            View.VISIBLE
+            visibility = View.VISIBLE
         }
     }
 
