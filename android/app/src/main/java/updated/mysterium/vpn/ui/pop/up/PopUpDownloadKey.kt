@@ -53,7 +53,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     bindingPopUp.repeatPasswordEditText.hint = dialog
                         .context
                         .getString(R.string.pop_up_repeat_password_account_hint)
-                    clearErrorState()
+                    if (isErrorState()) clearErrorState()
                 }
             }
             repeatPasswordEditText.onFocusChangeListener =
@@ -65,7 +65,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                         bindingPopUp.repeatPasswordEditText.hint = dialog
                             .context
                             .getString(R.string.pop_up_repeat_password_account_hint)
-                        clearErrorState()
+                        if (isErrorState()) clearErrorState()
                     }
                 }
             passwordEditText.doOnTextChanged { _, _, _, _ ->
@@ -174,4 +174,9 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         )
         bindingPopUp.errorText.visibility = View.INVISIBLE
     }
+
+    private fun isErrorState(): Boolean {
+        return bindingPopUp.errorText.visibility == View.VISIBLE
+    }
+
 }
