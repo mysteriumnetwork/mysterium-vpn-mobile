@@ -55,8 +55,10 @@ class PlayBillingSummaryActivity : SummaryActivity() {
                 }
                 result.onFailure { error ->
                     if (error is BaseNetworkException) {
+                        Log.e(TAG, error.getMessage(this))
                         onFailure.invoke(error)
                     } else {
+                        Log.e(TAG, error.localizedMessage ?: error.toString())
                         wifiNetworkErrorPopUp {
                             getOrder(info)
                         }
