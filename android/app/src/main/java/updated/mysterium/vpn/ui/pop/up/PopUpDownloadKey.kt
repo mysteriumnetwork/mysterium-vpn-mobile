@@ -91,15 +91,16 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
             closeButton.setOnClickListener {
                 dialog.dismiss()
             }
-            var position = 0
+            var passwordPosition = 0
+            var repeatPasswordPosition = 0
             bindingPopUp.passwordEditText.setSelectionChangedListener {
-                position = it
+                passwordPosition = it
             }
             bindingPopUp.repeatPasswordEditText.setSelectionChangedListener {
-                position = it
+                repeatPasswordPosition = it
             }
             showPasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = passwordPosition
                 isPasswordVisible = true
                 bindingPopUp.apply {
                     passwordEditText.transformationMethod =
@@ -110,7 +111,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                 }
             }
             showRepeatPasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = repeatPasswordPosition
                 isRepeatPasswordVisible = true
                 bindingPopUp.apply {
                     repeatPasswordEditText.transformationMethod =
@@ -121,7 +122,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                 }
             }
             hidePasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = passwordPosition
                 isPasswordVisible = false
                 bindingPopUp.passwordEditText.transformationMethod =
                     PasswordTransformationMethod.getInstance()
@@ -130,7 +131,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                 bindingPopUp.passwordEditText.setSelection(oldPosition)
             }
             hideRepeatPasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = repeatPasswordPosition
                 isRepeatPasswordVisible = false
                 bindingPopUp.repeatPasswordEditText.transformationMethod =
                     PasswordTransformationMethod.getInstance()
