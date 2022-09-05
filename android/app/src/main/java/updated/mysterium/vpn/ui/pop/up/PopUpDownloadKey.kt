@@ -172,6 +172,6 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         bindingPopUp.repeatPasswordEditText.background = ContextCompat.getDrawable(
             dialog.context, R.drawable.shape_password_field
         )
-        bindingPopUp.errorText.visibility = View.GONE
+        bindingPopUp.errorText.visibility = View.INVISIBLE
     }
 }
