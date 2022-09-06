@@ -1,7 +1,9 @@
 package updated.mysterium.vpn.ui.top.up.card.summary
 
 import android.content.Intent
+import android.util.Log
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.model.payment.CardOrderRequestInfo
 import updated.mysterium.vpn.model.payment.OrderRequestInfo
@@ -45,8 +47,10 @@ class CardSummaryActivity : SummaryActivity() {
                 }
                 result.onFailure { error ->
                     if (error is BaseNetworkException) {
+                        Log.e(TAG, error.getMessage(this))
                         onFailure.invoke(error)
                     } else {
+                        Log.e(TAG, error.localizedMessage ?: error.toString())
                         wifiNetworkErrorPopUp {
                             getOrder(info)
                         }

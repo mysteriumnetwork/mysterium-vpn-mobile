@@ -165,12 +165,13 @@ class CryptoPaymentActivity : BaseActivity() {
                 setCryptoOrderScreen(order, currency, amountUSD)
             }
             result.onFailure { error ->
-                Log.e(TAG, error.localizedMessage ?: error.toString())
                 if (error is BaseNetworkException && error.exception is TopupBalanceLimitException) {
+                    Log.e(TAG, error.getMessage(this))
                     showPaymentBalanceLimitError(
                         error.getMessage(this)
                     )
                 } else {
+                    Log.e(TAG, error.localizedMessage ?: error.toString())
                     showTopUpServerFailed()
                 }
             }
