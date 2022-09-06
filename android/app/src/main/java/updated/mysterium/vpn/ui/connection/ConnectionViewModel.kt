@@ -76,6 +76,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val settingsUseCase = useCaseProvider.settings()
     private val statisticUseCase = useCaseProvider.statistic()
     private val favouritesUseCase = useCaseProvider.favourites()
+    private val filtersUseCase = useCaseProvider.filters()
     private var deferredNode = DeferredNode()
     private var exchangeRate = 0.0
     private var isConnectionStopped = false
@@ -123,6 +124,11 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 smartConnect(countryCode)
             }
         }
+    }
+
+    fun repeatLastConnection() {
+        Log.d(TAG, "Repeat last connection")
+        smartConnect(filtersUseCase.getPreviousCountryCode())
     }
 
     private fun smartConnect(countryCode: String? = null) {
