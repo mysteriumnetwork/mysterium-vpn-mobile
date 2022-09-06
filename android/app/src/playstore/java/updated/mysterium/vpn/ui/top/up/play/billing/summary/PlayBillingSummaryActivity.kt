@@ -1,7 +1,9 @@
 package updated.mysterium.vpn.ui.top.up.play.billing.summary
 
+import android.util.Log
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.model.payment.PaymentStatus
