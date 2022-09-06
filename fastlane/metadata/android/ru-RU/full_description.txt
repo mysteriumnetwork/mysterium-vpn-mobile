@@ -23,4 +23,4 @@ Mysterium Network поддерживается мировым сообществ
 О Mysterium Network:
 Сайт - https://mysterium.network/
 GitHub - https://github.com/MysteriumNetwork
-Работающие ноды - https://my.mysterium.network
+Работающие ноды - https://mystnodes.com/

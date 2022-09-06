@@ -9,11 +9,15 @@ import updated.mysterium.vpn.model.top.up.CryptoCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.custom.view.CryptoAnimationView
 import updated.mysterium.vpn.ui.top.up.crypto.payment.CryptoPaymentActivity
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity.Companion.COUNTRY_EXTRA_KEY
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity.Companion.STATE_EXTRA_KEY
 
 class CryptoCurrencyActivity : BaseActivity() {
 
     companion object {
         const val CRYPTO_AMOUNT_USD_EXTRA_KEY = "CRYPTO_AMOUNT_USD_EXTRA_KEY"
+        const val CRYPTO_IS_LIGHTNING_EXTRA_KEY = "CRYPTO_IS_LIGHTNING_EXTRA_KEY"
+        const val CRYPTO_NAME_EXTRA_KEY = "CRYPTO_NAME_EXTRA_KEY"
     }
 
     private lateinit var binding: ActivityCryptoCurrencyBinding
@@ -48,12 +52,16 @@ class CryptoCurrencyActivity : BaseActivity() {
             finish()
         }
         binding.confirmButton.setOnClickListener {
+            val selectedCountry = intent?.extras?.getString(COUNTRY_EXTRA_KEY)
+            val selectedStateOfAmerica = intent?.extras?.getString(STATE_EXTRA_KEY)
             val cryptoName = adapter.getSelectedValue()
             val intent = Intent(this, CryptoPaymentActivity::class.java).apply {
-                putExtra(CryptoPaymentActivity.CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
-                putExtra(CryptoPaymentActivity.CRYPTO_NAME_EXTRA_KEY, cryptoName)
+                putExtra(CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
+                putExtra(COUNTRY_EXTRA_KEY, selectedCountry)
+                putExtra(STATE_EXTRA_KEY, selectedStateOfAmerica)
+                putExtra(CRYPTO_NAME_EXTRA_KEY, cryptoName)
                 putExtra(
-                    CryptoPaymentActivity.CRYPTO_IS_LIGHTNING_EXTRA_KEY,
+                    CRYPTO_IS_LIGHTNING_EXTRA_KEY,
                     binding.lightningSwitch.isChecked
                 )
             }
@@ -69,8 +77,7 @@ class CryptoCurrencyActivity : BaseActivity() {
     }
 
     private fun getCryptoList() = listOf(
-        CryptoCardItem(CryptoAnimationView.MYST, false, R.raw.myst_animation, true),
-        CryptoCardItem(CryptoAnimationView.BTC, true, R.raw.btc_animation),
+        CryptoCardItem(CryptoAnimationView.BTC, true, R.raw.btc_animation, true),
         CryptoCardItem(CryptoAnimationView.ETH, false, R.raw.eth_animation),
         CryptoCardItem(CryptoAnimationView.LTC, true, R.raw.ltc_animation),
         CryptoCardItem(CryptoAnimationView.DAI, false, R.raw.dai_animation),

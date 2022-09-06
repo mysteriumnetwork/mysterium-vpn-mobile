@@ -1,4 +1,4 @@
-package updated.mysterium.vpn.ui.top.up.card.currency
+package updated.mysterium.vpn.ui.top.up.select.country
 
 import android.graphics.Color
 import android.view.LayoutInflater

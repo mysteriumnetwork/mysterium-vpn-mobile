@@ -14,10 +14,14 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun createPlayBillingPaymentGatewayOrder(
         identityAddress: String,
-        amountUsd: Double
+        amountUsd: Double,
+        country: String,
+        state: String
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
+            this.country = country
+            this.state = state
             this.identityAddress = identityAddress
             this.amountUSD = amountUsd.toString()
             this.gateway = Gateway.GOOGLE.gateway
@@ -27,12 +31,16 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun createCoingatePaymentGatewayOrder(
         currency: String,
+        country: String,
+        state: String,
         identityAddress: String,
         amountUSD: Double,
         isLightning: Boolean
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.payCurrency = currency
+            this.country = country
+            this.state = state
             this.identityAddress = identityAddress
             this.amountUSD = amountUSD.toString()
             this.gateway = Gateway.COINGATE.gateway
@@ -46,6 +54,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
 
     suspend fun createCardPaymentGatewayOrder(
         country: String,
+        state: String,
         identityAddress: String,
         amountUSD: Double,
         currency: String,
@@ -53,6 +62,7 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     ): Order {
         val req = CreatePaymentGatewayOrderReq().apply {
             this.country = country
+            this.state = state
             this.payCurrency = currency
             this.identityAddress = identityAddress
             this.amountUSD = amountUSD.toString()
@@ -72,4 +82,8 @@ class PaymentUseCase(private val nodeRepository: NodeRepository) {
     }
 
     suspend fun getGateways() = nodeRepository.getGateways()
+
+    suspend fun gatewayClientCallback(purchase: Purchase) =
+        nodeRepository.gatewayClientCallback(purchase)
+
 }

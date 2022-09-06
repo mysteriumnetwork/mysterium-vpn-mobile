@@ -197,7 +197,13 @@
     <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
-    <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than 50 MYST</string>
+    <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than $%.2f MYST</string>
+
+    <!-- Select country -->
+    <string name="card_currency_title">Currency &amp; Country</string>
+    <string name="card_currency_description">Select your country for the VAT calculation</string>
+    <string name="card_payment_country_hint">Select Country or Region</string>
+    <string name="card_payment_state_hint">Select State</string>
 
     <!--  Provider  -->
     <string name="server_title">Server</string>
@@ -291,7 +297,8 @@
     <string name="pop_up_card_payment_button">Continue</string>
     <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
-    <string name="pop_up_private_key_error">Enter at least 12 characters</string>
+    <string name="pop_up_private_key_valid_error">Enter at least 12 characters</string>
+    <string name="pop_up_private_key_match_error">Passwords didn\'t match</string>
     <string name="pop_up_import_wrong_password">Wrong password</string>
     <string name="pop_up_private_key_hint">Password length at least 12 characters</string>
     <string name="pop_up_import_account_title">Import account</string>
@@ -299,6 +306,7 @@
     <string name="pop_up_password_account_title">Account password</string>
     <string name="pop_up_password_account_apply">Apply</string>
     <string name="pop_up_password_account_hint">Enter password here</string>
+    <string name="pop_up_repeat_password_account_hint">Repeat password here</string>
     <string name="pop_up_referral_hint">Enter code here</string>
     <string name="pop_up_referral_title">Referral code</string>
     <string name="pop_up_referral_description">You will get</string>
@@ -327,8 +335,16 @@
 
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
+    <string name="unknown_error">Unknown error</string>
 
     <!--  HomeSelection  -->
     <string name="home_selection_smart_connect">Smart Connect is coming soon</string>
     <string name="home_selection_all_nodes">All nodes</string>
+
+    <!--  Notifications channels  -->
+    <string name="marketing_notification_chanel">Marketing Updates</string>
+    <string name="statisctics_notification_chanel">Connection Statistics</string>
+    <string name="connection_lost_notification_chanel">Lost Connection</string>
+    <string name="payment_notification_chanel">Payments</string>
+    <string name="innactive_notification_chanel">Reminder Notifications</string>
 </resources>

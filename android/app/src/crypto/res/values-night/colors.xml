@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="payment_method_stripe_background">#33ED5BAC</color>
-    <color name="payment_method_stripe_icon_color">#ED5BAC</color>
-    <color name="payment_method_stripe_icon_background_color">#33ED5BAC</color>
-    <color name="payment_method_stripe_text_color">#FFFFFF</color>
-    <color name="payment_method_paypal_icon_background_color">#335BB1EF</color>
-    <color name="payment_method_paypal_text_color">#FFFFFF</color>
-    <color name="payment_method_crypto_background">#33F6F6FA</color>
-    <color name="payment_method_crypto_icon_background_color">#339090BB</color>
-    <color name="payment_method_crypto_text_color">#FFFFFF</color>
+    <color name="payment_method_card_background_color">#339090BB</color>
+    <color name="payment_method_text_color">#FFFFFF</color>
+
+    <color name="crypto_payment_address_background_color">#1AFFFFFF</color>
+    <color name="crypto_payment_address_border_color">#4DFFFFFF</color>
+    <color name="crypto_payment_address_text_color">#F6F6FA</color>
 
 </resources>

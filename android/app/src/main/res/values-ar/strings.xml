@@ -143,6 +143,9 @@
     <string name="top_up_crypto_lightning">شبكة الإضاءة</string>
     <string name="top_up_free_trial">تجربة مجانية</string>
     <string name="payment_processing_text">تحذير: سوف يستغرق التطبيق بعض الوقت لمعالجة عمليات الدفع</string>
+    <string name="card_currency_title">العملة والبلد</string>
+    <string name="card_currency_description">حدد بلدك لحساب ضريبة القيمة المضافة</string>
+    <string name="card_payment_country_hint">حدد البلد أو المنطقة</string>
     <string name="settings_title">الإعدادات</string>
     <string name="settings_description">المعرف هو معرف المستخدم الداخلي الخاص بك في Mysterium. لا ترسل أبدًا إيثر أو أي نوع من رموز ERC20 هناك.</string>
     <string name="settings_dns_title">DNS</string>
@@ -204,7 +207,7 @@ Wi-Fi</string>
     <string name="pop_up_card_payment_button">متابعة</string>
     <string name="pop_up_card_payment_title">شكرًا على الشراء!</string>
     <string name="pop_up_card_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت. سنرسل إليك إشعارًا بمجرد إتمام عملية الدفع.</string>
-    <string name="pop_up_private_key_error">كلمة مرور غير صحيحة</string>
+    <string name="pop_up_private_key_valid_error">كلمة مرور غير صحيحة</string>
     <string name="pop_up_import_wrong_password">كلمة مرور غير صحيحة</string>
     <string name="pop_up_private_key_hint">طول كلمة المرور 12–16 حرفًا</string>
     <string name="pop_up_import_account_title">استيراد الحساب</string>

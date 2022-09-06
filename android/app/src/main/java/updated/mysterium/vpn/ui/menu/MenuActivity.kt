@@ -147,8 +147,8 @@ class MenuActivity : BaseActivity() {
     }
 
     private fun inflateAppVersion() {
-        val version = "${BuildConfig.VERSION_CODE}.${BuildConfig.VERSION_NAME}"
-        val formattedVersion = getString(R.string.report_issue_app_version_template, version)
+        val formattedVersion =
+            getString(R.string.report_issue_app_version_template, BuildConfig.VERSION_NAME)
         binding.appVersionTextView.text = getString(R.string.menu_app_version, formattedVersion)
     }
 

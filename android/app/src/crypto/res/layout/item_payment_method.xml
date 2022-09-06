@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/paymentMethodItemCard"
+    style="@style/Widget.PaymentMethodCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_padding_size_small_medium"
-    app:rippleColor="@color/primary_card_view"
-    tools:background="@drawable/shape_rectangle_gray_rounded_10">
+    android:layout_margin="@dimen/margin_padding_size_small"
+    app:rippleColor="@color/primary_card_view">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,11 +31,11 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_padding_size_medium"
             android:textAlignment="center"
+            android:textColor="@color/payment_method_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/paymentMethodIcon"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/credit_card"
-            tools:textColor="@color/create_account_import_text" />
+            tools:text="@string/credit_card" />
 
         <ImageView
             android:id="@+id/arrowImageView"
@@ -46,6 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/payment_method_icon_color"
             tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

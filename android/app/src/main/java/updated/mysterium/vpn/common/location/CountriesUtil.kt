@@ -1,6 +1,6 @@
-package updated.mysterium.vpn.common.countries
+package updated.mysterium.vpn.common.location
 
-import updated.mysterium.vpn.model.settings.CountryISO
+import updated.mysterium.vpn.model.location.CountryISO
 import java.util.*
 
 object CountriesUtil {

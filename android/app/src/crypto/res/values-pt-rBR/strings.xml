@@ -8,11 +8,11 @@
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Aguardando por um pagamento</string>
-    <string name="top_up_payment_description">Leia este código QR que contém o seu endereço de recarga</string>
+    <string name="top_up_payment_crypto_description">Leia este código QR que contém o seu endereço de recarga</string>
     <string name="top_up_payment_link">Ou use um link de pagamento</string>
     <string name="top_up_usd_equivalent">Equivalente em USD ≈ $%.2f</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">Moeda e país</string>
     <string name="card_currency_description">Selecione seu país para o cálculo do IVA</string>
     <string name="card_payment_country_hint">Selecione o país ou a região</string>
@@ -27,6 +27,7 @@
 
     <string name="pop_up_payment_successfully_title">Pagamento\n Feito com Sucesso</string>
     <string name="pop_up_payment_successfully_done">Muito bem</string>
+    <!-- TODO: re-translate -->
     <string name="pop_up_payment_successfully_close">Fechar</string>
 
     <string name="pop_up_payment_not_work_title">O Servidor de Pagamento\n Não Está Respondendo</string>

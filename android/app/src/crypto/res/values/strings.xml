@@ -5,19 +5,29 @@
     <string name="payment_method_title">Choose a payment method to continue</string>
     <string name="credit_card">Credit Card</string>
     <string name="crypto">Crypto</string>
+    <string name="myst">MYST</string>
+    <string name="polygon">MYST(Polygon)</string>
+    <string name="ethereum">MYST(Ethereum)</string>
     <string name="paypal">Paypal</string>
     <string name="stripe">Stripe</string>
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_payment_description">Scan this QR code which contains your top-up address</string>
+    <string name="top_up_polygon_only_warning">Only Polygon Myst is supported.\nDo not send Ethereum MYST!</string>
+    <string name="top_up_payment_crypto_description">Scan this QR code which contains your top-up address</string>
+    <string name="top_up_payment_myst_polygon_description">Deposit Polygon MYST directly to your Payment channel. Scan QR code or copy address to proceed.</string>
+    <string name="top_up_payment_balance_refreshing">Balance is being refreshed automatically while this screen is open</string>
     <string name="top_up_payment_link">Or use a payment link</string>
     <string name="top_up_usd_equivalent">USD equivalent ≈ $%.2f</string>
+    <string name="top_up_payment_back_to_home_screen">Back to Home Screen</string>
+    <string name="top_up_payment_myst_description">%.8f MYST</string>
+    <string name="top_up_payment_myst_received">received!</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">Currency &amp; Country</string>
     <string name="card_currency_description">Select your country for the VAT calculation</string>
     <string name="card_payment_country_hint">Select Country or Region</string>
+    <string name="card_payment_state_hint">Select State</string>
 
     <!--  Pop up  -->
     <string name="pop_up_payment_canceled_title">Payment\n Canceled</string>
@@ -29,7 +39,7 @@
 
     <string name="pop_up_payment_successfully_title">Payment\n Successful</string>
     <string name="pop_up_payment_successfully_done">Well done</string>
-    <string name="pop_up_payment_successfully_close">Close</string>
+    <string name="pop_up_payment_successfully_close">To home screen</string>
 
     <string name="pop_up_payment_not_work_title">Payment Server\n Doesn\'t Work</string>
     <string name="pop_up_payment_not_work_try_again">Please try again later</string>

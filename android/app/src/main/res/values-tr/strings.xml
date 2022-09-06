@@ -165,6 +165,11 @@
     <string name="top_up_free_trial">Ücretsiz Deneme</string>
     <string name="payment_processing_text">Uyarı: Ödeme işlemleri bir kaç dakika alabilir</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">Para Birimi ve Ülke</string>
+    <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
+    <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
+
     <!--  Settings  -->
     <string name="settings_title">Ayarlar</string>
     <string name="settings_description">Kimlik, Mysterium\'daki dahili kullanıcı kimliğinizdir. Buraya hiçbir zaman ether veya herhangi bir ERC20 token\'ı göndermeyin.</string>
@@ -243,7 +248,7 @@
     <string name="pop_up_card_payment_button">Devam</string>
     <string name="pop_up_card_payment_title">Satın aldığın için teşekkürler!</string>
     <string name="pop_up_card_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen tamamlandığında sana bir bildirim göndereceğiz.</string>
-    <string name="pop_up_private_key_error">Hatalı Parola</string>
+    <string name="pop_up_private_key_valid_error">Hatalı Parola</string>
     <string name="pop_up_import_wrong_password">Hatalı Parola</string>
     <string name="pop_up_private_key_hint">Parola uzunluğu 12–16 karakterdir</string>
     <string name="pop_up_import_account_title">Hesabı içe aktarın</string>

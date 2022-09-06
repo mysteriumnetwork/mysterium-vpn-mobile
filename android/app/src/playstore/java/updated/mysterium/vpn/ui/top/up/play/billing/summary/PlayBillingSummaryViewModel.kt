@@ -1,13 +1,19 @@
 package updated.mysterium.vpn.ui.top.up.play.billing.summary
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import mysterium.RegisterIdentityRequest
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
+import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.payment.PlayBillingOrderRequestInfo
-import updated.mysterium.vpn.model.wallet.IdentityModel
+import updated.mysterium.vpn.model.payment.Purchase
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class PlayBillingSummaryViewModel(
@@ -25,13 +31,38 @@ class PlayBillingSummaryViewModel(
     private val loginUseCase = useCaseProvider.login()
     private val paymentUseCase = useCaseProvider.payment()
 
+    init {
+        subscribeOnBillingFlow()
+    }
+
+    private fun subscribeOnBillingFlow() {
+        try {
+            playBillingDataSource.purchaseConsumedFlow
+                .distinctUntilChanged()
+                .onEach {
+                    val purchase = Purchase(
+                        identityAddress = connectionUseCase.getIdentityAddress(),
+                        gateway = Gateway.GOOGLE,
+                        googlePurchaseToken = it.purchaseToken,
+                        googleProductID = it.skus.first()
+                    )
+                    paymentUseCase.gatewayClientCallback(purchase)
+                }
+                .launchIn(viewModelScope)
+        } catch (exception: Throwable) {
+            Log.e(TAG, exception.localizedMessage ?: exception.toString())
+        }
+    }
+
     fun getPlayBillingPayment(
         info: PlayBillingOrderRequestInfo
     ) = liveDataResult {
         registerOrderCallback()
         paymentUseCase.createPlayBillingPaymentGatewayOrder(
             identityAddress = connectionUseCase.getIdentityAddress(),
-            amountUsd = info.amountUsd
+            amountUsd = info.amountUsd,
+            country = info.country,
+            state = info.state
         )
     }
 
@@ -46,19 +77,6 @@ class PlayBillingSummaryViewModel(
         balanceUseCase.clearMinBalancePopUpHistory()
         balanceUseCase.clearBalancePushHistory()
         balanceUseCase.clearMinBalancePushHistory()
-    }
-
-    fun registerAccount() = liveDataResult {
-        val identity = connectionUseCase.getIdentity()
-        val identityModel = IdentityModel(identity)
-        val req = RegisterIdentityRequest().apply {
-            identityAddress = identityModel.address
-            token?.let {
-                this.token = it
-            }
-        }
-        connectionUseCase.registerIdentity(req)
-        connectionUseCase.registrationFees()
     }
 
     fun accountFlowShown() {

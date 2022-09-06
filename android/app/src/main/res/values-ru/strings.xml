@@ -163,6 +163,11 @@
     <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">Валюта и страна</string>
+    <string name="card_currency_description">Выберите страну для расчета НДС</string>
+    <string name="card_payment_country_hint">Выберите страну или регион</string>
+
     <!--  Settings  -->
     <string name="settings_title">Настройки</string>
     <string name="settings_description">Идентификатор - это ваш внутренний идентификатор пользователя Mysterium. Никогда не отправляйте туда Ethereum или какие-либо токены ERC20.</string>
@@ -241,7 +246,7 @@
     <string name="pop_up_card_payment_button">Продолжить</string>
     <string name="pop_up_card_payment_title">Благодарим за покупку!</string>
     <string name="pop_up_card_payment_description">Обработка вашего платежа может занять некоторое время. Как только она будет закончена, вы получите уведомление.</string>
-    <string name="pop_up_private_key_error">Неверный пароль</string>
+    <string name="pop_up_private_key_valid_error">Неверный пароль</string>
     <string name="pop_up_import_wrong_password">Неверный пароль</string>
     <string name="pop_up_private_key_hint">Длина пароля 12–16 символов.</string>
     <string name="pop_up_import_account_title">Импортировать аккаунт</string>

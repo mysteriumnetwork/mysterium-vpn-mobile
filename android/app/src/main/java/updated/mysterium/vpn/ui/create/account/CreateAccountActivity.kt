@@ -18,6 +18,7 @@ import network.mysterium.vpn.databinding.PopUpImportAccountBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
+import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
@@ -36,7 +37,6 @@ class CreateAccountActivity : BaseActivity() {
         const val MIME_TYPE_JSON = "application/json"
         const val MIME_TYPE_BINARY_FILE = "application/octet-stream"
         const val KEY_REQUEST_CODE = 0
-        const val TAG = "CreateAccountActivity"
     }
 
     private val viewModel: CreateAccountViewModel by inject()
@@ -128,6 +128,7 @@ class CreateAccountActivity : BaseActivity() {
         viewModel.importAccount(privateKey, passphrase).observe(this) { result ->
             result.onSuccess {
                 dialogPasswordPopup.dismiss()
+                binding.loader.visibility = View.VISIBLE
                 applyNewIdentity(it)
             }
             result.onFailure {
@@ -149,7 +150,7 @@ class CreateAccountActivity : BaseActivity() {
                 registrationViewModel.tryRegisterIdentity(identity)
             }
 
-            it.onFailure { error ->
+            it.onFailure {
                 binding.loader.visibility = View.GONE
                 detailedErrorPopUp {
                     applyNewIdentity(newIdentityAddress)
@@ -159,6 +160,8 @@ class CreateAccountActivity : BaseActivity() {
     }
 
     private fun showPasswordWrongState() {
+        bindingPasswordPopUp.applyLoader.visibility = View.GONE
+        bindingPasswordPopUp.applyButton.visibility = View.VISIBLE
         bindingPasswordPopUp.passwordEditText.text?.clear()
         bindingPasswordPopUp.passwordEditText.clearFocus()
         bindingPasswordPopUp.passwordEditText.background = ContextCompat.getDrawable(
@@ -206,6 +209,8 @@ class CreateAccountActivity : BaseActivity() {
                 passwordEditText.hideKeyboard()
                 privateKeyJson?.let {
                     importAccount(it, bindingPasswordPopUp.passwordEditText.text.toString())
+                    bindingPasswordPopUp.applyLoader.visibility = View.VISIBLE
+                    bindingPasswordPopUp.applyButton.visibility = View.GONE
                 }
             }
             closeButton.setOnClickListener {

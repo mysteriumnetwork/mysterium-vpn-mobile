@@ -8,11 +8,11 @@
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">等待付款</string>
-    <string name="top_up_payment_description">扫描这个包含您的 充值地址的二维码</string>
+    <string name="top_up_payment_crypto_description">扫描这个包含您的 充值地址的二维码</string>
     <string name="top_up_payment_link">或使用付款链接</string>
     <string name="top_up_usd_equivalent">美元等值金额 ≈ $%.2f</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">货币和国家</string>
     <string name="card_currency_description">选择所在国家来计算增值税</string>
     <string name="card_payment_country_hint">选择国家或地区</string>
@@ -27,6 +27,7 @@
 
     <string name="pop_up_payment_successfully_title">付款\n 成功</string>
     <string name="pop_up_payment_successfully_done">做得好</string>
+    <!-- TODO: re-translate -->
     <string name="pop_up_payment_successfully_close">关闭</string>
 
     <string name="pop_up_payment_not_work_title">付款服务器\n 故障</string>

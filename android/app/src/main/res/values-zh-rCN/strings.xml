@@ -162,6 +162,11 @@
     <string name="top_up_free_trial">免费试用</string>
     <string name="payment_processing_text">警告：可能需要几分钟来处理付款</string>
 
+    <!-- Select country -->
+    <string name="card_currency_title">货币和国家</string>
+    <string name="card_currency_description">选择所在国家来计算增值税</string>
+    <string name="card_payment_country_hint">选择国家或地区</string>
+
     <!--  Settings  -->
     <string name="settings_title">设置</string>
     <string name="settings_description">身份即您的 Mysterium 内部用户 ID。请勿在那里发送以太币或任何类型的 ERC20 代币。</string>
@@ -240,7 +245,7 @@
     <string name="pop_up_card_payment_button">继续</string>
     <string name="pop_up_card_payment_title">感谢购买！</string>
     <string name="pop_up_card_payment_description">可能需要一些时间来处理您的付款。完成后，我们会给您发通知。</string>
-    <string name="pop_up_private_key_error">密码有误</string>
+    <string name="pop_up_private_key_valid_error">密码有误</string>
 
     <string name="pop_up_import_wrong_password">密码有误</string>
     <string name="pop_up_private_key_hint">密码长度为 12–16 个字符</string>

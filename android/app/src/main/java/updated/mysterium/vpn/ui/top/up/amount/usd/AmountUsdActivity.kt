@@ -12,6 +12,10 @@ import java.util.*
 
 abstract class AmountUsdActivity : BaseActivity() {
 
+    companion object {
+        const val AMOUNT_USD_EXTRA_KEY = "AMOUNT_USD_EXTRA_KEY"
+    }
+
     val adapter = AmountUsdAdapter()
 
     private lateinit var binding: ActivityAmountUsdBinding

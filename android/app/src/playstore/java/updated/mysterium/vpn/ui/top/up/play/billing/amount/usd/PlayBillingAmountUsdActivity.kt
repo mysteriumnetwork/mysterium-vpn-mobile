@@ -3,9 +3,11 @@ package updated.mysterium.vpn.ui.top.up.play.billing.amount.usd
 import android.content.Intent
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.observeOnce
+import updated.mysterium.vpn.model.payment.PaymentOption
 import updated.mysterium.vpn.model.top.up.AmountUsdCardItem
 import updated.mysterium.vpn.ui.top.up.amount.usd.AmountUsdActivity
 import updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingSummaryActivity
+import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity
 
 class PlayBillingAmountUsdActivity : AmountUsdActivity() {
 
@@ -28,8 +30,9 @@ class PlayBillingAmountUsdActivity : AmountUsdActivity() {
     }
 
     override fun navigate() {
-        val intent = Intent(this, PlayBillingSummaryActivity::class.java).apply {
+        val intent = Intent(this, SelectCountryActivity::class.java).apply {
             putExtra(PlayBillingSummaryActivity.SKU_EXTRA_KEY, adapter.getSelectedValue())
+            putExtra(PAYMENT_OPTION_EXTRA_KEY, PaymentOption.GOOGLE.value)
         }
         startActivity(intent)
     }

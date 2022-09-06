@@ -6,8 +6,8 @@ buildscript {
         compileSdkVersion = 30
         targetSdkVersion = 30
         ndkVersion = '21.4.7075529' // r21e - https://developer.android.com/ndk/downloads#lts-downloads
-        versionCode = 2
-        versionName = 0.31
+        versionCode = 107158
+        versionName = '2.0.34'
     }
     repositories {
         google()
@@ -27,9 +27,6 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
-        maven {
-            url "https://oss.sonatype.org/service/local/repositories/releases/content/"
-        }
         google()
         jcenter()
         maven { url 'https://jitpack.io' }

@@ -8,11 +8,11 @@
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Ödeme bekleniyor</string>
-    <string name="top_up_payment_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
+    <string name="top_up_payment_crypto_description">Para ekleme adresinizi içeren bu QR kodunu tarayın</string>
     <string name="top_up_payment_link">Alternatif olarak, ödeme bağlantısı kullanın</string>
     <string name="top_up_usd_equivalent">USD eş değeri ≈ %.2f $</string>
 
-    <!-- Card currency -->
+    <!-- Select country -->
     <string name="card_currency_title">Para Birimi ve Ülke</string>
     <string name="card_currency_description">KDV hesaplaması için ülkeni seç</string>
     <string name="card_payment_country_hint">Ülke veya Bölge seç</string>
@@ -27,6 +27,7 @@
 
     <string name="pop_up_payment_successfully_title">Ödeme\n Başarılı</string>
     <string name="pop_up_payment_successfully_done">Tebrikler</string>
+    <!-- TODO: re-translate -->
     <string name="pop_up_payment_successfully_close">Kapat</string>
 
     <string name="pop_up_payment_not_work_title">Ödeme Sunucusu\n Çalışmıyor</string>

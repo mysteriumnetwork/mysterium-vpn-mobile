@@ -1,3 +1,3 @@
 package updated.mysterium.vpn.exceptions
 
-class TopupBalanceLimitException: Exception()
+class TopupBalanceLimitException(val limit: Double): Exception()

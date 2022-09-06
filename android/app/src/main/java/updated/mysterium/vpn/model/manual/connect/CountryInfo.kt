@@ -3,7 +3,7 @@ package updated.mysterium.vpn.model.manual.connect
 import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import updated.mysterium.vpn.common.countries.Countries
+import updated.mysterium.vpn.common.location.Countries
 import java.util.*
 
 @Parcelize

@@ -32,10 +32,9 @@ class ReportIssueActivity : BaseActivity() {
 
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
-        val version = "${BuildConfig.VERSION_CODE}.${BuildConfig.VERSION_NAME}"
         binding.appVersionValueTextView.text = getString(
             R.string.report_issue_app_version_template,
-            version
+            BuildConfig.VERSION_NAME
         )
         binding.nodeVersionValueTextView.text = BuildConfig.NODE_VERSION
     }

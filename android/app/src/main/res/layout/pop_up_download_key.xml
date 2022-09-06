@@ -98,8 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/margin_padding_size_large"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
                 android:background="@drawable/shape_password_field"
                 android:ellipsize="end"
                 android:hint="@string/pop_up_password_account_hint"
@@ -115,16 +114,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/icon"
                 tools:ignore="LabelFor" />
 
-            <TextView
-                android:id="@+id/passwordHelperText"
+            <EditText
+                android:id="@+id/repeatPasswordEditText"
                 style="@style/TextAppearance.Caption"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_padding_size_small"
-                android:text="@string/pop_up_private_key_hint"
-                android:textColor="@color/pop_up_password_helper_text"
-                app:layout_constraintStart_toStartOf="@id/passwordEditText"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+                android:layout_marginBottom="@dimen/margin_padding_size_large"
+                android:background="@drawable/shape_password_field"
+                android:ellipsize="end"
+                android:hint="@string/pop_up_repeat_password_account_hint"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingStart="@dimen/margin_padding_size_xlarge"
+                android:paddingEnd="@dimen/margin_padding_size_small"
+                android:textColor="@color/pop_up_password_text"
+                android:textColorHint="@color/pop_up_password_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+                tools:ignore="LabelFor" />
 
             <ImageView
                 android:id="@+id/hidePasswordImageView"
@@ -141,6 +152,20 @@
                 tools:ignore="ContentDescription" />
 
             <ImageView
+                android:id="@+id/hideRepeatPasswordImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_size_xsmall"
+                android:elevation="2dp"
+                android:padding="@dimen/margin_padding_size_xsmall"
+                android:src="@drawable/icon_hide_password"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/repeatPasswordEditText"
+                app:layout_constraintStart_toStartOf="@+id/repeatPasswordEditText"
+                app:layout_constraintTop_toTopOf="@+id/repeatPasswordEditText"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
                 android:id="@+id/showPasswordImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,21 +178,35 @@
                 app:layout_constraintTop_toTopOf="@+id/passwordEditText"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/showRepeatPasswordImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_size_xsmall"
+                android:padding="@dimen/margin_padding_size_xsmall"
+                android:src="@drawable/icon_show_password"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/repeatPasswordEditText"
+                app:layout_constraintStart_toStartOf="@+id/repeatPasswordEditText"
+                app:layout_constraintTop_toTopOf="@+id/repeatPasswordEditText"
+                tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/errorText"
                 style="@style/TextAppearance.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_padding_size_xsmall"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/pop_up_private_key_error"
+                android:textAlignment="center"
+                android:text="@string/pop_up_private_key_valid_error"
                 android:textColor="@color/menu_subtitle_light_pink"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/passwordEditText"
-                app:layout_constraintEnd_toEndOf="@+id/passwordEditText"
-                app:layout_constraintStart_toEndOf="@+id/hidePasswordImageView"
-                app:layout_constraintTop_toTopOf="@+id/passwordEditText" />
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@id/passwordEditText"
+                app:layout_constraintStart_toStartOf="@id/passwordEditText"
+                app:layout_constraintTop_toBottomOf="@id/repeatPasswordEditText" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/downloadButton"
@@ -182,7 +221,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordHelperText" />
+                app:layout_constraintTop_toBottomOf="@+id/errorText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
