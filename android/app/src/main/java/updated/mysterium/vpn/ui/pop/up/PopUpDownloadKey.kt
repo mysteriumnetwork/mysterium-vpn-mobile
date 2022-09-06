@@ -12,6 +12,7 @@ import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
 import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
+import updated.mysterium.vpn.common.extensions.setVisibility
 
 class PopUpDownloadKey(layoutInflater: LayoutInflater) {
 
@@ -53,7 +54,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     bindingPopUp.repeatPasswordEditText.hint = dialog
                         .context
                         .getString(R.string.pop_up_repeat_password_account_hint)
-                    clearErrorState()
+                    if (isErrorState()) clearErrorState()
                 }
             }
             repeatPasswordEditText.onFocusChangeListener =
@@ -65,77 +66,60 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                         bindingPopUp.repeatPasswordEditText.hint = dialog
                             .context
                             .getString(R.string.pop_up_repeat_password_account_hint)
-                        clearErrorState()
+                        if (isErrorState()) clearErrorState()
                     }
                 }
             passwordEditText.doOnTextChanged { _, _, _, _ ->
-                if (isPasswordVisible) {
-                    bindingPopUp.showPasswordImageView.visibility = View.INVISIBLE
-                    bindingPopUp.hidePasswordImageView.visibility = View.VISIBLE
-                } else {
-                    bindingPopUp.showPasswordImageView.visibility = View.VISIBLE
-                    bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
-                }
-                clearErrorState()
+                switchPasswordToggle(isPasswordVisible)
             }
             repeatPasswordEditText.doOnTextChanged { _, _, _, _ ->
-                if (isRepeatPasswordVisible) {
-                    bindingPopUp.showRepeatPasswordImageView.visibility = View.INVISIBLE
-                    bindingPopUp.hideRepeatPasswordImageView.visibility = View.VISIBLE
-                } else {
-                    bindingPopUp.showRepeatPasswordImageView.visibility = View.VISIBLE
-                    bindingPopUp.hideRepeatPasswordImageView.visibility = View.INVISIBLE
-                }
-                clearErrorState()
+                switchRepeatPasswordToggle(isRepeatPasswordVisible)
             }
             closeButton.setOnClickListener {
                 dialog.dismiss()
             }
-            var position = 0
+            var passwordPosition = 0
+            var repeatPasswordPosition = 0
             bindingPopUp.passwordEditText.setSelectionChangedListener {
-                position = it
+                passwordPosition = it
             }
             bindingPopUp.repeatPasswordEditText.setSelectionChangedListener {
-                position = it
+                repeatPasswordPosition = it
             }
             showPasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = passwordPosition
                 isPasswordVisible = true
+                switchPasswordToggle(isPasswordVisible)
                 bindingPopUp.apply {
                     passwordEditText.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
-                    showPasswordImageView.visibility = View.INVISIBLE
-                    hidePasswordImageView.visibility = View.VISIBLE
                     passwordEditText.setSelection(oldPosition)
                 }
             }
             showRepeatPasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = repeatPasswordPosition
                 isRepeatPasswordVisible = true
+                switchRepeatPasswordToggle(isRepeatPasswordVisible)
                 bindingPopUp.apply {
                     repeatPasswordEditText.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
-                    showRepeatPasswordImageView.visibility = View.INVISIBLE
-                    hideRepeatPasswordImageView.visibility = View.VISIBLE
                     repeatPasswordEditText.setSelection(oldPosition)
                 }
             }
             hidePasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = passwordPosition
                 isPasswordVisible = false
+                switchPasswordToggle(isPasswordVisible)
                 bindingPopUp.passwordEditText.transformationMethod =
                     PasswordTransformationMethod.getInstance()
-                bindingPopUp.showPasswordImageView.visibility = View.VISIBLE
-                bindingPopUp.hidePasswordImageView.visibility = View.INVISIBLE
                 bindingPopUp.passwordEditText.setSelection(oldPosition)
             }
             hideRepeatPasswordImageView.setOnClickListener {
-                val oldPosition = position
+                val oldPosition = repeatPasswordPosition
                 isRepeatPasswordVisible = false
+                switchRepeatPasswordToggle(isRepeatPasswordVisible)
                 bindingPopUp.repeatPasswordEditText.transformationMethod =
                     PasswordTransformationMethod.getInstance()
-                bindingPopUp.showRepeatPasswordImageView.visibility = View.VISIBLE
-                bindingPopUp.hideRepeatPasswordImageView.visibility = View.INVISIBLE
                 bindingPopUp.repeatPasswordEditText.setSelection(oldPosition)
             }
         }
@@ -161,7 +145,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         }
         with(bindingPopUp.errorText) {
             text = errorMessage
-            View.VISIBLE
+            visibility = View.VISIBLE
         }
     }
 
@@ -172,6 +156,22 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         bindingPopUp.repeatPasswordEditText.background = ContextCompat.getDrawable(
             dialog.context, R.drawable.shape_password_field
         )
-        bindingPopUp.errorText.visibility = View.GONE
+        bindingPopUp.errorText.visibility = View.INVISIBLE
     }
+
+    private fun isErrorState(): Boolean {
+        return bindingPopUp.errorText.visibility == View.VISIBLE
+    }
+
+    private fun switchPasswordToggle(isPasswordVisible: Boolean) {
+        bindingPopUp.showPasswordImageView.setVisibility(!isPasswordVisible)
+        bindingPopUp.hidePasswordImageView.setVisibility(isPasswordVisible)
+    }
+
+    private fun switchRepeatPasswordToggle(isRepeatPasswordVisible: Boolean) {
+        bindingPopUp.showRepeatPasswordImageView.setVisibility(!isRepeatPasswordVisible)
+        bindingPopUp.hideRepeatPasswordImageView.setVisibility(isRepeatPasswordVisible)
+    }
+
+
 }
