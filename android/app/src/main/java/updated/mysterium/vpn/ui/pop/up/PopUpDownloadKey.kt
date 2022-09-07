@@ -147,6 +147,9 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
             text = errorMessage
             visibility = View.VISIBLE
         }
+        with(bindingPopUp.passwordHelperText) {
+            visibility = View.INVISIBLE
+        }
     }
 
     private fun clearErrorState() {
@@ -157,6 +160,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
             dialog.context, R.drawable.shape_password_field
         )
         bindingPopUp.errorText.visibility = View.INVISIBLE
+        bindingPopUp.passwordHelperText.visibility = View.VISIBLE
     }
 
     private fun isErrorState(): Boolean {
