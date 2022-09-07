@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import androidx.lifecycle.distinctUntilChanged
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
@@ -20,7 +19,6 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.AppConstants.Payments.PAYMENT_BALANCE_LIMIT
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
-import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.extensions.setVisibility
 import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
@@ -102,6 +100,9 @@ class CryptoPaymentActivity : BaseActivity() {
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
         }
+        binding.closeButton.setOnClickListener {
+            navigateToHome()
+        }
     }
 
     private fun getExtra() {
@@ -133,12 +134,11 @@ class CryptoPaymentActivity : BaseActivity() {
             stopLoaderAnimation()
             it.onSuccess { channelAddress ->
                 setMystPolygonWaitingScreen(channelAddress)
-                balanceViewModeL.balanceLiveData.distinctUntilChanged()
-                    .observeOnce(this) { newBalance ->
-                        if (newBalance > initialBalance) {
-                            setMystPolygonReceivedScreen(newBalance)
-                        }
+                balanceViewModeL.balanceLiveData.observe(this) { newBalance ->
+                    if (newBalance > initialBalance) {
+                        setMystPolygonReceivedScreen(newBalance)
                     }
+                }
             }
             it.onFailure {
                 showTopUpServerFailed()
@@ -196,6 +196,7 @@ class CryptoPaymentActivity : BaseActivity() {
         binding.receivedMystValueTextView.text =
             getString(R.string.top_up_payment_myst_description, newBalance)
         binding.paymentAnimation.setVisibility(false)
+        binding.balanceRefreshingTextView.setVisibility(false)
         binding.closeButton.setVisibility(true)
     }
 
