@@ -111,7 +111,18 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // Connect to VPN service.
     suspend fun connect(req: ConnectRequest) = withContext(Dispatchers.IO) {
         val res = deferredNode.await().connect(req) ?: return@withContext
-        throw BaseNetworkException.fromErrorCode(res.errorCode, res.errorMessage)
+        Log.e(TAG, res.errorMessage)
+        when (res.errorCode) {
+            "InvalidProposal" -> throw ConnectInvalidProposalException(res.errorMessage)
+            "InsufficientBalance" -> throw ConnectInsufficientBalanceException(res.errorMessage)
+            "Unknown" -> {
+                if (res.errorMessage == "connection already exists") {
+                    throw ConnectAlreadyExistsException(res.errorMessage)
+                } else {
+                    throw ConnectUnknownException(res.errorMessage)
+                }
+            }
+        }
     }
 
     // Disconnect from VPN service.
