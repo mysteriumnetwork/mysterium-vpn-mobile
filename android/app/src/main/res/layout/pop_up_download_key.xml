@@ -100,6 +100,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_padding_size_large"
                 android:background="@drawable/shape_password_field"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
                 android:ellipsize="end"
                 android:hint="@string/pop_up_password_account_hint"
                 android:importantForAutofill="no"
@@ -123,6 +124,7 @@
                 android:layout_marginTop="@dimen/margin_padding_size_small"
                 android:layout_marginBottom="@dimen/margin_padding_size_large"
                 android:background="@drawable/shape_password_field"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
                 android:ellipsize="end"
                 android:hint="@string/pop_up_repeat_password_account_hint"
                 android:importantForAutofill="no"
@@ -202,7 +204,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/passwordEditText"
                 app:layout_constraintStart_toStartOf="@id/passwordEditText"
-                app:layout_constraintTop_toBottomOf="@id/repeatPasswordEditText"/>
+                app:layout_constraintTop_toBottomOf="@id/repeatPasswordEditText" />
 
             <TextView
                 android:id="@+id/errorText"
@@ -213,8 +215,8 @@
                 android:layout_marginTop="@dimen/margin_padding_size_small"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAlignment="center"
                 android:text="@string/pop_up_private_key_valid_error"
+                android:textAlignment="center"
                 android:textColor="@color/menu_subtitle_light_pink"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@id/passwordEditText"
