@@ -198,6 +198,7 @@ class CryptoPaymentActivity : BaseActivity() {
         binding.paymentAnimation.setVisibility(false)
         binding.balanceRefreshingTextView.setVisibility(false)
         binding.closeButton.setVisibility(true)
+        binding.title.text = getString(R.string.top_up_your_account)
     }
 
     private fun setCryptoOrderScreen(order: Order, currency: String, amountUSD: Double?) {
