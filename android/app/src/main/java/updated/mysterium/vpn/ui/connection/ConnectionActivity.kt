@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.distinctUntilChanged
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeBinding
 import network.mysterium.vpn.databinding.PopUpLostConnectionBinding
@@ -16,6 +17,7 @@ import updated.mysterium.vpn.analytics.AnalyticEvent
 import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.getTypeLabelResource
+import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.playstore.PlayStoreHelper
 import updated.mysterium.vpn.exceptions.ConnectAlreadyExistsException
 import updated.mysterium.vpn.exceptions.ConnectInsufficientBalanceException
@@ -126,7 +128,7 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun subscribeConnectionListener() {
-        viewModel.connectionStatus.observe(this) {
+        viewModel.connectionStatus.distinctUntilChanged().observe(this) {
             proposal = it.proposal
             handleConnectionChange(it)
         }
@@ -194,7 +196,7 @@ class ConnectionActivity : BaseActivity() {
     }
 
     private fun checkForReview() {
-        viewModel.isReviewAvailable().observe(this) {
+        viewModel.isReviewAvailable().observeOnce(this) {
             it.onSuccess { isReviewAvailable ->
                 if (isReviewAvailable) {
                     playStoreHelper?.showReview(this)

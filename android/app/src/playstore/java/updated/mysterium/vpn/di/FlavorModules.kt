@@ -24,7 +24,7 @@ object FlavorModules {
             PlayBillingSummaryViewModel(get(), get())
         }
         single<PlayStoreHelper> {
-            PlayStoreHelperImpl()
+            PlayStoreHelperImpl(get())
         }
         single<NotificationsHelper> {
             Notifications(androidApplication())
