@@ -26,12 +26,8 @@
     <string name="smart_connect_connecting_title">Smart Connect</string>
 
     <!--  ManualConnection  -->
-    <string name="manual_connect_country_select_title">Select node</string>
     <string name="manual_connect_all_nodes">All nodes</string>
-    <string name="manual_connect_saved_nodes">Saved</string>
     <string name="manual_connect_all_countries">All countries</string>
-    <string name="manual_connect_nodes_label">Nodes</string>
-    <string name="manual_connect_country_label">Countries</string>
     <string name="manual_connect_disconnected">Disconnected</string>
     <string name="manual_connect_select_node">Manual Node Selection</string>
     <string name="manual_connect_country_status">Unprotected</string>
@@ -39,7 +35,6 @@
     <string name="manual_connect_price">Price</string>
     <string name="manual_connect_type">Type</string>
     <string name="manual_connect_quality">Quality</string>
-    <string name="manual_connect_type_filter_title">Select the node type</string>
     <string name="manual_connect_node">Node</string>
     <string name="manual_connect_another_node">Select another node </string>
     <string name="manual_connect_cancel">Cancel and choose another node</string>
@@ -61,7 +56,6 @@
     <string name="manual_connect_data_received" translatable="false">%1$s/</string>
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
-    <string name="manual_connect_saved_to_favourite">Successfully saved</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH and more</string>
     <string name="manual_connect_search">Search</string>
     <string name="manual_connect_node_id">Node id or Country</string>
@@ -89,7 +83,6 @@
     <string name="menu_item_monitoring_title">History</string>
     <string name="menu_item_referral_title">Referral program</string>
     <string name="menu_item_referral_subtitle">Earn VPN Credits</string>
-    <string name="menu_item_wallet_subtitle">Top up your account</string>
     <string name="menu_item_monitoring_subtitle">Connection history</string>
     <string name="menu_list_item_settings">Settings</string>
     <string name="menu_list_item_report">Report an issue</string>
@@ -109,7 +102,6 @@
     <string name="wallet_main_title">Account balance</string>
     <string name="wallet_currency" translatable="false">MYST</string>
     <string name="wallet_balance_currency" translatable="false">MYST</string>
-    <string name="wallet_start_balance">0,000</string>
     <string name="wallet_usd_equivalent">USD equivalent ≈ $%.3f</string>
     <string name="wallet_buys_for_you">This buys you:</string>
     <string name="wallet_current_balance" translatable="false">"%.3f"</string>
@@ -137,7 +129,6 @@
     <string name="profile_title">Profile</string>
     <string name="profile_identity">Mysterium Identity Address</string>
     <string name="profile_identity_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
-    <string name="profile_change_keys">Change Private keys</string>
     <string name="profile_copy_to_clipboard">Copied to clipboard</string>
     <string name="profile_private_keys">Private keys</string>
     <string name="profile_keys_description">On Mysterium your account is not stored in centralised servers. Private keys that hold your tokens are stored only in your application. </string>
@@ -184,7 +175,6 @@
     <string name="top_up_amount_music">Music</string>
     <string name="top_up_amount_pages">Web pages</string>
     <string name="top_up_amount_traffic">Traffic</string>
-    <string name="top_up_amount_description">Select how much MYST credits\n you would like to add into your account</string>
     <string name="top_up_price_description">Select the price in USD</string>
     <string name="top_up_amount_confirm">Confirm</string>
     <string name="top_up_crypto_description">Select the crypto currency\n in which the top up will be done.\n Currently only Ethereum Network MYST is supported!</string>
@@ -192,7 +182,6 @@
     <string name="top_up_crypto_lightning">Lightning Network</string>
     <string name="top_up_amount_usd" translatable="false">$%.2f</string>
     <string name="top_up_currency_equivalent" translatable="false">%1$s %2$s</string>
-    <string name="top_up_free_trial">Free Trial</string>
     <string name="payment_details">Payment details</string>
     <string name="payment_processing_text">Warning: It takes a few minutes to process payments after topping up</string>
     <string name="payment_balance_limit_text">You can\'t make a payment if the account balance is more than %.2f MYST</string>
@@ -211,7 +200,6 @@
     <string name="settings_dns_system">System</string>
     <string name="settings_dns_provider">Provider</string>
     <string name="settings_dns_cloudflare">Cloudflare</string>
-    <string name="settings_dns_default">Default</string>
     <string name="settings_dark_mode">Dark Mode</string>
     <string name="settings_nat_description">NAT Type Detection</string>
     <string name="settings_helper_mark" translatable="false">\?</string>
@@ -226,11 +214,9 @@
     <!--  Card payment  -->
     <string name="card_summary_title">Order Summary</string>
     <string name="card_payment_pay">Continue to Pay</string>
-    <string name="card_payment_stripe">You will be taken to Stripe payment page to pay.</string>
     <string name="card_payment_total">Total Due</string>
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_myst_top_up_description">%.2f MYST Top-up</string>
     <string name="card_payment_myst_description">%.2f MYST</string>
 
     <!--  Private key  -->
@@ -242,13 +228,8 @@
     <string name="prepare_top_up_description">Top up your account or use the referral code to start using Mysterium dVPN</string>
     <string name="prepare_top_up_referral">Use referral code</string>
     <string name="prepare_top_up_now">Top up now</string>
-    <string name="prepare_top_up_later">Top up later</string>
 
     <!--  Payment method  -->
-    <string name="payment_method_title">Choose a payment method to continue</string>
-    <string name="credit_card">Credit Card</string>
-    <string name="crypto">Crypto</string>
-    <string name="paypal">Paypal</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Use </string>
@@ -287,8 +268,6 @@
     <string name="pop_up_private_key_description">Type Your Password</string>
     <string name="pop_up_private_key_download">Download</string>
     <string name="pop_up_payment_title_thanks">Thanks for the purchase!</string>
-    <string name="pop_up_card_payment_button">Continue</string>
-    <string name="pop_up_card_payment_title">Thanks for the purchase!</string>
     <string name="pop_up_card_payment_description">It may take some time to process your payment.\n We\'ll send you a notification once it\'s completed</string>
     <string name="pop_up_private_key_valid_error">Enter at least 12 characters</string>
     <string name="pop_up_private_key_match_error">Passwords didn\'t match</string>
@@ -305,9 +284,6 @@
     <string name="pop_up_referral_description">You will get</string>
     <string name="pop_up_referral_empty_error">Field can\'t be empty</string>
     <string name="pop_up_referral_invalid_error">Code is not valid</string>
-    <string name="pop_up_new_version_title">New Version\n Available</string>
-    <string name="pop_up_new_version_description">Please update your app\n in Google Play Store</string>
-    <string name="pop_up_new_version_update">Update</string>
     <string name="pop_up_no_amount_title">Can\'t display\n amount</string>
     <string name="pop_up_no_amount_description">Sorry, we can\`t display your amount right now.</string>
     <string name="pop_up_no_amount_try_again">Try again</string>
@@ -331,7 +307,6 @@
     <string name="unknown_error">Unknown error</string>
 
     <!--  HomeSelection  -->
-    <string name="home_selection_smart_connect">Smart Connect is coming soon</string>
     <string name="home_selection_all_nodes">All nodes</string>
 
     <!--  Notifications channels  -->

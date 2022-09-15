@@ -18,21 +18,15 @@
     <string name="onboarding_next">Avançar</string>
 
     <!--  ManualConnection  -->
-    <string name="manual_connect_country_select_title">Selecionar nó</string>
     <string name="manual_connect_all_nodes">Todos os nós</string>
-    <string name="manual_connect_saved_nodes">Salvo</string>
     <string name="manual_connect_all_countries">Todos os países</string>
-    <string name="manual_connect_nodes_label">Nós</string>
-    <string name="manual_connect_country_label">Países</string>
     <string name="manual_connect_disconnected">Desconectado</string>
     <string name="manual_connect_select_node">Selecionar nó</string>
-    <string name="manual_connect_smart_unavailable">O Smart Connect não está disponível no modo de teste\n Selecione o nó manualmente</string>
     <string name="manual_connect_country_status">Desprotegido</string>
     <string name="manual_connect_protected">Protegido</string>
     <string name="manual_connect_price">Preço</string>
     <string name="manual_connect_type">Tipo</string>
     <string name="manual_connect_quality">Qualidade</string>
-    <string name="manual_connect_type_filter_title">Selecione outro tipo de nó</string>
     <string name="manual_connect_node">Nó</string>
     <string name="manual_connect_another_node">Selecione outro nó </string>
     <string name="manual_connect_cancel">Cancele e escolha outro nó</string>
@@ -52,7 +46,6 @@
     <string name="manual_connect_unknown">Desconhecido</string>
     <string name="manual_connect_price_per_hour">%.5f/h</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/GiB</string>
-    <string name="manual_connect_saved_to_favourite">Salvo com sucesso</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH e mais</string>
     <string name="manual_connect_search">Pesquisar</string>
     <string name="manual_connect_node_id">ID do nó ou país</string>
@@ -80,7 +73,6 @@
     <string name="menu_item_monitoring_title">Histórico</string>
     <string name="menu_item_referral_title">Programa de indicação</string>
     <string name="menu_item_referral_subtitle">Ganhar créditos de VPN</string>
-    <string name="menu_item_wallet_subtitle">Recarregue a sua conta</string>
     <string name="menu_item_monitoring_subtitle">Histórico de conexão</string>
     <string name="menu_list_item_settings">Configurações</string>
     <string name="menu_list_item_report">Reportar um problema</string>
@@ -90,7 +82,6 @@
 
     <!--  Wallet  -->
     <string name="wallet_main_title">Saldo da conta</string>
-    <string name="wallet_start_balance">0.000</string>
     <string name="wallet_usd_equivalent">Equivalente em USD ≈ $%.3f</string>
     <string name="wallet_buys_for_you">Essa quantia pode comprar:</string>
     <string name="wallet_top_up">Recarregar</string>
@@ -116,7 +107,6 @@
     <string name="profile_title">Perfil</string>
     <string name="profile_identity">Endereço de Identidade no Mysterium</string>
     <string name="profile_identity_description">A identidade é o seu ID de usuário interno no Mysterium. Nunca envie Ethereum ou qualquer tipo de tokens ERC20 nesse local.</string>
-    <string name="profile_change_keys">Alterar Chaves Privadas</string>
     <string name="profile_copy_to_clipboard">Copiado para a área de transferência</string>
     <string name="profile_private_keys">Chaves privadas</string>
     <string name="profile_keys_description">No Mysterium, sua conta não é armazenada em servidores centralizados. As chaves privadas que contêm seus tokens são armazenadas apenas em seu aplicativo. </string>
@@ -154,12 +144,10 @@
     <string name="top_up_amount_music">Música</string>
     <string name="top_up_amount_pages">Páginas da Web</string>
     <string name="top_up_amount_traffic">Tráfego</string>
-    <string name="top_up_amount_description">Selecione quantos créditos MYST\n você quer adicionar à sua conta</string>
     <string name="top_up_amount_confirm">Confirmar</string>
     <string name="top_up_crypto_description">Selecione a croptomoeda\n em que a recarga será feita</string>
 
     <string name="top_up_crypto_lightning">Rede Lightning</string>
-    <string name="top_up_free_trial">Teste Grátis</string>
     <string name="payment_processing_text">Aviso: os pagamentos levam alguns minutos para serem processados</string>
 
     <!-- Select country -->
@@ -175,7 +163,6 @@
     <string name="settings_dns_system">Sistema</string>
     <string name="settings_dns_provider">Provedor</string>
     <string name="settings_dns_cloudflare">Cloudflare</string>
-    <string name="settings_dns_default">Padrão</string>
     <string name="settings_dark_mode">Modo escuro</string>
     <string name="settings_nat_description">Detecção de tipo de NAT</string>
     <string name="settings_helper_description">Use a detecção automática de tipo de NAT para filtrar provedores incompatíveis. Isso aumenta suas chances de se conectar a um provedor.</string>
@@ -189,11 +176,9 @@
     <!--  Card payment  -->
     <string name="card_summary_title">Resumo do pedido</string>
     <string name="card_payment_pay">Continue para pagar</string>
-    <string name="card_payment_stripe">Você será encaminhado para a página de pagamento da Stripe para pagar.</string>
     <string name="card_payment_total">Valor total</string>
     <string name="card_payment_vat_title">VAT</string>
     <string name="card_payment_vat_value">VAT(%1.1f%%)</string>
-    <string name="card_payment_myst_top_up_description">Recarregar MYST %.2f</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Importante! Baixe sua chave particular agora e armazene-a de forma segura para não ficar sem acesso à sua conta.</string>
@@ -203,7 +188,6 @@
     <string name="prepare_top_up_description">Recarregue sua conta ou use o código de indicação para começar a usar a Mysterium dVPN</string>
     <string name="prepare_top_up_referral">Usar código de inscrição</string>
     <string name="prepare_top_up_now">Recarregar agora</string>
-    <string name="prepare_top_up_later">Recarregar depois</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Usar </string>
@@ -242,8 +226,6 @@
     <string name="pop_up_private_key_description">Digite a sua senha</string>
     <string name="pop_up_private_key_download">Fazer download</string>
     <string name="pop_up_payment_title_thanks">Agradecemos a sua compra!</string>
-    <string name="pop_up_card_payment_button">Continuar</string>
-    <string name="pop_up_card_payment_title">Agradecemos a sua compra!</string>
     <string name="pop_up_card_payment_description">O pagamento pode levar algum tempo para ser processado. Enviaremos uma notificação quando ele for concluído.</string>
     <string name="pop_up_private_key_valid_error">Senha incorreta</string>
     <string name="pop_up_import_wrong_password">Senha incorreta</string>
@@ -256,14 +238,13 @@
     <string name="pop_up_referral_hint">Insira o código aqui</string>
     <string name="pop_up_referral_title">Código de indicação</string>
     <string name="pop_up_referral_description">Você receberá</string>
-    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Token incorreto</string>
-    <string name="pop_up_new_version_title">Nova versão disponível</string>
-    <string name="pop_up_new_version_description">Atualize seu aplicativo na Google Play Store</string>
-    <string name="pop_up_new_version_update">Atualizar</string>
+    <!-- TODO: re-translate -->
+    <string name="pop_up_referral_invalid_error">Token incorreto</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Saldo no Mysterium</string>
-    <!-- TODO: re-translate --><string name="push_notification_balance_message">Seu saldo está acabando!</string>
+    <!-- TODO: re-translate -->
+    <string name="push_notification_balance_message">Seu saldo está acabando!</string>
     <string name="push_notification_connection_title">Conexão com o Mysterium</string>
     <string name="push_notification_connection_message">Perda de conexão com o nó.</string>
     <string name="push_notification_connected_title">Conectado a %1$s</string>
@@ -277,6 +258,5 @@
     <string name="error_vpn_permission">A conexão VPN deve ser concedida para o funcionamento da MysteriumVPN</string>
 
     <!--  HomeSelection  -->
-    <string name="home_selection_smart_connect">Smart Connect será lançado em breve</string>
     <string name="home_selection_all_nodes">Todos os nós</string>
 </resources>
