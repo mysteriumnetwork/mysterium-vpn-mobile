@@ -1,6 +1,5 @@
 package updated.mysterium.vpn.ui.pop.up
 
-import android.text.InputFilter
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
+import updated.mysterium.vpn.common.Filters
 import updated.mysterium.vpn.common.extensions.hideKeyboard
 import updated.mysterium.vpn.common.extensions.isValidPassword
 import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
@@ -24,9 +24,6 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
     private var passwordPosition = 0
     private var repeatPasswordPosition = 0
     private lateinit var dialog: AlertDialog
-    private val spaceFilter = InputFilter { source, start, end, _, _, _ ->
-        source?.subSequence(start, end)?.replace(Regex("[ ]"), "")
-    }
 
     fun downloadAction(onDownloadAction: (String) -> Unit) {
         this.onDownloadAction = onDownloadAction
@@ -41,9 +38,8 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
             downloadButton.setOnClickListener {
                 onDownloadButtonClick()
             }
-            passwordEditText.filters = arrayOf(spaceFilter)
             passwordEditText.apply {
-                filters = arrayOf(spaceFilter)
+                filters = arrayOf(Filters.password)
                 onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                     if (hasFocus) {
                         bindingPopUp.passwordEditText.hint = dialog
@@ -62,9 +58,8 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     passwordPosition = it
                 }
             }
-            repeatPasswordEditText.filters = arrayOf(spaceFilter)
             repeatPasswordEditText.apply {
-                filters = arrayOf(spaceFilter)
+                filters = arrayOf(Filters.password)
                 onFocusChangeListener =
                     View.OnFocusChangeListener { _, hasFocus ->
                         if (hasFocus) {
@@ -114,7 +109,8 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         isPasswordVisible = isVisible
         switchPasswordToggle(isPasswordVisible)
         bindingPopUp.passwordEditText.apply {
-            transformationMethod = if (isVisible) HideReturnsTransformationMethod.getInstance() else PasswordTransformationMethod.getInstance()
+            transformationMethod =
+                if (isVisible) HideReturnsTransformationMethod.getInstance() else PasswordTransformationMethod.getInstance()
             setSelection(oldPosition)
         }
     }
@@ -124,7 +120,8 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
         isRepeatPasswordVisible = isVisible
         switchRepeatPasswordToggle(isRepeatPasswordVisible)
         bindingPopUp.repeatPasswordEditText.apply {
-            transformationMethod = if (isVisible) HideReturnsTransformationMethod.getInstance() else PasswordTransformationMethod.getInstance()
+            transformationMethod =
+                if (isVisible) HideReturnsTransformationMethod.getInstance() else PasswordTransformationMethod.getInstance()
             setSelection(oldPosition)
         }
     }
