@@ -1,5 +1,6 @@
 package updated.mysterium.vpn.ui.pop.up
 
+import android.text.InputFilter
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
@@ -21,6 +22,9 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
     var bindingPopUp = PopUpDownloadKeyBinding.inflate(layoutInflater)
     private var onDownloadAction: ((String) -> Unit)? = null
     private lateinit var dialog: AlertDialog
+    private val spaceFilter = InputFilter { source, start, end, _, _, _ ->
+        source?.subSequence(start, end)?.replace(Regex("[ ]"), "")
+    }
 
     fun downloadAction(onDownloadAction: (String) -> Unit) {
         this.onDownloadAction = onDownloadAction
@@ -46,6 +50,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     setErrorState(dialog.context.getString(R.string.pop_up_private_key_valid_error))
                 }
             }
+            passwordEditText.filters = arrayOf(spaceFilter)
             passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     bindingPopUp.passwordEditText.hint = dialog
@@ -57,6 +62,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
                     if (isErrorState()) clearErrorState()
                 }
             }
+            repeatPasswordEditText.filters = arrayOf(spaceFilter)
             repeatPasswordEditText.onFocusChangeListener =
                 View.OnFocusChangeListener { _, hasFocus ->
                     if (hasFocus) {
