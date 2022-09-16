@@ -179,6 +179,7 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun setMystPolygonWaitingScreen(channelAddress: String) {
+        binding.title.text = getString(R.string.top_up_deposit_title)
         binding.timer.setVisibility(false)
         setCurrencyEquivalentVisibility(false)
         binding.topUpDescription.text = getString(R.string.top_up_payment_myst_polygon_description)
@@ -198,7 +199,6 @@ class CryptoPaymentActivity : BaseActivity() {
         binding.paymentAnimation.setVisibility(false)
         binding.balanceRefreshingTextView.setVisibility(false)
         binding.closeButton.setVisibility(true)
-        binding.title.text = getString(R.string.top_up_your_account)
     }
 
     private fun setCryptoOrderScreen(order: Order, currency: String, amountUSD: Double?) {
