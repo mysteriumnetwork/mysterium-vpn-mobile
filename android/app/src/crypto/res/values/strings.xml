@@ -12,7 +12,7 @@
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Waiting for a payment</string>
-    <string name="top_up_your_account">Top up your account</string>
+    <string name="top_up_deposit_title">MYST deposit</string>
     <string name="top_up_polygon_only_warning">Only Polygon Myst is supported.\nDo not send Ethereum MYST!</string>
     <string name="top_up_payment_crypto_description">Scan this QR code which contains your top-up address</string>
     <string name="top_up_payment_myst_polygon_description">Deposit Polygon MYST directly to your Payment channel. Scan QR code or copy address to proceed.</string>
