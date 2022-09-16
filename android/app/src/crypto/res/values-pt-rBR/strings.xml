@@ -39,8 +39,6 @@
     <string name="pop_up_payment_expired_try_again">Tentar novamente</string>
     <string name="pop_up_payment_expired_later">Recarregar depois</string>
 
-    <string name="pop_up_crypto_payment_button">Continuar</string>
-    <string name="pop_up_crypto_payment_title">Aviso!</string>
     <string name="pop_up_crypto_payment_description">Pagamento pode levar algum tempo para ser processado após esta etapa. Você receberá uma notificação quando ele for concluído.</string>
 
 </resources>

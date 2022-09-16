@@ -39,8 +39,7 @@
     <string name="pop_up_payment_expired_try_again">حاول مرة أخرى</string>
     <string name="pop_up_payment_expired_later">التعبئة لاحقًا</string>
 
-    <string name="pop_up_crypto_payment_title">تحذير!</string>
     <string name="pop_up_crypto_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت بعد هذه الخطوة. سنرسل إليك إشعارًا بمجرد الإتمام الناجح لعملية الدفع.</string>
-    <string name="pop_up_crypto_payment_button">متابعة</string>
+
 
 </resources>
