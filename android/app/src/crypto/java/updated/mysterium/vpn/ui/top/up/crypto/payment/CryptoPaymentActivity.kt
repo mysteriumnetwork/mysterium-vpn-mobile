@@ -56,6 +56,11 @@ class CryptoPaymentActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        balanceViewModeL.stopForceBalanceUpdatePeriodically()
+    }
+
     private fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this) {
             val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
@@ -75,6 +80,7 @@ class CryptoPaymentActivity : BaseActivity() {
         viewModel.paymentCanceled.observe(this) {
             showTopUpCanceled()
         }
+        balanceViewModeL.launchForceBalanceUpdatePeriodically()
     }
 
     private fun registerAccount() {
@@ -134,10 +140,8 @@ class CryptoPaymentActivity : BaseActivity() {
             stopLoaderAnimation()
             it.onSuccess { channelAddress ->
                 setMystPolygonWaitingScreen(channelAddress)
-                balanceViewModeL.balanceLiveData.observe(this) { newBalance ->
-                    if (newBalance > initialBalance) {
-                        setMystPolygonReceivedScreen(newBalance)
-                    }
+                balanceViewModeL.paymentReceivedLiveData.observe(this) { mystReceived ->
+                    setMystPolygonReceivedScreen(mystReceived)
                 }
             }
             it.onFailure {
