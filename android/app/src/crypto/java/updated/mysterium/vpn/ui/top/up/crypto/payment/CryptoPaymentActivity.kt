@@ -57,8 +57,8 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         balanceViewModeL.stopForceBalanceUpdatePeriodically()
+        super.onDestroy()
     }
 
     private fun subscribeViewModel() {
