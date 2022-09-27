@@ -136,7 +136,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
         getIdentityRequest: GetIdentityRequest = GetIdentityRequest()
     ): Identity = withContext(Dispatchers.IO + SupervisorJob()) {
         val res = deferredNode.await().getIdentity(getIdentityRequest)
-        upgradeIdentityIfNeeded(res.identityAddress)
         Identity(
             address = res.identityAddress,
             channelAddress = res.channelAddress,
@@ -144,7 +143,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
         )
     }
 
-    private suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
+    suspend fun upgradeIdentityIfNeeded(identityAddress: String) {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
         }
@@ -258,9 +257,7 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun importIdentity(
         privateKey: ByteArray, passphrase: String
     ): String = withContext(Dispatchers.IO + SupervisorJob()) {
-        val identityAddress = deferredNode.await().importIdentity(privateKey, passphrase)
-        upgradeIdentityIfNeeded(identityAddress)
-        identityAddress
+        deferredNode.await().importIdentity(privateKey, passphrase)
     }
 
     suspend fun getWalletEquivalent(balance: Double): Estimates = withContext(Dispatchers.IO) {
