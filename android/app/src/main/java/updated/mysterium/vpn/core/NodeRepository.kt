@@ -250,7 +250,6 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun exportIdentity(
         address: String, newPassphrase: String
     ): ByteArray = withContext(Dispatchers.IO + SupervisorJob()) {
-        upgradeIdentityIfNeeded(address)
         deferredNode.await().exportIdentity(address, newPassphrase)
     }
 

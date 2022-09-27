@@ -17,9 +17,14 @@ class PrivateKeyViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         )
     }
 
+    fun upgradeIdentityIfNeeded() = liveDataResult {
+        val identityAddress = connectionUseCase.getIdentityAddress()
+        privateKeyUseCase.upgradeIdentityIfNeeded(identityAddress)
+    }
+
     fun exportIdentity(newPassphrase: String) = liveDataResult {
-        val address = connectionUseCase.getIdentityAddress()
-        privateKeyUseCase.exportIdentity(address, newPassphrase)
+        val identityAddress = connectionUseCase.getIdentityAddress()
+        privateKeyUseCase.exportIdentity(identityAddress, newPassphrase)
     }
 
     fun accountCreated() = loginUseCase.accountCreated()
