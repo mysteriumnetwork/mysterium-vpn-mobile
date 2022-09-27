@@ -85,6 +85,7 @@
     <color name="pop_up_password_helper_text">#805A597D</color>
     <color name="pop_up_icon_color">#D61F85</color>
     <color name="pop_up_successful_icon_color">#23D61F</color>
+    <color name="pop_up_smth_went_wrong_icon_color">#339090BB</color>
 
     <color name="payment_banner_icon_background">#3C3857</color>
     <color name="payment_banner_icon_color">#ffffff</color>

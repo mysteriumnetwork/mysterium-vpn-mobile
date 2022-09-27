@@ -24,6 +24,7 @@ import updated.mysterium.vpn.common.extensions.setSelectionChangedListener
 import updated.mysterium.vpn.ui.balance.BalanceViewModel
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.base.RegistrationViewModel
+import updated.mysterium.vpn.ui.pop.up.PopUpSmthWentWrong
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import java.io.BufferedReader
@@ -126,14 +127,28 @@ class CreateAccountActivity : BaseActivity() {
 
     private fun importAccount(privateKey: String, passphrase: String) {
         viewModel.importAccount(privateKey, passphrase).observe(this) { result ->
-            result.onSuccess {
+            result.onSuccess { identityAddress ->
                 dialogPasswordPopup.dismiss()
-                binding.loader.visibility = View.VISIBLE
-                applyNewIdentity(it)
+                upgradeIdentityIfNeeded(identityAddress)
             }
-            result.onFailure {
-                Log.i(TAG, "onFailure $it")
+            result.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
                 showPasswordWrongState()
+            }
+        }
+    }
+
+    private fun upgradeIdentityIfNeeded(identityAddress: String) {
+        viewModel.upgradeIdentityIfNeeded(identityAddress).observe(this) { result ->
+            result.onSuccess {
+                binding.loader.visibility = View.VISIBLE
+                applyNewIdentity(identityAddress)
+            }
+            result.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                showSmthWentWrongPopUp {
+                    upgradeIdentityIfNeeded(identityAddress)
+                }
             }
         }
     }
@@ -169,6 +184,19 @@ class CreateAccountActivity : BaseActivity() {
         )
         bindingPasswordPopUp.passwordEditText.hint = ""
         bindingPasswordPopUp.errorText.visibility = View.VISIBLE
+    }
+
+    private fun showSmthWentWrongPopUp(retryAction: () -> Unit) {
+        val popUpSmthWentWrong = PopUpSmthWentWrong(layoutInflater)
+        val dialog = createPopUp(popUpSmthWentWrong.bindingPopUp.root, true)
+        popUpSmthWentWrong.apply {
+            setDialog(dialog)
+            retryAction {
+                retryAction.invoke()
+            }
+            setUp()
+        }
+        dialog.show()
     }
 
     private fun showRegistrationErrorPopUp() {

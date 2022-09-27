@@ -4,6 +4,7 @@
     <!--   Common   -->
     <string name="close">Close</string>
     <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
 
     <!--  Onboarding  -->
     <string name="onboarding_main_title_1">Decentralized global node network</string>
@@ -287,6 +288,8 @@
     <string name="pop_up_no_amount_title">Can\'t display\n amount</string>
     <string name="pop_up_no_amount_description">Sorry, we can\`t display your amount right now.</string>
     <string name="pop_up_no_amount_try_again">Try again</string>
+    <string name="pop_up_smth_went_wrong_title">Something went wrong</string>
+    <string name="pop_up_smth_went_wrong_retry">Retry</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Mysterium balance</string>

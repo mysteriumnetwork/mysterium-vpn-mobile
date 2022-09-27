@@ -16,10 +16,10 @@ import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.downloads.DownloadsUtil
 import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.pop.up.PopUpDownloadKey
+import updated.mysterium.vpn.ui.pop.up.PopUpSmthWentWrong
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 
 class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
@@ -128,7 +128,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         viewModel.downloadKey(passphrase).observe(this) { result ->
             result.onSuccess {
                 saveFile(it)
-                exportIdentity(passphrase)
+                upgradeIdentityIfNeeded(passphrase)
             }
             result.onFailure { throwable ->
                 Log.e(TAG, throwable.localizedMessage ?: throwable.toString())
@@ -150,6 +150,20 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     private fun scanFile(path: String) {
         MediaScannerConnection.scanFile(this, arrayOf(path), null) { _, _ ->
             appNotificationManager.showDownloadedNotification()
+        }
+    }
+
+    private fun upgradeIdentityIfNeeded(passphrase: String) {
+        viewModel.upgradeIdentityIfNeeded().observe(this) { result ->
+            result.onSuccess {
+                exportIdentity(passphrase)
+            }
+            result.onFailure { error ->
+                Log.e(TAG, error.localizedMessage ?: error.toString())
+                showSmthWentWrongPopUp {
+                    upgradeIdentityIfNeeded(passphrase)
+                }
+            }
         }
     }
 
@@ -200,6 +214,19 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
                 setNextToAccountFrameAvailability(viewModel.isAccountCreated())
             }
         }
+    }
+
+    private fun showSmthWentWrongPopUp(retryAction: () -> Unit) {
+        val popUpSmthWentWrong = PopUpSmthWentWrong(layoutInflater)
+        val dialog = createPopUp(popUpSmthWentWrong.bindingPopUp.root, true)
+        popUpSmthWentWrong.apply {
+            setDialog(dialog)
+            retryAction {
+                retryAction.invoke()
+            }
+            setUp()
+        }
+        dialog.show()
     }
 
 }

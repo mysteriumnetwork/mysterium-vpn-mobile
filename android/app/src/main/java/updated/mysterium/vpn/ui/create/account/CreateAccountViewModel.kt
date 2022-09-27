@@ -30,6 +30,10 @@ class CreateAccountViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         privateKeyUseCase.importIdentity(privateKey, passphrase)
     }
 
+    fun upgradeIdentityIfNeeded(identityAddress: String) = liveDataResult {
+        privateKeyUseCase.upgradeIdentityIfNeeded(identityAddress)
+    }
+
     fun applyNewIdentity(importedIdentity: String) = liveDataResult {
         connectionUseCase.getNewIdentity(importedIdentity)
     }

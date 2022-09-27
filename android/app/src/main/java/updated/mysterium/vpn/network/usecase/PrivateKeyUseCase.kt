@@ -15,4 +15,7 @@ class PrivateKeyUseCase(private val nodeRepository: NodeRepository) {
     suspend fun importIdentity(
         privateKey: String, passphrase: String
     ) = nodeRepository.importIdentity(privateKey.toByteArray(), passphrase)
+
+    suspend fun upgradeIdentityIfNeeded(identityAddress: String) =
+        nodeRepository.upgradeIdentityIfNeeded(identityAddress)
 }
