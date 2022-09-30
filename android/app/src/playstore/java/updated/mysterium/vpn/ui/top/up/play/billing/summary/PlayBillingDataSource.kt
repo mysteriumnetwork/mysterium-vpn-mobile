@@ -48,6 +48,19 @@ class PlayBillingDataSource(
     private val _newPurchaseFlow = SingleLiveEvent<Unit>()
     private val _purchaseConsumedFlow = MutableSharedFlow<Purchase>()
     private val billingFlowInProcess = MutableStateFlow(false)
+    private val failedBillingResponseCodes = listOf(
+        BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
+        BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE,
+        BillingClient.BillingResponseCode.SERVICE_TIMEOUT,
+        BillingClient.BillingResponseCode.BILLING_UNAVAILABLE,
+        BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
+        BillingClient.BillingResponseCode.DEVELOPER_ERROR,
+        BillingClient.BillingResponseCode.ERROR,
+        BillingClient.BillingResponseCode.USER_CANCELED,
+        BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
+        BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
+        BillingClient.BillingResponseCode.ITEM_NOT_OWNED
+    )
 
     private val billingClient: BillingClient
 
@@ -93,26 +106,14 @@ class PlayBillingDataSource(
     ) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        when (responseCode) {
-            BillingClient.BillingResponseCode.OK -> {
-                purchases?.let {
-                    processPurchaseList(it, null)
-                    return
-                }
+        if (responseCode == BillingClient.BillingResponseCode.OK) {
+            purchases?.let {
+                processPurchaseList(it, null)
+                return
             }
-            BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
-            BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE,
-            BillingClient.BillingResponseCode.BILLING_UNAVAILABLE,
-            BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
-            BillingClient.BillingResponseCode.DEVELOPER_ERROR,
-            BillingClient.BillingResponseCode.ERROR,
-            BillingClient.BillingResponseCode.USER_CANCELED,
-            BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
-            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
-            BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> {
-                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-                notificationManager.showFailedPaymentNotification()
-            }
+        } else if (failedBillingResponseCodes.contains(responseCode)) {
+            Log.e(TAG, "onPurchasesUpdated: $responseCode $debugMessage")
+            notificationManager.showFailedPaymentNotification()
         }
         defaultScope.launch {
             billingFlowInProcess.emit(false)
@@ -144,40 +145,27 @@ class PlayBillingDataSource(
     ) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        when (responseCode) {
-            BillingClient.BillingResponseCode.OK -> {
-                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-                if (skuDetailsList == null || skuDetailsList.isEmpty()) {
-                    Log.e(
-                        TAG,
-                        "onSkuDetailsResponse: " +
-                                "Found null or empty SkuDetails. " +
-                                "Check to see if the SKUs you requested are correctly published " +
-                                "in the Google Play Console."
-                    )
-                } else {
-                    for (skuDetails in skuDetailsList) {
-                        val sku = skuDetails.sku
-                        val detailsMutableFlow = skuDetailsMap[sku]
-                        detailsMutableFlow?.tryEmit(skuDetails) ?: Log.e(TAG, "Unknown sku: $sku")
-                    }
+        if (responseCode == BillingClient.BillingResponseCode.OK) {
+            Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+            if (skuDetailsList == null || skuDetailsList.isEmpty()) {
+                Log.e(
+                    TAG,
+                    "onSkuDetailsResponse: " +
+                            "Found null or empty SkuDetails. " +
+                            "Check to see if the SKUs you requested are correctly published " +
+                            "in the Google Play Console."
+                )
+            } else {
+                for (skuDetails in skuDetailsList) {
+                    val sku = skuDetails.sku
+                    val detailsMutableFlow = skuDetailsMap[sku]
+                    detailsMutableFlow?.tryEmit(skuDetails) ?: Log.e(TAG, "Unknown sku: $sku")
                 }
             }
-            BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
-            BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE,
-            BillingClient.BillingResponseCode.BILLING_UNAVAILABLE,
-            BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
-            BillingClient.BillingResponseCode.DEVELOPER_ERROR,
-            BillingClient.BillingResponseCode.ERROR,
-            BillingClient.BillingResponseCode.USER_CANCELED,
-            BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
-            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
-            BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> {
-                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-                notificationManager.showFailedPaymentNotification()
-            }
-            else -> Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-        }
+        } else if (failedBillingResponseCodes.contains(responseCode)) {
+            Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+            notificationManager.showFailedPaymentNotification()
+        } else Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             skuDetailsResponseTime = SystemClock.elapsedRealtime()
         } else {
