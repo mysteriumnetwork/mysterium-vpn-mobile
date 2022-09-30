@@ -15,7 +15,7 @@ object FlavorModules {
 
     val main = module {
         single {
-            PlayBillingDataSource(androidApplication())
+            PlayBillingDataSource(androidApplication(), get())
         }
         viewModel {
             PlayBillingAmountUsdViewModel(get())

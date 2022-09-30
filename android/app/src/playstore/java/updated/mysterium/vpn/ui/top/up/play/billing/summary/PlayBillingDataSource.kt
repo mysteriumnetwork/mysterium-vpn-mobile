@@ -15,9 +15,13 @@ import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.payment.SkuState
+import updated.mysterium.vpn.notification.AppNotificationManager
 import kotlin.math.min
 
-class PlayBillingDataSource(application: Application) : PurchasesUpdatedListener,
+class PlayBillingDataSource(
+    application: Application,
+    private val notificationManager: AppNotificationManager
+) : PurchasesUpdatedListener,
     BillingClientStateListener {
 
     val purchaseUpdatedFlow
@@ -87,10 +91,27 @@ class PlayBillingDataSource(application: Application) : PurchasesUpdatedListener
         billingResult: BillingResult,
         purchases: MutableList<Purchase>?
     ) {
-        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            purchases?.let {
-                processPurchaseList(it, null)
-                return
+        val responseCode = billingResult.responseCode
+        val debugMessage = billingResult.debugMessage
+        when (responseCode) {
+            BillingClient.BillingResponseCode.OK -> {
+                purchases?.let {
+                    processPurchaseList(it, null)
+                    return
+                }
+            }
+            BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
+            BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE,
+            BillingClient.BillingResponseCode.BILLING_UNAVAILABLE,
+            BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
+            BillingClient.BillingResponseCode.DEVELOPER_ERROR,
+            BillingClient.BillingResponseCode.ERROR,
+            BillingClient.BillingResponseCode.USER_CANCELED,
+            BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
+            BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> {
+                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                notificationManager.showFailedPaymentNotification()
             }
         }
         defaultScope.launch {
@@ -147,14 +168,14 @@ class PlayBillingDataSource(application: Application) : PurchasesUpdatedListener
             BillingClient.BillingResponseCode.BILLING_UNAVAILABLE,
             BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
             BillingClient.BillingResponseCode.DEVELOPER_ERROR,
-            BillingClient.BillingResponseCode.ERROR ->
-                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-            BillingClient.BillingResponseCode.USER_CANCELED ->
-                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+            BillingClient.BillingResponseCode.ERROR,
+            BillingClient.BillingResponseCode.USER_CANCELED,
             BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
-            BillingClient.BillingResponseCode.ITEM_NOT_OWNED ->
+            BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> {
                 Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                notificationManager.showFailedPaymentNotification()
+            }
             else -> Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
         }
         if (responseCode == BillingClient.BillingResponseCode.OK) {
