@@ -3,7 +3,7 @@ buildscript {
     ext {
         buildToolsVersion = "30.0.3"
         minSdkVersion = 24
-        compileSdkVersion = 30
+        compileSdkVersion = 31
         targetSdkVersion = 30
         ndkVersion = '21.4.7075529' // r21e - https://developer.android.com/ndk/downloads#lts-downloads
         versionCode = 107159
