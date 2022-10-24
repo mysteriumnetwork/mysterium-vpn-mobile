@@ -191,6 +191,7 @@ class ConnectionActivity : BaseActivity() {
                 inflateConnectedCardView()
                 viewModel.repeatLastConnection()
             }
+            else -> {}
         }
         updateStatusTitle(connectionState)
     }
@@ -255,6 +256,7 @@ class ConnectionActivity : BaseActivity() {
             ConnectionState.DISCONNECTING -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_disconnecting)
             }
+            else -> {}
         }
     }
 

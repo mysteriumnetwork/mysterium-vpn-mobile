@@ -84,7 +84,7 @@ class SplashActivity : BaseActivity() {
     private fun configure() {
         binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
 
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 viewModel.animationLoaded()
                 binding.onceAnimationView.visibility = View.GONE
                 binding.onceAnimationView.cancelAnimation()
