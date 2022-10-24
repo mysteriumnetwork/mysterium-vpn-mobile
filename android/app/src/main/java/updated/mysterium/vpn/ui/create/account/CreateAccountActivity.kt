@@ -119,7 +119,7 @@ class CreateAccountActivity : BaseActivity() {
             br.close()
         } catch (exception: FileNotFoundException) {
             Log.e(TAG, "Handle Selected File failed with $exception")
-        } catch (exception: IOException) {
+        } catch (exception: Exception) {
             Log.e(TAG, "Handle Selected File failed with $exception")
         }
         showPasswordPopUp()
