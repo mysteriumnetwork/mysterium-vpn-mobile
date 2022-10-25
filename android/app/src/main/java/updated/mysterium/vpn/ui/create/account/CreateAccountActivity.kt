@@ -28,8 +28,6 @@ import updated.mysterium.vpn.ui.pop.up.PopUpSmthWentWrong
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity
 import updated.mysterium.vpn.ui.private.key.PrivateKeyActivity
 import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.IOException
 import java.io.InputStreamReader
 
 class CreateAccountActivity : BaseActivity() {
@@ -117,9 +115,7 @@ class CreateAccountActivity : BaseActivity() {
                 BufferedReader(InputStreamReader(contentResolver.openInputStream(filePathName)))
             privateKeyJson = br.readLine()
             br.close()
-        } catch (exception: FileNotFoundException) {
-            Log.e(TAG, "Handle Selected File failed with $exception")
-        } catch (exception: IOException) {
+        } catch (exception: Exception) {
             Log.e(TAG, "Handle Selected File failed with $exception")
         }
         showPasswordPopUp()
