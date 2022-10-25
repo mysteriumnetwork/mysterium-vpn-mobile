@@ -12,6 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.work.Configuration.Builder
+import androidx.work.Configuration.Provider
 import kotlinx.coroutines.CompletableDeferred
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -25,7 +27,7 @@ import updated.mysterium.vpn.di.Modules
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
-class App : Application(), LifecycleObserver {
+class App : Application(), LifecycleObserver, Provider {
 
     companion object {
         private const val TAG = "App"
@@ -70,6 +72,11 @@ class App : Application(), LifecycleObserver {
         onAttach(this)
         super.onConfigurationChanged(newConfig)
     }
+
+    override fun getWorkManagerConfiguration() =
+        Builder()
+            .setMinimumLoggingLevel(Log.INFO)
+            .build()
 
     private fun bindMysteriumService() {
         Intent(this, MysteriumAndroidCoreService::class.java).also { intent ->
