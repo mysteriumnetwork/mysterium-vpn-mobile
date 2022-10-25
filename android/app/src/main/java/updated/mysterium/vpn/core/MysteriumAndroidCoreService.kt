@@ -165,6 +165,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                             vpnTimeSpent = null
                             isDisconnectManual = false
                         }
+                        else -> {}
                     }
                 }
             }

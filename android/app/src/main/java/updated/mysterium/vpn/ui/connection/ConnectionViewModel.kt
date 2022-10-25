@@ -123,6 +123,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             ConnectionType.SMART_CONNECT -> {
                 smartConnect(countryCode)
             }
+            else -> {}
         }
     }
 
