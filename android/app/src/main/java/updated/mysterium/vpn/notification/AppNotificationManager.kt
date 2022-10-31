@@ -34,7 +34,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         val intent = Intent(ctx, ConnectionActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        pendingAppIntent = PendingIntent.getActivity(ctx, 0, intent, 0)
+        pendingAppIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         registerAllNotificationChannels(context)
     }
@@ -77,7 +77,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             action = ACTION_DISCONNECT
         }
         val disconnectPendingIntent = PendingIntent.getBroadcast(
-            context, 0, disconnectIntent, 0
+            context, 0, disconnectIntent, PendingIntent.FLAG_IMMUTABLE
         )
 
         val notification = NotificationCompat.Builder(context, statisticsChannel)
@@ -109,7 +109,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             context,
             0,
             intent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+            PendingIntent.FLAG_IMMUTABLE
         )
         val notification = NotificationCompat.Builder(context, connLostChannel)
             .setSmallIcon(R.drawable.notification_logo)
@@ -128,7 +128,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         val intent = Intent(context, SplashActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        val appIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        val appIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(context, paymentStatusChannel)
             .setSmallIcon(R.drawable.notification_logo)
@@ -163,7 +163,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         val intent = Intent(context, SplashActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        val appIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        val appIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(context, paymentStatusChannel)
             .setSmallIcon(R.drawable.notification_logo)
@@ -190,7 +190,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
             putExtra(REDIRECTED_FROM_PUSH_KEY, true)
         }
         val appIntent =
-            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(context, paymentStatusChannel)
             .setSmallIcon(R.drawable.notification_logo)
