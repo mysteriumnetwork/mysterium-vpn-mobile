@@ -60,7 +60,7 @@ class TopUpAmountUsdActivity : AmountUsdActivity() {
             putExtra(CRYPTO_AMOUNT_USD_EXTRA_KEY, amountUSD)
             putExtra(COUNTRY_EXTRA_KEY, country)
             putExtra(STATE_EXTRA_KEY, stateOfAmerica)
-            putExtra(CRYPTO_NAME_EXTRA_KEY, CryptoAnimationView.ETH)
+            putExtra(CRYPTO_NAME_EXTRA_KEY, CryptoAnimationView.MYST)
         }
         startActivity(intent)
     }

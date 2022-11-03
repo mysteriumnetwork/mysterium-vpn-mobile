@@ -3,6 +3,7 @@ package updated.mysterium.vpn.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -63,7 +64,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         val resultIntent = Intent(context, WalletActivity::class.java)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
-            getPendingIntent(0, FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
         }
         builder.setContentIntent(resultPendingIntent)
 
@@ -76,7 +77,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         val resultIntent = Intent(context, HomeSelectionActivity::class.java)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
-            getPendingIntent(0, FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
         }
         builder.setContentIntent(resultPendingIntent)
 
@@ -89,7 +90,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         val resultIntent = Intent(context, HomeSelectionActivity::class.java)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
-            getPendingIntent(0, FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
         }
         builder.setContentIntent(resultPendingIntent)
 
@@ -103,7 +104,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
         val resultIntent = getMarketingPushResultIntent(context, url)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
-            getPendingIntent(0, FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
         }
         builder.setContentIntent(resultPendingIntent)
 
