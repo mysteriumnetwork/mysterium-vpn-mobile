@@ -84,15 +84,4 @@ class ConnectionUseCase(
     ) = nodeRepository.registerConnectionStatusChangeCallback(callback)
 
     suspend fun disconnect() = nodeRepository.disconnect()
-
-    //
-    suspend fun getIsProviderActive(): Boolean {
-        var s = nodeRepository.status()
-        println (format(">>>>>>>>>>>> pro %s ",  s.proposal!!.providerID))
-
-        if (s.state == ConnectionState.CONNECTED && s.proposal!!.providerID != "") {
-            return true
-        }
-        return false
-    }
 }

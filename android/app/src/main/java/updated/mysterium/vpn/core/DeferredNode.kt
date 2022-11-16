@@ -22,10 +22,14 @@ class DeferredNode {
 
     suspend fun start(
         service: MysteriumCoreService,
+        isProvider: Boolean,
         done: ((err: Exception?) -> Unit)? = null
     ) {
+        println("MYDBG > DeferredNode.start: $isProvider")
+
         if (!lock.tryAcquire()) {
             Log.i(TAG, "Node is already started or starting, skipping")
+
         } else {
             val handler = CoroutineExceptionHandler { _, exception ->
                 Log.e(TAG, exception.localizedMessage ?: exception.toString())
@@ -33,6 +37,10 @@ class DeferredNode {
             }
             var node: MobileNode? = null
             val startJob = CoroutineScope(Dispatchers.IO + handler).launch {
+                if (isProvider) {
+                    node = service.startProviderNode()
+                    return@launch
+                }
                 node = service.startNode()
             }
             startJob.invokeOnCompletion {

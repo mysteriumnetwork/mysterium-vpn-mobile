@@ -67,7 +67,7 @@ class SplashViewModel(
                 }
             } else {
                 service?.let {
-                    deferredNode.start(it) { exception ->
+                    deferredNode.start(it, false) { exception ->
                         if (exception != null) {
                             _nodeStartingError.postValue(exception)
                         } else {

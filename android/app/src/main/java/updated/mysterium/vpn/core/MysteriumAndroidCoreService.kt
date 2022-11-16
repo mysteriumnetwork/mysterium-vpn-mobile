@@ -75,8 +75,14 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var currentState = ConnectionState.NOTCONNECTED
     private var vpnTimeSpent: Float? = null // time spent for last session in minutes
     private var secondsBetweenAnalyticEvent = 0
+    private var isProviderActive = false
 
+    init {
+        println("MYDBG > MysteriumAndroidCoreService")
+    }
     override fun onDestroy() {
+        println("MYDBG > onDestroy")
+
         stopMobileNode()
         super.onDestroy()
     }
@@ -89,7 +95,42 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         return MysteriumCoreServiceBridge()
     }
 
+    private fun startMobileProviderNode(filesPath: String): MobileNode {
+        println("MYDBG > startMobileProviderNode $filesPath")
+
+        isProviderActive = true
+        mobileNode?.let {
+            val i = it.isProvider()
+            if (i) {
+                mobileNode = null
+            } else {
+                // stop consumer
+                stopMobileNode()
+                mobileNode = null
+            }
+        }
+
+        println("MYDBG > startMobileProviderNode !11")
+        if (mobileNode == null) {
+            try {
+                mobileNode = Mysterium.newProviderNode(filesPath)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+
+        mobileNode?.let {
+            it.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
+            it.startProvider()
+
+            println("MYDBG > startMobileProviderNode !2")
+            return it
+        }
+        return mobileNode?: MobileNode()
+    }
+
     private fun startMobileNode(filesPath: String): MobileNode {
+        println("MYDBG > startMobileNode $filesPath")
         mobileNode?.let {
             return it
         }
@@ -99,6 +140,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun stopMobileNode() {
+        println("MYDBG > stopMobileNode")
         val node = mobileNode
         if (node == null) {
             Log.w(TAG, "Trying to stop node when instance is not set")
@@ -270,6 +312,15 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
+        override suspend fun startProviderNode(): MobileNode {
+            return startMobileProviderNode(filesDir.canonicalPath)
+        }
+        override fun setProviderActive(provider: Boolean) {
+            isProviderActive = provider
+        }
+        override fun isProviderActive(): Boolean {
+            return isProviderActive
+        }
 
         override fun getDeferredNode() = deferredNode
 

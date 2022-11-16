@@ -117,7 +117,7 @@
                     android:textColor="@android:color/white" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/darkModeSwitch"
+                    android:id="@+id/providerModeSwitch"
                     style="@style/SwitchStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
