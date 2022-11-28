@@ -62,8 +62,7 @@ abstract class AmountUsdActivity : BaseActivity() {
     }
 
     private fun onItemSelected(selectedItem: AmountUsdCardItem) {
-        val mystAmount = exchangeRateViewModel.getMystEquivalent(selectedItem.amountUsd)
-        updateWalletEstimates(mystAmount)
+        updateWalletEstimates(selectedItem.amountUsd)
     }
 
     private fun updateWalletEstimates(amountUsd: Double) {
