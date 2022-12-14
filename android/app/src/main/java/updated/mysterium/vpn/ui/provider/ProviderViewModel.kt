@@ -1,11 +1,13 @@
 package updated.mysterium.vpn.ui.provider
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
+import updated.mysterium.vpn.model.manual.connect.ProviderState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
 class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -14,8 +16,12 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         const val TAG = "ProviderViewModel"
     }
 
-    private var deferredNode = DeferredNode()
+    val providerUpdate: LiveData<ProviderState>
+        get() = _providerUpdate
+
+    private val _providerUpdate = MutableLiveData<ProviderState>()
     private var coreService: MysteriumCoreService? = null
+
     val handler = CoroutineExceptionHandler { _, exception ->
         Log.i(TAG, exception.localizedMessage ?: exception.toString())
     }
@@ -26,25 +32,34 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         println("ProviderViewModel > init")
         viewModelScope.launch(handler) {
             coreService = deferredMysteriumCoreService.await()
+
+            val initialState = ProviderState(
+                active = getIsProvider(),
+            )
+            _providerUpdate.postValue(initialState)
         }
     }
 
     fun toggleProvider(isChecked: Boolean) {
+        println ("MYDBG >>>>>>>>>>>> toggleProvider ! $isChecked")
 
-        viewModelScope.launch(handler) {
+        // which scope is correct ?
+        CoroutineScope(Dispatchers.IO).launch {
             coreService?.let {
-
                 if (isChecked) {
-                    println ("MYDBG >>>>>>>>>>>> connect ! ")
+                    if (it.isProviderActive()) {
+                        return@let
+                    }
 
-                    it.setProviderActive(true)
-                    deferredNode.start(it, true)
+                    // stop consumer
+                    it.stopConsumer()
+                    it.startProvider(true)
+
                 } else {
-                    println ("MYDBG >>>>>>>>>>>> disconnect ! ")
-
-                    // disconnect
-                    it.stopNode()
-                    it.setProviderActive(false)
+                    if (!it.isProviderActive()) {
+                        return@let
+                    }
+                    it.startProvider(false)
                 }
             }
         }
@@ -56,5 +71,4 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         }
         return false
     }
-
 }

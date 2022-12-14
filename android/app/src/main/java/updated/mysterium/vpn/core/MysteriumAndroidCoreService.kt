@@ -25,10 +25,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.vpn.R
@@ -95,38 +92,39 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         return MysteriumCoreServiceBridge()
     }
 
-    private fun startMobileProviderNode(filesPath: String): MobileNode {
-        println("MYDBG > startMobileProviderNode $filesPath")
-
-        isProviderActive = true
+    private fun startMobileProviderService(active: Boolean) {
+        println("MYDBG > startMobileProviderService")
         mobileNode?.let {
-            val i = it.isProvider()
-            if (i) {
-                mobileNode = null
-            } else {
-                // stop consumer
-                stopMobileNode()
-                mobileNode = null
-            }
-        }
-
-        println("MYDBG > startMobileProviderNode !11")
-        if (mobileNode == null) {
             try {
-                mobileNode = Mysterium.newProviderNode(filesPath)
+                isProviderActive = active
+                if (active) {
+                    it.startProvider()
+                } else {
+                    it.stopProvider()
+                }
             } catch (e: Exception) {
                 println(e)
             }
         }
+    }
 
-        mobileNode?.let {
-            it.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
-            it.startProvider()
+    private fun innerStopConsumer() {
+        println("MYDBG > stopConsumer >")
+        var c = currentState == ConnectionState.CONNECTED ||
+                currentState == ConnectionState.CONNECTING ||
+                currentState == ConnectionState.ON_HOLD ||
+                currentState == ConnectionState.IP_NOT_CHANGED
 
-            println("MYDBG > startMobileProviderNode !2")
-            return it
+
+        GlobalScope.launch(Dispatchers.IO) {
+            if (c) {
+                connectionUseCase.disconnect()
+
+                activeProposal = null
+                deferredNode = null
+                stopForeground(true)
+            }
         }
-        return mobileNode?: MobileNode()
     }
 
     private fun startMobileNode(filesPath: String): MobileNode {
@@ -312,11 +310,12 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
-        override suspend fun startProviderNode(): MobileNode {
-            return startMobileProviderNode(filesDir.canonicalPath)
+
+        override fun stopConsumer() {
+            innerStopConsumer()
         }
-        override fun setProviderActive(provider: Boolean) {
-            isProviderActive = provider
+        override fun startProvider(active: Boolean) {
+            startMobileProviderService(active)
         }
         override fun isProviderActive(): Boolean {
             return isProviderActive

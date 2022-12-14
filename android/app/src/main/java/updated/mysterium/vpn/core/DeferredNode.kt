@@ -8,7 +8,6 @@ import mysterium.MobileNode
 // DeferredNode is a wrapper class which holds MobileNode instance promise.
 // This allows to load UI without waiting for node to start.
 class DeferredNode {
-
     private companion object {
         const val TAG = "DeferredNode"
     }
@@ -22,10 +21,9 @@ class DeferredNode {
 
     suspend fun start(
         service: MysteriumCoreService,
-        isProvider: Boolean,
         done: ((err: Exception?) -> Unit)? = null
     ) {
-        println("MYDBG > DeferredNode.start: $isProvider")
+        println("MYDBG > DeferredNode.start")
 
         if (!lock.tryAcquire()) {
             Log.i(TAG, "Node is already started or starting, skipping")
@@ -37,10 +35,6 @@ class DeferredNode {
             }
             var node: MobileNode? = null
             val startJob = CoroutineScope(Dispatchers.IO + handler).launch {
-                if (isProvider) {
-                    node = service.startProviderNode()
-                    return@launch
-                }
                 node = service.startNode()
             }
             startJob.invokeOnCompletion {

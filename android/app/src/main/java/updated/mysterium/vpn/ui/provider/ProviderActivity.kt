@@ -2,8 +2,6 @@ package updated.mysterium.vpn.ui.provider
 
 import android.os.Bundle
 import android.view.View
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import network.mysterium.vpn.databinding.ActivityProviderBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
@@ -38,8 +36,8 @@ class ProviderActivity : BaseActivity() {
     private fun configure() {
         initToolbar(binding.manualConnectToolbar)
 
-        GlobalScope.launch {
-            binding.providerModeSwitch.isChecked = viewModel.getIsProvider()
+        viewModel.providerUpdate.observe(this) {
+            binding.providerModeSwitch.isChecked = it.active
         }
     }
 

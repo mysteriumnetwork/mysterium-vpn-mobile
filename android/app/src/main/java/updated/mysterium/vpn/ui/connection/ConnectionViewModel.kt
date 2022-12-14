@@ -160,6 +160,9 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private fun connectNode(proposal: Proposal, rate: Double) {
         exchangeRate = rate
         viewModelScope.launch(handler) {
+            coreService?.let {
+                it.startProvider(false)
+            }
             _connectionStatus.postValue(_connectionStatus.value?.copy(proposal = proposal))
             disconnectIfConnectedNode()
             val req = ConnectRequest().apply {
@@ -250,7 +253,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private suspend fun startDeferredNode() {
         if (!deferredNode.startedOrStarting()) {
             coreService?.let {
-                deferredNode.start(it, false)
+                deferredNode.start(it)
             }
         }
         connectionUseCase.initDeferredNode(deferredNode)
