@@ -74,12 +74,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var secondsBetweenAnalyticEvent = 0
     private var isProviderActive = false
 
-    init {
-        println("MYDBG > MysteriumAndroidCoreService")
-    }
     override fun onDestroy() {
-        println("MYDBG > onDestroy")
-
         stopMobileNode()
         super.onDestroy()
     }
@@ -93,7 +88,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun startMobileProviderService(active: Boolean) {
-        println("MYDBG > startMobileProviderService")
         mobileNode?.let {
             try {
                 isProviderActive = active
@@ -109,7 +103,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun innerStopConsumer() {
-        println("MYDBG > stopConsumer >")
         var c = currentState == ConnectionState.CONNECTED ||
                 currentState == ConnectionState.CONNECTING ||
                 currentState == ConnectionState.ON_HOLD ||
@@ -128,7 +121,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun startMobileNode(filesPath: String): MobileNode {
-        println("MYDBG > startMobileNode $filesPath")
         mobileNode?.let {
             return it
         }
@@ -138,7 +130,6 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun stopMobileNode() {
-        println("MYDBG > stopMobileNode")
         val node = mobileNode
         if (node == null) {
             Log.w(TAG, "Trying to stop node when instance is not set")

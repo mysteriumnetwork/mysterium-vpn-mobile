@@ -23,8 +23,6 @@ class DeferredNode {
         service: MysteriumCoreService,
         done: ((err: Exception?) -> Unit)? = null
     ) {
-        println("MYDBG > DeferredNode.start")
-
         if (!lock.tryAcquire()) {
             Log.i(TAG, "Node is already started or starting, skipping")
 
