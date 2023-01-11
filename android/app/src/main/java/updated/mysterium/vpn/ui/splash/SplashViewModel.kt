@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +14,8 @@ import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
-import updated.mysterium.vpn.notification.ReviveUserWork
-import java.util.concurrent.TimeUnit
 
-class SplashViewModel(
-    useCaseProvider: UseCaseProvider,
-    private val workManager: WorkManager
-) : ViewModel() {
+class SplashViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     val navigateForward: LiveData<Unit>
         get() = _navigateForward
@@ -121,36 +114,4 @@ class SplashViewModel(
     fun getUserSavedMode() = settingsUseCase.getUserDarkMode()
 
     fun getLastCryptoCurrency() = pushyUseCase.getCryptoCurrency()
-
-    fun setUpInactiveUserPushyNotifications() {
-        val firstNotificationWork =
-            OneTimeWorkRequest
-                .Builder(ReviveUserWork::class.java)
-                .setInitialDelay(7, TimeUnit.DAYS)
-                .addTag(ReviveUserWork.WEEK_DELAY_NOTIFICATION)
-                .build()
-
-        val secondNotificationWork =
-            OneTimeWorkRequest
-                .Builder(ReviveUserWork::class.java)
-                .setInitialDelay(7, TimeUnit.DAYS)
-                .addTag(ReviveUserWork.TWO_WEEKS_DELAY_NOTIFICATION)
-                .build()
-
-        val lastNotificationWork =
-            OneTimeWorkRequest
-                .Builder(ReviveUserWork::class.java)
-                .setInitialDelay(14, TimeUnit.DAYS)
-                .addTag(ReviveUserWork.MONTH_DELAY_NOTIFICATION)
-                .build()
-
-        workManager.cancelAllWork()
-
-        workManager
-            .beginWith(firstNotificationWork)
-            .then(secondNotificationWork)
-            .then(lastNotificationWork)
-            .enqueue()
-
-    }
 }

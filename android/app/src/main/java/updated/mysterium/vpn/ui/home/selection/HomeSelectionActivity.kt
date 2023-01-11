@@ -74,7 +74,6 @@ class HomeSelectionActivity : BaseActivity() {
         initFiltersList()
         initCountriesList()
         viewModel.initConnectionListener()
-        subscribeToResidentCountry()
         intent.extras?.get(SHOW_PAYMENT_PROCESSING_BANNER_KEY)?.let {
             showPaymentProcessingBanner()
         }
@@ -113,14 +112,6 @@ class HomeSelectionActivity : BaseActivity() {
         }
         binding.paymentProcessingLayout.closeBannerButton.setOnClickListener {
             binding.paymentProcessingLayout.root.visibility = View.GONE
-        }
-    }
-
-    private fun subscribeToResidentCountry() {
-        viewModel.getResidentCountry().observe(this) {
-            it.onSuccess { country ->
-                pushyNotifications?.subscribe(country)
-            }
         }
     }
 

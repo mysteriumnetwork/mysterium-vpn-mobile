@@ -9,7 +9,6 @@ import network.mysterium.vpn.databinding.ActivityPrepareTopUpBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
-import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.base.RegistrationViewModel
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
@@ -84,7 +83,6 @@ class PrepareTopUpActivity : BaseActivity() {
     private fun registerIdentityWithToken(token: String) {
         registrationViewModel.registerIdentityWithToken(token).observe(this) {
             it.onSuccess {
-                pushyNotifications?.subscribe(PushyTopic.REFERRAL_CODE_USED)
                 isReferralTokenUsed = true
                 binding.referralProgram.visibility = View.GONE
                 dialog.dismiss()
