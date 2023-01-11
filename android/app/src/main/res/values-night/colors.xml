@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_ripple_efect">#90ED5BAC</color>
     <color name="primary_item_selected">#20FFFFFF</color>
-    <color name="primary_icon">#D61F85</color>
     <color name="primary_dark">#2B2745</color>
     <color name="primary_card_view">#64637D</color>
     <color name="primary_light_terms">#D61F85</color>
@@ -22,7 +20,6 @@
     <color name="card_payment_divider">#30FFFFFF</color>
     <color name="card_payment_title">#FFFFFF</color>
     <color name="card_payment_value">#FFFFFF</color>
-    <color name="card_payment_description">#FFFFFF</color>
     <color name="card_payment_total">#FFFFFF</color>
 
     <color name="manual_connect_list_background">#514D69</color>
@@ -56,6 +53,7 @@
     <color name="pop_up_negative_button_text">#70FFFFFF</color>
     <color name="pop_up_password_helper_text">#80FFFFFF</color>
     <color name="pop_up_icon_color">#9090BB</color>
+    <color name="pop_up_smth_went_wrong_icon_color">#9090BB</color>
 
     <color name="payment_processing_card_shadow">#3C3857</color>
     <color name="payment_processing_card_color">#504F6D</color>

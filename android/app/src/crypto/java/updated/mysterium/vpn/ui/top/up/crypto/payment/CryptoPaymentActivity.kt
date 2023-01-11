@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import androidx.lifecycle.distinctUntilChanged
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import network.mysterium.vpn.R
@@ -20,7 +19,6 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.AppConstants.Payments.PAYMENT_BALANCE_LIMIT
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.calculateRectOnScreen
-import updated.mysterium.vpn.common.extensions.observeOnce
 import updated.mysterium.vpn.common.extensions.setVisibility
 import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.exceptions.TopupBalanceLimitException
@@ -58,6 +56,11 @@ class CryptoPaymentActivity : BaseActivity() {
         bindsAction()
     }
 
+    override fun onDestroy() {
+        balanceViewModeL.stopForceBalanceUpdatePeriodically()
+        super.onDestroy()
+    }
+
     private fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this) {
             val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
@@ -77,6 +80,7 @@ class CryptoPaymentActivity : BaseActivity() {
         viewModel.paymentCanceled.observe(this) {
             showTopUpCanceled()
         }
+        balanceViewModeL.launchForceBalanceUpdatePeriodically()
     }
 
     private fun registerAccount() {
@@ -101,6 +105,9 @@ class CryptoPaymentActivity : BaseActivity() {
         }
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
+        }
+        binding.closeButton.setOnClickListener {
+            navigateToHome()
         }
     }
 
@@ -133,12 +140,9 @@ class CryptoPaymentActivity : BaseActivity() {
             stopLoaderAnimation()
             it.onSuccess { channelAddress ->
                 setMystPolygonWaitingScreen(channelAddress)
-                balanceViewModeL.balanceLiveData.distinctUntilChanged()
-                    .observeOnce(this) { newBalance ->
-                        if (newBalance > initialBalance) {
-                            setMystPolygonReceivedScreen(newBalance)
-                        }
-                    }
+                balanceViewModeL.paymentReceivedLiveData.observe(this) { mystReceived ->
+                    setMystPolygonReceivedScreen(mystReceived)
+                }
             }
             it.onFailure {
                 showTopUpServerFailed()
@@ -179,6 +183,7 @@ class CryptoPaymentActivity : BaseActivity() {
     }
 
     private fun setMystPolygonWaitingScreen(channelAddress: String) {
+        binding.title.text = getString(R.string.top_up_deposit_title)
         binding.timer.setVisibility(false)
         setCurrencyEquivalentVisibility(false)
         binding.topUpDescription.text = getString(R.string.top_up_payment_myst_polygon_description)
@@ -196,6 +201,7 @@ class CryptoPaymentActivity : BaseActivity() {
         binding.receivedMystValueTextView.text =
             getString(R.string.top_up_payment_myst_description, newBalance)
         binding.paymentAnimation.setVisibility(false)
+        binding.balanceRefreshingTextView.setVisibility(false)
         binding.closeButton.setVisibility(true)
     }
 

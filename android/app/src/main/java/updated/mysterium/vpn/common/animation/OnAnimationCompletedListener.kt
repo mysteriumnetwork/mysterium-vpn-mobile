@@ -4,19 +4,19 @@ import android.animation.Animator
 
 open class OnAnimationCompletedListener : Animator.AnimatorListener {
 
-    override fun onAnimationStart(animation: Animator?) {
+    override fun onAnimationStart(animation: Animator) {
         // implement in your code if needed
     }
 
-    override fun onAnimationEnd(animation: Animator?) {
+    override fun onAnimationEnd(animation: Animator) {
         // implement in your code if needed
     }
 
-    override fun onAnimationCancel(animation: Animator?) {
+    override fun onAnimationCancel(animation: Animator) {
         // implement in your code if needed
     }
 
-    override fun onAnimationRepeat(animation: Animator?) {
+    override fun onAnimationRepeat(animation: Animator) {
         // implement in your code if needed
     }
 }

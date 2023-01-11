@@ -39,8 +39,6 @@
     <string name="pop_up_payment_expired_try_again">Попробовать ещё раз</string>
     <string name="pop_up_payment_expired_later">Пополнить позже</string>
 
-    <string name="pop_up_crypto_payment_button">Продолжить</string>
-    <string name="pop_up_crypto_payment_title">Предупреждение!</string>
     <string name="pop_up_crypto_payment_description">Обработка вашего платежа после этого шага может занять некоторое время. Как только платеж будет выполнен, вы получите уведомление.</string>
 
 </resources>

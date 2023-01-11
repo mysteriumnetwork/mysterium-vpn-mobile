@@ -16,21 +16,15 @@
     <string name="onboarding_description_content_3">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا واستخدم وظائف محدودة وعقدًا مجانية</string>
     <string name="onboarding_skip">تخطي</string>
     <string name="onboarding_next">التالي</string>
-    <string name="manual_connect_country_select_title">تحديد العقدة</string>
     <string name="manual_connect_all_nodes">كل العقد</string>
-    <string name="manual_connect_saved_nodes">محفوظ</string>
     <string name="manual_connect_all_countries">كل البلدان</string>
-    <string name="manual_connect_nodes_label">العقد</string>
-    <string name="manual_connect_country_label">البلدان</string>
     <string name="manual_connect_disconnected">انقطع الاتصال</string>
     <string name="manual_connect_select_node">تحديد العقدة</string>
-    <string name="manual_connect_smart_unavailable">الاتصال الذكي غير متاح في وضع الاختبار\n يُرجى تحديد العقدة يدويًا</string>
     <string name="manual_connect_country_status">غير محمي</string>
     <string name="manual_connect_protected">محمي</string>
     <string name="manual_connect_price">السعر</string>
     <string name="manual_connect_type">النوع</string>
     <string name="manual_connect_quality">الجودة</string>
-    <string name="manual_connect_type_filter_title">تحديد نوع العقدة</string>
     <string name="manual_connect_node">العقدة</string>
     <string name="manual_connect_another_node">تحديد عقدة أخرى</string>
     <string name="manual_connect_cancel">إلغاء وتحديد عقدة أخرى</string>
@@ -50,7 +44,6 @@
     <string name="manual_connect_unknown">غير معروف</string>
     <string name="manual_connect_price_per_hour">%.5f/س</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/جيجابايت</string>
-    <string name="manual_connect_saved_to_favourite">تم الحفظ بنجاح</string>
     <string name="manual_connect_currency_hint">BTC وETH وLTC وBСH والمزيد</string>
     <string name="manual_connect_search">بحث</string>
     <string name="manual_connect_node_id">معرف العقدة أو البلد</string>
@@ -74,7 +67,6 @@
     <string name="menu_item_monitoring_title">السجل</string>
     <string name="menu_item_referral_title">برنامج الإحالة</string>
     <string name="menu_item_referral_subtitle">كسب أرصدة VPN</string>
-    <string name="menu_item_wallet_subtitle">تعبئة حسابك</string>
     <string name="menu_item_monitoring_subtitle">سجل الاتصال</string>
     <string name="menu_list_item_settings">الإعدادات</string>
     <string name="menu_list_item_report">الإبلاغ عن مشكلة</string>
@@ -82,7 +74,6 @@
     <string name="menu_terms">شروط الاستخدام</string>
     <string name="menu_app_version">إصدار التطبيق %s</string>
     <string name="wallet_main_title">رصيد الحساب</string>
-    <string name="wallet_start_balance">0,000</string>
     <string name="wallet_usd_equivalent">ما يعادل دولار أمريكي ≈ %.3f دولار</string>
     <string name="wallet_buys_for_you">هذا يشتري لك:</string>
     <string name="wallet_top_up">تعبئة</string>
@@ -106,7 +97,6 @@
     <string name="profile_title">ملف التعريف</string>
     <string name="profile_identity">عنوان معرف Mysterium</string>
     <string name="profile_identity_description">المعرف هو معرف المستخدم الداخلي الخاص بك في Mysterium. لا ترسل أبدًا إيثر أو أي نوع من رموز ERC20 هناك.</string>
-    <string name="profile_change_keys">تغيير المفاتيح الخاصة</string>
     <string name="profile_copy_to_clipboard">تم النسخ إلى الحافظة</string>
     <string name="profile_private_keys">مفاتيح خاصة</string>
     <string name="profile_keys_description">في Mysterium، لا يتم تخزين حسابك في خوادم مركزية. يتم تخزين المفاتيح الخاصة التي تحمل الرموز المميزة الخاصة بك في تطبيقك فقط</string>
@@ -136,12 +126,10 @@
     <string name="top_up_amount_music">الموسيقى</string>
     <string name="top_up_amount_pages">صفحات الويب</string>
     <string name="top_up_amount_traffic">حركة البيانات</string>
-    <string name="top_up_amount_description">حدد مقدار أرصدة MYST\n التي ترغب في إضافتها إلى حسابك</string>
     <string name="top_up_amount_confirm">تأكيد</string>
     <string name="top_up_crypto_description">حدد العملة المشفرة التي\n سيتم بها تعبئة الرصيد</string>
 
     <string name="top_up_crypto_lightning">شبكة الإضاءة</string>
-    <string name="top_up_free_trial">تجربة مجانية</string>
     <string name="payment_processing_text">تحذير: سوف يستغرق التطبيق بعض الوقت لمعالجة عمليات الدفع</string>
     <string name="card_currency_title">العملة والبلد</string>
     <string name="card_currency_description">حدد بلدك لحساب ضريبة القيمة المضافة</string>
@@ -153,7 +141,6 @@
     <string name="settings_dns_system">النظام</string>
     <string name="settings_dns_provider">الموفر</string>
     <string name="settings_dns_cloudflare">Cloudflare</string>
-    <string name="settings_dns_default">افتراضي</string>
     <string name="settings_dark_mode">الوضع الداكن</string>
     <string name="settings_nat_description">الكشف عن نوع ترجمة عنوان الشبكة (NAT)</string>
     <string name="settings_helper_description">استخدم الكشف التلقائي لنوع ترجمة عنوان الشبكة (NAT) لإجراء تصفية للموردين غير المطابقين. يزيد استخدام هذه الميزة من فرص التواصل الناجح مع مورد.</string>
@@ -163,16 +150,13 @@
     <string name="create_account_description">قم بتعبئة حسابك الآن أو قم بذلك لاحقًا\n واستخدم وظائف محدودة وعقدًا مجانية</string>
     <string name="card_summary_title">ملخص الطلب</string>
     <string name="card_payment_pay">متابعة للدفع</string>
-    <string name="card_payment_stripe">ستنتقل إلى صفحة الدفع على موقع Stripe لإتمام عملية الدفع.</string>
     <string name="card_payment_total">إجمالي المبلغ المستحق</string>
     <string name="card_payment_vat_title">ضريبة القيمة المضافة</string>
-    <string name="card_payment_myst_top_up_description">%.2f زيادة الحد المالي لحساب MYST</string>
     <string name="private_key_description">ملاحظة مهمة! قم بتنزيل مفتاحك الخاص الآن وخزنه حتى تتفادى عدم التمكن من الدخول إلى حسابك.</string>
     <string name="private_key_back_up">النسخ الاحتياطي\n للمفتاح الخاص</string>
     <string name="prepare_top_up_description">قم بزيادة الحد المالي لحسابك أو استخدم رمز الإحالة لبدء استخدام Mysterium dVPN</string>
     <string name="prepare_top_up_referral">استخدم رمز الإحالة</string>
     <string name="prepare_top_up_now">التعبئة الآن</string>
-    <string name="prepare_top_up_later">التعبئة لاحقًا</string>
     <string name="search_hint_first_part">استخدام</string>
     <string name="search_hint_highlighted">شريط البحث</string>
     <string name="search_hint_second_part">في الجزء العلوي للعثور\n على العقدة الصحيحة</string>
@@ -204,8 +188,6 @@ Wi-Fi</string>
     <string name="pop_up_private_key_description">اكتب كلمة مرورك</string>
     <string name="pop_up_private_key_download">تنزيل</string>
     <string name="pop_up_payment_title_thanks">شكرًا على الشراء!</string>
-    <string name="pop_up_card_payment_button">متابعة</string>
-    <string name="pop_up_card_payment_title">شكرًا على الشراء!</string>
     <string name="pop_up_card_payment_description">قد تستغرق عملية الدفع الخاصة بك بعض الوقت. سنرسل إليك إشعارًا بمجرد إتمام عملية الدفع.</string>
     <string name="pop_up_private_key_valid_error">كلمة مرور غير صحيحة</string>
     <string name="pop_up_import_wrong_password">كلمة مرور غير صحيحة</string>
@@ -218,12 +200,11 @@ Wi-Fi</string>
     <string name="pop_up_referral_hint">أدخل الرمز هنا</string>
     <string name="pop_up_referral_title">رمز الإحالة</string>
     <string name="pop_up_referral_description">ستحصل على</string>
-    <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">الرمز المتغير غير صحيح</string>
-    <string name="pop_up_new_version_title">إصدار جديد متوفر</string>
-    <string name="pop_up_new_version_description">يُرجى تحديث تطبيقك من متجر Google Play</string>
-    <string name="pop_up_new_version_update">تحديث</string>
+    <!-- TODO: re-translate -->
+    <string name="pop_up_referral_invalid_error">الرمز المتغير غير صحيح</string>
     <string name="push_notification_balance_title">رصيد Mysterium</string>
-    <!-- TODO: re-translate --> <string name="push_notification_balance_message">رصيدك ينفد!</string>
+    <!-- TODO: re-translate -->
+    <string name="push_notification_balance_message">رصيدك ينفد!</string>
     <string name="push_notification_connection_title">اتصال Mysterium</string>
     <string name="push_notification_connection_message">فقدان الاتصال بالعقدة!</string>
     <string name="push_notification_connected_title">متصل بـ %1$s</string>
@@ -233,7 +214,6 @@ Wi-Fi</string>
     <string name="push_notification_payment_failed_title">عملية دفع غير ناجحة</string>
     <string name="push_notification_payment_failed_message">عملية دفع غير ناجحة. يُرجى زيارة التطبيق لمحاولة زيادة الحد المالي للحساب أو الحصول على الدعم الفني.</string>
     <string name="error_vpn_permission">يجب منح اتصال VPN إلى MysteriumVPN للعمل</string>
-    <string name="home_selection_smart_connect">سيتم إطلاق ميزة الاتصال الذكي قريبًا</string>
     <string name="home_selection_all_nodes">جميع العُقَد</string>
     <string name="card_payment_vat_value">ضريبة القيمة المضافة(%1.1f%%)</string>
 </resources>

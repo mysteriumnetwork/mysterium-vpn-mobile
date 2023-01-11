@@ -19,7 +19,17 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_close_pop_up"
+        app:layout_constraintBottom_toTopOf="@id/popUpCard"
+        app:layout_constraintStart_toEndOf="@id/popUpCard"
+        tools:ignore="ContentDescription" />
+
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/popUpCard"
         style="@style/Widget.PrimaryCardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,9 +51,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginHorizontal="@dimen/margin_padding_size_xxlarge"
+                android:layout_marginHorizontal="@dimen/margin_padding_size_large"
                 android:layout_marginTop="@dimen/margin_padding_size_large"
-                android:text="@string/pop_up_new_version_title"
+                android:text="@string/pop_up_smth_went_wrong_title"
                 android:textAlignment="center"
                 android:textColor="@color/pop_up_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,45 +65,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
-                android:paddingVertical="@dimen/margin_padding_size_large"
-                android:src="@drawable/icon_new_version"
+                android:layout_marginVertical="@dimen/margin_padding_size_biggest"
+                android:src="@drawable/icon_pop_up_warning"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
+                app:tint="@color/pop_up_smth_went_wrong_icon_color"
                 tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/infoText"
-                style="@style/TextAppearance.HeadSubNumbers"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/margin_padding_size_xxlarge"
-                android:text="@string/pop_up_new_version_description"
-                android:textAlignment="center"
-                android:textColor="@color/pop_up_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/icon" />
-
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/updateButton"
+                android:id="@+id/retryButton"
                 style="@style/Widget.PrimaryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+                android:text="@string/pop_up_smth_went_wrong_retry"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelButton"
+                style="@style/Widget.NegativeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_padding_size_small_plus"
                 android:layout_marginBottom="@dimen/margin_padding_size_large"
-                android:text="@string/pop_up_new_version_update"
+                android:text="@string/cancel"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/infoText" />
+                app:layout_constraintTop_toBottomOf="@id/retryButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </com.google.android.material.card.MaterialCardView>
 

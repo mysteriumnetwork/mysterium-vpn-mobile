@@ -102,7 +102,7 @@ object Modules {
             WorkManager.getInstance(androidContext())
         }
 
-        viewModel {
+        single {
             SplashViewModel(get(), get())
         }
         viewModel {

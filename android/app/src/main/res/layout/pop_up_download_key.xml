@@ -192,6 +192,19 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
+                android:id="@+id/passwordHelperText"
+                style="@style/TextAppearance.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                android:text="@string/pop_up_private_key_hint"
+                android:textColor="@color/pop_up_password_helper_text"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/passwordEditText"
+                app:layout_constraintStart_toStartOf="@id/passwordEditText"
+                app:layout_constraintTop_toBottomOf="@id/repeatPasswordEditText" />
+
+            <TextView
                 android:id="@+id/errorText"
                 style="@style/TextAppearance.Caption"
                 android:layout_width="0dp"
@@ -200,8 +213,8 @@
                 android:layout_marginTop="@dimen/margin_padding_size_small"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAlignment="center"
                 android:text="@string/pop_up_private_key_valid_error"
+                android:textAlignment="center"
                 android:textColor="@color/menu_subtitle_light_pink"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@id/passwordEditText"

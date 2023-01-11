@@ -9,10 +9,10 @@
     <string name="polygon">MYST(Polygon)</string>
     <string name="ethereum">MYST(Ethereum)</string>
     <string name="paypal">Paypal</string>
-    <string name="stripe">Stripe</string>
 
     <!--  Crypto payment  -->
     <string name="top_up_payment_title">Waiting for a payment</string>
+    <string name="top_up_deposit_title">MYST deposit</string>
     <string name="top_up_polygon_only_warning">Only Polygon Myst is supported.\nDo not send Ethereum MYST!</string>
     <string name="top_up_payment_crypto_description">Scan this QR code which contains your top-up address</string>
     <string name="top_up_payment_myst_polygon_description">Deposit Polygon MYST directly to your Payment channel. Scan QR code or copy address to proceed.</string>
@@ -50,8 +50,6 @@
     <string name="pop_up_payment_expired_try_again">Try again</string>Top up later
     <string name="pop_up_payment_expired_later">Top up later</string>
 
-    <string name="pop_up_crypto_payment_title">Warning!</string>
     <string name="pop_up_crypto_payment_description">It may take some time to process your payment after this step.\n \n You\'ll receive a notification once your payment is successfully processed.</string>
-    <string name="pop_up_crypto_payment_button">Continue</string>
 
 </resources>

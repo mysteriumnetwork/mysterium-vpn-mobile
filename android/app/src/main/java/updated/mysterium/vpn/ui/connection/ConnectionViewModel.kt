@@ -123,6 +123,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             ConnectionType.SMART_CONNECT -> {
                 smartConnect(countryCode)
             }
+            else -> {}
         }
     }
 
@@ -181,12 +182,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun isReviewAvailable() = liveDataResult {
         val sessionsCount = statisticUseCase.getLastSessions().size
         if (sessionsCount == SESSION_NUMBER_BEFORE_REVIEW) {
-            if (!settingsUseCase.isReviewShown()) {
-                settingsUseCase.reviewShown()
-                true
-            } else {
-                false
-            }
+            !settingsUseCase.isReviewShown()
         } else {
             false
         }

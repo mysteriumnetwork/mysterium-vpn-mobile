@@ -16,13 +16,4 @@
     <dimen name="viewpager_next_item_visible">40dp</dimen>
     <dimen name="viewpager_current_item_margin">16dp</dimen>
 
-    <dimen name="standard_touch_size">48dp</dimen>
-
-    <dimen name="text_size_micro">12sp</dimen>
-    <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_large">20sp</dimen>
-    <dimen name="text_size_xlarge">34sp</dimen>
-    <dimen name="text_size_xxlarge">45sp</dimen>
-    <dimen name="text_size_xxxlarge">56sp</dimen>
 </resources>

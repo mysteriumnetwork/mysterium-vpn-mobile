@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#D61F85</color>
-    <color name="primary_ripple_efect">#20ED5BAC</color>
     <color name="primary_item_selected">#D61F85</color>
-    <color name="primary_icon">#20D61F85</color>
     <color name="primary_dark">#501d4f</color>
     <color name="primary_card_view">#FFFFFF</color>
     <color name="primary_light_terms">#ED5BAC</color>
@@ -32,12 +30,10 @@
     <color name="card_payment_divider">#9090BB</color>
     <color name="card_payment_title">#9090BB</color>
     <color name="card_payment_value">#5A597D</color>
-    <color name="card_payment_description">#9090BB</color>
     <color name="card_payment_total">#D61F85</color>
 
     <color name="manual_connect_items_empty_background">#F4F4FC</color>
     <color name="manual_connect_list_background">#FFFFFF</color>
-    <color name="manual_connect_title_grey">#F2F2F2</color>
     <color name="manual_connect_value_white">#50FFFFFF</color>
     <color name="manual_connect_divider_grey_blue">#9090BB</color>
     <color name="manual_connect_connecting">#9090BB</color>
@@ -81,8 +77,6 @@
     <color name="settings_dns_background">#883A7A</color>
     <color name="settings_nat_hint">#5B1851</color>
 
-    <color name="pop_up_transparent_dark_blue">#703C3857</color>
-    <color name="pop_up_background">#FFFFFF</color>
     <color name="pop_up_title">#5A597D</color>
     <color name="pop_up_successful_title_color">#63B64E</color>
     <color name="pop_up_password_text">#803C3857</color>
@@ -91,6 +85,7 @@
     <color name="pop_up_password_helper_text">#805A597D</color>
     <color name="pop_up_icon_color">#D61F85</color>
     <color name="pop_up_successful_icon_color">#23D61F</color>
+    <color name="pop_up_smth_went_wrong_icon_color">#339090BB</color>
 
     <color name="payment_banner_icon_background">#3C3857</color>
     <color name="payment_banner_icon_color">#ffffff</color>

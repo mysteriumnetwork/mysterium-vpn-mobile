@@ -1,9 +1,11 @@
 package updated.mysterium.vpn.ui.splash
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.animation.Animator
 import android.app.Activity
 import android.content.Intent
 import android.net.VpnService
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -11,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.inject
@@ -49,6 +50,11 @@ class SplashActivity : BaseActivity() {
     private var isVpnPermissionGranted = false
     private var isLoadingStarted = false
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            startLoading()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         applyDarkMode()
         super.onCreate(savedInstanceState)
@@ -84,7 +90,7 @@ class SplashActivity : BaseActivity() {
     private fun configure() {
         binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
 
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 viewModel.animationLoaded()
                 binding.onceAnimationView.visibility = View.GONE
                 binding.onceAnimationView.cancelAnimation()
@@ -195,18 +201,26 @@ class SplashActivity : BaseActivity() {
         val vpnServiceIntent = VpnService.prepare(this)
         if (vpnServiceIntent == null) {
             isVpnPermissionGranted = true
-            startLoading()
+            askNotificationsPermissions()
         } else {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     isVpnPermissionGranted = true
-                    startLoading()
+                    askNotificationsPermissions()
                 } else {
                     showPermissionErrorToast()
                     finish()
                 }
             }.launch(vpnServiceIntent)
         }
+    }
+
+    private fun askNotificationsPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startLoading()
+            return
+        }
+        requestPermissionLauncher.launch(POST_NOTIFICATIONS)
     }
 
     private fun showPermissionErrorToast() {

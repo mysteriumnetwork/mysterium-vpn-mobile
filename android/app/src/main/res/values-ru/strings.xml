@@ -18,19 +18,14 @@
     <string name="onboarding_next">Далее</string>
 
     <!--  ManualConnection  -->
-    <string name="manual_connect_country_select_title">Выбрать узел</string>
     <string name="manual_connect_all_nodes">Все узлы</string>
-    <string name="manual_connect_saved_nodes">Сохранено</string>
     <string name="manual_connect_all_countries">Все страны</string>
-    <string name="manual_connect_nodes_label">Узлы</string>
-    <string name="manual_connect_country_label">Страны</string>
     <string name="manual_connect_disconnected">Отключено</string>
     <string name="manual_connect_country_status">Не защищено</string>
     <string name="manual_connect_protected">Защищено</string>
     <string name="manual_connect_price">Цена</string>
     <string name="manual_connect_type">Тип</string>
     <string name="manual_connect_quality">Качество</string>
-    <string name="manual_connect_type_filter_title">Выберите тип узла</string>
     <string name="manual_connect_node">Узел</string>
     <string name="manual_connect_another_node">Выбрать другой узел</string>
     <string name="manual_connect_cancel">Отменить и выбрать другой узел</string>
@@ -50,7 +45,6 @@
     <string name="manual_connect_unknown">Неизвестный</string>
     <string name="manual_connect_price_per_hour">%.5f/ч</string>
     <string name="manual_connect_price_per_gigabyte">%.4f/ГБ</string>
-    <string name="manual_connect_saved_to_favourite">Успешно сохранено</string>
     <string name="manual_connect_currency_hint">BTC, ETH, LTC, BCH и другие</string>
     <string name="manual_connect_search">Поиск</string>
     <string name="manual_connect_node_id">Идентификатор или страна узла</string>
@@ -78,7 +72,6 @@
     <string name="menu_item_monitoring_title">История</string>
     <string name="menu_item_referral_title">Реферальная программа</string>
     <string name="menu_item_referral_subtitle">Зарабатывайте кредиты VPN</string>
-    <string name="menu_item_wallet_subtitle">Пополните свой счет</string>
     <string name="menu_item_monitoring_subtitle">История подключений</string>
     <string name="menu_list_item_settings">Настройки</string>
     <string name="menu_list_item_report">Сообщить о проблеме</string>
@@ -88,7 +81,6 @@
 
     <!--  Wallet  -->
     <string name="wallet_main_title">Остаток на счету</string>
-    <string name="wallet_start_balance">0,000</string>
     <string name="wallet_usd_equivalent">Эквивалент в долларах США ≈ %.3f$</string>
     <string name="wallet_buys_for_you">Это покупает вам:</string>
     <string name="wallet_top_up">Пополнить</string>
@@ -115,7 +107,6 @@
     <string name="profile_title">Профиль</string>
     <string name="profile_identity">Идентификационный адрес Mysterium</string>
     <string name="profile_identity_description">Идентификатор – это ваш внутренний идентификатор пользователя Mysterium. Никогда не отправляйте туда Ethereum или какие-либо токены ERC20.</string>
-    <string name="profile_change_keys">Изменить закрытые ключи</string>
     <string name="profile_copy_to_clipboard">Скопировано в буфер обмена</string>
     <string name="profile_private_keys">Закрытые ключи</string>
     <string name="profile_keys_description">На Mysterium ваш аккаунт не хранится на централизованных серверах. Закрытые ключи, в которых хранятся ваши токены, хранятся только в вашем приложении.</string>
@@ -154,13 +145,11 @@
     <string name="top_up_amount_music">Музыка</string>
     <string name="top_up_amount_pages">Интернет-страницы</string>
     <string name="top_up_amount_traffic">Трафик</string>
-    <string name="top_up_amount_description">Выберите, сколько кредитов MYST\n вы хотите добавить в свой аккаунт</string>
     <string name="top_up_amount_confirm">Подтвердить</string>
     <string name="top_up_crypto_description">Выберите криптовалюту, в которой\n будет произведено пополнение.\n На данный момент MYST исключительно на блокчейне Ethereum!</string>
 
     <string name="top_up_crypto_lightning">Lightning Network</string>
     <string name="top_up_currency_equivalent">%1$s %2$s</string>
-    <string name="top_up_free_trial">Бесплатная пробная версия</string>
     <string name="payment_processing_text">Внимание: обработка платежей занимает несколько минут</string>
 
     <!-- Select country -->
@@ -176,7 +165,6 @@
     <string name="settings_dns_system">Система</string>
     <string name="settings_dns_provider">Провайдер</string>
     <string name="settings_dns_cloudflare">Cloudflare</string>
-    <string name="settings_dns_default">По умолчанию</string>
     <string name="settings_dark_mode">Темный режим</string>
     <string name="settings_nat_description">Определение типа NAT</string>
     <string name="settings_helper_description">Используйте автоматическое определение типа NAT, чтобы отфильтровать несовместимых провайдеров. Это увеличит вашу возможность успешного подключения к провайдеру.</string>
@@ -190,11 +178,9 @@
     <!--  Card payment  -->
     <string name="card_summary_title">Сводка заказа</string>
     <string name="card_payment_pay">Продолжить оплату</string>
-    <string name="card_payment_stripe">Вы будете перенаправлены на страницу Stripe для оплаты.</string>
     <string name="card_payment_total">Всего к оплате</string>
     <string name="card_payment_vat_title">НДС</string>
     <string name="card_payment_vat_value">НДС(%1.1f%%)</string>
-    <string name="card_payment_myst_top_up_description">%.2f MYST пополнение</string>
 
     <!--  Private key  -->
     <string name="private_key_description">Важно! Загрузите свой частный код сейчас и надежно сохраните его, чтобы предотвратить блокировку аккаунта.</string>
@@ -204,7 +190,6 @@
     <string name="prepare_top_up_description">Пополните свой счет или используйте реферальный код, чтобы начать использовать Mysterium dVPN</string>
     <string name="prepare_top_up_referral">Использовать реферальный код</string>
     <string name="prepare_top_up_now">Пополнить сейчас</string>
-    <string name="prepare_top_up_later">Пополнить позже</string>
 
     <!--  Search  -->
     <string name="search_hint_first_part">Использовать</string>
@@ -243,8 +228,6 @@
     <string name="pop_up_private_key_description">Введите свой пароль</string>
     <string name="pop_up_private_key_download">Скачать</string>
     <string name="pop_up_payment_title_thanks">Благодарим за покупку!</string>
-    <string name="pop_up_card_payment_button">Продолжить</string>
-    <string name="pop_up_card_payment_title">Благодарим за покупку!</string>
     <string name="pop_up_card_payment_description">Обработка вашего платежа может занять некоторое время. Как только она будет закончена, вы получите уведомление.</string>
     <string name="pop_up_private_key_valid_error">Неверный пароль</string>
     <string name="pop_up_import_wrong_password">Неверный пароль</string>
@@ -258,9 +241,6 @@
     <string name="pop_up_referral_title">Реферальный код</string>
     <string name="pop_up_referral_description">Вы получите</string>
     <!-- TODO: re-translate --> <string name="pop_up_referral_invalid_error">Неверный токен</string>
-    <string name="pop_up_new_version_title">Доступна новая версия</string>
-    <string name="pop_up_new_version_description">Пожалуйста, обновите приложение в Google Play Store</string>
-    <string name="pop_up_new_version_update">Обновить</string>
 
     <!--  Push notifications  -->
     <string name="push_notification_balance_title">Остаток Mysterium</string>
@@ -278,6 +258,5 @@
     <string name="error_vpn_permission">Для работы Mysterium VPN необходимо предоставить VPN-соединение</string>
 
     <!--  HomeSelection  -->
-    <string name="home_selection_smart_connect">Скоро появится Smart Connect</string>
     <string name="home_selection_all_nodes">Все узлы</string>
 </resources>

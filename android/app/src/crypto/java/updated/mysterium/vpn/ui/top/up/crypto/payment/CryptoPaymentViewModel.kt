@@ -92,6 +92,7 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     PaymentStatus.STATUS_INVALID, PaymentStatus.STATUS_REFUNDED -> {
                         _paymentFailed.postValue(Unit)
                     }
+                    else -> {}
                 }
             }
         }

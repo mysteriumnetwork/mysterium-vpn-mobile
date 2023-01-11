@@ -39,8 +39,6 @@
     <string name="pop_up_payment_expired_try_again">Tekrar dene</string>
     <string name="pop_up_payment_expired_later">Daha sonra para ekle</string>
 
-    <string name="pop_up_crypto_payment_button">Devam</string>
-    <string name="pop_up_crypto_payment_title">Uyarı!</string>
     <string name="pop_up_crypto_payment_description">Bu adımdan sonra ödemenin işleme koyulması biraz zaman alabilir. Ödemen başarılı olduğunda bir bildirim alacaksın.</string>
 
 </resources>
