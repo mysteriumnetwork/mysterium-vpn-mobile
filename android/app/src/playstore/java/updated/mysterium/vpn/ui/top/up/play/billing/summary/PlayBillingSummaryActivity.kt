@@ -8,7 +8,6 @@ import updated.mysterium.vpn.exceptions.BaseNetworkException
 import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.model.payment.PaymentStatus
 import updated.mysterium.vpn.model.payment.PlayBillingOrderRequestInfo
-import updated.mysterium.vpn.model.pushy.PushyTopic
 import updated.mysterium.vpn.model.top.up.TopUpPlayBillingCardItem
 import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity
 import updated.mysterium.vpn.ui.top.up.summary.SummaryActivity
@@ -84,9 +83,6 @@ class PlayBillingSummaryActivity : SummaryActivity() {
 
     private fun paymentConfirmed() {
         setButtonAvailability(true)
-        pushyNotifications?.unsubscribe(PushyTopic.PAYMENT_FALSE)
-        pushyNotifications?.subscribe(PushyTopic.PAYMENT_TRUE)
-        pushyNotifications?.subscribe("USD")
         viewModel.clearPopUpTopUpHistory()
         registerAccount()
     }

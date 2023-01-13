@@ -102,7 +102,7 @@ object Modules {
         }
 
         single {
-            SplashViewModel(get(), get())
+            SplashViewModel(get())
         }
         viewModel {
             SearchViewModel()
