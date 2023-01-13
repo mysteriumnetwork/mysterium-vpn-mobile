@@ -35,6 +35,9 @@ import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
+import updated.mysterium.vpn.ui.menu.MenuActivity
+import updated.mysterium.vpn.ui.provider.ProviderActivity
+
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -266,7 +269,7 @@ abstract class BaseActivity : AppCompatActivity() {
         ) {
             Intent(this, ConnectionActivity::class.java)
         } else {
-            Intent(this, HomeSelectionActivity::class.java)
+            Intent(this, MenuActivity::class.java)
         }
         intent.apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
