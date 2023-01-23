@@ -44,6 +44,10 @@ class PlayBillingDataSource(
     val skuDetailsList
         get() = _skuDetailsList
 
+    private val _skuDetailsError = MutableLiveData<Int>()
+    val skuDetailsError
+        get() = _skuDetailsError
+
     private val purchaseConsumptionInProcess: MutableSet<Purchase> = HashSet()
     private val _newPurchaseFlow = SingleLiveEvent<Unit>()
     private val _purchaseConsumedFlow = MutableSharedFlow<Purchase>()
@@ -91,6 +95,7 @@ class PlayBillingDataSource(
                 refreshPurchases()
             }
         } else {
+            _skuDetailsError.value = responseCode
             retryBillingServiceConnectionWithExponentialBackoff()
         }
     }

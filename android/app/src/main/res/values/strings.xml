@@ -308,6 +308,7 @@
     <!--  Error  -->
     <string name="error_vpn_permission">VPN connection has to be granted for MysteriumVPN to work</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="billing_unavailable">Billing services are unavailable now. Please, try again later</string>
 
     <!--  HomeSelection  -->
     <string name="home_selection_all_nodes">All nodes</string>
