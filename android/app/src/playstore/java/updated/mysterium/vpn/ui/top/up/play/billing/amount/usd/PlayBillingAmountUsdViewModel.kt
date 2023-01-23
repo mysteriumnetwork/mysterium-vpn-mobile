@@ -21,6 +21,10 @@ class PlayBillingAmountUsdViewModel(
         }
     }
 
+    fun getSkuError() = liveDataResult {
+        playBillingDataSource.skuDetailsError
+    }
+
     private fun toTopUpPlayBillingCardItem(
         list: List<SkuDetails>
     ): List<TopUpPlayBillingCardItem> {
