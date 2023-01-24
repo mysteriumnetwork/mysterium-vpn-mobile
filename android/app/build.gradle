@@ -83,7 +83,7 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"1.19.2\""
+        buildConfigField "String", "NODE_VERSION", "\"1.19.8\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
