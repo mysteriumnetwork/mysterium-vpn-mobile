@@ -89,14 +89,15 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
 
     private fun startMobileProviderService(active: Boolean) {
         mobileNode?.let {
+            isProviderActive = active
             try {
-                isProviderActive = active
                 if (active) {
                     it.startProvider()
                 } else {
                     it.stopProvider()
                 }
             } catch (e: Exception) {
+                isProviderActive = !active
                 println(e)
             }
         }

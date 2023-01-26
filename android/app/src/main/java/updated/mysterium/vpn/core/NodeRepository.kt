@@ -19,6 +19,7 @@ import updated.mysterium.vpn.model.identity.MigrateHermesStatus
 import updated.mysterium.vpn.model.identity.MigrateHermesStatusResponse
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.CountryInfo
+import updated.mysterium.vpn.model.manual.connect.ServiceStatus
 import updated.mysterium.vpn.model.nodes.ProposalItem
 import updated.mysterium.vpn.model.nodes.ProposalsResponse
 import updated.mysterium.vpn.model.payment.Order
@@ -68,6 +69,16 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun registerConnectionStatusChangeCallback(cb: (status: String) -> Unit) {
         withContext(Dispatchers.IO) {
             deferredNode.await().registerConnectionStatusChangeCallback { status -> cb(status) }
+        }
+    }
+
+    // Register service status callback.
+    suspend fun registerServiceStatusChangeCallback(cb: (stats: ServiceStatus) -> Unit) {
+        withContext(Dispatchers.IO) {
+            deferredNode.await()
+                    .registerServiceStatusChangeCallback { service, status ->
+                        cb(ServiceStatus(service, status))
+                    }
         }
     }
 

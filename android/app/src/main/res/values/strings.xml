@@ -204,6 +204,12 @@
     <string name="settings_title">Settings</string>
     <string name="settings_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
     <string name="settings_dns_title">DNS</string>
+    <string name="service_1_title">wireguard</string>
+    <string name="service_2_title">data transfer</string>
+    <string name="service_3_title">scraping</string>
+    <string name="service_idle_title">idle</string>
+    <string name="service_active_title">active</string>
+
     <string name="settings_resident_title">Resident country</string>
     <string name="settings_dns_system">System</string>
     <string name="settings_dns_provider">Provider</string>
@@ -325,4 +331,6 @@
     <string name="connection_lost_notification_chanel">Lost Connection</string>
     <string name="payment_notification_chanel">Payments</string>
     <string name="innactive_notification_chanel">Reminder Notifications</string>
+    <string name="provider_notification_chanel">Provider mode</string>
+
 </resources>

@@ -9,6 +9,7 @@ import updated.mysterium.vpn.core.NodeRepository
 import updated.mysterium.vpn.database.preferences.SharedPreferencesList
 import updated.mysterium.vpn.database.preferences.SharedPreferencesManager
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
+import updated.mysterium.vpn.model.manual.connect.ServiceStatus
 import updated.mysterium.vpn.model.statistics.Statistics
 import updated.mysterium.vpn.model.wallet.Identity
 
@@ -78,6 +79,10 @@ class ConnectionUseCase(
     suspend fun registerStatisticsChangeCallback(
         callback: (Statistics) -> Unit
     ) = nodeRepository.registerStatisticsChangeCallback(callback)
+
+    suspend fun serviceStatusChangeCallback(
+            callback: (ServiceStatus) -> Unit
+    ) = nodeRepository.registerServiceStatusChangeCallback(callback)
 
     suspend fun connectionStatusCallback(
         callback: (String) -> Unit
