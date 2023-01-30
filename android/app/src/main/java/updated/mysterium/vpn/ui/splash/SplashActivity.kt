@@ -65,6 +65,7 @@ class SplashActivity : BaseActivity() {
         ensureVpnServicePermission()
         configure()
         subscribeViewModel()
+        viewModel.setUpInactiveUserPushyNotifications()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
