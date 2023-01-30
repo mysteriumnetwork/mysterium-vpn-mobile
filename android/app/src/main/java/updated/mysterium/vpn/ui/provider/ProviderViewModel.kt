@@ -7,16 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import updated.mysterium.vpn.core.MysteriumCoreService
-import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.model.manual.connect.ProviderState
 import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 import updated.mysterium.vpn.notification.AppNotificationManager
 
-data class ProviderService(
-        var active1: Boolean,
-        var active2: Boolean,
-        var active3: Boolean,
+data class ServiceState(
+        var active: Array<Boolean>,
 )
 
 class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
@@ -31,10 +28,10 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val _providerUpdate = MutableLiveData<ProviderState>()
 
 
-    private val servicesState = ProviderService(false,false,false)
-    val providerServiceStatus: LiveData<ProviderService>
+    private val servicesState = ServiceState( Array(3) {false} )
+    val providerServiceStatus: LiveData<ServiceState>
         get() = _providerServiceStatus
-    private val _providerServiceStatus = MutableLiveData<ProviderService>()
+    private val _providerServiceStatus = MutableLiveData<ServiceState>()
 
 
     private var coreService: MysteriumCoreService? = null
@@ -61,9 +58,9 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             connectionUseCase.serviceStatusChangeCallback {
                 val running = (it.status == "Running")
                 when (it.service) {
-                    "wireguard" -> servicesState.active1 = running
-                    "data_transfer" -> servicesState.active2 = running
-                    "scraping" -> servicesState.active3 = running
+                    "wireguard" -> servicesState.active[0] = running
+                    "data_transfer" -> servicesState.active[1] = running
+                    "scraping" -> servicesState.active[2] = running
                 }
                 _providerServiceStatus.postValue(servicesState)
             }

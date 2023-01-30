@@ -1,5 +1,8 @@
 package updated.mysterium.vpn.ui.provider
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import network.mysterium.vpn.R
@@ -8,6 +11,7 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.App
 import updated.mysterium.vpn.notification.AppNotificationManager
 import updated.mysterium.vpn.ui.base.BaseActivity
+
 
 class ProviderActivity : BaseActivity() {
 
@@ -52,9 +56,9 @@ class ProviderActivity : BaseActivity() {
                 }
                 return R.string.service_idle_title
             }
-            binding.titleSvcState1.setText(getStatusTxt(it.active1))
-            binding.titleSvcState2.setText(getStatusTxt(it.active2))
-            binding.titleSvcState3.setText(getStatusTxt(it.active3))
+            binding.titleSvcState1.setText(getStatusTxt(it.active[0]))
+            binding.titleSvcState2.setText(getStatusTxt(it.active[1]))
+            binding.titleSvcState3.setText(getStatusTxt(it.active[2]))
         }
     }
 
@@ -67,6 +71,14 @@ class ProviderActivity : BaseActivity() {
         }
         binding.providerModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleProvider(isChecked)
+        }
+        binding.buttonUI.setOnClickListener {
+            try {
+                val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://localhost:4449"))
+                startActivity(myIntent)
+            } catch (e: ActivityNotFoundException) {
+                e.printStackTrace()
+            }
         }
     }
 

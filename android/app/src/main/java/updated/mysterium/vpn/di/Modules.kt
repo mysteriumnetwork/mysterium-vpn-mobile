@@ -159,7 +159,7 @@ object Modules {
         viewModel {
             SelectCountryViewModel(get())
         }
-        viewModel {
+        single {
             ProviderViewModel(get())
         }
     }

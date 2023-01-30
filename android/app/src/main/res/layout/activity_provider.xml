@@ -52,7 +52,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/walletInfo"
         android:layout_width="376dp"
-        android:layout_height="261dp"
+        android:layout_height="341dp"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/margin_padding_size_small_medium"
         android:layout_marginTop="@dimen/margin_padding_size_small_medium"
@@ -69,6 +69,7 @@
             android:layout_marginTop="208dp"
             android:text="@string/service_idle_title"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.433"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,8 +95,10 @@
             android:layout_marginTop="144dp"
             android:text="@string/service_1_title"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintHorizontal_bias="0.051"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,6 +110,7 @@
             android:layout_marginTop="144dp"
             android:text="@string/service_idle_title"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.433"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,6 +124,7 @@
             android:layout_marginTop="176dp"
             android:text="@string/service_idle_title"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.433"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +138,7 @@
             android:layout_marginTop="176dp"
             android:text="@string/service_2_title"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.058"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,8 +152,9 @@
             android:layout_marginTop="208dp"
             android:text="@string/service_3_title"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.058"
+            app:layout_constraintHorizontal_bias="0.049"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -212,6 +219,31 @@
                 android:orientation="vertical"></LinearLayout>
 
         </FrameLayout>
+
+        <Button
+            android:id="@+id/buttonUI"
+            android:layout_width="134dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="16dp"
+            android:text="Open UI"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleSvc3"
+            app:layout_constraintVertical_bias="0.559" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

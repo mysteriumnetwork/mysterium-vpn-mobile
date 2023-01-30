@@ -161,9 +161,6 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private fun connectNode(proposal: Proposal, rate: Double) {
         exchangeRate = rate
         viewModelScope.launch(handler) {
-            coreService?.let {
-                it.startProvider(false)
-            }
             _connectionStatus.postValue(_connectionStatus.value?.copy(proposal = proposal))
             disconnectIfConnectedNode()
             val req = ConnectRequest().apply {
