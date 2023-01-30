@@ -63,11 +63,6 @@ class CryptoPaymentActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.paymentSuccessfully.observe(this) {
-            val currency = intent.extras?.getString(CRYPTO_NAME_EXTRA_KEY)
-            val amountUSD = intent.extras?.getDouble(CRYPTO_AMOUNT_USD_EXTRA_KEY)?.toFloat()
-            if (currency != null && amountUSD != null) {
-                viewModel.updateLastCurrency(currency)
-            }
             viewModel.clearPopUpTopUpHistory()
             registerAccount()
         }
