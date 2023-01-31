@@ -28,6 +28,7 @@ import android.util.Log
 import kotlinx.coroutines.*
 import mysterium.MobileNode
 import mysterium.Mysterium
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -126,6 +127,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
             return it
         }
         mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultProviderNodeOptions())
+
+        val launcherVersion = String.format("%s/android", BuildConfig.VERSION_NAME)
+        Mysterium.setFlagLauncherVersion(launcherVersion)
+
         mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
         return mobileNode ?: MobileNode()
     }
