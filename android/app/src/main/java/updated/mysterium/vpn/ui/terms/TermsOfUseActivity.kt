@@ -94,7 +94,7 @@ class TermsOfUseActivity : BaseActivity() {
             } else {
                 Intent(this, CreateAccountActivity::class.java)
             }
-            startActivity(intent)
+            startActivity(intent, getTransitionAnimation(false))
             finish()
         }
     }
