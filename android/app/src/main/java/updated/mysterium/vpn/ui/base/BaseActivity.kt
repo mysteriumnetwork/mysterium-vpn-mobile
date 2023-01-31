@@ -178,6 +178,22 @@ abstract class BaseActivity : AppCompatActivity() {
         connectionStateToolbar?.protectedState(true)
     }
 
+    protected fun getTransitionAnimation(isBackTransition: Boolean?): Bundle? {
+        return if (isBackTransition == true) {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).toBundle()
+        } else {
+            ActivityOptions.makeCustomAnimation(
+                applicationContext,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            ).toBundle()
+        }
+    }
+
     private fun unprotectedConnection() {
         connectionStateToolbar?.unprotectedState()
     }
@@ -357,22 +373,6 @@ abstract class BaseActivity : AppCompatActivity() {
                     Log.e(TAG, "getPaymentScreen failed with error ${error.message}")
                 }
             }
-        }
-    }
-
-    private fun getTransitionAnimation(isBackTransition: Boolean?): Bundle? {
-        return if (isBackTransition == true) {
-            ActivityOptions.makeCustomAnimation(
-                applicationContext,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            ).toBundle()
-        } else {
-            ActivityOptions.makeCustomAnimation(
-                applicationContext,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            ).toBundle()
         }
     }
 

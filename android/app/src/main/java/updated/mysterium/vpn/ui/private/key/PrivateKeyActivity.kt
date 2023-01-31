@@ -172,6 +172,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
             setNextToAccountFrameAvailability(result.isSuccess)
             result.onSuccess {
                 viewModel.accountCreated()
+                navigateToPrepareTopUp()
             }
             result.onFailure {
                 Log.i(TAG, "onFailure ${it.localizedMessage}")
