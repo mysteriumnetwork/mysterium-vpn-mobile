@@ -27,7 +27,6 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val balanceUseCase = useCaseProvider.balance()
     private val loginUseCase = useCaseProvider.login()
-    private val pushyUseCase = useCaseProvider.pushy()
     private val _paymentSuccessfully = MutableLiveData<Unit>()
     private val _paymentExpired = MutableLiveData<Unit>()
     private val _paymentFailed = MutableLiveData<Unit>()
@@ -59,10 +58,6 @@ class CryptoPaymentViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         balanceUseCase.clearMinBalancePopUpHistory()
         balanceUseCase.clearBalancePushHistory()
         balanceUseCase.clearMinBalancePushHistory()
-    }
-
-    fun updateLastCurrency(currency: String) {
-        pushyUseCase.updateCryptoCurrency(currency)
     }
 
     fun registerAccount() = liveDataResult {

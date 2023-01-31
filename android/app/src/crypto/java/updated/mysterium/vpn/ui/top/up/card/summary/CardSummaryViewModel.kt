@@ -19,7 +19,6 @@ class CardSummaryViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val connectionUseCase = useCaseProvider.connection()
     private val loginUseCase = useCaseProvider.login()
     private val paymentUseCase = useCaseProvider.payment()
-    private val pushyUseCase = useCaseProvider.pushy()
 
     fun accountFlowShown() {
         loginUseCase.accountFlowShown()
@@ -43,10 +42,6 @@ class CardSummaryViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         paymentUseCase.paymentOrderCallback {
             _paymentSuccessfully.postValue(PaymentStatus.from(it.status))
         }
-    }
-
-    fun updateLastCurrency(currency: String) {
-        pushyUseCase.updateCryptoCurrency(currency)
     }
 
     fun clearPopUpTopUpHistory() {

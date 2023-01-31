@@ -72,11 +72,6 @@ class CardSummaryActivity : SummaryActivity() {
 
     private fun paymentConfirmed() {
         setButtonAvailability(true)
-        val amountUSD = intent.extras?.getDouble(AMOUNT_USD_EXTRA_KEY)
-        val currency = intent.extras?.getString(CURRENCY_EXTRA_KEY)
-        if (currency != null && amountUSD != null) {
-            viewModel.updateLastCurrency(currency)
-        }
         viewModel.clearPopUpTopUpHistory()
         registerAccount()
     }
