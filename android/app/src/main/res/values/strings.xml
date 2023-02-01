@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MysteriumVPN</string>
+    <string name="app_name" translatable="false">MysteriumVPN Provider</string>
 
     <!--   Common   -->
     <string name="close">Close</string>
