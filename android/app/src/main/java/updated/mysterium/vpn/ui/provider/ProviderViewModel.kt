@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import updated.mysterium.vpn.core.DeferredNode
 import updated.mysterium.vpn.core.MysteriumCoreService
 import updated.mysterium.vpn.model.manual.connect.ProviderState
 import updated.mysterium.vpn.model.notification.NotificationChannels
@@ -37,6 +38,7 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var coreService: MysteriumCoreService? = null
     private val connectionUseCase = useCaseProvider.connection()
     private lateinit var appNotificationManager: AppNotificationManager
+    private var deferredNode = DeferredNode()
 
     val handler = CoroutineExceptionHandler { _, exception ->
         Log.i(TAG, exception.localizedMessage ?: exception.toString())
@@ -49,6 +51,9 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         viewModelScope.launch(handler) {
             appNotificationManager = notificationManager
             coreService = deferredMysteriumCoreService.await()
+
+            // Restart a node in case of app crash (on activity restore), thus regaining control of the node
+            startDeferredNode()
 
             val initialState = ProviderState(
                 active = getIsProvider(),
@@ -89,12 +94,25 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     it.stopForeground()
                 }
             }
-
-
         }
     }
 
-    private suspend fun getIsProvider(): Boolean {
+    private suspend fun startDeferredNode() {
+        if (deferredNode.startedOrStarting()) {
+            coreService?.getDeferredNode()?.let {
+                deferredNode = it
+            }
+        } else {
+            coreService?.let {
+                deferredNode.start(it)
+            }
+        }
+
+        connectionUseCase.initDeferredNode(deferredNode)
+        connectionUseCase.getIdentity()
+    }
+
+    private fun getIsProvider(): Boolean {
         coreService?.let {
             return it.isProviderActive()
         }
