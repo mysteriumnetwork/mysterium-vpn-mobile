@@ -46,7 +46,10 @@ class ProviderActivity : BaseActivity() {
         initToolbar(binding.manualConnectToolbar)
 
         viewModel.providerUpdate.observe(this) {
+            // prevent triggering of switch handler
+            binding.providerModeSwitch.tag = true
             binding.providerModeSwitch.isChecked = it.active
+            binding.providerModeSwitch.tag = null
         }
 
         viewModel.providerServiceStatus.observe(this) {
@@ -70,7 +73,9 @@ class ProviderActivity : BaseActivity() {
             finish()
         }
         binding.providerModeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.toggleProvider(isChecked)
+            if (binding.providerModeSwitch.tag == null) {
+                viewModel.toggleProvider(isChecked)
+            }
         }
         binding.buttonUI.setOnClickListener {
             try {

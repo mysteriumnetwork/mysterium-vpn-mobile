@@ -56,7 +56,7 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
             startDeferredNode()
 
             val initialState = ProviderState(
-                active = getIsProvider(),
+                active = getIsProviderActive(),
             )
             _providerUpdate.postValue(initialState)
 
@@ -68,6 +68,16 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                     "scraping" -> servicesState.active[2] = running
                 }
                 _providerServiceStatus.postValue(servicesState)
+
+                // make provider switch state "false" if all services are disabled
+                var someEnabled = false
+                for (x in servicesState.active) {
+                    if (x) {
+                        someEnabled = true
+                        break
+                    }
+                }
+                _providerUpdate.postValue(ProviderState(someEnabled))
             }
         }
     }
@@ -75,22 +85,13 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     fun toggleProvider(isChecked: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
             coreService?.let {
+                it.startProvider(isChecked)
                 if (isChecked) {
-                    if (it.isProviderActive()) {
-                        return@let
-                    }
-
-                    it.startProvider(true)
                     it.startForegroundWithNotification(
                             NotificationChannels.PROVIDER_NOTIFICATION,
                             appNotificationManager.createProviderNotification()
                     )
                 } else {
-                    if (!it.isProviderActive()) {
-                        return@let
-                    }
-
-                    it.startProvider(false)
                     it.stopForeground()
                 }
             }
@@ -112,7 +113,7 @@ class ProviderViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         connectionUseCase.getIdentity()
     }
 
-    private fun getIsProvider(): Boolean {
+    private fun getIsProviderActive(): Boolean {
         coreService?.let {
             return it.isProviderActive()
         }

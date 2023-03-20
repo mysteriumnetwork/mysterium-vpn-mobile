@@ -97,6 +97,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 } else {
                     it.stopProvider()
                 }
+
             } catch (e: Exception) {
                 isProviderActive = !active
                 println(e)
