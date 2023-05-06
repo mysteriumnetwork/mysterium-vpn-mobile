@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Mysterium</string>
+    <string name="earn">Earn</string>
+    <string name="earn_while_sleep">\nWhile\nYou\nSleep</string>
+    <string name="sell_unused_bandwidth">Sell your unused bandwidth\nand earn crypto passive income, MYST</string>
+    <string name="onboard">Onboard</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
 </resources>

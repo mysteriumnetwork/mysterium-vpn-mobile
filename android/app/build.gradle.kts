@@ -52,8 +52,11 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.core)
     api(platform(libs.androidx.compose.bom))
+
+    implementation(libs.bundles.core)
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.accompanist.tools)
+
     debugImplementation(libs.bundles.compose.debug)
 }
