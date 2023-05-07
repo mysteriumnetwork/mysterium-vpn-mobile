@@ -3,6 +3,7 @@ package network.mystrium.provider.ui.components.content
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import network.mystrium.provider.ui.theme.Paddings
 @Composable
 fun RoundedBox(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = Paddings.card,
     contentAlignment: Alignment = Alignment.TopStart,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -34,7 +36,7 @@ fun RoundedBox(
                 color = Color.White,
                 shape = RoundedCornerShape(Corners.default)
             )
-            .padding(Paddings.card),
+            .padding(contentPadding),
         contentAlignment = contentAlignment
     ) {
         content()

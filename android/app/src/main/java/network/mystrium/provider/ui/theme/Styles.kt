@@ -26,6 +26,9 @@ object Colors {
     val primaryBg = Color.White
     val secondaryBg = Color(0xFFF8F9FD)
     val shadow = Color(0x1A090064)
+    val textFieldBorder = Color(0xFFE2E1EF)
+    val textFieldError = Color(0xFFF44D89)
+    val textFieldErrorBg = Color(0xFFFFF7FA)
 }
 
 object Styles {
@@ -53,6 +56,12 @@ object TextStyles {
         fontSize = 14.sp,
         lineHeight = 18.sp
     )
+    val label = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 15.sp
+    )
     val button = body
     val header = TextStyle(
         fontFamily = FontFamily.Default,
@@ -63,21 +72,37 @@ object TextStyles {
 }
 
 object Paddings {
-    val small = 10.dp
+    val tiny = 2.dp
+    val small = 8.dp
     val default = 18.dp
     val logoDescription = 33.dp
     val onboardButton = PaddingValues(
         horizontal = 65.dp,
         vertical = 53.dp
     )
-    val buttonContent = PaddingValues(default)
+    val applyButton = PaddingValues(
+        top = 0.dp,
+        start = 65.dp,
+        end = 65.dp,
+        bottom = 40.dp
+    )
+    val primaryButton = PaddingValues(default)
+    val secondaryButton = PaddingValues(
+        horizontal = 18.dp,
+        vertical = 6.dp
+    )
     val card = PaddingValues(
         horizontal = 26.dp,
         vertical = 30.dp
+    )
+    val cardButton = PaddingValues(
+        horizontal = 26.dp,
+        vertical = 23.dp
     )
 }
 
 object Corners {
     val card = 30.dp
     val default = 20.dp
+    val small = 10.dp
 }

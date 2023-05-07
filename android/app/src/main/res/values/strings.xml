@@ -8,4 +8,12 @@
     <string name="mobile_data_settings">Mobile data settings</string>
     <string name="use_mobile_data">Use mobile data</string>
     <string name="set_mobile_limit">Set mobile data limit</string>
+    <string name="allow_use_on_battery">Allow use on battery</string>
+    <string name="shut_down">Shut down</string>
+    <string name="node_ui">Node UI</string>
+    <string name="open">Open</string>
+    <string name="apply">Apply</string>
+    <string name="mobile_data_limit_reset">Mobile data limit automatically resets on the first day of each month</string>
+    <string name="mobile_data_limit">Mobile data limit</string>
+    <string name="invalid_mobile_data_limit">Invalid value entered. Please enter correct value (%1$d-%2$d)</string>
 </resources>

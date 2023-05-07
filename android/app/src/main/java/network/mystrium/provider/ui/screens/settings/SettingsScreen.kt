@@ -1,25 +1,37 @@
 package network.mystrium.provider.ui.screens.settings
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import network.mystrium.provider.Config
 import network.mystrium.provider.R
 import network.mystrium.provider.ui.components.buttons.BackButton
-import network.mystrium.provider.ui.components.content.RoundedBox
+import network.mystrium.provider.ui.components.buttons.PrimaryButton
 import network.mystrium.provider.ui.components.content.ScreenContent
-import network.mystrium.provider.ui.components.switcher.Switcher
+import network.mystrium.provider.ui.components.input.InputTextField
 import network.mystrium.provider.ui.navigation.NavigationDestination
+import network.mystrium.provider.ui.screens.settings.views.ButtonOption
+import network.mystrium.provider.ui.screens.settings.views.SwitchOption
 import network.mystrium.provider.ui.theme.Colors
 import network.mystrium.provider.ui.theme.MysteriumTheme
 import network.mystrium.provider.ui.theme.Paddings
@@ -49,7 +61,6 @@ private fun SettingsContent(
     onNavigate: (NavigationDestination) -> Unit
 ) {
     ScreenContent(
-        modifier = Modifier.padding(Paddings.default),
         title = stringResource(id = R.string.mobile_data_settings),
         color = Colors.secondaryBg,
         navLeading = {
@@ -60,68 +71,128 @@ private fun SettingsContent(
             }
         }
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Paddings.default)
-        ) {
-            UseMobileData(checked = state.isMobileDataOn) {
-                onEvent(Settings.Event.ToggleMobileData(it))
-            }
-            SetMobileDataLimit(checked = state.isMobileDataLimitOn) {
-                onEvent(Settings.Event.ToggleLimit(it))
+        Column {
+            OptionsContent(
+                modifier = Modifier.weight(1f),
+                state = state,
+                isOnboarding = isOnboarding,
+                onEvent = onEvent
+            )
+
+            PrimaryButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Paddings.applyButton),
+                text = stringResource(id = R.string.apply)
+            ) {
+
             }
         }
     }
 }
 
 @Composable
-private fun UseMobileData(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+private fun OptionsContent(
+    modifier: Modifier = Modifier,
+    state: Settings.State,
+    isOnboarding: Boolean,
+    onEvent: (Settings.Event) -> Unit
 ) {
-    RoundedBox(
-        modifier = Modifier.fillMaxWidth()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = Paddings.tiny)
+            .verticalScroll(rememberScrollState())
+            .padding(Paddings.default),
+        verticalArrangement = Arrangement.spacedBy(Paddings.default)
     ) {
         SwitchOption(
             title = stringResource(id = R.string.use_mobile_data),
-            checked = checked,
-            onCheckedChange = onCheckedChange
+            checked = state.isMobileDataOn,
+            onCheckedChange = {
+                onEvent(Settings.Event.ToggleMobileData(it))
+            }
         )
-    }
-}
 
-@Composable
-private fun SetMobileDataLimit(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    RoundedBox(
-        modifier = Modifier.fillMaxWidth()
-    ) {
         SwitchOption(
             title = stringResource(id = R.string.set_mobile_limit),
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
+            checked = state.isMobileDataLimitOn,
+            onCheckedChange = {
+                onEvent(Settings.Event.ToggleLimit(it))
+            }
+        ) {
+            DataLimitInput(
+                state = state,
+                onEvent = onEvent
+            )
+        }
+
+
+        if (!isOnboarding) {
+            SwitchOption(
+                title = stringResource(id = R.string.allow_use_on_battery),
+                checked = state.isAllowUseOnBatteryOn,
+                onCheckedChange = {
+                    onEvent(Settings.Event.ToggleAllowUseOnBattery(it))
+                }
+            )
+
+            ButtonOption(
+                title = stringResource(id = R.string.shut_down),
+                actionName = stringResource(id = R.string.shut_down)
+            ) {
+            }
+
+            ButtonOption(
+                title = stringResource(id = R.string.open),
+                actionName = stringResource(id = R.string.open),
+                color = Colors.textPrimary
+            ) {
+            }
+        }
     }
 }
 
 @Composable
-private fun SwitchOption(
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+private fun DataLimitInput(
+    state: Settings.State,
+    onEvent: (Settings.Event) -> Unit
 ) {
-    Row {
-        Text(
-            text = title,
-            style = TextStyles.body
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Switcher(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
+    AnimatedVisibility(
+        visible = state.isMobileDataLimitOn,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically()
+    ) {
+        Column(
+            modifier = Modifier.padding(top = Paddings.default),
+            verticalArrangement = Arrangement.spacedBy(Paddings.default)
+        ) {
+            InputTextField(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(R.string.mobile_data_limit),
+                value = state.mobileDataLimit,
+                onValueChange = {
+                    onEvent(Settings.Event.UpdateLimit(it))
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                ),
+                error = if (state.mobileDataLimitInvalid) {
+                    stringResource(
+                        R.string.invalid_mobile_data_limit,
+                        Config.minMobileDataLimit,
+                        Config.maxMobileDataLimit
+                    )
+                } else {
+                    null
+                }
+            )
+            Text(
+                text = stringResource(id = R.string.mobile_data_limit_reset),
+                style = TextStyles.body,
+                color = Colors.textSecondary
+            )
+        }
     }
 }
 
@@ -132,9 +203,12 @@ private fun SettingsContentPreview() {
         SettingsContent(
             state = Settings.State(
                 isMobileDataOn = true,
-                isMobileDataLimitOn = false,
+                isMobileDataLimitOn = true,
+                isAllowUseOnBatteryOn = false,
+                mobileDataLimit = "50",
+                mobileDataLimitInvalid = true
             ),
-            isOnboarding = true,
+            isOnboarding = false,
             onEvent = {},
             onNavigate = {}
         )
