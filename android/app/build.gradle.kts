@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.accompanist.tools)
+    implementation(libs.bundles.navigation)
 
     debugImplementation(libs.bundles.compose.debug)
 }

@@ -52,6 +52,7 @@ object TextStyles {
 }
 
 object Paddings {
+    val small = 10.dp
     val default = 18.dp
     val logoDescription = 33.dp
     val logoText = 67.dp

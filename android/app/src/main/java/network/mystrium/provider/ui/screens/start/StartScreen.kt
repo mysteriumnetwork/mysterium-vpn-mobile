@@ -1,11 +1,7 @@
 package network.mystrium.provider.ui.screens.start
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,35 +12,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import network.mystrium.provider.R
 import network.mystrium.provider.ui.components.buttons.PrimaryButton
 import network.mystrium.provider.ui.components.buttons.PrimaryTextButton
 import network.mystrium.provider.ui.components.content.ScreenContent
+import network.mystrium.provider.ui.components.logo.HeaderLogo
+import network.mystrium.provider.ui.components.logo.HeaderLogoStyle
 import network.mystrium.provider.ui.theme.Colors
 import network.mystrium.provider.ui.theme.MysteriumTheme
 import network.mystrium.provider.ui.theme.Paddings
 import network.mystrium.provider.ui.theme.TextStyles
 
 @Composable
-fun StartScreen() {
+fun StartScreen(
+    toOnboard: () -> Unit,
+    toTAC: () -> Unit
+) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
     ScreenContent(
         header = {
             Header(modifier = Modifier.height(screenHeight * 0.6f))
         }
     ) {
-        Content()
+        Content(
+            toOnboard = toOnboard,
+            toTAC = toTAC
+        )
     }
 }
 
@@ -54,7 +54,7 @@ private fun Header(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HeaderLogo()
+        HeaderLogo(style = HeaderLogoStyle.Big)
         Spacer(modifier = Modifier.weight(1f))
         HeaderText()
         Spacer(modifier = Modifier.weight(1f))
@@ -63,7 +63,10 @@ private fun Header(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    toOnboard: () -> Unit,
+    toTAC: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -72,32 +75,13 @@ private fun Content() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.onboardButton),
-            text = stringResource(id = R.string.onboard)
-        ) {
-            // to implemnt
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        PrimaryTextButton(text = stringResource(id = R.string.terms_and_conditions)) {
-            // to implemnt
-        }
-    }
-}
-
-@Composable
-private fun HeaderLogo() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Paddings.default, Alignment.CenterHorizontally)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = null
+            text = stringResource(id = R.string.onboard),
+            onClick = toOnboard
         )
-        Image(
-            painter = painterResource(id = R.drawable.ic_logo_name),
-            contentDescription = null
+        Spacer(modifier = Modifier.weight(1f))
+        PrimaryTextButton(
+            text = stringResource(id = R.string.terms_and_conditions),
+            onClick = toTAC
         )
     }
 }
@@ -136,6 +120,9 @@ private fun HeaderDescription() {
 @Composable
 fun StartScreenPreview() {
     MysteriumTheme {
-        StartScreen()
+        StartScreen(
+            toOnboard = {},
+            toTAC = {}
+        )
     }
 }

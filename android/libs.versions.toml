@@ -3,6 +3,7 @@ ktx = "1.10.0"
 ktx-lifecycle-runtime =  "2.6.1"
 compose-activity = "1.7.1"
 compose-bom = "2022.10.00"
+compose-navigation = "2.5.3"
 accompanist = "0.30.1"
 
 [libraries]
@@ -17,6 +18,7 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation"}
+androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 [bundles]
@@ -30,7 +32,10 @@ compose = [
     "androidx-compose-ui-graphics",
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-material3",
-    "androidx-compose-foundation"
+    "androidx-compose-foundation",
+]
+navigation = [
+    "androidx-compose-navigation"
 ]
 accompanist-tools = [
     "accompanist-systemuicontroller"
