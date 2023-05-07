@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mystrium.provider.R
+import network.mystrium.provider.ui.components.logo.HeaderLogo
 import network.mystrium.provider.ui.theme.Colors
 import network.mystrium.provider.ui.theme.Corners
 import network.mystrium.provider.ui.theme.Paddings
@@ -35,17 +36,17 @@ import network.mystrium.provider.ui.theme.TextStyles
 @Composable
 fun ScreenContent(
     modifier: Modifier = Modifier,
+    color: Color = Colors.primaryBg,
     header: (@Composable BoxScope.() -> Unit)? = null,
-    navLeading: (@Composable RowScope.() -> Unit)? = null,
-    navTrailing: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
     ScreenContent(
         modifier = modifier,
         title = null,
         header = header,
-        navLeading = navLeading,
-        navTrailing = navTrailing,
+        color = color,
+        navLeading = null,
+        navTrailing = null,
         content = content
     )
 }
@@ -54,6 +55,7 @@ fun ScreenContent(
 fun ScreenContent(
     modifier: Modifier = Modifier,
     title: String,
+    color: Color = Colors.primaryBg,
     header: (@Composable BoxScope.() -> Unit)? = null,
     navLeading: (@Composable RowScope.() -> Unit)? = null,
     navTrailing: (@Composable RowScope.() -> Unit)? = null,
@@ -71,6 +73,7 @@ fun ScreenContent(
                 overflow = TextOverflow.Ellipsis
             )
         },
+        color = color,
         header = header,
         navLeading = navLeading,
         navTrailing = navTrailing,
@@ -85,6 +88,7 @@ fun ScreenContent(
     header: (@Composable BoxScope.() -> Unit)? = null,
     navLeading: (@Composable RowScope.() -> Unit)? = null,
     navTrailing: (@Composable RowScope.() -> Unit)? = null,
+    color: Color = Colors.primaryBg,
     content: @Composable BoxScope.() -> Unit
 ) {
     Column(
@@ -107,7 +111,11 @@ fun ScreenContent(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    title?.invoke(this)
+                    if (title == null) {
+                        HeaderLogo()
+                    } else {
+                        title()
+                    }
                 }
 
                 Row(modifier = Modifier.align(Alignment.CenterEnd)) {
@@ -126,12 +134,13 @@ fun ScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Color.White, RoundedCornerShape(
+                    color = color,
+                    shape = RoundedCornerShape(
                         topStart = Corners.card,
                         topEnd = Corners.card
                     )
                 )
-                .composed { modifier }
+                .then(modifier)
         ) {
             content()
         }

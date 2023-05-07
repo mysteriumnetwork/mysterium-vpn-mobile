@@ -50,9 +50,6 @@ private fun TACContent(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(Paddings.default),
-        title = {
-            HeaderLogo()
-        },
         navLeading = {
             IconButton(
                 onClick = {

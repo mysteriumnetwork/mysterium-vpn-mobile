@@ -23,6 +23,9 @@ object Colors {
     val textButton = Color(0xFF6A678E)
     val textPrimary = Color(0xFF363355)
     val textSecondary = Color(0xFF6A678E)
+    val primaryBg = Color.White
+    val secondaryBg = Color(0xFFF8F9FD)
+    val shadow = Color(0x1A090064)
 }
 
 object Styles {
@@ -68,6 +71,10 @@ object Paddings {
         vertical = 53.dp
     )
     val buttonContent = PaddingValues(default)
+    val card = PaddingValues(
+        horizontal = 26.dp,
+        vertical = 30.dp
+    )
 }
 
 object Corners {
