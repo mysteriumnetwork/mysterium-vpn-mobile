@@ -23,7 +23,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -52,12 +55,16 @@ android {
 }
 
 dependencies {
+    implementation(project(":node"))
+
     api(platform(libs.androidx.compose.bom))
 
     implementation(libs.bundles.core)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.accompanist.tools)
     implementation(libs.bundles.navigation)
+    implementation(libs.bundles.di)
+    implementation(libs.markdown)
 
     debugImplementation(libs.bundles.compose.debug)
 }

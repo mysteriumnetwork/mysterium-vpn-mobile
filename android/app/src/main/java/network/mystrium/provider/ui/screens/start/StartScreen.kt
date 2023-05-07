@@ -24,6 +24,7 @@ import network.mystrium.provider.ui.components.buttons.PrimaryTextButton
 import network.mystrium.provider.ui.components.content.ScreenContent
 import network.mystrium.provider.ui.components.logo.HeaderLogo
 import network.mystrium.provider.ui.components.logo.HeaderLogoStyle
+import network.mystrium.provider.ui.navigation.NavigationDestination
 import network.mystrium.provider.ui.theme.Colors
 import network.mystrium.provider.ui.theme.MysteriumTheme
 import network.mystrium.provider.ui.theme.Paddings
@@ -31,8 +32,7 @@ import network.mystrium.provider.ui.theme.TextStyles
 
 @Composable
 fun StartScreen(
-    toOnboard: () -> Unit,
-    toTAC: () -> Unit
+    onNavigate: (NavigationDestination) -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -41,10 +41,7 @@ fun StartScreen(
             Header(modifier = Modifier.height(screenHeight * 0.6f))
         }
     ) {
-        Content(
-            toOnboard = toOnboard,
-            toTAC = toTAC
-        )
+        Content(onNavigate = onNavigate)
     }
 }
 
@@ -64,8 +61,7 @@ private fun Header(modifier: Modifier = Modifier) {
 
 @Composable
 private fun Content(
-    toOnboard: () -> Unit,
-    toTAC: () -> Unit
+    onNavigate: (NavigationDestination) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -76,12 +72,17 @@ private fun Content(
                 .fillMaxWidth()
                 .padding(Paddings.onboardButton),
             text = stringResource(id = R.string.onboard),
-            onClick = toOnboard
+            onClick = {
+                // to implement
+            }
         )
         Spacer(modifier = Modifier.weight(1f))
         PrimaryTextButton(
+            modifier = Modifier.padding(Paddings.default),
             text = stringResource(id = R.string.terms_and_conditions),
-            onClick = toTAC
+            onClick = {
+                onNavigate(NavigationDestination.TAC)
+            }
         )
     }
 }
@@ -120,9 +121,6 @@ private fun HeaderDescription() {
 @Composable
 fun StartScreenPreview() {
     MysteriumTheme {
-        StartScreen(
-            toOnboard = {},
-            toTAC = {}
-        )
+        StartScreen {}
     }
 }

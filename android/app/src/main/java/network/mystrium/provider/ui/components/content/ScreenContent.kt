@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,12 +34,14 @@ import network.mystrium.provider.ui.theme.TextStyles
 
 @Composable
 fun ScreenContent(
+    modifier: Modifier = Modifier,
     header: (@Composable BoxScope.() -> Unit)? = null,
     navLeading: (@Composable RowScope.() -> Unit)? = null,
     navTrailing: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
     ScreenContent(
+        modifier = modifier,
         title = null,
         header = header,
         navLeading = navLeading,
@@ -49,6 +52,7 @@ fun ScreenContent(
 
 @Composable
 fun ScreenContent(
+    modifier: Modifier = Modifier,
     title: String,
     header: (@Composable BoxScope.() -> Unit)? = null,
     navLeading: (@Composable RowScope.() -> Unit)? = null,
@@ -56,6 +60,7 @@ fun ScreenContent(
     content: @Composable BoxScope.() -> Unit
 ) {
     ScreenContent(
+        modifier = modifier,
         title = {
             Text(
                 text = title,
@@ -75,6 +80,7 @@ fun ScreenContent(
 
 @Composable
 fun ScreenContent(
+    modifier: Modifier = Modifier,
     title: (@Composable BoxScope.() -> Unit)? = null,
     header: (@Composable BoxScope.() -> Unit)? = null,
     navLeading: (@Composable RowScope.() -> Unit)? = null,
@@ -125,7 +131,7 @@ fun ScreenContent(
                         topEnd = Corners.card
                     )
                 )
-                .padding(Paddings.default)
+                .composed { modifier }
         ) {
             content()
         }
@@ -136,15 +142,16 @@ fun ScreenContent(
 @Composable
 fun ScreenContentPreview() {
     ScreenContent(
+        modifier = Modifier.padding(horizontal = Paddings.default),
         title = "Title",
-//        header = {
-//            Text(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                text = "Header",
-//                textAlign = TextAlign.Center
-//            )
-//        },
+        header = {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = "Header",
+                textAlign = TextAlign.Center
+            )
+        },
         navLeading = {
             IconButton(onClick = { /*TODO*/ }) {
                 Image(

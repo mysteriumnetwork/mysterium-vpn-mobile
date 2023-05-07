@@ -21,6 +21,8 @@ object Colors {
     )
     val textBg = Color.White
     val textButton = Color(0xFF6A678E)
+    val textPrimary = Color(0xFF363355)
+    val textSecondary = Color(0xFF6A678E)
 }
 
 object Styles {
@@ -49,16 +51,21 @@ object TextStyles {
         lineHeight = 18.sp
     )
     val button = body
+    val header = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Black,
+        fontSize = 20.sp,
+        lineHeight = 25.sp
+    )
 }
 
 object Paddings {
     val small = 10.dp
     val default = 18.dp
     val logoDescription = 33.dp
-    val logoText = 67.dp
     val onboardButton = PaddingValues(
-        horizontal = 45.dp,
-        vertical = 33.dp
+        horizontal = 65.dp,
+        vertical = 53.dp
     )
     val buttonContent = PaddingValues(default)
 }
