@@ -73,7 +73,7 @@ private fun Content(
                 .padding(Paddings.onboardButton),
             text = stringResource(id = R.string.onboard),
             onClick = {
-                onNavigate(NavigationDestination.Settings(true))
+//                onNavigate(NavigationDestination.Settings(true))
             }
         )
         Spacer(modifier = Modifier.weight(1f))

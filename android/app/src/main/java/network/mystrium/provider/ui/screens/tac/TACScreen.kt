@@ -21,8 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mystrium.provider.R
 import network.mystrium.provider.ui.components.content.ScreenContent
-import network.mystrium.provider.ui.components.logo.HeaderLogo
-import network.mystrium.provider.ui.components.markdown.MarkDownText
+import network.mystrium.provider.ui.components.markdown.MarkdownText
 import network.mystrium.provider.ui.navigation.NavigationDestination
 import network.mystrium.provider.ui.theme.Colors
 import network.mystrium.provider.ui.theme.Paddings
@@ -71,7 +70,7 @@ private fun TACContent(
                 color = Colors.textPrimary,
                 textAlign = TextAlign.Center
             )
-            MarkDownText(
+            MarkdownText(
                 text = state.terms,
                 textStyle = TextStyles.body,
                 color = Colors.textSecondary

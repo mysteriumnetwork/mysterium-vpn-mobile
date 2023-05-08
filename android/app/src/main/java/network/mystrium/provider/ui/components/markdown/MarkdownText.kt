@@ -12,7 +12,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import io.noties.markwon.Markwon
 
 @Composable
-fun MarkDownText(
+fun MarkdownText(
     modifier: Modifier = Modifier,
     text: String,
     textStyle: TextStyle = TextStyle.Default,
