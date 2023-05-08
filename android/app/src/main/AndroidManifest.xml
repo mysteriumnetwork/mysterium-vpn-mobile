@@ -1,161 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="LockedOrientationActivity">
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission
-        android:name="android.permission.CAMERA"
-        tools:node="remove" />
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name="updated.mysterium.vpn.App"
-        android:allowBackup="false"
+        android:name=".App"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-
+        android:theme="@style/Theme.Mysterium"
+        tools:targetApi="31">
         <activity
-            android:name="updated.mysterium.vpn.ui.splash.SplashActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Mysterium">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.onboarding.OnboardingActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.connection.ConnectionActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.nodes.list.FilterActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.search.SearchActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.menu.MenuActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.wallet.WalletActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.profile.ProfileActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.report.issue.ReportIssueActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.monitoring.MonitoringActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.terms.TermsOfUseActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.amount.usd.AmountUsdActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.settings.SettingsActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.create.account.CreateAccountActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.private.key.PrivateKeyActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.favourites.FavouritesActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity"
-            android:screenOrientation="portrait" />
-
-        <receiver
-            android:name="updated.mysterium.vpn.notification.AppBroadcastReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name="updated.mysterium.vpn.core.MysteriumAndroidCoreService"
-            android:exported="false"
-            android:permission="android.permission.BIND_VPN_SERVICE">
-            <intent-filter>
-                <action android:name="android.net.VpnService" />
-            </intent-filter>
-        </service>
-
-        <service android:name="updated.mysterium.vpn.notification.PaymentStatusService" />
-
-        <meta-data
-            android:name="google_analytics_adid_collection_enabled"
-            android:value="false" />
-
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
-
     </application>
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.SENDTO" />
-            <data android:scheme="*" />
-        </intent>
-    </queries>
 
 </manifest>

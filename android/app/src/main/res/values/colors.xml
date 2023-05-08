@@ -1,102 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#D61F85</color>
-    <color name="primary_item_selected">#D61F85</color>
-    <color name="primary_dark">#501d4f</color>
-    <color name="primary_card_view">#FFFFFF</color>
-    <color name="primary_light_terms">#ED5BAC</color>
-
-    <color name="secondary_semi_transparent">#209090BB</color>
-
-    <color name="gradient_card_view_top">#50F4F4FC</color>
-    <color name="gradient_card_view_bottom">#80D6D6EA</color>
-
-    <color name="common_icon_background_white">#10FFFFFF</color>
-
-    <color name="onboarding_description_grey_blue">#705A597D</color>
-    <color name="onboarding_title_dark_blue">#3C3857</color>
-    <color name="onboarding_current_screen_white">#FFFFFF</color>
-    <color name="onboarding_faded_screen_white">#50FFFFFF</color>
-    <color name="onboarding_skip_white">#70FFFFFF</color>
-
-    <color name="create_account_import_background">#F4F4FC</color>
-    <color name="create_account_import_background_tapped">#E2E2F2</color>
-    <color name="create_account_import_text">#D61F85</color>
-    <color name="create_account_trial_button_text">#B33C3857</color>
-    <color name="create_account_trial_button_text_tapped">#803C3857</color>
-
-    <color name="top_up_unselected_state">#F4F4FC</color>
-    <color name="card_payment_background">#F4F4FC</color>
-    <color name="card_payment_divider">#9090BB</color>
-    <color name="card_payment_title">#9090BB</color>
-    <color name="card_payment_value">#5A597D</color>
-    <color name="card_payment_total">#D61F85</color>
-
-    <color name="manual_connect_items_empty_background">#F4F4FC</color>
-    <color name="manual_connect_list_background">#FFFFFF</color>
-    <color name="manual_connect_value_white">#50FFFFFF</color>
-    <color name="manual_connect_divider_grey_blue">#9090BB</color>
-    <color name="manual_connect_connecting">#9090BB</color>
-    <color name="manual_connect_scrollbar_grey">#9090BB</color>
-    <color name="manual_connect_track_background_white">#10FFFFFF</color>
-    <color name="manual_connect_icon_white">#20FFFFFF</color>
-    <color name="manual_connect_attention_text_light_grey">#B5B3CA</color>
-    <color name="manual_connect_subtitle_white">#70FFFFFF</color>
-    <color name="manual_connect_filter_background_white">#0DFFFFFF</color>
-    <color name="manual_connect_filter_borders_white">#20FFFFFF</color>
-    <color name="manual_connect_country_dark_blue">#503C3857</color>
-    <color name="manual_connect_connecting_title_grey_blue">#5A597D</color>
-    <color name="manual_connect_country_name_dark_blue">#3C3857</color>
-    <color name="manual_connect_disconnect">#3C3857</color>
-    <color name="manual_connect_card_view_light_blue">#F4F4FC</color>
-    <color name="manual_connect_info_text_grey_blue">#8387A4</color>#F4F4FC
-    <color name="manual_connect_time_format_grey_blue">#8386A4</color>
-    <color name="manual_connect_connection_state">#6FC716</color>
-    <color name="manual_connect_favourite_country">#503C3857</color>
-    <color name="manual_connect_connected_icons">#5A597D</color>
-    <color name="manual_connect_connected_receive">#5A597D</color>
-    <color name="manual_connect_connected_output_icons">#9090BB</color>
-    <color name="manual_connect_button_text">#5A597D</color>
-    <color name="manual_connect_button_text_tapped">#805A597D</color>
-    <color name="manual_connect_button_background">#F4F4FC</color>
-    <color name="manual_connect_button_background_tapped">#F4F4FC</color>
-
-    <color name="menu_inactive_item_text_color">#BA95B5</color>
-    <color name="menu_active_item_icon_color">#ED5BAC</color>
-    <color name="menu_inactive_item_icon_color">#D9B8D4</color>
-
-    <color name="home_country_amount">#9090BB</color>
-
-    <color name="search_text">#50FFFFFF</color>
-
-    <color name="menu_subtitle_light_pink">#ED5BAC</color>
-    <color name="menu_drop_down">#A469A9</color>
-
-    <color name="wallet_description">#50FFFFFF</color>
-
-    <color name="settings_dns_background">#883A7A</color>
-    <color name="settings_nat_hint">#5B1851</color>
-
-    <color name="pop_up_title">#5A597D</color>
-    <color name="pop_up_successful_title_color">#63B64E</color>
-    <color name="pop_up_password_text">#803C3857</color>
-    <color name="pop_up_password_hint">#503C3857</color>
-    <color name="pop_up_negative_button_text">#B33C3857</color>
-    <color name="pop_up_password_helper_text">#805A597D</color>
-    <color name="pop_up_icon_color">#D61F85</color>
-    <color name="pop_up_successful_icon_color">#23D61F</color>
-    <color name="pop_up_smth_went_wrong_icon_color">#339090BB</color>
-
-    <color name="payment_banner_icon_background">#3C3857</color>
-    <color name="payment_banner_icon_color">#ffffff</color>
-
-    <color name="payment_processing_card_shadow">#4D704C60</color>
-    <color name="payment_processing_icon_color">#FF8440</color>
-    <color name="payment_processing_card_color">#FFFFFF</color>
-    <color name="payment_processing_text_color">#9090BB</color>
-
-    <color name="payment_balance_limit_card_shadow">#66704C60</color>
-    <color name="payment_balance_limit_icon_color">#ED5BAC</color>
-    <color name="payment_balance_limit_card_color">#FFFFFF</color>
-    <color name="payment_balance_limit_text_color">#9090BB</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>
