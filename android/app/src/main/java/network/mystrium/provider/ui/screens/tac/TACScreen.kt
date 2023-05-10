@@ -13,12 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import network.mystrium.node.model.NodeTerms
 import network.mystrium.provider.R
 import network.mystrium.provider.ui.components.content.ScreenContent
 import network.mystrium.provider.ui.components.markdown.MarkdownText
@@ -63,15 +65,24 @@ private fun TACContent(
         }
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
-            Text(
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.terms_and_conditions),
-                style = TextStyles.header,
-                color = Colors.textPrimary,
-                textAlign = TextAlign.Center
-            )
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(Paddings.small)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.terms_and_conditions),
+                    style = TextStyles.header,
+                    color = Colors.textPrimary
+                )
+                Text(
+                    text = state.terms.version,
+                    style = TextStyles.body,
+                    color = Colors.textPrimary
+                )
+            }
             MarkdownText(
-                text = state.terms,
+                text = state.terms.content,
                 textStyle = TextStyles.body,
                 color = Colors.textSecondary
             )
@@ -83,6 +94,6 @@ private fun TACContent(
 @Composable
 private fun TermsAndConditionsScreenPreview() {
     MaterialTheme {
-        TACContent(state = TAC.State("Terms content")) {}
+        TACContent(state = TAC.State(NodeTerms("Terms content", "v1"))) {}
     }
 }
