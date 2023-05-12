@@ -1,6 +1,7 @@
 package network.mystrium.provider.ui.screens.tac
 
 import network.mystrium.node.MobileNode
+import network.mystrium.node.model.NodeTerms
 import network.mystrium.provider.core.CoreViewModel
 
 class TACViewModel(
@@ -12,7 +13,7 @@ class TACViewModel(
     }
 
     override fun createInitialState(): TAC.State {
-        return TAC.State(terms = "")
+        return TAC.State(terms = NodeTerms("", ""))
     }
 
     override fun handleEvent(event: TAC.Event) {
