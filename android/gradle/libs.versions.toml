@@ -55,7 +55,7 @@ compose-debug = [
     "androidx-compose-ui-test-manifest"
 ]
 node = [
-    "mysterium-node",
+#    "mysterium-node",
     "mysterium-node-terms",
 ]
 di = [

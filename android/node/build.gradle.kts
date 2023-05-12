@@ -34,4 +34,5 @@ android {
 dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.node)
+    implementation(files("libs/provider-mobile-node-1.20.2.aar"))
 }
