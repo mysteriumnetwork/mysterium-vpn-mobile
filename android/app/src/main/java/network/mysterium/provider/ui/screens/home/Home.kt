@@ -1,6 +1,6 @@
 package network.mysterium.provider.ui.screens.home
 
-import network.mysterium.node.model.NodeService
+import network.mysterium.node.model.NodeRunnerService
 import network.mysterium.provider.core.UIEffect
 import network.mysterium.provider.core.UIEvent
 import network.mysterium.provider.core.UIState
@@ -11,7 +11,7 @@ sealed class Home {
     }
 
     data class State(
-        val services: List<NodeService>,
+        val services: List<NodeRunnerService>,
         val isLimitReached: Boolean,
         val balance: Double
     ) : UIState

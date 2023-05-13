@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import network.mysterium.provider.Config
+import network.mysterium.provider.Formatters
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.Paddings
 import network.mysterium.provider.ui.theme.TextStyles
@@ -35,8 +37,7 @@ fun BalanceItem(
     ) {
         Text(
             modifier = Modifier.padding(Paddings.default),
-            text = DecimalFormat("0.# MYST")
-                .format(value),
+            text = Formatters.balance.format(value),
             style = TextStyles.balance
         )
     }

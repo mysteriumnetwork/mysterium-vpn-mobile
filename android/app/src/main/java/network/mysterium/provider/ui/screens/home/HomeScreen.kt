@@ -1,7 +1,6 @@
 package network.mysterium.provider.ui.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -15,14 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import network.mysterium.node.model.NodeService
+import kotlinx.coroutines.Dispatchers
+import network.mysterium.node.model.NodeRunnerService
 import network.mysterium.provider.R
 import network.mysterium.provider.ui.components.buttons.SettingsButton
 import network.mysterium.provider.ui.components.content.LogoScreenContent
@@ -40,7 +37,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = getViewModel(),
     onNavigate: (NavigationDestination) -> Unit
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState(Dispatchers.Main)
     HomeScreenContent(
         state = state,
         onNavigate = onNavigate
@@ -125,9 +122,9 @@ fun HomeScreenContentPreview() {
     HomeScreenContent(
         state = Home.State(
             services = listOf(
-                NodeService("wireguard", NodeService.Status.RUNNING),
-                NodeService("scraping", NodeService.Status.STARTING),
-                NodeService("data_transfer", NodeService.Status.NOT_RUNNING)
+                NodeRunnerService("wireguard", NodeRunnerService.Status.RUNNING),
+                NodeRunnerService("scraping", NodeRunnerService.Status.STARTING),
+                NodeRunnerService("data_transfer", NodeRunnerService.Status.NOT_RUNNING)
             ),
             isLimitReached = true,
             balance = 0.0

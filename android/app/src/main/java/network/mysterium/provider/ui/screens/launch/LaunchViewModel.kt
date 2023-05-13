@@ -41,8 +41,12 @@ class LaunchViewModel(
 
     private fun initializeNode() = viewModelScope.launch(Dispatchers.IO) {
         try {
-//            node.initialize()
-            setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
+            node.start()
+            if (node.isRegistered) {
+                setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
+            } else {
+                setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
+            }
         } catch (error: Throwable) {
             Log.e(TAG, "unable to init node", error)
             setState { copy(error = Launch.InitError(R.string.unable_init_node)) }

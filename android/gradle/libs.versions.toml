@@ -10,6 +10,8 @@ node = "1.19.8"
 koin = "3.4.0"
 koin-compose = "3.4.4"
 markwon = "4.6.2"
+kotlinx-serialization = "1.5.0"
+kotlinx-serialization-json = "1.5.1"
 
 [libraries]
 androidx-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -30,6 +32,8 @@ mysterium-node = { module = "network.mysterium:mobile-node", version.ref = "node
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 markdown = { module = "io.noties.markwon:core", version.ref = "markwon" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 [bundles]
 core = [
@@ -61,4 +65,8 @@ node = [
 di = [
     "koin-core",
     "koin-compose"
+]
+serialization = [
+    "kotlinx-serialization",
+    "kotlinx-serialization-json"
 ]

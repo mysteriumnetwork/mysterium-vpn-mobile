@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mysterium.provider.ui.components.buttons.PrimaryButton
+import network.mysterium.provider.ui.components.buttons.SecondaryButton
 import network.mysterium.provider.ui.components.content.RoundedBox
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.Paddings
@@ -36,12 +37,8 @@ fun ButtonOption(
                 style = TextStyles.body
             )
             Spacer(modifier = Modifier.weight(1f))
-            PrimaryButton(
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 110.dp)
-                    .height(32.dp),
+            SecondaryButton(
                 text = actionName,
-                contentPadding = Paddings.secondaryButton,
                 color = color,
                 onClick = onClick
             )

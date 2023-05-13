@@ -1,6 +1,6 @@
 package network.mysterium.node.model
 
-data class NodeService(
+data class NodeRunnerService(
     val name: String,
     val status: Status
 ) {

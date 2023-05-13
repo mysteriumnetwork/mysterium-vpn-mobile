@@ -1,7 +1,7 @@
 package network.mysterium.provider.ui.screens.tac
 
 import network.mysterium.node.Node
-import network.mysterium.node.model.NodeTerms
+import network.mysterium.node.model.NodeRunnerTerms
 import network.mysterium.provider.core.CoreViewModel
 
 class TACViewModel(
@@ -13,7 +13,7 @@ class TACViewModel(
     }
 
     override fun createInitialState(): TAC.State {
-        return TAC.State(terms = NodeTerms("", ""))
+        return TAC.State(terms = NodeRunnerTerms("", ""))
     }
 
     override fun handleEvent(event: TAC.Event) {

@@ -16,7 +16,7 @@ val viewModels = module {
         TACViewModel(node = get())
     }
     viewModel {
-        SettingsViewModel()
+        SettingsViewModel(node = get())
     }
     viewModel {
         NodeUIViewModel(node = get())
