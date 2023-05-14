@@ -4,7 +4,7 @@ import android.content.Context
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import network.mysterium.node.Storage
-import network.mysterium.node.model.NodeRunnerConfig
+import network.mysterium.node.model.NodeConfig
 
 internal class StorageImpl(
     context: Context
@@ -25,8 +25,8 @@ internal class StorageImpl(
                 .apply()
         }
 
-    override var config: NodeRunnerConfig
-        get() = decode(NODE_CONFIG) ?: NodeRunnerConfig()
+    override var config: NodeConfig
+        get() = decode(NODE_CONFIG) ?: NodeConfig()
         set(value) {
             encode(NODE_CONFIG, value)
         }

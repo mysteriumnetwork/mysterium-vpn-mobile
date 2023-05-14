@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -14,13 +15,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.Dispatchers
-import network.mysterium.node.model.NodeRunnerService
+import network.mysterium.node.model.NodeServiceType
 import network.mysterium.provider.R
+import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
 import network.mysterium.provider.ui.components.buttons.SettingsButton
 import network.mysterium.provider.ui.components.content.LogoScreenContent
 import network.mysterium.provider.ui.navigation.NavigationDestination
@@ -37,7 +39,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = getViewModel(),
     onNavigate: (NavigationDestination) -> Unit
 ) {
-    val state by viewModel.uiState.collectAsState(Dispatchers.Main)
+    val state by viewModel.uiState.collectAsState()
     HomeScreenContent(
         state = state,
         onNavigate = onNavigate
@@ -56,47 +58,59 @@ fun HomeScreenContent(
             }
         }
     ) {
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth(),
-            columns = GridCells.Fixed(3),
-            contentPadding = PaddingValues(Paddings.default),
-            horizontalArrangement = Arrangement.spacedBy(Paddings.service),
-            verticalArrangement = Arrangement.spacedBy(Paddings.service)
-        ) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                Header(text = stringResource(id = R.string.services))
-            }
-
-            items(state.services) {
-                ServiceItem(
-                    modifier = Modifier.aspectRatio(1f),
-                    service = it
-                )
-            }
-
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(Paddings.default.div(2))
-                ) {
-                    Header(
-                        text = stringResource(id = R.string.unsettled_earnings)
-                    )
-
-                    BalanceItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = 5.5
-                    )
-
-                    if (state.isLimitReached) {
-                        ErrorItem(
-                            modifier = Modifier.fillMaxWidth(),
-                            message = stringResource(id = R.string.mobile_data_limit_reached)
-                        )
-                    }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(Paddings.default),
+                horizontalArrangement = Arrangement.spacedBy(Paddings.service),
+                verticalArrangement = Arrangement.spacedBy(Paddings.service)
+            ) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    Header(text = stringResource(id = R.string.services))
                 }
 
+                items(state.services) {
+                    ServiceItem(
+                        modifier = Modifier.aspectRatio(1f),
+                        service = it
+                    )
+                }
+
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(Paddings.default.div(2))
+                    ) {
+                        Header(
+                            text = stringResource(id = R.string.unsettled_earnings)
+                        )
+
+                        BalanceItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = state.balance
+                        )
+
+                        if (state.isLimitReached) {
+                            ErrorItem(
+                                modifier = Modifier.fillMaxWidth(),
+                                message = stringResource(id = R.string.mobile_data_limit_reached)
+                            )
+                        }
+                    }
+
+                }
             }
+            PrimaryTextButton(
+                modifier = Modifier
+                    .padding(Paddings.default),
+                text = stringResource(id = R.string.terms_and_conditions),
+                onClick = {
+                    onNavigate(NavigationDestination.TAC)
+                }
+            )
         }
     }
 }
@@ -122,9 +136,9 @@ fun HomeScreenContentPreview() {
     HomeScreenContent(
         state = Home.State(
             services = listOf(
-                NodeRunnerService("wireguard", NodeRunnerService.Status.RUNNING),
-                NodeRunnerService("scraping", NodeRunnerService.Status.STARTING),
-                NodeRunnerService("data_transfer", NodeRunnerService.Status.NOT_RUNNING)
+                NodeServiceType("wireguard", NodeServiceType.State.RUNNING),
+                NodeServiceType("scraping", NodeServiceType.State.STARTING),
+                NodeServiceType("data_transfer", NodeServiceType.State.NOT_RUNNING)
             ),
             isLimitReached = true,
             balance = 0.0

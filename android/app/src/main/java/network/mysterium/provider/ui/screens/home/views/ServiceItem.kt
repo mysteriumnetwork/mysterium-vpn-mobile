@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import network.mysterium.node.model.NodeRunnerService
+import network.mysterium.node.model.NodeServiceType
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.Corners
 import network.mysterium.provider.ui.theme.Paddings
@@ -24,12 +24,12 @@ import network.mysterium.provider.ui.theme.TextStyles
 @Composable
 fun ServiceItem(
     modifier: Modifier = Modifier,
-    service: NodeRunnerService
+    service: NodeServiceType
 ) {
     Box(
         modifier = modifier
             .background(
-                color = service.status.bgColor,
+                color = service.state.bgColor,
                 shape = RoundedCornerShape(Corners.default)
             ),
         contentAlignment = Alignment.Center
@@ -40,7 +40,7 @@ fun ServiceItem(
                 .align(Alignment.TopStart)
                 .size(10.dp)
                 .background(
-                    color = service.status.dotColor,
+                    color = service.state.dotColor,
                     shape = CircleShape
                 )
         )
@@ -48,40 +48,43 @@ fun ServiceItem(
             modifier = Modifier.padding(Paddings.default),
             text = service.name,
             style = TextStyles.label,
-            color = service.status.textColor
+            color = service.state.textColor
         )
     }
 }
 
-private val NodeRunnerService.Status.bgColor: Color
+private val NodeServiceType.State.bgColor: Color
     get() = when (this) {
-        NodeRunnerService.Status.NOT_RUNNING,
-        NodeRunnerService.Status.STARTING -> {
+        NodeServiceType.State.UNKNOWN,
+        NodeServiceType.State.NOT_RUNNING,
+        NodeServiceType.State.STARTING-> {
             Colors.serviceNotRunningBg
         }
-        NodeRunnerService.Status.RUNNING -> {
+        NodeServiceType.State.RUNNING -> {
             Colors.serviceRunningBg
         }
     }
 
-private val NodeRunnerService.Status.textColor: Color
+private val NodeServiceType.State.textColor: Color
     get() = when (this) {
-        NodeRunnerService.Status.NOT_RUNNING,
-        NodeRunnerService.Status.STARTING -> {
+        NodeServiceType.State.UNKNOWN,
+        NodeServiceType.State.NOT_RUNNING,
+        NodeServiceType.State.STARTING-> {
             Colors.textDisabled
         }
-        NodeRunnerService.Status.RUNNING -> {
+        NodeServiceType.State.RUNNING -> {
             Colors.textPrimary
         }
     }
 
-private val NodeRunnerService.Status.dotColor: Color
+private val NodeServiceType.State.dotColor: Color
     get() = when (this) {
-        NodeRunnerService.Status.NOT_RUNNING,
-        NodeRunnerService.Status.STARTING -> {
+        NodeServiceType.State.UNKNOWN,
+        NodeServiceType.State.NOT_RUNNING,
+        NodeServiceType.State.STARTING -> {
             Colors.serviceNotRunningDot
         }
-        NodeRunnerService.Status.RUNNING -> {
+        NodeServiceType.State.RUNNING -> {
             Colors.serviceRunningDot
         }
     }
@@ -93,8 +96,8 @@ private fun ServiceItemPreview() {
         modifier = Modifier.background(Colors.primaryBg),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        ServiceItem(service = NodeRunnerService("name", NodeRunnerService.Status.RUNNING))
-        ServiceItem(service = NodeRunnerService("name", NodeRunnerService.Status.NOT_RUNNING))
-        ServiceItem(service = NodeRunnerService("name", NodeRunnerService.Status.STARTING))
+        ServiceItem(service = NodeServiceType("name", NodeServiceType.State.RUNNING))
+        ServiceItem(service = NodeServiceType("name", NodeServiceType.State.NOT_RUNNING))
+        ServiceItem(service = NodeServiceType("name", NodeServiceType.State.STARTING))
     }
 }

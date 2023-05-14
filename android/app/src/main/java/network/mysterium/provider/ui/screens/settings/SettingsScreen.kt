@@ -168,7 +168,7 @@ private fun OptionsContent(
 //            )
 
             ButtonOption(
-                title = stringResource(id = R.string.open),
+                title = stringResource(id = R.string.node_ui),
                 actionName = stringResource(id = R.string.open),
                 color = Colors.textPrimary
             ) {

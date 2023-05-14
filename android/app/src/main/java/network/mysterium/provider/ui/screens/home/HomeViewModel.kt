@@ -1,6 +1,7 @@
 package network.mysterium.provider.ui.screens.home
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.provider.core.CoreViewModel
@@ -25,14 +26,20 @@ class HomeViewModel(
         when (event) {
             Home.Event.Load -> {
                 observeServices()
+                observeBalance()
             }
         }
     }
 
     private fun observeServices() = viewModelScope.launch {
-        node.getServices()
-            .collect {
-                setState { copy(services = it) }
-            }
+        node.services.collect {
+            setState { copy(services = it) }
+        }
+    }
+
+    private fun observeBalance() = viewModelScope.launch {
+        node.balance.collect {
+            setState { copy(balance = it) }
+        }
     }
 }

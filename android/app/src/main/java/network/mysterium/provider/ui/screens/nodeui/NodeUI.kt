@@ -9,7 +9,10 @@ sealed class NodeUI {
         object Load : Event()
     }
 
-    data class State(val url: String) : UIState
+    data class State(
+        val url: String,
+        val isRegistered: Boolean
+    ) : UIState
 
     sealed class Effect : UIEffect
 }

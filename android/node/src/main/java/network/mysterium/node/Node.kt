@@ -1,15 +1,16 @@
 package network.mysterium.node
 
 import kotlinx.coroutines.flow.Flow
-import network.mysterium.node.model.NodeRunnerConfig
-import network.mysterium.node.model.NodeRunnerService
-import network.mysterium.node.model.NodeRunnerTerms
+import network.mysterium.node.model.NodeConfig
+import network.mysterium.node.model.NodeIdentity
+import network.mysterium.node.model.NodeServiceType
+import network.mysterium.node.model.NodeTerms
 
 interface Node {
     /**
      * Returns Node terms and conditions and terms of use content
      */
-    val terms: NodeRunnerTerms
+    val terms: NodeTerms
 
     /**
      * Returns url to NodeUI
@@ -18,13 +19,28 @@ interface Node {
 
     /**
      * Check if node is registered or not
-      */
+     */
     val isRegistered: Boolean
 
     /**
      * Node config
      */
-    var config: NodeRunnerConfig
+    var config: NodeConfig
+
+    /**
+     * Get list of current services and statuses.
+     */
+    val services: Flow<List<NodeServiceType>>
+
+    /**
+     * Get unsettled balance.
+     */
+    val balance: Flow<Double>
+
+    /**
+     * Get status of node.
+     */
+    val identity: Flow<NodeIdentity>
 
     /**
      * Initializes node and starts it in foreground service
@@ -32,17 +48,17 @@ interface Node {
     suspend fun start()
 
     /**
-     * Enable foreground service to run node when app is closed.
+     * Start node services and enables foreground service to run node when app is closed.
      */
-    fun enableForeground()
+    fun startServices()
+
+    /**
+     * Stop services
+     */
+    fun stopServices()
 
     /**
      * Stops node and foreground service
      */
     suspend fun stop()
-
-    /**
-     * Get list of current services and statuses.
-     */
-    suspend fun getServices(): Flow<List<NodeRunnerService>>
 }

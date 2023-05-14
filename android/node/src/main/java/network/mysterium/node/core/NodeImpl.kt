@@ -5,18 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.util.Log
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
-import mysterium.MobileNode
-import mysterium.Mysterium
 import network.mysterium.node.Node
 import network.mysterium.node.Storage
-import network.mysterium.node.model.NodeRunnerConfig
-import network.mysterium.node.model.NodeRunnerService
-import network.mysterium.node.model.NodeRunnerTerms
+import network.mysterium.node.model.NodeConfig
+import network.mysterium.node.model.NodeIdentity
+import network.mysterium.node.model.NodeServiceType
+import network.mysterium.node.model.NodeTerms
 import network.mysterium.terms.Terms
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -31,42 +28,63 @@ internal class NodeImpl(
         val TAG: String = NodeImpl::class.java.simpleName
     }
 
-    override val terms: NodeRunnerTerms
-        get() = NodeRunnerTerms(Terms.endUserMD(), Terms.version())
+    override val terms: NodeTerms
+        get() = NodeTerms(Terms.endUserMD(), Terms.version())
 
     override val nodeUIUrl: String = "http://localhost:4449"
 
     override val isRegistered: Boolean
         get() = storage.isRegistered
 
-    override var config: NodeRunnerConfig
+    override var config: NodeConfig
         get() = storage.config
         set(value) {
             storage.config = value
         }
+    override val services: Flow<List<NodeServiceType>>
+        get() = service?.services
+            ?: throw IllegalStateException("Node should be started to get services")
+
+    override val balance: Flow<Double>
+        get() = service?.balance
+            ?: throw IllegalStateException("Node should be started to get services")
+
+    override val identity: Flow<NodeIdentity>
+        get() = service?.identity
+            ?: throw IllegalStateException("Node should be started to get services")
 
     private var service: NodeServiceBinder? = null
 
-    override suspend fun start() = suspendCoroutine { continuation ->
+    override suspend fun start() {
+        service = startService()
+        service?.start()
+    }
+
+    override fun startServices() {
+        service?.startForeground()
+    }
+
+    override fun stopServices() {
+        // to implement
+    }
+
+    override suspend fun stop() {
+        // to implement
+    }
+
+    private suspend fun startService() = suspendCoroutine { continuation ->
         val intent = Intent(context, NodeService::class.java)
         context.bindService(
             intent,
             object : ServiceConnection {
                 override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                    val service = binder as? NodeServiceBinder ?: return
-                    try {
-                        service.start()
+                    val service = binder as? NodeServiceBinder
 
-                        this@NodeImpl.service = service
-
-                        if (isRegistered) {
-                            enableForeground()
-                        }
-
-                        continuation.resume(Unit)
-                    } catch (error: Throwable) {
-                        continuation.resumeWithException(error)
+                    if (service == null) {
+                        continuation.resumeWithException(IllegalStateException("Unable to create service"))
+                        return
                     }
+                    continuation.resume(service)
                 }
 
                 override fun onServiceDisconnected(name: ComponentName?) {
@@ -74,26 +92,5 @@ internal class NodeImpl(
             },
             Context.BIND_AUTO_CREATE
         )
-    }
-
-    override fun enableForeground() {
-        storage.isRegistered = true
-        service?.startForeground()
-    }
-
-    override suspend fun stop() {
-        // to implement
-    }
-
-    override suspend fun getServices(): Flow<List<NodeRunnerService>> {
-        return flow {
-            emit(
-                listOf(
-                    NodeRunnerService("wireguard", NodeRunnerService.Status.RUNNING),
-                    NodeRunnerService("scraping", NodeRunnerService.Status.STARTING),
-                    NodeRunnerService("data_transfer", NodeRunnerService.Status.NOT_RUNNING)
-                )
-            )
-        }
     }
 }

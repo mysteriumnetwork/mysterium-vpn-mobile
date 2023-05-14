@@ -1,6 +1,6 @@
 package network.mysterium.node.model
 
-data class NodeRunnerTerms(
+data class NodeTerms(
     val content: String,
     val version: String
 )

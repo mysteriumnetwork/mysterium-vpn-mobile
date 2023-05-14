@@ -99,7 +99,7 @@ class SettingsViewModel(
     }
 
     private fun startNodeInForeground() {
-        node.enableForeground()
+        node.startServices()
         setEffect { Settings.Effect.Navigation(NavigationDestination.NodeUI(true)) }
     }
 }

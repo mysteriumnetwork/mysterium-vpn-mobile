@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import network.mysterium.node.model.NodeRunnerTerms
+import network.mysterium.node.model.NodeTerms
 import network.mysterium.provider.R
 import network.mysterium.provider.ui.components.content.LogoScreenContent
 import network.mysterium.provider.ui.components.markdown.MarkdownText
@@ -93,6 +93,6 @@ private fun TACContent(
 @Composable
 private fun TermsAndConditionsScreenPreview() {
     MaterialTheme {
-        TACContent(state = TAC.State(NodeRunnerTerms("Terms content", "v1"))) {}
+        TACContent(state = TAC.State(NodeTerms("Terms content", "v1"))) {}
     }
 }
