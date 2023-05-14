@@ -36,5 +36,5 @@ dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.node)
     implementation(libs.bundles.serialization)
-    compileOnly(files("../app/libs/provider-mobile-node.aar"))
+    implementation(group = "", name = "provider-mobile-node", ext = "aar")
 }

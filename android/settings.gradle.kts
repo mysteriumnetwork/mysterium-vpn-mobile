@@ -10,6 +10,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        flatDir {
+            dirs("libs")
+        }
     }
 }
 rootProject.name = "Myst Nodes"
