@@ -91,7 +91,7 @@ object Paddings {
         top = 0.dp,
         start = 65.dp,
         end = 65.dp,
-        bottom = 40.dp
+        bottom = Paddings.default
     )
     val primaryButton = PaddingValues(default)
     val secondaryButton = PaddingValues(

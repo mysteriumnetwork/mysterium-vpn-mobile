@@ -38,7 +38,6 @@ private fun NodeUIScreenContent(
     onNavigate: (NavigationDestination) -> Unit
 ) {
     LogoScreenContent(
-        modifier = Modifier.verticalScroll(rememberScrollState()),
         navLeading = {
             HomeButton {
                 onNavigate(NavigationDestination.Home)
@@ -50,7 +49,10 @@ private fun NodeUIScreenContent(
             }
         }
     ) {
-        ComposeWebView(url = state.url)
+        ComposeWebView(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
+            url = state.url
+        )
     }
 }
 

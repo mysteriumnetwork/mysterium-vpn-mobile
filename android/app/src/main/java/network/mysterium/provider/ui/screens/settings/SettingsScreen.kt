@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.Dispatchers
 import network.mysterium.provider.Config
 import network.mysterium.provider.R
 import network.mysterium.provider.ui.components.buttons.BackButton
@@ -34,7 +33,6 @@ import network.mysterium.provider.ui.components.buttons.PrimaryButton
 import network.mysterium.provider.ui.components.buttons.SecondaryButton
 import network.mysterium.provider.ui.components.content.TitledScreenContent
 import network.mysterium.provider.ui.components.input.InputTextField
-import network.mysterium.provider.ui.components.progress.ProgressDialog
 import network.mysterium.provider.ui.navigation.NavigationDestination
 import network.mysterium.provider.ui.screens.settings.views.ButtonOption
 import network.mysterium.provider.ui.screens.settings.views.SwitchOption
@@ -128,7 +126,8 @@ private fun OptionsContent(
             .fillMaxSize()
             .padding(top = Paddings.tiny)
             .verticalScroll(rememberScrollState())
-            .padding(Paddings.default),
+            .padding(horizontal = Paddings.default)
+            .padding(top = Paddings.default),
         verticalArrangement = Arrangement.spacedBy(Paddings.default)
     ) {
         SwitchOption(
@@ -160,13 +159,13 @@ private fun OptionsContent(
 
 
         if (!isOnboarding) {
-            SwitchOption(
-                title = stringResource(id = R.string.allow_use_on_battery),
-                checked = state.isAllowUseOnBatteryOn,
-                onCheckedChange = {
-                    onEvent(Settings.Event.ToggleAllowUseOnBattery(it))
-                }
-            )
+//            SwitchOption(
+//                title = stringResource(id = R.string.allow_use_on_battery),
+//                checked = state.isAllowUseOnBatteryOn,
+//                onCheckedChange = {
+//                    onEvent(Settings.Event.ToggleAllowUseOnBattery(it))
+//                }
+//            )
 
             ButtonOption(
                 title = stringResource(id = R.string.open),
@@ -176,11 +175,11 @@ private fun OptionsContent(
                 onNavigate(NavigationDestination.NodeUI())
             }
 
-            ButtonOption(
-                title = stringResource(id = R.string.shut_down),
-                actionName = stringResource(id = R.string.shut_down)
-            ) {
-            }
+//            ButtonOption(
+//                title = stringResource(id = R.string.shut_down),
+//                actionName = stringResource(id = R.string.shut_down)
+//            ) {
+//            }
         }
     }
 }
@@ -254,7 +253,7 @@ private fun SettingsContentPreview() {
                 isStartingNode = true,
                 nodeError = null
             ),
-            isOnboarding = false,
+            isOnboarding = true,
             onEvent = {},
             onNavigate = {}
         )

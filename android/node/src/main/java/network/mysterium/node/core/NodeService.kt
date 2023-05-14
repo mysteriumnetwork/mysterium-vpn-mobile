@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -13,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import mysterium.MobileNode
 import mysterium.Mysterium
+import network.mystrium.node.R
 
 class NodeService : Service() {
 
@@ -47,8 +49,9 @@ class NodeService : Service() {
         }
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_delete)
+            .setSmallIcon(R.drawable.ic_notification_logo)
             .setContentTitle("Connected")
+            .setColor(Color.BLACK)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVibrate(LongArray(0))
             .setContentIntent(pendingIntent)
