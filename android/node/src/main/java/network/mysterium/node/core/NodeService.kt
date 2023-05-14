@@ -78,13 +78,15 @@ class NodeService : Service() {
         override val node: MobileNode?
             get() = mobileNode
 
-        override fun start(): MobileNode {
+        override fun start() {
+            if (mobileNode != null) {
+                return
+            }
             val node = Mysterium.newNode(
                 filesDir.canonicalPath,
                 Mysterium.defaultProviderNodeOptions()
             )
             mobileNode = node
-            return node
         }
 
         override fun startForeground() {
