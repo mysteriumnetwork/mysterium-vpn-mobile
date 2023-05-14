@@ -1,18 +1,12 @@
 package network.mysterium.provider.ui.screens.nodeui
 
-import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
-import network.mysterium.provider.Config
 import network.mysterium.provider.ui.components.buttons.HomeButton
 import network.mysterium.provider.ui.components.buttons.SettingsButton
 import network.mysterium.provider.ui.components.content.LogoScreenContent

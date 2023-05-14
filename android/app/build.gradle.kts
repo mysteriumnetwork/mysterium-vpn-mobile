@@ -56,6 +56,7 @@ android {
 
 dependencies {
     implementation(project(":node"))
+    implementation(files("libs/provider-mobile-node-1.20.2.aar"))
 
     api(platform(libs.androidx.compose.bom))
 

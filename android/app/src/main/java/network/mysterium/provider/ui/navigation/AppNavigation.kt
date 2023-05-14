@@ -50,8 +50,7 @@ fun AppNavigation() {
                 navController.navigate(it)
             }
         }
-        composable(route = Route.NODE_UI) { backStackEntry ->
-            val isOnboarding = backStackEntry.arguments?.getBoolean(Route.Arg.ONBOARDING) ?: false
+        composable(route = Route.NODE_UI) {
             NodeUIScreen {
                 navController.navigate(it)
             }
