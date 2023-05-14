@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "network.mystrium.provider"
+    namespace = "network.mysterium.provider"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "network.mystrium.provider"
+        applicationId = "network.mysterium.provider"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

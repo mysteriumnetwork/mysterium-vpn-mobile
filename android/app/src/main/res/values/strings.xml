@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Mysterium</string>
+    <string name="app_name">Myst Nodes</string>
+    <string name="ok">OK</string>
     <string name="earn">Earn</string>
     <string name="earn_while_sleep">\nWhile\nYou\nSleep</string>
     <string name="sell_unused_bandwidth">Sell your unused bandwidth\nand earn crypto passive income, MYST</string>
@@ -16,4 +17,11 @@
     <string name="mobile_data_limit_reset">Mobile data limit automatically resets on the first day of each month</string>
     <string name="mobile_data_limit">Mobile data limit</string>
     <string name="invalid_mobile_data_limit">Invalid value entered. Please enter correct value (%1$d-%2$d)</string>
+    <string name="onboard_continue">Continue</string>
+    <string name="missing_vpn_permission">VPN connection has to be granted for Myst Nodes to work</string>
+    <string name="unable_init_node">Unable to start node due to unknown error</string>
+    <string name="services">Services</string>
+    <string name="unsettled_earnings">Unsettled earnings</string>
+    <string name="mobile_data_limit_reached">Mobile data limit reached!</string>
+    <string name="save">Save</string>
 </resources>

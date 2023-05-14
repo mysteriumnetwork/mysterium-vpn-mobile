@@ -11,13 +11,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-
-//    versionCatalogs {
-//        create("libs") {
-//            from(files("libs.versions.toml"))
-//        }
-//    }
 }
-rootProject.name = "Mysterium"
+rootProject.name = "Myst Nodes"
 include(":app")
 include(":node")

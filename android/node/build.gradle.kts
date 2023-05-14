@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -34,4 +35,6 @@ android {
 dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.node)
+    implementation(libs.bundles.serialization)
+    implementation(files("libs/provider-mobile-node-1.20.2.aar"))
 }
