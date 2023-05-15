@@ -145,8 +145,9 @@ class NodeService : Service() {
     private suspend fun fetchServices() = withContext(dispatcher) {
         val node = mobileNode ?: return@withContext
         val json = node.allServicesState.decodeToString()
+        val services = Json.decodeFromString<List<NodeServiceType>>(json)
         servicesFlow.update {
-            Json.decodeFromString(json)
+            services.toSet().toList()
         }
     }
 
