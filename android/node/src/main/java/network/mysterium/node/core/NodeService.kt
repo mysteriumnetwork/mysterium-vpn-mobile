@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -66,7 +67,6 @@ class NodeService : Service() {
     private val scope = CoroutineScope(dispatcher)
     private var balanceTimer: Timer? = null
     private var endOfDayTimer: Timer? = null
-    private var isServicesStarted: Boolean = false
     private var mobileLimitJob: Job? = null
 
     override fun onCreate() {
@@ -270,14 +270,10 @@ class NodeService : Service() {
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
 
         if (batteryOption && (wifiOption || mobileDataOption)) {
-            if (!isServicesStarted) {
-                mobileNode?.startProvider()
-                isServicesStarted = true
-            } else {
-                return@withContext
-            }
+            // starting and stopping provider helps to display service status correctly
+            mobileNode?.stopProvider()
+            mobileNode?.startProvider()
         } else {
-            isServicesStarted = false
             mobileNode?.stopProvider()
         }
     }

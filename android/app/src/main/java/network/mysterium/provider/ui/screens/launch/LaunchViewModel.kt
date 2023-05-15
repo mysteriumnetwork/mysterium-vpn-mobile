@@ -39,7 +39,7 @@ class LaunchViewModel(
         }
     }
 
-    private fun initializeNode() = viewModelScope.launch {
+    private fun initializeNode() = viewModelScope.launch(Dispatchers.IO) {
         try {
             node.start()
             if (node.identity.value.isRegistered) {
