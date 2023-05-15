@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 @Serializable
 data class NodeServiceType(
     @SerialName("Service")
-    val name: String,
+    val service: Service,
 
     @SerialName("State")
     val state: State,
@@ -24,6 +24,14 @@ data class NodeServiceType(
         STARTING("Starting"),
         RUNNING("Running"),
         UNKNOWN("unknown")
+    }
+
+    @Serializable(with = ServiceSerializer::class)
+    enum class Service(val raw: String) {
+        WIREGUARD("wireguard"),
+        SCRAPING("scraping"),
+        DATA_TRANSFER("data_transfer"),
+        OTHER("other")
     }
 
     object StatusSerializer : KSerializer<State> {
@@ -44,7 +52,26 @@ data class NodeServiceType(
         override fun serialize(encoder: Encoder, value: State) {
             encoder.encodeString(value.raw)
         }
+    }
 
+    object ServiceSerializer : KSerializer<Service> {
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+            "Status",
+            PrimitiveKind.STRING
+        )
+
+        override fun deserialize(decoder: Decoder): Service {
+            return when (decoder.decodeString()) {
+                Service.WIREGUARD.raw -> Service.WIREGUARD
+                Service.SCRAPING.raw -> Service.SCRAPING
+                Service.DATA_TRANSFER.raw -> Service.DATA_TRANSFER
+                else -> Service.OTHER
+            }
+        }
+
+        override fun serialize(encoder: Encoder, value: Service) {
+            encoder.encodeString(value.raw)
+        }
     }
 }
 

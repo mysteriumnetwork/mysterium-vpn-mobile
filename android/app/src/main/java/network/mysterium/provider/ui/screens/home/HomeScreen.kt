@@ -145,9 +145,9 @@ fun HomeScreenContentPreview() {
     HomeScreenContent(
         state = Home.State(
             services = listOf(
-                NodeServiceType("wireguard", NodeServiceType.State.RUNNING),
-                NodeServiceType("scraping", NodeServiceType.State.STARTING),
-                NodeServiceType("data_transfer", NodeServiceType.State.NOT_RUNNING)
+                NodeServiceType(NodeServiceType.Service.WIREGUARD, NodeServiceType.State.RUNNING),
+                NodeServiceType(NodeServiceType.Service.SCRAPING, NodeServiceType.State.STARTING),
+                NodeServiceType(NodeServiceType.Service.DATA_TRANSFER, NodeServiceType.State.NOT_RUNNING)
             ),
             isLimitReached = true,
             balance = 0.0

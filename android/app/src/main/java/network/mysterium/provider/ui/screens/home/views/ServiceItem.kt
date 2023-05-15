@@ -12,10 +12,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mysterium.node.model.NodeServiceType
+import network.mysterium.provider.extensions.bgColor
+import network.mysterium.provider.extensions.dotColor
+import network.mysterium.provider.extensions.nameResId
+import network.mysterium.provider.extensions.textColor
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.Corners
 import network.mysterium.provider.ui.theme.Paddings
@@ -46,48 +51,13 @@ fun ServiceItem(
         )
         Text(
             modifier = Modifier.padding(Paddings.default),
-            text = service.name,
+            text = stringResource(id = service.service.nameResId),
             style = TextStyles.label,
-            color = service.state.textColor
+            color = service.state.textColor,
+            textAlign = TextAlign.Center
         )
     }
 }
-
-private val NodeServiceType.State.bgColor: Color
-    get() = when (this) {
-        NodeServiceType.State.UNKNOWN,
-        NodeServiceType.State.NOT_RUNNING,
-        NodeServiceType.State.STARTING-> {
-            Colors.serviceNotRunningBg
-        }
-        NodeServiceType.State.RUNNING -> {
-            Colors.serviceRunningBg
-        }
-    }
-
-private val NodeServiceType.State.textColor: Color
-    get() = when (this) {
-        NodeServiceType.State.UNKNOWN,
-        NodeServiceType.State.NOT_RUNNING,
-        NodeServiceType.State.STARTING-> {
-            Colors.textDisabled
-        }
-        NodeServiceType.State.RUNNING -> {
-            Colors.textPrimary
-        }
-    }
-
-private val NodeServiceType.State.dotColor: Color
-    get() = when (this) {
-        NodeServiceType.State.UNKNOWN,
-        NodeServiceType.State.NOT_RUNNING,
-        NodeServiceType.State.STARTING -> {
-            Colors.serviceNotRunningDot
-        }
-        NodeServiceType.State.RUNNING -> {
-            Colors.serviceRunningDot
-        }
-    }
 
 @Preview(showBackground = true)
 @Composable
@@ -96,8 +66,8 @@ private fun ServiceItemPreview() {
         modifier = Modifier.background(Colors.primaryBg),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        ServiceItem(service = NodeServiceType("name", NodeServiceType.State.RUNNING))
-        ServiceItem(service = NodeServiceType("name", NodeServiceType.State.NOT_RUNNING))
-        ServiceItem(service = NodeServiceType("name", NodeServiceType.State.STARTING))
+        ServiceItem(service = NodeServiceType(NodeServiceType.Service.WIREGUARD, NodeServiceType.State.RUNNING))
+        ServiceItem(service = NodeServiceType(NodeServiceType.Service.WIREGUARD, NodeServiceType.State.NOT_RUNNING))
+        ServiceItem(service = NodeServiceType(NodeServiceType.Service.WIREGUARD, NodeServiceType.State.STARTING))
     }
 }

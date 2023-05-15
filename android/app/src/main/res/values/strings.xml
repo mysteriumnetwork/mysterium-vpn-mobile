@@ -24,4 +24,8 @@
     <string name="unsettled_earnings">Unsettled earnings</string>
     <string name="mobile_data_limit_reached">Mobile data limit reached!</string>
     <string name="save">Save</string>
+    <string name="service_public">Public</string>
+    <string name="service_data_transfer">Data Transfer</string>
+    <string name="service_data_scraping">Data Scraping</string>
+    <string name="service_other">Other</string>
 </resources>
