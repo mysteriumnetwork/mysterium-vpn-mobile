@@ -67,7 +67,7 @@ internal class NodeImpl(
     override suspend fun start() {
         val service = startService()
         service.start()
-        if (service.identity.value.isRegistered) {
+        if (service.identity.value.status == NodeIdentity.Status.REGISTERED) {
             service.startForegroundService()
             service.startServices()
         }

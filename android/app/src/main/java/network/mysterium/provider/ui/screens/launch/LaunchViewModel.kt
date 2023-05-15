@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
+import network.mysterium.node.model.NodeIdentity
 import network.mysterium.provider.R
 import network.mysterium.provider.core.CoreViewModel
 import network.mysterium.provider.ui.navigation.NavigationDestination
@@ -42,11 +43,22 @@ class LaunchViewModel(
     private fun initializeNode() = viewModelScope.launch(Dispatchers.IO) {
         try {
             node.start()
-            if (node.identity.value.isRegistered) {
-                setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
-            } else {
-                setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
+            node.identity.collect {
+                when (it.status) {
+                    NodeIdentity.Status.REGISTERED -> {
+                        setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
+                    }
+                    NodeIdentity.Status.IN_PROGRESS -> {
+                        setEffect { Launch.Effect.Navigation(NavigationDestination.NodeUI(false)) }
+                    }
+                    NodeIdentity.Status.UNKNOWN,
+                    NodeIdentity.Status.UNREGISTERED,
+                    NodeIdentity.Status.REGISTRATION_ERROR -> {
+                        setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
+                    }
+                }
             }
+
         } catch (error: Throwable) {
             Log.e(TAG, "unable to init node", error)
             setState { copy(error = Launch.InitError(R.string.unable_init_node)) }

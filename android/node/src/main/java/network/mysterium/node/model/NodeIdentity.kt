@@ -22,11 +22,4 @@ data class NodeIdentity(
             }
         }
     }
-
-    // Identity is considered as registered if it's status RegisteredConsumer or InProgress since we support fast
-    // identity registration flow which means there is no need to wait for actual registration.
-    val isRegistered: Boolean
-        get() {
-            return status == Status.REGISTERED || status == Status.IN_PROGRESS
-        }
 }

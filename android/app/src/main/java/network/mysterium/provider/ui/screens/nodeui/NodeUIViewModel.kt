@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
+import network.mysterium.node.model.NodeIdentity
 import network.mysterium.provider.core.CoreViewModel
 
 class NodeUIViewModel(
@@ -32,7 +33,7 @@ class NodeUIViewModel(
 
     private fun observeIdentity() = viewModelScope.launch {
         node.identity.collect {
-            setState { copy(isRegistered = it.isRegistered) }
+            setState { copy(isRegistered = it.status == NodeIdentity.Status.REGISTERED) }
         }
     }
 }
