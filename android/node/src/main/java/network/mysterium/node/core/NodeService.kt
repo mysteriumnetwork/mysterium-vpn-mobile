@@ -30,6 +30,7 @@ import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.node.Storage
 import network.mysterium.node.StorageFactory
+import network.mysterium.node.battery.BatteryStatus
 import network.mysterium.node.extensions.isFirstDayOfMonth
 import network.mysterium.node.extensions.nextDay
 import network.mysterium.node.model.NodeIdentity
@@ -43,7 +44,6 @@ import java.util.Date
 import java.util.Timer
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.fixedRateTimer
-import kotlin.concurrent.schedule
 import kotlin.concurrent.timer
 
 class NodeService : Service() {
@@ -56,6 +56,7 @@ class NodeService : Service() {
 
     private lateinit var networkReporter: NetworkReporter
     private lateinit var storage: Storage
+    private lateinit var batteryStatus: BatteryStatus
     private var mobileNode: MobileNode? = null
     private var servicesFlow = MutableStateFlow<List<NodeServiceType>>(emptyList())
     private var identityFlow = MutableStateFlow(NodeIdentity.empty())
@@ -68,13 +69,14 @@ class NodeService : Service() {
     private var isServicesStarted: Boolean = false
     private var mobileLimitJob: Job? = null
 
-
     override fun onCreate() {
         networkReporter = NetworkReporter(this)
         storage = StorageFactory.make(this)
+        batteryStatus = BatteryStatus(this)
         observeNetworkUsage()
         observeNetworkStatus()
         startEndOfDayTimer()
+        observeBatteryStatus()
         super.onCreate()
     }
 
@@ -224,6 +226,12 @@ class NodeService : Service() {
         }
     }
 
+    private fun observeBatteryStatus() = scope.launch {
+        batteryStatus.isCharging.collect {
+            updateNodeServices()
+        }
+    }
+
     private fun resetMobileDataUsageIfNeeded() {
         val calendar = Calendar.getInstance()
         val startDate = Date(storage.usage.startTime)
@@ -255,10 +263,12 @@ class NodeService : Service() {
 
     private suspend fun updateNodeServices() = withContext(dispatcher) {
         val config = storage.config
-        val isOnWifi = networkReporter.isConnected(NetworkType.WIFI)
-        val mobileDataAllowed =
+        val wifiOption = networkReporter.isConnected(NetworkType.WIFI)
+        val mobileDataOption =
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
-        if (isOnWifi || mobileDataAllowed) {
+        val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
+
+        if (batteryOption && (wifiOption || mobileDataOption)) {
             if (!isServicesStarted) {
                 mobileNode?.startProvider()
                 isServicesStarted = true

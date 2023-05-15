@@ -38,6 +38,7 @@ class SettingsViewModel(
                     copy(
                         isMobileDataOn = config.useMobileData,
                         isMobileDataLimitOn = config.useMobileDataLimit,
+                        isAllowUseOnBatteryOn = config.allowUseOnBattery,
                         mobileDataLimit = config.mobileDataLimit?.let {
                             Converter.bytesToMegabytes(it)
                         }
@@ -55,6 +56,7 @@ class SettingsViewModel(
             }
 
             is Settings.Event.ToggleAllowUseOnBattery -> {
+                updateNodeConfig(node.config.copy(allowUseOnBattery = event.checked))
                 setState { copy(isAllowUseOnBatteryOn = event.checked) }
             }
 

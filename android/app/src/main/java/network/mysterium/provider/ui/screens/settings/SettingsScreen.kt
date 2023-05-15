@@ -165,13 +165,13 @@ private fun OptionsContent(
 
 
         if (!isOnboarding) {
-//            SwitchOption(
-//                title = stringResource(id = R.string.allow_use_on_battery),
-//                checked = state.isAllowUseOnBatteryOn,
-//                onCheckedChange = {
-//                    onEvent(Settings.Event.ToggleAllowUseOnBattery(it))
-//                }
-//            )
+            SwitchOption(
+                title = stringResource(id = R.string.allow_use_on_battery),
+                checked = state.isAllowUseOnBatteryOn,
+                onCheckedChange = {
+                    onEvent(Settings.Event.ToggleAllowUseOnBattery(it))
+                }
+            )
 
             ButtonOption(
                 title = stringResource(id = R.string.node_ui),
