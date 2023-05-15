@@ -37,7 +37,7 @@ fun BalanceItem(
     ) {
         Text(
             modifier = Modifier.padding(Paddings.default),
-            text = Formatters.balance.format(0.0004),
+            text = Formatters.balance.format(value),
             style = TextStyles.balance
         )
     }

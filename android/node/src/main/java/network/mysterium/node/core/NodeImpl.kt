@@ -78,11 +78,12 @@ internal class NodeImpl(
     }
 
     override fun disableForegroundService() {
-        // to implement
+        service?.stopForegroundService()
     }
 
     override suspend fun stop() {
-        // to implement
+        service?.stop()
+        disableForegroundService()
     }
 
     private suspend fun startService() = suspendCoroutine { continuation ->

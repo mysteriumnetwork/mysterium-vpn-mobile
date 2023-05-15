@@ -15,12 +15,10 @@ import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,23 +30,28 @@ import mysterium.MobileNode
 import mysterium.Mysterium
 import network.mysterium.node.Storage
 import network.mysterium.node.StorageFactory
+import network.mysterium.node.extensions.isFirstDayOfMonth
+import network.mysterium.node.extensions.nextDay
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeServiceType
 import network.mysterium.node.model.NodeUsage
 import network.mysterium.node.network.NetworkReporter
 import network.mysterium.node.network.NetworkType
 import network.mystrium.node.R
+import java.util.Calendar
 import java.util.Date
 import java.util.Timer
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.fixedRateTimer
+import kotlin.concurrent.schedule
+import kotlin.concurrent.timer
 
 class NodeService : Service() {
 
     companion object {
         const val CHANNEL_ID = "mystnodes.channel"
         const val NOTIFICATION_ID = 1
-        val BALANCE_CHECK_INTERVAL = TimeUnit.SECONDS.toMillis(10)
+        val BALANCE_CHECK_INTERVAL = TimeUnit.MINUTES.toMillis(1)
     }
 
     private lateinit var networkReporter: NetworkReporter
@@ -61,14 +64,17 @@ class NodeService : Service() {
     private var dispatcher = Dispatchers.IO
     private val scope = CoroutineScope(dispatcher)
     private var balanceTimer: Timer? = null
+    private var endOfDayTimer: Timer? = null
     private var isServicesStarted: Boolean = false
     private var mobileLimitJob: Job? = null
+
 
     override fun onCreate() {
         networkReporter = NetworkReporter(this)
         storage = StorageFactory.make(this)
         observeNetworkUsage()
         observeNetworkStatus()
+        startEndOfDayTimer()
         super.onCreate()
     }
 
@@ -101,6 +107,10 @@ class NodeService : Service() {
             .setOngoing(true)
             .build()
         startForeground(NOTIFICATION_ID, notification)
+    }
+
+    private fun stopForegroundNotification() {
+        stopForeground(STOP_FOREGROUND_DETACH)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -204,6 +214,25 @@ class NodeService : Service() {
         }
     }
 
+    private fun startEndOfDayTimer() {
+        endOfDayTimer?.cancel()
+        endOfDayTimer = timer(
+            startAt = Calendar.getInstance().nextDay(),
+            period = TimeUnit.DAYS.toMillis(1)
+        ) {
+            resetMobileDataUsageIfNeeded()
+        }
+    }
+
+    private fun resetMobileDataUsageIfNeeded() {
+        val calendar = Calendar.getInstance()
+        val startDate = Date(storage.usage.startTime)
+        val today = Date()
+        if (calendar.isFirstDayOfMonth && today.after(startDate)) {
+            storage.usage = NodeUsage(Date().time, 0)
+        }
+    }
+
     private fun updateMobileDataUsage(usedBytes: Long) {
         val config = storage.config
         if (config.useMobileData &&
@@ -242,10 +271,6 @@ class NodeService : Service() {
         }
     }
 
-    private fun resetMobileDataUsage() {
-        storage.usage = NodeUsage(Date().time, 0)
-    }
-
     internal inner class Bridge : Binder(), NodeServiceBinder {
 
         override val services: Flow<List<NodeServiceType>>
@@ -273,6 +298,10 @@ class NodeService : Service() {
             startForegroundNotification()
         }
 
+        override fun stopForegroundService() {
+            stopForegroundNotification()
+        }
+
         override suspend fun startServices() {
             updateNodeServices()
         }
@@ -286,11 +315,10 @@ class NodeService : Service() {
             mobileNode?.stopProvider()
         }
 
-        override fun resetMobileUsage() {
-            resetMobileDataUsage()
-        }
-
-        override fun stop() {
+        override suspend fun stop() {
+            mobileNode?.stopProvider()
+            mobileNode?.shutdown()
+            mobileNode?.waitUntilDies()
         }
     }
 }

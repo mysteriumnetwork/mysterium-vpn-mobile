@@ -13,10 +13,10 @@ internal interface NodeServiceBinder : IBinder {
     val balance: Flow<Double>
     val limitMonitor: StateFlow<Boolean>
     suspend fun start()
-    fun stop()
+    suspend fun stop()
     fun startForegroundService()
+    fun stopForegroundService()
     suspend fun startServices()
     suspend fun updateServices()
     fun stopServices()
-    fun resetMobileUsage()
 }

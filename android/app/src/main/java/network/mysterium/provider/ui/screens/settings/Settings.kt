@@ -15,6 +15,7 @@ sealed class Settings {
         data class UpdateLimit(val value: String) : Event()
         object SaveMobileDataLimit : Event()
         object OnContinue : Event()
+        object ShutDown: Event()
     }
 
     data class State(
@@ -34,5 +35,6 @@ sealed class Settings {
 
     sealed class Effect : UIEffect {
         data class Navigation(val destination: NavigationDestination): Effect()
+        object CloseApp: Effect()
     }
 }

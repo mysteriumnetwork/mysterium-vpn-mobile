@@ -12,6 +12,7 @@ koin-compose = "3.4.4"
 markwon = "4.6.2"
 kotlinx-serialization = "1.5.0"
 kotlinx-serialization-json = "1.5.1"
+kotlinx-datetime = "0.4.0"
 
 [libraries]
 androidx-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -34,11 +35,13 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 markdown = { module = "io.noties.markwon:core", version.ref = "markwon" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+kotlinx-datetime = { module ="org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 [bundles]
 core = [
     "androidx-ktx",
-    "androidx-lifecycle-ktx"
+    "androidx-lifecycle-ktx",
+#    "kotlinx-datetime"
 ]
 compose = [
     "androidx-compose-activity",

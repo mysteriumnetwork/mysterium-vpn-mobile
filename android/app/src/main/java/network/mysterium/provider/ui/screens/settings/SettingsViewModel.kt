@@ -69,6 +69,9 @@ class SettingsViewModel(
             Settings.Event.OnContinue -> {
                 startNodeInForeground()
             }
+            Settings.Event.ShutDown -> {
+                shutDownNode()
+            }
         }
     }
 
@@ -107,5 +110,10 @@ class SettingsViewModel(
 
     private fun updateNodeConfig(config: NodeConfig) = viewModelScope.launch {
         node.updateConfig(config)
+    }
+
+    private fun shutDownNode() = viewModelScope.launch {
+        node.stop()
+        setEffect { Settings.Effect.CloseApp }
     }
 }

@@ -22,11 +22,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import network.mysterium.provider.Config
 import network.mysterium.provider.R
+import network.mysterium.provider.extensions.getActivity
 import network.mysterium.provider.ui.components.buttons.BackButton
 import network.mysterium.provider.ui.components.buttons.HomeButton
 import network.mysterium.provider.ui.components.buttons.PrimaryButton
@@ -48,6 +50,7 @@ fun SettingsScreen(
     isOnboarding: Boolean,
     onNavigate: (NavigationDestination) -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.uiState.collectAsState()
 
     LaunchedEffect("Settings") {
@@ -55,6 +58,9 @@ fun SettingsScreen(
             .collect {
                 when (it) {
                     is Settings.Effect.Navigation -> onNavigate(it.destination)
+                    Settings.Effect.CloseApp -> {
+                        context.getActivity()?.finishAndRemoveTask()
+                    }
                 }
             }
     }
@@ -175,11 +181,12 @@ private fun OptionsContent(
                 onNavigate(NavigationDestination.NodeUI())
             }
 
-//            ButtonOption(
-//                title = stringResource(id = R.string.shut_down),
-//                actionName = stringResource(id = R.string.shut_down)
-//            ) {
-//            }
+            ButtonOption(
+                title = stringResource(id = R.string.shut_down),
+                actionName = stringResource(id = R.string.shut_down)
+            ) {
+                onEvent(Settings.Event.ShutDown)
+            }
         }
     }
 }
