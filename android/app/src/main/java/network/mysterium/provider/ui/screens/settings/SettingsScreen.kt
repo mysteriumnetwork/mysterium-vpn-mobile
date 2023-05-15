@@ -25,9 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import network.mysterium.provider.Config
 import network.mysterium.provider.R
+import network.mysterium.provider.extensions.appVersion
 import network.mysterium.provider.extensions.getActivity
 import network.mysterium.provider.ui.components.buttons.BackButton
 import network.mysterium.provider.ui.components.buttons.HomeButton
@@ -48,6 +50,7 @@ import org.koin.androidx.compose.getViewModel
 fun SettingsScreen(
     viewModel: SettingsViewModel = getViewModel(),
     isOnboarding: Boolean,
+
     onNavigate: (NavigationDestination) -> Unit
 ) {
     val context = LocalContext.current
@@ -68,6 +71,7 @@ fun SettingsScreen(
     SettingsContent(
         state = state,
         isOnboarding = isOnboarding,
+        appVersion = context.appVersion(),
         onEvent = { viewModel.setEvent(it) },
         onNavigate = onNavigate
     )
@@ -77,6 +81,7 @@ fun SettingsScreen(
 private fun SettingsContent(
     state: Settings.State,
     isOnboarding: Boolean,
+    appVersion: String,
     onEvent: (Settings.Event) -> Unit,
     onNavigate: (NavigationDestination) -> Unit
 ) {
@@ -100,6 +105,7 @@ private fun SettingsContent(
                 modifier = Modifier.weight(1f),
                 state = state,
                 isOnboarding = isOnboarding,
+                appVersion = appVersion,
                 onEvent = onEvent,
                 onNavigate = onNavigate
             )
@@ -112,7 +118,6 @@ private fun SettingsContent(
                     text = stringResource(id = R.string.onboard_continue)
                 ) {
                     onEvent(Settings.Event.OnContinue)
-//                    onNavigate(NavigationDestination.Home)
                 }
             }
         }
@@ -124,6 +129,7 @@ private fun OptionsContent(
     modifier: Modifier = Modifier,
     state: Settings.State,
     isOnboarding: Boolean,
+    appVersion: String,
     onEvent: (Settings.Event) -> Unit,
     onNavigate: (NavigationDestination) -> Unit
 ) {
@@ -188,6 +194,14 @@ private fun OptionsContent(
                 onEvent(Settings.Event.ShutDown)
             }
         }
+
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "v${appVersion}",
+            style = TextStyles.label,
+            color = Colors.textSecondary,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -261,6 +275,7 @@ private fun SettingsContentPreview() {
                 nodeError = null
             ),
             isOnboarding = true,
+            appVersion = "1.0",
             onEvent = {},
             onNavigate = {}
         )

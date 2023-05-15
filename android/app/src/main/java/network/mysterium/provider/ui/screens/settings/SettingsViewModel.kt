@@ -26,7 +26,7 @@ class SettingsViewModel(
             mobileDataLimitInvalid = false,
             isSaveButtonEnabled = false,
             isStartingNode = false,
-            nodeError = null
+            nodeError = null,
         )
     }
 
