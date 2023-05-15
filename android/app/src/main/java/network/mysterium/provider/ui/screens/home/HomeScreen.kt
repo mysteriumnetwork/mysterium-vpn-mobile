@@ -1,5 +1,10 @@
 package network.mysterium.provider.ui.screens.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -93,7 +98,11 @@ fun HomeScreenContent(
                             value = state.balance
                         )
 
-                        if (state.isLimitReached) {
+                        AnimatedVisibility(
+                            visible = state.isLimitReached,
+                            enter = fadeIn() + expandVertically(),
+                            exit = fadeOut() + shrinkVertically()
+                        ) {
                             ErrorItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 message = stringResource(id = R.string.mobile_data_limit_reached)

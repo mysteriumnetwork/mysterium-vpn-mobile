@@ -1,10 +1,15 @@
 package network.mysterium.node.core
 
 import android.content.Context
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import network.mysterium.node.Storage
 import network.mysterium.node.model.NodeConfig
+import network.mysterium.node.model.NodeUsage
+import java.util.Date
 
 internal class StorageImpl(
     context: Context
@@ -13,6 +18,7 @@ internal class StorageImpl(
     private companion object {
         const val IS_REGISTERED = "isRegistered"
         const val NODE_CONFIG = "nodeConfig"
+        const val NODE_USAGE = "nodeUsage"
     }
 
     private val preferences = context.getSharedPreferences("mysterium.node", Context.MODE_PRIVATE)
@@ -29,6 +35,11 @@ internal class StorageImpl(
         get() = decode(NODE_CONFIG) ?: NodeConfig()
         set(value) {
             encode(NODE_CONFIG, value)
+        }
+    override var usage: NodeUsage
+        get() = decode(NODE_USAGE) ?: NodeUsage(Date().time, 0)
+        set(value) {
+            encode(NODE_USAGE, value)
         }
 
     private inline fun <reified T> decode(key: String): T? {

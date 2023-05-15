@@ -1,18 +1,17 @@
 package network.mysterium.provider.ui.screens.settings
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import network.mysterium.node.Node
+import network.mysterium.node.model.NodeConfig
+import network.mysterium.provider.Config
 import network.mysterium.provider.core.CoreViewModel
 import network.mysterium.provider.ui.navigation.NavigationDestination
+import network.mysterium.provider.utils.Converter
 
 class SettingsViewModel(
     private val node: Node
 ) : CoreViewModel<Settings.Event, Settings.State, Settings.Effect>() {
-
-    private companion object {
-        const val MIN_LIMIT = 50
-        const val MAX_LIMIT = 999999
-        val TAG: String = SettingsViewModel::class.java.simpleName
-    }
 
     init {
         setEvent(Settings.Event.FetchConfig)
@@ -39,17 +38,19 @@ class SettingsViewModel(
                     copy(
                         isMobileDataOn = config.useMobileData,
                         isMobileDataLimitOn = config.useMobileDataLimit,
-                        mobileDataLimit = config.mobileDataLimit
+                        mobileDataLimit = config.mobileDataLimit?.let {
+                            Converter.bytesToMegabytes(it)
+                        }
                     )
                 }
             }
             is Settings.Event.ToggleMobileData -> {
-                node.config = node.config.copy(useMobileData = event.checked)
+                updateNodeConfig(node.config.copy(useMobileData = event.checked))
                 setState { copy(isMobileDataOn = event.checked) }
             }
 
             is Settings.Event.ToggleLimit -> {
-                node.config = node.config.copy(useMobileDataLimit = event.checked)
+                updateNodeConfig(node.config.copy(useMobileDataLimit = event.checked))
                 setState { copy(isMobileDataLimitOn = event.checked) }
             }
 
@@ -62,7 +63,7 @@ class SettingsViewModel(
             }
             Settings.Event.SaveMobileDataLimit -> {
                 val limit = currentState.mobileDataLimit ?: return
-                node.config = node.config.copy(mobileDataLimit = limit)
+                updateNodeConfig(node.config.copy(mobileDataLimit = Converter.megabytesToBytes(limit)))
                 setState { copy(isSaveButtonEnabled = false) }
             }
             Settings.Event.OnContinue -> {
@@ -75,7 +76,7 @@ class SettingsViewModel(
         if (value.isEmpty()) {
             setState {
                 copy(
-                    mobileDataLimit = value.toIntOrNull(),
+                    mobileDataLimit = value.toLongOrNull(),
                     mobileDataLimitInvalid = true,
                     isSaveButtonEnabled = false
                 )
@@ -83,10 +84,11 @@ class SettingsViewModel(
             return
         }
 
-        val limit = value.toIntOrNull() ?: return
-        val isValid = limit in MIN_LIMIT..MAX_LIMIT
+        val limit = value.toLongOrNull() ?: return
+        val limitBytes = Converter.megabytesToBytes(limit)
+        val isValid = limit in Config.minMobileDataLimit..Config.maxMobileDataLimit
         val isSaveEnabled = node.config.mobileDataLimit?.let {
-            isValid && limit != it
+            isValid && limitBytes != it
         } ?: isValid
 
         setState {
@@ -98,8 +100,12 @@ class SettingsViewModel(
         }
     }
 
-    private fun startNodeInForeground() {
-        node.startServices()
+    private fun startNodeInForeground() = viewModelScope.launch {
+        node.enableForegroundService()
         setEffect { Settings.Effect.Navigation(NavigationDestination.NodeUI(true)) }
+    }
+
+    private fun updateNodeConfig(config: NodeConfig) = viewModelScope.launch {
+        node.updateConfig(config)
     }
 }

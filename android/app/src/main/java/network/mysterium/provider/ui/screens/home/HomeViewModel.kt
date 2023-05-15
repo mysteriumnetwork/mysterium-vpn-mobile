@@ -27,6 +27,7 @@ class HomeViewModel(
             Home.Event.Load -> {
                 observeServices()
                 observeBalance()
+                observeLimit()
             }
         }
     }
@@ -40,6 +41,12 @@ class HomeViewModel(
     private fun observeBalance() = viewModelScope.launch {
         node.balance.collect {
             setState { copy(balance = it) }
+        }
+    }
+
+    private fun observeLimit() = viewModelScope.launch {
+        node.limitMonitor.collect {
+            setState { copy(isLimitReached = it) }
         }
     }
 }

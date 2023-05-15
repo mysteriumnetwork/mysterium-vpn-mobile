@@ -5,6 +5,10 @@ data class NodeIdentity(
     val channelAddress: String,
     val status: Status
 ) {
+    companion object {
+        fun empty() = NodeIdentity("", "", Status.UNKNOWN)
+    }
+
     enum class Status(private val raw: String) {
         UNKNOWN("Unknown"),
         REGISTERED("Registered"),

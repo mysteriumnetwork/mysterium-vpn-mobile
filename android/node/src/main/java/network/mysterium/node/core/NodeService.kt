@@ -14,11 +14,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -26,10 +30,14 @@ import mysterium.GetBalanceRequest
 import mysterium.GetIdentityRequest
 import mysterium.MobileNode
 import mysterium.Mysterium
+import network.mysterium.node.Storage
+import network.mysterium.node.StorageFactory
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeServiceType
+import network.mysterium.node.model.NodeUsage
+import network.mysterium.node.network.NetworkReporter
+import network.mysterium.node.network.NetworkType
 import network.mystrium.node.R
-import java.sql.Time
 import java.util.Date
 import java.util.Timer
 import java.util.concurrent.TimeUnit
@@ -43,20 +51,26 @@ class NodeService : Service() {
         val BALANCE_CHECK_INTERVAL = TimeUnit.SECONDS.toMillis(10)
     }
 
+    private lateinit var networkReporter: NetworkReporter
+    private lateinit var storage: Storage
     private var mobileNode: MobileNode? = null
     private var servicesFlow = MutableStateFlow<List<NodeServiceType>>(emptyList())
-    private var identityFlow = MutableStateFlow(
-        NodeIdentity(
-            "",
-            "",
-            NodeIdentity.Status.UNKNOWN
-        )
-    )
+    private var identityFlow = MutableStateFlow(NodeIdentity.empty())
     private var balanceFlow = MutableStateFlow(0.0)
-
+    private var limitMonitorFlow = MutableStateFlow(false)
     private var dispatcher = Dispatchers.IO
     private val scope = CoroutineScope(dispatcher)
     private var balanceTimer: Timer? = null
+    private var isServicesStarted: Boolean = false
+    private var mobileLimitJob: Job? = null
+
+    override fun onCreate() {
+        networkReporter = NetworkReporter(this)
+        storage = StorageFactory.make(this)
+        observeNetworkUsage()
+        observeNetworkStatus()
+        super.onCreate()
+    }
 
     override fun onBind(p0: Intent?): IBinder {
         return Bridge()
@@ -106,8 +120,6 @@ class NodeService : Service() {
         fetchIdentity()
         fetchServices()
         fetchBalance()
-        registerListeners()
-        startBalanceTimer()
     }
 
     private suspend fun createNode() = withContext(dispatcher) {
@@ -121,19 +133,21 @@ class NodeService : Service() {
     private suspend fun fetchServices() = withContext(dispatcher) {
         val node = mobileNode ?: return@withContext
         val json = node.allServicesState.decodeToString()
-        servicesFlow.tryEmit(Json.decodeFromString(json))
+        servicesFlow.update {
+            Json.decodeFromString(json)
+        }
     }
 
     private suspend fun fetchIdentity() = withContext(dispatcher) {
         val node = mobileNode ?: return@withContext
         val identity = node.getIdentity(GetIdentityRequest())
-        identityFlow.tryEmit(
+        identityFlow.update {
             NodeIdentity(
                 identity.identityAddress,
                 identity.channelAddress,
                 NodeIdentity.Status.from(identity.registrationStatus)
             )
-        )
+        }
     }
 
     private suspend fun fetchBalance() = withContext(dispatcher) {
@@ -141,7 +155,9 @@ class NodeService : Service() {
         val request = GetBalanceRequest()
         request.identityAddress = identityFlow.value.address
         val response = node.getUnsettledEarnings(request)
-        balanceFlow.tryEmit(response.balance)
+        balanceFlow.update {
+            response.balance
+        }
     }
 
     private fun registerListeners() {
@@ -172,6 +188,64 @@ class NodeService : Service() {
         }
     }
 
+    private fun observeNetworkUsage() {
+        mobileLimitJob?.cancel()
+        mobileLimitJob = scope.launch {
+            networkReporter.monitorUsage(NetworkType.MOBILE)
+                .collect {
+                    updateMobileDataUsage(it)
+                }
+        }
+    }
+
+    private fun observeNetworkStatus() = scope.launch {
+        networkReporter.currentConnectivity.drop(1).collect {
+            updateNodeServices()
+        }
+    }
+
+    private fun updateMobileDataUsage(usedBytes: Long) {
+        val config = storage.config
+        if (config.useMobileData &&
+            config.useMobileDataLimit &&
+            config.mobileDataLimit != null &&
+            networkReporter.isConnected(NetworkType.MOBILE)
+        ) {
+            var usage = storage.usage
+            usage = usage.copy(bytes = usage.bytes + usedBytes)
+            storage.usage = usage
+            if (usage.bytes > config.mobileDataLimit) {
+                limitMonitorFlow.update { true }
+            } else {
+                limitMonitorFlow.update { false }
+            }
+        } else {
+            limitMonitorFlow.update { false }
+        }
+    }
+
+    private suspend fun updateNodeServices() = withContext(dispatcher) {
+        val config = storage.config
+        val isOnWifi = networkReporter.isConnected(NetworkType.WIFI)
+        val mobileDataAllowed =
+            config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
+        if (isOnWifi || mobileDataAllowed) {
+            if (!isServicesStarted) {
+                mobileNode?.startProvider()
+                isServicesStarted = true
+            } else {
+                return@withContext
+            }
+        } else {
+            isServicesStarted = false
+            mobileNode?.stopProvider()
+        }
+    }
+
+    private fun resetMobileDataUsage() {
+        storage.usage = NodeUsage(Date().time, 0)
+    }
+
     internal inner class Bridge : Binder(), NodeServiceBinder {
 
         override val services: Flow<List<NodeServiceType>>
@@ -180,7 +254,10 @@ class NodeService : Service() {
         override val balance: Flow<Double>
             get() = balanceFlow.asStateFlow()
 
-        override val identity: Flow<NodeIdentity>
+        override val limitMonitor: StateFlow<Boolean>
+            get() = limitMonitorFlow.asStateFlow()
+
+        override val identity: StateFlow<NodeIdentity>
             get() = identityFlow.asStateFlow()
 
         override suspend fun start() {
@@ -188,10 +265,29 @@ class NodeService : Service() {
                 return
             }
             startNode()
+            registerListeners()
+            startBalanceTimer()
         }
 
-        override fun startForeground() {
+        override fun startForegroundService() {
             startForegroundNotification()
+        }
+
+        override suspend fun startServices() {
+            updateNodeServices()
+        }
+
+        override suspend fun updateServices() {
+            updateNodeServices()
+            updateMobileDataUsage(0)
+        }
+
+        override fun stopServices() {
+            mobileNode?.stopProvider()
+        }
+
+        override fun resetMobileUsage() {
+            resetMobileDataUsage()
         }
 
         override fun stop() {

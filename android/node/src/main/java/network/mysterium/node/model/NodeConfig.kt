@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class NodeConfig(
     val useMobileData: Boolean = true,
     val useMobileDataLimit: Boolean = false,
-    val mobileDataLimit: Int? = null
+    val mobileDataLimit: Long? = null
 )

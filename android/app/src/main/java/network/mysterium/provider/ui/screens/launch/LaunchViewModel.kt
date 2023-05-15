@@ -39,16 +39,13 @@ class LaunchViewModel(
         }
     }
 
-    private fun initializeNode() = viewModelScope.launch(Dispatchers.IO) {
+    private fun initializeNode() = viewModelScope.launch {
         try {
             node.start()
-            node.identity.collect {
-                if (it.isRegistered) {
-                    node.startServices()
-                    setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
-                } else {
-                    setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
-                }
+            if (node.identity.value.isRegistered) {
+                setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
+            } else {
+                setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
             }
         } catch (error: Throwable) {
             Log.e(TAG, "unable to init node", error)

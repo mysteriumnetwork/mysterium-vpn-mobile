@@ -1,6 +1,7 @@
 package network.mysterium.node
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import network.mysterium.node.model.NodeConfig
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeServiceType
@@ -25,7 +26,7 @@ interface Node {
     /**
      * Node config
      */
-    var config: NodeConfig
+    val config: NodeConfig
 
     /**
      * Get list of current services and statuses.
@@ -40,7 +41,17 @@ interface Node {
     /**
      * Get status of node.
      */
-    val identity: Flow<NodeIdentity>
+    val identity: StateFlow<NodeIdentity>
+
+    /**
+     * Get mobile limit reached status.
+     */
+    val limitMonitor: StateFlow<Boolean>
+
+    /**
+     * Update node config
+     */
+    suspend fun updateConfig(config: NodeConfig)
 
     /**
      * Initializes node and starts it in foreground service
@@ -48,14 +59,14 @@ interface Node {
     suspend fun start()
 
     /**
-     * Start node services and enables foreground service to run node when app is closed.
+     * Enable Android foreground service
      */
-    fun startServices()
+    suspend fun enableForegroundService()
 
     /**
-     * Stop services
+     * Disable Android foreground service
      */
-    fun stopServices()
+    fun disableForegroundService()
 
     /**
      * Stops node and foreground service

@@ -21,7 +21,7 @@ sealed class Settings {
         val isMobileDataOn: Boolean,
         val isMobileDataLimitOn: Boolean,
         val isAllowUseOnBatteryOn: Boolean,
-        val mobileDataLimit: Int?,
+        val mobileDataLimit: Long?,
         val mobileDataLimitInvalid: Boolean,
         val isSaveButtonEnabled: Boolean,
         val isStartingNode: Boolean,

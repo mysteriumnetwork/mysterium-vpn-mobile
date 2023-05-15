@@ -8,7 +8,7 @@ object NodeFactory {
     fun make(context: Context): Node {
         return NodeImpl(
             context,
-            StorageImpl(context)
+            StorageFactory.make(context)
         )
     }
 }

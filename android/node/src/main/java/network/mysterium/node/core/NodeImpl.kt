@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import network.mysterium.node.Node
 import network.mysterium.node.Storage
 import network.mysterium.node.model.NodeConfig
@@ -36,11 +36,9 @@ internal class NodeImpl(
     override val isRegistered: Boolean
         get() = storage.isRegistered
 
-    override var config: NodeConfig
+    override val config: NodeConfig
         get() = storage.config
-        set(value) {
-            storage.config = value
-        }
+
     override val services: Flow<List<NodeServiceType>>
         get() = service?.services
             ?: throw IllegalStateException("Node should be started to get services")
@@ -49,22 +47,37 @@ internal class NodeImpl(
         get() = service?.balance
             ?: throw IllegalStateException("Node should be started to get services")
 
-    override val identity: Flow<NodeIdentity>
+    override val identity: StateFlow<NodeIdentity>
         get() = service?.identity
             ?: throw IllegalStateException("Node should be started to get services")
+
+    override val limitMonitor: StateFlow<Boolean>
+        get() = service?.limitMonitor
+            ?: throw IllegalStateException("Node should be started to get services")
+
+    override suspend fun updateConfig(config: NodeConfig) {
+        storage.config = config
+        service?.updateServices()
+    }
 
     private var service: NodeServiceBinder? = null
 
     override suspend fun start() {
-        service = startService()
-        service?.start()
+        val service = startService()
+        service.start()
+        if (service.identity.value.isRegistered) {
+            service.startForegroundService()
+            service.startServices()
+        }
+        this.service = service
     }
 
-    override fun startServices() {
-        service?.startForeground()
+    override suspend fun enableForegroundService() {
+        service?.startForegroundService()
+        service?.updateServices()
     }
 
-    override fun stopServices() {
+    override fun disableForegroundService() {
         // to implement
     }
 
