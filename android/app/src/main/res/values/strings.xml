@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Myst Nodes</string>
     <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
     <string name="earn">Earn</string>
     <string name="earn_while_sleep">\nWhile\nYou\nSleep</string>
     <string name="sell_unused_bandwidth">Sell your unused bandwidth\nand earn crypto passive income, MYST</string>
@@ -11,6 +13,8 @@
     <string name="set_mobile_limit">Set mobile data limit</string>
     <string name="allow_use_on_battery">Allow use on battery</string>
     <string name="shut_down">Shut down</string>
+    <string name="shut_down_node">Shut down node</string>
+    <string name="shut_down_confirmation">Are you sure you want to stop earning and shut down the node?</string>
     <string name="node_ui">Node UI</string>
     <string name="open">Open</string>
     <string name="apply">Apply</string>

@@ -325,7 +325,6 @@ class NodeService : Service() {
         override suspend fun stop() {
             mobileNode?.stopProvider()
             mobileNode?.shutdown()
-            mobileNode?.waitUntilDies()
         }
     }
 }

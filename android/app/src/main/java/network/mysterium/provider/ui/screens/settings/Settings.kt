@@ -16,6 +16,8 @@ sealed class Settings {
         object SaveMobileDataLimit : Event()
         object OnContinue : Event()
         object ShutDown: Event()
+        object ConfirmShutDown: Event()
+        object CancelShutDown: Event()
     }
 
     data class State(
@@ -26,7 +28,8 @@ sealed class Settings {
         val mobileDataLimitInvalid: Boolean,
         val isSaveButtonEnabled: Boolean,
         val isStartingNode: Boolean,
-        val nodeError: NodeError?
+        val showShutDownConfirmation: Boolean,
+        val nodeError: NodeError?,
     ) : UIState
 
     data class NodeError(

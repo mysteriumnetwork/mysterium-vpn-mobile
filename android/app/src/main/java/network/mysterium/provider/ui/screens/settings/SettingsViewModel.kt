@@ -26,6 +26,7 @@ class SettingsViewModel(
             mobileDataLimitInvalid = false,
             isSaveButtonEnabled = false,
             isStartingNode = false,
+            showShutDownConfirmation = false,
             nodeError = null,
         )
     }
@@ -72,7 +73,13 @@ class SettingsViewModel(
                 startNodeInForeground()
             }
             Settings.Event.ShutDown -> {
+                setState { copy(showShutDownConfirmation = true) }
+            }
+            Settings.Event.ConfirmShutDown -> {
                 shutDownNode()
+            }
+            Settings.Event.CancelShutDown -> {
+                setState { copy(showShutDownConfirmation = false) }
             }
         }
     }

@@ -16,12 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,10 +36,12 @@ import network.mysterium.provider.extensions.getActivity
 import network.mysterium.provider.ui.components.buttons.BackButton
 import network.mysterium.provider.ui.components.buttons.HomeButton
 import network.mysterium.provider.ui.components.buttons.PrimaryButton
+import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
 import network.mysterium.provider.ui.components.buttons.SecondaryButton
 import network.mysterium.provider.ui.components.content.TitledScreenContent
 import network.mysterium.provider.ui.components.input.InputTextField
 import network.mysterium.provider.ui.navigation.NavigationDestination
+import network.mysterium.provider.ui.screens.launch.Launch
 import network.mysterium.provider.ui.screens.settings.views.ButtonOption
 import network.mysterium.provider.ui.screens.settings.views.SwitchOption
 import network.mysterium.provider.ui.theme.Colors
@@ -122,6 +126,10 @@ private fun SettingsContent(
             }
         }
     }
+
+    if (state.showShutDownConfirmation) {
+        ConfirmShutDown(onEvent = onEvent)
+    }
 }
 
 @Composable
@@ -188,7 +196,7 @@ private fun OptionsContent(
             }
 
             ButtonOption(
-                title = stringResource(id = R.string.shut_down),
+                title = stringResource(id = R.string.shut_down_node),
                 actionName = stringResource(id = R.string.shut_down)
             ) {
                 onEvent(Settings.Event.ShutDown)
@@ -259,6 +267,36 @@ private fun DataLimitInput(
     }
 }
 
+@Composable
+private fun ConfirmShutDown(
+    onEvent: (Settings.Event) -> Unit
+) {
+    AlertDialog(
+        title = {
+            Text(stringResource(id = R.string.shut_down_node))
+        },
+        text = {
+            Text(stringResource(id = R.string.shut_down_confirmation))
+        },
+        confirmButton = {
+            PrimaryTextButton(
+                text = stringResource(id = R.string.yes),
+                color = Color.Red
+            ) {
+                onEvent(Settings.Event.ConfirmShutDown)
+            }
+        },
+        dismissButton = {
+            PrimaryTextButton(text = stringResource(id = R.string.cancel)) {
+                onEvent(Settings.Event.CancelShutDown)
+            }
+        },
+        onDismissRequest = {
+            onEvent(Settings.Event.CancelShutDown)
+        }
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun SettingsContentPreview() {
@@ -272,9 +310,10 @@ private fun SettingsContentPreview() {
                 mobileDataLimitInvalid = true,
                 isSaveButtonEnabled = false,
                 isStartingNode = true,
+                showShutDownConfirmation = false,
                 nodeError = null
             ),
-            isOnboarding = true,
+            isOnboarding = false,
             appVersion = "1.0",
             onEvent = {},
             onNavigate = {}
