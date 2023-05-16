@@ -43,7 +43,7 @@ object Styles {
 
 object TextStyles {
     val navigationHeader = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = FontFamily.Lexend,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 20.sp
@@ -52,25 +52,25 @@ object TextStyles {
         lineHeight = 58.sp
     )
     val logoSpan = SpanStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = FontFamily.Lexend,
         fontWeight = FontWeight.Black,
         fontSize = 46.sp,
     )
     val body = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = FontFamily.Lexend,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 18.sp
     )
     val label = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = FontFamily.Lexend,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 15.sp
     )
     val button = body
     val header = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = FontFamily.Lexend,
         fontWeight = FontWeight.Black,
         fontSize = 20.sp,
         lineHeight = 25.sp
