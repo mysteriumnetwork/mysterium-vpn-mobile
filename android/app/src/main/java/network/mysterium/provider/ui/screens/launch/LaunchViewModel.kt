@@ -6,12 +6,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
+import network.mysterium.node.network.NetworkReporter
 import network.mysterium.provider.R
 import network.mysterium.provider.core.CoreViewModel
 import network.mysterium.provider.ui.navigation.NavigationDestination
 
 class LaunchViewModel(
-    private val node: Node
+    private val node: Node,
+    private val networkReporter: NetworkReporter
 ) : CoreViewModel<Launch.Event, Launch.State, Launch.Effect>() {
 
     private companion object {
@@ -20,6 +22,7 @@ class LaunchViewModel(
 
     init {
         setEffect { Launch.Effect.RequestVpnPermission }
+        observeNetworkState()
     }
 
     override fun createInitialState(): Launch.State {
@@ -41,6 +44,10 @@ class LaunchViewModel(
     }
 
     private fun initializeNode() = viewModelScope.launch(Dispatchers.IO) {
+        if (!networkReporter.isOnline()) {
+            setState { copy(error = Launch.InitError(R.string.unable_init_node_no_network)) }
+            return@launch
+        }
         try {
             node.start()
             node.identity.collect {
@@ -62,6 +69,18 @@ class LaunchViewModel(
         } catch (error: Throwable) {
             Log.e(TAG, "unable to init node", error)
             setState { copy(error = Launch.InitError(R.string.unable_init_node)) }
+        }
+    }
+
+    private fun observeNetworkState() = viewModelScope.launch {
+        networkReporter.currentConnectivity.collect {
+            if (currentState.error == null) {
+                return@collect
+            }
+            if (it.isNotEmpty()) {
+                setState { copy(error = null) }
+                initializeNode()
+            }
         }
     }
 }

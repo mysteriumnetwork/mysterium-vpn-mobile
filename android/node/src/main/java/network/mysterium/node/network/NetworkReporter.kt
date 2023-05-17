@@ -20,7 +20,7 @@ import java.util.Date
 import java.util.concurrent.TimeUnit
 
 
-internal class NetworkReporter(
+class NetworkReporter(
     context: Context
 ) {
 
@@ -32,7 +32,6 @@ internal class NetworkReporter(
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val networkStatsManager =
         context.getSystemService(NetworkStatsManager::class.java)
-    private val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onCapabilitiesChanged(
@@ -54,6 +53,10 @@ internal class NetworkReporter(
         val network = connectivity.activeNetwork ?: return false
         val activeNetwork = connectivity.getNetworkCapabilities(network) ?: return false
         return activeNetwork.hasTransport(type.capability)
+    }
+
+    fun isOnline(): Boolean {
+        return isConnected(NetworkType.MOBILE) || isConnected(NetworkType.WIFI)
     }
 
     @SuppressLint("MissingPermission", "HardwareIds")

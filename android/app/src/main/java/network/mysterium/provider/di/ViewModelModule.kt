@@ -10,7 +10,10 @@ import org.koin.dsl.module
 
 val viewModels = module {
     viewModel {
-        LaunchViewModel(node = get())
+        LaunchViewModel(
+            node = get(),
+            networkReporter = get()
+        )
     }
     viewModel {
         TACViewModel(node = get())

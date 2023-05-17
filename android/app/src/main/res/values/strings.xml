@@ -24,6 +24,7 @@
     <string name="onboard_continue">Continue</string>
     <string name="missing_vpn_permission">VPN connection has to be granted for Myst Nodes to work</string>
     <string name="unable_init_node">Unable to start node due to unknown error</string>
+    <string name="unable_init_node_no_network">Unable to start node due to no internet connection</string>
     <string name="services">Services</string>
     <string name="unsettled_earnings">Unsettled earnings</string>
     <string name="mobile_data_limit_reached">Mobile data limit reached!</string>
@@ -32,4 +33,5 @@
     <string name="service_data_transfer">Data Transfer</string>
     <string name="service_data_scraping">Data Scraping</string>
     <string name="service_other">Other</string>
+    <string name="no_internet_connection">Unable to proceed</string>
 </resources>
