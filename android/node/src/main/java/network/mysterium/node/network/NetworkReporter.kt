@@ -94,7 +94,7 @@ internal class NetworkReporter(
 
     @SuppressLint("MissingPermission", "HardwareIds")
     private fun getSubscriberId(): String? {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             telephony.subscriberId
         } else {
             null
