@@ -1,6 +1,7 @@
 package network.mysterium.provider.ui.screens.settings
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeConfig
@@ -136,8 +137,10 @@ class SettingsViewModel(
         }
     }
 
-    private fun startNodeInForeground() = viewModelScope.launch {
+    private fun startNodeInForeground() = viewModelScope.launch(Dispatchers.IO) {
+        setState { copy(isStartingNode = true) }
         node.enableForegroundService()
+        setState { copy(isStartingNode = false) }
         setEffect { Settings.Effect.Navigation(NavigationDestination.NodeUI(true)) }
     }
 

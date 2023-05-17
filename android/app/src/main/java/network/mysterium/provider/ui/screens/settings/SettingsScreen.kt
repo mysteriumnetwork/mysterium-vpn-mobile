@@ -40,6 +40,7 @@ import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
 import network.mysterium.provider.ui.components.buttons.SecondaryButton
 import network.mysterium.provider.ui.components.content.TitledScreenContent
 import network.mysterium.provider.ui.components.input.InputTextField
+import network.mysterium.provider.ui.components.progress.ProgressDialog
 import network.mysterium.provider.ui.navigation.NavigationDestination
 import network.mysterium.provider.ui.screens.launch.Launch
 import network.mysterium.provider.ui.screens.settings.views.ButtonOption
@@ -132,6 +133,10 @@ private fun SettingsContent(
 
     if (state.showShutDownConfirmation) {
         ConfirmShutDown(onEvent = onEvent)
+    }
+
+    if (state.isStartingNode) {
+        ProgressDialog()
     }
 }
 
