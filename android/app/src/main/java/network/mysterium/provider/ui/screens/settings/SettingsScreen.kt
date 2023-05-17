@@ -49,6 +49,7 @@ import network.mysterium.provider.ui.theme.MysteriumTheme
 import network.mysterium.provider.ui.theme.Paddings
 import network.mysterium.provider.ui.theme.TextStyles
 import org.koin.androidx.compose.getViewModel
+import kotlin.system.exitProcess
 
 @Composable
 fun SettingsScreen(
@@ -67,6 +68,7 @@ fun SettingsScreen(
                     is Settings.Effect.Navigation -> onNavigate(it.destination)
                     Settings.Effect.CloseApp -> {
                         context.getActivity()?.finishAndRemoveTask()
+                        exitProcess(0)
                     }
                 }
             }
