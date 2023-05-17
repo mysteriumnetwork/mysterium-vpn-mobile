@@ -30,6 +30,7 @@ sealed class Settings {
         val isStartingNode: Boolean,
         val showShutDownConfirmation: Boolean,
         val nodeError: NodeError?,
+        val continueButtonEnabled: Boolean
     ) : UIState
 
     data class NodeError(

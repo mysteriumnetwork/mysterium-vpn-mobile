@@ -119,6 +119,7 @@ private fun SettingsContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(Paddings.continueButton),
+                    enabled = state.continueButtonEnabled,
                     text = stringResource(id = R.string.onboard_continue)
                 ) {
                     onEvent(Settings.Event.OnContinue)
@@ -311,6 +312,7 @@ private fun SettingsContentPreview() {
                 isSaveButtonEnabled = false,
                 isStartingNode = true,
                 showShutDownConfirmation = false,
+                continueButtonEnabled = false,
                 nodeError = null
             ),
             isOnboarding = false,

@@ -27,6 +27,7 @@ class SettingsViewModel(
             isSaveButtonEnabled = false,
             isStartingNode = false,
             showShutDownConfirmation = false,
+            continueButtonEnabled = true,
             nodeError = null,
         )
     }
@@ -35,11 +36,17 @@ class SettingsViewModel(
         when (event) {
             Settings.Event.FetchConfig -> {
                 val config = node.config
+                val continueEnabled = if (config.useMobileDataLimit) {
+                    config.mobileDataLimit != null
+                } else {
+                    true
+                }
                 setState {
                     copy(
                         isMobileDataOn = config.useMobileData,
                         isMobileDataLimitOn = config.useMobileDataLimit,
                         isAllowUseOnBatteryOn = config.allowUseOnBattery,
+                        continueButtonEnabled = continueEnabled,
                         mobileDataLimit = config.mobileDataLimit?.let {
                             Converter.bytesToMegabytes(it)
                         }
@@ -50,12 +57,20 @@ class SettingsViewModel(
                 updateNodeConfig(node.config.copy(useMobileData = event.checked))
                 setState { copy(isMobileDataOn = event.checked) }
             }
-
             is Settings.Event.ToggleLimit -> {
+                val continueEnabled = if (event.checked) {
+                    node.config.mobileDataLimit != null
+                } else {
+                    true
+                }
                 updateNodeConfig(node.config.copy(useMobileDataLimit = event.checked))
-                setState { copy(isMobileDataLimitOn = event.checked) }
+                setState {
+                    copy(
+                        isMobileDataLimitOn = event.checked,
+                        continueButtonEnabled = continueEnabled
+                    )
+                }
             }
-
             is Settings.Event.ToggleAllowUseOnBattery -> {
                 updateNodeConfig(node.config.copy(allowUseOnBattery = event.checked))
                 setState { copy(isAllowUseOnBatteryOn = event.checked) }
@@ -65,9 +80,18 @@ class SettingsViewModel(
                 processLimitInput(event.value)
             }
             Settings.Event.SaveMobileDataLimit -> {
-                val limit = currentState.mobileDataLimit ?: return
+                val limit = currentState.mobileDataLimit
+                if (limit == null) {
+                    setState { copy(continueButtonEnabled = false) }
+                    return
+                }
                 updateNodeConfig(node.config.copy(mobileDataLimit = Converter.megabytesToBytes(limit)))
-                setState { copy(isSaveButtonEnabled = false) }
+                setState {
+                    copy(
+                        isSaveButtonEnabled = false,
+                        continueButtonEnabled = true
+                    )
+                }
             }
             Settings.Event.OnContinue -> {
                 startNodeInForeground()

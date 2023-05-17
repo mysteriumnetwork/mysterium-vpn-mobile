@@ -59,16 +59,12 @@ internal class NetworkReporter(
     @SuppressLint("MissingPermission", "HardwareIds")
     fun monitorUsage(type: NetworkType) = callbackFlow {
         val networkType = type.capability
-        val subscribeId: String? = when (type) {
-            NetworkType.WIFI -> null
-            NetworkType.MOBILE -> getSubscriberId()
-        }
-
         val interval = TimeUnit.SECONDS.toMillis(10)
         var isRunning = true
         while (isRunning) {
             val response = networkStatsManager.querySummary(
-                networkType, subscribeId,
+                networkType,
+                null,
                 Date().time - interval,
                 Date().time
             )
@@ -89,15 +85,6 @@ internal class NetworkReporter(
 
         awaitClose {
             isRunning = false
-        }
-    }
-
-    @SuppressLint("MissingPermission", "HardwareIds")
-    private fun getSubscriberId(): String? {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            telephony.subscriberId
-        } else {
-            null
         }
     }
 
