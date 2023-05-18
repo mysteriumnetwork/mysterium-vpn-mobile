@@ -101,7 +101,7 @@ class NodeService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_logo)
             .setContentTitle("Connected")
-            .setColor(Color.BLACK)
+            .setColor(Color.WHITE)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVibrate(LongArray(0))
             .setContentIntent(pendingIntent)
