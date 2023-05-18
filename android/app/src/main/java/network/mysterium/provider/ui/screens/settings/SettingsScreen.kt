@@ -238,6 +238,7 @@ private fun DataLimitInput(
             InputTextField(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.mobile_data_limit),
+                info = "Mb",
                 value = state.mobileDataLimit?.toString() ?: "",
                 onValueChange = {
                     onEvent(Settings.Event.UpdateLimit(it))
