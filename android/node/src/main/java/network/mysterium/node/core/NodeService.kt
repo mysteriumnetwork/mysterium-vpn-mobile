@@ -112,7 +112,11 @@ class NodeService : Service() {
     }
 
     private fun stopForegroundNotification() {
-        stopForeground(STOP_FOREGROUND_DETACH)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            stopForeground(STOP_FOREGROUND_DETACH)
+        } else {
+            stopForeground(true)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
