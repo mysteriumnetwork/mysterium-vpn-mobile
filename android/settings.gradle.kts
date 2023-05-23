@@ -16,6 +16,6 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "Myst Nodes"
+rootProject.name = "MystNodes"
 include(":app")
 include(":node")

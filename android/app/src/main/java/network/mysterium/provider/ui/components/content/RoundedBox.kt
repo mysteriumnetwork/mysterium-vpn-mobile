@@ -27,11 +27,6 @@ fun RoundedBox(
 ) {
     Box(
         modifier = modifier
-            .shadow(
-                elevation = 100.dp,
-                spotColor = Colors.shadow,
-                shape = RoundedCornerShape(Corners.default)
-            )
             .background(
                 color = Color.White,
                 shape = RoundedCornerShape(Corners.default)

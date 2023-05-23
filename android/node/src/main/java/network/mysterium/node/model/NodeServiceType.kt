@@ -11,11 +11,8 @@ import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 data class NodeServiceType(
-    @SerialName("Service")
-    val service: Service,
-
-    @SerialName("State")
-    val state: State,
+    val id: Service,
+    val state: State
 ) {
 
     @Serializable(with = StatusSerializer::class)
