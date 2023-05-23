@@ -19,6 +19,9 @@ fun NodeUIScreen(
     val state by viewModel.uiState.collectAsState()
     NodeUIScreenContent(
         state = state,
+        onEvent = {
+            viewModel.setEvent(it)
+        },
         onNavigate = onNavigate
     )
 }
@@ -26,6 +29,7 @@ fun NodeUIScreen(
 @Composable
 private fun NodeUIScreenContent(
     state: NodeUI.State,
+    onEvent: (NodeUI.Event) -> Unit,
     onNavigate: (NavigationDestination) -> Unit
 ) {
     LogoScreenContent(
@@ -45,7 +49,13 @@ private fun NodeUIScreenContent(
         }
     ) {
         ComposeWebView(
-            url = state.url
+            url = state.url,
+            onReload = {
+                onEvent(NodeUI.Event.SetReloadCallback(it))
+            },
+            onLoadUrl = {
+                onEvent(NodeUI.Event.UrlLoaded(it))
+            }
         )
     }
 }
@@ -57,8 +67,10 @@ private fun NodeUIScreenContentPreview() {
     NodeUIScreenContent(
         state = NodeUI.State(
             url = "http://localhost:4449",
+            reload = {},
             isRegistered = false
         ),
+        onEvent = {},
         onNavigate = {}
     )
 }

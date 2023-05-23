@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
@@ -318,8 +319,8 @@ class NodeService : Service() {
         }
 
         override suspend fun updateServices() {
-            updateNodeServices()
             updateMobileDataUsage(0)
+            updateNodeServices()
         }
 
         override fun stopServices() {

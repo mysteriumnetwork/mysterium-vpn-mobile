@@ -1,21 +1,25 @@
 package network.mysterium.provider.ui.components.webview
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 
+private const val TAG: String = "ComposeWebView"
+
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun ComposeWebView(
     modifier: Modifier = Modifier,
-    url: String
+    url: String,
+    onLoadUrl: (Uri) -> Unit = {},
+    onReload: (() -> Unit) -> Unit = {}
 ) {
     AndroidView(
         modifier = modifier
@@ -26,12 +30,24 @@ fun ComposeWebView(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
-                webViewClient = WebViewClient().apply {
+                webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?
+                    ): Boolean {
+                        val url = request?.url ?: return false
+                        onLoadUrl(url)
+                        return false
+                    }
+                }.apply {
                     settings.javaScriptEnabled = true
                     settings.javaScriptCanOpenWindowsAutomatically = true
                     settings.domStorageEnabled = true
                 }
                 loadUrl(url)
+                onReload {
+                    loadUrl(url)
+                }
             }
         }
     ) {
