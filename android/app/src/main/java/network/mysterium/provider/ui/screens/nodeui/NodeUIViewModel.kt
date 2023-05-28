@@ -51,7 +51,7 @@ class NodeUIViewModel(
     private fun handleUrl(url: Uri) {
         val path = url.toString()
         Log.d("NodeUI", "Url loaded: $path")
-        if (path == Config.stripeRedirectUrl || path == Config.payPalRedirectUrl) {
+        if (path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl)) {
             currentState.reload()
         }
     }
