@@ -227,6 +227,9 @@ dependencies {
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
+    //Fast scroll
+    implementation "me.zhanghai.android.fastscroll:library:1.2.0"
+
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.50"
