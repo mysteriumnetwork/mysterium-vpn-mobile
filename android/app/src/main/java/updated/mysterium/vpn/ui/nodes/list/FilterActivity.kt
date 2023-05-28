@@ -133,13 +133,13 @@ class FilterActivity : BaseActivity() {
             navigateToConnection(it)
         }
         binding.nodesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@FilterActivity)
+            val context = this@FilterActivity
+            layoutManager = LinearLayoutManager(context)
             adapter = nodeListAdapter
             FastScrollerBuilder(this).useMd2Style().apply {
-                ContextCompat.getDrawable(this@FilterActivity, R.drawable.thumb_drawable_scrolling)
-                    ?.let {
-                        setThumbDrawable(it)
-                    }
+                ContextCompat.getDrawable(context, R.drawable.thumb_drawable_scrolling)?.let {
+                    setThumbDrawable(it)
+                }
                 disableScrollbarAutoHide()
                 build()
             }
