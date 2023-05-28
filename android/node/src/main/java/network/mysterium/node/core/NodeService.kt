@@ -16,7 +16,6 @@ import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,10 +49,11 @@ import kotlin.concurrent.timer
 
 class NodeService : Service() {
 
-    companion object {
+    private companion object {
         const val CHANNEL_ID = "mystnodes.channel"
         const val NOTIFICATION_ID = 1
         val BALANCE_CHECK_INTERVAL = TimeUnit.MINUTES.toMillis(1)
+        val TAG: String = NodeService::class.java.simpleName
     }
 
     private lateinit var networkReporter: NetworkReporter
@@ -262,6 +262,7 @@ class NodeService : Service() {
             } else {
                 limitMonitorFlow.update { false }
             }
+            Log.d(TAG, "Total usage: ${usage.bytes / (1024 * 1024)} MB")
         } else {
             limitMonitorFlow.update { false }
         }
@@ -273,8 +274,7 @@ class NodeService : Service() {
         val mobileDataOption =
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
-
-        if (batteryOption && (wifiOption || mobileDataOption)) {
+        if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
             // starting and stopping provider helps to display service status correctly
             mobileNode?.stopProvider()
             mobileNode?.startProvider()
@@ -282,6 +282,21 @@ class NodeService : Service() {
             mobileNode?.stopProvider()
         }
     }
+
+    private fun isMobileLimitReached(): Boolean {
+        val config = storage.config
+        val usage = storage.usage
+        val shouldCheckLimit = config.useMobileData &&
+                config.useMobileDataLimit &&
+                networkReporter.isConnected(NetworkType.MOBILE)
+        val limit = config.mobileDataLimit ?: return false
+        return if (shouldCheckLimit) {
+            usage.bytes > limit
+        } else {
+            false
+        }
+    }
+
 
     internal inner class Bridge : Binder(), NodeServiceBinder {
 
