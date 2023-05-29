@@ -26,3 +26,11 @@ fun SettingsButton(onClick: () -> Unit) {
         onClick = onClick
     )
 }
+
+@Composable
+fun HelpButton(onClick: () -> Unit) {
+    PrimaryIconButton(
+        iconResId = R.drawable.ic_help,
+        onClick = onClick
+    )
+}

@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +35,7 @@ import network.mysterium.provider.R
 import network.mysterium.provider.extensions.appVersion
 import network.mysterium.provider.extensions.getActivity
 import network.mysterium.provider.ui.components.buttons.BackButton
+import network.mysterium.provider.ui.components.buttons.HelpButton
 import network.mysterium.provider.ui.components.buttons.HomeButton
 import network.mysterium.provider.ui.components.buttons.PrimaryButton
 import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
@@ -92,8 +94,15 @@ private fun SettingsContent(
     onEvent: (Settings.Event) -> Unit,
     onNavigate: (NavigationDestination) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
     TitledScreenContent(
-        title = stringResource(id = R.string.mobile_data_settings),
+        title = stringResource(
+            id = if (isOnboarding) {
+                R.string.mobile_data_settings
+            } else {
+                R.string.settings
+            }
+        ),
         color = Colors.secondaryBg,
         navLeading = {
             if (isOnboarding) {
@@ -103,6 +112,13 @@ private fun SettingsContent(
             } else {
                 HomeButton {
                     onNavigate(NavigationDestination.Home)
+                }
+            }
+        },
+        navTrailing = {
+            if (!isOnboarding) {
+                HelpButton {
+                    uriHandler.openUri(Config.helpLink)
                 }
             }
         }
@@ -211,13 +227,15 @@ private fun OptionsContent(
             }
         }
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "v${appVersion}",
-            style = TextStyles.label,
-            color = Colors.textSecondary,
-            textAlign = TextAlign.Center
-        )
+        if (!isOnboarding) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "v${appVersion}",
+                style = TextStyles.label,
+                color = Colors.textSecondary,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -282,11 +300,18 @@ private fun ConfirmShutDown(
 ) {
     AlertDialog(
         title = {
-            Text(stringResource(id = R.string.shut_down_node))
+            Text(
+                text = stringResource(id = R.string.shut_down_node),
+                style = TextStyles.header
+            )
         },
         text = {
-            Text(stringResource(id = R.string.shut_down_confirmation))
+            Text(
+                text = stringResource(id = R.string.shut_down_confirmation),
+                style = TextStyles.body
+            )
         },
+        containerColor = Color.White,
         confirmButton = {
             PrimaryTextButton(
                 text = stringResource(id = R.string.yes),
