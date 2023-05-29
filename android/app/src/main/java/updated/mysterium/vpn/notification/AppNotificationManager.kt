@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat
 import network.mysterium.vpn.R
 import updated.mysterium.vpn.model.notification.NotificationChannels
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
+import updated.mysterium.vpn.ui.provider.ProviderActivity
 import updated.mysterium.vpn.ui.splash.SplashActivity
 import updated.mysterium.vpn.ui.splash.SplashActivity.Companion.REDIRECTED_FROM_PUSH_KEY
 
@@ -19,6 +20,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         const val ACTION_DISCONNECT = "DISCONNECT"
     }
 
+    private val providerChannel = "provider"
     private val statisticsChannel = "statistics"
     private val connLostChannel = "connectionlost"
     private val paymentStatusChannel = "paymentstatus"
@@ -28,6 +30,7 @@ class AppNotificationManager(private val notificationManager: NotificationManage
     // pendingAppIntent is used to navigate back to MainActivity
     // when user taps on notification.
     private lateinit var pendingAppIntent: PendingIntent
+    private lateinit var pendingProviderIntent: PendingIntent
 
     fun init(ctx: Context) {
         context = ctx
@@ -36,11 +39,17 @@ class AppNotificationManager(private val notificationManager: NotificationManage
         }
         pendingAppIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
+        val intentProvider = Intent(ctx, ProviderActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        pendingProviderIntent = PendingIntent.getActivity(ctx, 0, intentProvider, PendingIntent.FLAG_IMMUTABLE)
+
         registerAllNotificationChannels(context)
     }
 
     private fun registerAllNotificationChannels(context: Context) {
         with(context) {
+            createChannel(providerChannel, getString(R.string.provider_notification_chanel))
             createChannel(statisticsChannel, getString(R.string.statisctics_notification_chanel))
             createChannel(connLostChannel, getString(R.string.connection_lost_notification_chanel))
             createChannel(paymentStatusChannel, getString(R.string.payment_notification_chanel))
@@ -69,6 +78,19 @@ class AppNotificationManager(private val notificationManager: NotificationManage
                 .setContentIntent(pendingAppIntent)
                 .setOnlyAlertOnce(true)
                 .build()
+        }
+    }
+
+    fun createProviderNotification(): NotificationFactory {
+        return {
+            NotificationCompat.Builder(it, providerChannel)
+                    .setSmallIcon(R.drawable.notification_logo)
+                    .setContentTitle("Provider is active")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVibrate(LongArray(0))
+                    .setContentIntent(pendingProviderIntent)
+                    .setOnlyAlertOnce(true)
+                    .build()
         }
     }
 

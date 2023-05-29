@@ -31,6 +31,7 @@ import updated.mysterium.vpn.ui.onboarding.OnboardingViewModel
 import updated.mysterium.vpn.ui.prepare.top.up.PrepareTopUpViewModel
 import updated.mysterium.vpn.ui.private.key.PrivateKeyViewModel
 import updated.mysterium.vpn.ui.profile.ProfileViewModel
+import updated.mysterium.vpn.ui.provider.ProviderViewModel
 import updated.mysterium.vpn.ui.report.issue.ReportIssueViewModel
 import updated.mysterium.vpn.ui.search.SearchViewModel
 import updated.mysterium.vpn.ui.settings.SettingsViewModel
@@ -157,6 +158,9 @@ object Modules {
         }
         viewModel {
             SelectCountryViewModel(get())
+        }
+        single {
+            ProviderViewModel(get())
         }
     }
 

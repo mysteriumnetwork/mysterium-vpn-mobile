@@ -7,4 +7,5 @@ object NotificationChannels {
     const val BALANCE_NOTIFICATION_ID = 4
     const val PRIVATE_KEY_NOTIFICATION_ID = 5
     const val PAYMENT_STATUS_ID = 6
+    const val PROVIDER_NOTIFICATION = 7
 }

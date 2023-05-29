@@ -26,6 +26,9 @@ import updated.mysterium.vpn.notification.NotificationFactory
 interface MysteriumCoreService : IBinder {
 
     suspend fun startNode(): MobileNode
+    fun isProviderActive(): Boolean
+    fun startProvider(provider: Boolean)
+    fun stopConsumer()
 
     fun stopNode()
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MysteriumVPN</string>
+    <string name="app_name" translatable="false">MysteriumVPN Provider</string>
 
     <!--   Common   -->
     <string name="close">Close</string>
@@ -86,6 +86,8 @@
     <string name="menu_item_referral_subtitle">Earn VPN Credits</string>
     <string name="menu_item_monitoring_subtitle">Connection history</string>
     <string name="menu_list_item_settings">Settings</string>
+    <string name="menu_list_item_provider">Provider mode</string>
+
     <string name="menu_list_item_report">Report an issue</string>
     <string name="menu_list_item_help">Get help</string>
     <string name="menu_terms">Terms of Use</string>
@@ -193,10 +195,21 @@
     <string name="card_payment_country_hint">Select Country or Region</string>
     <string name="card_payment_state_hint">Select State</string>
 
+    <!--  Provider  -->
+    <string name="server_title">Server</string>
+    <string name="provider_title">Myst provider</string>
+    <string name="enable_provider_title">Enable</string>
+
     <!--  Settings  -->
     <string name="settings_title">Settings</string>
     <string name="settings_description">Identity is your Mysterium internal user ID. Never send ether or any kind of ERC20 tokens there.</string>
     <string name="settings_dns_title">DNS</string>
+    <string name="service_1_title">wireguard</string>
+    <string name="service_2_title">data transfer</string>
+    <string name="service_3_title">scraping</string>
+    <string name="service_idle_title">idle</string>
+    <string name="service_active_title">active</string>
+
     <string name="settings_resident_title">Resident country</string>
     <string name="settings_dns_system">System</string>
     <string name="settings_dns_provider">Provider</string>
@@ -319,4 +332,6 @@
     <string name="connection_lost_notification_chanel">Lost Connection</string>
     <string name="payment_notification_chanel">Payments</string>
     <string name="innactive_notification_chanel">Reminder Notifications</string>
+    <string name="provider_notification_chanel">Provider mode</string>
+
 </resources>

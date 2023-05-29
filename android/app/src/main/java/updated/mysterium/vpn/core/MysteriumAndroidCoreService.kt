@@ -25,12 +25,10 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mysterium.MobileNode
 import mysterium.Mysterium
+import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -75,6 +73,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var currentState = ConnectionState.NOTCONNECTED
     private var vpnTimeSpent: Float? = null // time spent for last session in minutes
     private var secondsBetweenAnalyticEvent = 0
+    private var isProviderActive = false
 
     override fun onDestroy() {
         stopMobileNode()
@@ -89,11 +88,50 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         return MysteriumCoreServiceBridge()
     }
 
+    private fun startMobileProviderService(active: Boolean) {
+        mobileNode?.let {
+            isProviderActive = active
+            try {
+                if (active) {
+                    it.startProvider()
+                } else {
+                    it.stopProvider()
+                }
+
+            } catch (e: Exception) {
+                isProviderActive = !active
+                println(e)
+            }
+        }
+    }
+
+    private fun innerStopConsumer() {
+        var c = currentState == ConnectionState.CONNECTED ||
+                currentState == ConnectionState.CONNECTING ||
+                currentState == ConnectionState.ON_HOLD ||
+                currentState == ConnectionState.IP_NOT_CHANGED
+
+
+        GlobalScope.launch(Dispatchers.IO) {
+            if (c) {
+                connectionUseCase.disconnect()
+
+                activeProposal = null
+                deferredNode = null
+                stopForeground(true)
+            }
+        }
+    }
+
     private fun startMobileNode(filesPath: String): MobileNode {
         mobileNode?.let {
             return it
         }
-        mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultNodeOptions())
+        mobileNode = Mysterium.newNode(filesPath, Mysterium.defaultProviderNodeOptions())
+
+        val launcherVersion = String.format("%s/android", BuildConfig.VERSION_NAME)
+        Mysterium.setFlagLauncherVersion(launcherVersion)
+
         mobileNode?.overrideWireguardConnection(WireguardAndroidTunnelSetup(this@MysteriumAndroidCoreService))
         return mobileNode ?: MobileNode()
     }
@@ -271,6 +309,16 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     inner class MysteriumCoreServiceBridge : Binder(), MysteriumCoreService {
+
+        override fun stopConsumer() {
+            innerStopConsumer()
+        }
+        override fun startProvider(active: Boolean) {
+            startMobileProviderService(active)
+        }
+        override fun isProviderActive(): Boolean {
+            return isProviderActive
+        }
 
         override fun getDeferredNode() = deferredNode
 
