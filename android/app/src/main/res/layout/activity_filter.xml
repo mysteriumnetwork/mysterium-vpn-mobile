@@ -131,10 +131,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nodesRecyclerView"
-        style="@style/ScrollbarRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_padding_size_small_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_xsmall"
         android:layout_marginTop="@dimen/margin_padding_size_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nodeTextView"

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityFilterBinding
 import org.koin.android.ext.android.inject
@@ -132,8 +133,16 @@ class FilterActivity : BaseActivity() {
             navigateToConnection(it)
         }
         binding.nodesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@FilterActivity)
+            val context = this@FilterActivity
+            layoutManager = LinearLayoutManager(context)
             adapter = nodeListAdapter
+            FastScrollerBuilder(this).useMd2Style().apply {
+                ContextCompat.getDrawable(context, R.drawable.thumb_drawable_scrolling)?.let {
+                    setThumbDrawable(it)
+                }
+                disableScrollbarAutoHide()
+                build()
+            }
         }
     }
 
