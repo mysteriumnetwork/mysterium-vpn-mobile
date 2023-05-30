@@ -21,6 +21,14 @@
         android:theme="@style/Theme.Mysterium"
         tools:targetApi="33">
 
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="${SENTRY}" />
+
+        <meta-data
+            android:name="io.sentry.attach-screenshot"
+            android:value="true" />
+
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"

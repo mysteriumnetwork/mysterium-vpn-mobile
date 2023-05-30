@@ -112,6 +112,7 @@ class NodeService : Service() {
         startForeground(NOTIFICATION_ID, notification)
     }
 
+    @Suppress("DEPRECATION")
     private fun stopForegroundNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             stopForeground(STOP_FOREGROUND_DETACH)

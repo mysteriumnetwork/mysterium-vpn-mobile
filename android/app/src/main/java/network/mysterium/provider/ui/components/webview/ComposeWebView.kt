@@ -35,8 +35,8 @@ fun ComposeWebView(
                         view: WebView?,
                         request: WebResourceRequest?
                     ): Boolean {
-                        val url = request?.url ?: return false
-                        onLoadUrl(url)
+                        val loadUrl = request?.url ?: return false
+                        onLoadUrl(loadUrl)
                         return false
                     }
                 }.apply {
