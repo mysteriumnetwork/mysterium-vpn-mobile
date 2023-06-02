@@ -30,7 +30,6 @@ class NodeUIViewModel(
         when (event) {
             NodeUI.Event.Load -> {
                 setState { copy(url = node.nodeUIUrl) }
-                observeLimit()
             }
             is NodeUI.Event.UrlLoaded -> {
                 handleUrl(event.url)
@@ -53,12 +52,6 @@ class NodeUIViewModel(
         Log.d("NodeUI", "Url loaded: $path")
         if (path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl)) {
             currentState.reload()
-        }
-    }
-
-    private fun observeLimit() = viewModelScope.launch {
-        node.limitMonitor.collect { isLimitReached ->
-            if (isLimitReached) node.stop()
         }
     }
 }
