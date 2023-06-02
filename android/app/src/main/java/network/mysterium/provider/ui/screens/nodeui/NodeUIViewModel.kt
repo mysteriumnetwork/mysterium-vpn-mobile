@@ -3,7 +3,6 @@ package network.mysterium.provider.ui.screens.nodeui
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
@@ -31,6 +30,7 @@ class NodeUIViewModel(
         when (event) {
             NodeUI.Event.Load -> {
                 setState { copy(url = node.nodeUIUrl) }
+                observeLimit()
             }
             is NodeUI.Event.UrlLoaded -> {
                 handleUrl(event.url)
@@ -53,6 +53,12 @@ class NodeUIViewModel(
         Log.d("NodeUI", "Url loaded: $path")
         if (path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl)) {
             currentState.reload()
+        }
+    }
+
+    private fun observeLimit() = viewModelScope.launch {
+        node.limitMonitor.collect { isLimitReached ->
+            if (isLimitReached) node.stop()
         }
     }
 }
