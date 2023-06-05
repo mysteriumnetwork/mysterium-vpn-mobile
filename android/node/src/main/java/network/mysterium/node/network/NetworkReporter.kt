@@ -7,8 +7,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.os.Build
-import android.telephony.TelephonyManager
+import android.util.Log
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,13 +63,19 @@ class NetworkReporter(
         val networkType = type.capability
         val interval = TimeUnit.SECONDS.toMillis(10)
         var isRunning = true
+        var startTime = Date().time - interval
+        var endTime: Long
+
         while (isRunning) {
+            Log.d("NetworkReporter", "Start: $startTime; End: ${Date().time}")
+            endTime = Date().time
             val response = networkStatsManager.querySummary(
                 networkType,
                 null,
-                Date().time - interval,
-                Date().time
+                startTime,
+                endTime
             )
+            startTime = endTime
 
             var usage = 0L
             while (true) {
