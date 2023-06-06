@@ -3,7 +3,6 @@ package network.mysterium.provider.ui.screens.nodeui
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity

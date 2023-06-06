@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -256,7 +255,7 @@ class NodeService : Service() {
         }
     }
 
-    private fun updateMobileDataUsage(usedBytes: Long) {
+    private fun updateMobileDataUsage(usedBytesPerMonth: Long) {
         val config = storage.config
         if (config.useMobileData &&
             config.useMobileDataLimit &&
@@ -264,14 +263,15 @@ class NodeService : Service() {
             networkReporter.isConnected(NetworkType.MOBILE)
         ) {
             var usage = storage.usage
-            usage = usage.copy(bytes = usage.bytes + usedBytes)
+            usage = usage.copy(bytes = usedBytesPerMonth)
             storage.usage = usage
             if (usage.bytes > config.mobileDataLimit) {
                 limitMonitorFlow.update { true }
+                mobileNode?.stopProvider()
             } else {
                 limitMonitorFlow.update { false }
             }
-            Log.d(TAG, "Total usage: ${usage.bytes / (1024 * 1024)} MB")
+            Log.d(TAG, "MegaBytes: ${(((usage.bytes / (1024.0 * 1024.0)) * 100).toInt()) / 100.0}")
         } else {
             limitMonitorFlow.update { false }
         }
