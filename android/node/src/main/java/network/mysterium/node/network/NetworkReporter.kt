@@ -57,7 +57,7 @@ class NetworkReporter(
 
     fun monitorUsage(type: NetworkType) = callbackFlow {
         val networkType = type.capability
-        val interval = TimeUnit.SECONDS.toMillis(10)
+        val interval = TimeUnit.SECONDS.toMillis(5)
         var isRunning = true
         val startTime = DateUtil.getMillisecondsOfFirstDayOfMonth()
 

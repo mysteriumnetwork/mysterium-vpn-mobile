@@ -1,7 +1,6 @@
 package network.mysterium.provider.ui.screens.home
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.provider.core.CoreViewModel
@@ -34,7 +33,7 @@ class HomeViewModel(
 
     private fun observeServices() = viewModelScope.launch {
         node.services.collect {
-            setState { copy(services = it) }
+            setState { copy(services = it.sortedBy { it.id }) }
         }
     }
 
