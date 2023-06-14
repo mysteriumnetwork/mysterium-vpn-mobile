@@ -1,7 +1,6 @@
 package network.mysterium.node.model
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -26,8 +25,8 @@ data class NodeServiceType(
     @Serializable(with = ServiceSerializer::class)
     enum class Service(val raw: String) {
         WIREGUARD("wireguard"),
-        SCRAPING("scraping"),
         DATA_TRANSFER("data_transfer"),
+        SCRAPING("scraping"),
         OTHER("other")
     }
 
