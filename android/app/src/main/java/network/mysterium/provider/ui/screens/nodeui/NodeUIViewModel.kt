@@ -3,6 +3,7 @@ package network.mysterium.provider.ui.screens.nodeui
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
@@ -51,7 +52,10 @@ class NodeUIViewModel(
         val path = url.toString()
         Log.d("NodeUI", "Url loaded: $path")
         if (path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl)) {
-            currentState.reload()
+            viewModelScope.launch {
+                delay(3000)
+                currentState.reload()
+            }
         }
     }
 }
