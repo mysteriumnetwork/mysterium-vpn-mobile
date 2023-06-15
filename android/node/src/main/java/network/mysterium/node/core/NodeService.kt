@@ -284,8 +284,6 @@ class NodeService : Service() {
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
         if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
-            // starting and stopping provider helps to display service status correctly
-            mobileNode?.stopProvider()
             mobileNode?.startProvider()
         } else {
             mobileNode?.stopProvider()
