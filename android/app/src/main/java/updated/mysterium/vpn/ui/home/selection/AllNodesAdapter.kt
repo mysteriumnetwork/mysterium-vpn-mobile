@@ -42,6 +42,7 @@ class AllNodesAdapter : ContentListAdapter<CountryInfo, AllNodesAdapter.CountryS
             } else {
                 item.countryName
             }
+            Glide.with(itemView.context).clear(binding.countryImage)
             Glide.with(itemView.context)
                 .load(item.countryFlagBitmap ?: item.countryFlagRes)
                 .circleCrop()
