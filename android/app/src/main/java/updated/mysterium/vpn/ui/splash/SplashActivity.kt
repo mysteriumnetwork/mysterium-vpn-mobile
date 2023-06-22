@@ -63,7 +63,6 @@ class SplashActivity : BaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ensureVpnServicePermission()
-        configure()
         subscribeViewModel()
         viewModel.setUpInactiveUserPushyNotifications()
     }
@@ -84,19 +83,6 @@ class SplashActivity : BaseActivity() {
         if (isVpnPermissionGranted) {
             startLoading()
         }
-    }
-
-    private fun configure() {
-        binding.onceAnimationView.addAnimatorListener(object : OnAnimationCompletedListener() {
-
-            override fun onAnimationEnd(animation: Animator) {
-                viewModel.animationLoaded()
-                binding.onceAnimationView.visibility = View.GONE
-                binding.onceAnimationView.cancelAnimation()
-                binding.loopAnimationView.visibility = View.VISIBLE
-                binding.loopAnimationView.playAnimation()
-            }
-        })
     }
 
     private fun subscribeViewModel() {
