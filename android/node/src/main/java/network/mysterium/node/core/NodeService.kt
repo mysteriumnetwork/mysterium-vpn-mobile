@@ -267,7 +267,7 @@ class NodeService : Service() {
             storage.usage = usage
             if (usage.bytes > config.mobileDataLimit) {
                 limitMonitorFlow.update { true }
-                mobileNode?.stopProvider()
+                stopServicesOnlyIfNotRunning()
             } else {
                 limitMonitorFlow.update { false }
             }
@@ -286,7 +286,7 @@ class NodeService : Service() {
         if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
             mobileNode?.startProvider()
         } else {
-            mobileNode?.stopProvider()
+            stopServicesOnlyIfNotRunning()
         }
     }
 
@@ -301,6 +301,19 @@ class NodeService : Service() {
             usage.bytes > limit
         } else {
             false
+        }
+    }
+
+    //workaround used to prevent call stopProvider() twice. If called twice- won't automatically run services
+    private fun stopServicesOnlyIfNotRunning() {
+        if (mobileNode?.allServicesState == null) return
+        val node = mobileNode!!
+        val json = node.allServicesState.decodeToString()
+        val services = Json.decodeFromString<List<NodeServiceType>>(json)
+        val isRunning =
+            services.any { it.state == NodeServiceType.State.STARTING || it.state == NodeServiceType.State.RUNNING }
+        if (isRunning) {
+            mobileNode!!.stopProvider()
         }
     }
 
@@ -346,11 +359,11 @@ class NodeService : Service() {
         }
 
         override fun stopServices() {
-            mobileNode?.stopProvider()
+            stopServicesOnlyIfNotRunning()
         }
 
         override suspend fun stop() {
-            mobileNode?.stopProvider()
+            stopServicesOnlyIfNotRunning()
             mobileNode?.shutdown()
         }
     }
