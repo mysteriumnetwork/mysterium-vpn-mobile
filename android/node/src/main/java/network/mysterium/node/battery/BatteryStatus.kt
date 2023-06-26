@@ -15,7 +15,7 @@ class BatteryStatus(private val context: Context) {
     val isCharging: StateFlow<Boolean>
         get() = isChargingFlow.asStateFlow()
 
-    private val isChargingFlow = MutableStateFlow(false)
+    private val isChargingFlow = MutableStateFlow(true)
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
