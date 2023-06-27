@@ -126,7 +126,7 @@
         </item>
         <item name="android:background">@drawable/shape_rounded_semi_transparent</item>
         <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@color/manual_connect_button_text_black</item>
+        <item name="android:textColor">@color/manual_connect_subtitle_white</item>
         <item name="elevation">0dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingStart">@dimen/margin_padding_size_xlarge</item>
@@ -139,7 +139,7 @@
         </item>
         <item name="android:background">@drawable/shape_rounded_semi_transparent</item>
         <item name="backgroundTint">@null</item>
-        <item name="android:textColor">@color/manual_connect_button_text_black</item>
+        <item name="android:textColor">@color/manual_connect_subtitle_white</item>
         <item name="elevation">0dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingStart">@dimen/margin_padding_size_medium_large</item>
