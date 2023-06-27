@@ -43,8 +43,6 @@ class SplashViewModel(
     private val settingsUseCase = useCaseProvider.settings()
     private var deferredNode = DeferredNode()
     private var service: MysteriumCoreService? = null
-    private var isAnimationLoaded = false
-    private var isDataLoaded = false
     private var isNavigateForward = false
 
     fun startLoading(
@@ -86,17 +84,6 @@ class SplashViewModel(
 
     fun isTopUpFlowShown() = loginUseCase.isTopFlowShown()
 
-    fun animationLoaded() {
-        if (isDataLoaded) {
-            if (!isNavigateForward) {
-                isNavigateForward = true
-                _navigateForward.postValue(Unit)
-            }
-        } else {
-            isAnimationLoaded = true
-        }
-    }
-
     fun initRepository() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, exception.localizedMessage ?: exception.toString())
@@ -106,13 +93,9 @@ class SplashViewModel(
             service?.subscribeToListeners()
             balanceUseCase.initDeferredNode(deferredNode)
             connectionUseCase.initDeferredNode(deferredNode)
-            if (isAnimationLoaded) {
-                if (!isNavigateForward) {
-                    isNavigateForward = true
-                    _navigateForward.postValue(Unit)
-                }
-            } else {
-                isDataLoaded = true
+            if (!isNavigateForward) {
+                isNavigateForward = true
+                _navigateForward.postValue(Unit)
             }
         }
     }
