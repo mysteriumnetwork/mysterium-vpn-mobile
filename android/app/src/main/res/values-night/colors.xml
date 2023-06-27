@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_item_selected">#20FFFFFF</color>
+    <color name="primary_item_selected">#020202</color>
     <color name="primary_dark">#2B2745</color>
     <color name="primary_card_view">#64637D</color>
     <color name="primary_light_terms">#D61F85</color>
+    <color name="status_bar_color">#020202</color>
 
     <color name="onboarding_description_grey_blue">#70FFFFFF</color>
     <color name="onboarding_current_screen_white">#64637D</color>
@@ -37,6 +38,7 @@
     <color name="manual_connect_connected_receive">#FFFFFF</color>
     <color name="manual_connect_connected_output_icons">#9090BB</color>
     <color name="manual_connect_button_text">#B3FFFFFF</color>
+    <color name="manual_connect_button_text_black">#000000</color>
     <color name="manual_connect_button_text_tapped">#805A597D</color>
     <color name="manual_connect_button_background">#1AFFFFFF</color>
     <color name="manual_connect_button_background_tapped">#33FFFFFF</color>
