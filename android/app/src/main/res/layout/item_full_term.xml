@@ -54,7 +54,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_padding_size_small"
         android:layout_marginBottom="@dimen/margin_padding_size_large"
-        android:textColor="@color/manual_connect_subtitle_white"
+        android:textColor="@color/ColorWhite"
         android:textColorLink="@color/primary_light_terms"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

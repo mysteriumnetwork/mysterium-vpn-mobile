@@ -72,7 +72,7 @@ class MonitoringActivity : BaseActivity() {
         binding.sessionChart.apply {
             legend.isEnabled = false
             setNoDataText(getString(R.string.monitoring_empty_line_chart))
-            setNoDataTextColor(getColor(R.color.manual_connect_subtitle_white))
+            setNoDataTextColor(getColor(android.R.color.white))
             setDrawGridBackground(false)
             setDrawBorders(false)
             description = Description().apply {
