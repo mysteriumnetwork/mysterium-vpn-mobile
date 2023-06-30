@@ -38,10 +38,13 @@
     <color name="manual_connect_connected_receive">#FFFFFF</color>
     <color name="manual_connect_connected_output_icons">#9090BB</color>
     <color name="manual_connect_button_text">#B3FFFFFF</color>
-    <color name="manual_connect_button_text_black">#000000</color>
     <color name="manual_connect_button_text_tapped">#805A597D</color>
     <color name="manual_connect_button_background">#1AFFFFFF</color>
     <color name="manual_connect_button_background_tapped">#33FFFFFF</color>
+    <color name="shape_semi_transparent_background">#6664637D</color>
+    <color name="manual_connect_subtitle_white">#FFFFFF</color>
+
+    <color name="monitoring_text_color">#FFFFFF</color>
 
     <color name="onboarding_title_dark_blue">#FFFFFF</color>
 

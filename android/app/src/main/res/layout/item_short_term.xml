@@ -12,7 +12,7 @@
         android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
         android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
         android:autoLink="web"
-        android:textColor="@color/manual_connect_subtitle_white"
+        android:textColor="@color/ColorWhite"
         android:textColorLink="@color/primary_light_terms"
         app:drawableBottomCompat="@drawable/short_terms_separator" />
 

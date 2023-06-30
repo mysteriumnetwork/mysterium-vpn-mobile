@@ -2,15 +2,20 @@ package updated.mysterium.vpn.ui.home.selection
 
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.toolbar_base_connect.view.*
+import kotlinx.android.synthetic.main.toolbar_base_connect.view.leftButton
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
+import network.mysterium.vpn.databinding.PopUpDownloadNewApplicationBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
@@ -20,7 +25,8 @@ import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.favourites.FavouritesActivity
 import updated.mysterium.vpn.ui.menu.MenuActivity
 import updated.mysterium.vpn.ui.nodes.list.FilterActivity
-import java.util.*
+import java.util.Locale
+
 
 class HomeSelectionActivity : BaseActivity() {
 
@@ -30,6 +36,10 @@ class HomeSelectionActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityHomeSelectionBinding
+    private lateinit var bindingNewAppPopUp: PopUpDownloadNewApplicationBinding
+    private var dialogPasswordPopup: AlertDialog? = null
+
+
     private val viewModel: HomeSelectionViewModel by inject()
     private val allNodesViewModel: AllNodesViewModel by inject()
     private val allNodesAdapter = AllNodesAdapter()
@@ -92,9 +102,32 @@ class HomeSelectionActivity : BaseActivity() {
         viewModel.connectionState.observe(this) {
             handleConnectionState(it)
         }
+        viewModel.showNewAppUrl.observe(this) {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(getString(R.string.new_pop_up_url))
+            startActivity(i)
+        }
+        viewModel.isNewAppPopUpShow.observe(this) { isShow ->
+            if (isShow) {
+                showNewAppPopup()
+            } else {
+                dialogPasswordPopup?.dismiss()
+                dialogPasswordPopup = null
+            }
+        }
+        viewModel.isNewAppNotificationShow.observe(this) { isShow ->
+            binding.notificationNewApp.isVisible = isShow
+            binding.headerView.isInvisible = isShow
+        }
     }
 
     private fun bindsAction() {
+        binding.newAppNotification.setOnClickListener {
+            viewModel.openNewAppLink(NewAppPopupSource.NOTIFICATION)
+        }
+        binding.newAppNotificationClose.setOnClickListener {
+            viewModel.closeNewAppPopups(NewAppPopupSource.NOTIFICATION)
+        }
         binding.manualConnectToolbar.onLeftButtonClicked {
             startActivity(Intent(this, MenuActivity::class.java))
         }
@@ -121,18 +154,22 @@ class HomeSelectionActivity : BaseActivity() {
                 binding.titleTextView.text = getString(R.string.manual_connect_disconnected)
                 leftMenu()
             }
+
             ConnectionState.CONNECTING -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_connecting)
                 leftBack()
             }
+
             ConnectionState.CONNECTED -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_connected)
                 leftBack()
             }
+
             ConnectionState.ON_HOLD -> {
                 binding.titleTextView.text = getString(R.string.manual_connect_on_hold)
                 leftBack()
             }
+
             else -> {
                 binding.titleTextView.text = connection.state
                 leftMenu()
@@ -273,6 +310,22 @@ class HomeSelectionActivity : BaseActivity() {
                     start()
                 }
         }
+    }
+
+    private fun showNewAppPopup() {
+        bindingNewAppPopUp = PopUpDownloadNewApplicationBinding.inflate(layoutInflater)
+        dialogPasswordPopup = createPopUp(bindingNewAppPopUp.root, true)
+        with(bindingNewAppPopUp) {
+            acceptButton.setOnClickListener {
+                dialogPasswordPopup?.dismiss()
+                viewModel.openNewAppLink(NewAppPopupSource.POP_UP)
+            }
+            declineButton.setOnClickListener {
+                dialogPasswordPopup?.dismiss()
+                viewModel.closeNewAppPopups(NewAppPopupSource.POP_UP)
+            }
+        }
+        dialogPasswordPopup?.show()
     }
 
     private fun navigateToMenu() {
