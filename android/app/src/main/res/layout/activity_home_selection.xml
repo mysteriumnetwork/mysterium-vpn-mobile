@@ -78,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_padding_size_small_medium"
         android:text="@string/manual_connect_disconnected"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -118,6 +119,87 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/securityStatusImageView"
         tools:text="185.358.45.304" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/headerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ipTextView, connectedStatusImageView,securityStatusImageView,titleTextView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/notificationNewApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="newAppNotification, newAppNotificationClose" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/newAppNotification"
+        style="@style/Widget.SmallRoundedPrimaryCardView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_padding_size_small_medium"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/filterCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/manualConnectToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/notificationImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="12dp"
+                android:src="@drawable/icon_notification_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/notificationTitle"
+                style="@style/TextAppearance.MediumCaption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/notification_download_new_application_title"
+                android:textColor="@color/onboarding_title_dark_blue"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toTopOf="@id/notificationMessage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/notificationImage"
+                app:layout_constraintTop_toTopOf="@id/notificationImage" />
+
+            <TextView
+                android:id="@+id/notificationMessage"
+                style="@style/TextAppearance.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/notification_download_new_application_message"
+                android:textColor="@color/card_payment_value"
+                app:layout_constraintBottom_toBottomOf="@id/notificationImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/notificationImage"
+                app:layout_constraintTop_toBottomOf="@id/notificationTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/newAppNotificationClose"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_close_pop_up"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/newAppNotification"
+        app:layout_constraintEnd_toEndOf="@id/newAppNotification"
+        app:layout_constraintStart_toEndOf="@id/newAppNotification"
+        app:layout_constraintTop_toTopOf="@id/newAppNotification" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/filterCardView"

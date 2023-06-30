@@ -319,4 +319,14 @@
     <string name="connection_lost_notification_chanel">Lost Connection</string>
     <string name="payment_notification_chanel">Payments</string>
     <string name="innactive_notification_chanel">Reminder Notifications</string>
+
+    <string name="pop_up_download_new_application_title">Mysterium VPN 2.0 for\nAndroid is live!</string>
+    <string name="pop_up_download_new_application_message">Download the new app to use\nMysterium VPN on Android, iOS,\nMac and Windows.</string>
+    <string name="pop_up_download_new_application_accept_btn">Download</string>
+    <string name="pop_up_download_new_application_declain_btn">Go to Home</string>
+
+    <string name="notification_download_new_application_title">Mysterium VPN 2.0 for Android is live!</string>
+    <string name="notification_download_new_application_message">Download the new app to use Mysterium\nVPN on Android, iOS,Mac and Windows.</string>
+
+    <string name="new_pop_up_url" translatable="false">https://mysteriumvpn.com/v2</string>
 </resources>

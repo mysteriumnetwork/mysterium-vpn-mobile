@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import updated.mysterium.vpn.common.extensions.liveDataResult
+import updated.mysterium.vpn.common.livedata.SingleLiveEvent
 import updated.mysterium.vpn.model.manual.connect.ConnectionState
 import updated.mysterium.vpn.network.provider.usecase.UseCaseProvider
 
@@ -20,11 +21,27 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     val connectionState: LiveData<ConnectionState>
         get() = _connectionState
 
+    val isNewAppPopUpShow: LiveData<Boolean>
+        get() = _isNewAppPopUpShow
+    private val _isNewAppPopUpShow = MutableLiveData<Boolean>()
+
+    val isNewAppNotificationShow: LiveData<Boolean>
+        get() = _isNewAppNotificationShow
+    private val _isNewAppNotificationShow = MutableLiveData<Boolean>()
+
+    val showNewAppUrl = SingleLiveEvent<Unit>()
+
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val connectionUseCase = useCaseProvider.connection()
     private val locationUseCase = useCaseProvider.location()
     private val filtersUseCase = useCaseProvider.filters()
     private val settingsUseCase = useCaseProvider.settings()
+    private val newPopupUseCase = useCaseProvider.newAppPopup()
+
+    init {
+        refreshNewAppShowState(NewAppPopupSource.POP_UP)
+        refreshNewAppShowState(NewAppPopupSource.NOTIFICATION)
+    }
 
     fun getLocation() = liveDataResult {
         locationUseCase.getLocation()
@@ -64,5 +81,23 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
 
     fun getResidentCountry() = liveDataResult {
         settingsUseCase.getResidentCountry()
+    }
+
+    fun openNewAppLink(popUp: NewAppPopupSource) {
+        showNewAppUrl.value = Unit
+        closeNewAppPopups(popUp)
+    }
+
+    fun closeNewAppPopups(popUp: NewAppPopupSource) {
+        newPopupUseCase.disablePopUp(popUp)
+        refreshNewAppShowState(popUp)
+    }
+
+    private fun refreshNewAppShowState(popUp: NewAppPopupSource) {
+        val result = newPopupUseCase.getPopUpStatus(popUp)
+        when (popUp) {
+            NewAppPopupSource.POP_UP -> _isNewAppPopUpShow.value = result
+            NewAppPopupSource.NOTIFICATION -> _isNewAppNotificationShow.value = result
+        }
     }
 }

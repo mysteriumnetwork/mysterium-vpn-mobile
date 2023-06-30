@@ -41,4 +41,6 @@ class UseCaseProvider(
 
     fun favourites() = FavouritesUseCase(database.nodeDao())
 
+    fun newAppPopup() = NewAppPopupUseCase(sharedPreferencesManager)
+
 }

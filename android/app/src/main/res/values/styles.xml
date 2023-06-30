@@ -348,6 +348,12 @@
         <item name="cardBackgroundColor">@color/manual_connect_card_view_light_blue</item>
     </style>
 
+    <style name="Widget.SmallRoundedPrimaryCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/primary_card_view</item>
+    </style>
+
     <style name="Widget.SemiTransparentCardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">20dp</item>
         <item name="cardElevation">0dp</item>

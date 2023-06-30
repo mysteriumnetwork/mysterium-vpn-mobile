@@ -23,6 +23,8 @@ enum class SharedPreferencesList(val prefName: String) {
     IS_REVIEW_SHOWN("IS_REVIEW_SHOWN"),
     IS_NAT_AVAILABLE("IS_NAT_AVAILABLE"),
     DURATION("DURATION"),
+    IS_POP_UP_TO_SHOW("IS_POP_UP_TO_SHOW"),
+    IS_NOTIFICATION_TO_SHOW("IS_NOTIFICATION_TO_SHOW"),
 
     //Pushy parameters
     CRYPTO_PAYMENT("CRYPTO_PAYMENT"),
