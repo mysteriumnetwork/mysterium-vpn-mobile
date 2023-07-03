@@ -29,7 +29,7 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         get() = _isNewAppNotificationShow
     private val _isNewAppNotificationShow = MutableLiveData<Boolean>()
 
-    val showNewAppUrl = SingleLiveEvent<Unit>()
+    val showNewAppUrl = SingleLiveEvent<String>()
 
     private val _connectionState = MutableLiveData<ConnectionState>()
     private val connectionUseCase = useCaseProvider.connection()
@@ -83,8 +83,8 @@ class HomeSelectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         settingsUseCase.getResidentCountry()
     }
 
-    fun openNewAppLink(popUp: NewAppPopupSource) {
-        showNewAppUrl.value = Unit
+    fun openNewAppLink(popUp: NewAppPopupSource, link: String) {
+        showNewAppUrl.value = link
         closeNewAppPopups(popUp)
     }
 
