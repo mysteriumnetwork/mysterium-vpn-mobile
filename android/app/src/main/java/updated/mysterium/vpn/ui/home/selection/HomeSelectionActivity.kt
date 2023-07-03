@@ -102,9 +102,9 @@ class HomeSelectionActivity : BaseActivity() {
         viewModel.connectionState.observe(this) {
             handleConnectionState(it)
         }
-        viewModel.showNewAppUrl.observe(this) {
+        viewModel.showNewAppUrl.observe(this) { link ->
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(getString(R.string.new_pop_up_url))
+            i.data = Uri.parse(link)
             startActivity(i)
         }
         viewModel.isNewAppPopUpShow.observe(this) { isShow ->
@@ -123,7 +123,7 @@ class HomeSelectionActivity : BaseActivity() {
 
     private fun bindsAction() {
         binding.newAppNotification.setOnClickListener {
-            viewModel.openNewAppLink(NewAppPopupSource.NOTIFICATION)
+            viewModel.openNewAppLink(NewAppPopupSource.NOTIFICATION, getString(R.string.new_pop_up_url_download_url))
         }
         binding.newAppNotificationClose.setOnClickListener {
             viewModel.closeNewAppPopups(NewAppPopupSource.NOTIFICATION)
@@ -315,14 +315,23 @@ class HomeSelectionActivity : BaseActivity() {
     private fun showNewAppPopup() {
         bindingNewAppPopUp = PopUpDownloadNewApplicationBinding.inflate(layoutInflater)
         dialogPasswordPopup = createPopUp(bindingNewAppPopUp.root, true)
+        dialogPasswordPopup?.setOnDismissListener {
+            viewModel.closeNewAppPopups(NewAppPopupSource.POP_UP)
+        }
         with(bindingNewAppPopUp) {
             acceptButton.setOnClickListener {
                 dialogPasswordPopup?.dismiss()
-                viewModel.openNewAppLink(NewAppPopupSource.POP_UP)
+                viewModel.openNewAppLink(
+                    NewAppPopupSource.POP_UP,
+                    getString(R.string.new_pop_up_url_download_url)
+                )
             }
             declineButton.setOnClickListener {
                 dialogPasswordPopup?.dismiss()
-                viewModel.closeNewAppPopups(NewAppPopupSource.POP_UP)
+                viewModel.openNewAppLink(
+                    NewAppPopupSource.POP_UP,
+                    getString(R.string.new_pop_up_learn_more)
+                )
             }
         }
         dialogPasswordPopup?.show()

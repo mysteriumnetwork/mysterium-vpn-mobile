@@ -323,10 +323,11 @@
     <string name="pop_up_download_new_application_title">Mysterium VPN 2.0 for\nAndroid is live!</string>
     <string name="pop_up_download_new_application_message">Download the new app to use\nMysterium VPN on Android, iOS,\nMac and Windows.</string>
     <string name="pop_up_download_new_application_accept_btn">Download</string>
-    <string name="pop_up_download_new_application_declain_btn">Go to Home</string>
+    <string name="pop_up_download_new_application_declain_btn">Learn More</string>
 
     <string name="notification_download_new_application_title">Mysterium VPN 2.0 for Android is live!</string>
     <string name="notification_download_new_application_message">Download the new app to use Mysterium\nVPN on Android, iOS,Mac and Windows.</string>
 
-    <string name="new_pop_up_url" translatable="false">https://mysteriumvpn.com/v2</string>
+    <string name="new_pop_up_learn_more" translatable="false">https://mysteriumvpn.com/v2</string>
+    <string name="new_pop_up_url_download_url" translatable="false">https://play.google.com/store/apps/details?id=com.mysteriumvpn.android&amp;hl=en&amp;gl=US</string>
 </resources>
