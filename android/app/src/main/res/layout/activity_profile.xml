@@ -211,7 +211,7 @@
                     android:layout_marginTop="@dimen/margin_padding_size_medium_large"
                     android:text="@string/profile_backup"
                     android:textAlignment="center"
-                    android:textColor="@color/manual_connect_subtitle_white"
+                    android:textColor="@color/manual_connect_value_white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewKeysDescription" />

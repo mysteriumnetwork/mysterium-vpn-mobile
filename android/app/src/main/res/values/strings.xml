@@ -155,7 +155,7 @@
     <string name="report_issue_success">Report sent successfully. Thank you!</string>
 
     <!-- Get help -->
-    <string name="get_help_email" translatable="false">help@mysterium.network</string>
+    <string name="get_help_email" translatable="false">help@mysteriumvpn.com</string>
     <string name="get_help_subject" translatable="false">Mysterium: Get help</string>
 
     <!--  Monitoring  -->

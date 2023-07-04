@@ -11,6 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardPreventCornerOverlap="false"
+        app:cardBackgroundColor="@android:color/transparent"
         android:layout_marginHorizontal="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +46,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/message"
                 app:layout_constraintTop_toBottomOf="@id/ivBanner" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/primary_card_view"
+                app:layout_constraintTop_toBottomOf="@id/ivBanner"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
 
             <TextView
                 android:id="@+id/message"
