@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_size_medium_large"
                 android:text="@string/menu_terms"
-                android:textColor="@color/manual_connect_value_white"
+                android:textColor="@color/onboarding_skip_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/helpButton" />
