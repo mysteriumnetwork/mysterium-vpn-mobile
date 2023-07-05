@@ -94,7 +94,7 @@
             android:layout_marginTop="@dimen/margin_padding_size_small_medium"
             android:text="@string/report_issue_description"
             android:textAlignment="center"
-            android:textColor="@color/manual_connect_subtitle_white" />
+            android:textColor="@color/manual_connect_value_white" />
 
         <TextView
             android:id="@+id/emailSubtitleTextView"
