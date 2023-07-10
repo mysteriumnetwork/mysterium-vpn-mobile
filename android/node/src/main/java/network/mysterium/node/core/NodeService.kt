@@ -13,9 +13,11 @@ import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -65,7 +67,10 @@ class NodeService : Service() {
     private var balanceFlow = MutableStateFlow(0.0)
     private var limitMonitorFlow = MutableStateFlow(false)
     private var dispatcher = Dispatchers.IO
-    private val scope = CoroutineScope(dispatcher)
+    private val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e(TAG, throwable.message, throwable)
+    }
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher + defaultErrorHandler)
     private var balanceTimer: Timer? = null
     private var endOfDayTimer: Timer? = null
     private var mobileLimitJob: Job? = null

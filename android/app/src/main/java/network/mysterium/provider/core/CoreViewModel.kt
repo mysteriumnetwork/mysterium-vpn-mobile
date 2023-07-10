@@ -2,6 +2,11 @@ package network.mysterium.provider.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.sentry.Sentry
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,6 +17,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 interface UIEffect
 interface UIEvent
@@ -25,10 +31,18 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
     val event: SharedFlow<Event>
     val effect: Flow<Effect>
 
+    protected val mainDispatcher = Dispatchers.Main
+    protected val ioDispatcher = Dispatchers.IO
+
+    protected val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
+        Sentry.captureException(throwable)
+    }
+
     private val initialState: State by lazy { createInitialState() }
     private val uiStateFlow: MutableStateFlow<State> = MutableStateFlow(initialState)
     private val evenSharedFlow: MutableSharedFlow<Event> = MutableSharedFlow()
     private val effectChannel: Channel<Effect> = Channel()
+
 
     init {
         uiState = uiStateFlow.asStateFlow()
@@ -40,9 +54,19 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
     abstract fun createInitialState(): State
     abstract fun handleEvent(event: Event)
 
+    protected fun launch(
+        dispatcher: CoroutineContext = mainDispatcher,
+        scope: CoroutineScope = viewModelScope,
+        block: suspend CoroutineScope.() -> Unit,
+    ): Job {
+        return scope.launch(dispatcher + defaultErrorHandler) {
+            this.block()
+        }
+    }
+
     fun setEvent(event: Event) {
         val newEvent = event
-        viewModelScope.launch { evenSharedFlow.emit(newEvent) }
+        launch { evenSharedFlow.emit(newEvent) }
     }
 
     protected fun setState(reduce: State.() -> State) {
@@ -52,11 +76,11 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
 
     protected fun setEffect(builder: () -> Effect) {
         val effectValue = builder()
-        viewModelScope.launch { effectChannel.send(effectValue) }
+        launch { effectChannel.send(effectValue) }
     }
 
     private fun subscribeEvents() {
-        viewModelScope.launch {
+        launch {
             event.collect {
                 handleEvent(it)
             }
