@@ -55,7 +55,11 @@ private fun NodeUIScreenContent(
             },
             onLoadUrl = {
                 onEvent(NodeUI.Event.UrlLoaded(it))
-            }
+            },
+            onIgnoreCallback = {
+                onEvent(NodeUI.Event.UrlLoaded(it, true))
+            },
+            ignoreList = state.ignoredUrls,
         )
     }
 }
@@ -68,7 +72,8 @@ private fun NodeUIScreenContentPreview() {
         state = NodeUI.State(
             url = "http://localhost:4449",
             reload = {},
-            isRegistered = false
+            isRegistered = false,
+            ignoredUrls = emptyList(),
         ),
         onEvent = {},
         onNavigate = {}

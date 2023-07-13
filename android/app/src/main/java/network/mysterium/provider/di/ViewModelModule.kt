@@ -22,7 +22,7 @@ val viewModels = module {
         SettingsViewModel(node = get())
     }
     viewModel {
-        NodeUIViewModel(node = get())
+        NodeUIViewModel(node = get(), context = get())
     }
     viewModel {
         HomeViewModel(node = get())

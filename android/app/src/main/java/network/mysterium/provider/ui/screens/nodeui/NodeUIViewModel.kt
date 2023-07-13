@@ -1,5 +1,8 @@
 package network.mysterium.provider.ui.screens.nodeui
 
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -11,7 +14,8 @@ import network.mysterium.provider.Config
 import network.mysterium.provider.core.CoreViewModel
 
 class NodeUIViewModel(
-    private val node: Node
+    private val node: Node,
+    private val context: Context,
 ) : CoreViewModel<NodeUI.Event, NodeUI.State, NodeUI.Effect>() {
 
     init {
@@ -23,7 +27,8 @@ class NodeUIViewModel(
         return NodeUI.State(
             url = "",
             reload = {},
-            isRegistered = false
+            isRegistered = false,
+            ignoredUrls = listOf(Config.mystNodesUrl)
         )
     }
 
@@ -32,14 +37,30 @@ class NodeUIViewModel(
             NodeUI.Event.Load -> {
                 setState { copy(url = node.nodeUIUrl) }
             }
+
             is NodeUI.Event.UrlLoaded -> {
-                handleUrl(event.url)
+                if (!event.isIgnored) {
+                    handleUrl(event.url)
+                } else {
+                    handleIgnoredUrl(event.url)
+                }
             }
 
             is NodeUI.Event.SetReloadCallback -> {
                 setState { copy(reload = event.reload) }
             }
         }
+    }
+
+
+    //for now we will just open in browser all ignored urls, but may be modification if future
+    private fun handleIgnoredUrl(url: Uri) {
+        context.startActivity(
+            Intent(Intent.ACTION_VIEW).apply {
+                data = url
+                addFlags(FLAG_ACTIVITY_NEW_TASK)
+            }
+        )
     }
 
     private fun observeIdentity() = viewModelScope.launch {
