@@ -124,7 +124,7 @@
         android:id="@+id/headerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="ipTextView, connectedStatusImageView,securityStatusImageView,titleTextView" />
+        app:constraint_referenced_ids="ipTextView, titleTextView" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/notificationNewApp"
