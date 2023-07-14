@@ -6,7 +6,6 @@ buildscript {
         compileSdkVersion = 33
         targetSdkVersion = 33
         ndkVersion = '21.4.7075529' // r21e - https://developer.android.com/ndk/downloads#lts-downloads
-        feature/name-change
         versionCode = 107173
         versionName = '2.1.9'
     }
