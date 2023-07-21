@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import io.sentry.Sentry
 import network.mysterium.provider.ui.navigation.AppNavigation
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.MysteriumTheme

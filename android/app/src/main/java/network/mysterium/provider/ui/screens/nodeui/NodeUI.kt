@@ -8,14 +8,15 @@ import network.mysterium.provider.core.UIState
 sealed class NodeUI {
     sealed class Event : UIEvent {
         object Load : Event()
-        data class SetReloadCallback(val reload: () -> Unit): Event()
-        data class UrlLoaded(val url: Uri): Event()
+        data class SetReloadCallback(val reload: () -> Unit) : Event()
+        data class UrlLoaded(val url: Uri, val isIgnored: Boolean = false) : Event()
     }
 
     data class State(
         val url: String,
         val reload: () -> Unit,
-        val isRegistered: Boolean
+        val isRegistered: Boolean,
+        val ignoredUrls: List<String>,
     ) : UIState
 
     sealed class Effect : UIEffect
