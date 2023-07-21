@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import network.mysterium.provider.Config
 import network.mysterium.provider.ui.screens.home.HomeScreen
 import network.mysterium.provider.ui.screens.launch.LaunchScreen
 import network.mysterium.provider.ui.screens.nodeui.NodeUIScreen
@@ -50,8 +52,13 @@ fun AppNavigation() {
                 navController.navigate(it)
             }
         }
-        composable(route = Route.NODE_UI) {
-            NodeUIScreen {
+        composable(
+            route = Route.NODE_UI,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "${Config.deeplinkScheme}?authorizationGrant={authGrant}"
+            })
+        ) { backStackEntry ->
+            NodeUIScreen(backStackEntry.arguments?.getString("authGrant")) {
                 navController.navigate(it)
             }
         }

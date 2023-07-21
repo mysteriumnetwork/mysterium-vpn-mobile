@@ -52,7 +52,6 @@ fun ComposeWebView(
                     settings.javaScriptCanOpenWindowsAutomatically = true
                     settings.domStorageEnabled = true
                 }
-                loadUrl(url)
                 onReload {
                     loadUrl(url)
                 }

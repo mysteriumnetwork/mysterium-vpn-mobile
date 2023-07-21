@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.di)
     implementation(libs.markdown)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.serialization)
 
     debugImplementation(libs.bundles.compose.debug)
 }
