@@ -43,7 +43,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.LAUNCHER" />
 
-
                 <data
                     android:scheme="https"
                     android:host="mystnodes.com"
