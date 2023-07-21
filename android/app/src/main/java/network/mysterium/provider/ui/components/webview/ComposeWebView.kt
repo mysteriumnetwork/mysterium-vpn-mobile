@@ -48,6 +48,7 @@ fun ComposeWebView(
                         }
                     }
                 }.apply {
+                    settings.databaseEnabled = true
                     settings.javaScriptEnabled = true
                     settings.javaScriptCanOpenWindowsAutomatically = true
                     settings.domStorageEnabled = true
