@@ -34,8 +34,8 @@ class NodeUIViewModel(
             reload = {},
             isRegistered = false,
             ignoredUrls = listOf(
-                Config.mystNodesUrl,
-                Config.redirectUriReplacement,
+                Config.stripeRedirectUrl,
+                Config.payPalRedirectUrl,
             )
         )
     }
@@ -54,29 +54,12 @@ class NodeUIViewModel(
             }
 
             is NodeUI.Event.UrlLoaded -> {
-                if (!event.isIgnored) {
-                    handleUrl(event.url)
-                } else {
-                    handleIgnoredUrl(event.url)
-                }
+                handleUrl(event.url)
             }
 
             is NodeUI.Event.SetReloadCallback -> {
                 setState { copy(reload = event.reload) }
             }
-        }
-    }
-
-    //for now we will just open in browser all ignored urls, but may be modification if future
-    private fun handleIgnoredUrl(url: Uri) {
-        val stringUrl = url.toString()
-        when {
-            stringUrl.contains(Config.redirectUriReplacement) -> redirectionUrlReplacement(stringUrl)
-            stringUrl.contains(Config.mystNodesUrl) -> context.startActivity(
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = url
-                    addFlags(FLAG_ACTIVITY_NEW_TASK)
-                })
         }
     }
 
@@ -102,11 +85,24 @@ class NodeUIViewModel(
     private fun handleUrl(url: Uri) {
         val path = url.toString()
         Log.d("NodeUI", "Url loaded: $path")
-        if (path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl)) {
-            viewModelScope.launch {
-                delay(3000)
-                currentState.reload()
+        val stringUrl = url.toString()
+        when {
+            stringUrl.contains(Config.redirectUriReplacement) -> redirectionUrlReplacement(stringUrl)
+            path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl) -> {
+                viewModelScope.launch {
+                    delay(3000)
+                    currentState.reload()
+                }
+            }
+
+            else -> {
+                context.startActivity(
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = url
+                        addFlags(FLAG_ACTIVITY_NEW_TASK)
+                    })
             }
         }
     }
+
 }

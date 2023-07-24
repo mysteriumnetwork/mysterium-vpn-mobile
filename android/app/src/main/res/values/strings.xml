@@ -33,6 +33,7 @@
     <string name="service_public">Public</string>
     <string name="service_data_transfer">Data Transfer</string>
     <string name="service_data_scraping">Data Scraping</string>
+    <string name="service_vpn">VPN</string>
     <string name="service_other">Other</string>
     <string name="no_internet_connection">Unable to proceed</string>
 </resources>
