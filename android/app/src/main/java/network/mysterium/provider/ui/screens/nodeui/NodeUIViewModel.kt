@@ -93,6 +93,7 @@ class NodeUIViewModel(
                     currentState.reload()
                 }
             }
+
             else -> {
                 context.startActivity(
                     Intent(Intent.ACTION_VIEW).apply {
