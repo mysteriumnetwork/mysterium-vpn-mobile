@@ -9,7 +9,7 @@ sealed class NodeUI {
     sealed class Event : UIEvent {
         object Load : Event()
         data class SetReloadCallback(val reload: () -> Unit) : Event()
-        data class UrlLoaded(val url: Uri, val isIgnored: Boolean = false) : Event()
+        data class UrlLoaded(val url: Uri) : Event()
     }
 
     data class State(

@@ -18,10 +18,9 @@ private const val TAG: String = "ComposeWebView"
 fun ComposeWebView(
     modifier: Modifier = Modifier,
     url: String,
-    ignoreList: List<String> = emptyList(),
     onLoadUrl: (Uri) -> Unit = {},
     onReload: (() -> Unit) -> Unit = {},
-    onIgnoreCallback: (Uri) -> Unit = {},
+    ignoreUrls: List<String> = emptyList()
 ) {
     AndroidView(
         modifier = modifier
@@ -38,14 +37,9 @@ fun ComposeWebView(
                         request: WebResourceRequest?
                     ): Boolean {
                         val loadUrl = request?.url ?: return false
-                        val loadUrlPath = loadUrl.toString()
-                        return if (loadUrlPath.isNotEmpty() && ignoreList.any { url -> loadUrlPath.contains(url) }) {
-                            onIgnoreCallback(loadUrl)
-                            true
-                        } else {
-                            onLoadUrl(loadUrl)
-                            false
-                        }
+                        onLoadUrl(loadUrl)
+                        val path = loadUrl.toString()
+                        return !ignoreUrls.any { url -> path.startsWith(url) }
                     }
                 }.apply {
                     settings.databaseEnabled = true

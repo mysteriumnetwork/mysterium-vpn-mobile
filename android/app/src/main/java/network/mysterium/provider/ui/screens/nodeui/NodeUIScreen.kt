@@ -15,7 +15,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun NodeUIScreen(
     authGrant: String? = null,
-    viewModel: NodeUIViewModel = getViewModel(){ parametersOf(authGrant) },
+    viewModel: NodeUIViewModel = getViewModel() { parametersOf(authGrant) },
     onNavigate: (NavigationDestination) -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -58,10 +58,7 @@ private fun NodeUIScreenContent(
             onLoadUrl = {
                 onEvent(NodeUI.Event.UrlLoaded(it))
             },
-            onIgnoreCallback = {
-                onEvent(NodeUI.Event.UrlLoaded(it, true))
-            },
-            ignoreList = state.ignoredUrls,
+            ignoreUrls = state.ignoredUrls
         )
     }
 }
