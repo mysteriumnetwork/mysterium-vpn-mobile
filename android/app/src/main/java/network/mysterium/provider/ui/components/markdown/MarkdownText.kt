@@ -3,6 +3,7 @@ package network.mysterium.provider.ui.components.markdown
 import android.util.TypedValue
 import android.widget.TextView
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -21,7 +22,7 @@ fun MarkdownText(
     color: Color = Color.Unspecified
 ) {
     val context = LocalContext.current
-    val markwon = Markwon.create(context)
+    val markwon = remember { Markwon.create(context) }
     AndroidView(modifier = modifier,
         factory = {
             TextView(context).apply {
@@ -31,7 +32,8 @@ fun MarkdownText(
                     setTextColor(color.toArgb())
                 }
                 markwon.setMarkdown(this, text)
+
             }
-        }
+        }, update = { markwon.setMarkdown(it, text) }
     )
 }
