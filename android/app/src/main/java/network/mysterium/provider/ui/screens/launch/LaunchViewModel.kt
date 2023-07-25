@@ -1,9 +1,7 @@
 package network.mysterium.provider.ui.screens.launch
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.network.NetworkReporter
@@ -34,16 +32,18 @@ class LaunchViewModel(
             Launch.Event.InitializeNode -> {
                 initializeNode()
             }
+
             Launch.Event.DeclinedVpnPermission -> {
                 setState { copy(error = Launch.InitError(R.string.missing_vpn_permission)) }
             }
+
             Launch.Event.ConfirmedInitError -> {
                 setEffect { Launch.Effect.CloseApp }
             }
         }
     }
 
-    private fun initializeNode() = viewModelScope.launch(Dispatchers.IO) {
+    private fun initializeNode() = launch(dispatcher = Dispatchers.IO) {
         if (!networkReporter.isOnline()) {
             setState { copy(error = Launch.InitError(R.string.unable_init_node_no_network)) }
             return@launch
@@ -55,9 +55,11 @@ class LaunchViewModel(
                     NodeIdentity.Status.REGISTERED -> {
                         setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
                     }
+
                     NodeIdentity.Status.IN_PROGRESS -> {
                         setEffect { Launch.Effect.Navigation(NavigationDestination.NodeUI(false)) }
                     }
+
                     NodeIdentity.Status.UNKNOWN,
                     NodeIdentity.Status.UNREGISTERED,
                     NodeIdentity.Status.REGISTRATION_ERROR -> {
@@ -72,7 +74,7 @@ class LaunchViewModel(
         }
     }
 
-    private fun observeNetworkState() = viewModelScope.launch {
+    private fun observeNetworkState() = launch {
         networkReporter.currentConnectivity.collect {
             if (currentState.error == null) {
                 return@collect

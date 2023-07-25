@@ -5,10 +5,9 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
@@ -64,7 +63,7 @@ class NodeUIViewModel(
     }
 
     private fun redirectionUrlReplacement(url: String) {
-        viewModelScope.launch {
+        launch {
             val result = withContext(Dispatchers.IO) {
                 deeplinkRedirectionInteractor.getDeeplinkRedirection(url)
             }
@@ -76,8 +75,8 @@ class NodeUIViewModel(
         }
     }
 
-    private fun observeIdentity() = viewModelScope.launch {
-        node.identity.collect {
+    private fun observeIdentity() = launch {
+        node.identity.collectLatest {
             setState { copy(isRegistered = it.status == NodeIdentity.Status.REGISTERED) }
         }
     }
@@ -89,7 +88,7 @@ class NodeUIViewModel(
         when {
             stringUrl.contains(Config.redirectUriReplacement) -> redirectionUrlReplacement(stringUrl)
             path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl) -> {
-                viewModelScope.launch {
+                launch {
                     delay(3000)
                     currentState.reload()
                 }

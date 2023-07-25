@@ -1,8 +1,6 @@
 package network.mysterium.provider.ui.screens.settings
 
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeConfig
 import network.mysterium.provider.Config
@@ -54,10 +52,12 @@ class SettingsViewModel(
                     )
                 }
             }
+
             is Settings.Event.ToggleMobileData -> {
                 updateNodeConfig(node.config.copy(useMobileData = event.checked))
                 setState { copy(isMobileDataOn = event.checked) }
             }
+
             is Settings.Event.ToggleLimit -> {
                 val continueEnabled = if (event.checked) {
                     node.config.mobileDataLimit != null
@@ -72,6 +72,7 @@ class SettingsViewModel(
                     )
                 }
             }
+
             is Settings.Event.ToggleAllowUseOnBattery -> {
                 updateNodeConfig(node.config.copy(allowUseOnBattery = event.checked))
                 setState { copy(isAllowUseOnBatteryOn = event.checked) }
@@ -80,6 +81,7 @@ class SettingsViewModel(
             is Settings.Event.UpdateLimit -> {
                 processLimitInput(event.value)
             }
+
             Settings.Event.SaveMobileDataLimit -> {
                 val limit = currentState.mobileDataLimit
                 if (limit == null) {
@@ -94,15 +96,19 @@ class SettingsViewModel(
                     )
                 }
             }
+
             Settings.Event.OnContinue -> {
                 startNodeInForeground()
             }
+
             Settings.Event.ShutDown -> {
                 setState { copy(showShutDownConfirmation = true) }
             }
+
             Settings.Event.ConfirmShutDown -> {
                 shutDownNode()
             }
+
             Settings.Event.CancelShutDown -> {
                 setState { copy(showShutDownConfirmation = false) }
             }
@@ -137,18 +143,18 @@ class SettingsViewModel(
         }
     }
 
-    private fun startNodeInForeground() = viewModelScope.launch(Dispatchers.IO) {
+    private fun startNodeInForeground() = launch(dispatcher = Dispatchers.IO) {
         setState { copy(isStartingNode = true) }
         node.enableForegroundService()
         setState { copy(isStartingNode = false) }
         setEffect { Settings.Effect.Navigation(NavigationDestination.NodeUI(true)) }
     }
 
-    private fun updateNodeConfig(config: NodeConfig) = viewModelScope.launch {
+    private fun updateNodeConfig(config: NodeConfig) = launch {
         node.updateConfig(config)
     }
 
-    private fun shutDownNode() = viewModelScope.launch {
+    private fun shutDownNode() = launch {
         node.stop()
         setEffect { Settings.Effect.CloseApp }
     }
