@@ -21,8 +21,13 @@ val viewModels = module {
     viewModel {
         SettingsViewModel(node = get())
     }
-    viewModel {
-        NodeUIViewModel(node = get())
+    viewModel { (authGrant: String?) ->
+        NodeUIViewModel(
+            authGrant = authGrant,
+            node = get(),
+            context = get(),
+            deeplinkRedirectionInteractor = get()
+        )
     }
     viewModel {
         HomeViewModel(node = get())

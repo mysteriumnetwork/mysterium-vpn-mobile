@@ -1,16 +1,25 @@
 package network.mysterium.provider.ui.screens.nodeui
 
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.withContext
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.provider.Config
 import network.mysterium.provider.core.CoreViewModel
+import network.mysterium.provider.domain.DeeplinkRedirectionInteractor
 
 class NodeUIViewModel(
-    private val node: Node
+    private val authGrant: String?,
+    private val node: Node,
+    private val context: Context,
+    private val deeplinkRedirectionInteractor: DeeplinkRedirectionInteractor,
 ) : CoreViewModel<NodeUI.Event, NodeUI.State, NodeUI.Effect>() {
 
     init {
@@ -22,14 +31,25 @@ class NodeUIViewModel(
         return NodeUI.State(
             url = "",
             reload = {},
-            isRegistered = false
+            isRegistered = false,
+            ignoredUrls = listOf(
+                Config.stripeRedirectUrl,
+                Config.payPalRedirectUrl,
+            )
         )
     }
 
     override fun handleEvent(event: NodeUI.Event) {
         when (event) {
             NodeUI.Event.Load -> {
-                setState { copy(url = node.nodeUIUrl) }
+                setState {
+                    copy(
+                        url =
+                        authGrant?.let {
+                            node.nodeUIUrl + Config.authorizationGrantPath + it
+                        } ?: node.nodeUIUrl
+                    )
+                }
             }
 
             is NodeUI.Event.UrlLoaded -> {
@@ -42,6 +62,19 @@ class NodeUIViewModel(
         }
     }
 
+    private fun redirectionUrlReplacement(url: String) {
+        launch {
+            val result = withContext(Dispatchers.IO) {
+                deeplinkRedirectionInteractor.getDeeplinkRedirection(url)
+            }
+            context.startActivity(
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(result.link)
+                    addFlags(FLAG_ACTIVITY_NEW_TASK)
+                })
+        }
+    }
+
     private fun observeIdentity() = launch {
         node.identity.collectLatest {
             setState { copy(isRegistered = it.status == NodeIdentity.Status.REGISTERED) }
@@ -51,11 +84,24 @@ class NodeUIViewModel(
     private fun handleUrl(url: Uri) {
         val path = url.toString()
         Log.d("NodeUI", "Url loaded: $path")
-        if (path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl)) {
-            launch {
-                delay(3000)
-                currentState.reload()
+        val stringUrl = url.toString()
+        when {
+            stringUrl.contains(Config.redirectUriReplacement) -> redirectionUrlReplacement(stringUrl)
+            path.startsWith(Config.stripeRedirectUrl) || path.startsWith(Config.payPalRedirectUrl) -> {
+                launch {
+                    delay(3000)
+                    currentState.reload()
+                }
+            }
+
+            else -> {
+                context.startActivity(
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = url
+                        addFlags(FLAG_ACTIVITY_NEW_TASK)
+                    })
             }
         }
     }
+
 }

@@ -1,11 +1,15 @@
 package network.mysterium.provider.ui.screens.home
 
 import network.mysterium.node.Node
+import network.mysterium.node.model.NodeServiceType
 import network.mysterium.provider.core.CoreViewModel
 
 class HomeViewModel(
     private val node: Node
 ) : CoreViewModel<Home.Event, Home.State, Home.Effect>() {
+
+    private val ignoreServices: List<NodeServiceType.Service> =
+        listOf(NodeServiceType.Service.WIREGUARD)
 
     init {
         setEvent(Home.Event.Load)
@@ -31,7 +35,9 @@ class HomeViewModel(
 
     private fun observeServices() = launch {
         node.services.collect {
-            setState { copy(services = it.sortedBy { it.id }) }
+            setState {
+                copy(services = it.filterNot { it.id in ignoreServices }.sortedBy { it.id.order })
+            }
         }
     }
 

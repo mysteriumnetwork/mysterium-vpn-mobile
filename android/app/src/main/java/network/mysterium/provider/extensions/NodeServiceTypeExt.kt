@@ -1,6 +1,5 @@
 package network.mysterium.provider.extensions
 
-import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import network.mysterium.node.model.NodeServiceType
 import network.mysterium.provider.R
@@ -49,4 +48,5 @@ val NodeServiceType.Service.nameResId: Int
         NodeServiceType.Service.SCRAPING -> R.string.service_data_scraping
         NodeServiceType.Service.DATA_TRANSFER -> R.string.service_data_transfer
         NodeServiceType.Service.OTHER -> R.string.service_other
+        NodeServiceType.Service.DVPN -> R.string.service_vpn
     }
