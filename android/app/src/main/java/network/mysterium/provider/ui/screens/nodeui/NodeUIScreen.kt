@@ -10,10 +10,12 @@ import network.mysterium.provider.ui.components.content.LogoScreenContent
 import network.mysterium.provider.ui.components.webview.ComposeWebView
 import network.mysterium.provider.ui.navigation.NavigationDestination
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun NodeUIScreen(
-    viewModel: NodeUIViewModel = getViewModel(),
+    authGrant: String? = null,
+    viewModel: NodeUIViewModel = getViewModel() { parametersOf(authGrant) },
     onNavigate: (NavigationDestination) -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -55,7 +57,8 @@ private fun NodeUIScreenContent(
             },
             onLoadUrl = {
                 onEvent(NodeUI.Event.UrlLoaded(it))
-            }
+            },
+            ignoreUrls = state.ignoredUrls
         )
     }
 }
@@ -68,7 +71,8 @@ private fun NodeUIScreenContentPreview() {
         state = NodeUI.State(
             url = "http://localhost:4449",
             reload = {},
-            isRegistered = false
+            isRegistered = false,
+            ignoredUrls = emptyList(),
         ),
         onEvent = {},
         onNavigate = {}

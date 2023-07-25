@@ -19,7 +19,8 @@ fun ComposeWebView(
     modifier: Modifier = Modifier,
     url: String,
     onLoadUrl: (Uri) -> Unit = {},
-    onReload: (() -> Unit) -> Unit = {}
+    onReload: (() -> Unit) -> Unit = {},
+    ignoreUrls: List<String> = emptyList()
 ) {
     AndroidView(
         modifier = modifier
@@ -37,14 +38,15 @@ fun ComposeWebView(
                     ): Boolean {
                         val loadUrl = request?.url ?: return false
                         onLoadUrl(loadUrl)
-                        return false
+                        val path = loadUrl.toString()
+                        return !ignoreUrls.any { url -> path.startsWith(url) }
                     }
                 }.apply {
+                    settings.databaseEnabled = true
                     settings.javaScriptEnabled = true
                     settings.javaScriptCanOpenWindowsAutomatically = true
                     settings.domStorageEnabled = true
                 }
-                loadUrl(url)
                 onReload {
                     loadUrl(url)
                 }

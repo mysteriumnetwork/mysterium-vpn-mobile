@@ -1,6 +1,7 @@
 package network.mysterium.provider
 
 import android.app.Application
+import network.mysterium.provider.di.deeplinkModule
 import network.mysterium.node.di.nodeModule
 import network.mysterium.provider.di.viewModels
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +14,8 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 nodeModule,
-                viewModels
+                viewModels,
+                deeplinkModule,
             )
         }
     }

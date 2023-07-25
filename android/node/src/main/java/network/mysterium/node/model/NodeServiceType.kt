@@ -1,12 +1,14 @@
 package network.mysterium.node.model
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import network.mysterium.node.utils.EnumIgnoreUnknownSerializer
 
 @Serializable
 data class NodeServiceType(
@@ -23,12 +25,24 @@ data class NodeServiceType(
     }
 
     @Serializable(with = ServiceSerializer::class)
-    enum class Service(val raw: String) {
-        WIREGUARD("wireguard"),
-        DATA_TRANSFER("data_transfer"),
-        SCRAPING("scraping"),
-        OTHER("other")
+    enum class Service(val order: Int) {
+        @SerialName("wireguard")
+        WIREGUARD(4),
+
+        @SerialName("data_transfer")
+        DATA_TRANSFER(2),
+
+        @SerialName("scraping")
+        SCRAPING(1),
+
+        @SerialName("dvpn")
+        DVPN(3),
+
+        @SerialName("other")
+        OTHER(Int.MAX_VALUE)
     }
+
+    object ServiceSerializer : EnumIgnoreUnknownSerializer<Service>(Service.values(), Service.OTHER)
 
     object StatusSerializer : KSerializer<State> {
         override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
@@ -50,25 +64,6 @@ data class NodeServiceType(
         }
     }
 
-    object ServiceSerializer : KSerializer<Service> {
-        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-            "Status",
-            PrimitiveKind.STRING
-        )
-
-        override fun deserialize(decoder: Decoder): Service {
-            return when (decoder.decodeString()) {
-                Service.WIREGUARD.raw -> Service.WIREGUARD
-                Service.SCRAPING.raw -> Service.SCRAPING
-                Service.DATA_TRANSFER.raw -> Service.DATA_TRANSFER
-                else -> Service.OTHER
-            }
-        }
-
-        override fun serialize(encoder: Encoder, value: Service) {
-            encoder.encodeString(value.raw)
-        }
-    }
 }
 
 
