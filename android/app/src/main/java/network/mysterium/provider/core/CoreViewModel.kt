@@ -66,7 +66,7 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
 
     fun setEvent(event: Event) {
         val newEvent = event
-        launch { evenSharedFlow.emit(newEvent) }
+        viewModelScope.launch(defaultErrorHandler) { evenSharedFlow.emit(newEvent) }
     }
 
     protected fun setState(reduce: State.() -> State) {
@@ -76,11 +76,11 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
 
     protected fun setEffect(builder: () -> Effect) {
         val effectValue = builder()
-        launch { effectChannel.send(effectValue) }
+        viewModelScope.launch(defaultErrorHandler) { effectChannel.send(effectValue) }
     }
 
     private fun subscribeEvents() {
-        launch {
+        viewModelScope.launch(defaultErrorHandler) {
             event.collect {
                 handleEvent(it)
             }
