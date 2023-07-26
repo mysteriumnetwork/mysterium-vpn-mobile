@@ -2,7 +2,7 @@ package network.mysterium.provider
 
 import android.app.Application
 import network.mysterium.provider.di.deeplinkModule
-import network.mysterium.provider.di.nodeModule
+import network.mysterium.node.di.nodeModule
 import network.mysterium.provider.di.viewModels
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

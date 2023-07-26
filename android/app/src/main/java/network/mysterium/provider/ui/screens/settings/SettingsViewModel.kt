@@ -18,7 +18,7 @@ class SettingsViewModel(
 
     override fun createInitialState(): Settings.State {
         return Settings.State(
-            isMobileDataOn = false,
+            isMobileDataOn = true,
             isMobileDataLimitOn = false,
             isAllowUseOnBatteryOn = false,
             mobileDataLimit = null,

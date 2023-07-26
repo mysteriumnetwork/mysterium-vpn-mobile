@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.node)
+    implementation(libs.bundles.di)
     implementation(libs.bundles.serialization)
     implementation(libs.bundles.analytics)
 }
