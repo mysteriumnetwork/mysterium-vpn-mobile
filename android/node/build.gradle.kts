@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.firebase)
 }
 
 android {

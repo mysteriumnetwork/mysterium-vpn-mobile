@@ -25,6 +25,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mysterium.MobileNode
 import network.mysterium.node.Storage
+import network.mysterium.node.analytics.NodeAnalytics
+import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.node.battery.BatteryStatus
 import network.mysterium.node.data.NodeServiceDataSource
 import network.mysterium.node.extensions.isFirstDayOfMonth
@@ -57,6 +59,7 @@ class NodeService : Service() {
     private val networkReporter by inject<NetworkReporter>()
     private val storage by inject<Storage>()
     private val batteryStatus by inject<BatteryStatus>()
+    private val analytics by inject<NodeAnalytics>()
 
     private var dispatcher = Dispatchers.IO
     private val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
@@ -214,8 +217,10 @@ class NodeService : Service() {
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
         if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
             mobileNode.startProvider()
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = true))
         } else {
             mobileNode.stopProvider()
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
     }
 
@@ -263,10 +268,12 @@ class NodeService : Service() {
 
         override fun stopServices() {
             mobileNode.stopProvider()
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
 
         override suspend fun stop() {
             isStarted = false
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
             mobileNode.stopProvider()
             mobileNode.shutdown()
         }

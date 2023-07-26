@@ -37,6 +37,7 @@ val nodeModule = module {
             mobileNode = get(),
             storage = get(),
             networkReporter = get(),
+            analytics = get(),
         )
     }
 }

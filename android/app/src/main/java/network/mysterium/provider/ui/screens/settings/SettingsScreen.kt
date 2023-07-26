@@ -44,7 +44,6 @@ import network.mysterium.provider.ui.components.content.TitledScreenContent
 import network.mysterium.provider.ui.components.input.InputTextField
 import network.mysterium.provider.ui.components.progress.ProgressDialog
 import network.mysterium.provider.ui.navigation.NavigationDestination
-import network.mysterium.provider.ui.screens.launch.Launch
 import network.mysterium.provider.ui.screens.settings.views.ButtonOption
 import network.mysterium.provider.ui.screens.settings.views.SwitchOption
 import network.mysterium.provider.ui.theme.Colors
@@ -82,7 +81,8 @@ fun SettingsScreen(
         isOnboarding = isOnboarding,
         appVersion = context.appVersion(),
         onEvent = { viewModel.setEvent(it) },
-        onNavigate = onNavigate
+        onNavigate = onNavigate,
+        onHelpPressed = { viewModel.trackHelpPressed()}
     )
 }
 
@@ -92,7 +92,8 @@ private fun SettingsContent(
     isOnboarding: Boolean,
     appVersion: String,
     onEvent: (Settings.Event) -> Unit,
-    onNavigate: (NavigationDestination) -> Unit
+    onNavigate: (NavigationDestination) -> Unit,
+    onHelpPressed: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     TitledScreenContent(
@@ -118,6 +119,7 @@ private fun SettingsContent(
         navTrailing = {
             if (!isOnboarding) {
                 HelpButton {
+                    onHelpPressed()
                     uriHandler.openUri(Config.helpLink)
                 }
             }
@@ -351,7 +353,8 @@ private fun SettingsContentPreview() {
             isOnboarding = false,
             appVersion = "1.0",
             onEvent = {},
-            onNavigate = {}
+            onNavigate = {},
+            onHelpPressed = {},
         )
     }
 }

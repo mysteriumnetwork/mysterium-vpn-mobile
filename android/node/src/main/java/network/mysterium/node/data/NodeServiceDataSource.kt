@@ -10,7 +10,8 @@ import mysterium.GetBalanceRequest
 import mysterium.GetIdentityRequest
 import mysterium.MobileNode
 import network.mysterium.node.Storage
-import network.mysterium.node.core.NodeService
+import network.mysterium.node.analytics.NodeAnalytics
+import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeServiceType
 import network.mysterium.node.network.NetworkReporter
@@ -33,6 +34,7 @@ class NodeServiceDataSourceImpl(
     private val mobileNode: MobileNode,
     private val storage: Storage,
     private val networkReporter: NetworkReporter,
+    private val analytics: NodeAnalytics,
 ) : NodeServiceDataSource {
 
     private val TAG: String = NodeServiceDataSource::class.java.simpleName
@@ -66,8 +68,19 @@ class NodeServiceDataSourceImpl(
     override suspend fun fetchServices() {
         val json = mobileNode.allServicesState.decodeToString()
         val response = Json.decodeFromString<List<NodeServiceType>>(json)
+        val oldServices = services.value
         services.update {
-            response.toSet().toList()
+            val newServices = response.toSet().toList()
+            newServices.filter { new -> oldServices.all { old -> new.id == old.id && new.state != old.state } }
+                .forEach { analyticsData ->
+                    analytics.trackEvent(
+                        AnalyticsEvent.ServicesStatusEvent(
+                            serviceName = analyticsData.id.name,
+                            status = analyticsData.state.name
+                        )
+                    )
+                }
+            newServices
         }
     }
 
