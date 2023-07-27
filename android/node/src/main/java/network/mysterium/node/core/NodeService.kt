@@ -109,7 +109,7 @@ class NodeService : Service() {
             .setSmallIcon(R.drawable.ic_notification_logo)
             .setContentTitle("Connected")
             .setColor(Color.WHITE)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVibrate(LongArray(0))
             .setContentIntent(pendingIntent)
             .setOnlyAlertOnce(true)

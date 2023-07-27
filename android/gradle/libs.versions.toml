@@ -45,7 +45,9 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-serialization" }
-okhttp = { module ="com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
+
 
 [bundles]
 core = [
@@ -64,7 +66,8 @@ navigation = [
     "androidx-compose-navigation"
 ]
 accompanist-tools = [
-    "accompanist-systemuicontroller"
+    "accompanist-systemuicontroller",
+    "accompanist-permissions",
 ]
 compose-debug = [
     "androidx-compose-ui-tooling",

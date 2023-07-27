@@ -40,6 +40,10 @@ class LaunchViewModel(
             Launch.Event.ConfirmedInitError -> {
                 setEffect { Launch.Effect.CloseApp }
             }
+
+            Launch.Event.RequestNotificationPermission -> {
+                setEffect { Launch.Effect.RequestNotificationPermission }
+            }
         }
     }
 

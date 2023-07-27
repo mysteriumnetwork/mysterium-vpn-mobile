@@ -11,6 +11,7 @@ sealed class Launch {
         object InitializeNode : Event()
         object DeclinedVpnPermission : Event()
         object ConfirmedInitError : Event()
+        object RequestNotificationPermission : Event()
     }
 
     data class State(
@@ -23,6 +24,7 @@ sealed class Launch {
 
     sealed class Effect : UIEffect {
         object RequestVpnPermission : Effect()
+        object RequestNotificationPermission : Effect()
         object CloseApp : Effect()
         data class Navigation(val destination: NavigationDestination) : Effect()
     }
