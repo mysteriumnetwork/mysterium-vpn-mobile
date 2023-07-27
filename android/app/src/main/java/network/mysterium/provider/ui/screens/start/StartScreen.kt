@@ -29,10 +29,11 @@ import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.MysteriumTheme
 import network.mysterium.provider.ui.theme.Paddings
 import network.mysterium.provider.ui.theme.TextStyles
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun StartScreen(
-    onNavigate: (NavigationDestination) -> Unit
+    onNavigate: (NavigationDestination) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -61,7 +62,8 @@ private fun Header(modifier: Modifier = Modifier) {
 
 @Composable
 private fun Content(
-    onNavigate: (NavigationDestination) -> Unit
+    onNavigate: (NavigationDestination) -> Unit,
+    viewModel: StartScreenViewModel = getViewModel(),
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -73,6 +75,7 @@ private fun Content(
                 .padding(Paddings.onboardButton),
             text = stringResource(id = R.string.onboard),
             onClick = {
+                viewModel.trackOnboardClick()
                 onNavigate(NavigationDestination.Settings(true))
             }
         )

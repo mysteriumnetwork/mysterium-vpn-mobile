@@ -10,6 +10,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 import network.mysterium.node.Node
+import network.mysterium.node.analytics.NodeAnalytics
+import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.provider.Config
 import network.mysterium.provider.core.CoreViewModel
@@ -20,6 +22,7 @@ class NodeUIViewModel(
     private val node: Node,
     private val context: Context,
     private val deeplinkRedirectionInteractor: DeeplinkRedirectionInteractor,
+    private val analytics: NodeAnalytics,
 ) : CoreViewModel<NodeUI.Event, NodeUI.State, NodeUI.Effect>() {
 
     init {
@@ -102,6 +105,10 @@ class NodeUIViewModel(
                     })
             }
         }
+    }
+
+    fun trackNodeUiOpened() {
+        analytics.trackEvent(AnalyticsEvent.NodeUiOpenedEvent)
     }
 
 }

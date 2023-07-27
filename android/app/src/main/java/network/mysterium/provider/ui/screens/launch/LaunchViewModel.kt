@@ -1,6 +1,7 @@
 package network.mysterium.provider.ui.screens.launch
 
 import android.util.Log
+import io.sentry.Sentry
 import kotlinx.coroutines.Dispatchers
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
@@ -73,6 +74,7 @@ class LaunchViewModel(
             }
 
         } catch (error: Throwable) {
+            Sentry.captureException(error)
             Log.e(TAG, "unable to init node", error)
             setState { copy(error = Launch.InitError(R.string.unable_init_node)) }
         }

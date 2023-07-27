@@ -8,10 +8,7 @@ import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeServiceType
 
 internal interface NodeServiceBinder : IBinder {
-    val identity: StateFlow<NodeIdentity>
-    val services: Flow<List<NodeServiceType>>
-    val balance: Flow<Double>
-    val limitMonitor: StateFlow<Boolean>
+
     suspend fun start()
     suspend fun stop()
     fun startForegroundService()

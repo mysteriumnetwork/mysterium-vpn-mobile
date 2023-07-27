@@ -1,6 +1,8 @@
 package network.mysterium.provider.ui.screens.nodeui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,6 +21,10 @@ fun NodeUIScreen(
     onNavigate: (NavigationDestination) -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = Unit ) {
+        viewModel.trackNodeUiOpened()
+    }
     NodeUIScreenContent(
         state = state,
         onEvent = {
