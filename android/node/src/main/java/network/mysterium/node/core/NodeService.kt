@@ -34,6 +34,7 @@ import network.mysterium.node.extensions.nextDay
 import network.mysterium.node.model.NodeUsage
 import network.mysterium.node.network.NetworkReporter
 import network.mysterium.node.network.NetworkType
+import network.mysterium.node.utils.cancelCatching
 import network.mystrium.node.R
 import org.koin.android.ext.android.inject
 import java.util.Calendar
@@ -166,7 +167,7 @@ class NodeService : Service() {
     }
 
     private fun observeNetworkUsage() {
-        mobileLimitJob?.cancel()
+        mobileLimitJob?.cancelCatching()
         mobileLimitJob = networkReporter.monitorUsage(NetworkType.MOBILE)
             .onEach { nodeServiceDataSource.updateMobileDataUsage(it) }
             .launchIn(scope)
