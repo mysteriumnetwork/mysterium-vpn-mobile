@@ -21,6 +21,8 @@ sentry = "3.7.0"
 retrofit = "2.9.0"
 retrofit-serialization = "1.0.0"
 okhttp = "4.10.0"
+firebase-analytics = "21.3.0"
+firebase-plugin = "4.3.15"
 
 [libraries]
 androidx-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -45,7 +47,8 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-serialization" }
-okhttp = { module ="com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebase-analytics" }
 
 [bundles]
 core = [
@@ -89,6 +92,10 @@ retrofit = [
     "okhttp",
 ]
 
+analytics = [
+    "firebase-analytics",
+]
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }
 android-library = { id = "com.android.library", version.ref = "android-application" }
@@ -96,3 +103,4 @@ kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
+firebase = { id = "com.google.gms.google-services", version.ref = "firebase-plugin" }

@@ -18,30 +18,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import mysterium.GetBalanceRequest
-import mysterium.GetIdentityRequest
 import mysterium.MobileNode
-import mysterium.Mysterium
 import network.mysterium.node.Storage
-import network.mysterium.node.StorageFactory
+import network.mysterium.node.analytics.NodeAnalytics
+import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.node.battery.BatteryStatus
+import network.mysterium.node.data.NodeServiceDataSource
 import network.mysterium.node.extensions.isFirstDayOfMonth
 import network.mysterium.node.extensions.nextDay
-import network.mysterium.node.model.NodeIdentity
-import network.mysterium.node.model.NodeServiceType
 import network.mysterium.node.model.NodeUsage
 import network.mysterium.node.network.NetworkReporter
 import network.mysterium.node.network.NetworkType
+import network.mysterium.node.utils.cancelCatching
 import network.mystrium.node.R
+import org.koin.android.ext.android.inject
 import java.util.Calendar
 import java.util.Date
 import java.util.Timer
@@ -58,27 +53,27 @@ class NodeService : Service() {
         val TAG: String = NodeService::class.java.simpleName
     }
 
-    private lateinit var networkReporter: NetworkReporter
-    private lateinit var storage: Storage
-    private lateinit var batteryStatus: BatteryStatus
-    private var mobileNode: MobileNode? = null
-    private var servicesFlow = MutableStateFlow<List<NodeServiceType>>(emptyList())
-    private var identityFlow = MutableStateFlow(NodeIdentity.empty())
-    private var balanceFlow = MutableStateFlow(0.0)
-    private var limitMonitorFlow = MutableStateFlow(false)
+    private var isStarted: Boolean = false
+
+    private val mobileNode by inject<MobileNode>()
+    private val nodeServiceDataSource by inject<NodeServiceDataSource>()
+    private val networkReporter by inject<NetworkReporter>()
+    private val storage by inject<Storage>()
+    private val batteryStatus by inject<BatteryStatus>()
+    private val analytics by inject<NodeAnalytics>()
+
     private var dispatcher = Dispatchers.IO
     private val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e(TAG, throwable.message, throwable)
     }
+
     private val scope = CoroutineScope(SupervisorJob() + dispatcher + defaultErrorHandler)
     private var balanceTimer: Timer? = null
     private var endOfDayTimer: Timer? = null
     private var mobileLimitJob: Job? = null
 
     override fun onCreate() {
-        networkReporter = NetworkReporter(this)
-        storage = StorageFactory.make(this)
-        batteryStatus = BatteryStatus(this)
+        //todo needs refactor
         observeNetworkUsage()
         observeNetworkStatus()
         startEndOfDayTimer()
@@ -140,63 +135,21 @@ class NodeService : Service() {
     }
 
     private suspend fun startNode() = withContext(dispatcher) {
-        createNode()
-        fetchIdentity()
-        fetchServices()
-        fetchBalance()
-    }
-
-    private suspend fun createNode() = withContext(dispatcher) {
-        val node = Mysterium.newNode(
-            filesDir.canonicalPath,
-            Mysterium.defaultProviderNodeOptions()
-        )
-        mobileNode = node
-    }
-
-    private suspend fun fetchServices() = withContext(dispatcher) {
-        val node = mobileNode ?: return@withContext
-        val json = node.allServicesState.decodeToString()
-        val services = Json.decodeFromString<List<NodeServiceType>>(json)
-        servicesFlow.update {
-            services.toSet().toList()
-        }
-    }
-
-    private suspend fun fetchIdentity() = withContext(dispatcher) {
-        val node = mobileNode ?: return@withContext
-        val identity = node.getIdentity(GetIdentityRequest())
-        identityFlow.update {
-            NodeIdentity(
-                identity.identityAddress,
-                identity.channelAddress,
-                NodeIdentity.Status.from(identity.registrationStatus)
-            )
-        }
-    }
-
-    private suspend fun fetchBalance() = withContext(dispatcher) {
-        val node = mobileNode ?: return@withContext
-        val request = GetBalanceRequest()
-        request.identityAddress = identityFlow.value.address
-        val response = node.getUnsettledEarnings(request)
-        balanceFlow.update {
-            response.balance
-        }
+        nodeServiceDataSource.fetchIdentity()
+        nodeServiceDataSource.fetchServices()
+        nodeServiceDataSource.fetchBalance()
     }
 
     private fun registerListeners() {
-        val node = mobileNode ?: return
-
-        node.registerServiceStatusChangeCallback { _, _ ->
+        mobileNode.registerServiceStatusChangeCallback { _, _ ->
             scope.launch {
-                fetchServices()
+                nodeServiceDataSource.fetchServices()
             }
         }
 
-        node.registerIdentityRegistrationChangeCallback { _, _ ->
+        mobileNode.registerIdentityRegistrationChangeCallback { _, _ ->
             scope.launch {
-                fetchIdentity()
+                nodeServiceDataSource.fetchIdentity()
             }
         }
     }
@@ -208,19 +161,16 @@ class NodeService : Service() {
             period = BALANCE_CHECK_INTERVAL
         ) {
             scope.launch {
-                fetchBalance()
+                nodeServiceDataSource.fetchBalance()
             }
         }
     }
 
     private fun observeNetworkUsage() {
-        mobileLimitJob?.cancel()
-        mobileLimitJob = scope.launch {
-            networkReporter.monitorUsage(NetworkType.MOBILE)
-                .collect {
-                    updateMobileDataUsage(it)
-                }
-        }
+        mobileLimitJob?.cancelCatching()
+        mobileLimitJob = networkReporter.monitorUsage(NetworkType.MOBILE)
+            .onEach { nodeServiceDataSource.updateMobileDataUsage(it) }
+            .launchIn(scope)
     }
 
     private fun observeNetworkStatus() = scope.launch {
@@ -246,7 +196,7 @@ class NodeService : Service() {
     }
 
     private fun observeLimitStatus() = scope.launch {
-        limitMonitorFlow.collect {
+        nodeServiceDataSource.limitMonitor.collect {
             updateNodeServices()
         }
     }
@@ -260,28 +210,6 @@ class NodeService : Service() {
         }
     }
 
-    private fun updateMobileDataUsage(usedBytesPerMonth: Long) {
-        val config = storage.config
-        if (config.useMobileData &&
-            config.useMobileDataLimit &&
-            config.mobileDataLimit != null &&
-            networkReporter.isConnected(NetworkType.MOBILE)
-        ) {
-            var usage = storage.usage
-            usage = usage.copy(bytes = usedBytesPerMonth)
-            storage.usage = usage
-            if (usage.bytes > config.mobileDataLimit) {
-                limitMonitorFlow.update { true }
-                mobileNode?.stopProvider()
-            } else {
-                limitMonitorFlow.update { false }
-            }
-            Log.d(TAG, "MegaBytes: ${(((usage.bytes / (1024.0 * 1024.0)) * 100).toInt()) / 100.0}")
-        } else {
-            limitMonitorFlow.update { false }
-        }
-    }
-
     private suspend fun updateNodeServices() = withContext(dispatcher) {
         val config = storage.config
         val wifiOption = networkReporter.isConnected(NetworkType.WIFI)
@@ -289,9 +217,11 @@ class NodeService : Service() {
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
         if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
-            mobileNode?.startProvider()
+            mobileNode.startProvider()
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = true))
         } else {
-            mobileNode?.stopProvider()
+            mobileNode.stopProvider()
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
     }
 
@@ -312,25 +242,12 @@ class NodeService : Service() {
 
     internal inner class Bridge : Binder(), NodeServiceBinder {
 
-        override val services: Flow<List<NodeServiceType>>
-            get() = servicesFlow.asStateFlow()
-
-        override val balance: Flow<Double>
-            get() = balanceFlow.asStateFlow()
-
-        override val limitMonitor: StateFlow<Boolean>
-            get() = limitMonitorFlow.asStateFlow()
-
-        override val identity: StateFlow<NodeIdentity>
-            get() = identityFlow.asStateFlow()
-
         override suspend fun start() {
-            if (mobileNode != null) {
-                return
-            }
+            if (isStarted) return
             startNode()
             registerListeners()
             startBalanceTimer()
+            isStarted = true
         }
 
         override fun startForegroundService() {
@@ -346,17 +263,20 @@ class NodeService : Service() {
         }
 
         override suspend fun updateServices() {
-            updateMobileDataUsage(0)
+            nodeServiceDataSource.updateMobileDataUsage(0)
             updateNodeServices()
         }
 
         override fun stopServices() {
-            mobileNode?.stopProvider()
+            mobileNode.stopProvider()
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
 
         override suspend fun stop() {
-            mobileNode?.stopProvider()
-            mobileNode?.shutdown()
+            isStarted = false
+            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
+            mobileNode.stopProvider()
+            mobileNode.shutdown()
         }
     }
 }

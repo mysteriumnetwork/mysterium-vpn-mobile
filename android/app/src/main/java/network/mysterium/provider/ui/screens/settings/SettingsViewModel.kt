@@ -2,6 +2,8 @@ package network.mysterium.provider.ui.screens.settings
 
 import kotlinx.coroutines.Dispatchers
 import network.mysterium.node.Node
+import network.mysterium.node.analytics.NodeAnalytics
+import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.node.model.NodeConfig
 import network.mysterium.provider.Config
 import network.mysterium.provider.core.CoreViewModel
@@ -9,7 +11,8 @@ import network.mysterium.provider.ui.navigation.NavigationDestination
 import network.mysterium.provider.utils.Converter
 
 class SettingsViewModel(
-    private val node: Node
+    private val node: Node,
+    private val analytics: NodeAnalytics,
 ) : CoreViewModel<Settings.Event, Settings.State, Settings.Effect>() {
 
     init {
@@ -54,6 +57,7 @@ class SettingsViewModel(
             }
 
             is Settings.Event.ToggleMobileData -> {
+                analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.UseMobileDataEvent(event.checked))
                 updateNodeConfig(node.config.copy(useMobileData = event.checked))
                 setState { copy(isMobileDataOn = event.checked) }
             }
@@ -64,6 +68,12 @@ class SettingsViewModel(
                 } else {
                     true
                 }
+                analytics.trackEvent(
+                    AnalyticsEvent.ToggleAnalyticsEvent.UseMobileDataLimitUsageEvent(
+                        event.checked,
+                        limit = node.config.mobileDataLimit,
+                    )
+                )
                 updateNodeConfig(node.config.copy(useMobileDataLimit = event.checked))
                 setState {
                     copy(
@@ -74,6 +84,7 @@ class SettingsViewModel(
             }
 
             is Settings.Event.ToggleAllowUseOnBattery -> {
+                analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.UseOnBatteryEvent(event.checked))
                 updateNodeConfig(node.config.copy(allowUseOnBattery = event.checked))
                 setState { copy(isAllowUseOnBatteryOn = event.checked) }
             }
@@ -88,7 +99,14 @@ class SettingsViewModel(
                     setState { copy(continueButtonEnabled = false) }
                     return
                 }
-                updateNodeConfig(node.config.copy(mobileDataLimit = Converter.megabytesToBytes(limit)))
+                val bytesLimit = Converter.megabytesToBytes(limit)
+                analytics.trackEvent(
+                    AnalyticsEvent.ToggleAnalyticsEvent.UseMobileDataLimitUsageEvent(
+                        currentState.isMobileDataLimitOn,
+                        limit = bytesLimit
+                    )
+                )
+                updateNodeConfig(node.config.copy(mobileDataLimit = bytesLimit))
                 setState {
                     copy(
                         isSaveButtonEnabled = false,
@@ -98,6 +116,7 @@ class SettingsViewModel(
             }
 
             Settings.Event.OnContinue -> {
+                analytics.trackEvent(AnalyticsEvent.OnboardingCompletedPressEvent)
                 startNodeInForeground()
             }
 
@@ -157,5 +176,9 @@ class SettingsViewModel(
     private fun shutDownNode() = launch {
         node.stop()
         setEffect { Settings.Effect.CloseApp }
+    }
+
+    fun trackHelpPressed() {
+        analytics.trackEvent(AnalyticsEvent.HelpButtonPressedEvent)
     }
 }

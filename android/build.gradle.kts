@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.jvm)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.firebase) apply false
 }
