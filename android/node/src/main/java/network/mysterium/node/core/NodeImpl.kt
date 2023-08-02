@@ -60,6 +60,7 @@ internal class NodeImpl(
     private var service: NodeServiceBinder? = null
 
     override suspend fun start() {
+        if (service != null) return
         val service = startService()
         service.start()
         if (dataSource.identity.value.status == NodeIdentity.Status.REGISTERED) {
