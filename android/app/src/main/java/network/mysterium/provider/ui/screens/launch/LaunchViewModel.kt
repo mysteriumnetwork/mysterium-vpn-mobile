@@ -74,10 +74,13 @@ class LaunchViewModel(
                     setEffect { Launch.Effect.Navigation(NavigationDestination.NodeUI(false)) }
                 }
 
-                NodeIdentity.Status.UNKNOWN,
                 NodeIdentity.Status.UNREGISTERED,
                 NodeIdentity.Status.REGISTRATION_ERROR -> {
                     setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
+                }
+
+                NodeIdentity.Status.UNKNOWN -> {
+                    Log.d(TAG, "skip step")
                 }
             }
         }
