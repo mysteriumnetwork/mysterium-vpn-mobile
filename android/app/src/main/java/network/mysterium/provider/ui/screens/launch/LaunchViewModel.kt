@@ -2,6 +2,7 @@ package network.mysterium.provider.ui.screens.launch
 
 import android.util.Log
 import io.sentry.Sentry
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
@@ -23,6 +24,7 @@ class LaunchViewModel(
         setEffect { Launch.Effect.RequestVpnPermission }
         observeNetworkState()
     }
+
 
     override fun createInitialState(): Launch.State {
         return Launch.State(error = null)
@@ -55,28 +57,29 @@ class LaunchViewModel(
         }
         try {
             node.start()
-            node.identity.collect {
-                when (it.status) {
-                    NodeIdentity.Status.REGISTERED -> {
-                        setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
-                    }
+        } catch (error: Throwable) {
+            if (error !is CancellationException) {
+                Sentry.captureException(error)
+                Log.e(TAG, "unable to init node", error)
+                setState { copy(error = Launch.InitError(R.string.unable_init_node)) }
+            }
+        }
+        node.identity.collect {
+            when (it.status) {
+                NodeIdentity.Status.REGISTERED -> {
+                    setEffect { Launch.Effect.Navigation(NavigationDestination.Home) }
+                }
 
-                    NodeIdentity.Status.IN_PROGRESS -> {
-                        setEffect { Launch.Effect.Navigation(NavigationDestination.NodeUI(false)) }
-                    }
+                NodeIdentity.Status.IN_PROGRESS -> {
+                    setEffect { Launch.Effect.Navigation(NavigationDestination.NodeUI(false)) }
+                }
 
-                    NodeIdentity.Status.UNKNOWN,
-                    NodeIdentity.Status.UNREGISTERED,
-                    NodeIdentity.Status.REGISTRATION_ERROR -> {
-                        setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
-                    }
+                NodeIdentity.Status.UNKNOWN,
+                NodeIdentity.Status.UNREGISTERED,
+                NodeIdentity.Status.REGISTRATION_ERROR -> {
+                    setEffect { Launch.Effect.Navigation(NavigationDestination.Start) }
                 }
             }
-
-        } catch (error: Throwable) {
-            Sentry.captureException(error)
-            Log.e(TAG, "unable to init node", error)
-            setState { copy(error = Launch.InitError(R.string.unable_init_node)) }
         }
     }
 

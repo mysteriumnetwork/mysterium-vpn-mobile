@@ -29,6 +29,8 @@ internal class NodeImpl(
         val TAG: String = NodeImpl::class.java.simpleName
     }
 
+    private var serviceConnection: ServiceConnection? = null
+
     override val terms: NodeTerms
         get() = NodeTerms(Terms.endUserMD(), Terms.version())
 
@@ -63,10 +65,6 @@ internal class NodeImpl(
         if (service != null) return
         val service = startService()
         service.start()
-        if (dataSource.identity.value.status == NodeIdentity.Status.REGISTERED) {
-            service.startForegroundService()
-            service.startServices()
-        }
         this.service = service
     }
 
@@ -80,28 +78,31 @@ internal class NodeImpl(
     }
 
     override suspend fun stop() {
-        disableForegroundService()
         service?.stop()
+        disableForegroundService()
+        serviceConnection?.let { context.unbindService(it) }
     }
 
     private suspend fun startService() = suspendCoroutine { continuation ->
         val intent = Intent(context, NodeService::class.java)
+        serviceConnection = serviceConnection ?: object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                val service = binder as? NodeServiceBinder
+
+                if (service == null) {
+                    continuation.resumeWithException(IllegalStateException("Unable to create service"))
+                    return
+                }
+                continuation.resume(service)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                service?.stopSelf()
+            }
+        }
         context.bindService(
             intent,
-            object : ServiceConnection {
-                override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                    val service = binder as? NodeServiceBinder
-
-                    if (service == null) {
-                        continuation.resumeWithException(IllegalStateException("Unable to create service"))
-                        return
-                    }
-                    continuation.resume(service)
-                }
-
-                override fun onServiceDisconnected(name: ComponentName?) {
-                }
-            },
+            serviceConnection!!,
             Context.BIND_AUTO_CREATE
         )
     }

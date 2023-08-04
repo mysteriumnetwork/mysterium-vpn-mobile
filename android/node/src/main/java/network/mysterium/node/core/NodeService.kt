@@ -18,6 +18,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +33,7 @@ import network.mysterium.node.battery.BatteryStatus
 import network.mysterium.node.data.NodeServiceDataSource
 import network.mysterium.node.extensions.isFirstDayOfMonth
 import network.mysterium.node.extensions.nextDay
+import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeUsage
 import network.mysterium.node.network.NetworkReporter
 import network.mysterium.node.network.NetworkType
@@ -66,6 +69,8 @@ class NodeService : Service() {
     private val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e(TAG, throwable.message, throwable)
     }
+
+    private val isNotificationShown: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher + defaultErrorHandler)
     private var balanceTimer: Timer? = null
@@ -111,6 +116,7 @@ class NodeService : Service() {
             .setOngoing(true)
             .build()
         startForeground(NOTIFICATION_ID, notification)
+        isNotificationShown.value = true
     }
 
     @Suppress("DEPRECATION")
@@ -120,6 +126,7 @@ class NodeService : Service() {
         } else {
             stopForeground(true)
         }
+        isNotificationShown.value = false
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -134,10 +141,10 @@ class NodeService : Service() {
         )
     }
 
-    private suspend fun startNode() = withContext(dispatcher) {
-        nodeServiceDataSource.fetchIdentity()
+    private fun startNode() = scope.launch {
         nodeServiceDataSource.fetchServices()
         nodeServiceDataSource.fetchBalance()
+        nodeServiceDataSource.fetchIdentity()
     }
 
     private fun registerListeners() {
@@ -152,6 +159,19 @@ class NodeService : Service() {
                 nodeServiceDataSource.fetchIdentity()
             }
         }
+    }
+
+    private fun observeNotification() {
+        combine(
+            isNotificationShown,
+            nodeServiceDataSource.identity
+        ) { isNotificationShown, identity ->
+            if (!isNotificationShown && identity.status == NodeIdentity.Status.REGISTERED) {
+                updateNodeServices()
+                startForegroundNotification()
+            }
+        }
+            .launchIn(scope)
     }
 
     private fun startBalanceTimer() {
@@ -239,14 +259,19 @@ class NodeService : Service() {
         }
     }
 
+    private fun stopSelfService() {
+        this.stopSelf()
+    }
+
 
     internal inner class Bridge : Binder(), NodeServiceBinder {
 
-        override suspend fun start() {
+        override fun start() {
             if (isStarted) return
-            startNode()
+            observeNotification()
             registerListeners()
             startBalanceTimer()
+            startNode()
             isStarted = true
         }
 
@@ -278,5 +303,10 @@ class NodeService : Service() {
             mobileNode.stopProvider()
             mobileNode.shutdown()
         }
+
+        override fun stopSelf() {
+            stopSelfService()
+        }
     }
+
 }

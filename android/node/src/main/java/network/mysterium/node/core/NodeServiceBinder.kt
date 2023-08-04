@@ -9,11 +9,12 @@ import network.mysterium.node.model.NodeServiceType
 
 internal interface NodeServiceBinder : IBinder {
 
-    suspend fun start()
+    fun start()
     suspend fun stop()
     fun startForegroundService()
     fun stopForegroundService()
     suspend fun startServices()
     suspend fun updateServices()
     fun stopServices()
+    fun stopSelf()
 }

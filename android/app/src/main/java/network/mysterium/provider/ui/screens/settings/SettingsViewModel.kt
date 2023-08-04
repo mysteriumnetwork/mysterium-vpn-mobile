@@ -1,6 +1,7 @@
 package network.mysterium.provider.ui.screens.settings
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import network.mysterium.node.Node
 import network.mysterium.node.analytics.NodeAnalytics
 import network.mysterium.node.analytics.event.AnalyticsEvent
@@ -174,7 +175,9 @@ class SettingsViewModel(
     }
 
     private fun shutDownNode() = launch {
-        node.stop()
+        withContext(ioDispatcher) {
+            node.stop()
+        }
         setEffect { Settings.Effect.CloseApp }
     }
 

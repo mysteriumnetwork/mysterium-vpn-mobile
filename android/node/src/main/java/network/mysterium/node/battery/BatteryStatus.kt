@@ -32,12 +32,16 @@ class BatteryStatus(private val context: Context) {
     }
 
     private fun setInitialChargingState() {
-        val batteryStatusIntent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val batteryStatusIntent =
+            context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         isChargingFlow.update {
             batteryStatusIntent?.getIntExtra(
                 BatteryManager.EXTRA_STATUS,
                 -1
-            ) == BatteryManager.BATTERY_STATUS_CHARGING
+            ).let { batteryStatus ->
+                batteryStatus == BatteryManager.BATTERY_STATUS_CHARGING ||
+                        batteryStatus == BatteryManager.BATTERY_STATUS_FULL
+            }
         }
     }
 }
