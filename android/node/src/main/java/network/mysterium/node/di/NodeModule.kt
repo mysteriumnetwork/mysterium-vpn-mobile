@@ -1,6 +1,5 @@
 package network.mysterium.node.di
 
-import mysterium.Mysterium
 import network.mysterium.node.Node
 import network.mysterium.node.Storage
 import network.mysterium.node.battery.BatteryStatus
@@ -26,16 +25,7 @@ val nodeModule = module {
     single<Node> { NodeImpl(get(), get(), get()) }
 
     single<NodeContainer> {
-        try {
-            NodeContainer(
-                mobileNode = Mysterium.newNode(
-                    androidContext().filesDir.canonicalPath,
-                    Mysterium.defaultProviderNodeOptions()
-                )
-            )
-        } catch (e: Throwable) {
-            NodeContainer(mobileNode = null, e)
-        }
+        NodeContainer(androidContext())
     }
 
     single<NodeServiceDataSource> {

@@ -18,9 +18,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -59,7 +60,7 @@ class NodeService : Service() {
     private var isStarted: Boolean = false
 
     private val nodeContainer by inject<NodeContainer>()
-    private val mobileNode: MobileNode? = nodeContainer.mobileNode
+    private var mobileNode: MobileNode? = null
     private val nodeServiceDataSource by inject<NodeServiceDataSource>()
     private val networkReporter by inject<NetworkReporter>()
     private val storage by inject<Storage>()
@@ -80,6 +81,9 @@ class NodeService : Service() {
 
     override fun onCreate() {
         //todo needs refactor
+        scope.launch {
+            mobileNode = nodeContainer.getInstance()
+        }
         observeNetworkUsage()
         observeNetworkStatus()
         startEndOfDayTimer()
@@ -149,16 +153,19 @@ class NodeService : Service() {
     }
 
     private fun registerListeners() {
+        scope.launch {
+            mobileNode = nodeContainer.getInstance()
 
-        mobileNode?.registerServiceStatusChangeCallback { _, _ ->
-            scope.launch {
-                nodeServiceDataSource.fetchServices()
+            mobileNode?.registerServiceStatusChangeCallback { _, _ ->
+                scope.launch {
+                    nodeServiceDataSource.fetchServices()
+                }
             }
-        }
 
-        mobileNode?.registerIdentityRegistrationChangeCallback { _, _ ->
-            scope.launch {
-                nodeServiceDataSource.fetchIdentity()
+            mobileNode?.registerIdentityRegistrationChangeCallback { _, _ ->
+                scope.launch {
+                    nodeServiceDataSource.fetchIdentity()
+                }
             }
         }
     }
@@ -196,7 +203,8 @@ class NodeService : Service() {
     }
 
     private fun observeNetworkStatus() = scope.launch {
-        networkReporter.currentConnectivity.collect {
+        //delay to guarantee network off/on state
+        networkReporter.currentConnectivity.onEach { delay(2000) }.collectLatest {
             updateNodeServices()
         }
     }
