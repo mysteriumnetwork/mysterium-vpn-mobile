@@ -58,7 +58,8 @@ class NodeService : Service() {
 
     private var isStarted: Boolean = false
 
-    private val mobileNode by inject<MobileNode>()
+    private val nodeContainer by inject<NodeContainer>()
+    private val mobileNode: MobileNode? = nodeContainer.mobileNode
     private val nodeServiceDataSource by inject<NodeServiceDataSource>()
     private val networkReporter by inject<NetworkReporter>()
     private val storage by inject<Storage>()
@@ -148,13 +149,14 @@ class NodeService : Service() {
     }
 
     private fun registerListeners() {
-        mobileNode.registerServiceStatusChangeCallback { _, _ ->
+
+        mobileNode?.registerServiceStatusChangeCallback { _, _ ->
             scope.launch {
                 nodeServiceDataSource.fetchServices()
             }
         }
 
-        mobileNode.registerIdentityRegistrationChangeCallback { _, _ ->
+        mobileNode?.registerIdentityRegistrationChangeCallback { _, _ ->
             scope.launch {
                 nodeServiceDataSource.fetchIdentity()
             }
@@ -194,7 +196,7 @@ class NodeService : Service() {
     }
 
     private fun observeNetworkStatus() = scope.launch {
-        networkReporter.currentConnectivity.drop(1).collect {
+        networkReporter.currentConnectivity.collect {
             updateNodeServices()
         }
     }
@@ -237,10 +239,10 @@ class NodeService : Service() {
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
         if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
-            mobileNode.startProvider()
+            mobileNode?.startProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = true))
         } else {
-            mobileNode.stopProvider()
+            mobileNode?.stopProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
     }
@@ -293,15 +295,15 @@ class NodeService : Service() {
         }
 
         override fun stopServices() {
-            mobileNode.stopProvider()
+            mobileNode?.stopProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
 
         override suspend fun stop() {
             isStarted = false
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
-            mobileNode.stopProvider()
-            mobileNode.shutdown()
+            mobileNode?.stopProvider()
+            mobileNode?.shutdown()
         }
 
         override fun stopSelf() {

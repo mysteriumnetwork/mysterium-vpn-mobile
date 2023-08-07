@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import network.mysterium.node.Node
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.network.NetworkReporter
+import network.mysterium.node.network.NetworkType
 import network.mysterium.provider.R
 import network.mysterium.provider.core.CoreViewModel
 import network.mysterium.provider.ui.navigation.NavigationDestination
@@ -91,7 +92,7 @@ class LaunchViewModel(
             if (currentState.error == null) {
                 return@collect
             }
-            if (it.isNotEmpty()) {
+            if (it != NetworkType.NOT_CONNECTED) {
                 setState { copy(error = null) }
                 initializeNode()
             }
