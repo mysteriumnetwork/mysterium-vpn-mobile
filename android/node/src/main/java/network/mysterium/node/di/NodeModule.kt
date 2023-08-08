@@ -1,10 +1,9 @@
 package network.mysterium.node.di
 
-import mysterium.MobileNode
-import mysterium.Mysterium
 import network.mysterium.node.Node
 import network.mysterium.node.Storage
 import network.mysterium.node.battery.BatteryStatus
+import network.mysterium.node.core.NodeContainer
 import network.mysterium.node.core.NodeImpl
 import network.mysterium.node.core.StorageImpl
 import network.mysterium.node.data.NodeServiceDataSource
@@ -19,22 +18,19 @@ val nodeModule = module {
 
     single<Storage> { StorageImpl(androidContext()) }
 
-    factory {
+    single {
         NetworkReporter(androidContext())
     }
 
     single<Node> { NodeImpl(get(), get(), get()) }
 
-    single<MobileNode> {
-        Mysterium.newNode(
-            androidContext().filesDir.canonicalPath,
-            Mysterium.defaultProviderNodeOptions()
-        )
+    single<NodeContainer> {
+        NodeContainer(androidContext())
     }
 
     single<NodeServiceDataSource> {
         NodeServiceDataSourceImpl(
-            mobileNode = get(),
+            nodeContainer = get(),
             storage = get(),
             networkReporter = get(),
             analytics = get(),

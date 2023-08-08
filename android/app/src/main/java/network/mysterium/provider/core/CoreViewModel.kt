@@ -1,5 +1,6 @@
 package network.mysterium.provider.core
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.sentry.Sentry
@@ -35,6 +36,7 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
     protected val ioDispatcher = Dispatchers.IO
 
     protected val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("Default handler", throwable.message, throwable)
         Sentry.captureException(throwable)
     }
 

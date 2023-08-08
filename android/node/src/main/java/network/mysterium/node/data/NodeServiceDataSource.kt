@@ -12,6 +12,7 @@ import mysterium.MobileNode
 import network.mysterium.node.Storage
 import network.mysterium.node.analytics.NodeAnalytics
 import network.mysterium.node.analytics.event.AnalyticsEvent
+import network.mysterium.node.core.NodeContainer
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeServiceType
 import network.mysterium.node.network.NetworkReporter
@@ -31,7 +32,7 @@ interface NodeServiceDataSource {
 }
 
 class NodeServiceDataSourceImpl(
-    private val mobileNode: MobileNode,
+    private val nodeContainer: NodeContainer,
     private val storage: Storage,
     private val networkReporter: NetworkReporter,
     private val analytics: NodeAnalytics,
@@ -44,7 +45,9 @@ class NodeServiceDataSourceImpl(
     override val balance: MutableStateFlow<Double> = MutableStateFlow(0.0)
     override val limitMonitor: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
+
     override suspend fun fetchIdentity() {
+        val mobileNode: MobileNode = nodeContainer.getInstance()
         val response = mobileNode.getIdentity(GetIdentityRequest())
         identity.update {
             NodeIdentity(
@@ -56,6 +59,7 @@ class NodeServiceDataSourceImpl(
     }
 
     override suspend fun fetchBalance() {
+        val mobileNode: MobileNode = nodeContainer.getInstance()
         val request = GetBalanceRequest()
         request.identityAddress = identity.value.address
         val response = mobileNode.getUnsettledEarnings(request)
@@ -66,6 +70,7 @@ class NodeServiceDataSourceImpl(
 
 
     override suspend fun fetchServices() {
+        val mobileNode: MobileNode = nodeContainer.getInstance()
         val json = mobileNode.allServicesState.decodeToString()
         val response = Json.decodeFromString<List<NodeServiceType>>(json)
         val oldServices = services.value
@@ -85,6 +90,8 @@ class NodeServiceDataSourceImpl(
     }
 
     override suspend fun updateMobileDataUsage(usedBytesPerMonth: Long) {
+        val mobileNode: MobileNode = nodeContainer.getInstance()
+
         val config = storage.config
         if (config.useMobileData &&
             config.useMobileDataLimit &&

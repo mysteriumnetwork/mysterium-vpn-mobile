@@ -7,9 +7,19 @@ sealed class AnalyticsEvent(open val name: String) {
         AnalyticsEvent(name) {
 
         abstract val isEnabled: Boolean
-        override val properties: Map<String, Any?>
-            get() = super.properties + mapOf("is_enabled" to isEnabled)
+        override val properties: Map<String, Any?> by lazy { super.properties + mapOf("is_enabled" to isEnabled.toAnalytics()) }
 
+        enum class AnalyticsEnabled {
+            ENABLED,
+            DISABLED
+        }
+
+        private fun Boolean.toAnalytics(): String =
+            if (this) {
+                AnalyticsEnabled.ENABLED
+            } else {
+                AnalyticsEnabled.DISABLED
+            }.name.lowercase()
 
         data class NodeUiState(override val isEnabled: Boolean) :
             ToggleAnalyticsEvent("node_status")
@@ -46,5 +56,3 @@ sealed class AnalyticsEvent(open val name: String) {
     }
 
 }
-
-

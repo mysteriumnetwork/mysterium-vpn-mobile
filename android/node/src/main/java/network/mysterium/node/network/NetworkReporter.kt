@@ -6,13 +6,13 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.update
 import network.mysterium.node.date.DateUtil
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -21,38 +21,68 @@ class NetworkReporter(
     context: Context
 ) {
 
-    val currentConnectivity: StateFlow<List<NetworkType>>
+    val currentConnectivity: StateFlow<NetworkType>
         get() = currentConnectivityFlow.asStateFlow()
 
-    private val currentConnectivityFlow = MutableStateFlow<List<NetworkType>>(emptyList())
+    private val currentConnectivityFlow = MutableStateFlow<NetworkType>(NetworkType.NOT_CONNECTED)
     private val connectivity =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val networkStatsManager =
         context.getSystemService(NetworkStatsManager::class.java)
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onCapabilitiesChanged(
-            network: Network,
-            networkCapabilities: NetworkCapabilities
-        ) {
-            currentConnectivityFlow.update {
-                currentNetworkTypes()
+    private val availableCellularNetworkSet = HashSet<Long>()
+    private val availableWifiNetworkSet = HashSet<Long>()
+
+    init {
+        addNetworkStateListener(
+            connectivity,
+            NetworkCapabilities.TRANSPORT_WIFI,
+            availableWifiNetworkSet
+        )
+        addNetworkStateListener(
+            connectivity,
+            NetworkCapabilities.TRANSPORT_CELLULAR,
+            availableCellularNetworkSet
+        )
+    }
+
+    private fun addNetworkStateListener(
+        connectivityManager: ConnectivityManager,
+        transport: Int,
+        networkSetToUpdate: HashSet<Long>
+    ) {
+        val networkRequest = NetworkRequest.Builder()
+            .addTransportType(transport)
+            .build()
+
+        connectivityManager.registerNetworkCallback(
+            networkRequest,
+            object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    networkSetToUpdate.add(network.networkHandle)
+                    updateConnectionAvailableState()
+                }
+
+                override fun onLost(network: Network) {
+                    networkSetToUpdate.remove(network.networkHandle)
+                    updateConnectionAvailableState()
+                }
             }
+        )
+    }
+
+    private fun updateConnectionAvailableState() {
+        currentConnectivityFlow.value = when {
+            availableWifiNetworkSet.size > 0 -> NetworkType.WIFI
+            availableCellularNetworkSet.size > 0 -> NetworkType.MOBILE
+            else -> NetworkType.NOT_CONNECTED
         }
     }
 
-    init {
-        connectivity.registerDefaultNetworkCallback(networkCallback)
-    }
-
-    fun isConnected(type: NetworkType): Boolean {
-        val network = connectivity.activeNetwork ?: return false
-        val activeNetwork = connectivity.getNetworkCapabilities(network) ?: return false
-        return activeNetwork.hasTransport(type.capability)
-    }
+    fun isConnected(type: NetworkType): Boolean = currentConnectivityFlow.value == type
 
     fun isOnline(): Boolean {
-        return isConnected(NetworkType.MOBILE) || isConnected(NetworkType.WIFI)
+        return currentConnectivityFlow.value != NetworkType.NOT_CONNECTED
     }
 
     fun monitorUsage(type: NetworkType) = callbackFlow {
@@ -86,16 +116,5 @@ class NetworkReporter(
         awaitClose {
             isRunning = false
         }
-    }
-
-    private fun currentNetworkTypes(): List<NetworkType> {
-        return NetworkType.values().mapNotNull {
-            if (isConnected(it)) {
-                it
-            } else {
-                null
-            }
-        }
-
     }
 }

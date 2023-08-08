@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalPermissionsApi::class)
+
 package network.mysterium.provider.ui.screens.launch
 
+import android.Manifest
 import android.app.Activity
 import android.net.VpnService
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -18,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import network.mysterium.provider.R
 import network.mysterium.provider.extensions.getActivity
 import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
@@ -39,10 +45,18 @@ fun LaunchScreen(
     val vpnLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                viewModel.setEvent(Launch.Event.InitializeNode)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    viewModel.setEvent(Launch.Event.RequestNotificationPermission)
+                } else {
+                    viewModel.setEvent(Launch.Event.InitializeNode)
+                }
             } else {
                 viewModel.setEvent(Launch.Event.DeclinedVpnPermission)
             }
+        }
+    val notificationPermissionRequest =
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) {
+            viewModel.setEvent(Launch.Event.InitializeNode)
         }
 
     LaunchedEffect(LAUNCH_EFFECT) {
@@ -51,13 +65,23 @@ fun LaunchScreen(
                 is Launch.Effect.Navigation -> {
                     onNavigate(it.destination)
                 }
+
                 Launch.Effect.RequestVpnPermission -> {
                     VpnService.prepare(context)?.let { intent ->
                         vpnLauncher.launch(intent)
                     } ?: run {
-                        viewModel.setEvent(Launch.Event.InitializeNode)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            viewModel.setEvent(Launch.Event.RequestNotificationPermission)
+                        } else {
+                            viewModel.setEvent(Launch.Event.InitializeNode)
+                        }
                     }
                 }
+
+                Launch.Effect.RequestNotificationPermission -> {
+                    notificationPermissionRequest.launchPermissionRequest()
+                }
+
                 Launch.Effect.CloseApp -> {
                     context.getActivity()?.finishAndRemoveTask()
                 }

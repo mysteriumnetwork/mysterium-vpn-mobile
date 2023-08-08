@@ -18,7 +18,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -31,6 +34,7 @@ import network.mysterium.node.battery.BatteryStatus
 import network.mysterium.node.data.NodeServiceDataSource
 import network.mysterium.node.extensions.isFirstDayOfMonth
 import network.mysterium.node.extensions.nextDay
+import network.mysterium.node.model.NodeIdentity
 import network.mysterium.node.model.NodeUsage
 import network.mysterium.node.network.NetworkReporter
 import network.mysterium.node.network.NetworkType
@@ -55,7 +59,8 @@ class NodeService : Service() {
 
     private var isStarted: Boolean = false
 
-    private val mobileNode by inject<MobileNode>()
+    private val nodeContainer by inject<NodeContainer>()
+    private var mobileNode: MobileNode? = null
     private val nodeServiceDataSource by inject<NodeServiceDataSource>()
     private val networkReporter by inject<NetworkReporter>()
     private val storage by inject<Storage>()
@@ -67,6 +72,8 @@ class NodeService : Service() {
         Log.e(TAG, throwable.message, throwable)
     }
 
+    private val isNotificationShown: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
     private val scope = CoroutineScope(SupervisorJob() + dispatcher + defaultErrorHandler)
     private var balanceTimer: Timer? = null
     private var endOfDayTimer: Timer? = null
@@ -74,6 +81,9 @@ class NodeService : Service() {
 
     override fun onCreate() {
         //todo needs refactor
+        scope.launch {
+            mobileNode = nodeContainer.getInstance()
+        }
         observeNetworkUsage()
         observeNetworkStatus()
         startEndOfDayTimer()
@@ -104,22 +114,24 @@ class NodeService : Service() {
             .setSmallIcon(R.drawable.ic_notification_logo)
             .setContentTitle("Connected")
             .setColor(Color.WHITE)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVibrate(LongArray(0))
             .setContentIntent(pendingIntent)
             .setOnlyAlertOnce(true)
             .setOngoing(true)
             .build()
         startForeground(NOTIFICATION_ID, notification)
+        isNotificationShown.value = true
     }
 
     @Suppress("DEPRECATION")
     private fun stopForegroundNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            stopForeground(STOP_FOREGROUND_DETACH)
+            stopForeground(STOP_FOREGROUND_REMOVE)
         } else {
             stopForeground(true)
         }
+        isNotificationShown.value = false
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -134,24 +146,41 @@ class NodeService : Service() {
         )
     }
 
-    private suspend fun startNode() = withContext(dispatcher) {
-        nodeServiceDataSource.fetchIdentity()
+    private fun startNode() = scope.launch {
         nodeServiceDataSource.fetchServices()
         nodeServiceDataSource.fetchBalance()
+        nodeServiceDataSource.fetchIdentity()
     }
 
     private fun registerListeners() {
-        mobileNode.registerServiceStatusChangeCallback { _, _ ->
-            scope.launch {
-                nodeServiceDataSource.fetchServices()
-            }
-        }
+        scope.launch {
+            mobileNode = nodeContainer.getInstance()
 
-        mobileNode.registerIdentityRegistrationChangeCallback { _, _ ->
-            scope.launch {
-                nodeServiceDataSource.fetchIdentity()
+            mobileNode?.registerServiceStatusChangeCallback { _, _ ->
+                scope.launch {
+                    nodeServiceDataSource.fetchServices()
+                }
+            }
+
+            mobileNode?.registerIdentityRegistrationChangeCallback { _, _ ->
+                scope.launch {
+                    nodeServiceDataSource.fetchIdentity()
+                }
             }
         }
+    }
+
+    private fun observeNotification() {
+        combine(
+            isNotificationShown,
+            nodeServiceDataSource.identity
+        ) { isNotificationShown, identity ->
+            if (!isNotificationShown && identity.status == NodeIdentity.Status.REGISTERED) {
+                updateNodeServices()
+                startForegroundNotification()
+            }
+        }
+            .launchIn(scope)
     }
 
     private fun startBalanceTimer() {
@@ -174,7 +203,8 @@ class NodeService : Service() {
     }
 
     private fun observeNetworkStatus() = scope.launch {
-        networkReporter.currentConnectivity.drop(1).collect {
+        //delay to guarantee network off/on state
+        networkReporter.currentConnectivity.onEach { delay(2000) }.collectLatest {
             updateNodeServices()
         }
     }
@@ -217,10 +247,10 @@ class NodeService : Service() {
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
         if (batteryOption && (wifiOption || mobileDataOption) && !isMobileLimitReached()) {
-            mobileNode.startProvider()
+            mobileNode?.startProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = true))
         } else {
-            mobileNode.stopProvider()
+            mobileNode?.stopProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
     }
@@ -239,14 +269,19 @@ class NodeService : Service() {
         }
     }
 
+    private fun stopSelfService() {
+        this.stopSelf()
+    }
+
 
     internal inner class Bridge : Binder(), NodeServiceBinder {
 
-        override suspend fun start() {
+        override fun start() {
             if (isStarted) return
-            startNode()
+            observeNotification()
             registerListeners()
             startBalanceTimer()
+            startNode()
             isStarted = true
         }
 
@@ -268,15 +303,20 @@ class NodeService : Service() {
         }
 
         override fun stopServices() {
-            mobileNode.stopProvider()
+            mobileNode?.stopProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
         }
 
         override suspend fun stop() {
             isStarted = false
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
-            mobileNode.stopProvider()
-            mobileNode.shutdown()
+            mobileNode?.stopProvider()
+            mobileNode?.shutdown()
+        }
+
+        override fun stopSelf() {
+            stopSelfService()
         }
     }
+
 }
