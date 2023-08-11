@@ -55,7 +55,6 @@
                     android:scheme="https" />
 
             </intent-filter>
-
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -65,6 +64,29 @@
                 <data android:scheme="mystnodes" />
                 <data android:host="sso" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="mystnodes" />
+                <data android:host="clickboarding" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="claim"
+                    android:scheme="mystnodes" />
+
+            </intent-filter>
+
         </activity>
 
         <service

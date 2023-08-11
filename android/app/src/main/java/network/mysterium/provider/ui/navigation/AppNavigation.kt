@@ -1,7 +1,9 @@
 package network.mysterium.provider.ui.navigation
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import androidx.navigation.NavController.Companion.KEY_DEEP_LINK_INTENT
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,12 +11,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import network.mysterium.provider.Config
+import network.mysterium.provider.DeeplinkPath
+import network.mysterium.provider.ui.navigation.params.NodeUiParam
 import network.mysterium.provider.ui.screens.home.HomeScreen
 import network.mysterium.provider.ui.screens.launch.LaunchScreen
 import network.mysterium.provider.ui.screens.nodeui.NodeUIScreen
 import network.mysterium.provider.ui.screens.settings.SettingsScreen
 import network.mysterium.provider.ui.screens.start.StartScreen
 import network.mysterium.provider.ui.screens.tac.TACScreen
+import network.mysterium.provider.utils.parcelable
 
 @Composable
 fun AppNavigation() {
@@ -54,11 +59,33 @@ fun AppNavigation() {
         }
         composable(
             route = Route.NODE_UI,
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "${Config.deeplinkScheme}?authorizationGrant={authGrant}"
-            })
+            deepLinks = listOf(
+                navDeepLink { uriPattern = Config.deeplinkSSO.path() },
+                navDeepLink { uriPattern = Config.deeplinkClaim.path() },
+                navDeepLink { uriPattern = Config.deepLinkOnboardingClicking.path() },
+            )
         ) { backStackEntry ->
-            NodeUIScreen(backStackEntry.arguments?.getString("authGrant")) {
+            val host =
+                backStackEntry.arguments?.parcelable<Intent>(KEY_DEEP_LINK_INTENT)?.data?.host
+            val params = when (host) {
+                DeeplinkPath.Scheme.SSO.scheme -> NodeUiParam(
+                    scheme = DeeplinkPath.Scheme.SSO,
+                    parameter = backStackEntry.arguments?.getString(Config.deeplinkSSO.parameterName)
+                )
+
+                DeeplinkPath.Scheme.CLAIM.scheme -> NodeUiParam(
+                    scheme = DeeplinkPath.Scheme.CLAIM,
+                    parameter = backStackEntry.arguments?.getString(Config.deeplinkClaim.parameterName)
+                )
+
+                DeeplinkPath.Scheme.CLICKBOARDING.scheme -> NodeUiParam(
+                    scheme = DeeplinkPath.Scheme.CLICKBOARDING,
+                    parameter = backStackEntry.arguments?.getString(Config.deepLinkOnboardingClicking.parameterName)
+                )
+
+                else -> null
+            }
+            NodeUIScreen(params) {
                 navController.navigate(it)
             }
         }
