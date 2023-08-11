@@ -50,7 +50,7 @@ class NodeUIViewModel(
                 setState {
                     copy(
                         url = when (params?.scheme) {
-                            DeeplinkPath.Scheme.CLAIM -> node.nodeUIUrl + "/#/" + Config.deeplinkClaim.scheme.scheme + Config.deeplinkClaim.queryPath + params.parameter
+                            DeeplinkPath.Scheme.CLAIM -> node.nodeUIUrl + "/#/node-claim" + Config.deeplinkClaim.queryPath + params.parameter
                             DeeplinkPath.Scheme.SSO -> node.nodeUIUrl + "/#/auth-sso" + Config.deeplinkSSO.queryPath + params.parameter
                             DeeplinkPath.Scheme.CLICKBOARDING -> node.nodeUIUrl + "/#/" + Config.deepLinkOnboardingClicking.scheme.scheme + Config.deepLinkOnboardingClicking.queryPath + params.parameter
                             null -> node.nodeUIUrl
