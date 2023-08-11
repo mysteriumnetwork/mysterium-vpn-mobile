@@ -11,13 +11,14 @@ import network.mysterium.provider.ui.components.buttons.SettingsButton
 import network.mysterium.provider.ui.components.content.LogoScreenContent
 import network.mysterium.provider.ui.components.webview.ComposeWebView
 import network.mysterium.provider.ui.navigation.NavigationDestination
+import network.mysterium.provider.ui.navigation.params.NodeUiParam
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun NodeUIScreen(
-    authGrant: String? = null,
-    viewModel: NodeUIViewModel = getViewModel() { parametersOf(authGrant) },
+    params: NodeUiParam? = null,
+    viewModel: NodeUIViewModel = getViewModel { parametersOf(params) },
     onNavigate: (NavigationDestination) -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()

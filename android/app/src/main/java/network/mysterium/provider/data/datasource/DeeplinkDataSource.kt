@@ -20,6 +20,6 @@ class DeeplinkDataSourceImpl(private val deeplinkApi: DeeplinkApi) : DeeplinkDat
         deeplinkApi.mapDeeplink(url.toDeeplinkScheme()).toDomain()
 
     private fun String.toDeeplinkScheme(): String =
-        this.replaceAfter(REDIRECT_URI, Config.deeplinkScheme)
+        this.replaceAfter(REDIRECT_URI, Config.deeplinkSSO.run { host + scheme })
 
 }

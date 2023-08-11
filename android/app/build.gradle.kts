@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.sentry)
+    alias(libs.plugins.serialization)
+
 }
 
 android {

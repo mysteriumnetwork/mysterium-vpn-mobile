@@ -1,5 +1,6 @@
 package network.mysterium.provider.di
 
+import network.mysterium.provider.ui.navigation.params.NodeUiParam
 import network.mysterium.provider.ui.screens.home.HomeViewModel
 import network.mysterium.provider.ui.screens.launch.LaunchViewModel
 import network.mysterium.provider.ui.screens.nodeui.NodeUIViewModel
@@ -22,9 +23,9 @@ val viewModels = module {
     viewModel {
         SettingsViewModel(node = get(), analytics = get())
     }
-    viewModel { (authGrant: String?) ->
+    viewModel { (params: NodeUiParam?) ->
         NodeUIViewModel(
-            authGrant = authGrant,
+            params = params,
             node = get(),
             context = get(),
             deeplinkRedirectionInteractor = get(),

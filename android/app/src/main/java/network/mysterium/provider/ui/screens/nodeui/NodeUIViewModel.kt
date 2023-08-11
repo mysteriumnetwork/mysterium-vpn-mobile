@@ -14,11 +14,13 @@ import network.mysterium.node.analytics.NodeAnalytics
 import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.node.model.NodeIdentity
 import network.mysterium.provider.Config
+import network.mysterium.provider.DeeplinkPath
 import network.mysterium.provider.core.CoreViewModel
 import network.mysterium.provider.domain.DeeplinkRedirectionInteractor
+import network.mysterium.provider.ui.navigation.params.NodeUiParam
 
 class NodeUIViewModel(
-    private val authGrant: String?,
+    private val params: NodeUiParam?,
     private val node: Node,
     private val context: Context,
     private val deeplinkRedirectionInteractor: DeeplinkRedirectionInteractor,
@@ -47,10 +49,12 @@ class NodeUIViewModel(
             NodeUI.Event.Load -> {
                 setState {
                     copy(
-                        url =
-                        authGrant?.let {
-                            node.nodeUIUrl + Config.authorizationGrantPath + it
-                        } ?: node.nodeUIUrl
+                        url = when (params?.scheme) {
+                            DeeplinkPath.Scheme.CLAIM -> node.nodeUIUrl + "/#/" + Config.deeplinkClaim.scheme.scheme + Config.deeplinkClaim.queryPath + params.parameter
+                            DeeplinkPath.Scheme.SSO -> node.nodeUIUrl + "/#/auth-sso" + Config.deeplinkSSO.queryPath + params.parameter
+                            DeeplinkPath.Scheme.CLICKBOARDING -> node.nodeUIUrl + "/#/" + Config.deepLinkOnboardingClicking.scheme.scheme + Config.deepLinkOnboardingClicking.queryPath + params.parameter
+                            null -> node.nodeUIUrl
+                        }
                     )
                 }
             }
