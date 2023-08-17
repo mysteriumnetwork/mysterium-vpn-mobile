@@ -158,6 +158,7 @@ class NodeService : Service() {
 
             mobileNode?.registerServiceStatusChangeCallback { _, _ ->
                 scope.launch {
+                    updateNodeServices(isSkipStart = true)
                     nodeServiceDataSource.fetchServices()
                 }
             }
@@ -240,15 +241,17 @@ class NodeService : Service() {
         }
     }
 
-    private suspend fun updateNodeServices() = withContext(dispatcher) {
+    private suspend fun updateNodeServices(isSkipStart: Boolean = false) = withContext(dispatcher) {
         val config = storage.config
         val wifiOption = networkReporter.isConnected(NetworkType.WIFI)
         val mobileDataOption =
             config.useMobileData && networkReporter.isConnected(NetworkType.MOBILE)
         val batteryOption = if (config.allowUseOnBattery) true else batteryStatus.isCharging.value
         if (batteryOption && (wifiOption || (mobileDataOption && !isMobileLimitReached()))) {
-            mobileNode?.startProvider()
-            analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = true))
+            if (!isSkipStart) {
+                mobileNode?.startProvider()
+                analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = true))
+            }
         } else {
             mobileNode?.stopProvider()
             analytics.trackEvent(AnalyticsEvent.ToggleAnalyticsEvent.NodeUiState(isEnabled = false))
