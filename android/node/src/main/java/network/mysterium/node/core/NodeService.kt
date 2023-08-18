@@ -35,6 +35,7 @@ import network.mysterium.node.data.NodeServiceDataSource
 import network.mysterium.node.extensions.isFirstDayOfMonth
 import network.mysterium.node.extensions.nextDay
 import network.mysterium.node.model.NodeIdentity
+import network.mysterium.node.model.NodeServiceType
 import network.mysterium.node.model.NodeUsage
 import network.mysterium.node.network.NetworkReporter
 import network.mysterium.node.network.NetworkType
@@ -83,6 +84,13 @@ class NodeService : Service() {
         //todo needs refactor
         scope.launch {
             mobileNode = nodeContainer.getInstance()
+        }
+        scope.launch {
+            nodeServiceDataSource.services.collectLatest {
+                if (it.any { it.state == NodeServiceType.State.STARTING || it.state == NodeServiceType.State.RUNNING }) {
+                    updateNodeServices(true)
+                }
+            }
         }
         observeNetworkUsage()
         observeNetworkStatus()
@@ -158,7 +166,6 @@ class NodeService : Service() {
 
             mobileNode?.registerServiceStatusChangeCallback { _, _ ->
                 scope.launch {
-                    updateNodeServices(isSkipStart = true)
                     nodeServiceDataSource.fetchServices()
                 }
             }
