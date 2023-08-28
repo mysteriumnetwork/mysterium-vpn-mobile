@@ -31,12 +31,12 @@ interface Node {
     /**
      * Get list of current services and statuses.
      */
-    val services: Flow<List<NodeServiceType>>
+    val services: StateFlow<List<NodeServiceType>>
 
     /**
      * Get unsettled balance.
      */
-    val balance: Flow<Double>
+    val balance: StateFlow<Double>
 
     /**
      * Get status of node.

@@ -156,8 +156,8 @@ class NodeService : Service() {
 
     private fun startNode() = scope.launch {
         nodeServiceDataSource.fetchServices()
-        nodeServiceDataSource.fetchBalance()
         nodeServiceDataSource.fetchIdentity()
+        nodeServiceDataSource.fetchBalance()
     }
 
     private fun registerListeners() {

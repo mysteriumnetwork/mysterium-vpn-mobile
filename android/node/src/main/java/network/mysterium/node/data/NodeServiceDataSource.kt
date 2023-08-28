@@ -1,7 +1,6 @@
 package network.mysterium.node.data
 
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -21,8 +20,8 @@ import network.mysterium.node.network.NetworkType
 interface NodeServiceDataSource {
 
     val identity: StateFlow<NodeIdentity>
-    val services: Flow<List<NodeServiceType>>
-    val balance: Flow<Double>
+    val services: StateFlow<List<NodeServiceType>>
+    val balance: StateFlow<Double>
     val limitMonitor: StateFlow<Boolean>
 
     suspend fun fetchIdentity()
