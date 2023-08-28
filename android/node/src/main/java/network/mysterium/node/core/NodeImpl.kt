@@ -42,10 +42,10 @@ internal class NodeImpl(
     override val config: NodeConfig
         get() = storage.config
 
-    override val services: Flow<List<NodeServiceType>>
+    override val services: StateFlow<List<NodeServiceType>>
         get() = dataSource.services
 
-    override val balance: Flow<Double>
+    override val balance: StateFlow<Double>
         get() = dataSource.balance
 
     override val identity: StateFlow<NodeIdentity>
