@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -110,6 +111,7 @@ private fun LaunchContent(
 
     state.error?.let {
         AlertDialog(
+            containerColor = Color.White,
             title = {
                 Text(stringResource(id = R.string.app_name))
             },

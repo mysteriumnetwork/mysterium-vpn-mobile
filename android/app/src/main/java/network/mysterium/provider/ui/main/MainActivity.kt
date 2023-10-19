@@ -19,6 +19,7 @@ class MainActivity : ComponentActivity() {
     private val analytics by inject<NodeAnalytics>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView
         super.onCreate(savedInstanceState)
         analytics.trackEvent(AnalyticsEvent.AppLaunchEvent)
         setContent {

@@ -2,7 +2,7 @@
 compileSdk = "33"
 minSdk = "24"
 targetSdk = "33"
-android-application = "8.0.1"
+android-application = "8.1.1"
 kotlin = "1.8.21"
 ktx = "1.10.0"
 ktx-lifecycle-runtime = "2.6.1"
