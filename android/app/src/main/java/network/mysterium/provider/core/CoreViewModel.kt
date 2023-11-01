@@ -37,7 +37,6 @@ abstract class CoreViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
 
     protected val defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e("Default handler", throwable.message, throwable)
-        Sentry.captureException(throwable)
     }
 
     private val initialState: State by lazy { createInitialState() }
