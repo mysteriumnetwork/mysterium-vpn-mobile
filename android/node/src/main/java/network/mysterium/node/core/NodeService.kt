@@ -205,9 +205,10 @@ class NodeService : Service() {
 
     private fun observeNetworkUsage() {
         mobileLimitJob?.cancelCatching()
-        mobileLimitJob = networkReporter.monitorUsage(NetworkType.MOBILE)
-            .onEach { nodeServiceDataSource.updateMobileDataUsage(it) }
-            .launchIn(scope)
+        mobileLimitJob = scope.launch {
+            networkReporter.monitorUsage(NetworkType.MOBILE)
+                .collectLatest { nodeServiceDataSource.updateMobileDataUsage(it) }
+        }
     }
 
     private fun observeNetworkStatus() = scope.launch {
