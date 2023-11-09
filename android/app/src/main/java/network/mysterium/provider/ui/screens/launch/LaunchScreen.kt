@@ -4,8 +4,13 @@ package network.mysterium.provider.ui.screens.launch
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context.POWER_SERVICE
+import android.content.Intent
+import android.net.Uri
 import android.net.VpnService
 import android.os.Build
+import android.os.PowerManager
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -43,21 +48,43 @@ fun LaunchScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.uiState.collectAsState()
+    val batteryOptimization =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            viewModel.setEvent(Launch.Event.InitializeNode)
+        }
+
     val vpnLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     viewModel.setEvent(Launch.Event.RequestNotificationPermission)
                 } else {
-                    viewModel.setEvent(Launch.Event.InitializeNode)
+                    val pm: PowerManager? = context.getSystemService(POWER_SERVICE) as PowerManager?
+                    if (pm?.isIgnoringBatteryOptimizations(context.packageName) == false) {
+                        batteryOptimization.launch(Intent()
+                            .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                            .setData(Uri.parse("package:${context.packageName}"))
+                        )
+                    } else {
+                        viewModel.setEvent(Launch.Event.InitializeNode)
+                    }
                 }
             } else {
                 viewModel.setEvent(Launch.Event.DeclinedVpnPermission)
             }
         }
+
     val notificationPermissionRequest =
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) {
-            viewModel.setEvent(Launch.Event.InitializeNode)
+            val pm: PowerManager? = context.getSystemService(POWER_SERVICE) as PowerManager?
+            if (pm?.isIgnoringBatteryOptimizations(context.packageName) == false) {
+                batteryOptimization.launch(Intent()
+                    .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                    .setData(Uri.parse("package:${context.packageName}"))
+                )
+            } else {
+                viewModel.setEvent(Launch.Event.InitializeNode)
+            }
         }
 
     LaunchedEffect(LAUNCH_EFFECT) {
@@ -74,7 +101,16 @@ fun LaunchScreen(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             viewModel.setEvent(Launch.Event.RequestNotificationPermission)
                         } else {
-                            viewModel.setEvent(Launch.Event.InitializeNode)
+                            val pm: PowerManager? =
+                                context.getSystemService(POWER_SERVICE) as PowerManager?
+                            if (pm?.isIgnoringBatteryOptimizations(context.packageName) == false) {
+                                batteryOptimization.launch(Intent()
+                                    .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                                    .setData(Uri.parse("package:${context.packageName}"))
+                                )
+                            } else {
+                                viewModel.setEvent(Launch.Event.InitializeNode)
+                            }
                         }
                     }
                 }
