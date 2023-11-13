@@ -165,7 +165,7 @@ private fun NavController.navigate(
 ) {
     if (asRoot) {
         navigate(route) {
-            backQueue.firstNotNullOfOrNull { it.destination.route }?.let {
+            currentBackStack.value.firstNotNullOfOrNull { it.destination.route }?.let {
                 popUpTo(it) {
                     inclusive = true
                 }

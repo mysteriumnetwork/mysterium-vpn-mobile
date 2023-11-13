@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,6 +47,7 @@ fun ComposeWebView(
                     settings.javaScriptEnabled = true
                     settings.javaScriptCanOpenWindowsAutomatically = true
                     settings.domStorageEnabled = true
+                    settings.cacheMode = WebSettings.LOAD_NO_CACHE
                 }
                 onReload {
                     loadUrl(url)
