@@ -17,11 +17,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -82,7 +84,7 @@ fun SettingsScreen(
         appVersion = context.appVersion(),
         onEvent = { viewModel.setEvent(it) },
         onNavigate = onNavigate,
-        onHelpPressed = { viewModel.trackHelpPressed()}
+        onHelpPressed = { viewModel.trackHelpPressed() }
     )
 }
 
@@ -146,6 +148,10 @@ private fun SettingsContent(
                     onEvent(Settings.Event.OnContinue)
                 }
             }
+        }
+
+        if (state.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 

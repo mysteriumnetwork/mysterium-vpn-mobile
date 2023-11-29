@@ -32,6 +32,7 @@ class SettingsViewModel(
             showShutDownConfirmation = false,
             continueButtonEnabled = true,
             nodeError = null,
+            isLoading = false
         )
     }
 
@@ -175,9 +176,12 @@ class SettingsViewModel(
     }
 
     private fun shutDownNode() = launch {
+        setState { copy(isLoading = true) }
+
         withContext(ioDispatcher) {
             node.stop()
         }
+        setState { copy(isLoading = true) }
         setEffect { Settings.Effect.CloseApp }
     }
 
