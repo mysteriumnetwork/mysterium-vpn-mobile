@@ -15,9 +15,9 @@ sealed class Settings {
         data class UpdateLimit(val value: String) : Event()
         object SaveMobileDataLimit : Event()
         object OnContinue : Event()
-        object ShutDown: Event()
-        object ConfirmShutDown: Event()
-        object CancelShutDown: Event()
+        object ShutDown : Event()
+        object ConfirmShutDown : Event()
+        object CancelShutDown : Event()
     }
 
     data class State(
@@ -30,7 +30,8 @@ sealed class Settings {
         val isStartingNode: Boolean,
         val showShutDownConfirmation: Boolean,
         val nodeError: NodeError?,
-        val continueButtonEnabled: Boolean
+        val continueButtonEnabled: Boolean,
+        val isLoading: Boolean = false,
     ) : UIState
 
     data class NodeError(
@@ -38,7 +39,7 @@ sealed class Settings {
     )
 
     sealed class Effect : UIEffect {
-        data class Navigation(val destination: NavigationDestination): Effect()
-        object CloseApp: Effect()
+        data class Navigation(val destination: NavigationDestination) : Effect()
+        object CloseApp : Effect()
     }
 }
