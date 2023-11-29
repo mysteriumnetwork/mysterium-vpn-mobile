@@ -176,7 +176,7 @@ class SettingsViewModel(
     }
 
     private fun shutDownNode() = launch {
-        setState { copy(isLoading = true) }
+        setState { copy(isLoading = true, showShutDownConfirmation = false) }
 
         withContext(ioDispatcher) {
             node.stop()
