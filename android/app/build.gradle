@@ -233,7 +233,7 @@ dependencies {
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.50"
-    implementation "network.mysterium:mobile-node:1.19.8"
+    implementation "network.mysterium:mobile-node:1.29.2"
 }
 
 repositories {
