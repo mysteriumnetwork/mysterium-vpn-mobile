@@ -22,10 +22,10 @@ val NodeServiceType.State.textColor: Color
         NodeServiceType.State.UNKNOWN,
         NodeServiceType.State.NOT_RUNNING,
         NodeServiceType.State.STARTING -> {
-            Colors.textDisabled
+            Colors.slate400
         }
         NodeServiceType.State.RUNNING -> {
-            Colors.textPrimary
+            Colors.grey800
         }
     }
 

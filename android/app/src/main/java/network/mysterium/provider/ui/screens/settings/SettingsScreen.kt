@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -106,7 +108,7 @@ private fun SettingsContent(
                 R.string.settings
             }
         ),
-        color = Colors.secondaryBg,
+        color = Colors.primaryBg,
         navLeading = {
             if (isOnboarding) {
                 BackButton {
@@ -127,7 +129,9 @@ private fun SettingsContent(
             }
         }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.background(color = Colors.primaryBg),
+        ) {
             OptionsContent(
                 modifier = Modifier.weight(1f),
                 state = state,
@@ -221,15 +225,15 @@ private fun OptionsContent(
 
             ButtonOption(
                 title = stringResource(id = R.string.node_ui),
-                actionName = stringResource(id = R.string.open),
-                color = Colors.textPrimary
+                subTitle = stringResource(id = R.string.open),
             ) {
                 onNavigate(NavigationDestination.NodeUI())
             }
 
             ButtonOption(
-                title = stringResource(id = R.string.shut_down_node),
-                actionName = stringResource(id = R.string.shut_down)
+                title = stringResource(id = R.string.shut_down),
+                subTitle = stringResource(id = R.string.shut_down),
+                painterResource = painterResource(id = R.drawable.ic_shut_down),
             ) {
                 onEvent(Settings.Event.ShutDown)
             }
@@ -240,7 +244,7 @@ private fun OptionsContent(
                 modifier = Modifier.fillMaxWidth(),
                 text = "v${appVersion}",
                 style = TextStyles.label,
-                color = Colors.textSecondary,
+                color = Colors.grey500,
                 textAlign = TextAlign.Center
             )
         }
@@ -285,10 +289,12 @@ private fun DataLimitInput(
 
             Row(horizontalArrangement = Arrangement.spacedBy(Paddings.small)) {
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = Paddings.default),
                     text = stringResource(id = R.string.mobile_data_limit_reset),
-                    style = TextStyles.body,
-                    color = Colors.textSecondary
+                    style = TextStyles.hint,
+                    color = Colors.grey500
                 )
                 SecondaryButton(
                     text = stringResource(id = R.string.save),
@@ -350,11 +356,12 @@ private fun SettingsContentPreview() {
                 isAllowUseOnBatteryOn = false,
                 mobileDataLimit = 50,
                 mobileDataLimitInvalid = true,
-                isSaveButtonEnabled = false,
-                isStartingNode = true,
+                isSaveButtonEnabled = true,
+                isStartingNode = false,
                 showShutDownConfirmation = false,
                 continueButtonEnabled = false,
-                nodeError = null
+                nodeError = null,
+                isLoading = false,
             ),
             isOnboarding = false,
             appVersion = "1.0",

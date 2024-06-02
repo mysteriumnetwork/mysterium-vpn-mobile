@@ -1,6 +1,7 @@
 package network.mysterium.provider.ui.screens.home.views
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,11 @@ fun ServiceItem(
             .background(
                 color = service.state.bgColor,
                 shape = RoundedCornerShape(Corners.default)
+            )
+            .border(
+                width = 1.dp,
+                color = Colors.borders,
+                shape = RoundedCornerShape(Corners.default),
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -52,7 +58,7 @@ fun ServiceItem(
         Text(
             modifier = Modifier.padding(Paddings.default),
             text = stringResource(id = service.id.nameResId),
-            style = TextStyles.label,
+            style = TextStyles.bodyBold,
             color = service.state.textColor,
             textAlign = TextAlign.Center
         )

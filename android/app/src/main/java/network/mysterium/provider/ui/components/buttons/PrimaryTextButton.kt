@@ -15,7 +15,7 @@ fun PrimaryTextButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
-    color: Color = Colors.textButton,
+    color: Color = Colors.grey500,
     onClick: () -> Unit
 ) {
     TextButton(

@@ -23,12 +23,13 @@ fun RoundedBox(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = Paddings.card,
     contentAlignment: Alignment = Alignment.TopStart,
-    content: @Composable BoxScope.() -> Unit
+    color: Color = Color.White,
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
         modifier = modifier
             .background(
-                color = Color.White,
+                color = color,
                 shape = RoundedCornerShape(Corners.default)
             )
             .padding(contentPadding),

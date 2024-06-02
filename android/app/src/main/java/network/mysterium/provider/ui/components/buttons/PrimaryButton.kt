@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.Corners
@@ -19,6 +20,8 @@ import network.mysterium.provider.ui.theme.TextStyles
 fun PrimaryButton(
     modifier: Modifier = Modifier,
     text: String,
+    textColor: Color = Colors.primaryBg,
+    textStyle: TextStyle = TextStyles.button,
     enabled: Boolean = true,
     contentPadding: PaddingValues = Paddings.primaryButton,
     color: Color = Colors.primary,
@@ -29,12 +32,13 @@ fun PrimaryButton(
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(containerColor = color),
         contentPadding = contentPadding,
-        shape = RoundedCornerShape(Corners.default),
+        shape = RoundedCornerShape(Corners.small),
         onClick = onClick
     ) {
         Text(
             text = text,
-            style = TextStyles.button
+            style = textStyle,
+            color = if (enabled) textColor else Colors.textDisabled,
         )
     }
 }

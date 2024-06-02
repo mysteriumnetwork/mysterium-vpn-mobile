@@ -52,7 +52,10 @@ private fun Header(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HeaderLogo(style = HeaderLogoStyle.Big)
+        HeaderLogo(
+            style = HeaderLogoStyle.Big,
+            modifier = Modifier.padding(top = 24.dp),
+        )
         Spacer(modifier = Modifier.weight(1f))
         HeaderText()
         Spacer(modifier = Modifier.weight(1f))
@@ -83,6 +86,7 @@ private fun Content(
         PrimaryTextButton(
             modifier = Modifier.padding(Paddings.default),
             text = stringResource(id = R.string.terms_and_conditions),
+            color = Colors.grey500,
             onClick = {
                 onNavigate(NavigationDestination.TAC)
             }
@@ -97,10 +101,10 @@ private fun HeaderText() {
     Text(
         text = buildAnnotatedString {
             withStyle(style = TextStyles.logoParagraph) {
-                withStyle(style = TextStyles.logoSpan.copy(color = Colors.primary)) {
+                withStyle(style = TextStyles.logoSpan.copy(color = Colors.blue700)) {
                     append(text1)
                 }
-                withStyle(style = TextStyles.logoSpan.copy(color = Color.White)) {
+                withStyle(style = TextStyles.logoSpan.copy(color = Colors.blue700)) {
                     append(text2)
                 }
             }
@@ -114,8 +118,8 @@ private fun HeaderDescription() {
     Text(
         modifier = Modifier.padding(bottom = Paddings.logoDescription),
         text = stringResource(id = R.string.sell_unused_bandwidth),
-        style = TextStyles.body,
-        color = Colors.textBg,
+        style = TextStyles.highDescriptions,
+        color = Colors.grey500,
         textAlign = TextAlign.Center
     )
 }

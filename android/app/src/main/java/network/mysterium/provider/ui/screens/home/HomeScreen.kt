@@ -85,20 +85,20 @@ fun HomeScreenContent(
                 }
 
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(Paddings.default.div(2))
-                    ) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Header(
                             text = stringResource(id = R.string.unsettled_earnings)
                         )
 
                         BalanceItem(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = Paddings.default),
                             value = state.balance
                         )
 
                         AnimatedVisibility(
+                            modifier = Modifier.padding(top = Paddings.default),
                             visible = state.isLimitReached,
                             enter = fadeIn() + expandVertically(),
                             exit = fadeOut() + shrinkVertically()
@@ -134,7 +134,7 @@ private fun Header(
             .padding(vertical = Paddings.service),
         text = text,
         style = TextStyles.header,
-        color = Colors.textPrimary,
+        color = Colors.blue700,
         textAlign = TextAlign.Center
     )
 }
@@ -146,7 +146,10 @@ fun HomeScreenContentPreview() {
         state = Home.State(
             services = listOf(
                 NodeServiceType(NodeServiceType.Service.SCRAPING, NodeServiceType.State.STARTING),
-                NodeServiceType(NodeServiceType.Service.DATA_TRANSFER, NodeServiceType.State.NOT_RUNNING),
+                NodeServiceType(
+                    NodeServiceType.Service.DATA_TRANSFER,
+                    NodeServiceType.State.NOT_RUNNING
+                ),
                 NodeServiceType(NodeServiceType.Service.WIREGUARD, NodeServiceType.State.RUNNING),
             ),
             isLimitReached = true,
