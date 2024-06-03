@@ -23,20 +23,24 @@ sealed class HeaderLogoStyle {
 }
 
 @Composable
-fun HeaderLogo(style: HeaderLogoStyle = HeaderLogoStyle.Small) {
+fun HeaderLogo(
+    style: HeaderLogoStyle = HeaderLogoStyle.Small,
+    modifier: Modifier = Modifier,
+) {
     val iconWidth = when (style) {
         HeaderLogoStyle.Big -> 57.dp
         HeaderLogoStyle.Small -> 36.dp
     }
     val nameHeight = when (style) {
-        HeaderLogoStyle.Big -> 18.dp
-        HeaderLogoStyle.Small -> 11 .dp
+        HeaderLogoStyle.Big -> 22.dp
+        HeaderLogoStyle.Small -> 14 .dp
     }
     val spacing = when (style) {
         HeaderLogoStyle.Big -> Paddings.default
         HeaderLogoStyle.Small -> Paddings.small
     }
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)
     ) {

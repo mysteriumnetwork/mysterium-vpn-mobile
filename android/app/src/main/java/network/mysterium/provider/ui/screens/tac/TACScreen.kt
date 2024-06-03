@@ -72,18 +72,18 @@ private fun TACContent(
                 Text(
                     text = stringResource(id = R.string.terms_and_conditions),
                     style = TextStyles.header,
-                    color = Colors.textPrimary
+                    color = Colors.blue700
                 )
                 Text(
                     text = state.terms.version,
                     style = TextStyles.body,
-                    color = Colors.textPrimary
+                    color = Colors.blue700
                 )
             }
             MarkdownText(
                 text = state.terms.content,
                 textStyle = TextStyles.body,
-                color = Colors.textSecondary
+                color = Colors.grey500
             )
         }
     }

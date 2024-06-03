@@ -36,24 +36,24 @@ fun InputTextField(
 ) {
     val isError = error != null
     val borderColor: Color = if (isError) {
-        Colors.textFieldError
+        Colors.red500
     } else {
-        Colors.textFieldBorder
+        Colors.grey200
     }
     val titleColor: Color = if (isError) {
-        Colors.textFieldError
+        Colors.red500
     } else {
-        Colors.textSecondary
+        Colors.grey500
     }
     val textFieldBg: Color = if (isError) {
-        Colors.textFieldErrorBg
+        Colors.primaryBg
     } else {
         Color.Transparent
     }
     val textColor = if (isError) {
-        Colors.textFieldError
+        Colors.red500
     } else {
-        Colors.textPrimary
+        Colors.blue700
     }
     BasicTextField(
         modifier = modifier,
@@ -101,7 +101,7 @@ fun InputTextField(
                 Text(
                     text = it,
                     style = TextStyles.label,
-                    color = Colors.textFieldError
+                    color = Colors.red500
                 )
             }
         }

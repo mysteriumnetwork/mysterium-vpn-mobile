@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mysterium.provider.ui.components.content.RoundedBox
 import network.mysterium.provider.ui.components.switcher.Switcher
+import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.TextStyles
 
 @Composable
@@ -20,16 +22,21 @@ fun SwitchOption(
     title: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
+    color: Color = Colors.cardBg,
+    modifier: Modifier = Modifier,
     content: (@Composable ColumnScope.() -> Unit)? = null
 ) {
     RoundedBox(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        color = color,
     ) {
-        Column {
+        Column(
+            modifier = modifier,
+        ) {
             Row {
                 Text(
                     text = title,
-                    style = TextStyles.body
+                    style = TextStyles.body3,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Switcher(
@@ -48,7 +55,7 @@ private fun SwitchOptionPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         SwitchOption(title = "Option 1",
             checked = true,
-            onCheckedChange = {}
+            onCheckedChange = {},
         )
         SwitchOption(title = "Option 2",
             checked = false,

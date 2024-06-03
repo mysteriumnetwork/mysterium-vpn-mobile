@@ -72,7 +72,7 @@ fun TitledScreenContent(
             Text(
                 text = title,
                 style = TextStyles.navigationHeader,
-                color = Colors.navHeader,
+                color = Colors.blue700,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
