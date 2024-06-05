@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import network.mysterium.provider.Config
 import network.mysterium.provider.R
 import network.mysterium.provider.extensions.appVersion
@@ -287,11 +288,14 @@ private fun DataLimitInput(
                 }
             )
 
-            Row(horizontalArrangement = Arrangement.spacedBy(Paddings.small)) {
+            Row(
+                modifier = Modifier.padding(top = Paddings.small),
+                horizontalArrangement = Arrangement.spacedBy(Paddings.small)
+            ) {
                 Text(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(end = Paddings.default),
+                        .padding(end = 28.dp)
+                        .weight(1f),
                     text = stringResource(id = R.string.mobile_data_limit_reset),
                     style = TextStyles.hint,
                     color = Colors.grey500
@@ -348,7 +352,7 @@ private fun ConfirmShutDown(
 @Preview(showBackground = true)
 @Composable
 private fun SettingsContentPreview() {
-    MysteriumTheme {
+    MysteriumTheme(LocalContext.current) {
         SettingsContent(
             state = Settings.State(
                 isMobileDataOn = true,

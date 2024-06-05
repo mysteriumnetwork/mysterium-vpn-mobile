@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         analytics.trackEvent(AnalyticsEvent.AppLaunchEvent)
         setContent {
-            MysteriumTheme {
+            MysteriumTheme(this) {
                 Surface(
                     modifier = Modifier.background(Styles.background),
                     color = Colors.statusBar

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mysterium.provider.R
@@ -39,7 +40,9 @@ fun ButtonOption(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = title,
-                style = TextStyles.body3
+                style = TextStyles.body3,
+                fontWeight = FontWeight.Medium,
+                color = Colors.grey800,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(

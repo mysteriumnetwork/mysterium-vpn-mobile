@@ -26,7 +26,7 @@ fun MarkdownText(
     AndroidView(modifier = modifier,
         factory = {
             TextView(context).apply {
-                typeface = ResourcesCompat.getFont(context, R.font.lexend_regular)
+                typeface = ResourcesCompat.getFont(context, R.font.dmsans_regular)
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, textStyle.fontSize.value)
                 if (color != Color.Unspecified) {
                     setTextColor(color.toArgb())

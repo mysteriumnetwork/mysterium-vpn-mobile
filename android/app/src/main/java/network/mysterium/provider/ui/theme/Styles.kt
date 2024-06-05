@@ -3,8 +3,6 @@ package network.mysterium.provider.ui.theme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +28,7 @@ object Colors {
     val blue600 = Color(0xFF254E62)
     val blue700 = Color(0xFF0D3A4F)
     val grey200 = Color(0xFFD5DADC)
+    val grey300 = Color(0xFFBDC3C5)
     val grey500 = Color(0xFF6A7377)
     val grey800 = Color(0xFF101212)
     val red500 = Color(0xFFEF4444)
@@ -43,19 +42,17 @@ object Styles {
 }
 
 object TextStyles {
+    val splashHeader = TextStyle(
+        fontFamily = FontFamily.OpenSans,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 46.sp,
+        lineHeight = 62.64.sp,
+    )
     val navigationHeader = TextStyle(
         fontFamily = FontFamily.DMSans,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 20.sp
-    )
-    val logoParagraph = ParagraphStyle(
-        lineHeight = 58.sp
-    )
-    val logoSpan = SpanStyle(
-        fontFamily = FontFamily.DMSans,
-        fontWeight = FontWeight.Black,
-        fontSize = 46.sp,
     )
     val body = TextStyle(
         fontFamily = FontFamily.DMSans,
@@ -65,7 +62,13 @@ object TextStyles {
     )
     val body3 = TextStyle(
         fontFamily = FontFamily.DMSans,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 22.4.sp
+    )
+    val body3Bold = TextStyle(
+        fontFamily = FontFamily.DMSans,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 22.4.sp
     )
@@ -81,7 +84,12 @@ object TextStyles {
         fontSize = 10.sp,
         lineHeight = 13.sp
     )
-    val button = body
+    val button = TextStyle(
+        fontFamily = FontFamily.DMSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        lineHeight = 25.6.sp
+    )
     val button2 = TextStyle(
         fontFamily = FontFamily.DMSans,
         fontWeight = FontWeight.Bold,
@@ -100,12 +108,6 @@ object TextStyles {
         fontSize = 16.sp,
         lineHeight = 32.83.sp
     )
-    val bodyBold = TextStyle(
-        fontFamily = FontFamily.DMSans,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
-        lineHeight = 22.4.sp
-    )
     val balance = navigationHeader
 }
 
@@ -114,10 +116,7 @@ object Paddings {
     val small = 8.dp
     val default = 18.dp
     val logoDescription = 33.dp
-    val onboardButton = PaddingValues(
-        horizontal = 65.dp,
-        vertical = 53.dp
-    )
+    val splashLogo = 60.dp
     val continueButton = PaddingValues(
         top = 0.dp,
         start = default,
@@ -142,7 +141,7 @@ object Paddings {
 }
 
 object Corners {
-    val card = 30.dp
+    val card = 40.dp
     val default = 16.dp
     val small = 8.dp
 }
