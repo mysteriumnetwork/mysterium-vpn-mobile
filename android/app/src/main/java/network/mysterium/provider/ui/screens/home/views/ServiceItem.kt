@@ -58,7 +58,7 @@ fun ServiceItem(
         Text(
             modifier = Modifier.padding(Paddings.default),
             text = stringResource(id = service.id.nameResId),
-            style = TextStyles.bodyBold,
+            style = TextStyles.body3Bold,
             color = service.state.textColor,
             textAlign = TextAlign.Center
         )

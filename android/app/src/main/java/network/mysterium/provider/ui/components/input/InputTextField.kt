@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -14,9 +15,17 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.Corners
@@ -31,20 +40,26 @@ fun InputTextField(
     onValueChange: (String) -> Unit,
     info: String? = null,
     error: String? = null,
+    enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
     val isError = error != null
-    val borderColor: Color = if (isError) {
-        Colors.red500
-    } else {
-        Colors.grey200
+
+    val borderWidth: Dp = when {
+        isFocused -> 2.dp
+        enabled -> 0.dp
+        else -> 1.dp
     }
-    val titleColor: Color = if (isError) {
-        Colors.red500
-    } else {
-        Colors.grey500
+    val borderColor: Color = when {
+        isError -> Colors.red500
+        isFocused -> Colors.grey500
+        title.isNotEmpty() -> Colors.grey300
+        else -> Colors.grey200
     }
+    val titleColor: Color = Colors.grey500
     val textFieldBg: Color = if (isError) {
         Colors.primaryBg
     } else {
@@ -53,13 +68,17 @@ fun InputTextField(
     val textColor = if (isError) {
         Colors.red500
     } else {
-        Colors.blue700
+        Colors.grey800
     }
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier
+            .focusRequester(focusRequester)
+            .onFocusChanged { focusState ->
+                isFocused = focusState.isFocused
+            },
         value = value,
         onValueChange = onValueChange,
-        textStyle = TextStyles.body.copy(color = textColor),
+        textStyle = TextStyles.body3.copy(color = textColor),
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions
     ) { innerTextField ->
@@ -88,11 +107,11 @@ fun InputTextField(
                     .fillMaxWidth()
                     .background(color = textFieldBg)
                     .border(
-                        width = 1.dp,
+                        width = borderWidth,
                         color = borderColor,
                         shape = RoundedCornerShape(Corners.small)
                     )
-                    .padding(16.dp)
+                    .padding(12.dp)
             ) {
                 innerTextField()
             }

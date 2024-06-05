@@ -8,6 +8,9 @@ import network.mysterium.provider.R
 val FontFamily.Companion.DMSans
     get() = dmsansFontFamily
 
+val FontFamily.Companion.OpenSans
+    get() = opensansFontFamily
+
 private val dmsansFontFamily = FontFamily(
     Font(R.font.dmsans_black, weight = FontWeight.Black),
     Font(R.font.dmsans_bold, weight = FontWeight.Bold),
@@ -19,3 +22,8 @@ private val dmsansFontFamily = FontFamily(
     Font(R.font.dmsans_semibold, weight = FontWeight.SemiBold),
     Font(R.font.dmsans_thin, weight = FontWeight.Thin),
 )
+
+private val opensansFontFamily = FontFamily(
+    Font(R.font.opensans_extrabold, weight = FontWeight.ExtraBold),
+)
+

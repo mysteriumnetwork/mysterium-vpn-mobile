@@ -82,7 +82,7 @@ private fun TACContent(
             }
             MarkdownText(
                 text = state.terms.content,
-                textStyle = TextStyles.body,
+                textStyle = TextStyles.body3,
                 color = Colors.grey500
             )
         }

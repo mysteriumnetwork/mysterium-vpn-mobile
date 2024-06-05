@@ -10,12 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import network.mysterium.provider.R
@@ -74,8 +72,9 @@ private fun Content(
     ) {
         PrimaryButton(
             modifier = Modifier
+                .padding(top = 50.dp)
                 .fillMaxWidth()
-                .padding(Paddings.onboardButton),
+                .padding(Paddings.continueButton),
             text = stringResource(id = R.string.onboard),
             onClick = {
                 viewModel.trackOnboardClick()
@@ -96,19 +95,10 @@ private fun Content(
 
 @Composable
 private fun HeaderText() {
-    val text1 = stringResource(id = R.string.earn)
-    val text2 = stringResource(id = R.string.earn_while_sleep)
     Text(
-        text = buildAnnotatedString {
-            withStyle(style = TextStyles.logoParagraph) {
-                withStyle(style = TextStyles.logoSpan.copy(color = Colors.blue700)) {
-                    append(text1)
-                }
-                withStyle(style = TextStyles.logoSpan.copy(color = Colors.blue700)) {
-                    append(text2)
-                }
-            }
-        },
+        text = stringResource(id = R.string.earn_while_you_sleep),
+        style = TextStyles.splashHeader,
+        color = Colors.blue700,
         textAlign = TextAlign.Center
     )
 }
@@ -127,7 +117,7 @@ private fun HeaderDescription() {
 @Preview(showBackground = true)
 @Composable
 fun StartScreenPreview() {
-    MysteriumTheme {
+    MysteriumTheme(LocalContext.current) {
         StartScreen {}
     }
 }

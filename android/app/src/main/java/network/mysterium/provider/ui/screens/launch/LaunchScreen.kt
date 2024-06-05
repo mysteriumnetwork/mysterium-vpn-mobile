@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
 import network.mysterium.provider.ui.components.logo.HeaderLogo
 import network.mysterium.provider.ui.components.logo.HeaderLogoStyle
 import network.mysterium.provider.ui.navigation.NavigationDestination
+import network.mysterium.provider.ui.theme.Paddings
 import network.mysterium.provider.ui.theme.Styles
 import org.koin.androidx.compose.getViewModel
 
@@ -142,7 +144,10 @@ private fun LaunchContent(
             .background(Styles.background),
         contentAlignment = Alignment.Center
     ) {
-        HeaderLogo(style = HeaderLogoStyle.Big)
+        HeaderLogo(
+            modifier = Modifier.padding(bottom = Paddings.splashLogo),
+            style = HeaderLogoStyle.Big,
+        )
     }
 
     state.error?.let {
