@@ -16,7 +16,6 @@ object Colors {
         Color(0xFFe9f7ff),
         Color(0xFFf4e1ec)
     )
-    val textDisabled = Color(0xFFA1A1AA)
     val primaryBg = Color.White
     val cardBg = Color(0xFFFAFAFA)
     val serviceRunningBg = Color(0xFFF1F5F9)
@@ -24,13 +23,18 @@ object Colors {
     val serviceNotRunningBg = Color(0xFFFAFAFA)
     val serviceNotRunningDot = Color(0xFF94A2B8)
     val balanceBg = Color(0xFFE9F7FF)
+    val blue100 = Color(0xFFE9F7FF)
     val blue200 = Color(0xFFD3E8F2)
     val blue600 = Color(0xFF254E62)
     val blue700 = Color(0xFF0D3A4F)
+    val grey100 = Color(0xFFF1F1F1)
     val grey200 = Color(0xFFD5DADC)
     val grey300 = Color(0xFFBDC3C5)
+    val grey400 = Color(0xFFA1A1AA)
     val grey500 = Color(0xFF6A7377)
     val grey800 = Color(0xFF101212)
+    val pink400 = Color(0xFFD64495)
+    val pink600 = Color(0xFFA01663)
     val red500 = Color(0xFFEF4444)
     val red50 = Color(0xFFFEF2F2)
     val slate400 = Color(0xFF94A2B8)
@@ -125,8 +129,8 @@ object Paddings {
     )
     val primaryButton = PaddingValues(default)
     val secondaryButton = PaddingValues(
-        horizontal = 18.dp,
-        vertical = 6.dp
+        horizontal = 23.dp,
+        vertical = 5.dp
     )
     val card = PaddingValues(
         horizontal = 26.dp,

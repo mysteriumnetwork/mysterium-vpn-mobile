@@ -26,7 +26,7 @@ fun SecondaryButton(
     Box(
         modifier = modifier.border(
             width = 1.dp,
-            color = Colors.blue600,
+            color = if (enabled) Colors.blue600 else Colors.grey400,
             shape = RoundedCornerShape(Corners.small),
         )
     ) {
@@ -39,7 +39,8 @@ fun SecondaryButton(
             textStyle = TextStyles.button2,
             enabled = enabled,
             contentPadding = Paddings.secondaryButton,
-            color = color,
+            backgroundColor = color,
+            onPressedColor = Colors.blue100,
             onClick = onClick
         )
     }
@@ -49,7 +50,7 @@ fun SecondaryButton(
 @Composable
 fun SecondaryButtonPreview() {
     SecondaryButton(
-        text = "Preview Text",
+        text = "Save",
         onClick = {},
     )
 }

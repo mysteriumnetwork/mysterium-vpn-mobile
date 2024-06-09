@@ -50,7 +50,6 @@ fun InputTextField(
 
     val borderWidth: Dp = when {
         isFocused -> 2.dp
-        enabled -> 0.dp
         else -> 1.dp
     }
     val borderColor: Color = when {
