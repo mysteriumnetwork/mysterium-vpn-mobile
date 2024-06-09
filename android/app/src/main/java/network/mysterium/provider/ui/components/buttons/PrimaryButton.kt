@@ -28,8 +28,9 @@ fun PrimaryButton(
     textStyle: TextStyle = TextStyles.button,
     enabled: Boolean = true,
     contentPadding: PaddingValues = Paddings.primaryButton,
-    backgroundColor: Color = Colors.primary,
-    onPressedColor: Color = Colors.primary,
+    backgroundColor: Color = Colors.pink400,
+    onPressedColor: Color = Colors.pink600,
+    disabledColor: Color = Colors.grey100,
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -40,15 +41,17 @@ fun PrimaryButton(
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isPressed) onPressedColor else backgroundColor,
+            disabledContainerColor = disabledColor,
         ),
         contentPadding = contentPadding,
         shape = RoundedCornerShape(Corners.small),
-        onClick = onClick
+        onClick = onClick,
+        interactionSource = interactionSource,
     ) {
         Text(
             text = text,
             style = textStyle,
-            color = if (enabled) textColor else Colors.textDisabled,
+            color = if (enabled) textColor else Colors.grey400,
         )
     }
 }
