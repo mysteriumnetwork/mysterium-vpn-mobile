@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.sentry)
     alias(libs.plugins.serialization)
-
 }
 
 android {
@@ -17,8 +16,8 @@ android {
         applicationId = "network.mysterium.provider"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 4
-        versionName = "3.1"
+        versionCode = 5
+        versionName = "4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
