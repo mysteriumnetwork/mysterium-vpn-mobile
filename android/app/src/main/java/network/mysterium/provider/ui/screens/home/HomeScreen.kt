@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import network.mysterium.node.model.NodeServiceType
 import network.mysterium.provider.R
 import network.mysterium.provider.ui.components.buttons.PrimaryTextButton
