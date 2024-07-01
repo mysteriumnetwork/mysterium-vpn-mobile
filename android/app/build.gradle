@@ -180,7 +180,7 @@ dependencies {
     //Google
     playstoreImplementation "com.google.android.play:core-ktx:1.8.1"
     implementation "com.google.android.material:material:1.8.0-alpha01"
-    playstoreImplementation "com.android.billingclient:billing-ktx:5.0.0"
+    playstoreImplementation "com.android.billingclient:billing-ktx:6.0.1"
 
     //Koin
     implementation "io.insert-koin:koin-core:3.1.6"
