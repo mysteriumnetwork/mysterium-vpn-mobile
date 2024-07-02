@@ -180,7 +180,7 @@ dependencies {
     //Google
     playstoreImplementation "com.google.android.play:core-ktx:1.8.1"
     implementation "com.google.android.material:material:1.8.0-alpha01"
-    playstoreImplementation "com.android.billingclient:billing-ktx:5.0.0"
+    playstoreImplementation "com.android.billingclient:billing-ktx:6.0.1"
 
     //Koin
     implementation "io.insert-koin:koin-core:3.1.6"
@@ -233,7 +233,7 @@ dependencies {
     //Mysterium
     // Change NODE_VERSION in defaultConfig if updating version of mobile-node
     implementation "network.mysterium:terms:0.0.50"
-    implementation "network.mysterium:mobile-node:1.29.2"
+    implementation "network.mysterium:mobile-node:1.29.23"
 }
 
 repositories {
