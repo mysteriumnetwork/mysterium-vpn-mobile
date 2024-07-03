@@ -6,7 +6,7 @@ buildscript {
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = '21.4.7075529' // r21e - https://developer.android.com/ndk/downloads#lts-downloads
-        versionCode = 107176
+        versionCode = 107180
         versionName = '2.1.14'
     }
     repositories {
