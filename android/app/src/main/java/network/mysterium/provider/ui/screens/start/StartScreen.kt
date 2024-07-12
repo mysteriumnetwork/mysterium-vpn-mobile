@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +19,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,7 +50,11 @@ fun StartScreen(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Header(modifier = Modifier.fillMaxWidth())
+        Header(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
         Box(
             modifier = Modifier
                 .height(screenHeight * 0.3f)
@@ -75,10 +79,12 @@ private fun Header(modifier: Modifier = Modifier) {
     ) {
         HeaderLogo(
             style = HeaderLogoStyle.Big,
-            modifier = Modifier.padding(top = 24.dp),
+            modifier = Modifier.weight(1f),
         )
-        HeaderText(modifier = Modifier.padding(vertical = 16.dp))
-        HeaderDescription()
+        HeaderText(
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+        HeaderDescription(modifier = Modifier.weight(1f))
     }
 }
 
@@ -90,26 +96,31 @@ private fun Content(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        PrimaryButton(
-            modifier = Modifier
-                .padding(top = 50.dp)
-                .fillMaxWidth()
-                .padding(Paddings.continueButton),
-            text = stringResource(id = R.string.onboard),
-            onClick = {
-                viewModel.trackOnboardClick()
-                onNavigate(NavigationDestination.Settings(true))
-            }
-        )
-        PrimaryTextButton(
-            text = stringResource(id = R.string.terms_and_conditions),
-            color = Colors.grey500,
-            onClick = {
-                onNavigate(NavigationDestination.TAC)
-            }
-        )
+        Box(modifier = Modifier.weight(1.3f)) {
+            PrimaryButton(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
+                    .padding(horizontal = Paddings.default),
+                text = stringResource(id = R.string.onboard),
+                onClick = {
+                    viewModel.trackOnboardClick()
+                    onNavigate(NavigationDestination.Settings(true))
+                }
+            )
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            PrimaryTextButton(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                text = stringResource(id = R.string.terms_and_conditions),
+                style = TextStyles.terms,
+                color = Colors.grey500,
+                onClick = {
+                    onNavigate(NavigationDestination.TAC)
+                }
+            )
+        }
     }
 }
 
@@ -127,20 +138,32 @@ private fun HeaderText(
 }
 
 @Composable
-private fun HeaderDescription() {
-    Text(
-        modifier = Modifier.padding(bottom = Paddings.logoDescription),
-        text = stringResource(id = R.string.sell_unused_bandwidth),
-        style = TextStyles.highDescriptions,
-        color = Colors.grey500,
-        textAlign = TextAlign.Center
-    )
+private fun HeaderDescription(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxHeight()
+    ) {
+        Text(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(bottom = Paddings.small),
+            text = stringResource(id = R.string.sell_unused_bandwidth),
+            style = TextStyles.highDescriptions,
+            color = Colors.grey500,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    widthDp = 390,
+    heightDp = 844,
+)
 @Composable
 fun StartScreenPreview() {
     MysteriumTheme(LocalContext.current) {
-        StartScreen {}
+        StartScreen() {}
     }
 }

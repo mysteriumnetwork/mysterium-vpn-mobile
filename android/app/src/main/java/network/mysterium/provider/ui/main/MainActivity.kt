@@ -4,12 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import network.mysterium.node.analytics.NodeAnalytics
 import network.mysterium.node.analytics.event.AnalyticsEvent
 import network.mysterium.provider.ui.navigation.AppNavigation
-import network.mysterium.provider.ui.theme.Colors
 import network.mysterium.provider.ui.theme.MysteriumTheme
 import network.mysterium.provider.ui.theme.Styles
 import org.koin.android.ext.android.inject
@@ -25,8 +26,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             MysteriumTheme(this) {
                 Surface(
-                    modifier = Modifier.background(Styles.background),
-                    color = Colors.statusBar
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Styles.background),
+                    color = Color.Transparent,
                 ) {
                     AppNavigation()
                 }

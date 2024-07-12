@@ -11,10 +11,9 @@ import androidx.compose.ui.unit.sp
 
 object Colors {
     val primary = Color(0xFFD64495)
-    val statusBar = Color(0xFFecf0f9)
     val bgGradient = listOf(
         Color(0xFFe9f7ff),
-        Color(0xFFf4e1ec)
+        Color(0xFFf4e0eb)
     )
     val primaryBg = Color.White
     val cardBg = Color(0xFFFAFAFA)
@@ -111,6 +110,12 @@ object TextStyles {
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 32.83.sp
+    )
+    val terms = TextStyle(
+        fontFamily = FontFamily.DMSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 25.6.sp
     )
     val balance = navigationHeader
 }
