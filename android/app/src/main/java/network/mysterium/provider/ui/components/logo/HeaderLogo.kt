@@ -3,6 +3,7 @@ package network.mysterium.provider.ui.components.logo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -39,21 +40,25 @@ fun HeaderLogo(
         HeaderLogoStyle.Big -> Paddings.default
         HeaderLogoStyle.Small -> Paddings.small
     }
-    Row(
+    Box(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)
     ) {
-        Image(
-            modifier = Modifier.width(iconWidth),
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = null
-        )
-        Image(
-            modifier = Modifier.height(nameHeight),
-            painter = painterResource(id = R.drawable.ic_logo_name),
-            contentDescription = null
-        )
+        Row(
+            modifier = Modifier.align(Alignment.Center),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)
+        ) {
+            Image(
+                modifier = Modifier.width(iconWidth),
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = null
+            )
+            Image(
+                modifier = Modifier.height(nameHeight),
+                painter = painterResource(id = R.drawable.ic_logo_name),
+                contentDescription = null
+            )
+        }
     }
 }
 
