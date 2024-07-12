@@ -20,7 +20,7 @@ private val colorScheme = lightColorScheme(
 
 @Composable
 fun MysteriumTheme(
-    context: Context,
+    context: Context = LocalContext.current,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = colorScheme
