@@ -1,8 +1,8 @@
 [versions]
-compileSdk = "34"
+compileSdk = "35"
 minSdk = "24"
-targetSdk = "34"
-android-application = "8.1.1"
+targetSdk = "35"
+android-application = "8.2.1"
 kotlin = "1.8.21"
 ktx = "1.12.0"
 ktx-lifecycle-runtime = "2.6.2"
