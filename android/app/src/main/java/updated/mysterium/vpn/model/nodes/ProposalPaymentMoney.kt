@@ -2,7 +2,7 @@ package updated.mysterium.vpn.model.nodes
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class ProposalPaymentMoney(

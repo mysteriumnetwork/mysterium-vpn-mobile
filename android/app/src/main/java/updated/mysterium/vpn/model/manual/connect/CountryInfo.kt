@@ -2,7 +2,7 @@ package updated.mysterium.vpn.model.manual.connect
 
 import android.graphics.Bitmap
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import updated.mysterium.vpn.common.location.Countries
 import java.util.*
 
@@ -25,7 +25,7 @@ data class CountryInfo(
 
             val countryName = Countries
                 .values
-                .getOrDefault(countryCode.toLowerCase(Locale.ROOT), null)
+                .getOrDefault(countryCode.lowercase(Locale.ROOT), null)
                 ?.name
 
             return countryName?.let {
@@ -33,7 +33,7 @@ data class CountryInfo(
                     countryCode = countryCode,
                     countryName = countryName,
                     countryFlagBitmap = Countries.bitmaps.getOrDefault(
-                        countryCode.toLowerCase(Locale.ROOT),
+                        countryCode.lowercase(Locale.ROOT),
                         null
                     ),
                     proposalsNumber = proposalsNumber,

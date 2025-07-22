@@ -12,7 +12,6 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.toolbar_base_connect.view.leftButton
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityHomeSelectionBinding
 import network.mysterium.vpn.databinding.PopUpDownloadNewApplicationBinding
@@ -300,9 +299,8 @@ class HomeSelectionActivity : BaseActivity() {
 
     private fun showPaymentProcessingBanner() {
         binding.paymentProcessingLayout.root.doOnLayout { view ->
-            val animationY = binding.manualConnectToolbar.leftButton.y +
-                    binding.manualConnectToolbar.leftButton.height +
-                    view.height
+            val leftButton = binding.manualConnectToolbar.findViewById<View>(R.id.leftButton)
+            val animationY = leftButton.y + leftButton.height + view.height
             view.visibility = View.VISIBLE
             ObjectAnimator.ofFloat(view, "translationY", animationY)
                 .apply {
@@ -345,7 +343,7 @@ class HomeSelectionActivity : BaseActivity() {
         val intent = Intent(this, FilterActivity::class.java).apply {
             val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
             val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
-                selectedCountryCode?.toLowerCase(Locale.ROOT) ?: ALL_COUNTRY_CODE
+                selectedCountryCode?.lowercase(Locale.ROOT) ?: ALL_COUNTRY_CODE
             } else {
                 ALL_COUNTRY_CODE
             }

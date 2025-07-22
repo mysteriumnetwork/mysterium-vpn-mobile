@@ -22,13 +22,13 @@ class SearchViewModel : ViewModel() {
         if (text.isNotEmpty()) {
             val resultByCountry = allProposal.filter {
                 it.countryName
-                    .toLowerCase(Locale.ROOT)
-                    .contains(text.toLowerCase(Locale.ROOT))
+                    .lowercase(Locale.ROOT)
+                    .contains(text.lowercase(Locale.ROOT))
             }
             val resultByProviderId = allProposal.filter {
                 it.providerID
-                    .toLowerCase(Locale.ROOT)
-                    .contains(text.toLowerCase(Locale.ROOT))
+                    .lowercase(Locale.ROOT)
+                    .contains(text.lowercase(Locale.ROOT))
             }
             _searchResult.value = resultByCountry + resultByProviderId
         } else {

@@ -35,7 +35,7 @@ class SessionsAdapter : ContentListAdapter<Session, SessionsAdapter.SessionViewH
             binding.apply {
                 providerIdTextView.text = session.providerId
                 countryTextView.text = Countries
-                    .values[session.providerCountry.toLowerCase(Locale.ROOT)]
+                    .values[session.providerCountry.lowercase(Locale.ROOT)]
                     ?.name
                     ?: UNKNOWN
                 durationTextView.text = DateUtil.convertToDateType((session.duration) * 1000)

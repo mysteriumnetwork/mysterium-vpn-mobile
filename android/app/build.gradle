@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 
 import com.android.build.OutputFile
 
@@ -44,6 +44,7 @@ def getVersionName = { ->
  */
 def enableSeparateBuildPerCPUArchitecture = false
 
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     ndkVersion rootProject.ext.ndkVersion
@@ -56,13 +57,14 @@ android {
         jvmTarget = "1.8"
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     testOptions {
         unitTests.includeAndroidResources = true
     }
 
-    androidExtensions {
-        experimental = true
-    }
 
     bundle {
         language {
@@ -163,24 +165,25 @@ android {
 dependencies {
 
     //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     //AndroidX
     implementation "androidx.fragment:fragment-ktx:1.3.1"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
-    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.core:core-ktx:1.15.0"
     implementation "androidx.multidex:multidex:2.0.1"
-    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
-    implementation "androidx.appcompat:appcompat:1.5.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
+    implementation "androidx.appcompat:appcompat:1.7.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //Google
     playstoreImplementation "com.google.android.play:review-ktx:2.0.1"
-    implementation "com.google.android.material:material:1.8.0-alpha01"
-    playstoreImplementation "com.android.billingclient:billing-ktx:6.0.1"
+    implementation "com.google.android.material:material:1.12.0"
+    playstoreImplementation "com.android.billingclient:billing-ktx:7.0.0"
 
     //Koin
     implementation "io.insert-koin:koin-core:3.1.6"
@@ -202,12 +205,12 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.12.0"
 
     //Intercom
-    implementation "io.intercom.android:intercom-sdk-base:9.1.0"
+    implementation "io.intercom.android:intercom-sdk-base:15.1.0"
 
     //Room
-    implementation "androidx.room:room-ktx:2.4.3"
-    implementation "androidx.room:room-runtime:2.4.3"
-    kapt "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-ktx:2.7.2"
+    implementation "androidx.room:room-runtime:2.7.2"
+    kapt "androidx.room:room-compiler:2.7.2"
 
     //Line chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"

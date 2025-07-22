@@ -14,7 +14,7 @@ object LanguagesUtil {
         "ZH"
     )
 
-    fun getUserDefaultLanguage() = Locale.getDefault().language.toUpperCase(Locale.ROOT)
+    fun getUserDefaultLanguage() = Locale.getDefault().language.uppercase(Locale.ROOT)
 
     fun getCountryCodeByIndex(index: Int) = languagesList[index]
 
