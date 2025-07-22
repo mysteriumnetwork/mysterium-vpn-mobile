@@ -15,7 +15,7 @@ fun Context.getActivity(): Activity? = when (this) {
     else -> null
 }
 
-fun Context.appVersion(): String {
+fun Context.appVersion(): String? {
     val info = packageManager.getPackageInfoCompat(packageName, 0)
     return info.versionName
 }

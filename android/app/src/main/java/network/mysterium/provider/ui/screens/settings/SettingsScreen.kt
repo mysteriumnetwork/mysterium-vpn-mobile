@@ -95,7 +95,7 @@ fun SettingsScreen(
 private fun SettingsContent(
     state: Settings.State,
     isOnboarding: Boolean,
-    appVersion: String,
+    appVersion: String?,
     onEvent: (Settings.Event) -> Unit,
     onNavigate: (NavigationDestination) -> Unit,
     onHelpPressed: () -> Unit,
@@ -174,7 +174,7 @@ private fun OptionsContent(
     modifier: Modifier = Modifier,
     state: Settings.State,
     isOnboarding: Boolean,
-    appVersion: String,
+    appVersion: String?,
     onEvent: (Settings.Event) -> Unit,
     onNavigate: (NavigationDestination) -> Unit
 ) {
@@ -240,7 +240,7 @@ private fun OptionsContent(
             }
         }
 
-        if (!isOnboarding) {
+        if (!isOnboarding && appVersion != null) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "v${appVersion}",
