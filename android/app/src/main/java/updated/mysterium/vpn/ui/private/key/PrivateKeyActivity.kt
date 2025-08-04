@@ -10,6 +10,9 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivityPrivateKeyBinding
 import network.mysterium.vpn.databinding.PopUpRetryRegistrationBinding
@@ -114,6 +117,26 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
     private fun showDownloadKeyPopUp() {
         val popUpDownloadKey = PopUpDownloadKey(layoutInflater)
         val dialog = createPopUp(popUpDownloadKey.bindingPopUp.root, true)
+
+        // Important: Let dialog handle insets by itself
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            @Suppress("DEPRECATION")
+            dialog.window?.setDecorFitsSystemWindows(false)
+        }
+        // Apply window insets on the dialog's decorView
+        dialog.window?.decorView?.let { decorView ->
+            ViewCompat.setOnApplyWindowInsetsListener(decorView) { view, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                popUpDownloadKey.bindingPopUp.root.updatePadding(
+                    top = systemBars.top,
+                    bottom = systemBars.bottom
+                )
+                WindowInsetsCompat.CONSUMED
+            }
+            // Request to apply insets now
+            ViewCompat.requestApplyInsets(decorView)
+        }
+
         popUpDownloadKey.apply {
             setDialog(dialog)
             downloadAction {
@@ -121,8 +144,10 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
             }
             setUp()
         }
+
         dialog.show()
     }
+
 
     private fun downloadKey(passphrase: String) {
         viewModel.downloadKey(passphrase).observe(this) { result ->

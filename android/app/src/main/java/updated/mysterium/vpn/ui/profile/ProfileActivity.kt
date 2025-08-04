@@ -41,6 +41,7 @@ class ProfileActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun onRequestPermissionsResult(

@@ -12,6 +12,9 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import network.mysterium.vpn.BuildConfig
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.PopUpInsufficientFundsBinding
@@ -94,6 +97,19 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun initToolbar(connectionToolbar: ConnectionToolbar) {
         connectionStateToolbar = connectionToolbar
+    }
+
+    protected fun applyInsets(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            v.updatePadding(
+                top = systemBars.top,
+                bottom = systemBars.bottom
+            )
+
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     fun createPopUp(popUpView: View, cancelable: Boolean): AlertDialog {

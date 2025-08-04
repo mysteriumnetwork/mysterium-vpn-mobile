@@ -29,6 +29,7 @@ class PrepareTopUpActivity : BaseActivity() {
         registrationViewModel.tryRegisterIdentity()
         subscribeViewModel()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     private fun subscribeViewModel() {

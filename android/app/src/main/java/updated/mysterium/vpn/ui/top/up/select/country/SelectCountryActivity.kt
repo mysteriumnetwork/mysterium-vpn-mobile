@@ -55,6 +55,7 @@ class SelectCountryActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bind()
+        applyInsets(binding.root)
     }
 
     private fun configure() {

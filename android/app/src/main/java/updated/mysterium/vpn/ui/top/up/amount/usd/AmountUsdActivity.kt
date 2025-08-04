@@ -28,6 +28,7 @@ abstract class AmountUsdActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     private fun configure() {

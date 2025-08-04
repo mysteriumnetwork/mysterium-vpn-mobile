@@ -30,6 +30,8 @@ class CardPaymentActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindActions()
+        applyInsets(binding.root)
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")

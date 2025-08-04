@@ -87,6 +87,7 @@ abstract class SummaryActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindActions()
+        applyInsets(binding.root)
     }
 
     private fun configure() {

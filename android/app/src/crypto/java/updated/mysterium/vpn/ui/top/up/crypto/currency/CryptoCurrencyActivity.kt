@@ -31,6 +31,8 @@ class CryptoCurrencyActivity : BaseActivity() {
         getCryptoValue()
         configure()
         bindsAction()
+        applyInsets(binding.root)
+
     }
 
     private fun configure() {

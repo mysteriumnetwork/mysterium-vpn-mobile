@@ -52,6 +52,7 @@ class CreateAccountActivity : BaseActivity() {
         setContentView(binding.root)
         subscribeViewModel()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

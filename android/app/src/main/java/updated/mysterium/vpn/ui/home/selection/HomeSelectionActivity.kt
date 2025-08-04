@@ -53,6 +53,7 @@ class HomeSelectionActivity : BaseActivity() {
         configure()
         subscribeViewModel()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun showConnectionHint() {

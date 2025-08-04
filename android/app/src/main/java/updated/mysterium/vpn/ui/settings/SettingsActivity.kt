@@ -55,6 +55,7 @@ class SettingsActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun showConnectionHint() {
