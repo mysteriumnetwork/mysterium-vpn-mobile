@@ -344,7 +344,7 @@ class HomeSelectionActivity : BaseActivity() {
         val intent = Intent(this, FilterActivity::class.java).apply {
             val selectedCountryCode = allNodesAdapter.selectedItem?.countryCode
             val countryCode = if (selectedCountryCode != ALL_COUNTRY_CODE) {
-                selectedCountryCode?.lowercase(Locale.ROOT) ?: ALL_COUNTRY_CODE
+                selectedCountryCode?.lowercase() ?: ALL_COUNTRY_CODE
             } else {
                 ALL_COUNTRY_CODE
             }

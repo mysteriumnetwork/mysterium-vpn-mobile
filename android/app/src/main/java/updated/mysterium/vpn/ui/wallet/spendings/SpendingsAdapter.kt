@@ -55,7 +55,7 @@ class SpendingsAdapter : ContentListAdapter<Spending, SpendingsAdapter.SpendingV
             val mystSpent = DataUtil.convertTokenToMyst(spending.tokenSpend)
             binding.nodeTypeImageView.setImageDrawable(nodeTypeDrawable)
             binding.countryTextView.text = Countries
-                .values[spending.countryName.lowercase(Locale.ROOT)]
+                .values[spending.countryName.lowercase()]
                 ?.name
                 ?: UNKNOWN
             binding.durationTextView.text = DateUtil.convertToDateType(spending.duration * 1000)

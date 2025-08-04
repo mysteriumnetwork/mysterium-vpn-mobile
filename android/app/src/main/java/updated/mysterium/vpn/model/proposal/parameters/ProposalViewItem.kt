@@ -45,7 +45,7 @@ class ProposalViewItem constructor(
                 id = proposal.providerID + proposal.serviceType,
                 providerID = proposal.providerID,
                 serviceType = proposal.serviceType,
-                countryCode = proposal.countryCode.lowercase(Locale.ROOT),
+                countryCode = proposal.countryCode.lowercase(),
                 nodeType = proposal.nodeType,
                 payment = proposal.payment
             )

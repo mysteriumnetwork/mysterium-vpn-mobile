@@ -25,7 +25,7 @@ data class CountryInfo(
 
             val countryName = Countries
                 .values
-                .getOrDefault(countryCode.lowercase(Locale.ROOT), null)
+                .getOrDefault(countryCode.lowercase(), null)
                 ?.name
 
             return countryName?.let {
@@ -33,7 +33,7 @@ data class CountryInfo(
                     countryCode = countryCode,
                     countryName = countryName,
                     countryFlagBitmap = Countries.bitmaps.getOrDefault(
-                        countryCode.lowercase(Locale.ROOT),
+                        countryCode.lowercase(),
                         null
                     ),
                     proposalsNumber = proposalsNumber,

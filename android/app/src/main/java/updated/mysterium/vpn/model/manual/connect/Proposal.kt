@@ -35,7 +35,7 @@ data class Proposal(
         id = nodeEntity.id,
         providerID = nodeEntity.providerID,
         serviceType = ServiceType.parse(nodeEntity.serviceType),
-        countryCode = nodeEntity.countryCode.lowercase(Locale.ROOT),
+        countryCode = nodeEntity.countryCode.lowercase(),
         nodeType = NodeType.parse(nodeEntity.nodeType),
         payment = ProposalPaymentMethod(
             currency = nodeEntity.currency,
@@ -43,12 +43,12 @@ data class Proposal(
             perHour = nodeEntity.pricePerSecond / ETHER_VALUE * SECOND_IN_HOUR
         ),
         countryFlagImage = Countries.bitmaps.getOrDefault(
-            nodeEntity.countryCode.lowercase(Locale.ROOT),
+            nodeEntity.countryCode.lowercase(),
             null
         ),
         qualityLevel = QualityLevel.parse(nodeEntity.qualityLevel),
         countryName = Countries
-            .values[nodeEntity.countryCode.lowercase(Locale.ROOT)]
+            .values[nodeEntity.countryCode.lowercase()]
             ?.name ?: "Unknown"
     )
 
@@ -56,13 +56,13 @@ data class Proposal(
         id = proposalViewItem.id,
         providerID = proposalViewItem.providerID,
         serviceType = proposalViewItem.serviceType,
-        countryCode = proposalViewItem.countryCode.lowercase(Locale.ROOT),
+        countryCode = proposalViewItem.countryCode.lowercase(),
         nodeType = proposalViewItem.nodeType,
         payment = proposalViewItem.payment,
         countryFlagImage = proposalViewItem.countryFlagImage,
         qualityLevel = proposalViewItem.qualityLevel,
         countryName = Countries
-            .values[proposalViewItem.countryCode.lowercase(Locale.ROOT)]
+            .values[proposalViewItem.countryCode.lowercase()]
             ?.name ?: "Unknown"
     )
 

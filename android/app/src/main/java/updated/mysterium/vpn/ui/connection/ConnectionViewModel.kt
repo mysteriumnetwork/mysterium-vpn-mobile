@@ -140,7 +140,7 @@ class ConnectionViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
                 if (countryCode == ALL_COUNTRY_CODE || countryCode == null) {
                     String()
                 } else {
-                    countryCode.uppercase(Locale.ROOT)
+                    countryCode.uppercase()
                 }
             val req = ConnectRequest().apply {
                 identityAddress = identity?.address ?: ""
