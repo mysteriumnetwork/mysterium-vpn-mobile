@@ -11,9 +11,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -131,7 +135,10 @@ private fun SettingsContent(
         }
     ) {
         Column(
-            modifier = Modifier.background(color = Colors.primaryBg),
+            modifier = Modifier
+                .background(color = Colors.primaryBg)
+                .windowInsetsPadding(WindowInsets.statusBars)
+                .windowInsetsPadding(WindowInsets.navigationBars),
         ) {
             OptionsContent(
                 modifier = Modifier.weight(1f),
@@ -242,7 +249,8 @@ private fun OptionsContent(
 
         if (!isOnboarding && appVersion != null) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 text = "v${appVersion}",
                 style = TextStyles.label,
                 color = Colors.grey500,

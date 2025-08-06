@@ -15,8 +15,12 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,9 +67,10 @@ fun LaunchScreen(
                 } else {
                     val pm: PowerManager? = context.getSystemService(POWER_SERVICE) as PowerManager?
                     if (pm?.isIgnoringBatteryOptimizations(context.packageName) == false) {
-                        batteryOptimization.launch(Intent()
-                            .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                            .setData(Uri.parse("package:${context.packageName}"))
+                        batteryOptimization.launch(
+                            Intent()
+                                .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                                .setData(Uri.parse("package:${context.packageName}"))
                         )
                     } else {
                         viewModel.setEvent(Launch.Event.InitializeNode)
@@ -80,9 +85,10 @@ fun LaunchScreen(
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) {
             val pm: PowerManager? = context.getSystemService(POWER_SERVICE) as PowerManager?
             if (pm?.isIgnoringBatteryOptimizations(context.packageName) == false) {
-                batteryOptimization.launch(Intent()
-                    .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                    .setData(Uri.parse("package:${context.packageName}"))
+                batteryOptimization.launch(
+                    Intent()
+                        .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                        .setData(Uri.parse("package:${context.packageName}"))
                 )
             } else {
                 viewModel.setEvent(Launch.Event.InitializeNode)
@@ -106,9 +112,10 @@ fun LaunchScreen(
                             val pm: PowerManager? =
                                 context.getSystemService(POWER_SERVICE) as PowerManager?
                             if (pm?.isIgnoringBatteryOptimizations(context.packageName) == false) {
-                                batteryOptimization.launch(Intent()
-                                    .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                                    .setData(Uri.parse("package:${context.packageName}"))
+                                batteryOptimization.launch(
+                                    Intent()
+                                        .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                                        .setData(Uri.parse("package:${context.packageName}"))
                                 )
                             } else {
                                 viewModel.setEvent(Launch.Event.InitializeNode)
@@ -141,6 +148,8 @@ private fun LaunchContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .windowInsetsPadding(WindowInsets.navigationBars)
             .background(Styles.background),
         contentAlignment = Alignment.Center
     ) {
