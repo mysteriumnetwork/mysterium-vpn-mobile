@@ -45,6 +45,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
         setContentView(binding.root)
         setNextToAccountFrameAvailability()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun onRequestPermissionsResult(
