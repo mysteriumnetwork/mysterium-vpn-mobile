@@ -59,6 +59,7 @@ class WalletActivity : BaseActivity() {
         subscribeViewModel()
         bindsAction()
         balanceViewModel.requestBalanceChange()
+        applyInsets(binding.root)
     }
 
     override fun showConnectionHint() {

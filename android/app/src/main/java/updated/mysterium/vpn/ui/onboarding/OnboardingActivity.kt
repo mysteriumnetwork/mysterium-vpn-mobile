@@ -10,17 +10,21 @@ import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.onboarding.viewpager.*
 import updated.mysterium.vpn.ui.terms.TermsOfUseActivity
+import androidx.core.view.WindowCompat
+import updated.mysterium.vpn.ui.base.BaseActivity
 
-class OnboardingActivity : AppCompatActivity(), ViewPagerActionListener {
+class OnboardingActivity : BaseActivity(), ViewPagerActionListener {
 
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var viewPager: ViewPager2
     private val viewModel: OnboardingViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applyInsets(binding.root)
         initCustomViewPagerBehaviour()
     }
 

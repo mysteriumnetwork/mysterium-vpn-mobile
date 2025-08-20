@@ -28,6 +28,7 @@ abstract class AmountUsdActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     private fun configure() {
@@ -71,11 +72,11 @@ abstract class AmountUsdActivity : BaseActivity() {
             result.onSuccess { estimates ->
                 binding.videoTopUpItem.setData(WalletEstimatesUtil.convertVideoData(estimates))
                 binding.videoTopUpItem.setType(
-                    WalletEstimatesUtil.convertVideoType(estimates).toUpperCase(Locale.ROOT)
+                    WalletEstimatesUtil.convertVideoType(estimates).uppercase()
                 )
                 binding.pagesTopUpItem.setData(WalletEstimatesUtil.convertWebData(estimates))
                 binding.pagesTopUpItem.setType(
-                    WalletEstimatesUtil.convertWebType(estimates).toUpperCase(Locale.ROOT)
+                    WalletEstimatesUtil.convertWebType(estimates).uppercase()
                 )
                 binding.trafficTopUpItem.setData(
                     WalletEstimatesUtil.convertDownloadData(estimates).toString()
@@ -91,7 +92,7 @@ abstract class AmountUsdActivity : BaseActivity() {
                     )
                 )
                 binding.musicTopUpItem.setType(
-                    WalletEstimatesUtil.convertMusicTimeType(estimates).toUpperCase(Locale.ROOT)
+                    WalletEstimatesUtil.convertMusicTimeType(estimates).uppercase()
                 )
             }
         }

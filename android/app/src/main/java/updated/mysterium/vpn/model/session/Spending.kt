@@ -1,7 +1,6 @@
 package updated.mysterium.vpn.model.session
 
 import com.google.gson.annotations.SerializedName
-import updated.mysterium.vpn.model.filter.NodeType
 
 data class Spending(
     @SerializedName("ip_type") val nodeType: String,

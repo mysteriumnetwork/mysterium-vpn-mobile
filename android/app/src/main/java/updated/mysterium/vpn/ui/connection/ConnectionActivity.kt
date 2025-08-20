@@ -61,6 +61,7 @@ class ConnectionActivity : BaseActivity() {
         subscribeViewModel()
         bindsAction()
         getSelectedNode()
+        applyInsets(binding.root)
     }
 
     override fun onResume() {

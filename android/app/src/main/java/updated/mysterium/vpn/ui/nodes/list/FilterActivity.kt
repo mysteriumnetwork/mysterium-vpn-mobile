@@ -43,6 +43,7 @@ class FilterActivity : BaseActivity() {
         configure()
         subscribeViewModel()
         bindsActions()
+        applyInsets(binding.root)
     }
 
     override fun showConnectionHint() {

@@ -55,6 +55,7 @@ class SettingsActivity : BaseActivity() {
         setContentView(binding.root)
         configure()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun showConnectionHint() {
@@ -189,7 +190,7 @@ class SettingsActivity : BaseActivity() {
         val popUpHeight = size.y - location[1] // distance from view to screen bottom
         val margin = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            resources.getDimension(R.dimen.margin_padding_size_large),
+            resources.getDimension(R.dimen.margin_padding_size_settings_spinner),
             resources.displayMetrics
         ).toInt()
         if (popUpHeight > margin) {

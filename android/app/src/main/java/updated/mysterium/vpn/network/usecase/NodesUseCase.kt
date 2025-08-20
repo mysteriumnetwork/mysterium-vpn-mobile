@@ -51,7 +51,7 @@ class NodesUseCase(
             request.presetID = filterId.toLong()
         }
         countryCode?.let {
-            request.locationCountry = countryCode.toUpperCase(Locale.ROOT)
+            request.locationCountry = countryCode.uppercase()
         }
         return nodeRepository.proposals(request)
     }

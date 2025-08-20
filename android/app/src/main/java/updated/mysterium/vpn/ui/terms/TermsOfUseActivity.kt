@@ -33,6 +33,7 @@ class TermsOfUseActivity : BaseActivity() {
         checkCurrentState()
         configure()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun showConnectionHint() {

@@ -2,7 +2,7 @@ package updated.mysterium.vpn.model.manual.connect
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PresetFilter(

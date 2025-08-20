@@ -54,6 +54,7 @@ class CryptoPaymentActivity : BaseActivity() {
         getExtra()
         subscribeViewModel()
         bindsAction()
+        applyInsets(binding.root)
     }
 
     override fun onDestroy() {

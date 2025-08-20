@@ -22,6 +22,7 @@ class PaymentMethodActivity : BaseActivity() {
         setContentView(binding.root)
         bind()
         setUpPaymentMethodList()
+        applyInsets(binding.root)
     }
 
     private fun bind() {
