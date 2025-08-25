@@ -16,9 +16,8 @@ jobs:
 
       - name: Install Ruby gems
         run: |
-          ls -la
+          java --version
           bundle install
-          env
 
       - name: Decode google-services.json
         run: echo "${{ secrets.GOOGLE_SERVICES_VALUE }}" | base64 --decode > "android/app/google-services.json"
