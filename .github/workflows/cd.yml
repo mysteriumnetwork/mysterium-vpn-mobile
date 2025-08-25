@@ -1,0 +1,54 @@
+name: CD
+
+on:
+  pull_request:
+
+jobs:
+
+  buildDebug:
+    name: Build Debug APK
+    runs-on: ubuntu-latest
+    container:
+      image: mysteriumnetwork/mobile-ci:1.2.0
+    if: github.ref_type != 'tag'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ruby gems
+        run: |
+          ls -la
+          bundle install
+          env
+
+      - name: Decode google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_VALUE }}" | base64 --decode > "android/app/google-services.json"
+
+      - name: Build Debug
+        run: bundle exec fastlane buildDebug
+        env:
+          FASTLANE_ANDROID_SIGNING_FILE_PATH: my-release-key.keystore
+          FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS: ${{ secrets.FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS }}
+          FASTLANE_ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.FASTLANE_ANDROID_SIGNING_KEY_ALIAS }}
+          FASTLANE_ANDROID_SIGNING_KEY_PASS: ${{ secrets.FASTLANE_ANDROID_SIGNING_KEY_PASS }}
+
+  testDebug:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    container:
+      image: mysteriumnetwork/mobile-ci:1.2.0
+    needs: buildDebug
+    if: github.ref_type != 'tag'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ruby gems
+        run: bundle install
+
+      - name: Decode google-services.json
+        run: echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
+        env:
+          GOOGLE_SERVICES_VALUE: ${{ secrets.GOOGLE_SERVICES_VALUE }}
+          GOOGLE_SERVICES_PATH: android/app/google-services.json
+
+      - name: Run Fastlane tests
+        run: bundle exec fastlane test
