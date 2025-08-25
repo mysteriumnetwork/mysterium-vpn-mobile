@@ -9,7 +9,7 @@ jobs:
     name: Build Debug APK
     runs-on: ubuntu-latest
     container:
-      image: mysteriumnetwork/mobile-ci:1.2.0
+      image: mysteriumnetwork/mobile-ci:1.3.0
     if: github.ref_type != 'tag'
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     container:
-      image: mysteriumnetwork/mobile-ci:1.2.0
+      image: mysteriumnetwork/mobile-ci:1.3.0
     needs: buildDebug
     if: github.ref_type != 'tag'
     steps:
