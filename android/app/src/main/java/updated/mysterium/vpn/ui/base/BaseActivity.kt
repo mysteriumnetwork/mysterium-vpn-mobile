@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -56,6 +57,9 @@ abstract class BaseActivity : AppCompatActivity() {
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Explicit rather than relying on targetSdk 36+ enforcement, so the
+        // behaviour does not silently change on the next targetSdk bump.
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setLayoutDirection()
         baseViewModel.checkInternetConnection()

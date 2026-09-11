@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '2.1.0'
+    ext.kotlin_version = '2.3.21'
     ext {
-        buildToolsVersion = "30.0.3"
         minSdkVersion = 24
-        compileSdkVersion = 35
-        targetSdkVersion = 35
-        ndkVersion = '21.4.7075529' // r21e - https://developer.android.com/ndk/downloads#lts-downloads
+        compileSdkVersion = 37
+        targetSdkVersion = 36
+        ndkVersion = '28.2.13676358'
+        nodeVersion = '1.39.5'
         versionCode = 107183
         versionName = '2.1.15'
     }
@@ -14,8 +14,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.11.1'
+        classpath 'com.android.tools.build:gradle:9.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.3.12"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -23,8 +24,62 @@ buildscript {
 
 allprojects {
     repositories {
+        // Local Maven repo holding the mobile-node AAR fetched by `downloadMobileNode`.
+        maven {
+            url = uri("${rootDir}/libs")
+        }
         mavenCentral()
         google()
-        maven { url 'https://jitpack.io' }
+        maven { url = uri('https://jitpack.io') }
+    }
+}
+
+// The mobile-node AAR is published to the node project's GitHub releases rather
+// than Maven Central, whose `network.mysterium:mobile-node` publication has been
+// stale since 2024-09-20 and whose newest artifact is not 16 KB page aligned.
+def nodeArtifactDir = file("${rootDir}/libs/network/mysterium/mobile-node/${rootProject.ext.nodeVersion}")
+def nodeAarFile = new File(nodeArtifactDir, "mobile-node-${rootProject.ext.nodeVersion}.aar")
+def nodePomFile = new File(nodeArtifactDir, "mobile-node-${rootProject.ext.nodeVersion}.pom")
+
+tasks.register('downloadMobileNode') {
+    group = 'build setup'
+    description = 'Downloads the mobile-node AAR + POM from the GitHub release if missing.'
+
+    inputs.property('version', rootProject.ext.nodeVersion)
+    outputs.files(nodeAarFile, nodePomFile)
+    outputs.upToDateWhen { nodeAarFile.exists() && nodePomFile.exists() }
+
+    doLast {
+        nodeArtifactDir.mkdirs()
+        def baseUrl = "https://github.com/mysteriumnetwork/node/releases/download/${rootProject.ext.nodeVersion}"
+        [nodeAarFile, nodePomFile].each { f ->
+            if (f.exists()) {
+                return
+            }
+            logger.lifecycle("Downloading ${f.name} from ${baseUrl}/${f.name}")
+            def tmp = new File(f.parentFile, "${f.name}.tmp")
+            try {
+                new URI("${baseUrl}/${f.name}").toURL().withInputStream { input ->
+                    tmp.withOutputStream { output -> output << input }
+                }
+                java.nio.file.Files.move(
+                        tmp.toPath(), f.toPath(),
+                        java.nio.file.StandardCopyOption.ATOMIC_MOVE,
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                )
+            } finally {
+                tmp.delete()
+            }
+        }
+    }
+}
+
+subprojects { sp ->
+    ['com.android.application', 'com.android.library'].each { pluginId ->
+        sp.plugins.withId(pluginId) {
+            sp.tasks.named('preBuild') {
+                dependsOn rootProject.tasks.named('downloadMobileNode')
+            }
+        }
     }
 }

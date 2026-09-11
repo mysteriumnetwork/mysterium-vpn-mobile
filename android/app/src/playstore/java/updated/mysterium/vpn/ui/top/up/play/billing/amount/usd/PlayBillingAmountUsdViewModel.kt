@@ -2,7 +2,7 @@ package updated.mysterium.vpn.ui.top.up.play.billing.amount.usd
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.ProductDetails
 import updated.mysterium.vpn.common.extensions.liveDataResult
 import updated.mysterium.vpn.model.top.up.TopUpPlayBillingCardItem
 import updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingDataSource
@@ -26,22 +26,18 @@ class PlayBillingAmountUsdViewModel(
     }
 
     private fun toTopUpPlayBillingCardItem(
-        list: List<SkuDetails>
+        list: List<ProductDetails>
     ): List<TopUpPlayBillingCardItem> {
-        return list.map { skuDetails ->
-            // Parse description from (5.99 USD) format to 5.99
-            val amountUsd = skuDetails.description
-                .replace("(", "")
-                .replace(")", "")
-                .split(" ")
-                .first()
-                .toDouble()
+        return list.mapNotNull { productDetails ->
+            // Description is formatted as "(5.99 USD)"; skip anything unparseable.
+            val amountUsd = parseAmountUsd(productDetails.description)
+                ?: return@mapNotNull null
 
             TopUpPlayBillingCardItem(
                 id = "",
-                sku = skuDetails.sku,
+                sku = productDetails.productId,
                 amountUsd = amountUsd,
-                isSelected = list.indexOf(skuDetails) == 0
+                isSelected = list.indexOf(productDetails) == 0
             )
         }
     }

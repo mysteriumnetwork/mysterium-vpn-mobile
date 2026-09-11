@@ -44,7 +44,7 @@ class PlayBillingSummaryViewModel(
                         identityAddress = connectionUseCase.getIdentityAddress(),
                         gateway = Gateway.GOOGLE,
                         googlePurchaseToken = it.purchaseToken,
-                        googleProductID = it.skus.first()
+                        googleProductID = it.products.first()
                     )
                     paymentUseCase.gatewayClientCallback(purchase)
                 }

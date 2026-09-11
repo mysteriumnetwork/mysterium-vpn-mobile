@@ -62,6 +62,7 @@ class SplashActivity : BaseActivity() {
         }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applyInsets(binding.root)
         ensureVpnServicePermission()
         subscribeViewModel()
         viewModel.setUpInactiveUserPushyNotifications()

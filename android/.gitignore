@@ -1,0 +1,3 @@
+
+# mobile-node AAR is downloaded by the `downloadMobileNode` Gradle task
+/libs/

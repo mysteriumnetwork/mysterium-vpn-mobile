@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'kotlin-parcelize'
-
-import com.android.build.OutputFile
 
 /**
  * Get the version code from command line param
@@ -34,33 +32,14 @@ def getVersionName = { ->
 }
 
 
-/**
- * Set this to true to create two separate APKs instead of one:
- *   - An APK that only works on ARM devices
- *   - An APK that only works on x86 devices
- * The advantage is the size of the APK is reduced by about 4MB.
- * Upload all the APKs to the Play Store and people will download
- * the correct one based on the CPU architecture of their device.
- */
-def enableSeparateBuildPerCPUArchitecture = false
-
-
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
     ndkVersion rootProject.ext.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    viewBinding {
-        enabled = true
-    }
-
     testOptions {
         unitTests.includeAndroidResources = true
     }
@@ -74,8 +53,8 @@ android {
 
     defaultConfig {
         applicationId "network.mysterium.vpn"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
         versionCode getVersionCode()
         versionName getVersionName()
         multiDexEnabled true
@@ -85,27 +64,9 @@ android {
         }
 
         buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"1.29.23\""
+        buildConfigField "String", "NODE_VERSION", "\"${rootProject.ext.nodeVersion}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += [
-                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
-                        "room.incremental"     : "true",
-                        "room.expandProjection": "true"
-                ]
-            }
-        }
-    }
-    splits {
-        abi {
-            reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-        }
     }
     signingConfigs {
         debug {
@@ -118,13 +79,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         debug {
             signingConfig signingConfigs.debug
         }
     }
-    flavorDimensions "default"
+    flavorDimensions += "default"
     productFlavors {
         playstore {
             dimension = "default"
@@ -136,21 +97,8 @@ android {
         }
     }
     buildFeatures {
-        dataBinding true
-        buildFeatures.viewBinding = true
-    }
-    // applicationVariants are e.g. debug, release
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
-        }
+        viewBinding true
+        buildConfig true
     }
 
     useLibrary 'android.test.runner'
@@ -166,6 +114,9 @@ dependencies {
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    //Testing
+    testImplementation 'junit:junit:4.13.2'
 
     //AndroidX
     implementation "androidx.fragment:fragment-ktx:1.3.1"
@@ -183,7 +134,7 @@ dependencies {
     //Google
     playstoreImplementation "com.google.android.play:review-ktx:2.0.1"
     implementation "com.google.android.material:material:1.12.0"
-    playstoreImplementation "com.android.billingclient:billing-ktx:7.0.0"
+    playstoreImplementation "com.android.billingclient:billing-ktx:9.1.0"
 
     //Koin
     implementation "io.insert-koin:koin-core:3.1.6"
@@ -192,8 +143,7 @@ dependencies {
     //Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
@@ -210,7 +160,7 @@ dependencies {
     //Room
     implementation "androidx.room:room-ktx:2.7.2"
     implementation "androidx.room:room-runtime:2.7.2"
-    kapt "androidx.room:room-compiler:2.7.2"
+    ksp "androidx.room:room-compiler:2.7.2"
 
     //Line chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
@@ -234,11 +184,24 @@ dependencies {
     implementation "me.zhanghai.android.fastscroll:library:1.2.0"
 
     //Mysterium
-    // Change NODE_VERSION in defaultConfig if updating version of mobile-node
+    // Version comes from rootProject.ext.nodeVersion, which also drives the
+    // NODE_VERSION buildConfigField and the downloadMobileNode task.
     implementation "network.mysterium:terms:0.0.50"
-    implementation "network.mysterium:mobile-node:1.29.23"
+    implementation "network.mysterium:mobile-node:${rootProject.ext.nodeVersion}"
 }
 
 repositories {
     mavenCentral()
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+    arg("room.expandProjection", "true")
 }

@@ -15,7 +15,7 @@ runs:
     - uses: android-actions/setup-android@v3
       with:
         cmdline-tools-version: 7302050
-        packages: "tools platform-tools extras;android;m2repository extras;google;m2repository extras;google;google_play_services platforms;android-29 build-tools;30.0.3 ndk;21.4.7075529"
+        packages: "tools platform-tools extras;android;m2repository extras;google;m2repository extras;google;google_play_services platforms;android-37 build-tools;36.1.0 ndk;28.2.13676358"
 
     - run: sdkmanager --list_installed
       shell: bash

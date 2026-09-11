@@ -39,8 +39,8 @@ class PlayBillingDataSource(
     private val knownAutoConsumeSKUs = mutableListOf("1_99_usd", "3_99_usd", "5_99_usd")
 
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
-    private val skuDetailsMap: MutableMap<String, MutableStateFlow<SkuDetails?>> = HashMap()
-    private val _skuDetailsList = MutableLiveData<List<SkuDetails>?>()
+    private val skuDetailsMap: MutableMap<String, MutableStateFlow<ProductDetails?>> = HashMap()
+    private val _skuDetailsList = MutableLiveData<List<ProductDetails>?>()
     val skuDetailsList
         get() = _skuDetailsList
 
@@ -79,7 +79,11 @@ class PlayBillingDataSource(
         initializeFlows()
         billingClient = BillingClient.newBuilder(application)
             .setListener(this)
-            .enablePendingPurchases()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder()
+                    .enableOneTimeProducts()
+                    .build()
+            )
             .build()
         billingClient.startConnection(this)
     }
@@ -91,7 +95,7 @@ class PlayBillingDataSource(
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
             defaultScope.launch {
-                querySkuDetailsAsync()
+                queryProductDetailsAsync()
                 refreshPurchases()
             }
         } else {
@@ -128,14 +132,14 @@ class PlayBillingDataSource(
     private fun initializeFlows() {
         for (sku in knownInAppSKUs) {
             val skuState = MutableStateFlow(SkuState.SKU_STATE_UNPURCHASED)
-            val details = MutableStateFlow<SkuDetails?>(null)
+            val details = MutableStateFlow<ProductDetails?>(null)
             details.subscriptionCount.map { count -> count > 0 }
                 .distinctUntilChanged()
                 .onEach { isActive ->
                     if (isActive && (SystemClock.elapsedRealtime() - skuDetailsResponseTime > SKU_DETAILS_REQUERY_TIME)) {
                         skuDetailsResponseTime = SystemClock.elapsedRealtime()
                         Log.e(TAG, "Skus not fresh, requiring")
-                        querySkuDetailsAsync()
+                        queryProductDetailsAsync()
                     }
                 }
                 .launchIn(defaultScope)
@@ -146,7 +150,7 @@ class PlayBillingDataSource(
 
     private fun onSkuDetailsResponse(
         billingResult: BillingResult,
-        skuDetailsList: List<SkuDetails>?
+        skuDetailsList: List<ProductDetails>?
     ) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
@@ -162,7 +166,7 @@ class PlayBillingDataSource(
                 )
             } else {
                 for (skuDetails in skuDetailsList) {
-                    val sku = skuDetails.sku
+                    val sku = skuDetails.productId
                     val detailsMutableFlow = skuDetailsMap[sku]
                     detailsMutableFlow?.tryEmit(skuDetails) ?: Log.e(TAG, "Unknown sku: $sku")
                 }
@@ -178,25 +182,35 @@ class PlayBillingDataSource(
         }
     }
 
-    private suspend fun querySkuDetailsAsync() {
-        if (!knownInAppSKUs.isNullOrEmpty()) {
-            val skuDetailsResult = billingClient.querySkuDetails(
-                SkuDetailsParams.newBuilder()
-                    .setType(BillingClient.SkuType.INAPP)
-                    .setSkusList(knownInAppSKUs)
-                    .build()
-            )
-            onSkuDetailsResponse(
-                skuDetailsResult.billingResult,
-                skuDetailsResult.skuDetailsList
-            )
-            _skuDetailsList.postValue(skuDetailsResult.skuDetailsList)
+    private suspend fun queryProductDetailsAsync() {
+        if (knownInAppSKUs.isEmpty()) {
+            return
         }
+        val productList = knownInAppSKUs.map { sku ->
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(sku)
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+        }
+        val productDetailsResult = billingClient.queryProductDetails(
+            QueryProductDetailsParams.newBuilder()
+                .setProductList(productList)
+                .build()
+        )
+        onSkuDetailsResponse(
+            productDetailsResult.billingResult,
+            productDetailsResult.productDetailsList
+        )
+        _skuDetailsList.postValue(productDetailsResult.productDetailsList)
     }
 
     private suspend fun refreshPurchases() {
         Log.e(TAG, "Refreshing purchases.")
-        val purchasesResult = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
+        val purchasesResult = billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+        )
         val billingResult = purchasesResult.billingResult
         if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
             Log.e(TAG, "Problem getting purchases: " + billingResult.debugMessage)
@@ -207,7 +221,7 @@ class PlayBillingDataSource(
     }
 
     private fun setSkuStateFromPurchase(purchase: Purchase) {
-        for (purchaseSku in purchase.skus) {
+        for (purchaseSku in purchase.products) {
             val skuStateFlow = skuStateMap[purchaseSku]
             if (null == skuStateFlow) {
                 Log.e(
@@ -252,7 +266,7 @@ class PlayBillingDataSource(
         val updatedSkus = HashSet<String>()
         if (purchases != null) {
             for (purchase in purchases) {
-                for (sku in purchase.skus) {
+                for (sku in purchase.products) {
                     val skuStateFlow = skuStateMap[sku]
                     if (null == skuStateFlow) {
                         Log.e(
@@ -269,14 +283,14 @@ class PlayBillingDataSource(
                     setSkuStateFromPurchase(purchase)
                     var isConsumable = false
                     defaultScope.launch {
-                        for (sku in purchase.skus) {
+                        for (sku in purchase.products) {
                             if (knownAutoConsumeSKUs.contains(sku)) {
                                 isConsumable = true
                             } else {
                                 if (isConsumable) {
                                     Log.e(
                                         TAG, "Purchase cannot contain a mixture of consumable" +
-                                                "and non-consumable items: " + purchase.skus.toString()
+                                                "and non-consumable items: " + purchase.products.toString()
                                     )
                                     isConsumable = false
                                     break
@@ -320,7 +334,7 @@ class PlayBillingDataSource(
             defaultScope.launch {
                 _purchaseConsumedFlow.emit(purchase)
             }
-            for (sku in purchase.skus) {
+            for (sku in purchase.products) {
                 setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
             }
         } else {
@@ -332,25 +346,28 @@ class PlayBillingDataSource(
     }
 
     fun launchBillingFlow(activity: Activity, sku: String, id: String) {
-        val skuDetails = skuDetailsMap[sku]?.value
-        if (null != skuDetails) {
-            val billingFlowParamsBuilder = BillingFlowParams.newBuilder()
-            billingFlowParamsBuilder
-                .setObfuscatedAccountId(id)
-                .setSkuDetails(skuDetails)
-            defaultScope.launch {
-                val br = billingClient.launchBillingFlow(
-                    activity,
-                    billingFlowParamsBuilder.build()
-                )
-                if (br.responseCode == BillingClient.BillingResponseCode.OK) {
-                    billingFlowInProcess.emit(true)
-                } else {
-                    Log.e(TAG, "Billing failed: + " + br.debugMessage)
-                }
+        val productDetails = skuDetailsMap[sku]?.value
+        if (productDetails == null) {
+            Log.e(TAG, "ProductDetails not found for: $sku")
+            return
+        }
+        // One-time products carry no offer token; that is subscriptions only.
+        val productDetailsParamsList = listOf(
+            BillingFlowParams.ProductDetailsParams.newBuilder()
+                .setProductDetails(productDetails)
+                .build()
+        )
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setObfuscatedAccountId(id)
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .build()
+        defaultScope.launch {
+            val br = billingClient.launchBillingFlow(activity, billingFlowParams)
+            if (br.responseCode == BillingClient.BillingResponseCode.OK) {
+                billingFlowInProcess.emit(true)
+            } else {
+                Log.e(TAG, "Billing failed: + " + br.debugMessage)
             }
-        } else {
-            Log.e(TAG, "SkuDetails not found for: $sku")
         }
     }
 
