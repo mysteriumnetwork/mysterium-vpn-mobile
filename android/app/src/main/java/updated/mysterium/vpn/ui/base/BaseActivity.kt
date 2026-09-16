@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -34,6 +35,7 @@ import updated.mysterium.vpn.model.payment.PaymentOption
 import updated.mysterium.vpn.ui.base.BaseViewModel.Companion.CONNECT_BALANCE_LIMIT
 import updated.mysterium.vpn.ui.connection.ConnectionActivity
 import updated.mysterium.vpn.ui.custom.view.ConnectionToolbar
+import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionViewModel
 import java.util.*
@@ -51,9 +53,15 @@ abstract class BaseActivity : AppCompatActivity() {
     private val homeSelectionViewModel: HomeSelectionViewModel by inject()
     protected var isInternetAvailable = true
     protected var connectionState = ConnectionState.NOTCONNECTED
-    private val dialogs = emptyList<Dialog>().toMutableList()
+    // Dialog -> whether it should be dismissed when the activity pauses.
+    // Handing off to Google Password Manager ("create password with Google" /
+    // "use suggested password") pauses this activity, and dismissing the dialog
+    // there would throw away what the user had typed before they get back.
+    private val dialogs = mutableMapOf<Dialog, Boolean>()
     private var insufficientFoundsDialog: AlertDialog? = null
     private var wifiErrorDialog: AlertDialog? = null
+    private var noAmountDialog: AlertDialog? = null
+    private var noAmountPopUp: PopUpNoAmount? = null
     private lateinit var alertDialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,8 +90,14 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        closeAllPopUps()
+        dialogs.filterValues { it }.keys.forEach { it.dismiss() }
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        // Dialogs kept across a pause still must not outlive the activity window.
+        closeAllPopUps()
+        super.onDestroy()
     }
 
     override fun finish() {
@@ -116,27 +130,23 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun createPopUp(popUpView: View, cancelable: Boolean): AlertDialog {
-        alertDialogBuilder.apply {
-            setView(popUpView)
-            setCancelable(cancelable)
-            create().apply {
-                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                window?.setLayout(
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-                )
-            }
-        }
-        val dialog = alertDialogBuilder.create()
+    fun createPopUp(
+        popUpView: View,
+        cancelable: Boolean,
+        dismissOnPause: Boolean = true
+    ): AlertDialog {
+        val dialog = alertDialogBuilder
+            .setView(popUpView)
+            .setCancelable(cancelable)
+            .create()
         dialog.apply {
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
             window?.setLayout(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        dialogs.add(dialog)
+        dialogs[dialog] = dismissOnPause
         return dialog
     }
 
@@ -171,6 +181,30 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
+        // Retrying can reach this repeatedly; reuse one dialog rather than
+        // inflating and retaining a new one per attempt. The action is refreshed
+        // each time so a reused dialog never runs a stale caller's lambda.
+        val existing = noAmountDialog
+        if (existing != null) {
+            noAmountPopUp?.onTryAgainAction = onTryAgainClick
+            if (!existing.isShowing) {
+                existing.show()
+            }
+            return
+        }
+        val popUpNoAmount = PopUpNoAmount(layoutInflater)
+        val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
+        popUpNoAmount.apply {
+            this.dialog = dialogNoAmount
+            this.onTryAgainAction = onTryAgainClick
+            setUp()
+        }
+        noAmountPopUp = popUpNoAmount
+        noAmountDialog = dialogNoAmount
+        dialogNoAmount.show()
+    }
+
     fun insufficientFundsPopUp(onContinueAction: (() -> Unit)? = null) {
         val bindingPopUp = PopUpInsufficientFundsBinding.inflate(layoutInflater)
         val dialog = createPopUp(bindingPopUp.root, false)
@@ -185,9 +219,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun closeAllPopUps() {
-        dialogs.forEach {
-            it.dismiss()
-        }
+        dialogs.keys.forEach { it.dismiss() }
     }
 
     fun establishConnectionListeners() {

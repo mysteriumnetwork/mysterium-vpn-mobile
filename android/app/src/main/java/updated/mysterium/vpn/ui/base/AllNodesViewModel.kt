@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.base
 
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,7 +40,7 @@ class AllNodesViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private val countryInfoUseCase = useCaseProvider.countryInfo()
     private var cachedCountryInfoList: List<CountryInfo> = emptyList()
     private var cachedProposalList: List<Proposal> = emptyList()
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
     private val filteredCountryInfoLists = emptyList<List<CountryInfo>?>().toMutableList()
     private val runnable = object : Runnable {
 

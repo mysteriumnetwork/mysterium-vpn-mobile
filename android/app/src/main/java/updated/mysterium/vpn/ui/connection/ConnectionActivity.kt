@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.connection
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.os.BundleCompat
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -71,7 +72,7 @@ class ConnectionActivity : BaseActivity() {
         checkAbilityToConnect()
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         getSelectedNode()
@@ -284,7 +285,9 @@ class ConnectionActivity : BaseActivity() {
         intent?.extras?.getString(CONNECTION_TYPE_KEY)?.let {
             connectionType = ConnectionType.from(it)
             val countryCode = intent?.extras?.getString(COUNTRY_CODE_KEY)
-            val proposalExtra = intent.extras?.getParcelable<Proposal>(EXTRA_PROPOSAL_MODEL)
+            val proposalExtra = intent.extras?.let {
+                BundleCompat.getParcelable(it, EXTRA_PROPOSAL_MODEL, Proposal::class.java)
+            }
             if (viewModel.connectionStatus.value?.state != ConnectionState.CONNECTED) {
                 proposal = proposalExtra
                 initViewModel(connectionType, countryCode, proposalExtra)

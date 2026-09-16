@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.PopUpDownloadKeyBinding
@@ -165,7 +166,7 @@ class PopUpDownloadKey(layoutInflater: LayoutInflater) {
     }
 
     private fun isErrorState(): Boolean {
-        return bindingPopUp.errorText.visibility == View.VISIBLE
+        return bindingPopUp.errorText.isVisible
     }
 
     private fun switchPasswordToggle(isVisible: Boolean) {

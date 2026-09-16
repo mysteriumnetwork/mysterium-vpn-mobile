@@ -46,7 +46,7 @@ class CountryInfoUseCase(
             countryFlagRes = R.drawable.icon_all_countries,
             countryCode = ALL_COUNTRY_CODE,
             countryName = "",
-            proposalsNumber = countryInfoList.sumBy { it.proposalsNumber },
+            proposalsNumber = countryInfoList.sumOf { it.proposalsNumber },
             isSelected = true
         )
         return mutableListOf<CountryInfo>().apply {

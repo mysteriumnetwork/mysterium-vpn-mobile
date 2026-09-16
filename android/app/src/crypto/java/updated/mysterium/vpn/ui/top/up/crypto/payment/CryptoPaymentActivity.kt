@@ -33,6 +33,7 @@ import updated.mysterium.vpn.ui.top.up.crypto.currency.CryptoCurrencyActivity.Co
 import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity.Companion.COUNTRY_EXTRA_KEY
 import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity.Companion.STATE_EXTRA_KEY
 import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.math.abs
 
 class CryptoPaymentActivity : BaseActivity() {
@@ -260,7 +261,7 @@ class CryptoPaymentActivity : BaseActivity() {
             binding.currencyEquivalentFrame.visibility = View.VISIBLE
             val amount = order?.payAmount // round currency amount
                 ?.toBigDecimal()
-                ?.setScale(6, BigDecimal.ROUND_HALF_EVEN)
+                ?.setScale(6, RoundingMode.HALF_EVEN)
                 ?.toPlainString()
             binding.currencyEquivalentTextView.text = getString(
                 R.string.top_up_currency_equivalent, amount, currency

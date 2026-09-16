@@ -117,7 +117,7 @@ class PrivateKeyActivity : BaseActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private fun showDownloadKeyPopUp() {
         val popUpDownloadKey = PopUpDownloadKey(layoutInflater)
-        val dialog = createPopUp(popUpDownloadKey.bindingPopUp.root, true)
+        val dialog = createPopUp(popUpDownloadKey.bindingPopUp.root, true, dismissOnPause = false)
 
         // Important: Let dialog handle insets by itself
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

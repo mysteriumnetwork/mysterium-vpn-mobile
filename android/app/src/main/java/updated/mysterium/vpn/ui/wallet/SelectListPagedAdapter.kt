@@ -11,7 +11,7 @@ class SelectListPagedAdapter(
 
     private companion object {
 
-        // change if new fragment will added
+        // change if new fragment will add
         const val SCREENS_LIST_SIZE = 2
     }
 
@@ -22,6 +22,6 @@ class SelectListPagedAdapter(
     private fun getNewFragmentInstance(position: Int) = when (position) {
         0 -> TopUpsListFragment()
         1 -> SpendingsFragment()
-        else -> SpendingsFragment() // default, change if new fragment will added
+        else -> SpendingsFragment() // default, change if new fragment will add
     }
 }

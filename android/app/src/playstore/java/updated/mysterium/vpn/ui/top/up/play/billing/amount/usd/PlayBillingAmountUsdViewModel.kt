@@ -21,6 +21,8 @@ class PlayBillingAmountUsdViewModel(
         }
     }
 
+    fun refreshProductDetails() = playBillingDataSource.refresh()
+
     fun getSkuError() = liveDataResult {
         playBillingDataSource.skuDetailsError
     }
@@ -28,18 +30,20 @@ class PlayBillingAmountUsdViewModel(
     private fun toTopUpPlayBillingCardItem(
         list: List<ProductDetails>
     ): List<TopUpPlayBillingCardItem> {
-        return list.mapNotNull { productDetails ->
-            // Description is formatted as "(5.99 USD)"; skip anything unparseable.
-            val amountUsd = parseAmountUsd(productDetails.description)
-                ?: return@mapNotNull null
-
-            TopUpPlayBillingCardItem(
-                id = "",
-                sku = productDetails.productId,
-                amountUsd = amountUsd,
-                isSelected = list.indexOf(productDetails) == 0
-            )
-        }
+        return list
+            .mapNotNull { productDetails ->
+                // Description is formatted as "(5.99 USD)"; skip anything unparseable.
+                val amountUsd = parseAmountUsd(productDetails.description)
+                    ?: return@mapNotNull null
+                TopUpPlayBillingCardItem(
+                    id = "",
+                    sku = productDetails.productId,
+                    amountUsd = amountUsd,
+                    isSelected = false
+                )
+            }
+            // Select the first item that survived parsing, not the first input.
+            .mapIndexed { index, item -> item.copy(isSelected = index == 0) }
     }
 
 }

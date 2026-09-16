@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import network.mysterium.vpn.BuildConfig
@@ -194,7 +195,7 @@ class MenuActivity : BaseActivity() {
 
     private fun composeEmail() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
+            data = "mailto:".toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.get_help_email)))
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.get_help_subject))
         }

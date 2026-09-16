@@ -8,12 +8,11 @@ import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.work.Configuration.Builder
 import androidx.work.Configuration.Provider
+import androidx.work.Configuration as WorkConfiguration
 import kotlinx.coroutines.CompletableDeferred
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -27,7 +26,7 @@ import updated.mysterium.vpn.di.Modules
 import updated.mysterium.vpn.ui.base.AllNodesViewModel
 import updated.mysterium.vpn.ui.wallet.ExchangeRateViewModel
 
-class App : Application(), LifecycleObserver, Provider {
+class App : Application(), DefaultLifecycleObserver, Provider {
 
     companion object {
         private const val TAG = "App"
@@ -40,7 +39,9 @@ class App : Application(), LifecycleObserver, Provider {
     private val exchangeRateViewModel: ExchangeRateViewModel by inject()
 
     override fun onCreate() {
-        super.onCreate()
+        // DefaultLifecycleObserver also declares onCreate(LifecycleOwner),
+        // so the Application supertype must be named explicitly.
+        super<Application>.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         Countries.loadBitmaps()
         startKoin {
@@ -50,15 +51,13 @@ class App : Application(), LifecycleObserver, Provider {
         bindMysteriumService()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onMoveToForeground() {
+    override fun onStart(owner: LifecycleOwner) {
         // App goes to foreground, start fetching periodical works
         allNodesViewModel.launchProposalsPeriodically()
         exchangeRateViewModel.launchPeriodicallyExchangeRate()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onMoveToBackground() {
+    override fun onStop(owner: LifecycleOwner) {
         // App goes to background, stop fetching periodical works
         allNodesViewModel.stopPeriodicalProposalFetch()
         exchangeRateViewModel.stopPeriodicallyExchangeRate()
@@ -73,8 +72,8 @@ class App : Application(), LifecycleObserver, Provider {
         super.onConfigurationChanged(newConfig)
     }
 
-    override fun getWorkManagerConfiguration() =
-        Builder()
+    override val workManagerConfiguration: WorkConfiguration
+        get() = WorkConfiguration.Builder()
             .setMinimumLoggingLevel(Log.INFO)
             .build()
 
@@ -95,7 +94,7 @@ class App : Application(), LifecycleObserver, Provider {
                         }
                     }
                 },
-                Context.BIND_AUTO_CREATE
+                BIND_AUTO_CREATE
             )
         }
     }

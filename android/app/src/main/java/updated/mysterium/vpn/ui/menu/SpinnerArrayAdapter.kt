@@ -14,7 +14,7 @@ class SpinnerArrayAdapter(
 
     var selectedPosition = 0
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         return if (position == selectedPosition) {
             TextView(context).apply {
                 visibility = View.GONE

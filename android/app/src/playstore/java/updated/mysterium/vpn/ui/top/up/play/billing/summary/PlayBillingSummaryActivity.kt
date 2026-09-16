@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.top.up.play.billing.summary
 
 import android.util.Log
+import androidx.core.os.BundleCompat
 import network.mysterium.vpn.databinding.PopUpCardPaymentBinding
 import org.koin.android.ext.android.inject
 import updated.mysterium.vpn.common.extensions.TAG
@@ -34,7 +35,9 @@ class PlayBillingSummaryActivity : SummaryActivity() {
     }
 
     override fun getOrderRequestInfo(): PlayBillingOrderRequestInfo? {
-        this.topUpPlayBillingCardItem = intent.extras?.getParcelable(SKU_EXTRA_KEY)
+        this.topUpPlayBillingCardItem = intent.extras?.let {
+            BundleCompat.getParcelable(it, SKU_EXTRA_KEY, TopUpPlayBillingCardItem::class.java)
+        }
         val country =
             intent.extras?.getString(SelectCountryActivity.COUNTRY_EXTRA_KEY) ?: return null
         val state = intent.extras?.getString(SelectCountryActivity.STATE_EXTRA_KEY) ?: ""

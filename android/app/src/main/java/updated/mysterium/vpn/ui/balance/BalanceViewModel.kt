@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.balance
 
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,7 +37,7 @@ class BalanceViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
     private var balanceRequest: GetBalanceRequest? = null
     private var initialBalance: Double? = null
 
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
 
         override fun run() {

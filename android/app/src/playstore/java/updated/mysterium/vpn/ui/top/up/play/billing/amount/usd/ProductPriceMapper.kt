@@ -8,8 +8,6 @@ package updated.mysterium.vpn.ui.top.up.play.billing.amount.usd
  * description skips that product instead of crashing the top-up screen.
  */
 fun parseAmountUsd(description: String): Double? = description
-    .replace("(", "")
-    .replace(")", "")
-    .split(" ")
-    .firstOrNull()
-    ?.toDoubleOrNull()
+    .removeSurrounding("(", ")")
+    .substringBefore(' ')
+    .toDoubleOrNull()

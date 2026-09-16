@@ -2,39 +2,36 @@ package updated.mysterium.vpn.database.preferences
 
 import android.content.Context
 import android.util.Log
+import androidx.core.content.edit
 import updated.mysterium.vpn.common.extensions.TAG
 
 class SharedPreferencesManager(private val context: Context) {
 
     fun setPreferenceValue(key: SharedPreferencesList, value: Int) {
         context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
-            .edit().let {
-                it.putInt(key.prefName, value)
-                it.apply()
+            .edit {
+                putInt(key.prefName, value)
             }
     }
 
     fun setPreferenceValue(key: SharedPreferencesList, value: Long) {
         context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
-            .edit().let {
-                it.putLong(key.prefName, value)
-                it.apply()
+            .edit {
+                putLong(key.prefName, value)
             }
     }
 
     fun setPreferenceValue(key: SharedPreferencesList, value: Boolean) {
         context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
-            .edit().let {
-                it.putBoolean(key.prefName, value)
-                it.apply()
+            .edit {
+                putBoolean(key.prefName, value)
             }
     }
 
     fun setPreferenceValue(key: SharedPreferencesList, value: String) {
         context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
-            .edit().let {
-                it.putString(key.prefName, value)
-                it.apply()
+            .edit {
+                putString(key.prefName, value)
             }
     }
 
@@ -88,8 +85,8 @@ class SharedPreferencesManager(private val context: Context) {
 
     fun removePreferenceValue(key: SharedPreferencesList) {
         context.getSharedPreferences(key.prefName, Context.MODE_PRIVATE)
-            .edit()
-            .remove(key.prefName)
-            .apply()
+            .edit {
+                remove(key.prefName)
+            }
     }
 }

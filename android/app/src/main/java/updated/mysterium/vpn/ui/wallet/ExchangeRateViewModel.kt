@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.wallet
 
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +21,7 @@ class ExchangeRateViewModel(useCaseProvider: UseCaseProvider) : ViewModel() {
         private set
 
     private val balanceUseCase = useCaseProvider.balance()
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
 
         override fun run() {

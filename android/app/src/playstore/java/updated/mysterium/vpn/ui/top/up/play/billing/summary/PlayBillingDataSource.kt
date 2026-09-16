@@ -33,6 +33,7 @@ class PlayBillingDataSource(
     private val defaultScope = CoroutineScope(Dispatchers.Main)
 
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
+    private var consecutiveSetupFailures = 0
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
 
     private val knownInAppSKUs = mutableListOf("1_99_usd", "3_99_usd", "5_99_usd")
@@ -44,7 +45,10 @@ class PlayBillingDataSource(
     val skuDetailsList
         get() = _skuDetailsList
 
-    private val _skuDetailsError = MutableLiveData<Int>()
+    // SingleLiveEvent, not MutableLiveData: this data source is an app-scoped
+    // singleton, so a retained value would replay the last failure to every
+    // future observer and make top-up permanently unreachable.
+    private val _skuDetailsError = SingleLiveEvent<Int>()
     val skuDetailsError
         get() = _skuDetailsError
 
@@ -93,14 +97,35 @@ class PlayBillingDataSource(
         val debugMessage = billingResult.debugMessage
         Log.e(TAG, "onBillingSetupFinished: $responseCode $debugMessage")
         if (responseCode == BillingClient.BillingResponseCode.OK) {
+            consecutiveSetupFailures = 0
             reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
             defaultScope.launch {
                 queryProductDetailsAsync()
                 refreshPurchases()
             }
-        } else {
+            return
+        }
+        consecutiveSetupFailures++
+        // Transient service errors are retried quietly; only a genuine user
+        // billing error, or a transient one that refuses to clear, reaches the UI.
+        if (shouldSurfaceSetupFailure(responseCode, consecutiveSetupFailures)) {
             _skuDetailsError.value = responseCode
-            retryBillingServiceConnectionWithExponentialBackoff()
+        } else {
+            Log.w(
+                TAG,
+                "Transient billing setup failure ($responseCode), " +
+                    "attempt $consecutiveSetupFailures; retrying before alerting the user"
+            )
+        }
+        retryBillingServiceConnectionWithExponentialBackoff()
+    }
+
+    /** Re-runs the product query, reconnecting first if the client dropped. */
+    fun refresh() {
+        if (billingClient.isReady) {
+            defaultScope.launch { queryProductDetailsAsync() }
+        } else {
+            billingClient.startConnection(this)
         }
     }
 
@@ -289,7 +314,7 @@ class PlayBillingDataSource(
                             } else {
                                 if (isConsumable) {
                                     Log.e(
-                                        TAG, "Purchase cannot contain a mixture of consumable" +
+                                        TAG, "Purchase cannot contain a mixture of consumable " +
                                                 "and non-consumable items: " + purchase.products.toString()
                                     )
                                     isConsumable = false

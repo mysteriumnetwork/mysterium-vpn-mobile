@@ -1,6 +1,7 @@
 package updated.mysterium.vpn.ui.onboarding
 
 import android.os.Bundle
+import androidx.core.os.BundleCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,9 @@ class OnboardingItemFragment : Fragment(), OnScreenVisibilityChanged {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getParcelable<OnboardingScreen>(SCREEN_TAG)?.let { configure(it) }
+        arguments?.let {
+            BundleCompat.getParcelable(it, SCREEN_TAG, OnboardingScreen::class.java)
+        }?.let { configure(it) }
         bindsAction()
     }
 

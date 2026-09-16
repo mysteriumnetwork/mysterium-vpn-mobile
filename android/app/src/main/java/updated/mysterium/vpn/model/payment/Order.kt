@@ -39,8 +39,8 @@ data class Order constructor(
 ) {
     val created: Boolean
         get() = status in listOf("new", "pending")
-                && payAmount != null && payAmount.toLong() > 0
-                && !payCurrency.isNullOrEmpty()
+                && payAmount.toLong() > 0
+                && payCurrency.isNotEmpty()
     val paid: Boolean
         get() = status in listOf("confirming", "paid")
     val failed: Boolean
