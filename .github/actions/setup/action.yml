@@ -10,6 +10,7 @@ runs:
         cache: 'gradle'
         cache-dependency-path: |
           android/*.gradle*
+          android/gradle/libs.versions.toml
           android/**/gradle-wrapper.properties
 
     - name: Cache mobile-node AAR
@@ -23,7 +24,7 @@ runs:
     # 2021 sdkmanager that cannot read the current repository schema.
     - uses: android-actions/setup-android@v4
       with:
-        packages: "platform-tools extras;android;m2repository extras;google;m2repository extras;google;google_play_services platforms;android-37.0 build-tools;36.1.0 ndk;28.2.13676358"
+        packages: "platform-tools platforms;android-37.0 build-tools;36.1.0 ndk;28.2.13676358"
 
     - run: sdkmanager --list_installed
       shell: bash
@@ -32,9 +33,6 @@ runs:
       with:
         ruby-version: '2.7'
         bundler-cache: true
-
-    - run: fastlane --version
-      shell: bash
 
     - name: Install Ruby gems
       run: bundle install --frozen
