@@ -16,63 +16,88 @@ import glob
 import os
 import struct
 import sys
-import tempfile
 import zipfile
 
 REQUIRED_ALIGN = 16 * 1024
 PT_LOAD = 1
 
 
-def load_segment_aligns(path):
-    """Return p_align for every PT_LOAD segment, or None if not an ELF file."""
-    with open(path, "rb") as f:
-        head = f.read(64)
-        if len(head) < 64 or head[:4] != b"\x7fELF":
-            return None
-        is64 = head[4] == 2
-        endian = "<" if head[5] == 1 else ">"
-        if is64:
-            ph_off = struct.unpack_from(endian + "Q", head, 0x20)[0]
-            ph_entsize = struct.unpack_from(endian + "H", head, 0x36)[0]
-            ph_num = struct.unpack_from(endian + "H", head, 0x38)[0]
-        else:
-            ph_off = struct.unpack_from(endian + "I", head, 0x1C)[0]
-            ph_entsize = struct.unpack_from(endian + "H", head, 0x2A)[0]
-            ph_num = struct.unpack_from(endian + "H", head, 0x2C)[0]
-        f.seek(ph_off)
-        table = f.read(ph_entsize * ph_num)
+def segment_aligns(stream):
+    """Return p_align of every PT_LOAD segment, or None if not an ELF.
+
+    Reads only the ELF header and the program-header table (a few hundred
+    bytes) straight from the stream, so a library inside an APK never has to
+    be inflated to disk just to be inspected.
+    """
+    head = stream.read(64)
+    if len(head) < 64 or head[:4] != b"\x7fELF":
+        return None
+    is64 = head[4] == 2
+    endian = "<" if head[5] == 1 else ">"
+    if is64:
+        ph_off = struct.unpack_from(endian + "Q", head, 0x20)[0]
+        ph_entsize = struct.unpack_from(endian + "H", head, 0x36)[0]
+        ph_num = struct.unpack_from(endian + "H", head, 0x38)[0]
+    else:
+        ph_off = struct.unpack_from(endian + "I", head, 0x1C)[0]
+        ph_entsize = struct.unpack_from(endian + "H", head, 0x2A)[0]
+        ph_num = struct.unpack_from(endian + "H", head, 0x2C)[0]
+
+    table_end = ph_off + ph_entsize * ph_num
+    buf = head
+    while len(buf) < table_end:
+        chunk = stream.read(table_end - len(buf))
+        if not chunk:
+            return []
+        buf += chunk
 
     aligns = []
     for i in range(ph_num):
-        off = i * ph_entsize
-        if off + ph_entsize > len(table):
-            break
-        if struct.unpack_from(endian + "I", table, off)[0] != PT_LOAD:
+        off = ph_off + i * ph_entsize
+        if struct.unpack_from(endian + "I", buf, off)[0] != PT_LOAD:
             continue
         if is64:
-            aligns.append(struct.unpack_from(endian + "Q", table, off + 0x30)[0])
+            aligns.append(struct.unpack_from(endian + "Q", buf, off + 0x30)[0])
         else:
-            aligns.append(struct.unpack_from(endian + "I", table, off + 0x1C)[0])
+            aligns.append(struct.unpack_from(endian + "I", buf, off + 0x1C)[0])
     return aligns
+
+
+def report(name, aligns, failures):
+    # The weakest segment decides compliance: one under-aligned PT_LOAD is
+    # enough to break loading on a 16 KB page kernel.
+    worst = min(aligns) if aligns else 0
+    if worst < REQUIRED_ALIGN:
+        failures.append(name)
+        print("FAIL  align=0x%x  %s" % (worst, name))
+    else:
+        print("PASS  align=0x%x  %s" % (worst, name))
 
 
 def check_dir(root):
     failures = []
     checked = 0
     for so in sorted(glob.glob(os.path.join(root, "**", "*.so"), recursive=True)):
-        aligns = load_segment_aligns(so)
+        with open(so, "rb") as stream:
+            aligns = segment_aligns(stream)
         if aligns is None:
             continue
         checked += 1
-        # The weakest segment decides compliance: one under-aligned PT_LOAD
-        # is enough to break loading on a 16 KB page kernel.
-        worst = min(aligns) if aligns else 0
-        name = os.path.relpath(so, root)
-        if worst < REQUIRED_ALIGN:
-            failures.append(name)
-            print("FAIL  align=0x%x  %s" % (worst, name))
-        else:
-            print("PASS  align=0x%x  %s" % (worst, name))
+        report(os.path.relpath(so, root), aligns, failures)
+    return failures, checked
+
+
+def check_archive(path):
+    failures = []
+    checked = 0
+    with zipfile.ZipFile(path) as archive:
+        for name in sorted(n for n in archive.namelist() if n.endswith(".so")):
+            with archive.open(name) as stream:
+                aligns = segment_aligns(stream)
+            if aligns is None:
+                continue
+            checked += 1
+            report(name, aligns, failures)
     return failures, checked
 
 
@@ -86,15 +111,9 @@ def main():
         print("ERROR: no such file or directory: %s" % target)
         return 1
 
-    if os.path.isdir(target):
-        failures, checked = check_dir(target)
-    else:
-        with tempfile.TemporaryDirectory() as tmp:
-            with zipfile.ZipFile(target) as z:
-                for name in z.namelist():
-                    if name.endswith(".so"):
-                        z.extract(name, tmp)
-            failures, checked = check_dir(tmp)
+    failures, checked = (
+        check_dir(target) if os.path.isdir(target) else check_archive(target)
+    )
 
     if checked == 0:
         print("ERROR: no shared libraries found in %s; nothing was verified" % target)
