@@ -6,8 +6,8 @@ plugins {
 }
 
 ext {
-    versionCode = 107183
-    versionName = '2.1.15'
+    versionCode = 107184
+    versionName = '2.2.0'
 }
 
 allprojects {
