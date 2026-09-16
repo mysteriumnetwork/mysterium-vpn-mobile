@@ -18,10 +18,12 @@ runs:
         path: android/libs
         key: mobile-node-${{ hashFiles('android/gradle/libs.versions.toml') }}
 
-    - uses: android-actions/setup-android@v3
+    # v4 runs on node24 (v3 is node20, now deprecated on GitHub runners).
+    # cmdline-tools-version is deliberately unpinned: the old 7302050 pin forced a
+    # 2021 sdkmanager that cannot read the current repository schema.
+    - uses: android-actions/setup-android@v4
       with:
-        cmdline-tools-version: 7302050
-        packages: "tools platform-tools extras;android;m2repository extras;google;m2repository extras;google;google_play_services platforms;android-37 build-tools;36.1.0 ndk;28.2.13676358"
+        packages: "platform-tools extras;android;m2repository extras;google;m2repository extras;google;google_play_services platforms;android-37.0 build-tools;36.1.0 ndk;28.2.13676358"
 
     - run: sdkmanager --list_installed
       shell: bash
