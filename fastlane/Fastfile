@@ -52,7 +52,7 @@ platform :android do
       })
     # Gate the upload: Play rejects bundles whose native libraries do not
     # support 16 KB memory pages.
-    sh("cd .. && util_scripts/verify-16kb-alignment.py android/app/build/outputs/bundle/playstoreRelease/app-playstore-release.aab")
+    sh('cd "$(git rev-parse --show-toplevel)" && util_scripts/verify-16kb-alignment.py android/app/build/outputs/bundle/playstoreRelease/app-playstore-release.aab')
     upload_to_play_store(
       track: "internal",
       json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]

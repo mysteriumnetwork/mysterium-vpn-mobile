@@ -106,9 +106,11 @@ class PlayBillingDataSource(
             return
         }
         consecutiveSetupFailures++
-        // Transient service errors are retried quietly; only a genuine user
-        // billing error, or a transient one that refuses to clear, reaches the UI.
         if (shouldSurfaceSetupFailure(responseCode, consecutiveSetupFailures)) {
+            // Once surfaced, stop reconnecting on our own: Google's guidance for a
+            // user billing error is manual retry only, and this data source is
+            // app-scoped, so an automatic loop would outlive the screen. The user
+            // now drives recovery through refresh().
             _skuDetailsError.value = responseCode
         } else {
             Log.w(
@@ -116,8 +118,8 @@ class PlayBillingDataSource(
                 "Transient billing setup failure ($responseCode), " +
                     "attempt $consecutiveSetupFailures; retrying before alerting the user"
             )
+            retryBillingServiceConnectionWithExponentialBackoff()
         }
-        retryBillingServiceConnectionWithExponentialBackoff()
     }
 
     /** Re-runs the product query, reconnecting first if the client dropped. */
