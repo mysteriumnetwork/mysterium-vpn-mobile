@@ -1,7 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.devtools.ksp'
-apply plugin: 'kotlin-parcelize'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
+}
 
 /**
  * Get the version code from command line param
@@ -33,15 +35,18 @@ def getVersionName = { ->
 
 
 android {
-    compileSdk rootProject.ext.compileSdkVersion
-    ndkVersion rootProject.ext.ndkVersion
+    compileSdk libs.versions.compileSdk.get().toInteger()
+    ndkVersion libs.versions.ndk.get()
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     testOptions {
         unitTests.includeAndroidResources = true
+        // android.util.Log is not mocked in unit tests; return defaults rather
+        // than throwing so guard code paths can be exercised.
+        unitTests.returnDefaultValues = true
     }
 
 
@@ -53,18 +58,16 @@ android {
 
     defaultConfig {
         applicationId "network.mysterium.vpn"
-        minSdk rootProject.ext.minSdkVersion
-        targetSdk rootProject.ext.targetSdkVersion
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode getVersionCode()
         versionName getVersionName()
-        multiDexEnabled true
         ndk {
             debugSymbolLevel 'FULL'
             abiFilters "arm64-v8a", "armeabi-v7a", "armeabi", "x86", "x86_64"
         }
 
-        buildConfigField "String", "BUGFENDER_KEY", "\"76DAzZtiLE5AYx7uvIWD8I16EqgReOHc\""
-        buildConfigField "String", "NODE_VERSION", "\"${rootProject.ext.nodeVersion}\""
+        buildConfigField "String", "NODE_VERSION", "\"${libs.versions.node.get()}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -113,90 +116,86 @@ android {
 dependencies {
 
     //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation libs.kotlin.reflect
 
     //Testing
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.junit
 
     //AndroidX
-    implementation "androidx.fragment:fragment-ktx:1.3.1"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
-    implementation "androidx.core:core-ktx:1.15.0"
-    implementation "androidx.multidex:multidex:2.0.1"
-    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
-    implementation "androidx.appcompat:appcompat:1.7.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.viewpager2
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
 
     //Google
-    playstoreImplementation "com.google.android.play:review-ktx:2.0.1"
-    implementation "com.google.android.material:material:1.12.0"
-    playstoreImplementation "com.android.billingclient:billing-ktx:9.1.0"
+    playstoreImplementation libs.play.review.ktx
+    implementation libs.material
+    playstoreImplementation libs.billing.ktx
 
     //Koin
-    implementation "io.insert-koin:koin-core:3.1.6"
-    implementation "io.insert-koin:koin-android:3.1.6"
+    implementation libs.koin.core
+    implementation libs.koin.android
 
     //Coroutines
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    implementation 'androidx.lifecycle:lifecycle-process:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    api libs.coroutines.core
+    api libs.coroutines.android
+    implementation libs.androidx.lifecycle.process
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.livedata.ktx
+    implementation libs.androidx.lifecycle.runtime.ktx
 
     //Animation
-    implementation "com.airbnb.android:lottie:3.6.1"
+    implementation libs.lottie
 
     //Glide
-    implementation "com.github.bumptech.glide:glide:4.12.0"
-
-    //Intercom
-    implementation "io.intercom.android:intercom-sdk-base:15.1.0"
+    implementation libs.glide
 
     //Room
-    implementation "androidx.room:room-ktx:2.7.2"
-    implementation "androidx.room:room-runtime:2.7.2"
-    ksp "androidx.room:room-compiler:2.7.2"
+    implementation libs.androidx.room.ktx
+    implementation libs.androidx.room.runtime
+    ksp libs.androidx.room.compiler
 
     //Line chart
-    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
+    implementation libs.mpandroidchart
 
     //Rounded image
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation libs.roundedimageview
 
     //Moshi
-    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
+    implementation libs.moshi.kotlin
 
     //QrCode
-    cryptoImplementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    cryptoImplementation libs.zxing.android.embedded
 
     //Markdown
-    implementation "io.noties.markwon:core:4.6.2"
+    implementation libs.markwon.core
 
     //WorkManager
-    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation libs.androidx.work.runtime.ktx
 
     //Fast scroll
-    implementation "me.zhanghai.android.fastscroll:library:1.2.0"
+    implementation libs.fastscroll
 
     //Mysterium
-    // Version comes from rootProject.ext.nodeVersion, which also drives the
-    // NODE_VERSION buildConfigField and the downloadMobileNode task.
-    implementation "network.mysterium:terms:0.0.50"
-    implementation "network.mysterium:mobile-node:${rootProject.ext.nodeVersion}"
+    // Version comes from the `node` entry in libs.versions.toml, which also
+    // drives the NODE_VERSION buildConfigField and the downloadMobileNode task.
+    implementation libs.mysterium.terms
+    implementation libs.mysterium.mobile.node
 }
 
-repositories {
-    mavenCentral()
-}
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        // Adopt the upcoming default: annotations on constructor params also
+        // apply to the generated property. Silences ~100 migration warnings.
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
     }
 }
 

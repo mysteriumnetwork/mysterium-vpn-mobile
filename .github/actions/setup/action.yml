@@ -12,6 +12,12 @@ runs:
           android/*.gradle*
           android/**/gradle-wrapper.properties
 
+    - name: Cache mobile-node AAR
+      uses: actions/cache@v4
+      with:
+        path: android/libs
+        key: mobile-node-${{ hashFiles('android/gradle/libs.versions.toml') }}
+
     - uses: android-actions/setup-android@v3
       with:
         cmdline-tools-version: 7302050

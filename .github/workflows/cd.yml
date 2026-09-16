@@ -32,19 +32,7 @@ jobs:
       - uses: maierj/fastlane-action@v3.1.0
         with:
           lane: buildDebug
-      - name: Verify 16 KB page size support
-        shell: bash
-        run: |
-          shopt -s nullglob
-          artifacts=(android/app/build/outputs/apk/*/*/*.apk android/app/build/outputs/bundle/*/*.aab)
-          if [ ${#artifacts[@]} -eq 0 ]; then
-            echo "No build artifacts found to verify"
-            exit 1
-          fi
-          for artifact in "${artifacts[@]}"; do
-            echo "== $artifact =="
-            util_scripts/verify-16kb-alignment.py "$artifact"
-          done
+      - uses: ./.github/actions/verify-16kb
 
   test:
     name: Run Tests
@@ -75,19 +63,7 @@ jobs:
       - uses: maierj/fastlane-action@v3.1.0
         with:
           lane: build
-      - name: Verify 16 KB page size support
-        shell: bash
-        run: |
-          shopt -s nullglob
-          artifacts=(android/app/build/outputs/apk/*/*/*.apk android/app/build/outputs/bundle/*/*.aab)
-          if [ ${#artifacts[@]} -eq 0 ]; then
-            echo "No build artifacts found to verify"
-            exit 1
-          fi
-          for artifact in "${artifacts[@]}"; do
-            echo "== $artifact =="
-            util_scripts/verify-16kb-alignment.py "$artifact"
-          done
+      - uses: ./.github/actions/verify-16kb
       - name: Rename APK to myst.apk
         run: mv android/app/build/outputs/apk/crypto/release/app-crypto-release.apk android/app/build/outputs/apk/crypto/release/myst.apk
       - name: Publish assets
