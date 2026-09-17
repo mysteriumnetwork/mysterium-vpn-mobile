@@ -1,0 +1,6 @@
+
+# mobile-node AAR is downloaded by the `downloadMobileNode` Gradle task
+/libs/
+
+# Kotlin 2.x project-local build data
+/.kotlin/

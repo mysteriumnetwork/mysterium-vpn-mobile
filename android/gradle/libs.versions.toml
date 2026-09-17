@@ -1,0 +1,107 @@
+[versions]
+# SDK / toolchain
+compileSdk = "37"
+minSdk = "24"
+targetSdk = "37"
+ndk = "28.2.13676358"
+agp = "9.4.0"
+# Kotlin is held at 2.3.x because KSP (required by Room) has no 2.4-compatible
+# release yet: symbol-processing 2.3.12 is built against Kotlin 2.3.20.
+kotlin = "2.3.21"
+ksp = "2.3.12"
+
+# Mysterium node. Drives the dependency coordinate, the NODE_VERSION
+# buildConfigField, and the downloadMobileNode task's GitHub release URL.
+node = "1.39.5"
+nodeTerms = "0.0.50"
+
+# AndroidX
+androidxCore = "1.19.0"
+appcompat = "1.8.0"
+constraintlayout = "2.2.2"
+fragment = "1.9.0"
+lifecycle = "2.11.0"
+navigation = "2.10.1"
+recyclerview = "1.4.0"
+room = "2.8.5"
+viewpager2 = "1.1.0"
+work = "2.11.2"
+
+# Google
+billing = "9.1.0"
+material = "1.14.0"
+playReview = "2.0.1"
+
+# Third party
+coroutines = "1.11.0"
+fastscroll = "1.3.0"
+glide = "5.0.9"
+junit = "4.13.2"
+koin = "4.2.2"
+lottie = "6.7.1"
+markwon = "4.6.2"
+moshi = "1.15.2"
+mpandroidchart = "v3.1.0"
+retrofit = "3.0.0"
+roundedimageview = "2.3.0"
+zxing = "4.3.0"
+
+[libraries]
+# Kotlin
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
+# AndroidX
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+
+# Google
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "playReview" }
+
+# Third party
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+fastscroll = { module = "me.zhanghai.android.fastscroll:library", version.ref = "fastscroll" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+markwon-core = { module = "io.noties.markwon:core", version.ref = "markwon" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+roundedimageview = { module = "com.makeramen:roundedimageview", version.ref = "roundedimageview" }
+zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+
+# Mysterium
+mysterium-mobile-node = { module = "network.mysterium:mobile-node", version.ref = "node" }
+mysterium-terms = { module = "network.mysterium:terms", version.ref = "nodeTerms" }
+
+# Testing
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

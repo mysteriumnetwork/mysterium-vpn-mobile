@@ -9,7 +9,7 @@ object CountriesUtil {
         val countries = mutableListOf<CountryISO>()
         val isoCountries = Locale.getISOCountries()
         for (country in isoCountries) {
-            val locale = Locale("en", country)
+            val locale = Locale.Builder().setLanguage("en").setRegion(country).build()
             val code = locale.country
             val name =
                 locale.getDisplayCountry(Locale.ENGLISH) // Replace for current selected language
@@ -259,7 +259,7 @@ object CountriesUtil {
         "ZW",
         "AX"
     ).map { code ->
-        val country = Locale("", code).displayCountry
+        val country = Locale.Builder().setRegion(code).build().displayCountry
         CountryISO(
             fullName = country,
             code = code

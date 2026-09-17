@@ -23,6 +23,8 @@ import android.content.IntentFilter
 import android.net.VpnService
 import android.os.Binder
 import android.os.Bundle
+import androidx.core.app.ServiceCompat
+import androidx.core.content.ContextCompat
 import android.os.IBinder
 import android.util.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -76,7 +78,30 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     private var vpnTimeSpent: Float? = null // time spent for last session in minutes
     private var secondsBetweenAnalyticEvent = 0
 
+    private val pushReceiver = PushReceiver()
+    private var pushReceiverRegistered = false
+
+    private fun ensurePushReceiverRegistered() {
+        if (pushReceiverRegistered) {
+            return
+        }
+        ContextCompat.registerReceiver(
+            this,
+            pushReceiver,
+            IntentFilter().apply {
+                addAction(PushReceiver.PUSHY_CONNECTION_ACTION)
+                addAction(PushReceiver.PUSHY_BALANCE_ACTION)
+            },
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        pushReceiverRegistered = true
+    }
+
     override fun onDestroy() {
+        if (pushReceiverRegistered) {
+            unregisterReceiver(pushReceiver)
+            pushReceiverRegistered = false
+        }
         stopMobileNode()
         super.onDestroy()
     }
@@ -111,7 +136,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         } catch (e: Exception) {
             Log.i(TAG, "Got exception, safe to ignore: " + e.message)
         } finally {
-            stopForeground(true)
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         }
     }
 
@@ -173,7 +198,7 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
     }
 
     private fun makeConnectionPushNotification() {
-        registerReceiver(PushReceiver(), IntentFilter(PushReceiver.PUSHY_CONNECTION_ACTION))
+        ensurePushReceiverRegistered()
         val extra = Bundle().apply {
             putString(
                 PushReceiver.NOTIFICATION_TITLE,
@@ -184,11 +209,16 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 getString(R.string.push_notification_connection_message)
             )
         }
-        sendBroadcast(Intent(PushReceiver.PUSHY_CONNECTION_ACTION).putExtras(extra))
+        // Keep the broadcast within this app: the receiver is not exported.
+        sendBroadcast(
+            Intent(PushReceiver.PUSHY_CONNECTION_ACTION)
+                .setPackage(packageName)
+                .putExtras(extra)
+        )
     }
 
     private fun makeBalancePushNotification() {
-        registerReceiver(PushReceiver(), IntentFilter(PushReceiver.PUSHY_BALANCE_ACTION))
+        ensurePushReceiverRegistered()
         val extra = Bundle().apply {
             putString(
                 PushReceiver.NOTIFICATION_TITLE,
@@ -199,7 +229,12 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
                 getString(R.string.push_notification_balance_message)
             )
         }
-        sendBroadcast(Intent(PushReceiver.PUSHY_BALANCE_ACTION).putExtras(extra))
+        // Keep the broadcast within this app: the receiver is not exported.
+        sendBroadcast(
+            Intent(PushReceiver.PUSHY_BALANCE_ACTION)
+                .setPackage(packageName)
+                .putExtras(extra)
+        )
     }
 
     private fun initStatisticListener() {
@@ -316,7 +351,10 @@ class MysteriumAndroidCoreService : VpnService(), KoinComponent {
         }
 
         override fun stopForeground() {
-            stopForeground(true)
+            ServiceCompat.stopForeground(
+                this@MysteriumAndroidCoreService,
+                ServiceCompat.STOP_FOREGROUND_REMOVE
+            )
         }
     }
 }

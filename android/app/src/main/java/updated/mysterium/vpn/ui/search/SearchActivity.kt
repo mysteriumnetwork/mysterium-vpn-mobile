@@ -3,6 +3,7 @@ package updated.mysterium.vpn.ui.search
 import android.os.Bundle
 import android.text.Html
 import android.view.View
+import androidx.core.view.isGone
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import network.mysterium.vpn.R
@@ -58,7 +59,7 @@ class SearchActivity : BaseActivity() {
 
     private fun subscribeViewModel() {
         viewModel.searchResult.observe(this) {
-            if (binding.loaderAnimation.visibility == View.GONE) {
+            if (binding.loaderAnimation.isGone) {
                 if (it.isNotEmpty()) {
                     binding.searchLogo.visibility = View.INVISIBLE
                     binding.searchHint.visibility = View.INVISIBLE

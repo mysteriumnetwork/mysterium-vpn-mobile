@@ -14,6 +14,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.net.toUri
 import network.mysterium.vpn.R
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -131,7 +132,7 @@ class PushReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun getMarketingPushResultIntent(context: Context, url: String?) = when {
         url != null -> {
-            Intent(Intent.ACTION_VIEW, Uri.parse(url.guaranteeCorrectLink()))
+            Intent(Intent.ACTION_VIEW, url.guaranteeCorrectLink().toUri())
         }
         !loginUseCase.isAlreadyLogin() -> {
             Intent(context, OnboardingActivity::class.java)

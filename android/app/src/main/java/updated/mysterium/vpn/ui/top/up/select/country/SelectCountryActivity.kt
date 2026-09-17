@@ -2,6 +2,7 @@ package updated.mysterium.vpn.ui.top.up.select.country
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.os.BundleCompat
 import android.util.Log
 import android.view.View
 import network.mysterium.vpn.BuildConfig
@@ -214,7 +215,9 @@ class SelectCountryActivity : BaseActivity() {
     }
 
     private fun navigateToPlayBillingSummary() {
-        intent?.extras?.getParcelable<AmountUsdCardItem>("SKU_EXTRA_KEY")?.let { sku ->
+        intent?.extras?.let {
+            BundleCompat.getParcelable(it, "SKU_EXTRA_KEY", AmountUsdCardItem::class.java)
+        }?.let { sku ->
             val intent = Intent(
                 this,
                 Class.forName("updated.mysterium.vpn.ui.top.up.play.billing.summary.PlayBillingSummaryActivity")

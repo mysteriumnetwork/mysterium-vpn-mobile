@@ -19,7 +19,6 @@ import updated.mysterium.vpn.model.payment.OrderRequestInfo
 import updated.mysterium.vpn.notification.PaymentStatusService
 import updated.mysterium.vpn.ui.base.BaseActivity
 import updated.mysterium.vpn.ui.home.selection.HomeSelectionActivity
-import updated.mysterium.vpn.ui.pop.up.PopUpNoAmount
 
 abstract class SummaryActivity : BaseActivity() {
 
@@ -111,17 +110,6 @@ abstract class SummaryActivity : BaseActivity() {
         binding.paymentBalanceLimitLayout.closeBannerButton.setOnClickListener {
             binding.paymentBalanceLimitLayout.root.visibility = View.GONE
         }
-    }
-
-    fun showNoAmountPopUp(onTryAgainClick: () -> Unit) {
-        val popUpNoAmount = PopUpNoAmount(layoutInflater)
-        val dialogNoAmount = createPopUp(popUpNoAmount.bindingPopUp.root, true)
-        popUpNoAmount.apply {
-            this.dialog = dialogNoAmount
-            this.onTryAgainAction = onTryAgainClick
-            setUp()
-        }
-        dialogNoAmount.show()
     }
 
     fun setButtonAvailability(isAvailable: Boolean) {

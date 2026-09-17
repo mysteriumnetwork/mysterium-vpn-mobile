@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -104,7 +105,7 @@ class HomeSelectionActivity : BaseActivity() {
         }
         viewModel.showNewAppUrl.observe(this) { link ->
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(link)
+            i.data = link.toUri()
             startActivity(i)
         }
         viewModel.isNewAppPopUpShow.observe(this) { isShow ->

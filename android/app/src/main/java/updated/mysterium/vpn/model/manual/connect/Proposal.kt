@@ -3,6 +3,7 @@ package updated.mysterium.vpn.model.manual.connect
 import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
 import updated.mysterium.vpn.model.proposal.parameters.ProposalViewItem
 import updated.mysterium.vpn.common.location.Countries
 import updated.mysterium.vpn.database.entity.NodeEntity
@@ -66,6 +67,9 @@ data class Proposal(
             ?.name ?: "Unknown"
     )
 
+    @IgnoredOnParcel
     var priceLevel = PriceLevel.MEDIUM
+
+    @IgnoredOnParcel
     var isAvailable = true
 }

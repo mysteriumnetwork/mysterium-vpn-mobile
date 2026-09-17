@@ -1,6 +1,6 @@
 package updated.mysterium.vpn.di
 
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.ui.top.up.amount.usd.TopUpAmountUsdViewModel
 import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryViewModel

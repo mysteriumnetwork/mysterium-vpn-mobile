@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Locale
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ItemSpendingBinding
 import updated.mysterium.vpn.common.adapters.ContentListAdapter
@@ -59,7 +61,7 @@ class SpendingsAdapter : ContentListAdapter<Spending, SpendingsAdapter.SpendingV
                 ?.name
                 ?: UNKNOWN
             binding.durationTextView.text = DateUtil.convertToDateType(spending.duration * 1000)
-            binding.mystSpentTextView.text = String.format("%.3f", mystSpent)
+            binding.mystSpentTextView.text = String.format(Locale.getDefault(), "%.3f", mystSpent)
             binding.qualityTextView.text = spending.quality
             binding.sizeTextView.text = dataReceivedText
             binding.connectedTextView.text = itemView.context.getString(
@@ -70,12 +72,12 @@ class SpendingsAdapter : ContentListAdapter<Spending, SpendingsAdapter.SpendingV
                 onItemClicked()
             }
             exchangeRate?.let {
-                binding.usdSpentTextView.text = String.format("%.3f", (mystSpent * it))
+                binding.usdSpentTextView.text = String.format(Locale.getDefault(), "%.3f", (mystSpent * it))
             }
         }
 
         private fun onItemClicked() {
-            if (binding.divider.visibility == View.VISIBLE) {
+            if (binding.divider.isVisible) {
                 showShortItem()
             } else {
                 showFullItem()

@@ -10,12 +10,21 @@ runs:
         cache: 'gradle'
         cache-dependency-path: |
           android/*.gradle*
+          android/gradle/libs.versions.toml
           android/**/gradle-wrapper.properties
 
-    - uses: android-actions/setup-android@v3
+    - name: Cache mobile-node AAR
+      uses: actions/cache@v4
       with:
-        cmdline-tools-version: 7302050
-        packages: "tools platform-tools extras;android;m2repository extras;google;m2repository extras;google;google_play_services platforms;android-29 build-tools;30.0.3 ndk;21.4.7075529"
+        path: android/libs
+        key: mobile-node-${{ hashFiles('android/gradle/libs.versions.toml') }}
+
+    # v4 runs on node24 (v3 is node20, now deprecated on GitHub runners).
+    # cmdline-tools-version is deliberately unpinned: the old 7302050 pin forced a
+    # 2021 sdkmanager that cannot read the current repository schema.
+    - uses: android-actions/setup-android@v4
+      with:
+        packages: "platform-tools platforms;android-37.0 build-tools;36.1.0 ndk;28.2.13676358"
 
     - run: sdkmanager --list_installed
       shell: bash
@@ -24,9 +33,6 @@ runs:
       with:
         ruby-version: '2.7'
         bundler-cache: true
-
-    - run: fastlane --version
-      shell: bash
 
     - name: Install Ruby gems
       run: bundle install --frozen

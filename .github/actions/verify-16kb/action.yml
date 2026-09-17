@@ -1,0 +1,19 @@
+name: Verify 16 KB page size support
+description: >
+  Fails the job if any native library in the built APKs or bundles is not
+  aligned for 16 KB memory pages, which Google Play requires.
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        shopt -s nullglob
+        artifacts=(android/app/build/outputs/apk/*/*/*.apk android/app/build/outputs/bundle/*/*.aab)
+        if [ ${#artifacts[@]} -eq 0 ]; then
+          echo "No build artifacts found to verify"
+          exit 1
+        fi
+        for artifact in "${artifacts[@]}"; do
+          echo "== $artifact =="
+          util_scripts/verify-16kb-alignment.py "$artifact"
+        done

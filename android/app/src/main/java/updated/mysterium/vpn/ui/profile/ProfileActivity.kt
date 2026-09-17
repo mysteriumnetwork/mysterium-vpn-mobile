@@ -134,7 +134,7 @@ class ProfileActivity : BaseActivity() {
 
     private fun showDownloadKeyPopUp() {
         val popUpDownloadKey = PopUpDownloadKey(layoutInflater)
-        val dialog = createPopUp(popUpDownloadKey.bindingPopUp.root, true)
+        val dialog = createPopUp(popUpDownloadKey.bindingPopUp.root, true, dismissOnPause = false)
         popUpDownloadKey.apply {
             setDialog(dialog)
             downloadAction {

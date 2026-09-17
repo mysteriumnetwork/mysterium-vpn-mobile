@@ -32,6 +32,7 @@ jobs:
       - uses: maierj/fastlane-action@v3.1.0
         with:
           lane: buildDebug
+      - uses: ./.github/actions/verify-16kb
 
   test:
     name: Run Tests
@@ -62,6 +63,7 @@ jobs:
       - uses: maierj/fastlane-action@v3.1.0
         with:
           lane: build
+      - uses: ./.github/actions/verify-16kb
       - name: Rename APK to myst.apk
         run: mv android/app/build/outputs/apk/crypto/release/app-crypto-release.apk android/app/build/outputs/apk/crypto/release/myst.apk
       - name: Publish assets

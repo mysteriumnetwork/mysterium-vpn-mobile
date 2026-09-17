@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isInvisible
 import network.mysterium.vpn.R
 import network.mysterium.vpn.databinding.ActivitySettingsBinding
 import network.mysterium.vpn.databinding.ViewItemNatCompatibilityDescriptionBinding
@@ -174,7 +175,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun changeCountryListVisibility() {
-        if (binding.residentCountryList.visibility == View.INVISIBLE) {
+        if (binding.residentCountryList.isInvisible) {
             calculateSpinnerSize()
             binding.residentCountryList.visibility = View.VISIBLE
         } else {

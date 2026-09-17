@@ -6,7 +6,7 @@ import android.content.Context.NOTIFICATION_SERVICE
 import androidx.room.Room
 import androidx.work.WorkManager
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import updated.mysterium.vpn.analytics.AnalyticWrapper
 import updated.mysterium.vpn.analytics.mysterium.MysteriumAnalytic

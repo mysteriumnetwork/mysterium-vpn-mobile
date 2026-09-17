@@ -6,10 +6,6 @@ abstract class ContentListAdapter<T, V : RecyclerView.ViewHolder> : RecyclerView
 
     protected val items = mutableListOf<T>()
 
-    fun getItem(predicate: (T) -> Boolean): T? {
-        return items.firstOrNull(predicate)
-    }
-
     fun contains(predicate: (T) -> Boolean): Boolean {
         return items.indexOfFirst(predicate) >= 0
     }
@@ -27,39 +23,10 @@ abstract class ContentListAdapter<T, V : RecyclerView.ViewHolder> : RecyclerView
         notifyDataSetChanged()
     }
 
-    fun addNew(newItem: T) {
-        if (items.none { it == newItem }) {
-            items.add(newItem)
-            notifyDataSetChanged()
-        }
-    }
-
     fun addAll(items: List<T>) {
         val position = this.items.size
         this.items.addAll(items)
         notifyItemRangeInserted(position, items.size)
-    }
-
-    fun remove(item: T) {
-        val index = items.indexOf(item)
-        if (index >= 0) {
-            removeAt(index)
-        }
-    }
-
-    fun remove(predicate: (T) -> Boolean) {
-        val index = items.indexOfFirst(predicate)
-        if (index >= 0) {
-            removeAt(index)
-        }
-    }
-
-    fun update(item: T, predicate: (T) -> Boolean) {
-        val index = items.indexOfFirst(predicate)
-        if (index >= 0) {
-            items[index] = item
-            notifyItemChanged(index)
-        }
     }
 
     fun replaceAll(items: List<T>) {
@@ -73,11 +40,6 @@ abstract class ContentListAdapter<T, V : RecyclerView.ViewHolder> : RecyclerView
     fun clear() {
         this.items.clear()
         notifyDataSetChanged()
-    }
-
-    private fun removeAt(index: Int) {
-        items.removeAt(index)
-        notifyItemRemoved(index)
     }
 
     override fun getItemCount(): Int {

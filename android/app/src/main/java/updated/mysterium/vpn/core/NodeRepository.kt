@@ -67,7 +67,9 @@ class NodeRepository(var deferredNode: DeferredNode) {
     // Register connection status callback.
     suspend fun registerConnectionStatusChangeCallback(cb: (status: String) -> Unit) {
         withContext(Dispatchers.IO) {
-            deferredNode.await().registerConnectionStatusChangeCallback { status -> cb(status) }
+            deferredNode.await().registerConnectionStatusChangeCallback { status ->
+                guardNativeCallback("registerConnectionStatusChangeCallback") { cb(status) }
+            }
         }
     }
 
@@ -76,7 +78,9 @@ class NodeRepository(var deferredNode: DeferredNode) {
         withContext(Dispatchers.IO) {
             deferredNode.await()
                 .registerStatisticsChangeCallback { duration, bytesReceived, bytesSent, tokensSpent ->
-                    cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
+                    guardNativeCallback("registerStatisticsChangeCallback") {
+                        cb(Statistics(duration, bytesReceived, bytesSent, tokensSpent))
+                    }
                 }
         }
     }
@@ -85,14 +89,16 @@ class NodeRepository(var deferredNode: DeferredNode) {
     suspend fun registerBalanceChangeCallback(cb: (balance: Double) -> Unit) {
         withContext(Dispatchers.IO) {
             deferredNode.await().registerBalanceChangeCallback { _, balance ->
-                cb(balance)
+                guardNativeCallback("registerBalanceChangeCallback") { cb(balance) }
             }
         }
     }
 
     suspend fun registerOrderUpdatedCallback(cb: (payload: OrderUpdatedCallbackPayload) -> Unit) {
         withContext(Dispatchers.IO) {
-            deferredNode.await().registerOrderUpdatedCallback(cb)
+            deferredNode.await().registerOrderUpdatedCallback { payload ->
+                guardNativeCallback("registerOrderUpdatedCallback") { cb(payload) }
+            }
         }
     }
 

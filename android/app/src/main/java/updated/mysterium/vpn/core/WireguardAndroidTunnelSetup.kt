@@ -25,32 +25,33 @@ class WireguardAndroidTunnelSetup(private val vpnService: VpnService) : Wireguar
 
     var tunBuilder: VpnService.Builder? = null
 
-    override fun setBlocking(blocking: Boolean) {
+    override fun setBlocking(blocking: Boolean) = guardNativeCallback("setBlocking") {
         tunBuilder?.setBlocking(blocking)
     }
 
-    override fun newTunnel() {
+    override fun newTunnel() = guardNativeCallback("newTunnel") {
         tunBuilder = vpnService.Builder()
     }
 
-    override fun addRoute(route: String, prefixLenth: Long) {
+    override fun addRoute(route: String, prefixLenth: Long) = guardNativeCallback("addRoute") {
         tunBuilder?.addRoute(route, prefixLenth.toInt())
     }
 
-    override fun addTunnelAddress(ip: String, prefixLength: Long) {
-        tunBuilder?.addAddress(ip, prefixLength.toInt())
-    }
+    override fun addTunnelAddress(ip: String, prefixLength: Long) =
+        guardNativeCallback("addTunnelAddress") {
+            tunBuilder?.addAddress(ip, prefixLength.toInt())
+        }
 
     override fun protect(socket: Long) {
         val protected = vpnService.protect(socket.toInt())
         Log.i("[Wg tun setup]", "Protecting: ${socket.toInt()}  Success: $protected")
     }
 
-    override fun setMTU(mtu: Long) {
+    override fun setMTU(mtu: Long) = guardNativeCallback("setMTU") {
         tunBuilder?.setMtu(mtu.toInt())
     }
 
-    override fun addDNS(ip: String) {
+    override fun addDNS(ip: String) = guardNativeCallback("addDNS") {
         tunBuilder?.addDnsServer(ip)
     }
 
@@ -59,7 +60,7 @@ class WireguardAndroidTunnelSetup(private val vpnService: VpnService) : Wireguar
         return tunBuilder?.establish()?.detachFd()?.toLong()!!
     }
 
-    override fun setSessionName(session: String) {
+    override fun setSessionName(session: String) = guardNativeCallback("setSessionName") {
         tunBuilder?.setSession(session)
     }
 }
