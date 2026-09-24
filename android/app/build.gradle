@@ -81,7 +81,12 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            // R8 shrinking + obfuscation. Play's DEX optimization report flags
+            // builds under 25% obfuscated; with this off the app sat at 1%.
+            // shrinkResources is left at its default of false: it does not
+            // affect the DEX categories Play scores, and a wrongly dropped
+            // resource is a runtime crash, so it wants its own QA pass.
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         debug {
