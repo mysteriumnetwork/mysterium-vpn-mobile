@@ -12,7 +12,7 @@ ksp = "2.3.12"
 
 # Mysterium node. Drives the dependency coordinate, the NODE_VERSION
 # buildConfigField, and the downloadMobileNode task's GitHub release URL.
-node = "1.39.5"
+node = "1.39.7"
 nodeTerms = "0.0.50"
 
 # AndroidX
