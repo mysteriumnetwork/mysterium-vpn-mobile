@@ -10,11 +10,12 @@ import com.android.billingclient.api.BillingClient.BillingResponseCode
 internal const val MAX_TRANSIENT_SETUP_ATTEMPTS = 3
 
 /**
- * Setup failures that Google classifies as transient service problems, usually a
- * network issue between the device and Play. The documented handling is to retry
- * with backoff, not to tell the user billing is unavailable.
+ * Failures Google classifies as transient service problems, usually a network
+ * issue between the device and Play. The documented handling is to retry, not to
+ * tell the user billing is unavailable. Shared by the setup and query policies,
+ * which differ only in what spends the retry budget.
  */
-private val transientSetupFailures = setOf(
+internal val transientBillingFailures = setOf(
     BillingResponseCode.SERVICE_UNAVAILABLE,
     BillingResponseCode.SERVICE_DISCONNECTED,
     BillingResponseCode.NETWORK_ERROR
@@ -37,7 +38,7 @@ private val transientSetupFailures = setOf(
  * @see <a href="https://developer.android.com/google/play/billing/errors">Handle BillingResult response codes</a>
  */
 internal fun shouldSurfaceSetupFailure(responseCode: Int, consecutiveFailures: Int): Boolean =
-    if (responseCode in transientSetupFailures) {
+    if (responseCode in transientBillingFailures) {
         consecutiveFailures >= MAX_TRANSIENT_SETUP_ATTEMPTS
     } else {
         true

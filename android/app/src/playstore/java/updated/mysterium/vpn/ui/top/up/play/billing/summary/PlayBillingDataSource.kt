@@ -34,6 +34,7 @@ class PlayBillingDataSource(
 
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
     private var consecutiveSetupFailures = 0
+    private var consecutiveQueryFailures = 0
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
 
     private val knownInAppSKUs = mutableListOf("1_99_usd", "3_99_usd", "5_99_usd")
@@ -124,10 +125,17 @@ class PlayBillingDataSource(
 
     /** Re-runs the product query, reconnecting first if the client dropped. */
     fun refresh() {
-        if (billingClient.isReady) {
-            defaultScope.launch { queryProductDetailsAsync() }
-        } else {
-            billingClient.startConnection(this)
+        // A user-driven retry earns a fresh transient-failure budget. Without
+        // this the counter stays spent after the first surfaced failure and
+        // every later blip goes straight to the unavailable dialog.
+        consecutiveSetupFailures = 0
+        when (refreshActionFor(billingClient.connectionState)) {
+            BillingRefreshAction.QUERY_PRODUCTS ->
+                defaultScope.launch { queryProductDetailsAsync() }
+            // onBillingSetupFinished queries once the pending setup lands.
+            BillingRefreshAction.AWAIT_PENDING_SETUP -> Unit
+            BillingRefreshAction.START_CONNECTION ->
+                billingClient.startConnection(this)
         }
     }
 
@@ -224,11 +232,27 @@ class PlayBillingDataSource(
                 .setProductList(productList)
                 .build()
         )
+        val responseCode = productDetailsResult.billingResult.responseCode
         onSkuDetailsResponse(
             productDetailsResult.billingResult,
             productDetailsResult.productDetailsList
         )
-        _skuDetailsList.postValue(productDetailsResult.productDetailsList)
+        if (responseCode == BillingClient.BillingResponseCode.OK) {
+            consecutiveQueryFailures = 0
+            _skuDetailsList.postValue(productDetailsResult.productDetailsList)
+            return
+        }
+        // A failed query returns an empty list whatever the gateway actually
+        // sells. Posting it renders as "no top-up amounts for this gateway",
+        // which hides the billing error behind a Play Console problem that
+        // isn't there.
+        consecutiveQueryFailures++
+        if (shouldSurfaceQueryFailure(responseCode, consecutiveQueryFailures)) {
+            _skuDetailsError.value = responseCode
+        } else {
+            // Null leaves the screen its own retry prompt, which re-queries.
+            _skuDetailsList.postValue(null)
+        }
     }
 
     private suspend fun refreshPurchases() {
@@ -400,7 +424,16 @@ class PlayBillingDataSource(
 
     private fun retryBillingServiceConnectionWithExponentialBackoff() {
         handler.postDelayed(
-            { billingClient.startConnection(this) },
+            {
+                // By the time this lands a screen may have opened its own
+                // connection; stacking a second one on top would come back as
+                // DEVELOPER_ERROR instead of retrying.
+                if (refreshActionFor(billingClient.connectionState) ==
+                    BillingRefreshAction.START_CONNECTION
+                ) {
+                    billingClient.startConnection(this)
+                }
+            },
             reconnectMilliseconds
         )
         reconnectMilliseconds = min(
