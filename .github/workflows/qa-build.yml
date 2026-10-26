@@ -55,6 +55,16 @@ jobs:
       - uses: maierj/fastlane-action@v3.1.0
         with:
           lane: qaPlaystore
+      # minifyEnabled is on for release, and QA builds reuse one versionCode,
+      # so Play cannot hand this back later. Without it a QA crash report is
+      # unreadable.
+      - name: Keep the R8 mapping for this build
+        uses: actions/upload-artifact@v4
+        with:
+          name: mapping-playstore-qa-${{ github.run_number }}
+          path: android/app/build/outputs/mapping/playstoreRelease/mapping.txt
+          retention-days: 14
+          if-no-files-found: error
 
   crypto:
     name: Crypto APK for sideloading
@@ -71,10 +81,12 @@ jobs:
       - uses: maierj/fastlane-action@v3.1.0
         with:
           lane: qaCrypto
-      - name: Attach APK to the run
+      - name: Attach APK and its R8 mapping to the run
         uses: actions/upload-artifact@v4
         with:
           name: mysterium-crypto-qa-${{ github.run_number }}
-          path: android/app/build/outputs/apk/crypto/release/app-crypto-release.apk
+          path: |
+            android/app/build/outputs/apk/crypto/release/app-crypto-release.apk
+            android/app/build/outputs/mapping/cryptoRelease/mapping.txt
           retention-days: 14
           if-no-files-found: error
