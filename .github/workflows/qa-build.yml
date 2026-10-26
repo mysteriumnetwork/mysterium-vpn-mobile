@@ -1,0 +1,92 @@
+name: QA Build
+
+# Hands QA a testable build on demand. Deliberately separate from cd.yml: that
+# workflow is the merge gate and the release path, and dispatching it would drag
+# buildDebug along with it.
+on:
+  workflow_dispatch:
+    inputs:
+      flavor:
+        description: "Which flavour to build"
+        required: true
+        type: choice
+        default: both
+        options:
+          - both
+          - playstore
+          - crypto
+
+env:
+  FASTLANE_ANDROID_SECRET_JSON_VALUE: ${{ secrets.FASTLANE_ANDROID_SECRET_JSON_VALUE }}
+  FASTLANE_ANDROID_SECRET_JSON_PATH: ${{ github.workspace }}/api-key.json
+  FASTLANE_ANDROID_SIGNING_FILE_VALUE: ${{ secrets.FASTLANE_ANDROID_SIGNING_FILE_VALUE }}
+  FASTLANE_ANDROID_SIGNING_FILE_PATH: ${{ github.workspace }}/my-release-key.keystore
+  FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS: ${{ secrets.FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS }}
+  FASTLANE_ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.FASTLANE_ANDROID_SIGNING_KEY_ALIAS }}
+  FASTLANE_ANDROID_SIGNING_KEY_PASS: ${{ secrets.FASTLANE_ANDROID_SIGNING_KEY_PASS }}
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: maierj/fastlane-action@v3.1.0
+        with:
+          lane: test
+
+  playstore:
+    name: Play Store build to Internal App Sharing
+    runs-on: ubuntu-latest
+    needs: test
+    if: inputs.flavor == 'both' || inputs.flavor == 'playstore'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The QA version name is built from the last git tag, and the default
+          # shallow checkout fetches no tags.
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - name: Decode signing and service files
+        run: |
+          echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
+          echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
+      - uses: maierj/fastlane-action@v3.1.0
+        with:
+          lane: qaPlaystore
+      # minifyEnabled is on for release, and QA builds reuse one versionCode,
+      # so Play cannot hand this back later. Without it a QA crash report is
+      # unreadable.
+      - name: Keep the R8 mapping for this build
+        uses: actions/upload-artifact@v4
+        with:
+          name: mapping-playstore-qa-${{ github.run_number }}
+          path: android/app/build/outputs/mapping/playstoreRelease/mapping.txt
+          retention-days: 14
+          if-no-files-found: error
+
+  crypto:
+    name: Crypto APK for sideloading
+    runs-on: ubuntu-latest
+    needs: test
+    if: inputs.flavor == 'both' || inputs.flavor == 'crypto'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - name: Decode signing file
+        run: echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
+      - uses: maierj/fastlane-action@v3.1.0
+        with:
+          lane: qaCrypto
+      - name: Attach APK and its R8 mapping to the run
+        uses: actions/upload-artifact@v4
+        with:
+          name: mysterium-crypto-qa-${{ github.run_number }}
+          path: |
+            android/app/build/outputs/apk/crypto/release/app-crypto-release.apk
+            android/app/build/outputs/mapping/cryptoRelease/mapping.txt
+          retention-days: 14
+          if-no-files-found: error
