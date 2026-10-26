@@ -10,15 +10,23 @@ import com.android.billingclient.api.BillingClient.BillingResponseCode
 internal const val MAX_TRANSIENT_SETUP_ATTEMPTS = 3
 
 /**
- * Failures Google classifies as transient service problems, usually a network
- * issue between the device and Play. The documented handling is to retry, not to
- * tell the user billing is unavailable. Shared by the setup and query policies,
- * which differ only in what spends the retry budget.
+ * Failures Google classifies as transient and documents as retry-with-backoff,
+ * rather than something to tell the user about. Shared by the setup and query
+ * policies, which differ only in what spends the retry budget.
+ *
+ * `ERROR` belongs here despite the name: Google describes it as an internal
+ * Play problem that is sometimes transient, and the retry example on the page
+ * below is built around exactly this set.
+ *
+ * `SERVICE_TIMEOUT` is deliberately absent. It is retriable, but Billing
+ * Library 6.0.0 and later report that condition as `SERVICE_UNAVAILABLE`, so on
+ * the version this app builds against it would be dead weight.
  */
 internal val transientBillingFailures = setOf(
     BillingResponseCode.SERVICE_UNAVAILABLE,
     BillingResponseCode.SERVICE_DISCONNECTED,
-    BillingResponseCode.NETWORK_ERROR
+    BillingResponseCode.NETWORK_ERROR,
+    BillingResponseCode.ERROR
 )
 
 /**

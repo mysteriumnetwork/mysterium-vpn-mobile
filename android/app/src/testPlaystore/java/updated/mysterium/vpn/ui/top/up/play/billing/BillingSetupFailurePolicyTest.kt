@@ -23,6 +23,7 @@ class BillingSetupFailurePolicyTest {
 
     @Test
     fun `transient errors are retried silently at first`() {
+        assertFalse(shouldSurfaceSetupFailure(BillingResponseCode.ERROR, 1))
         assertFalse(shouldSurfaceSetupFailure(BillingResponseCode.SERVICE_UNAVAILABLE, 1))
         assertFalse(shouldSurfaceSetupFailure(BillingResponseCode.SERVICE_DISCONNECTED, 1))
         assertFalse(shouldSurfaceSetupFailure(BillingResponseCode.NETWORK_ERROR, 2))

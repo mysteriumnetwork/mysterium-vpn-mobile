@@ -38,6 +38,12 @@ class BillingQueryFailurePolicyTest {
             QueryFailureResponse.RETRYABLE,
             queryFailureResponse(BillingResponseCode.NETWORK_ERROR, 1)
         )
+        // Google documents ERROR as an internal Play problem to retry with
+        // backoff, and its own example retries on exactly this code.
+        assertEquals(
+            QueryFailureResponse.RETRYABLE,
+            queryFailureResponse(BillingResponseCode.ERROR, 1)
+        )
         assertEquals(
             QueryFailureResponse.RETRYABLE,
             queryFailureResponse(
