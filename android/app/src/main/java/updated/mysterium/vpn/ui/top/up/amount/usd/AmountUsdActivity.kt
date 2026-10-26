@@ -68,6 +68,10 @@ abstract class AmountUsdActivity : BaseActivity() {
         )
     }
 
+    override fun retryLoading() {
+        loadAmounts()
+    }
+
     private fun bindsAction() {
         binding.backButton.setOnClickListener {
             finish()

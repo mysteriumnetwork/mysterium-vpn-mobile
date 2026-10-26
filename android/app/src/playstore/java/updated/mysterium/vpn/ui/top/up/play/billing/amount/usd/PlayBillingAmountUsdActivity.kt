@@ -15,7 +15,7 @@ import updated.mysterium.vpn.ui.top.up.select.country.SelectCountryActivity
 class PlayBillingAmountUsdActivity : AmountUsdActivity() {
 
     private val viewModel: PlayBillingAmountUsdViewModel by inject()
-    private var errorObserverRegistered = false
+    private var observersRegistered = false
 
     override fun populateAdapter(
         onSuccess: (List<AmountUsdCardItem>?) -> Unit,
@@ -24,6 +24,10 @@ class PlayBillingAmountUsdActivity : AmountUsdActivity() {
         // A retry must actually ask Play again: the LiveData below is backed by
         // an app-scoped singleton and would otherwise just replay its last value.
         viewModel.refreshProductDetails()
+        if (observersRegistered) {
+            return
+        }
+        observersRegistered = true
         viewModel.getSkuDetails().observe(this) { result ->
             result.onSuccess { skuDetailList ->
                 skuDetailList.observeOnce(this) { list ->
@@ -34,10 +38,6 @@ class PlayBillingAmountUsdActivity : AmountUsdActivity() {
                 onFailure.invoke(exception)
             }
         }
-        if (errorObserverRegistered) {
-            return
-        }
-        errorObserverRegistered = true
         viewModel.getSkuError().observe(this) { result ->
             result.onSuccess { failures ->
                 // observe, not observeOnce: SingleLiveEvent already delivers a
@@ -55,7 +55,7 @@ class PlayBillingAmountUsdActivity : AmountUsdActivity() {
                     // failure nothing here can fix gets the dialog whose single
                     // button drops the user out of the top-up flow.
                     if (failure.retryable) {
-                        wifiNetworkErrorPopUp { loadAmounts() }
+                        showNoAmountPopUp { loadAmounts() }
                     } else {
                         billingUnavailable()
                     }
