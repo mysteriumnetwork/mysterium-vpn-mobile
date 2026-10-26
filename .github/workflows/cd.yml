@@ -25,11 +25,11 @@ jobs:
     name: Build Debug APK
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Decode service file
         run: echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
-      - uses: maierj/fastlane-action@v3.1.0
+      - uses: maierj/fastlane-action@v3.2.0
         with:
           lane: buildDebug
       - uses: ./.github/actions/verify-16kb
@@ -39,11 +39,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: buildDebug
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Decode service file
         run: echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
-      - uses: maierj/fastlane-action@v3.1.0
+      - uses: maierj/fastlane-action@v3.2.0
         with:
           lane: test
 
@@ -53,21 +53,21 @@ jobs:
     needs: [buildDebug, test]
     if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Decode signing and service files
         run: |
           echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
           echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
           echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
-      - uses: maierj/fastlane-action@v3.1.0
+      - uses: maierj/fastlane-action@v3.2.0
         with:
           lane: build
       - uses: ./.github/actions/verify-16kb
       - name: Rename APK to myst.apk
         run: mv android/app/build/outputs/apk/crypto/release/app-crypto-release.apk android/app/build/outputs/apk/crypto/release/myst.apk
       - name: Publish assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.event.release.tag_name }}
           files: android/app/build/outputs/apk/crypto/release/myst.apk
@@ -78,13 +78,13 @@ jobs:
     needs: [buildDebug, test]
     if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Decode signing and service files
         run: |
           echo "$FASTLANE_ANDROID_SIGNING_FILE_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SIGNING_FILE_PATH"
           echo "$FASTLANE_ANDROID_SECRET_JSON_VALUE" | base64 --decode > "$FASTLANE_ANDROID_SECRET_JSON_PATH"
           echo "$GOOGLE_SERVICES_VALUE" | base64 --decode > "$GOOGLE_SERVICES_PATH"
-      - uses: maierj/fastlane-action@v3.1.0
+      - uses: maierj/fastlane-action@v3.2.0
         with:
           lane: internal
