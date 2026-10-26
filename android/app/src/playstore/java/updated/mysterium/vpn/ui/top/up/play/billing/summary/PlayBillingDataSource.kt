@@ -50,7 +50,7 @@ class PlayBillingDataSource(
     // SingleLiveEvent, not MutableLiveData: this data source is an app-scoped
     // singleton, so a retained value would replay the last failure to every
     // future observer and make top-up permanently unreachable.
-    private val _skuDetailsError = SingleLiveEvent<BillingFailure>()
+    private val _skuDetailsError = SingleLiveEvent<BillingFailure?>()
     val skuDetailsError
         get() = _skuDetailsError
 
@@ -244,6 +244,11 @@ class PlayBillingDataSource(
         )
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             consecutiveQueryFailures = 0
+            // Retract any failure still queued on this channel. A failure
+            // posted while no screen was observing stays pending, so without
+            // this the next screen to attach is handed an error that this
+            // success has just disproved.
+            _skuDetailsError.postValue(null)
             _skuDetailsList.postValue(productDetailsResult.productDetailsList)
             return
         }

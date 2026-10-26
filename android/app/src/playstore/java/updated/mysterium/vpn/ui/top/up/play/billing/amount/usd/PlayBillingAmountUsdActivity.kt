@@ -45,6 +45,11 @@ class PlayBillingAmountUsdActivity : AmountUsdActivity() {
                 // SingleLiveEvent.observe registers a wrapper, so the
                 // removeObserver inside observeOnce matches nothing.
                 failures.observe(this) { failure ->
+                    // Null is a retraction: a later query succeeded, so a
+                    // failure that was still queued here no longer holds.
+                    if (failure == null) {
+                        return@observe
+                    }
                     Log.e(TAG, "Play Billing failed, response code: ${failure.responseCode}")
                     // A blip that will clear on its own gets a retry. Only a
                     // failure nothing here can fix gets the dialog whose single
