@@ -33,6 +33,58 @@ platform :android do
       })
   end
 
+  desc "Build the Play Store flavour and hand it to QA through Internal App Sharing"
+  lane :qaPlaystore do
+    version_name = qa_version_name(last_git_tag)
+    gradle(
+      task: "clean bundle",
+      flavor: "playstore",
+      build_type: "Release",
+      project_dir: "android",
+      print_command: false, # to prevent outputting passwords
+      properties: {
+        'versionCode' => version_code,
+        'versionName' => version_name,
+        "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
+        "android.injected.signing.store.password" => ENV["FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS"],
+        "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["FASTLANE_ANDROID_SIGNING_KEY_PASS"],
+      })
+    # Gate the upload: Play rejects bundles whose native libraries do not
+    # support 16 KB memory pages.
+    sh("cd \"$(git rev-parse --show-toplevel)\" && util_scripts/verify-16kb-alignment.py #{playstore_aab}")
+    # Internal App Sharing, not a track: it accepts repeat uploads of the same
+    # versionCode, so QA builds never have to touch android_version_code.
+    url = upload_to_play_store_internal_app_sharing(
+      aab: File.join(repo_root, playstore_aab),
+      json_key: ENV["FASTLANE_ANDROID_SECRET_JSON_PATH"]
+    )
+    publish_qa_build("Play Store flavour", version_name, "Install: #{url}")
+  end
+
+  desc "Build a signed crypto flavour APK for QA to sideload"
+  lane :qaCrypto do
+    version_name = qa_version_name(last_git_tag)
+    gradle(
+      task: "clean assemble",
+      flavor: "crypto",
+      build_type: "Release",
+      project_dir: "android",
+      print_command: false, # to prevent outputting passwords
+      properties: {
+        'versionCode' => version_code,
+        'versionName' => version_name,
+        "android.injected.signing.store.file" => ENV["FASTLANE_ANDROID_SIGNING_FILE_PATH"],
+        "android.injected.signing.store.password" => ENV["FASTLANE_ANDROID_SIGNING_KEYSTORE_PASS"],
+        "android.injected.signing.key.alias" => ENV["FASTLANE_ANDROID_SIGNING_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["FASTLANE_ANDROID_SIGNING_KEY_PASS"],
+      })
+    sh("cd \"$(git rev-parse --show-toplevel)\" && util_scripts/verify-16kb-alignment.py #{crypto_apk}")
+    # Crypto pays through the node, not Play Billing, so this one needs no Play
+    # round trip at all; the workflow attaches the APK to the run.
+    publish_qa_build("Crypto flavour", version_name, "Download the APK from this run's artifacts.")
+  end
+
   desc "Push a new internal build to Play Store"
   lane :internal do
     gradle(
@@ -63,4 +115,40 @@ end
 
 def version_code
   return File.read("./android_version_code").to_i
+end
+
+def playstore_aab
+  return "android/app/build/outputs/bundle/playstoreRelease/app-playstore-release.aab"
+end
+
+def crypto_apk
+  return "android/app/build/outputs/apk/crypto/release/app-crypto-release.apk"
+end
+
+def repo_root
+  @repo_root ||= `git rev-parse --show-toplevel`.strip
+end
+
+# QA builds keep the released versionCode, so the version name is the only
+# thing telling two of them apart on a tester's device. Carry the run and the
+# commit so a bug report names the exact build it came from.
+def qa_version_name(base)
+  run = ENV["GITHUB_RUN_NUMBER"] || "local"
+  sha = (ENV["GITHUB_SHA"] || `git rev-parse HEAD`.strip)[0, 8]
+  "#{base}-qa.#{run}-#{sha}"
+end
+
+# Put the build where whoever asked for it will look: the run summary, rather
+# than a line somewhere in the log.
+def publish_qa_build(title, version_name, line)
+  UI.important("#{title} QA build #{version_name} -- #{line}")
+  summary = ENV["GITHUB_STEP_SUMMARY"]
+  return if summary.nil? || summary.empty?
+  File.open(summary, "a") do |file|
+    file.puts("### #{title}")
+    file.puts("")
+    file.puts("- Version: `#{version_name}`")
+    file.puts("- #{line}")
+    file.puts("")
+  end
 end
