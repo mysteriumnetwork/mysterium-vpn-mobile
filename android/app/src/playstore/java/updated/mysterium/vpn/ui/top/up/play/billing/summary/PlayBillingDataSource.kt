@@ -85,17 +85,6 @@ class PlayBillingDataSource(
         initializeFlows()
         billingClient = BillingClient.newBuilder(application)
             .setListener(this)
-            // Google's first-line handling for SERVICE_DISCONNECTED. A call that
-            // finds the client dropped reconnects and completes instead of
-            // failing, which the backoff below cannot do -- by the time it
-            // reconnects, the call has already come back disconnected.
-            //
-            // It does not replace the rest: the library only repairs a client
-            // that was connected and only when a call needs it, so a setup that
-            // never succeeded still needs the retry in onBillingSetupFinished,
-            // a drop still needs the re-query, and startConnection is still
-            // ours to call, which is what refreshActionFor guards.
-            .enableAutoServiceReconnection()
             .enablePendingPurchases(
                 PendingPurchasesParams.newBuilder()
                     .enableOneTimeProducts()
