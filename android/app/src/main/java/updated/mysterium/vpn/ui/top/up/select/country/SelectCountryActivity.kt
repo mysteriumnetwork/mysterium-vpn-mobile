@@ -187,8 +187,11 @@ class SelectCountryActivity : BaseActivity() {
 
     private fun checkValidData() {
         if (
-        // select state for USA users
-            ((selectedCountry == "US" && selectedStateOfAmerica != null) ||
+        // an unrecognised payment option has no flow to confirm into, and
+        // nothing further down the screen can supply one
+            paymentOption != null
+            // select state for USA users
+            && ((selectedCountry == "US" && selectedStateOfAmerica != null) ||
                     (selectedCountry != "US" && selectedCountry != null))
             // wait for a currency only where the screen actually offers one
             && (!requiresCurrencySelection(paymentOption?.gateway) || selectedCurrency != null)
