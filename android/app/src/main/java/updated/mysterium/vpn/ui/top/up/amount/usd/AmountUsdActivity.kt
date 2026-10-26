@@ -41,7 +41,7 @@ abstract class AmountUsdActivity : BaseActivity() {
         loadAmounts()
     }
 
-    private fun loadAmounts() {
+    protected fun loadAmounts() {
         populateAdapter(
             onSuccess = { list ->
                 // A null or empty list means the gateway returned no suggested
@@ -61,7 +61,9 @@ abstract class AmountUsdActivity : BaseActivity() {
             },
             onFailure = { error ->
                 Log.e(TAG, "Failed to load top-up amounts", error)
-                wifiNetworkErrorPopUp {}
+                // Retry for real: an empty action left a Retry button that only
+                // closed the dialog and put the user back on an empty screen.
+                wifiNetworkErrorPopUp { loadAmounts() }
             }
         )
     }

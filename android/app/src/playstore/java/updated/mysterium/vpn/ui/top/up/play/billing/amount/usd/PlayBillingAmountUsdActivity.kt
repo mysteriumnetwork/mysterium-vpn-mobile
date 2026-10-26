@@ -39,15 +39,21 @@ class PlayBillingAmountUsdActivity : AmountUsdActivity() {
         }
         errorObserverRegistered = true
         viewModel.getSkuError().observe(this) { result ->
-            result.onSuccess { errorCode ->
-                errorCode.observeOnce(this) { responseCode ->
-                    // Every non-OK setup response means billing is unusable right
-                    // now. Previously only BILLING_UNAVAILABLE said so; the rest
-                    // (SERVICE_UNAVAILABLE, SERVICE_DISCONNECTED, DEVELOPER_ERROR,
-                    // ...) fell through to a "check your Wi-Fi" dialog, which is
-                    // wrong and sends users and support down the wrong path.
-                    Log.e(TAG, "Play Billing setup failed, response code: $responseCode")
-                    billingUnavailable()
+            result.onSuccess { failures ->
+                // observe, not observeOnce: SingleLiveEvent already delivers a
+                // value once, and observeOnce cannot remove itself from one --
+                // SingleLiveEvent.observe registers a wrapper, so the
+                // removeObserver inside observeOnce matches nothing.
+                failures.observe(this) { failure ->
+                    Log.e(TAG, "Play Billing failed, response code: ${failure.responseCode}")
+                    // A blip that will clear on its own gets a retry. Only a
+                    // failure nothing here can fix gets the dialog whose single
+                    // button drops the user out of the top-up flow.
+                    if (failure.retryable) {
+                        wifiNetworkErrorPopUp { loadAmounts() }
+                    } else {
+                        billingUnavailable()
+                    }
                 }
             }
             result.onFailure { exception ->

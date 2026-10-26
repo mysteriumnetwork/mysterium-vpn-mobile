@@ -35,6 +35,7 @@ class PlayBillingDataSource(
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
     private var consecutiveSetupFailures = 0
     private var consecutiveQueryFailures = 0
+    private var lastQueryFailureUptime = 0L
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
 
     private val knownInAppSKUs = mutableListOf("1_99_usd", "3_99_usd", "5_99_usd")
@@ -49,7 +50,7 @@ class PlayBillingDataSource(
     // SingleLiveEvent, not MutableLiveData: this data source is an app-scoped
     // singleton, so a retained value would replay the last failure to every
     // future observer and make top-up permanently unreachable.
-    private val _skuDetailsError = SingleLiveEvent<Int>()
+    private val _skuDetailsError = SingleLiveEvent<BillingFailure>()
     val skuDetailsError
         get() = _skuDetailsError
 
@@ -112,7 +113,7 @@ class PlayBillingDataSource(
             // user billing error is manual retry only, and this data source is
             // app-scoped, so an automatic loop would outlive the screen. The user
             // now drives recovery through refresh().
-            _skuDetailsError.value = responseCode
+            _skuDetailsError.postValue(BillingFailure(responseCode, retryable = false))
         } else {
             Log.w(
                 TAG,
@@ -125,11 +126,13 @@ class PlayBillingDataSource(
 
     /** Re-runs the product query, reconnecting first if the client dropped. */
     fun refresh() {
-        // A user-driven retry earns a fresh transient-failure budget. Without
-        // this the counter stays spent after the first surfaced failure and
-        // every later blip goes straight to the unavailable dialog.
+        // A user-driven retry earns a fresh transient-failure budget and a
+        // fresh backoff. Left alone both stay spent from the previous visit:
+        // the next blip goes straight to the unavailable dialog, and the quiet
+        // retries before it would have been minutes apart.
         consecutiveSetupFailures = 0
-        when (refreshActionFor(billingClient.connectionState)) {
+        reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
+        when (refreshActionFor(billingClient.connectionState, billingClient.isReady)) {
             BillingRefreshAction.QUERY_PRODUCTS ->
                 defaultScope.launch { queryProductDetailsAsync() }
             // onBillingSetupFinished queries once the pending setup lands.
@@ -206,10 +209,12 @@ class PlayBillingDataSource(
                     detailsMutableFlow?.tryEmit(skuDetails) ?: Log.e(TAG, "Unknown sku: $sku")
                 }
             }
-        } else if (failedBillingResponseCodes.contains(responseCode)) {
+        } else {
+            // No notification here: this is a product listing, not a purchase.
+            // A "payment failed" notification for a payment nobody attempted
+            // sends the user, and support, after the wrong thing.
             Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-            notificationManager.showFailedPaymentNotification()
-        } else Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+        }
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             skuDetailsResponseTime = SystemClock.elapsedRealtime()
         } else {
@@ -243,16 +248,20 @@ class PlayBillingDataSource(
             return
         }
         // A failed query returns an empty list whatever the gateway actually
-        // sells. Posting it renders as "no top-up amounts for this gateway",
-        // which hides the billing error behind a Play Console problem that
-        // isn't there.
-        consecutiveQueryFailures++
-        if (shouldSurfaceQueryFailure(responseCode, consecutiveQueryFailures)) {
-            _skuDetailsError.value = responseCode
-        } else {
-            // Null leaves the screen its own retry prompt, which re-queries.
-            _skuDetailsList.postValue(null)
-        }
+        // sells, so nothing goes to _skuDetailsList: posting that list, or
+        // null, renders as "no top-up amounts for this gateway" and hides the
+        // billing error behind a Play Console problem that isn't there.
+        val now = SystemClock.elapsedRealtime()
+        consecutiveQueryFailures = nextQueryFailureCount(
+            consecutiveQueryFailures,
+            now - lastQueryFailureUptime
+        )
+        lastQueryFailureUptime = now
+        val retryable = queryFailureResponse(responseCode, consecutiveQueryFailures) ==
+            QueryFailureResponse.RETRYABLE
+        // postValue, not value: the success path posts too, and a synchronous
+        // error would overtake a list already queued and close the screen on it.
+        _skuDetailsError.postValue(BillingFailure(responseCode, retryable))
     }
 
     private suspend fun refreshPurchases() {
@@ -423,22 +432,24 @@ class PlayBillingDataSource(
     }
 
     private fun retryBillingServiceConnectionWithExponentialBackoff() {
+        val delayMilliseconds = reconnectMilliseconds
         handler.postDelayed(
             {
                 // By the time this lands a screen may have opened its own
                 // connection; stacking a second one on top would come back as
-                // DEVELOPER_ERROR instead of retrying.
-                if (refreshActionFor(billingClient.connectionState) ==
+                // DEVELOPER_ERROR instead of retrying. Only an attempt really
+                // made should cost the next one its longer wait.
+                if (refreshActionFor(billingClient.connectionState, billingClient.isReady) ==
                     BillingRefreshAction.START_CONNECTION
                 ) {
+                    reconnectMilliseconds = min(
+                        reconnectMilliseconds * 2,
+                        RECONNECT_TIMER_MAX_TIME_MILLISECONDS
+                    )
                     billingClient.startConnection(this)
                 }
             },
-            reconnectMilliseconds
-        )
-        reconnectMilliseconds = min(
-            reconnectMilliseconds * 2,
-            RECONNECT_TIMER_MAX_TIME_MILLISECONDS
+            delayMilliseconds
         )
     }
 

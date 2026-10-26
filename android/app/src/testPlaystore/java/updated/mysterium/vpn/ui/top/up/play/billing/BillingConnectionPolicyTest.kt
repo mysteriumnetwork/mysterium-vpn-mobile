@@ -15,18 +15,20 @@ import updated.mysterium.vpn.ui.top.up.play.billing.summary.refreshActionFor
 class BillingConnectionPolicyTest {
 
     @Test
-    fun `a disconnected client is connected first`() {
+    fun `a ready client queries products straight away`() {
         assertEquals(
-            BillingRefreshAction.START_CONNECTION,
-            refreshActionFor(ConnectionState.DISCONNECTED)
+            BillingRefreshAction.QUERY_PRODUCTS,
+            refreshActionFor(ConnectionState.CONNECTED, isReady = true)
         )
     }
 
     @Test
-    fun `a connected client queries products straight away`() {
+    fun `a client that says CONNECTED but is not ready reconnects`() {
+        // isReady() also requires the service binder and the service connection,
+        // so CONNECTED on its own is not enough to query against.
         assertEquals(
-            BillingRefreshAction.QUERY_PRODUCTS,
-            refreshActionFor(ConnectionState.CONNECTED)
+            BillingRefreshAction.START_CONNECTION,
+            refreshActionFor(ConnectionState.CONNECTED, isReady = false)
         )
     }
 
@@ -34,7 +36,15 @@ class BillingConnectionPolicyTest {
     fun `a connecting client waits for the setup already in flight`() {
         assertEquals(
             BillingRefreshAction.AWAIT_PENDING_SETUP,
-            refreshActionFor(ConnectionState.CONNECTING)
+            refreshActionFor(ConnectionState.CONNECTING, isReady = false)
+        )
+    }
+
+    @Test
+    fun `a disconnected client is connected first`() {
+        assertEquals(
+            BillingRefreshAction.START_CONNECTION,
+            refreshActionFor(ConnectionState.DISCONNECTED, isReady = false)
         )
     }
 
@@ -42,7 +52,7 @@ class BillingConnectionPolicyTest {
     fun `a closed client is reconnected rather than left dead`() {
         assertEquals(
             BillingRefreshAction.START_CONNECTION,
-            refreshActionFor(ConnectionState.CLOSED)
+            refreshActionFor(ConnectionState.CLOSED, isReady = false)
         )
     }
 }

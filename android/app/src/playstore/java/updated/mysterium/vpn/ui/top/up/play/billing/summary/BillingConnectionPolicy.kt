@@ -10,12 +10,12 @@ internal enum class BillingRefreshAction {
     /** A setup is already in flight; its callback will query once it lands. */
     AWAIT_PENDING_SETUP,
 
-    /** No connection and none pending; open one. */
+    /** No usable connection and none pending; open one. */
     START_CONNECTION
 }
 
 /**
- * Picks the refresh action for a connection state.
+ * Picks the refresh action for a billing client.
  *
  * `startConnection` is not idempotent. Called while the client is already
  * CONNECTING, Play answers `onBillingSetupFinished` immediately with
@@ -29,10 +29,15 @@ internal enum class BillingRefreshAction {
  * lazy Koin singleton, so its constructor opens the first connection inside the
  * very statement that then calls refresh.
  *
+ * [isReady] is passed separately because `connectionState` is the weaker test.
+ * `isReady()` also requires the service binder and the service connection, so a
+ * client whose binder has gone can still report CONNECTED; querying that one
+ * fails where reconnecting would have recovered.
+ *
  * @see <a href="https://developer.android.com/google/play/billing/errors">Handle BillingResult response codes</a>
  */
-internal fun refreshActionFor(connectionState: Int): BillingRefreshAction = when (connectionState) {
-    ConnectionState.CONNECTED -> BillingRefreshAction.QUERY_PRODUCTS
-    ConnectionState.CONNECTING -> BillingRefreshAction.AWAIT_PENDING_SETUP
+internal fun refreshActionFor(connectionState: Int, isReady: Boolean): BillingRefreshAction = when {
+    isReady -> BillingRefreshAction.QUERY_PRODUCTS
+    connectionState == ConnectionState.CONNECTING -> BillingRefreshAction.AWAIT_PENDING_SETUP
     else -> BillingRefreshAction.START_CONNECTION
 }
