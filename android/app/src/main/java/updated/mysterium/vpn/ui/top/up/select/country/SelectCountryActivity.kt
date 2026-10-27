@@ -14,8 +14,8 @@ import updated.mysterium.vpn.common.extensions.TAG
 import updated.mysterium.vpn.common.extensions.onItemSelected
 import updated.mysterium.vpn.common.location.CountriesUtil
 import updated.mysterium.vpn.common.location.StatesUtil
-import updated.mysterium.vpn.model.payment.Gateway
 import updated.mysterium.vpn.model.payment.PaymentOption
+import updated.mysterium.vpn.model.payment.requiresCurrencySelection
 import updated.mysterium.vpn.model.top.up.AmountUsdCardItem
 import updated.mysterium.vpn.model.top.up.CurrencyCardItem
 import updated.mysterium.vpn.ui.base.BaseActivity
@@ -77,8 +77,10 @@ class SelectCountryActivity : BaseActivity() {
 
     private fun setUpCurrencies() {
         paymentOption?.gateway?.let { gateway ->
-            // inflate currencies for crypto payments on the separate screen
-            if (gateway != Gateway.COINGATE) {
+            // Crypto picks its currency on the separate screen, and Play always
+            // charges in USD. Asking the node for either only delays the screen
+            // behind a lookup whose answer is thrown away.
+            if (requiresCurrencySelection(gateway)) {
                 viewModel.getCurrencies(gateway.gateway).observe(this) { result ->
                     result.onSuccess { currencies ->
                         currencies?.let {
@@ -185,12 +187,14 @@ class SelectCountryActivity : BaseActivity() {
 
     private fun checkValidData() {
         if (
-        // select state for USA users
-            ((selectedCountry == "US" && selectedStateOfAmerica != null) ||
+        // an unrecognised payment option has no flow to confirm into, and
+        // nothing further down the screen can supply one
+            paymentOption != null
+            // select state for USA users
+            && ((selectedCountry == "US" && selectedStateOfAmerica != null) ||
                     (selectedCountry != "US" && selectedCountry != null))
-            // select currency for non-crypto payments
-            && ((paymentOption?.gateway != Gateway.COINGATE && selectedCurrency != null) ||
-                    paymentOption?.gateway == Gateway.COINGATE)
+            // wait for a currency only where the screen actually offers one
+            && (!requiresCurrencySelection(paymentOption?.gateway) || selectedCurrency != null)
         ) {
             binding.confirmButton.isEnabled = true
             binding.confirmButtonShadow.visibility = View.VISIBLE

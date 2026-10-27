@@ -48,7 +48,7 @@ class PlayBillingDataSource(
     // SingleLiveEvent, not MutableLiveData: this data source is an app-scoped
     // singleton, so a retained value would replay the last failure to every
     // future observer and make top-up permanently unreachable.
-    private val _skuDetailsError = SingleLiveEvent<Int>()
+    private val _skuDetailsError = SingleLiveEvent<BillingFailure?>()
     val skuDetailsError
         get() = _skuDetailsError
 
@@ -64,10 +64,7 @@ class PlayBillingDataSource(
         BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
         BillingClient.BillingResponseCode.DEVELOPER_ERROR,
         BillingClient.BillingResponseCode.ERROR,
-        BillingClient.BillingResponseCode.USER_CANCELED,
-        BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
-        BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
-        BillingClient.BillingResponseCode.ITEM_NOT_OWNED
+        BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED
     )
 
     private val billingClient: BillingClient
@@ -111,7 +108,9 @@ class PlayBillingDataSource(
             // user billing error is manual retry only, and this data source is
             // app-scoped, so an automatic loop would outlive the screen. The user
             // now drives recovery through refresh().
-            _skuDetailsError.value = responseCode
+            _skuDetailsError.postValue(
+                BillingFailure(responseCode, isRetryableBillingFailure(responseCode))
+            )
         } else {
             Log.w(
                 TAG,
@@ -124,10 +123,19 @@ class PlayBillingDataSource(
 
     /** Re-runs the product query, reconnecting first if the client dropped. */
     fun refresh() {
-        if (billingClient.isReady) {
-            defaultScope.launch { queryProductDetailsAsync() }
-        } else {
-            billingClient.startConnection(this)
+        // A user-driven retry earns a fresh transient-failure budget and a
+        // fresh backoff. Left alone both stay spent from the previous visit:
+        // the next blip goes straight to the unavailable dialog, and the quiet
+        // retries before it would have been minutes apart.
+        consecutiveSetupFailures = 0
+        reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
+        when (refreshActionFor(billingClient.connectionState, billingClient.isReady)) {
+            BillingRefreshAction.QUERY_PRODUCTS ->
+                defaultScope.launch { queryProductDetailsAsync() }
+            // onBillingSetupFinished queries once the pending setup lands.
+            BillingRefreshAction.AWAIT_PENDING_SETUP -> Unit
+            BillingRefreshAction.START_CONNECTION ->
+                billingClient.startConnection(this)
         }
     }
 
@@ -198,10 +206,12 @@ class PlayBillingDataSource(
                     detailsMutableFlow?.tryEmit(skuDetails) ?: Log.e(TAG, "Unknown sku: $sku")
                 }
             }
-        } else if (failedBillingResponseCodes.contains(responseCode)) {
+        } else {
+            // No notification here: this is a product listing, not a purchase.
+            // A "payment failed" notification for a payment nobody attempted
+            // sends the user, and support, after the wrong thing.
             Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
-            notificationManager.showFailedPaymentNotification()
-        } else Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+        }
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             skuDetailsResponseTime = SystemClock.elapsedRealtime()
         } else {
@@ -224,11 +234,29 @@ class PlayBillingDataSource(
                 .setProductList(productList)
                 .build()
         )
+        val responseCode = productDetailsResult.billingResult.responseCode
         onSkuDetailsResponse(
             productDetailsResult.billingResult,
             productDetailsResult.productDetailsList
         )
-        _skuDetailsList.postValue(productDetailsResult.productDetailsList)
+        if (responseCode == BillingClient.BillingResponseCode.OK) {
+            // Retract any failure still queued on this channel. A failure
+            // posted while no screen was observing stays pending, so without
+            // this the next screen to attach is handed an error that this
+            // success has just disproved.
+            _skuDetailsError.postValue(null)
+            _skuDetailsList.postValue(productDetailsResult.productDetailsList)
+            return
+        }
+        // A failed query returns an empty list whatever the gateway actually
+        // sells, so nothing goes to _skuDetailsList: posting that list, or
+        // null, renders as "no top-up amounts for this gateway" and hides the
+        // billing error behind a Play Console problem that isn't there.
+        // postValue, not value: the success path posts too, and a synchronous
+        // error would overtake a list already queued and close the screen on it.
+        _skuDetailsError.postValue(
+            BillingFailure(responseCode, isRetryableBillingFailure(responseCode))
+        )
     }
 
     private suspend fun refreshPurchases() {
@@ -399,13 +427,27 @@ class PlayBillingDataSource(
     }
 
     private fun retryBillingServiceConnectionWithExponentialBackoff() {
+        val delayMilliseconds = reconnectMilliseconds
         handler.postDelayed(
-            { billingClient.startConnection(this) },
-            reconnectMilliseconds
-        )
-        reconnectMilliseconds = min(
-            reconnectMilliseconds * 2,
-            RECONNECT_TIMER_MAX_TIME_MILLISECONDS
+            {
+                // By the time this lands a screen may have opened its own
+                // connection; stacking a second one on top would come back as
+                // DEVELOPER_ERROR instead of retrying. Only an attempt really
+                // made should cost the next one its longer wait.
+                when (refreshActionFor(billingClient.connectionState, billingClient.isReady)) {
+                    BillingRefreshAction.QUERY_PRODUCTS ->
+                        defaultScope.launch { queryProductDetailsAsync() }
+                    BillingRefreshAction.AWAIT_PENDING_SETUP -> Unit
+                    BillingRefreshAction.START_CONNECTION -> {
+                        reconnectMilliseconds = min(
+                            reconnectMilliseconds * 2,
+                            RECONNECT_TIMER_MAX_TIME_MILLISECONDS
+                        )
+                        billingClient.startConnection(this)
+                    }
+                }
+            },
+            delayMilliseconds
         )
     }
 
